@@ -16,20 +16,21 @@ import (
 	"strings"
 )
 
-// AdministratorsClient contains the methods for the Administrators group.
-// Don't use this type directly, use NewAdministratorsClient() instead.
+// MicrosoftEntraAdministratorsClient - Operations for PostgreSQL roles that are members of azure_pg_admin and mapped to Microsoft
+// Entra principals.
+// Don't use this type directly, use NewMicrosoftEntraAdministratorsClient() instead.
 //
-// Generated from API version 2026-05-01-preview
-type AdministratorsClient struct {
+// Generated from API version 2026-10-01-preview
+type MicrosoftEntraAdministratorsClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewAdministratorsClient creates a new instance of AdministratorsClient with the specified values.
+// NewMicrosoftEntraAdministratorsClient creates a new instance of MicrosoftEntraAdministratorsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
-func NewAdministratorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AdministratorsClient, error) {
+func NewMicrosoftEntraAdministratorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MicrosoftEntraAdministratorsClient, error) {
 	if subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
@@ -37,48 +38,51 @@ func NewAdministratorsClient(subscriptionID string, credential azcore.TokenCrede
 	if err != nil {
 		return nil, err
 	}
-	client := &AdministratorsClient{
+	client := &MicrosoftEntraAdministratorsClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
 	return client, nil
 }
 
-// BeginCreateOrUpdate - Creates a new HorizonDB administrator or updates an existing administrator.
+// BeginCreateOrReplace - Creates or replaces a PostgreSQL role that is a member of azure_pg_admin and mapped to a Microsoft
+// Entra principal.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the HorizonDB cluster.
-//   - objectID - The Entra ID object identifier of the principal (an RFC 4122 GUID).
+//   - objectID - The Microsoft Entra object identifier of the principal mapped to the PostgreSQL role, represented as an RFC
+//     4122 GUID.
 //   - resource - Resource create parameters.
-//   - options - AdministratorsClientBeginCreateOrUpdateOptions contains the optional parameters for the AdministratorsClient.BeginCreateOrUpdate
+//   - options - MicrosoftEntraAdministratorsClientBeginCreateOrReplaceOptions contains the optional parameters for the MicrosoftEntraAdministratorsClient.BeginCreateOrReplace
 //     method.
-func (client *AdministratorsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, objectID string, resource AdministratorAdd, options *AdministratorsClientBeginCreateOrUpdateOptions) (*runtime.Poller[AdministratorsClientCreateOrUpdateResponse], error) {
+func (client *MicrosoftEntraAdministratorsClient) BeginCreateOrReplace(ctx context.Context, resourceGroupName string, clusterName string, objectID string, resource MicrosoftEntraAdministratorAdd, options *MicrosoftEntraAdministratorsClientBeginCreateOrReplaceOptions) (*runtime.Poller[MicrosoftEntraAdministratorsClientCreateOrReplaceResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.createOrUpdate(ctx, resourceGroupName, clusterName, objectID, resource, options)
+		resp, err := client.createOrReplace(ctx, resourceGroupName, clusterName, objectID, resource, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AdministratorsClientCreateOrUpdateResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[MicrosoftEntraAdministratorsClientCreateOrReplaceResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AdministratorsClientCreateOrUpdateResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[MicrosoftEntraAdministratorsClientCreateOrReplaceResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// CreateOrUpdate - Creates a new HorizonDB administrator or updates an existing administrator.
+// createOrReplace - Creates or replaces a PostgreSQL role that is a member of azure_pg_admin and mapped to a Microsoft Entra
+// principal.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *AdministratorsClient) createOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, objectID string, resource AdministratorAdd, options *AdministratorsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
+func (client *MicrosoftEntraAdministratorsClient) createOrReplace(ctx context.Context, resourceGroupName string, clusterName string, objectID string, resource MicrosoftEntraAdministratorAdd, options *MicrosoftEntraAdministratorsClientBeginCreateOrReplaceOptions) (*http.Response, error) {
 	var err error
-	const operationName = "AdministratorsClient.BeginCreateOrUpdate"
+	const operationName = "MicrosoftEntraAdministratorsClient.BeginCreateOrReplace"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, clusterName, objectID, resource, options)
+	req, err := client.createOrReplaceCreateRequest(ctx, resourceGroupName, clusterName, objectID, resource, options)
 	if err != nil {
 		return nil, err
 	}
@@ -92,9 +96,9 @@ func (client *AdministratorsClient) createOrUpdate(ctx context.Context, resource
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *AdministratorsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, objectID string, resource AdministratorAdd, _ *AdministratorsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HorizonDb/clusters/{clusterName}/administrators/{objectId}"
+// createOrReplaceCreateRequest creates the createOrReplace request.
+func (client *MicrosoftEntraAdministratorsClient) createOrReplaceCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, objectID string, resource MicrosoftEntraAdministratorAdd, _ *MicrosoftEntraAdministratorsClientBeginCreateOrReplaceOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HorizonDb/clusters/{clusterName}/microsoftEntraAdministrators/{objectId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
@@ -116,7 +120,7 @@ func (client *AdministratorsClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
+	reqQP.Set("api-version", version20261001Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -126,35 +130,36 @@ func (client *AdministratorsClient) createOrUpdateCreateRequest(ctx context.Cont
 	return req, nil
 }
 
-// BeginDelete - Deletes a HorizonDB administrator.
+// BeginDelete - Deletes a PostgreSQL role that is a member of azure_pg_admin and mapped to a Microsoft Entra principal.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the HorizonDB cluster.
-//   - objectID - The Entra ID object identifier of the principal (an RFC 4122 GUID).
-//   - options - AdministratorsClientBeginDeleteOptions contains the optional parameters for the AdministratorsClient.BeginDelete
+//   - objectID - The Microsoft Entra object identifier of the principal mapped to the PostgreSQL role, represented as an RFC
+//     4122 GUID.
+//   - options - MicrosoftEntraAdministratorsClientBeginDeleteOptions contains the optional parameters for the MicrosoftEntraAdministratorsClient.BeginDelete
 //     method.
-func (client *AdministratorsClient) BeginDelete(ctx context.Context, resourceGroupName string, clusterName string, objectID string, options *AdministratorsClientBeginDeleteOptions) (*runtime.Poller[AdministratorsClientDeleteResponse], error) {
+func (client *MicrosoftEntraAdministratorsClient) BeginDelete(ctx context.Context, resourceGroupName string, clusterName string, objectID string, options *MicrosoftEntraAdministratorsClientBeginDeleteOptions) (*runtime.Poller[MicrosoftEntraAdministratorsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, clusterName, objectID, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AdministratorsClientDeleteResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[MicrosoftEntraAdministratorsClientDeleteResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AdministratorsClientDeleteResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[MicrosoftEntraAdministratorsClientDeleteResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// Delete - Deletes a HorizonDB administrator.
+// deleteOperation - Deletes a PostgreSQL role that is a member of azure_pg_admin and mapped to a Microsoft Entra principal.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *AdministratorsClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, objectID string, options *AdministratorsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *MicrosoftEntraAdministratorsClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, objectID string, options *MicrosoftEntraAdministratorsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
-	const operationName = "AdministratorsClient.BeginDelete"
+	const operationName = "MicrosoftEntraAdministratorsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
@@ -172,9 +177,9 @@ func (client *AdministratorsClient) deleteOperation(ctx context.Context, resourc
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
-func (client *AdministratorsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, objectID string, _ *AdministratorsClientBeginDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HorizonDb/clusters/{clusterName}/administrators/{objectId}"
+// deleteCreateRequest creates the delete request.
+func (client *MicrosoftEntraAdministratorsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, objectID string, _ *MicrosoftEntraAdministratorsClientBeginDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HorizonDb/clusters/{clusterName}/microsoftEntraAdministrators/{objectId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
@@ -196,37 +201,39 @@ func (client *AdministratorsClient) deleteCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
+	reqQP.Set("api-version", version20261001Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
-// Get - Gets information about a HorizonDB administrator.
+// Get - Gets information about a PostgreSQL role that is a member of azure_pg_admin and mapped to a Microsoft Entra principal.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the HorizonDB cluster.
-//   - objectID - The Entra ID object identifier of the principal (an RFC 4122 GUID).
-//   - options - AdministratorsClientGetOptions contains the optional parameters for the AdministratorsClient.Get method.
-func (client *AdministratorsClient) Get(ctx context.Context, resourceGroupName string, clusterName string, objectID string, options *AdministratorsClientGetOptions) (AdministratorsClientGetResponse, error) {
+//   - objectID - The Microsoft Entra object identifier of the principal mapped to the PostgreSQL role, represented as an RFC
+//     4122 GUID.
+//   - options - MicrosoftEntraAdministratorsClientGetOptions contains the optional parameters for the MicrosoftEntraAdministratorsClient.Get
+//     method.
+func (client *MicrosoftEntraAdministratorsClient) Get(ctx context.Context, resourceGroupName string, clusterName string, objectID string, options *MicrosoftEntraAdministratorsClientGetOptions) (MicrosoftEntraAdministratorsClientGetResponse, error) {
 	var err error
-	const operationName = "AdministratorsClient.Get"
+	const operationName = "MicrosoftEntraAdministratorsClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, clusterName, objectID, options)
 	if err != nil {
-		return AdministratorsClientGetResponse{}, err
+		return MicrosoftEntraAdministratorsClientGetResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return AdministratorsClientGetResponse{}, err
+		return MicrosoftEntraAdministratorsClientGetResponse{}, err
 	}
 	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
-func (client *AdministratorsClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, objectID string, _ *AdministratorsClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HorizonDb/clusters/{clusterName}/administrators/{objectId}"
+func (client *MicrosoftEntraAdministratorsClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, objectID string, _ *MicrosoftEntraAdministratorsClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HorizonDb/clusters/{clusterName}/microsoftEntraAdministrators/{objectId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
@@ -248,46 +255,48 @@ func (client *AdministratorsClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
+	reqQP.Set("api-version", version20261001Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *AdministratorsClient) getHandleResponse(resp *http.Response, successCodes ...int) (AdministratorsClientGetResponse, error) {
-	result := AdministratorsClientGetResponse{}
+func (client *MicrosoftEntraAdministratorsClient) getHandleResponse(resp *http.Response, successCodes ...int) (MicrosoftEntraAdministratorsClientGetResponse, error) {
+	result := MicrosoftEntraAdministratorsClientGetResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.Administrator); err != nil {
-		return AdministratorsClientGetResponse{}, err
+	if err := runtime.UnmarshalAsJSON(resp, &result.MicrosoftEntraAdministrator); err != nil {
+		return MicrosoftEntraAdministratorsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// NewListPager - Lists all HorizonDB administrators in a cluster.
+// NewListPager - Lists the PostgreSQL roles in a cluster that are members of azure_pg_admin and mapped to Microsoft Entra
+// principals.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the HorizonDB cluster.
-//   - options - AdministratorsClientListOptions contains the optional parameters for the AdministratorsClient.NewListPager method.
-func (client *AdministratorsClient) NewListPager(resourceGroupName string, clusterName string, options *AdministratorsClientListOptions) *runtime.Pager[AdministratorsClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[AdministratorsClientListResponse]{
-		More: func(page AdministratorsClientListResponse) bool {
+//   - options - MicrosoftEntraAdministratorsClientListOptions contains the optional parameters for the MicrosoftEntraAdministratorsClient.NewListPager
+//     method.
+func (client *MicrosoftEntraAdministratorsClient) NewListPager(resourceGroupName string, clusterName string, options *MicrosoftEntraAdministratorsClientListOptions) *runtime.Pager[MicrosoftEntraAdministratorsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[MicrosoftEntraAdministratorsClientListResponse]{
+		More: func(page MicrosoftEntraAdministratorsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *AdministratorsClientListResponse) (AdministratorsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AdministratorsClient.NewListPager")
+		Fetcher: func(ctx context.Context, page *MicrosoftEntraAdministratorsClientListResponse) (MicrosoftEntraAdministratorsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "MicrosoftEntraAdministratorsClient.NewListPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
 			}
 			req, err := client.listCreateRequest(ctx, resourceGroupName, clusterName, nextLink, options)
 			if err != nil {
-				return AdministratorsClientListResponse{}, err
+				return MicrosoftEntraAdministratorsClientListResponse{}, err
 			}
 			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
-				return AdministratorsClientListResponse{}, err
+				return MicrosoftEntraAdministratorsClientListResponse{}, err
 			}
 			return client.listHandleResponse(resp, http.StatusOK)
 		},
@@ -296,12 +305,12 @@ func (client *AdministratorsClient) NewListPager(resourceGroupName string, clust
 }
 
 // listCreateRequest creates the List request.
-func (client *AdministratorsClient) listCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, nextLink string, _ *AdministratorsClientListOptions) (*policy.Request, error) {
+func (client *MicrosoftEntraAdministratorsClient) listCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, nextLink string, _ *MicrosoftEntraAdministratorsClientListOptions) (*policy.Request, error) {
 	firstPage := nextLink == ""
 	var req *policy.Request
 	var err error
 	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HorizonDb/clusters/{clusterName}/administrators"
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HorizonDb/clusters/{clusterName}/microsoftEntraAdministrators"
 		if client.subscriptionID == "" {
 			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
@@ -323,7 +332,7 @@ func (client *AdministratorsClient) listCreateRequest(ctx context.Context, resou
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260501Preview)
+		reqQP.Set("api-version", version20261001Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -331,13 +340,13 @@ func (client *AdministratorsClient) listCreateRequest(ctx context.Context, resou
 }
 
 // listHandleResponse handles the List response.
-func (client *AdministratorsClient) listHandleResponse(resp *http.Response, successCodes ...int) (AdministratorsClientListResponse, error) {
-	result := AdministratorsClientListResponse{}
+func (client *MicrosoftEntraAdministratorsClient) listHandleResponse(resp *http.Response, successCodes ...int) (MicrosoftEntraAdministratorsClientListResponse, error) {
+	result := MicrosoftEntraAdministratorsClientListResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.AdministratorListResult); err != nil {
-		return AdministratorsClientListResponse{}, err
+	if err := runtime.UnmarshalAsJSON(resp, &result.MicrosoftEntraAdministratorListResult); err != nil {
+		return MicrosoftEntraAdministratorsClientListResponse{}, err
 	}
 	return result, nil
 }

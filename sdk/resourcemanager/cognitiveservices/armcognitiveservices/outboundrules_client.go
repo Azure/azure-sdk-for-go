@@ -19,7 +19,7 @@ import (
 // OutboundRulesClient contains the methods for the OutboundRules group.
 // Don't use this type directly, use NewOutboundRulesClient() instead.
 //
-// Generated from API version 2026-07-15-preview
+// Generated from API version 2026-09-15-preview
 type OutboundRulesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -90,7 +90,7 @@ func (client *OutboundRulesClient) BeginPost(ctx context.Context, resourceGroupN
 	}
 }
 
-// Post - The POST API for updating the outbound rules of the managed network associated with the cognitive services account.
+// post - The POST API for updating the outbound rules of the managed network associated with the cognitive services account.
 //
 // The POST API for updating the outbound rules of the managed network associated with the cognitive services account.
 func (client *OutboundRulesClient) post(ctx context.Context, resourceGroupName string, accountName string, managedNetworkName string, body ManagedNetworkSettingsBasicResource, options *OutboundRulesClientBeginPostOptions) (*http.Response, error) {
@@ -113,7 +113,7 @@ func (client *OutboundRulesClient) post(ctx context.Context, resourceGroupName s
 	return httpResp, nil
 }
 
-// postCreateRequest creates the Post request.
+// postCreateRequest creates the post request.
 func (client *OutboundRulesClient) postCreateRequest(ctx context.Context, resourceGroupName string, accountName string, managedNetworkName string, body ManagedNetworkSettingsBasicResource, nextLink string, _ *OutboundRulesClientBeginPostOptions) (*policy.Request, error) {
 	firstPage := nextLink == ""
 	var req *policy.Request
@@ -145,7 +145,7 @@ func (client *OutboundRulesClient) postCreateRequest(ctx context.Context, resour
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260715Preview)
+		reqQP.Set("api-version", version20260915Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 		req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -156,7 +156,7 @@ func (client *OutboundRulesClient) postCreateRequest(ctx context.Context, resour
 	return req, nil
 }
 
-// postHandleResponse handles the Post response.
+// postHandleResponse handles the post response.
 func (client *OutboundRulesClient) postHandleResponse(resp *http.Response, successCodes ...int) (OutboundRulesClientPostResponse, error) {
 	result := OutboundRulesClientPostResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {

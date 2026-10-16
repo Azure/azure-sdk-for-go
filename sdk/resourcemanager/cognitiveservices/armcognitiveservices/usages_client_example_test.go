@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-15-preview/ListUsages.json
+// Generated from example definition: 2026-09-15-preview/ListUsages.json
 func ExampleUsagesClient_NewListPager_getUsages() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -53,7 +53,7 @@ func ExampleUsagesClient_NewListPager_getUsages() {
 	}
 }
 
-// Generated from example definition: 2026-07-15-preview/ListUsagesClassicScope.json
+// Generated from example definition: 2026-09-15-preview/ListUsagesClassicScope.json
 func ExampleUsagesClient_NewListPager_getUsagesClassicScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -94,7 +94,7 @@ func ExampleUsagesClient_NewListPager_getUsagesClassicScope() {
 	}
 }
 
-// Generated from example definition: 2026-07-15-preview/ListUsagesDataZoneScope.json
+// Generated from example definition: 2026-09-15-preview/ListUsagesDataZoneScope.json
 func ExampleUsagesClient_NewListPager_getUsagesDataZoneScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -136,7 +136,7 @@ func ExampleUsagesClient_NewListPager_getUsagesDataZoneScope() {
 	}
 }
 
-// Generated from example definition: 2026-07-15-preview/ListUsagesGlobalScope.json
+// Generated from example definition: 2026-09-15-preview/ListUsagesGlobalScope.json
 func ExampleUsagesClient_NewListPager_getUsagesGlobalScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -171,6 +171,50 @@ func ExampleUsagesClient_NewListPager_getUsagesGlobalScope() {
 		// 				Unit: to.Ptr(armcognitiveservices.UnitTypeCount),
 		// 				ScopeType: to.Ptr(armcognitiveservices.QuotaScopeTypeGlobal),
 		// 				ScopeID: to.Ptr("Global"),
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-09-15-preview/ListUsagesWithResourceMetadata.json
+func ExampleUsagesClient_NewListPager_getUsagesWithResourceMetadata() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcognitiveservices.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewUsagesClient().NewListPager("WestUS", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armcognitiveservices.UsagesClientListResponse{
+		// 	UsageListResult: armcognitiveservices.UsageListResult{
+		// 		Value: []*armcognitiveservices.Usage{
+		// 			{
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.CognitiveServices/locations/WestUS/usages/OpenAI.GlobalStandard.gpt-5"),
+		// 				Type: to.Ptr("Microsoft.CognitiveServices/locations/usages"),
+		// 				Name: &armcognitiveservices.MetricName{
+		// 					LocalizedValue: to.Ptr("OpenAI.GlobalStandard.gpt-5"),
+		// 					Value: to.Ptr("OpenAI.GlobalStandard.gpt-5"),
+		// 				},
+		// 				CurrentValue: to.Ptr[float64](3),
+		// 				Limit: to.Ptr[float64](200),
+		// 				Unit: to.Ptr(armcognitiveservices.UnitTypeCount),
+		// 				ScopeType: to.Ptr(armcognitiveservices.QuotaScopeTypeGlobal),
+		// 				ScopeID: to.Ptr("global"),
 		// 			},
 		// 		},
 		// 	},

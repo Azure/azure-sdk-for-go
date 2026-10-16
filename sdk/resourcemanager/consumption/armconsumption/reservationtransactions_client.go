@@ -20,7 +20,7 @@ import (
 // ReservationTransactionsClient contains the methods for the ReservationTransactions group.
 // Don't use this type directly, use NewReservationTransactionsClient() instead.
 //
-// Generated from API version 2024-08-01
+// Generated from API version 2026-06-01
 type ReservationTransactionsClient struct {
 	internal *arm.Client
 }
@@ -95,7 +95,7 @@ func (client *ReservationTransactionsClient) listCreateRequest(ctx context.Conte
 		if options != nil && options.Filter != nil {
 			reqQP.Set("$filter", *options.Filter)
 		}
-		reqQP.Set("api-version", version20240801)
+		reqQP.Set("api-version", version20260601)
 		if options != nil && options.PreviewMarkupPercentage != nil {
 			reqQP.Set("previewMarkupPercentage", strconv.FormatFloat(*options.PreviewMarkupPercentage, 'f', -1, 64))
 		}
@@ -181,7 +181,7 @@ func (client *ReservationTransactionsClient) listByBillingProfileCreateRequest(c
 		if options != nil && options.Filter != nil {
 			reqQP.Set("$filter", *options.Filter)
 		}
-		reqQP.Set("api-version", version20240801)
+		reqQP.Set("api-version", version20260601)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

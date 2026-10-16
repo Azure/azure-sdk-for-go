@@ -126,6 +126,32 @@ type AccountsClientUpdateResponse struct {
 	Account
 }
 
+// AdapterDeploymentsClientCreateOrUpdateResponse contains the response from method AdapterDeploymentsClient.BeginCreateOrUpdate.
+type AdapterDeploymentsClientCreateOrUpdateResponse struct {
+	// An independently managed LoRA adapter attached to a managed compute deployment.
+	AdapterDeployment
+}
+
+// AdapterDeploymentsClientDeleteResponse contains the response from method AdapterDeploymentsClient.BeginDelete.
+type AdapterDeploymentsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// AdapterDeploymentsClientGetResponse contains the response from method AdapterDeploymentsClient.Get.
+type AdapterDeploymentsClientGetResponse struct {
+	// An independently managed LoRA adapter attached to a managed compute deployment.
+	AdapterDeployment
+
+	// The concurrency token for the adapter deployment.
+	Etag *string
+}
+
+// AdapterDeploymentsClientListResponse contains the response from method AdapterDeploymentsClient.NewListPager.
+type AdapterDeploymentsClientListResponse struct {
+	// A paginated collection of adapter deployments.
+	AdapterDeploymentListResult
+}
+
 // AgentApplicationsClientCreateOrUpdateResponse contains the response from method AgentApplicationsClient.BeginCreateOrUpdate.
 type AgentApplicationsClientCreateOrUpdateResponse struct {
 	// Agent Application resource
@@ -358,6 +384,44 @@ type ComputesClientStartResponse struct {
 // ComputesClientStopResponse contains the response from method ComputesClient.BeginStop.
 type ComputesClientStopResponse struct {
 	// placeholder for future response values
+}
+
+// CostControlsClientCreateOrUpdateResponse contains the response from method CostControlsClient.CreateOrUpdate.
+type CostControlsClientCreateOrUpdateResponse struct {
+	// A cost control owned by a Cognitive Services account.
+	CostControl
+
+	// The current entity tag for the cost control.
+	Etag *string
+}
+
+// CostControlsClientDeleteResponse contains the response from method CostControlsClient.Delete.
+type CostControlsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// CostControlsClientGetResponse contains the response from method CostControlsClient.Get.
+type CostControlsClientGetResponse struct {
+	// A cost control owned by a Cognitive Services account.
+	CostControl
+
+	// The current entity tag for the cost control.
+	Etag *string
+}
+
+// CostControlsClientListResponse contains the response from method CostControlsClient.NewListPager.
+type CostControlsClientListResponse struct {
+	// A page of cost controls.
+	CostControlListResult
+}
+
+// CostControlsClientUpdateResponse contains the response from method CostControlsClient.Update.
+type CostControlsClientUpdateResponse struct {
+	// A cost control owned by a Cognitive Services account.
+	CostControl
+
+	// The current entity tag for the cost control.
+	Etag *string
 }
 
 // DefenderForAISettingsClientCreateOrUpdateResponse contains the response from method DefenderForAISettingsClient.CreateOrUpdate.
@@ -772,6 +836,35 @@ type QuotaTiersClientUpdateResponse struct {
 	QuotaTier
 }
 
+// RaiBindingsClientCreateOrUpdateResponse contains the response from method RaiBindingsClient.CreateOrUpdate.
+type RaiBindingsClientCreateOrUpdateResponse struct {
+	// An account-scoped binding from an Azure resource to an Agent Control Specification policy.
+	RaiBinding
+
+	// The entity tag for the returned resource representation.
+	EtagHeader *string
+}
+
+// RaiBindingsClientDeleteResponse contains the response from method RaiBindingsClient.Delete.
+type RaiBindingsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// RaiBindingsClientGetResponse contains the response from method RaiBindingsClient.Get.
+type RaiBindingsClientGetResponse struct {
+	// An account-scoped binding from an Azure resource to an Agent Control Specification policy.
+	RaiBinding
+
+	// The entity tag for the returned resource representation.
+	EtagHeader *string
+}
+
+// RaiBindingsClientListResponse contains the response from method RaiBindingsClient.NewListPager.
+type RaiBindingsClientListResponse struct {
+	// The list of account-scoped RAI bindings.
+	RaiBindingListResult
+}
+
 // RaiBlocklistItemsClientBatchAddResponse contains the response from method RaiBlocklistItemsClient.BatchAdd.
 type RaiBlocklistItemsClientBatchAddResponse struct {
 	// Cognitive Services RaiBlocklist.
@@ -868,6 +961,9 @@ type RaiExternalSafetyProvidersClientListResponse struct {
 type RaiPoliciesClientCreateOrUpdateResponse struct {
 	// Cognitive Services RaiPolicy.
 	RaiPolicy
+
+	// The entity tag for the returned resource representation.
+	EtagHeader *string
 }
 
 // RaiPoliciesClientDeleteResponse contains the response from method RaiPoliciesClient.BeginDelete.
@@ -879,12 +975,44 @@ type RaiPoliciesClientDeleteResponse struct {
 type RaiPoliciesClientGetResponse struct {
 	// Cognitive Services RaiPolicy.
 	RaiPolicy
+
+	// The entity tag for the returned resource representation.
+	EtagHeader *string
 }
 
 // RaiPoliciesClientListResponse contains the response from method RaiPoliciesClient.NewListPager.
 type RaiPoliciesClientListResponse struct {
 	// The list of cognitive services RaiPolicies.
 	RaiPolicyListResult
+}
+
+// RaiRegosClientCreateOrUpdateResponse contains the response from method RaiRegosClient.CreateOrUpdate.
+type RaiRegosClientCreateOrUpdateResponse struct {
+	// An account-scoped reusable Rego artifact.
+	RaiRego
+
+	// The entity tag for the returned resource representation.
+	EtagHeader *string
+}
+
+// RaiRegosClientDeleteResponse contains the response from method RaiRegosClient.Delete.
+type RaiRegosClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// RaiRegosClientGetResponse contains the response from method RaiRegosClient.Get.
+type RaiRegosClientGetResponse struct {
+	// An account-scoped reusable Rego artifact.
+	RaiRego
+
+	// The entity tag for the returned resource representation.
+	EtagHeader *string
+}
+
+// RaiRegosClientListResponse contains the response from method RaiRegosClient.NewListPager.
+type RaiRegosClientListResponse struct {
+	// The list of account-scoped reusable Rego resources.
+	RaiRegoListResult
 }
 
 // RaiToolLabelsClientCreateOrUpdateResponse contains the response from method RaiToolLabelsClient.CreateOrUpdate.
@@ -1008,7 +1136,7 @@ type WorkbenchesClientStopResponse struct {
 	// placeholder for future response values
 }
 
-// WorkbenchesClientUpdateResponse contains the response from method WorkbenchesClient.BeginUpdate.
+// WorkbenchesClientUpdateResponse contains the response from method WorkbenchesClient.Update.
 type WorkbenchesClientUpdateResponse struct {
 	// Workbench resource under a Cognitive Services project.
 	// Provides interactive compute with data access for AI development.

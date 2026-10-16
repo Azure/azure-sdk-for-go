@@ -19,7 +19,7 @@ import (
 // DeletedAccountsClient contains the methods for the DeletedAccounts group.
 // Don't use this type directly, use NewDeletedAccountsClient() instead.
 //
-// Generated from API version 2026-07-15-preview
+// Generated from API version 2026-09-15-preview
 type DeletedAccountsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,6 +42,81 @@ func NewDeletedAccountsClient(subscriptionID string, credential azcore.TokenCred
 		internal:       cl,
 	}
 	return client, nil
+}
+
+// BeginPurge - Deletes a Cognitive Services account from the resource group.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - location - The location name.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of Cognitive Services account.
+//   - options - DeletedAccountsClientBeginPurgeOptions contains the optional parameters for the DeletedAccountsClient.BeginPurge
+//     method.
+func (client *DeletedAccountsClient) BeginPurge(ctx context.Context, location string, resourceGroupName string, accountName string, options *DeletedAccountsClientBeginPurgeOptions) (*runtime.Poller[DeletedAccountsClientPurgeResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.purge(ctx, location, resourceGroupName, accountName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DeletedAccountsClientPurgeResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DeletedAccountsClientPurgeResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// purge - Deletes a Cognitive Services account from the resource group.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *DeletedAccountsClient) purge(ctx context.Context, location string, resourceGroupName string, accountName string, options *DeletedAccountsClientBeginPurgeOptions) (*http.Response, error) {
+	var err error
+	const operationName = "DeletedAccountsClient.BeginPurge"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.purgeCreateRequest(ctx, location, resourceGroupName, accountName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// purgeCreateRequest creates the purge request.
+func (client *DeletedAccountsClient) purgeCreateRequest(ctx context.Context, location string, resourceGroupName string, accountName string, _ *DeletedAccountsClientBeginPurgeOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/locations/{location}/resourceGroups/{resourceGroupName}/deletedAccounts/{accountName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if location == "" {
+		return nil, errors.New("parameter location cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260915Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
 }
 
 // Get - Returns a Cognitive Services account specified by the parameters.
@@ -91,7 +166,7 @@ func (client *DeletedAccountsClient) getCreateRequest(ctx context.Context, locat
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260715Preview)
+	reqQP.Set("api-version", version20260915Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -157,7 +232,7 @@ func (client *DeletedAccountsClient) listCreateRequest(ctx context.Context, next
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260715Preview)
+		reqQP.Set("api-version", version20260915Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -174,79 +249,4 @@ func (client *DeletedAccountsClient) listHandleResponse(resp *http.Response, suc
 		return DeletedAccountsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginPurge - Deletes a Cognitive Services account from the resource group.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - location - The location name.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - accountName - The name of Cognitive Services account.
-//   - options - DeletedAccountsClientBeginPurgeOptions contains the optional parameters for the DeletedAccountsClient.BeginPurge
-//     method.
-func (client *DeletedAccountsClient) BeginPurge(ctx context.Context, location string, resourceGroupName string, accountName string, options *DeletedAccountsClientBeginPurgeOptions) (*runtime.Poller[DeletedAccountsClientPurgeResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.purge(ctx, location, resourceGroupName, accountName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DeletedAccountsClientPurgeResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DeletedAccountsClientPurgeResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Purge - Deletes a Cognitive Services account from the resource group.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *DeletedAccountsClient) purge(ctx context.Context, location string, resourceGroupName string, accountName string, options *DeletedAccountsClientBeginPurgeOptions) (*http.Response, error) {
-	var err error
-	const operationName = "DeletedAccountsClient.BeginPurge"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.purgeCreateRequest(ctx, location, resourceGroupName, accountName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// purgeCreateRequest creates the Purge request.
-func (client *DeletedAccountsClient) purgeCreateRequest(ctx context.Context, location string, resourceGroupName string, accountName string, _ *DeletedAccountsClientBeginPurgeOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/locations/{location}/resourceGroups/{resourceGroupName}/deletedAccounts/{accountName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if location == "" {
-		return nil, errors.New("parameter location cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260715Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
 }

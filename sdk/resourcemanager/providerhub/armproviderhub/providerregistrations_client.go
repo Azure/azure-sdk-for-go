@@ -67,7 +67,7 @@ func (client *ProviderRegistrationsClient) BeginCreateOrUpdate(ctx context.Conte
 	}
 }
 
-// CreateOrUpdate - Creates or updates the provider registration.
+// createOrUpdate - Creates or updates the provider registration.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ProviderRegistrationsClient) createOrUpdate(ctx context.Context, providerNamespace string, properties ProviderRegistration, options *ProviderRegistrationsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -89,7 +89,7 @@ func (client *ProviderRegistrationsClient) createOrUpdate(ctx context.Context, p
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ProviderRegistrationsClient) createOrUpdateCreateRequest(ctx context.Context, providerNamespace string, properties ProviderRegistration, _ *ProviderRegistrationsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
 	if client.subscriptionID == "" {

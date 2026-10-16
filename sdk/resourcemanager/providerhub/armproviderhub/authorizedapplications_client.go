@@ -68,7 +68,7 @@ func (client *AuthorizedApplicationsClient) BeginCreateOrUpdate(ctx context.Cont
 	}
 }
 
-// CreateOrUpdate - Creates or updates the authorized application.
+// createOrUpdate - Creates or updates the authorized application.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AuthorizedApplicationsClient) createOrUpdate(ctx context.Context, providerNamespace string, applicationID string, properties AuthorizedApplication, options *AuthorizedApplicationsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -90,7 +90,7 @@ func (client *AuthorizedApplicationsClient) createOrUpdate(ctx context.Context, 
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *AuthorizedApplicationsClient) createOrUpdateCreateRequest(ctx context.Context, providerNamespace string, applicationID string, properties AuthorizedApplication, _ *AuthorizedApplicationsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/authorizedApplications/{applicationId}"
 	if client.subscriptionID == "" {

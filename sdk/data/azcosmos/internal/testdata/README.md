@@ -59,8 +59,11 @@ EMULATOR=true AZCOSMOS_ENDPOINT="<accountEndpoint>" \
 
 Batch Read If-None-Match tests check matching (304) and different (200) ETags without deriving
 commitment from the outer status. The pinned emulator can commit writes around a conditional
-304 read and then report HTTP 207. Go preserves such raw results, like the Rust SDK; emulator
-behavior does not establish real-service commit/rollback semantics.
+304 read and then report HTTP 207. These conditional-read assertions are emulator-specific:
+live-account checks with native driver v0.2.0 returned HTTP 200 for both matching and different
+If-None-Match ETags, while a matching point-read control returned HTTP 304. Go preserves such raw
+results, like the Rust SDK; emulator behavior does not establish real-service conditional or
+commit/rollback semantics.
 
 The emulator also retains batch read bodies when write content is disabled, unlike observed
 live-account behavior with native driver v0.2.0. Explicit or inherited false can suppress both

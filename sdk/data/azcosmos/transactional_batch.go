@@ -24,7 +24,7 @@ const (
 // Construct it with [NewTransactionalBatch]. Item bodies and conditional options are copied
 // when appended. Copies of a batch can be extended independently. A completed builder can be
 // executed repeatedly or concurrently, but must not be mutated concurrently with other access.
-// Reexecuting a batch is a new transaction, not an idempotent replay.
+// Executing a batch again starts a new transaction, not an idempotent replay.
 //
 // An append error makes the builder unusable, even when the caller ignores that error.
 // The zero value has no partition key and cannot be executed. A batch supports create, read,
@@ -51,13 +51,16 @@ type TransactionalBatchCreateItemOptions struct{}
 // TransactionalBatchReadItemOptions configures [TransactionalBatch.ReadItem].
 // A nil options pointer selects defaults.
 type TransactionalBatchReadItemOptions struct {
-	// IfMatchETag makes the read conditional on the item having this ETag.
-	// A mismatch fails the entire transaction.
+	// IfMatchETag forwards an If-Match read condition to the native driver.
+	// Live checks with native driver v0.2.0 returned HTTP 304 for a matching ETag
+	// and HTTP 200 for a mismatch. Do not use this condition to guard writes:
+	// accompanying writes can still commit.
 	// It must not be set together with IfNoneMatchETag.
 	IfMatchETag *azcore.ETag
 
-	// IfNoneMatchETag applies cache validation to the read. A matching ETag is reported
-	// as HTTP 304 without an item body in the operation result.
+	// IfNoneMatchETag forwards an If-None-Match read condition to the native driver.
+	// Live checks with native driver v0.2.0 returned HTTP 200 for both matching
+	// and different ETags. Do not rely on this option to produce HTTP 304.
 	// It must not be set together with IfMatchETag.
 	IfNoneMatchETag *azcore.ETag
 }
@@ -69,7 +72,9 @@ type TransactionalBatchUpsertItemOptions struct {
 	// It must not be set together with IfNoneMatchETag.
 	IfMatchETag *azcore.ETag
 
-	// IfNoneMatchETag applies an If-None-Match precondition. Use "*" to require creation.
+	// IfNoneMatchETag forwards an If-None-Match upsert condition to the native driver.
+	// Live checks with native driver v0.2.0 replaced existing items even with "*".
+	// This is not a creation-only guard; use [TransactionalBatch.CreateItem] instead.
 	// It must not be set together with IfMatchETag.
 	IfNoneMatchETag *azcore.ETag
 }

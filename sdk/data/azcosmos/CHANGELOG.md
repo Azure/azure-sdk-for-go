@@ -7,7 +7,7 @@
 ### Features Added
 
 * Added transactional batches for create, read, upsert, replace, and delete with complete
-  hierarchical partition keys, owned builders, conditional operations including read If-None-Match,
+  hierarchical partition keys, owned builders, Rust-compatible conditional options,
   ordered raw result metadata, and authoritative native completion. Results preserve HTTP 304 and
   207 without inferring transaction commitment or rollback. Prefix batches and transactional PATCH
   are not exposed.
@@ -104,6 +104,9 @@
 
 ### Other Changes
 
+* Clarified that batch read and upsert ETag options are forwarded to the native driver without
+  stronger conditional guarantees. Documented observed live-account behavior and creation-only
+  guidance without changing the Rust-compatible options or raw result handling.
 * Documented the native driver v0.2.0 batch content-response limitation: disabling write content
   can also suppress HTTP 200 read bodies. Batch examples explicitly enable content when needed.
 

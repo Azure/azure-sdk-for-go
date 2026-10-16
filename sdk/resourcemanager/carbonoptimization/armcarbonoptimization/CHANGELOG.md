@@ -1,6 +1,6 @@
 # Release History
 
-## 2.0.0-beta.1 (2026-10-14)
+## 2.0.0-beta.1 (2026-10-16)
 ### Breaking Changes
 
 - Operation `*CarbonServiceClient.QueryCarbonEmissionReports` has supported pagination, use `*CarbonServiceClient.NewQueryCarbonEmissionReportsPager` instead.
@@ -15,7 +15,7 @@
 - New function `*BillingAccountQueryFilter.GetBillingAccountQueryFilter() *BillingAccountQueryFilter`
 - New function `*BillingAccountTopItemsMonthlySummaryReportQueryFilter.GetBillingAccountQueryFilter() *BillingAccountQueryFilter`
 - New function `*BillingAccountTopItemsSummaryReportQueryFilter.GetBillingAccountQueryFilter() *BillingAccountQueryFilter`
-- New function `*CarbonServiceClient.QueryCarbonEmissionReportsByBillingAccount(ctx context.Context, scope string, queryParameters BillingAccountQueryFilterClassification, options *CarbonServiceClientQueryCarbonEmissionReportsByBillingAccountOptions) (CarbonServiceClientQueryCarbonEmissionReportsByBillingAccountResponse, error)`
+- New function `*CarbonServiceClient.NewQueryCarbonEmissionReportsByBillingAccountPager(scope string, queryParameters BillingAccountQueryFilterClassification, options *CarbonServiceClientQueryCarbonEmissionReportsByBillingAccountOptions) *runtime.Pager[CarbonServiceClientQueryCarbonEmissionReportsByBillingAccountResponse]`
 - New struct `BillingAccountItemDetailsReportQueryFilter`
 - New struct `BillingAccountMonthlySummaryReportQueryFilter`
 - New struct `BillingAccountOverallSummaryReportQueryFilter`

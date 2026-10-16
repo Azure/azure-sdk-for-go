@@ -21,7 +21,7 @@ type BillingAccountItemDetailsReportQueryFilter struct {
 	// and end: 2024-06-01).
 	DateRange *DateRange
 
-	// REQUIRED; Page size for server paging. Optional. Default value is 1000 items per page.
+	// REQUIRED; Number of items to return in one request, max value is 5000.
 	PageSize *int32
 
 	// CONSTANT; Specifies that the report type is an item details report for carbon emissions data.

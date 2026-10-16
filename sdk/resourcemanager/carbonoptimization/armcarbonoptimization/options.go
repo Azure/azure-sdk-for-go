@@ -10,7 +10,7 @@ type CarbonServiceClientQueryCarbonEmissionDataAvailableDateRangeOptions struct 
 	// placeholder for future optional parameters
 }
 
-// CarbonServiceClientQueryCarbonEmissionReportsByBillingAccountOptions contains the optional parameters for the CarbonServiceClient.QueryCarbonEmissionReportsByBillingAccount
+// CarbonServiceClientQueryCarbonEmissionReportsByBillingAccountOptions contains the optional parameters for the CarbonServiceClient.NewQueryCarbonEmissionReportsByBillingAccountPager
 // method.
 type CarbonServiceClientQueryCarbonEmissionReportsByBillingAccountOptions struct {
 	// placeholder for future optional parameters

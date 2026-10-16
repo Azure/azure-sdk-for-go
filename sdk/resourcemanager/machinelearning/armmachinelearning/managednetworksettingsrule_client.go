@@ -19,7 +19,7 @@ import (
 // ManagedNetworkSettingsRuleClient contains the methods for the ManagedNetworkSettingsRule group.
 // Don't use this type directly, use NewManagedNetworkSettingsRuleClient() instead.
 //
-// Generated from API version 2026-03-15-preview
+// Generated from API version 2026-09-01
 type ManagedNetworkSettingsRuleClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -71,7 +71,7 @@ func (client *ManagedNetworkSettingsRuleClient) BeginCreateOrUpdate(ctx context.
 	}
 }
 
-// CreateOrUpdate - Creates or updates an outbound rule in the managed network of a machine learning workspace.
+// createOrUpdate - Creates or updates an outbound rule in the managed network of a machine learning workspace.
 //
 // Creates or updates an outbound rule in the managed network of a machine learning workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -95,7 +95,7 @@ func (client *ManagedNetworkSettingsRuleClient) createOrUpdate(ctx context.Conte
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ManagedNetworkSettingsRuleClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, ruleName string, body OutboundRuleBasicResource, _ *ManagedNetworkSettingsRuleClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/outboundRules/{ruleName}"
 	if client.subscriptionID == "" {
@@ -119,7 +119,7 @@ func (client *ManagedNetworkSettingsRuleClient) createOrUpdateCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -140,7 +140,7 @@ func (client *ManagedNetworkSettingsRuleClient) createOrUpdateCreateRequest(ctx 
 //     method.
 func (client *ManagedNetworkSettingsRuleClient) BeginDelete(ctx context.Context, resourceGroupName string, workspaceName string, ruleName string, options *ManagedNetworkSettingsRuleClientBeginDeleteOptions) (*runtime.Poller[ManagedNetworkSettingsRuleClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, workspaceName, ruleName, options)
+		resp, err := client.delete(ctx, resourceGroupName, workspaceName, ruleName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -155,11 +155,11 @@ func (client *ManagedNetworkSettingsRuleClient) BeginDelete(ctx context.Context,
 	}
 }
 
-// Delete - Deletes an outbound rule from the managed network of a machine learning workspace.
+// delete - Deletes an outbound rule from the managed network of a machine learning workspace.
 //
 // Deletes an outbound rule from the managed network of a machine learning workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *ManagedNetworkSettingsRuleClient) deleteOperation(ctx context.Context, resourceGroupName string, workspaceName string, ruleName string, options *ManagedNetworkSettingsRuleClientBeginDeleteOptions) (*http.Response, error) {
+func (client *ManagedNetworkSettingsRuleClient) delete(ctx context.Context, resourceGroupName string, workspaceName string, ruleName string, options *ManagedNetworkSettingsRuleClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ManagedNetworkSettingsRuleClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -179,7 +179,7 @@ func (client *ManagedNetworkSettingsRuleClient) deleteOperation(ctx context.Cont
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ManagedNetworkSettingsRuleClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, ruleName string, _ *ManagedNetworkSettingsRuleClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/outboundRules/{ruleName}"
 	if client.subscriptionID == "" {
@@ -203,7 +203,7 @@ func (client *ManagedNetworkSettingsRuleClient) deleteCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -258,7 +258,7 @@ func (client *ManagedNetworkSettingsRuleClient) getCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -336,7 +336,7 @@ func (client *ManagedNetworkSettingsRuleClient) listCreateRequest(ctx context.Co
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260315Preview)
+		reqQP.Set("api-version", version20260901)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

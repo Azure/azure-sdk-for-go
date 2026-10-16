@@ -74,8 +74,9 @@ type Diagnostics struct {
 	StatusCode int
 	SubStatus  int
 
-	// AttemptCount includes the initial request and every native retry. It can
-	// exceed len(Attempts) if the driver compacted the timeline.
+	// AttemptCount counts recorded native requests, including retries and hedges.
+	// An unfinished request from a canceled losing hedge leg may be absent.
+	// It can exceed len(Attempts) if the driver compacted the timeline.
 	AttemptCount uint32
 
 	// TotalRequestCharge is the charge across all attempts, including retries.
@@ -93,7 +94,8 @@ type Diagnostics struct {
 	// Compacted reports whether the driver discarded older attempt records.
 	Compacted bool
 
-	// RegionsContacted lists distinct regions in first-contact order.
+	// RegionsContacted lists distinct regions from recorded attempts in first-contact
+	// order. It may omit a losing hedge region whose unfinished request was canceled.
 	RegionsContacted []string
 
 	// Attempts contains the retained per-attempt records in execution order.

@@ -1,0 +1,44 @@
+{
+  "$schema": "../../schema/scenario.v1.json",
+  "specVersion": "1.0",
+  "id": "query.feed-ranges",
+  "title": "Feed ranges cover container routing space",
+  "requirement": "Physical feed ranges are distinct and a full partition key maps deterministically to exactly one of them.",
+  "maturity": "candidate",
+  "precedents": [
+    {
+      "sdk": "rust",
+      "path": "sdk/cosmos/azure_data_cosmos/tests/emulator_tests/cosmos_feed_ranges.rs",
+      "test": "read_feed_ranges_returns_physical_partitions/feed_range_from_partition_key_maps_correctly"
+    }
+  ],
+  "profiles": [
+    "coreOperations"
+  ],
+  "tags": [
+    "query",
+    "feedRange",
+    "coreOperations"
+  ],
+  "backends": {
+    "hostedEmulatorGatewayV1": {
+      "applicability": "required",
+      "fidelity": "full",
+      "requires": [
+        "container"
+      ]
+    },
+    "hostedEmulatorGatewayV2": {
+      "applicability": "required",
+      "fidelity": "full",
+      "requires": [
+        "container",
+        "gatewayV2"
+      ]
+    },
+    "azureLive": {
+      "applicability": "supported",
+      "fidelity": "full"
+    }
+  }
+}

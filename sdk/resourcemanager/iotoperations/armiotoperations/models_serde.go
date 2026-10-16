@@ -4559,6 +4559,7 @@ func (d DataflowGraphDestinationNodeSettings) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "dataDestination", d.DataDestination)
 	populate(objectMap, "endpointRef", d.EndpointRef)
 	populate(objectMap, "headers", d.Headers)
+	populate(objectMap, "outputSchemaSettings", d.OutputSchemaSettings)
 	return json.Marshal(objectMap)
 }
 
@@ -4579,6 +4580,9 @@ func (d *DataflowGraphDestinationNodeSettings) UnmarshalJSON(data []byte) error 
 			delete(rawMsg, key)
 		case "headers":
 			d.Headers, err = unmarshalDataflowGraphDestinationHeaderActionClassificationArray(val)
+			delete(rawMsg, key)
+		case "outputSchemaSettings":
+			err = unpopulate(val, "OutputSchemaSettings", &d.OutputSchemaSettings)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -4610,6 +4614,37 @@ func (d *DataflowGraphDestinationRemoveHeaderAction) UnmarshalJSON(data []byte) 
 			delete(rawMsg, key)
 		case "key":
 			err = unpopulate(val, "Key", &d.Key)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", d, err.Error())
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type DataflowGraphDestinationSchemaSettings.
+func (d DataflowGraphDestinationSchemaSettings) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "schemaRef", d.SchemaRef)
+	populate(objectMap, "serializationFormat", d.SerializationFormat)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type DataflowGraphDestinationSchemaSettings.
+func (d *DataflowGraphDestinationSchemaSettings) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", d, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "schemaRef":
+			err = unpopulate(val, "SchemaRef", &d.SchemaRef)
+			delete(rawMsg, key)
+		case "serializationFormat":
+			err = unpopulate(val, "SerializationFormat", &d.SerializationFormat)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -5791,6 +5826,7 @@ func (i InstanceResource) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "location", i.Location)
 	populate(objectMap, "name", i.Name)
 	populate(objectMap, "properties", i.Properties)
+	populate(objectMap, "sku", i.SKU)
 	populate(objectMap, "systemData", i.SystemData)
 	populate(objectMap, "tags", i.Tags)
 	populate(objectMap, "type", i.Type)
@@ -5823,6 +5859,9 @@ func (i *InstanceResource) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "properties":
 			err = unpopulate(val, "Properties", &i.Properties)
+			delete(rawMsg, key)
+		case "sku":
+			err = unpopulate(val, "SKU", &i.SKU)
 			delete(rawMsg, key)
 		case "systemData":
 			err = unpopulate(val, "SystemData", &i.SystemData)
@@ -5863,6 +5902,33 @@ func (i *InstanceResourceListResult) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "value":
 			err = unpopulate(val, "Value", &i.Value)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", i, err.Error())
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type InstanceSKU.
+func (i InstanceSKU) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "name", i.Name)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type InstanceSKU.
+func (i *InstanceSKU) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", i, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "name":
+			err = unpopulate(val, "Name", &i.Name)
 			delete(rawMsg, key)
 		}
 		if err != nil {

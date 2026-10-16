@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-01/Instance_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/Instance_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleInstanceClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -29,6 +29,9 @@ func ExampleInstanceClient_BeginCreateOrUpdate() {
 				ResourceID: to.Ptr("/subscriptions/0000000-0000-0000-0000-000000000000/resourceGroups/resourceGroup123/providers/Microsoft.DeviceRegistry/schemaRegistries/resource-name123"),
 			},
 			Description: to.Ptr("kpqtgocs"),
+		},
+		SKU: &armiotoperations.InstanceSKU{
+			Name: to.Ptr(armiotoperations.InstanceSKUNameStandard),
 		},
 		ExtendedLocation: &armiotoperations.ExtendedLocation{
 			Name: to.Ptr("/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123"),
@@ -61,6 +64,9 @@ func ExampleInstanceClient_BeginCreateOrUpdate() {
 	// 			ProvisioningState: to.Ptr(armiotoperations.ProvisioningStateSucceeded),
 	// 			Version: to.Ptr("1.2.0"),
 	// 		},
+	// 		SKU: &armiotoperations.InstanceSKU{
+	// 			Name: to.Ptr(armiotoperations.InstanceSKUNameStandard),
+	// 		},
 	// 		ExtendedLocation: &armiotoperations.ExtendedLocation{
 	// 			Name: to.Ptr("/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123"),
 	// 			Type: to.Ptr(armiotoperations.ExtendedLocationTypeCustomLocation),
@@ -90,7 +96,7 @@ func ExampleInstanceClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-07-01/Instance_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/Instance_Delete_MaximumSet_Gen.json
 func ExampleInstanceClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -111,7 +117,7 @@ func ExampleInstanceClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-07-01/Instance_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/Instance_Get_MaximumSet_Gen.json
 func ExampleInstanceClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -152,6 +158,9 @@ func ExampleInstanceClient_Get() {
 	// 				},
 	// 			},
 	// 		},
+	// 		SKU: &armiotoperations.InstanceSKU{
+	// 			Name: to.Ptr(armiotoperations.InstanceSKUNameStandard),
+	// 		},
 	// 		ExtendedLocation: &armiotoperations.ExtendedLocation{
 	// 			Name: to.Ptr("/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123"),
 	// 			Type: to.Ptr(armiotoperations.ExtendedLocationTypeCustomLocation),
@@ -181,7 +190,7 @@ func ExampleInstanceClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-07-01/Instance_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/Instance_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleInstanceClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -215,6 +224,9 @@ func ExampleInstanceClient_NewListByResourceGroupPager() {
 		// 					},
 		// 					Description: to.Ptr("A description"),
 		// 				},
+		// 				SKU: &armiotoperations.InstanceSKU{
+		// 					Name: to.Ptr(armiotoperations.InstanceSKUNameStandard),
+		// 				},
 		// 				ExtendedLocation: &armiotoperations.ExtendedLocation{
 		// 					Name: to.Ptr("/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123"),
 		// 					Type: to.Ptr(armiotoperations.ExtendedLocationTypeCustomLocation),
@@ -248,7 +260,7 @@ func ExampleInstanceClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-07-01/Instance_ListBySubscription_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/Instance_ListBySubscription_MaximumSet_Gen.json
 func ExampleInstanceClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -282,6 +294,9 @@ func ExampleInstanceClient_NewListBySubscriptionPager() {
 		// 					},
 		// 					Description: to.Ptr("empgqmbhvklcqlyahmdsjemlep"),
 		// 				},
+		// 				SKU: &armiotoperations.InstanceSKU{
+		// 					Name: to.Ptr(armiotoperations.InstanceSKUNameStandard),
+		// 				},
 		// 				ExtendedLocation: &armiotoperations.ExtendedLocation{
 		// 					Name: to.Ptr("/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123"),
 		// 					Type: to.Ptr(armiotoperations.ExtendedLocationTypeCustomLocation),
@@ -315,7 +330,7 @@ func ExampleInstanceClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-07-01/Instance_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/Instance_Update_MaximumSet_Gen.json
 func ExampleInstanceClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -348,6 +363,9 @@ func ExampleInstanceClient_Update() {
 	// 			Description: to.Ptr("wwihkapmgjbyrtyaj"),
 	// 			ProvisioningState: to.Ptr(armiotoperations.ProvisioningStateSucceeded),
 	// 			Version: to.Ptr("1.2.0"),
+	// 		},
+	// 		SKU: &armiotoperations.InstanceSKU{
+	// 			Name: to.Ptr(armiotoperations.InstanceSKUNameStandard),
 	// 		},
 	// 		ExtendedLocation: &armiotoperations.ExtendedLocation{
 	// 			Name: to.Ptr("/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123"),

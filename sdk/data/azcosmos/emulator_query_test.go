@@ -97,8 +97,7 @@ func TestEmulatorQueryPaginationAfterContainerRecreation(t *testing.T) {
 		t.Helper()
 		for i := 0; i < 5; i++ {
 			id := fmt.Sprintf("item-%d", i)
-			_, err := container.CreateItem(t.Context(), key, id,
-				[]byte(fmt.Sprintf(`{"id":%q,"pk":"partition","value":%d}`, id, i)), nil)
+			_, err := container.CreateItem(t.Context(), key, id, json.RawMessage(fmt.Sprintf(`{"id":%q,"pk":"partition","value":%d}`, id, i)), nil)
 			require.NoError(t, err)
 		}
 	}
@@ -106,7 +105,7 @@ func TestEmulatorQueryPaginationAfterContainerRecreation(t *testing.T) {
 	query := NewQuery("SELECT VALUE c.value FROM c ORDER BY c.value")
 	scope := NewFeedScopeForPartitionKey(key)
 	options := &QueryOptions{Feed: FeedOptions{PageSizeHint: 2}}
-	oldPager := container.NewQueryItemsPager(query, scope, options)
+	oldPager := container.NewQueryItemsPager[json.RawMessage](query, scope, options)
 	defer func() { require.NoError(t, oldPager.Close()) }()
 	_, err = oldPager.NextPage(t.Context())
 	require.NoError(t, err)
@@ -132,26 +131,26 @@ func TestEmulatorQueryPaginationAfterContainerRecreation(t *testing.T) {
 	_, err = container.ReadItem(t.Context(), key, "item-0", nil)
 	require.NoError(t, err)
 	require.False(t, invalidate.Load(), "the stale-container signal must reach the native driver")
-	pager := container.NewQueryItemsPager(query, scope, options)
+	pager := container.NewQueryItemsPager[json.RawMessage](query, scope, options)
 	first, err := pager.NextPage(t.Context())
 	require.NoError(t, err)
-	require.Equal(t, [][]byte{[]byte("0"), []byte("1")}, first.Items)
+	require.Equal(t, []json.RawMessage{[]byte("0"), []byte("1")}, first.Items)
 	firstToken, err := pager.ContinuationToken(t.Context())
 	require.NoError(t, err)
 	require.NotEmpty(t, firstToken)
-	var remaining [][]byte
+	var remaining []json.RawMessage
 	for count := 0; pager.More(); count++ {
 		require.Less(t, count, 5)
 		page, err := pager.NextPage(t.Context())
 		require.NoError(t, err, "tokens issued for the replacement must work on the same client")
 		remaining = append(remaining, page.Items...)
 	}
-	require.Equal(t, [][]byte{[]byte("2"), []byte("3"), []byte("4")}, remaining)
+	require.Equal(t, []json.RawMessage{[]byte("2"), []byte("3"), []byte("4")}, remaining)
 
-	resumed := container.NewQueryItemsPager(query, scope, &QueryOptions{
+	resumed := container.NewQueryItemsPager[json.RawMessage](query, scope, &QueryOptions{
 		Feed: FeedOptions{PageSizeHint: 2, ContinuationToken: firstToken},
 	})
-	var resumedItems [][]byte
+	var resumedItems []json.RawMessage
 	for count := 0; resumed.More(); count++ {
 		require.Less(t, count, 5)
 		page, err := resumed.NextPage(t.Context())
@@ -160,7 +159,7 @@ func TestEmulatorQueryPaginationAfterContainerRecreation(t *testing.T) {
 	}
 	require.Equal(t, remaining, resumedItems)
 
-	stale := container.NewQueryItemsPager(query, scope, &QueryOptions{
+	stale := container.NewQueryItemsPager[json.RawMessage](query, scope, &QueryOptions{
 		Feed: FeedOptions{ContinuationToken: oldToken},
 	})
 	page, err := stale.NextPage(t.Context())
@@ -178,24 +177,24 @@ func TestEmulatorQueryPagination(t *testing.T) {
 		id := fmt.Sprintf("%s-%d", partition, i)
 		body, err := json.Marshal(map[string]any{"id": id, "pk": partition, "value": i})
 		require.NoError(t, err)
-		_, err = container.CreateItem(t.Context(), key, id, body, nil)
+		_, err = container.CreateItem(t.Context(), key, id, json.RawMessage(body), nil)
 		require.NoError(t, err)
 		trackEmulatorItem(t, container, key, id)
 	}
 	otherKey := NewPartitionKeyString(partition + "-other")
 	otherBody, err := json.Marshal(map[string]any{"id": partition, "pk": partition + "-other", "value": 0})
 	require.NoError(t, err)
-	_, err = container.CreateItem(t.Context(), otherKey, partition, otherBody, nil)
+	_, err = container.CreateItem(t.Context(), otherKey, partition, json.RawMessage(otherBody), nil)
 	require.NoError(t, err)
 	trackEmulatorItem(t, container, otherKey, partition)
 
 	query, err := NewQuery("SELECT VALUE c.value FROM c WHERE c.value >= @min ORDER BY c.value").WithParameter("@min", 0)
 	require.NoError(t, err)
 	scope := NewFeedScopeForPartitionKey(key)
-	pager := container.NewQueryItemsPager(query, scope, &QueryOptions{Feed: FeedOptions{PageSizeHint: 2}})
+	pager := container.NewQueryItemsPager[json.RawMessage](query, scope, &QueryOptions{Feed: FeedOptions{PageSizeHint: 2}})
 	first, err := pager.NextPage(t.Context())
 	require.NoError(t, err)
-	require.Equal(t, [][]byte{[]byte("0"), []byte("1")}, first.Items, "the ABI must return every item, not just the first")
+	require.Equal(t, []json.RawMessage{[]byte("0"), []byte("1")}, first.Items, "the ABI must return every item, not just the first")
 	require.Positive(t, first.RequestCharge)
 	require.NotEmpty(t, first.ActivityID)
 	require.NotEmpty(t, first.SessionToken)
@@ -203,19 +202,19 @@ func TestEmulatorQueryPagination(t *testing.T) {
 	require.NoError(t, err)
 	require.NotEmpty(t, firstToken)
 
-	remaining := make([][]byte, 0)
+	remaining := make([]json.RawMessage, 0)
 	for pages := 0; pager.More(); pages++ {
 		require.Less(t, pages, 10, "query failed to terminate")
 		page, err := pager.NextPage(t.Context())
 		require.NoError(t, err)
 		remaining = append(remaining, page.Items...)
 	}
-	require.Equal(t, [][]byte{[]byte("2"), []byte("3"), []byte("4")}, remaining)
+	require.Equal(t, []json.RawMessage{[]byte("2"), []byte("3"), []byte("4")}, remaining)
 
-	resumed := container.NewQueryItemsPager(query, scope, &QueryOptions{
+	resumed := container.NewQueryItemsPager[json.RawMessage](query, scope, &QueryOptions{
 		Feed: FeedOptions{PageSizeHint: 2, ContinuationToken: firstToken},
 	})
-	var resumedItems [][]byte
+	var resumedItems []json.RawMessage
 	for pages := 0; resumed.More(); pages++ {
 		require.Less(t, pages, 10, "resumed query failed to terminate")
 		page, err := resumed.NextPage(t.Context())
@@ -224,7 +223,7 @@ func TestEmulatorQueryPagination(t *testing.T) {
 	}
 	require.Equal(t, remaining, resumedItems)
 
-	empty := container.NewQueryItemsPager(NewQuery("SELECT * FROM c WHERE c.value = -1"), scope, nil)
+	empty := container.NewQueryItemsPager[json.RawMessage](NewQuery("SELECT * FROM c WHERE c.value = -1"), scope, nil)
 	for pages := 0; empty.More(); pages++ {
 		require.Less(t, pages, 3, "empty query failed to terminate")
 		page, err := empty.NextPage(t.Context())
@@ -232,7 +231,7 @@ func TestEmulatorQueryPagination(t *testing.T) {
 		require.Empty(t, page.Items)
 	}
 
-	invalid := container.NewQueryItemsPager(query, scope, &QueryOptions{Feed: FeedOptions{ContinuationToken: "not-a-continuation"}})
+	invalid := container.NewQueryItemsPager[json.RawMessage](query, scope, &QueryOptions{Feed: FeedOptions{ContinuationToken: "not-a-continuation"}})
 	page, err := invalid.NextPage(t.Context())
 	require.Error(t, err)
 	require.Zero(t, page)
@@ -246,23 +245,21 @@ func TestEmulatorQueryHierarchicalScope(t *testing.T) {
 	key := NewPartitionKeyString(partition).AppendString("child")
 	body, err := json.Marshal(map[string]any{"id": partition, "pk": partition, "child": "child"})
 	require.NoError(t, err)
-	_, err = container.CreateItem(t.Context(), key, partition, body, nil)
+	_, err = container.CreateItem(t.Context(), key, partition, json.RawMessage(body), nil)
 	require.NoError(t, err)
 	trackEmulatorItem(t, container, key, partition)
 	siblingKey := NewPartitionKeyString(partition).AppendString("sibling")
 	siblingID := partition + "-sibling"
-	_, err = container.CreateItem(t.Context(), siblingKey, siblingID,
-		[]byte(fmt.Sprintf(`{"id":%q,"pk":%q,"child":"sibling"}`, siblingID, partition)), nil)
+	_, err = container.CreateItem(t.Context(), siblingKey, siblingID, json.RawMessage(fmt.Sprintf(`{"id":%q,"pk":%q,"child":"sibling"}`, siblingID, partition)), nil)
 	require.NoError(t, err)
 	trackEmulatorItem(t, container, siblingKey, siblingID)
 	outsideKey := NewPartitionKeyString(partition + "-outside").AppendString("child")
 	outsideID := partition + "-outside"
-	_, err = container.CreateItem(t.Context(), outsideKey, outsideID,
-		[]byte(fmt.Sprintf(`{"id":%q,"pk":%q,"child":"child"}`, outsideID, outsideID)), nil)
+	_, err = container.CreateItem(t.Context(), outsideKey, outsideID, json.RawMessage(fmt.Sprintf(`{"id":%q,"pk":%q,"child":"child"}`, outsideID, outsideID)), nil)
 	require.NoError(t, err)
 	trackEmulatorItem(t, container, outsideKey, outsideID)
 
-	pager := container.NewQueryItemsPager(NewQuery("SELECT VALUE c.id FROM c"), NewFeedScopeForPartitionKey(key), nil)
+	pager := container.NewQueryItemsPager[json.RawMessage](NewQuery("SELECT VALUE c.id FROM c"), NewFeedScopeForPartitionKey(key), nil)
 	page, err := pager.NextPage(t.Context())
 	require.NoError(t, err)
 	require.Len(t, page.Items, 1)
@@ -270,7 +267,7 @@ func TestEmulatorQueryHierarchicalScope(t *testing.T) {
 	require.NoError(t, json.Unmarshal(page.Items[0], &id))
 	require.Equal(t, partition, id)
 
-	prefix := container.NewQueryItemsPager(NewQuery("SELECT VALUE c.id FROM c"),
+	prefix := container.NewQueryItemsPager[json.RawMessage](NewQuery("SELECT VALUE c.id FROM c"),
 		NewFeedScopeForPartitionKey(NewPartitionKeyString(partition)), nil)
 	defer func() { require.NoError(t, prefix.Close()) }()
 	var ids []string
@@ -295,7 +292,7 @@ func TestEmulatorQueryCrossPartition(t *testing.T) {
 		key := NewPartitionKeyString(id)
 		body, err := json.Marshal(map[string]any{"id": id, "pk": id, "run": run, "value": i, "category": i % 2})
 		require.NoError(t, err)
-		_, err = container.CreateItem(t.Context(), key, id, body, nil)
+		_, err = container.CreateItem(t.Context(), key, id, json.RawMessage(body), nil)
 		require.NoError(t, err)
 		trackEmulatorItem(t, container, key, id)
 	}
@@ -304,7 +301,7 @@ func TestEmulatorQueryCrossPartition(t *testing.T) {
 		require.NoError(t, err)
 		return query
 	}
-	read := func(t *testing.T, pager *QueryItemsPager) []int {
+	read := func(t *testing.T, pager *QueryItemsPager[json.RawMessage]) []int {
 		t.Helper()
 		defer func() { require.NoError(t, pager.Close()) }()
 		var values []int
@@ -336,7 +333,7 @@ func TestEmulatorQueryCrossPartition(t *testing.T) {
 				{"offset", "SELECT VALUE c.value FROM c WHERE c.run = @run ORDER BY c.value OFFSET 3 LIMIT 4", all[3:7]},
 			} {
 				t.Run(tc.name, func(t *testing.T) {
-					pager := container.NewQueryItemsPager(build(tc.sql), scope, &QueryOptions{
+					pager := container.NewQueryItemsPager[json.RawMessage](build(tc.sql), scope, &QueryOptions{
 						Feed: FeedOptions{PageSizeHint: 2}, QueryPlanMode: mode,
 					})
 					require.Equal(t, tc.want, read(t, pager))
@@ -349,7 +346,7 @@ func TestEmulatorQueryCrossPartition(t *testing.T) {
 						slices.Reverse(expected)
 					}
 					query := build("SELECT VALUE c.value FROM c WHERE c.run = @run ORDER BY c.value " + direction)
-					pager := container.NewQueryItemsPager(query, scope, &QueryOptions{
+					pager := container.NewQueryItemsPager[json.RawMessage](query, scope, &QueryOptions{
 						Feed: FeedOptions{PageSizeHint: 2}, QueryPlanMode: mode,
 					})
 					defer func() { require.NoError(t, pager.Close()) }()
@@ -371,7 +368,7 @@ func TestEmulatorQueryCrossPartition(t *testing.T) {
 					client, databaseID, containerID := emulatorClient(t)
 					freshContainer, err := client.NewContainer(databaseID, containerID)
 					require.NoError(t, err)
-					resumed := freshContainer.NewQueryItemsPager(query, scope, &QueryOptions{
+					resumed := freshContainer.NewQueryItemsPager[json.RawMessage](query, scope, &QueryOptions{
 						Feed: FeedOptions{PageSizeHint: 2, ContinuationToken: token}, QueryPlanMode: mode,
 					})
 					require.Equal(t, expected[len(first.Items):], read(t, resumed),
@@ -379,7 +376,7 @@ func TestEmulatorQueryCrossPartition(t *testing.T) {
 				})
 			}
 			for _, aggregate := range []string{"COUNT(1)", "SUM(c.value)"} {
-				pager := container.NewQueryItemsPager(build("SELECT VALUE "+aggregate+" FROM c WHERE c.run = @run"),
+				pager := container.NewQueryItemsPager[json.RawMessage](build("SELECT VALUE "+aggregate+" FROM c WHERE c.run = @run"),
 					scope, &QueryOptions{QueryPlanMode: mode})
 				defer func() { require.NoError(t, pager.Close()) }()
 				page, err := pager.NextPage(t.Context())
@@ -391,7 +388,7 @@ func TestEmulatorQueryCrossPartition(t *testing.T) {
 		})
 	}
 	query := build("SELECT VALUE c.value FROM c WHERE c.run = @run")
-	pager := container.NewQueryItemsPager(query, scope, &QueryOptions{Feed: FeedOptions{PageSizeHint: 2}})
+	pager := container.NewQueryItemsPager[json.RawMessage](query, scope, &QueryOptions{Feed: FeedOptions{PageSizeHint: 2}})
 	defer func() { require.NoError(t, pager.Close()) }()
 	_, err := pager.NextPage(t.Context())
 	require.NoError(t, err)
@@ -399,21 +396,21 @@ func TestEmulatorQueryCrossPartition(t *testing.T) {
 	require.NoError(t, err)
 	require.NotEmpty(t, token)
 	remaining := read(t, pager)
-	resumed := read(t, container.NewQueryItemsPager(query, scope, &QueryOptions{
+	resumed := read(t, container.NewQueryItemsPager[json.RawMessage](query, scope, &QueryOptions{
 		Feed: FeedOptions{PageSizeHint: 2, ContinuationToken: token},
 	}))
 	slices.Sort(remaining)
 	slices.Sort(resumed)
 	require.Equal(t, remaining, resumed, "checkpoint must resume without duplication or omission")
 
-	limited := container.NewQueryItemsPager(query, scope, &QueryOptions{Feed: FeedOptions{MaxFanOut: 1}})
+	limited := container.NewQueryItemsPager[json.RawMessage](query, scope, &QueryOptions{Feed: FeedOptions{MaxFanOut: 1}})
 	defer func() { require.NoError(t, limited.Close()) }()
 	page, err := limited.NextPage(t.Context())
 	require.Error(t, err, "the fixture has four physical partitions")
 	require.Zero(t, page)
 	require.False(t, limited.More())
 
-	buffered := container.NewQueryItemsPager(build("SELECT DISTINCT TOP 2 VALUE c.category FROM c WHERE c.run = @run"), scope,
+	buffered := container.NewQueryItemsPager[json.RawMessage](build("SELECT DISTINCT TOP 2 VALUE c.category FROM c WHERE c.run = @run"), scope,
 		&QueryOptions{Feed: FeedOptions{PageSizeHint: 1}})
 	defer func() { require.NoError(t, buffered.Close()) }()
 	page, err = buffered.NextPage(t.Context())
@@ -445,12 +442,12 @@ func TestEmulatorQuerySpecialPartitionKeys(t *testing.T) {
 			item := map[string]any{"id": id, "pk": tt.value}
 			body, err := json.Marshal(item)
 			require.NoError(t, err)
-			_, err = container.CreateItem(t.Context(), tt.key, id, body, nil)
+			_, err = container.CreateItem(t.Context(), tt.key, id, json.RawMessage(body), nil)
 			require.NoError(t, err)
 			trackEmulatorItem(t, container, tt.key, id)
 			query, err := NewQuery("SELECT * FROM c WHERE c.id = @id").WithParameter("@id", id)
 			require.NoError(t, err)
-			page, err := container.NewQueryItemsPager(query, NewFeedScopeForPartitionKey(tt.key), nil).NextPage(t.Context())
+			page, err := container.NewQueryItemsPager[json.RawMessage](query, NewFeedScopeForPartitionKey(tt.key), nil).NextPage(t.Context())
 			require.NoError(t, err)
 			require.Len(t, page.Items, 1)
 			var result map[string]any
@@ -479,13 +476,13 @@ func TestEmulatorQueryCancellationAndClose(t *testing.T) {
 			ctx, cancel := context.WithCancel(t.Context())
 			defer cancel()
 			type result struct {
-				page QueryItemsResponse
+				page QueryItemsResponse[json.RawMessage]
 				err  error
 			}
 
 			results := make(chan result, 1)
 			go func() {
-				page, err := container.NewQueryItemsPager(NewQuery("SELECT * FROM c"),
+				page, err := container.NewQueryItemsPager[json.RawMessage](NewQuery("SELECT * FROM c"),
 					NewFeedScopeForPartitionKey(NewPartitionKeyString("cancel-query")), nil).NextPage(ctx)
 				results <- result{page, err}
 			}()
@@ -535,7 +532,7 @@ func TestEmulatorQueryEncodingAndRuntimeDefaults(t *testing.T) {
 	container := runtimeEmulatorContainer(t, shared, OperationOptions{})
 	id := uniqueItemID(t)
 	pk := NewPartitionKeyString(id)
-	_, err = container.CreateItem(t.Context(), pk, id, []byte(fmt.Sprintf(`{"id":%q,"pk":%q,"value":42}`, id, id)), nil)
+	_, err = container.CreateItem(t.Context(), pk, id, json.RawMessage(fmt.Sprintf(`{"id":%q,"pk":%q,"value":42}`, id, id)), nil)
 	require.NoError(t, err)
 	trackEmulatorItem(t, container, pk, id)
 	for _, encoding := range []*BinaryEncodingOptions{
@@ -543,12 +540,12 @@ func TestEmulatorQueryEncodingAndRuntimeDefaults(t *testing.T) {
 		{Enabled: to(false)},
 		{Enabled: to(true)},
 	} {
-		pager := container.NewQueryItemsPager(NewQuery("SELECT VALUE c.value FROM c"),
+		pager := container.NewQueryItemsPager[json.RawMessage](NewQuery("SELECT VALUE c.value FROM c"),
 			NewFeedScopeForPartitionKey(pk), &QueryOptions{Operation: OperationOptions{BinaryEncoding: encoding}})
 		t.Cleanup(func() { require.NoError(t, pager.Close()) })
 		page, err := pager.NextPage(t.Context())
 		require.NoError(t, err)
-		require.Equal(t, [][]byte{[]byte("42")}, page.Items)
+		require.Equal(t, []json.RawMessage{[]byte("42")}, page.Items)
 	}
 }
 
@@ -620,7 +617,7 @@ func TestEmulatorQueryAdmittedPageLifetime(t *testing.T) {
 			t.Cleanup(func() { once.Do(func() { close(release) }) })
 			container, err := client.NewContainer(databaseID, containerID)
 			require.NoError(t, err)
-			pager := container.NewQueryItemsPager(NewQuery("SELECT VALUE c.id FROM c WHERE c.value >= 0"), NewFeedScopeForFullContainer(), nil)
+			pager := container.NewQueryItemsPager[json.RawMessage](NewQuery("SELECT VALUE c.id FROM c WHERE c.value >= 0"), NewFeedScopeForFullContainer(), nil)
 			ctx, cancel := context.WithCancel(t.Context())
 			defer cancel()
 			result := make(chan error, 1)
@@ -637,7 +634,7 @@ func TestEmulatorQueryAdmittedPageLifetime(t *testing.T) {
 			case <-time.After(10 * time.Second):
 				t.Fatal("query did not reach the delayed data request")
 			}
-			sibling := container.NewQueryItemsPager(NewQuery("SELECT VALUE c.id FROM c WHERE c.value >= 0"),
+			sibling := container.NewQueryItemsPager[json.RawMessage](NewQuery("SELECT VALUE c.id FROM c WHERE c.value >= 0"),
 				NewFeedScopeForFullContainer(), nil)
 			siblingCtx, stopSibling := context.WithTimeout(t.Context(), 5*time.Second)
 			_, err = sibling.NextPage(siblingCtx)

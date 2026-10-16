@@ -6,6 +6,8 @@
 
 ### Features Added
 
+* Added optional `ClientOptions.Serializer`, generic item writes, `ItemResponse.IntoModel[T]()`,
+  and generic query results with metadata-preserving model conversion errors.
 * Added database/container management: `Client.CreateDatabase`;
   `DatabaseClient.Read`, `DatabaseClient.Delete`, `DatabaseClient.CreateContainer`;
   `ContainerClient.Read`, `ContainerClient.Delete`; and the
@@ -83,6 +85,12 @@
 
 ### Breaking Changes
 
+* Raised the minimum Go version to 1.27 for concrete generic methods.
+* Replaced provisional byte-oriented writes with generic `CreateItem`, `ReplaceItem`, and
+  `UpsertItem`. Pass models directly or use `json.RawMessage` for pre-encoded JSON; plain
+  `[]byte` is now serialized using the configured serializer.
+* `NewQueryItemsPager[T]`, `QueryItemsPager[T]`, and `QueryItemsResponse[T]` require an
+  explicit query result type. There are no separate raw operation variants.
 * This is the first release of `github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos/v2`. The v2
   module replaces the v1 pure-Go implementation with a binding to the shared Rust Cosmos driver,
   so it is a full rewrite of the public surface rather than an incremental change. The complete

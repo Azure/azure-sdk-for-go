@@ -41,7 +41,7 @@ func TestEmulatorDiagnosticsPointOperations(t *testing.T) {
 	body, err := json.Marshal(map[string]string{"id": id, "pk": id})
 	require.NoError(t, err)
 
-	created, err := container.CreateItem(t.Context(), pk, id, body, nil)
+	created, err := container.CreateItem(t.Context(), pk, id, json.RawMessage(body), nil)
 	require.NoError(t, err)
 	require.Equal(t, http.StatusCreated, created.StatusCode)
 	require.Zero(t, created.SubStatus)
@@ -77,9 +77,9 @@ func TestEmulatorDiagnosticsWireFailures(t *testing.T) {
 	require.InDelta(t, missing.RequestCharge, missing.Diagnostics.TotalRequestCharge, 0.001)
 
 	trackEmulatorItem(t, container, pk, id)
-	_, err = container.CreateItem(t.Context(), pk, id, body, nil)
+	_, err = container.CreateItem(t.Context(), pk, id, json.RawMessage(body), nil)
 	require.NoError(t, err)
-	response, err := container.CreateItem(t.Context(), pk, id, body, nil)
+	response, err := container.CreateItem(t.Context(), pk, id, json.RawMessage(body), nil)
 	require.Equal(t, ItemResponse{}, response)
 	conflict := requireWireErrorDetails(t, err, CodeConflict, http.StatusConflict)
 	requireEmulatorDiagnostics(t, conflict.Diagnostics, http.StatusConflict, 0, true)
@@ -95,10 +95,10 @@ func TestEmulatorDiagnosticsQueryPage(t *testing.T) {
 	trackEmulatorItem(t, container, pk, id)
 	body, err := json.Marshal(map[string]string{"id": id, "pk": id})
 	require.NoError(t, err)
-	_, err = container.CreateItem(t.Context(), pk, id, body, nil)
+	_, err = container.CreateItem(t.Context(), pk, id, json.RawMessage(body), nil)
 	require.NoError(t, err)
 
-	pager := container.NewQueryItemsPager(NewQuery("SELECT * FROM c"), NewFeedScopeForPartitionKey(pk), nil)
+	pager := container.NewQueryItemsPager[json.RawMessage](NewQuery("SELECT * FROM c"), NewFeedScopeForPartitionKey(pk), nil)
 	page, err := pager.NextPage(t.Context())
 	require.NoError(t, err)
 	require.NotEmpty(t, page.Items)
@@ -116,7 +116,7 @@ func TestEmulatorDiagnosticsConcurrentSnapshots(t *testing.T) {
 	trackEmulatorItem(t, container, pk, id)
 	body, err := json.Marshal(map[string]string{"id": id, "pk": id})
 	require.NoError(t, err)
-	_, err = container.CreateItem(t.Context(), pk, id, body, nil)
+	_, err = container.CreateItem(t.Context(), pk, id, json.RawMessage(body), nil)
 	require.NoError(t, err)
 
 	const callers = 8
@@ -151,7 +151,7 @@ func TestEmulatorDiagnosticsVerbosityOption(t *testing.T) {
 	require.NoError(t, err)
 
 	trackEmulatorItem(t, summaryContainer, pk, id)
-	summary, err := summaryContainer.CreateItem(t.Context(), pk, id, body, nil)
+	summary, err := summaryContainer.CreateItem(t.Context(), pk, id, json.RawMessage(body), nil)
 	require.NoError(t, err)
 	require.True(t, json.Valid([]byte(summary.Diagnostics.JSON)))
 
@@ -160,7 +160,7 @@ func TestEmulatorDiagnosticsVerbosityOption(t *testing.T) {
 	detailedBody, err := json.Marshal(map[string]string{"id": detailedID, "pk": detailedID})
 	require.NoError(t, err)
 	trackEmulatorItem(t, detailedContainer, detailedPK, detailedID)
-	detailed, err := detailedContainer.CreateItem(t.Context(), detailedPK, detailedID, detailedBody, nil)
+	detailed, err := detailedContainer.CreateItem(t.Context(), detailedPK, detailedID, json.RawMessage(detailedBody), nil)
 	require.NoError(t, err)
 	require.True(t, json.Valid([]byte(detailed.Diagnostics.JSON)))
 
@@ -177,7 +177,7 @@ func TestEmulatorDiagnosticsVerbosityOption(t *testing.T) {
 	defaultBody, err := json.Marshal(map[string]string{"id": defaultID, "pk": defaultID})
 	require.NoError(t, err)
 	trackEmulatorItem(t, defaultContainer, defaultPK, defaultID)
-	defaultResult, err := defaultContainer.CreateItem(t.Context(), defaultPK, defaultID, defaultBody, nil)
+	defaultResult, err := defaultContainer.CreateItem(t.Context(), defaultPK, defaultID, json.RawMessage(defaultBody), nil)
 	require.NoError(t, err)
 	require.True(t, json.Valid([]byte(defaultResult.Diagnostics.JSON)))
 }
@@ -190,7 +190,7 @@ func TestEmulatorDiagnosticsSurviveClientClose(t *testing.T) {
 	pk := NewPartitionKeyString(id)
 	body, err := json.Marshal(map[string]string{"id": id, "pk": id})
 	require.NoError(t, err)
-	_, err = container.CreateItem(t.Context(), pk, id, body, nil)
+	_, err = container.CreateItem(t.Context(), pk, id, json.RawMessage(body), nil)
 	require.NoError(t, err)
 	read, err := container.ReadItem(t.Context(), pk, id, nil)
 	require.NoError(t, err)

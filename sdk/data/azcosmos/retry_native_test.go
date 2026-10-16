@@ -33,7 +33,7 @@ func seedFaultInjectedItem(t *testing.T, container *ContainerClient) (string, Pa
 	id := uniqueItemID(t)
 	pk := NewPartitionKeyString(id)
 	trackEmulatorItem(t, container, pk, id)
-	created, err := container.CreateItem(t.Context(), pk, id, []byte(`{"id":"`+id+`","pk":"`+id+`"}`), nil)
+	created, err := container.CreateItem(t.Context(), pk, id, json.RawMessage(`{"id":"`+id+`","pk":"`+id+`"}`), nil)
 	require.NoError(t, err)
 	require.NotEmpty(t, created.SessionToken)
 	return id, pk, created.SessionToken

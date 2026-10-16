@@ -60,7 +60,7 @@ func TestCursorClientCloseAndConcurrentCleanup(t *testing.T) {
 	cursor, err := driver.testIdleCursor()
 	require.NoError(t, err)
 	require.NotNil(t, cursor.queue)
-	pager := &QueryItemsPager{client: client, cursor: cursor}
+	pager := &QueryItemsPager[any]{client: client, cursor: cursor}
 	var wg sync.WaitGroup
 	for range 5 {
 		wg.Add(2)

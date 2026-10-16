@@ -32,6 +32,12 @@ type ClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
+// ClientGetRedundancyConversionStatusOptions contains the optional parameters for the Client.GetRedundancyConversionStatus
+// method.
+type ClientGetRedundancyConversionStatusOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ClientListByParentOptions contains the optional parameters for the Client.NewListByParentPager method.
 type ClientListByParentOptions struct {
 	// placeholder for future optional parameters
@@ -39,6 +45,11 @@ type ClientListByParentOptions struct {
 
 // ClientListBySubscriptionOptions contains the optional parameters for the Client.NewListBySubscriptionPager method.
 type ClientListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClientStartRedundancyConversionOptions contains the optional parameters for the Client.StartRedundancyConversion method.
+type ClientStartRedundancyConversionOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -78,7 +89,8 @@ type FileShareSnapshotsClientListByFileShareOptions struct {
 // InformationalOperationsClientGetLimitsOptions contains the optional parameters for the InformationalOperationsClient.GetLimits
 // method.
 type InformationalOperationsClientGetLimitsOptions struct {
-	// placeholder for future optional parameters
+	// The request body
+	Body *FileShareLimitsRequest
 }
 
 // InformationalOperationsClientGetProvisioningRecommendationOptions contains the optional parameters for the InformationalOperationsClient.GetProvisioningRecommendation

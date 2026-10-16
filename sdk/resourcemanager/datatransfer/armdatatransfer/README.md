@@ -1,4 +1,4 @@
-# Azure Datatransfer Module for Go
+# Azure Data Transfer Module for Go
 
 The `armdatatransfer` module provides operations for working with Azure Datatransfer.
 

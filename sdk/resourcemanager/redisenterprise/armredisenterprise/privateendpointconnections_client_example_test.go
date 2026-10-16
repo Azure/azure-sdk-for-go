@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-06-01-preview/RedisEnterpriseDeletePrivateEndpointConnection.json
+// Generated from example definition: 2026-09-01/RedisEnterpriseDeletePrivateEndpointConnection.json
 func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -38,7 +38,35 @@ func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01-preview/RedisEnterpriseGetPrivateEndpointConnection.json
+// Generated from example definition: 2026-09-01/RedisEnterprisePutPrivateEndpointConnection.json
+func ExamplePrivateEndpointConnectionsClient_BeginPut() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armredisenterprise.NewClientFactory("e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewPrivateEndpointConnectionsClient().BeginPut(ctx, "rg1", "cache1", "pectest01", armredisenterprise.PrivateEndpointConnection{
+		Properties: &armredisenterprise.PrivateEndpointConnectionProperties{
+			PrivateLinkServiceConnectionState: &armredisenterprise.PrivateLinkServiceConnectionState{
+				Description: to.Ptr("Auto-Approved"),
+				Status:      to.Ptr(armredisenterprise.PrivateEndpointServiceConnectionStatusApproved),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-09-01/RedisEnterpriseGetPrivateEndpointConnection.json
 func ExamplePrivateEndpointConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -76,7 +104,7 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01-preview/RedisEnterpriseListPrivateEndpointConnections.json
+// Generated from example definition: 2026-09-01/RedisEnterpriseListPrivateEndpointConnections.json
 func ExamplePrivateEndpointConnectionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -136,33 +164,5 @@ func ExamplePrivateEndpointConnectionsClient_NewListPager() {
 		// 		},
 		// 	},
 		// }
-	}
-}
-
-// Generated from example definition: 2026-06-01-preview/RedisEnterprisePutPrivateEndpointConnection.json
-func ExamplePrivateEndpointConnectionsClient_BeginPut() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armredisenterprise.NewClientFactory("e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewPrivateEndpointConnectionsClient().BeginPut(ctx, "rg1", "cache1", "pectest01", armredisenterprise.PrivateEndpointConnection{
-		Properties: &armredisenterprise.PrivateEndpointConnectionProperties{
-			PrivateLinkServiceConnectionState: &armredisenterprise.PrivateLinkServiceConnectionState{
-				Description: to.Ptr("Auto-Approved"),
-				Status:      to.Ptr(armredisenterprise.PrivateEndpointServiceConnectionStatusApproved),
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
 	}
 }

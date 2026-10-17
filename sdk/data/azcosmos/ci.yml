@@ -186,6 +186,29 @@ extends:
               exit 1
             displayName: 'Start the in-memory Cosmos emulator'
 
+          - script: |
+              # cSpell:ignore ppaf PPAF
+              set -euo pipefail
+              config='sdk/data/azcosmos/internal/testdata/emulator-ppaf-config.json'
+              nohup "$(EmulatorBinDir)/azure_data_cosmos_emulator" --config "$config" \
+                > "$(Agent.TempDirectory)/emulator-ppaf-ready.json" \
+                2> "$(Agent.TempDirectory)/emulator-ppaf.log" &
+
+              for _ in $(seq 1 60); do
+                if grep -q '"event":"ready"' "$(Agent.TempDirectory)/emulator-ppaf-ready.json" 2>/dev/null; then
+                  endpoint=$(python3 -c "import json,sys; print(json.load(open(sys.argv[1]))['accountEndpoint'])" \
+                    "$(Agent.TempDirectory)/emulator-ppaf-ready.json")
+                  echo "PPAF emulator ready at $endpoint"
+                  echo "##vso[task.setvariable variable=EmulatorPPAFEndpoint]$endpoint"
+                  exit 0
+                fi
+                sleep 1
+              done
+              echo '##[error] The PPAF emulator did not become ready.'
+              tail -50 "$(Agent.TempDirectory)/emulator-ppaf.log" || true
+              exit 1
+            displayName: 'Start the PPAF Cosmos emulator'
+
           - task: GoTool@0
             inputs:
               version: '1.26.1'
@@ -203,4 +226,5 @@ extends:
                 EMULATOR: 'true'
                 AZCOSMOS_ENDPOINT: $(EmulatorEndpoint)
                 AZCOSMOS_MANAGEMENT_ENDPOINT: $(EmulatorManagementEndpoint)
+                AZCOSMOS_PPAF_ENDPOINT: $(EmulatorPPAFEndpoint)
                 CGO_ENABLED: '1'

@@ -6,6 +6,7 @@ package azcosmos
 import (
 	"context"
 	"encoding/json"
+	"net/http"
 	"testing"
 	"time"
 
@@ -841,18 +842,12 @@ func TestEmulatorContainerChangeFeed(t *testing.T) {
 		}
 		options.FeedRange = &feedRanges[0] // Add required FeedRange
 
-		resp, err := container.ReadChangeFeed(context.TODO(), options)
-		if err != nil {
-			t.Fatalf("Failed to get change feed with If-Modified-Since: %v", err)
-		}
-
-		t.Logf("If-Modified-Since Response:")
-		t.Logf("  - Count: %d", resp.Count)
-		t.Logf("  - StatusCode: %d", resp.RawResponse.StatusCode)
+		items := readChangeFeedUntilNotModified(t, container, options)
+		t.Logf("If-Modified-Since Response - Count: %d", len(items))
 
 		// Should find at least the new item
 		foundNewItem := false
-		for _, doc := range resp.Items {
+		for _, doc := range items {
 			var item map[string]interface{}
 			err := json.Unmarshal(doc, &item)
 			if err != nil {
@@ -869,8 +864,7 @@ func TestEmulatorContainerChangeFeed(t *testing.T) {
 			t.Error("Expected to find the item inserted after the If-Modified-Since timestamp")
 		}
 
-		// Test with If-Modified-Since set to future - should get no items or 304
-		// Note: The emulator might not fully support this behavior, so we'll make this test more lenient
+		// Test with If-Modified-Since set to future - should get no items
 		futureTime := time.Now().UTC().Add(1 * time.Hour)
 		futureOptions := &ChangeFeedOptions{
 			MaxItemCount: 10,
@@ -878,26 +872,43 @@ func TestEmulatorContainerChangeFeed(t *testing.T) {
 		}
 		futureOptions.FeedRange = &feedRanges[0] // Add required FeedRange
 
-		futureResp, err := container.ReadChangeFeed(context.TODO(), futureOptions)
-		if err != nil {
-			t.Fatalf("Failed to get change feed with future If-Modified-Since: %v", err)
-		}
-		t.Logf("Future If-Modified-Since Response - Count: %d, StatusCode: %d", futureResp.Count, futureResp.RawResponse.StatusCode)
+		futureItems := readChangeFeedUntilNotModified(t, container, futureOptions)
+		t.Logf("Future If-Modified-Since Response - Count: %d", len(futureItems))
 
-		// The emulator might not properly support future If-Modified-Since timestamps
-		// So we'll log a warning instead of failing the test
-		if futureResp.RawResponse.StatusCode != 304 && futureResp.Count > 0 {
-			t.Logf("WARNING: Expected no items or 304 for future If-Modified-Since, but got %d items with status %d",
-				futureResp.Count, futureResp.RawResponse.StatusCode)
-			t.Log("This might be a limitation of the emulator's change feed implementation")
-
-			// Let's verify what items were returned
-			for i, doc := range futureResp.Items {
+		// Items returned here mean the service ignored If-Modified-Since and
+		// read the change feed from the beginning.
+		if len(futureItems) > 0 {
+			for i, doc := range futureItems {
 				var item map[string]interface{}
 				if err := json.Unmarshal(doc, &item); err == nil {
 					t.Logf("  Unexpected document %d: id=%v, pk=%v", i, item["id"], item["pk"])
 				}
 			}
+			t.Errorf("Expected no items for future If-Modified-Since, but got %d items", len(futureItems))
 		}
 	})
+}
+
+// readChangeFeedUntilNotModified reads the change feed from options until the
+// service returns 304 Not Modified, and returns every item read. A single read
+// isn't enough: the service can return a page with no items (200 OK) while
+// changes are still to come, as the emulator does on the first read with a
+// StartFrom. It fails the test if the feed hasn't caught up within 30 seconds.
+func readChangeFeedUntilNotModified(t *testing.T, container *ContainerClient, options *ChangeFeedOptions) [][]byte {
+	t.Helper()
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	defer cancel()
+	var items [][]byte
+	for {
+		resp, err := container.ReadChangeFeed(ctx, options)
+		if err != nil {
+			t.Fatalf("Failed to read change feed before it returned 304 Not Modified: %v", err)
+		}
+		items = append(items, resp.Items...)
+		if resp.RawResponse.StatusCode == http.StatusNotModified {
+			return items
+		}
+		next := resp.ContinuationToken
+		options = &ChangeFeedOptions{MaxItemCount: options.MaxItemCount, Continuation: &next}
+	}
 }

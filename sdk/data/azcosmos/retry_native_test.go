@@ -20,7 +20,11 @@ import (
 // submits once; the driver's diagnostics count the attempts made inside that submission.
 func faultInjectedContainer(t *testing.T, rule nativeFaultRule) *ContainerClient {
 	t.Helper()
-	client, databaseID, containerID := emulatorClientConfigured(t, nil, false)
+	// Capture test-scoped environment overrides rather than reusing the default runtime's snapshot.
+	runtime, err := NewRuntime(nil)
+	require.NoError(t, err)
+	t.Cleanup(func() { require.NoError(t, runtime.Close()) })
+	client, databaseID, containerID := emulatorClientConfigured(t, &ClientOptions{Runtime: runtime}, false)
 	client.driver.faultRules = []nativeFaultRule{rule}
 	require.NoError(t, client.Initialize(t.Context()))
 	container, err := client.NewContainer(databaseID, containerID)
@@ -154,6 +158,7 @@ func TestNativeThrottleCancellationReturnsPromptly(t *testing.T) {
 }
 
 func TestNativeFaultTargetsRegionAndContainerWithCustomStatus(t *testing.T) {
+	t.Setenv("AZURE_COSMOS_HEDGING_ENABLED_OVERRIDE", "false")
 	baseline := emulatorContainerWithOptions(t, nil)
 	id, pk, token := seedFaultInjectedItem(t, baseline)
 	response, err := baseline.ReadItem(t.Context(), pk, id, &ReadItemOptions{SessionToken: token})
@@ -197,7 +202,8 @@ func TestNativeFaultTargetsRegionAndContainerWithCustomStatus(t *testing.T) {
 			require.NotNil(t, cosmosErr.Diagnostics)
 			require.Equal(t, int(statusCode), cosmosErr.Diagnostics.StatusCode)
 			require.Equal(t, int(subStatus), cosmosErr.Diagnostics.SubStatus)
-			require.NotEmpty(t, cosmosErr.Diagnostics.Attempts)
+			require.Len(t, cosmosErr.Diagnostics.Attempts, 1)
+			require.Equal(t, region, cosmosErr.Diagnostics.Attempts[0].Region)
 			require.Equal(t, int(statusCode), cosmosErr.Diagnostics.Attempts[0].StatusCode)
 			require.Equal(t, int(subStatus), cosmosErr.Diagnostics.Attempts[0].SubStatus)
 		})

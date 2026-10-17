@@ -876,7 +876,7 @@ func TestContainerReadChangeFeedWithStartFrom(t *testing.T) {
 
 	request := verifier.requests[0]
 	ifModifiedSinceHeader := request.headers.Get(cosmosHeaderIfModifiedSince)
-	expectedIfModifiedSince := modifiedSince.Format(time.RFC1123)
+	expectedIfModifiedSince := modifiedSince.UTC().Format(http.TimeFormat)
 
 	if ifModifiedSinceHeader == "" {
 		t.Errorf("If-Modified-Since header was not set")
@@ -974,7 +974,7 @@ func TestContainerReadChangeFeedWithStartFromFiltering(t *testing.T) {
 
 	firstRequest := verifier.requests[0]
 	firstIfModifiedSinceHeader := firstRequest.headers.Get(cosmosHeaderIfModifiedSince)
-	firstExpectedIfModifiedSince := beginningOfTime.Format(time.RFC1123)
+	firstExpectedIfModifiedSince := beginningOfTime.UTC().Format(http.TimeFormat)
 
 	if firstIfModifiedSinceHeader == "" {
 		t.Errorf("If-Modified-Since header was not set in first request")
@@ -1029,7 +1029,7 @@ func TestContainerReadChangeFeedWithStartFromFiltering(t *testing.T) {
 
 	secondRequest := verifier.requests[0]
 	secondIfModifiedSinceHeader := secondRequest.headers.Get(cosmosHeaderIfModifiedSince)
-	secondExpectedIfModifiedSince := midpointTime.Format(time.RFC1123)
+	secondExpectedIfModifiedSince := midpointTime.UTC().Format(http.TimeFormat)
 
 	if secondIfModifiedSinceHeader == "" {
 		t.Errorf("If-Modified-Since header was not set in second request")

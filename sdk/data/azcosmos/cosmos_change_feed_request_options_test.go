@@ -4,6 +4,7 @@
 package azcosmos
 
 import (
+	"net/http"
 	"testing"
 	"time"
 
@@ -55,7 +56,7 @@ func TestChangeFeedOptions_BuildRequestHeaders_AllFields(t *testing.T) {
 
 	require.Equal(t, cosmosHeaderValuesChangeFeed, headers[cosmosHeaderChangeFeed])
 	require.Equal(t, "25", headers[cosmosHeaderMaxItemCount])
-	require.Equal(t, now.Format(time.RFC1123), headers[cosmosHeaderIfModifiedSince])
+	require.Equal(t, now.UTC().Format(http.TimeFormat), headers[cosmosHeaderIfModifiedSince])
 
 	pkJSON, _ := pk.toJsonString()
 	require.Equal(t, string(pkJSON), headers[cosmosHeaderPartitionKey])
@@ -94,4 +95,17 @@ func TestChangeFeedOptions_BuildRequestHeaders_PartitionKeySerializationError(t 
 
 	_, err := options.buildRequestHeaders(changeFeedRange{}, "")
 	require.Error(t, err, "buildRequestHeaders must surface PartitionKey serialization errors")
+}
+
+// TestChangeFeedOptions_BuildRequestHeaders_IfModifiedSinceIsHTTPDate verifies
+// that StartFrom is sent as an HTTP date (RFC 9110 IMF-fixdate), which must end
+// in "GMT". The service ignores an If-Modified-Since header ending in "UTC" and
+// reads the change feed from the beginning.
+func TestChangeFeedOptions_BuildRequestHeaders_IfModifiedSinceIsHTTPDate(t *testing.T) {
+	startFrom := time.Date(2026, time.October, 17, 19, 20, 30, 0, time.FixedZone("UTC+1", 60*60))
+	options := &ChangeFeedOptions{StartFrom: &startFrom}
+
+	headers, err := options.buildRequestHeaders(changeFeedRange{}, "")
+	require.NoError(t, err)
+	require.Equal(t, "Sat, 17 Oct 2026 18:20:30 GMT", headers[cosmosHeaderIfModifiedSince])
 }

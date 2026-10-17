@@ -10,6 +10,8 @@
 
 ### Bugs Fixed
 
+* Fixed `ChangeFeedOptions.StartFrom` being ignored by the service, which read the change feed from the beginning instead. The `If-Modified-Since` header is now an HTTP date ending in `GMT` rather than `UTC`. See [PR 27787](https://github.com/Azure/azure-sdk-for-go/pull/27787).
+
 ### Other Changes
 
 ## 1.6.0-beta.4 (2026-10-14)

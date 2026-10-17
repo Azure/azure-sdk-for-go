@@ -11,6 +11,8 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestContainerCRUD(t *testing.T) {
@@ -877,15 +879,13 @@ func TestEmulatorContainerChangeFeed(t *testing.T) {
 
 		// Items returned here mean the service ignored If-Modified-Since and
 		// read the change feed from the beginning.
-		if len(futureItems) > 0 {
-			for i, doc := range futureItems {
-				var item map[string]interface{}
-				if err := json.Unmarshal(doc, &item); err == nil {
-					t.Logf("  Unexpected document %d: id=%v, pk=%v", i, item["id"], item["pk"])
-				}
+		for i, doc := range futureItems {
+			var item map[string]interface{}
+			if err := json.Unmarshal(doc, &item); err == nil {
+				t.Logf("  Unexpected document %d: id=%v, pk=%v", i, item["id"], item["pk"])
 			}
-			t.Errorf("Expected no items for future If-Modified-Since, but got %d items", len(futureItems))
 		}
+		assert.Empty(t, futureItems, "Expected no items for future If-Modified-Since")
 	})
 }
 
@@ -901,9 +901,7 @@ func readChangeFeedUntilNotModified(t *testing.T, container *ContainerClient, op
 	var items [][]byte
 	for {
 		resp, err := container.ReadChangeFeed(ctx, options)
-		if err != nil {
-			t.Fatalf("Failed to read change feed before it returned 304 Not Modified: %v", err)
-		}
+		require.NoError(t, err, "Failed to read change feed before it returned 304 Not Modified")
 		items = append(items, resp.Items...)
 		if resp.RawResponse.StatusCode == http.StatusNotModified {
 			return items

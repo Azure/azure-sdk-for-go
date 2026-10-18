@@ -64,7 +64,7 @@ func FiniteSessions(remainingArgs []string) {
 	sender, err := shared.NewTrackingSender(sc.TC, client, topicName, nil)
 	sc.NoError(err)
 
-	defer sender.Close(sc.Context)
+	defer func() { _ = sender.Close(sc.Context) }()
 
 	for round := 0; round < int(params.rounds); round++ {
 		var sessionReceivers []*azservicebus.SessionReceiver

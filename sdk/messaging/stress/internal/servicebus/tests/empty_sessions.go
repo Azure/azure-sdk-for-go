@@ -74,9 +74,9 @@ func EmptySessions(remainingArgs []string) {
 			cancelAccept()
 			sc.Nil(sessionReceiver)
 
-			endMS := time.Since(start) / time.Millisecond
+			elapsed := time.Since(start)
 
-			shared.TrackMetric(sc.Context, sc.TC, shared.MetricSessionTimeoutMS, float64(endMS), nil)
+			shared.TrackMetric(sc.Context, sc.TC, shared.MetricSessionTimeoutMS, float64(elapsed.Milliseconds()), nil)
 
 			// the error should indicate that we timed out waiting for a new session
 			if sbErr := (*azservicebus.Error)(nil); errors.As(err, &sbErr) {
@@ -93,7 +93,7 @@ func EmptySessions(remainingArgs []string) {
 			} else if errors.Is(err, context.DeadlineExceeded) {
 				// this means we gave the service a max timeout (passed in via
 				// the link attach request) and there was some issue
-				sc.Failf("Deadline exceeded, session timeout took too long (%dms)", endMS)
+				sc.Failf("Deadline exceeded, session timeout took too long (%dms)", elapsed.Milliseconds())
 			} else if err != nil {
 				sc.PanicOnError("A non-timeout error occurred", err)
 			}

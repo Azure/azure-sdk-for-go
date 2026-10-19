@@ -22,6 +22,15 @@ func TestWrapTracerDisabled(t *testing.T) {
 	require.Zero(t, span)
 }
 
+func TestWrapTracerWithoutSpanLookup(t *testing.T) {
+	tr := WrapTracer(tracing.NewTracer(func(ctx context.Context, _ string, _ *tracing.SpanOptions) (context.Context, tracing.Span) {
+		return ctx, tracing.Span{}
+	}, nil))
+	ctx, _ := tr.Start(context.Background(), "operation", nil)
+	require.True(t, tr.Enabled())
+	require.Zero(t, tr.SpanFromContext(ctx))
+}
+
 func TestWrapTracerForwarding(t *testing.T) {
 	type spanKey struct{}
 	var attrs []tracing.Attribute

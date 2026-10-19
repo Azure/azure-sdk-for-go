@@ -103,3 +103,43 @@ func TestWrapTracer(t *testing.T) {
 	original.Start(context.Background(), "original", nil)
 	require.Equal(t, []Attribute{{Key: "key", Value: "original"}}, attrs)
 }
+
+func TestWrapTracerSpanFromContext(t *testing.T) {
+	for _, supported := range []bool{false, true} {
+		name := "unsupported"
+		if supported {
+			name = "supported"
+		}
+		t.Run(name, func(t *testing.T) {
+			var originalCalled, wrapperCalled, ended bool
+			options := &TracerOptions{}
+			if supported {
+				options.SpanFromContext = func(context.Context) Span {
+					originalCalled = true
+					return NewSpan(SpanImpl{End: func() { ended = true }})
+				}
+			}
+			tr := NewTracer(func(ctx context.Context, _ string, _ *SpanOptions) (context.Context, Span) {
+				return ctx, Span{}
+			}, options)
+			wrapped := WrapTracer(tr, func(inner Tracer) Tracer {
+				return NewTracer(inner.Start, &TracerOptions{
+					SpanFromContext: func(ctx context.Context) Span {
+						wrapperCalled = true
+						span := inner.SpanFromContext(ctx)
+						return NewSpan(SpanImpl{End: span.End})
+					},
+				})
+			})
+			span := wrapped.SpanFromContext(context.Background())
+			span.End()
+			require.Equal(t, supported, originalCalled)
+			require.Equal(t, supported, wrapperCalled)
+			require.Equal(t, supported, ended)
+			if !supported {
+				require.Nil(t, wrapped.spanFromContextFn)
+				require.Zero(t, span)
+			}
+		})
+	}
+}

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-02-preview/AgentPoolsAbortOperation.json
+// Generated from example definition: 2026-08-01/AgentPoolsAbortOperation.json
 func ExampleAgentPoolsClient_BeginAbortLatestOperation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -33,29 +33,8 @@ func ExampleAgentPoolsClient_BeginAbortLatestOperation() {
 	}
 }
 
-// Generated from example definition: 2026-07-02-preview/AgentPoolsCompleteUpgrade.json
-func ExampleAgentPoolsClient_BeginCompleteUpgrade() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcontainerservice.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewAgentPoolsClient().BeginCompleteUpgrade(ctx, "rg1", "clustername1", "agentpool1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2026-07-02-preview/AgentPoolsAssociate_CRG.json
-func ExampleAgentPoolsClient_BeginCreateOrUpdate_associateAgentPoolWithCapacityReservationGroup() {
+// Generated from example definition: 2026-08-01/AgentPoolsCreate_CRG.json
+func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithCapacityReservationGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -103,7 +82,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_associateAgentPoolWithCapacityR
 	// }
 }
 
-// Generated from example definition: 2026-07-02-preview/AgentPoolsCreate_CustomNodeConfig.json
+// Generated from example definition: 2026-08-01/AgentPoolsCreate_CustomNodeConfig.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithKubeletConfigAndLinuxOSConfig() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -122,32 +101,12 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithKubeletConfi
 					to.Ptr("kernel.msg*"),
 					to.Ptr("net.core.somaxconn"),
 				},
-				CPUCfsQuota:                        to.Ptr(true),
-				CPUCfsQuotaPeriod:                  to.Ptr("200ms"),
-				CPUManagerPolicy:                   to.Ptr("static"),
-				EvictionMaxPodGracePeriodInSeconds: to.Ptr[int32](60),
-				FailSwapOn:                         to.Ptr(false),
-				HardEvictionThreshold: &armcontainerservice.HardEvictionThreshold{
-					MemoryAvailable:  to.Ptr("500Mi"),
-					NodeFsAvailable:  to.Ptr("15%"),
-					NodeFsInodesFree: to.Ptr("10%"),
-				},
-				ImageGcHighThreshold: to.Ptr[int32](90),
-				ImageGcLowThreshold:  to.Ptr[int32](70),
-				KubeReserved: &armcontainerservice.KubeReserved{
-					CPUMillicores: to.Ptr[int32](200),
-					MemoryMB:      to.Ptr[int32](1024),
-				},
-				SoftEvictionGracePeriod: &armcontainerservice.SoftEvictionGracePeriod{
-					MemoryAvailable:  to.Ptr("1m30s"),
-					NodeFsAvailable:  to.Ptr("2m"),
-					NodeFsInodesFree: to.Ptr("2m"),
-				},
-				SoftEvictionThreshold: &armcontainerservice.SoftEvictionThreshold{
-					MemoryAvailable:  to.Ptr("750Mi"),
-					NodeFsAvailable:  to.Ptr("20%"),
-					NodeFsInodesFree: to.Ptr("15%"),
-				},
+				CPUCfsQuota:           to.Ptr(true),
+				CPUCfsQuotaPeriod:     to.Ptr("200ms"),
+				CPUManagerPolicy:      to.Ptr("static"),
+				FailSwapOn:            to.Ptr(false),
+				ImageGcHighThreshold:  to.Ptr[int32](90),
+				ImageGcLowThreshold:   to.Ptr[int32](70),
 				TopologyManagerPolicy: to.Ptr("best-effort"),
 			},
 			LinuxOSConfig: &armcontainerservice.LinuxOSConfig{
@@ -192,30 +151,9 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithKubeletConfi
 	// 				CPUCfsQuota: to.Ptr(true),
 	// 				CPUCfsQuotaPeriod: to.Ptr("200ms"),
 	// 				CPUManagerPolicy: to.Ptr("static"),
-	// 				EvictionMaxPodGracePeriodInSeconds: to.Ptr[int32](60),
 	// 				FailSwapOn: to.Ptr(false),
-	// 				HardEvictionThreshold: &armcontainerservice.HardEvictionThreshold{
-	// 					MemoryAvailable: to.Ptr("500Mi"),
-	// 					NodeFsAvailable: to.Ptr("15%"),
-	// 					NodeFsInodesFree: to.Ptr("10%"),
-	// 				},
 	// 				ImageGcHighThreshold: to.Ptr[int32](90),
 	// 				ImageGcLowThreshold: to.Ptr[int32](70),
-	// 				KubeReserved: &armcontainerservice.KubeReserved{
-	// 					CPUMillicores: to.Ptr[int32](200),
-	// 					MemoryMB: to.Ptr[int32](1024),
-	// 				},
-	// 				SeccompDefault: to.Ptr(armcontainerservice.SeccompDefaultUnconfined),
-	// 				SoftEvictionGracePeriod: &armcontainerservice.SoftEvictionGracePeriod{
-	// 					MemoryAvailable: to.Ptr("1m30s"),
-	// 					NodeFsAvailable: to.Ptr("2m"),
-	// 					NodeFsInodesFree: to.Ptr("2m"),
-	// 				},
-	// 				SoftEvictionThreshold: &armcontainerservice.SoftEvictionThreshold{
-	// 					MemoryAvailable: to.Ptr("750Mi"),
-	// 					NodeFsAvailable: to.Ptr("20%"),
-	// 					NodeFsInodesFree: to.Ptr("15%"),
-	// 				},
 	// 				TopologyManagerPolicy: to.Ptr("best-effort"),
 	// 			},
 	// 			LinuxOSConfig: &armcontainerservice.LinuxOSConfig{
@@ -239,7 +177,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithKubeletConfi
 	// }
 }
 
-// Generated from example definition: 2026-07-02-preview/AgentPoolsCreate_DedicatedHostGroup.json
+// Generated from example definition: 2026-08-01/AgentPoolsCreate_DedicatedHostGroup.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithDedicatedHostGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -276,7 +214,6 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithDedicatedHos
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
 	// 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
 	// 			Count: to.Ptr[int32](3),
-	// 			CurrentOrchestratorVersion: to.Ptr("1.19.6"),
 	// 			HostGroupID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.Compute/hostGroups/hostgroup1"),
 	// 			MaxPods: to.Ptr[int32](110),
 	// 			OrchestratorVersion: to.Ptr("1.19.6"),
@@ -288,7 +225,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithDedicatedHos
 	// }
 }
 
-// Generated from example definition: 2026-07-02-preview/AgentPoolsCreate_EnableEncryptionAtHost.json
+// Generated from example definition: 2026-08-01/AgentPoolsCreate_EnableEncryptionAtHost.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithEncryptionAtHostEnabled() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -337,7 +274,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithEncryptionAt
 	// }
 }
 
-// Generated from example definition: 2026-07-02-preview/AgentPoolsCreate_EnableFIPS.json
+// Generated from example definition: 2026-08-01/AgentPoolsCreate_EnableFIPS.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithFipsEnabledOS() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -386,7 +323,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithFipsEnabledO
 	// }
 }
 
-// Generated from example definition: 2026-07-02-preview/AgentPoolsCreate_EnableUltraSSD.json
+// Generated from example definition: 2026-08-01/AgentPoolsCreate_EnableUltraSSD.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithUltraSsdEnabled() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -435,7 +372,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithUltraSsdEnab
 	// }
 }
 
-// Generated from example definition: 2026-07-02-preview/AgentPoolsCreate_Ephemeral.json
+// Generated from example definition: 2026-08-01/AgentPoolsCreate_Ephemeral.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithEphemeralOSDisk() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -486,50 +423,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithEphemeralOSD
 	// }
 }
 
-// Generated from example definition: 2026-07-02-preview/AgentPoolsCreate_FlexNode.json
-func ExampleAgentPoolsClient_BeginCreateOrUpdate_createFlexNodeAgentPool() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcontainerservice.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewAgentPoolsClient().BeginCreateOrUpdate(ctx, "rg1", "clustername1", "flexnode1", armcontainerservice.AgentPool{
-		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
-			Mode:                to.Ptr(armcontainerservice.AgentPoolModeUser),
-			OrchestratorVersion: to.Ptr("1.32"),
-			Type:                to.Ptr(armcontainerservice.AgentPoolTypeFlexNodes),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcontainerservice.AgentPoolsClientCreateOrUpdateResponse{
-	// 	AgentPool: armcontainerservice.AgentPool{
-	// 		Name: to.Ptr("flexnode1"),
-	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusters/agentPools"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/flexnode1"),
-	// 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
-	// 			Mode: to.Ptr(armcontainerservice.AgentPoolModeUser),
-	// 			OrchestratorVersion: to.Ptr("1.32"),
-	// 			ProvisioningState: to.Ptr("Succeeded"),
-	// 			Type: to.Ptr(armcontainerservice.AgentPoolTypeFlexNodes),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-07-02-preview/AgentPoolsCreate_GPUMIG.json
+// Generated from example definition: 2026-08-01/AgentPoolsCreate_GPUMIG.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithGpumig() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -626,7 +520,64 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithGpumig() {
 	// }
 }
 
-// Generated from example definition: 2026-07-02-preview/AgentPoolsCreate_MessageOfTheDay.json
+// Generated from example definition: 2026-08-01/AgentPoolsCreate_ManagedGPU.json
+func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithFullyManagedGpuExperience() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcontainerservice.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewAgentPoolsClient().BeginCreateOrUpdate(ctx, "rg1", "clustername1", "agentpool1", armcontainerservice.AgentPool{
+		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
+			Count: to.Ptr[int32](3),
+			GpuProfile: &armcontainerservice.GPUProfile{
+				Driver: to.Ptr(armcontainerservice.GPUDriverInstall),
+				Nvidia: &armcontainerservice.NvidiaGPUProfile{
+					ManagementMode: to.Ptr(armcontainerservice.ManagementModeManaged),
+				},
+			},
+			Mode:   to.Ptr(armcontainerservice.AgentPoolModeUser),
+			OSType: to.Ptr(armcontainerservice.OSTypeLinux),
+			VMSize: to.Ptr("Standard_NC4as_T4_v3"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcontainerservice.AgentPoolsClientCreateOrUpdateResponse{
+	// 	AgentPool: armcontainerservice.AgentPool{
+	// 		Name: to.Ptr("agentpool1"),
+	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusters/agentPools"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
+	// 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
+	// 			Count: to.Ptr[int32](3),
+	// 			GpuProfile: &armcontainerservice.GPUProfile{
+	// 				Driver: to.Ptr(armcontainerservice.GPUDriverInstall),
+	// 				Nvidia: &armcontainerservice.NvidiaGPUProfile{
+	// 					ManagementMode: to.Ptr(armcontainerservice.ManagementModeManaged),
+	// 				},
+	// 			},
+	// 			Mode: to.Ptr(armcontainerservice.AgentPoolModeUser),
+	// 			OSType: to.Ptr(armcontainerservice.OSTypeLinux),
+	// 			ProvisioningState: to.Ptr("Succeeded"),
+	// 			VMSize: to.Ptr("Standard_NC4as_T4_v3"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-08-01/AgentPoolsCreate_MessageOfTheDay.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithMessageOfTheDay() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -679,78 +630,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithMessageOfThe
 	// }
 }
 
-// Generated from example definition: 2026-07-02-preview/AgentPoolsCreate_MixedMIG.json
-func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithMixedMigProfiles() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcontainerservice.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewAgentPoolsClient().BeginCreateOrUpdate(ctx, "rg1", "clustername1", "agentpool1", armcontainerservice.AgentPool{
-		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
-			Count: to.Ptr[int32](3),
-			GpuProfile: &armcontainerservice.GPUProfile{
-				Driver: to.Ptr(armcontainerservice.GPUDriverInstall),
-				Nvidia: &armcontainerservice.NvidiaGPUProfile{
-					ManagementMode: to.Ptr(armcontainerservice.ManagementModeManaged),
-					MigStrategy:    to.Ptr(armcontainerservice.MigStrategyMixed),
-					MigProfiles: []*armcontainerservice.GPUInstanceProfile{
-						to.Ptr(armcontainerservice.GPUInstanceProfileMIG3G),
-						to.Ptr(armcontainerservice.GPUInstanceProfileMIG2G),
-						to.Ptr(armcontainerservice.GPUInstanceProfileMIG1G),
-						to.Ptr(armcontainerservice.GPUInstanceProfileMIG1G),
-					},
-				},
-			},
-			Mode:   to.Ptr(armcontainerservice.AgentPoolModeUser),
-			OSType: to.Ptr(armcontainerservice.OSTypeLinux),
-			VMSize: to.Ptr("Standard_ND96asr_v4"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcontainerservice.AgentPoolsClientCreateOrUpdateResponse{
-	// 	AgentPool: armcontainerservice.AgentPool{
-	// 		Name: to.Ptr("agentpool1"),
-	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusters/agentPools"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
-	// 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
-	// 			Count: to.Ptr[int32](3),
-	// 			GpuProfile: &armcontainerservice.GPUProfile{
-	// 				Driver: to.Ptr(armcontainerservice.GPUDriverInstall),
-	// 				Nvidia: &armcontainerservice.NvidiaGPUProfile{
-	// 					ManagementMode: to.Ptr(armcontainerservice.ManagementModeManaged),
-	// 					MigStrategy: to.Ptr(armcontainerservice.MigStrategyMixed),
-	// 					MigProfiles: []*armcontainerservice.GPUInstanceProfile{
-	// 						to.Ptr(armcontainerservice.GPUInstanceProfileMIG3G),
-	// 						to.Ptr(armcontainerservice.GPUInstanceProfileMIG2G),
-	// 						to.Ptr(armcontainerservice.GPUInstanceProfileMIG1G),
-	// 						to.Ptr(armcontainerservice.GPUInstanceProfileMIG1G),
-	// 					},
-	// 				},
-	// 			},
-	// 			Mode: to.Ptr(armcontainerservice.AgentPoolModeUser),
-	// 			OSType: to.Ptr(armcontainerservice.OSTypeLinux),
-	// 			ProvisioningState: to.Ptr("Succeeded"),
-	// 			VMSize: to.Ptr("Standard_ND96asr_v4"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-07-02-preview/AgentPoolsCreate_OSSKU.json
+// Generated from example definition: 2026-08-01/AgentPoolsCreate_OSSKU.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithOssku() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -847,7 +727,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithOssku() {
 	// }
 }
 
-// Generated from example definition: 2026-07-02-preview/AgentPoolsCreate_PPG.json
+// Generated from example definition: 2026-08-01/AgentPoolsCreate_PPG.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithPpg() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -896,173 +776,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithPpg() {
 	// }
 }
 
-// Generated from example definition: 2026-07-02-preview/AgentPoolsCreate_PerNICPublicIP.json
-func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithPerNicPublicIPConfiguration() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcontainerservice.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewAgentPoolsClient().BeginCreateOrUpdate(ctx, "rg1", "clustername1", "agentpool1", armcontainerservice.AgentPool{
-		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
-			Count:               to.Ptr[int32](3),
-			OrchestratorVersion: to.Ptr(""),
-			OSType:              to.Ptr(armcontainerservice.OSTypeLinux),
-			VMSize:              to.Ptr("Standard_D8s_v3"),
-			NetworkProfile: &armcontainerservice.AgentPoolNetworkProfile{
-				SecondaryNetworkInterfaces: []*armcontainerservice.AgentPoolNetworkInterface{
-					{
-						Type:                        to.Ptr(armcontainerservice.AgentPoolNetworkInterfaceTypeStandard),
-						VnetSubnetID:                to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/myVNet/subnets/secondary-subnet-1"),
-						EnableAcceleratedNetworking: to.Ptr(true),
-						PublicIPAddressConfiguration: &armcontainerservice.AgentPoolNICPublicIPAddressConfiguration{
-							PublicIPAddressVersion: to.Ptr(armcontainerservice.AgentPoolNICPublicIPAddressVersionIPv4),
-							IPTags: []*armcontainerservice.IPTag{
-								{
-									IPTagType: to.Ptr("FirstPartyUsage"),
-									Tag:       to.Ptr("teams"),
-								},
-							},
-						},
-					},
-					{
-						Type:                        to.Ptr(armcontainerservice.AgentPoolNetworkInterfaceTypeStandard),
-						VnetSubnetID:                to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/myVNet/subnets/secondary-subnet-2"),
-						EnableAcceleratedNetworking: to.Ptr(true),
-						PublicIPAddressConfiguration: &armcontainerservice.AgentPoolNICPublicIPAddressConfiguration{
-							PublicIPAddressVersion: to.Ptr(armcontainerservice.AgentPoolNICPublicIPAddressVersionIPv4),
-							PublicIPPrefixID:       to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/publicIPPrefixes/myPrefix"),
-						},
-					},
-				},
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcontainerservice.AgentPoolsClientCreateOrUpdateResponse{
-	// 	AgentPool: armcontainerservice.AgentPool{
-	// 		Name: to.Ptr("agentpool1"),
-	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusters/agentPools"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
-	// 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
-	// 			Count: to.Ptr[int32](3),
-	// 			CurrentOrchestratorVersion: to.Ptr("1.9.6"),
-	// 			MaxPods: to.Ptr[int32](110),
-	// 			OrchestratorVersion: to.Ptr("1.9.6"),
-	// 			OSType: to.Ptr(armcontainerservice.OSTypeLinux),
-	// 			ProvisioningState: to.Ptr("Succeeded"),
-	// 			VMSize: to.Ptr("Standard_D8s_v3"),
-	// 			NetworkProfile: &armcontainerservice.AgentPoolNetworkProfile{
-	// 				SecondaryNetworkInterfaces: []*armcontainerservice.AgentPoolNetworkInterface{
-	// 					{
-	// 						Type: to.Ptr(armcontainerservice.AgentPoolNetworkInterfaceTypeStandard),
-	// 						VnetSubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/myVNet/subnets/secondary-subnet-1"),
-	// 						EnableAcceleratedNetworking: to.Ptr(true),
-	// 						PublicIPAddressConfiguration: &armcontainerservice.AgentPoolNICPublicIPAddressConfiguration{
-	// 							PublicIPAddressVersion: to.Ptr(armcontainerservice.AgentPoolNICPublicIPAddressVersionIPv4),
-	// 							IPTags: []*armcontainerservice.IPTag{
-	// 								{
-	// 									IPTagType: to.Ptr("FirstPartyUsage"),
-	// 									Tag: to.Ptr("teams"),
-	// 								},
-	// 							},
-	// 						},
-	// 					},
-	// 					{
-	// 						Type: to.Ptr(armcontainerservice.AgentPoolNetworkInterfaceTypeStandard),
-	// 						VnetSubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/myVNet/subnets/secondary-subnet-2"),
-	// 						EnableAcceleratedNetworking: to.Ptr(true),
-	// 						PublicIPAddressConfiguration: &armcontainerservice.AgentPoolNICPublicIPAddressConfiguration{
-	// 							PublicIPAddressVersion: to.Ptr(armcontainerservice.AgentPoolNICPublicIPAddressVersionIPv4),
-	// 							PublicIPPrefixID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/publicIPPrefixes/myPrefix"),
-	// 						},
-	// 					},
-	// 				},
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-07-02-preview/AgentPoolsCreate_SingleMIG.json
-func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithSingleMigProfile() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcontainerservice.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewAgentPoolsClient().BeginCreateOrUpdate(ctx, "rg1", "clustername1", "agentpool1", armcontainerservice.AgentPool{
-		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
-			Count: to.Ptr[int32](3),
-			GpuProfile: &armcontainerservice.GPUProfile{
-				Driver: to.Ptr(armcontainerservice.GPUDriverInstall),
-				Nvidia: &armcontainerservice.NvidiaGPUProfile{
-					ManagementMode: to.Ptr(armcontainerservice.ManagementModeManaged),
-					MigStrategy:    to.Ptr(armcontainerservice.MigStrategySingle),
-					MigProfiles: []*armcontainerservice.GPUInstanceProfile{
-						to.Ptr(armcontainerservice.GPUInstanceProfileMIG3G),
-					},
-				},
-			},
-			Mode:   to.Ptr(armcontainerservice.AgentPoolModeUser),
-			OSType: to.Ptr(armcontainerservice.OSTypeLinux),
-			VMSize: to.Ptr("Standard_ND96asr_v4"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcontainerservice.AgentPoolsClientCreateOrUpdateResponse{
-	// 	AgentPool: armcontainerservice.AgentPool{
-	// 		Name: to.Ptr("agentpool1"),
-	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusters/agentPools"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
-	// 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
-	// 			Count: to.Ptr[int32](3),
-	// 			GpuProfile: &armcontainerservice.GPUProfile{
-	// 				Driver: to.Ptr(armcontainerservice.GPUDriverInstall),
-	// 				Nvidia: &armcontainerservice.NvidiaGPUProfile{
-	// 					ManagementMode: to.Ptr(armcontainerservice.ManagementModeManaged),
-	// 					MigStrategy: to.Ptr(armcontainerservice.MigStrategySingle),
-	// 					MigProfiles: []*armcontainerservice.GPUInstanceProfile{
-	// 						to.Ptr(armcontainerservice.GPUInstanceProfileMIG3G),
-	// 					},
-	// 				},
-	// 			},
-	// 			Mode: to.Ptr(armcontainerservice.AgentPoolModeUser),
-	// 			OSType: to.Ptr(armcontainerservice.OSTypeLinux),
-	// 			ProvisioningState: to.Ptr("Succeeded"),
-	// 			VMSize: to.Ptr("Standard_ND96asr_v4"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-07-02-preview/AgentPoolsCreate_Snapshot.json
+// Generated from example definition: 2026-08-01/AgentPoolsCreate_Snapshot.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolUsingAnAgentPoolSnapshot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1117,7 +831,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolUsingAnAgentPool
 	// }
 }
 
-// Generated from example definition: 2026-07-02-preview/AgentPoolsCreate_Spot.json
+// Generated from example definition: 2026-08-01/AgentPoolsCreate_Spot.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createSpotAgentPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1187,7 +901,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createSpotAgentPool() {
 	// }
 }
 
-// Generated from example definition: 2026-07-02-preview/AgentPoolsCreate_TypeVirtualMachines.json
+// Generated from example definition: 2026-08-01/AgentPoolsCreate_TypeVirtualMachines.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithVirtualMachinesPoolType() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1289,7 +1003,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithVirtualMachi
 	// }
 }
 
-// Generated from example definition: 2026-07-02-preview/AgentPoolsCreate_TypeVirtualMachines_Autoscale.json
+// Generated from example definition: 2026-08-01/AgentPoolsCreate_TypeVirtualMachines_Autoscale.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithVirtualMachinesPoolTypeWithAutoscalingEnabled() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1381,7 +1095,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithVirtualMachi
 	// }
 }
 
-// Generated from example definition: 2026-07-02-preview/AgentPoolsCreate_Update.json
+// Generated from example definition: 2026-08-01/AgentPoolsCreate_Update.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createUpdateAgentPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1429,6 +1143,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createUpdateAgentPool() {
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
 	// 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
 	// 			Count: to.Ptr[int32](3),
+	// 			CurrentOrchestratorVersion: to.Ptr("1.9.6"),
 	// 			MaxPods: to.Ptr[int32](110),
 	// 			Mode: to.Ptr(armcontainerservice.AgentPoolModeUser),
 	// 			NodeImageVersion: to.Ptr("AKSUbuntu:1604:2020.03.11"),
@@ -1452,66 +1167,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createUpdateAgentPool() {
 	// }
 }
 
-// Generated from example definition: 2026-07-02-preview/AgentPoolsCreate_UpgradeGate.json
-func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithUpgradeGateEnabled() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcontainerservice.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewAgentPoolsClient().BeginCreateOrUpdate(ctx, "rg1", "clustername1", "agentpool1", armcontainerservice.AgentPool{
-		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
-			Count:               to.Ptr[int32](3),
-			OrchestratorVersion: to.Ptr(""),
-			OSType:              to.Ptr(armcontainerservice.OSTypeLinux),
-			UpgradeSettings: &armcontainerservice.AgentPoolUpgradeSettings{
-				MaxSurge: to.Ptr("33%"),
-				UpgradeGateSettings: &armcontainerservice.UpgradeGateSettings{
-					Enabled: to.Ptr(true),
-				},
-			},
-			VMSize: to.Ptr("Standard_DS2_v2"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcontainerservice.AgentPoolsClientCreateOrUpdateResponse{
-	// 	AgentPool: armcontainerservice.AgentPool{
-	// 		Name: to.Ptr("agentpool1"),
-	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusters/agentPools"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
-	// 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
-	// 			Count: to.Ptr[int32](3),
-	// 			CurrentOrchestratorVersion: to.Ptr("1.19.6"),
-	// 			MaxPods: to.Ptr[int32](110),
-	// 			OrchestratorVersion: to.Ptr("1.19.6"),
-	// 			OSType: to.Ptr(armcontainerservice.OSTypeLinux),
-	// 			ProvisioningState: to.Ptr("Succeeded"),
-	// 			UpgradeSettings: &armcontainerservice.AgentPoolUpgradeSettings{
-	// 				MaxSurge: to.Ptr("33%"),
-	// 				UpgradeGateSettings: &armcontainerservice.UpgradeGateSettings{
-	// 					Enabled: to.Ptr(true),
-	// 				},
-	// 			},
-	// 			VMSize: to.Ptr("Standard_DS2_v2"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-07-02-preview/AgentPoolsCreate_WasmWasi.json
+// Generated from example definition: 2026-08-01/AgentPoolsCreate_WasmWasi.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithKrustletAndTheWasiRuntime() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1564,7 +1220,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithKrustletAndT
 	// }
 }
 
-// Generated from example definition: 2026-07-02-preview/AgentPoolsCreate_WindowsDisableOutboundNAT.json
+// Generated from example definition: 2026-08-01/AgentPoolsCreate_WindowsDisableOutboundNAT.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createWindowsAgentPoolWithDisablingOutboundNat() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1619,7 +1275,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createWindowsAgentPoolWithDisab
 	// }
 }
 
-// Generated from example definition: 2026-07-02-preview/AgentPoolsCreate_WindowsOSSKU.json
+// Generated from example definition: 2026-08-01/AgentPoolsCreate_WindowsOSSKU.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithWindowsOssku() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1668,7 +1324,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithWindowsOssku
 	// }
 }
 
-// Generated from example definition: 2026-07-02-preview/AgentPools_Start.json
+// Generated from example definition: 2026-08-01/AgentPools_Start.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_startAgentPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1715,7 +1371,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_startAgentPool() {
 	// }
 }
 
-// Generated from example definition: 2026-07-02-preview/AgentPools_Stop.json
+// Generated from example definition: 2026-08-01/AgentPools_Stop.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_stopAgentPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1760,7 +1416,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_stopAgentPool() {
 	// }
 }
 
-// Generated from example definition: 2026-07-02-preview/AgentPools_Update.json
+// Generated from example definition: 2026-08-01/AgentPools_Update.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_updateAgentPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1823,8 +1479,8 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_updateAgentPool() {
 	// }
 }
 
-// Generated from example definition: 2026-07-02-preview/AgentPoolsDelete.json
-func ExampleAgentPoolsClient_BeginDelete_deleteAgentPool() {
+// Generated from example definition: 2026-08-01/AgentPoolsDelete.json
+func ExampleAgentPoolsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1844,29 +1500,7 @@ func ExampleAgentPoolsClient_BeginDelete_deleteAgentPool() {
 	}
 }
 
-// Generated from example definition: 2026-07-02-preview/AgentPoolsDelete_IgnorePodDisruptionBudget.json
-func ExampleAgentPoolsClient_BeginDelete_deleteAgentPoolByIgnoringPodDisruptionBudget() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcontainerservice.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewAgentPoolsClient().BeginDelete(ctx, "rg1", "clustername1", "agentpool1", &armcontainerservice.AgentPoolsClientBeginDeleteOptions{
-		IgnorePodDisruptionBudget: to.Ptr(true)})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2026-07-02-preview/AgentPoolsDeleteMachines.json
+// Generated from example definition: 2026-08-01/AgentPoolsDeleteMachines.json
 func ExampleAgentPoolsClient_BeginDeleteMachines() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1892,7 +1526,33 @@ func ExampleAgentPoolsClient_BeginDeleteMachines() {
 	}
 }
 
-// Generated from example definition: 2026-07-02-preview/AgentPoolsGet.json
+// Generated from example definition: 2026-08-01/AgentPoolsUpgradeNodeImageVersion.json
+func ExampleAgentPoolsClient_BeginUpgradeNodeImageVersion() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcontainerservice.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewAgentPoolsClient().BeginUpgradeNodeImageVersion(ctx, "rg1", "clustername1", "agentpool1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcontainerservice.AgentPoolsClientUpgradeNodeImageVersionResponse{
+	// }
+}
+
+// Generated from example definition: 2026-08-01/AgentPoolsGet.json
 func ExampleAgentPoolsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1932,7 +1592,7 @@ func ExampleAgentPoolsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-07-02-preview/AgentPoolsGetAgentPoolAvailableVersions.json
+// Generated from example definition: 2026-08-01/AgentPoolsGetAgentPoolAvailableVersions.json
 func ExampleAgentPoolsClient_GetAvailableAgentPoolVersions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1974,7 +1634,7 @@ func ExampleAgentPoolsClient_GetAvailableAgentPoolVersions() {
 	// }
 }
 
-// Generated from example definition: 2026-07-02-preview/AgentPoolsGetUpgradeProfile.json
+// Generated from example definition: 2026-08-01/AgentPoolsGetUpgradeProfile.json
 func ExampleAgentPoolsClient_GetUpgradeProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2011,7 +1671,7 @@ func ExampleAgentPoolsClient_GetUpgradeProfile() {
 	// }
 }
 
-// Generated from example definition: 2026-07-02-preview/AgentPoolsList.json
+// Generated from example definition: 2026-08-01/AgentPoolsList.json
 func ExampleAgentPoolsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2055,217 +1715,4 @@ func ExampleAgentPoolsClient_NewListPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-07-02-preview/AgentPoolsListBootstrapData.json
-func ExampleAgentPoolsClient_ListBootstrapData() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcontainerservice.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewAgentPoolsClient().ListBootstrapData(ctx, "rg1", "clustername1", "flexnode1", armcontainerservice.ListBootstrapDataRequest{}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcontainerservice.AgentPoolsClientListBootstrapDataResponse{
-	// 	PoolBootstrapData: armcontainerservice.PoolBootstrapData{
-	// 		Azure: &armcontainerservice.BootstrapAzureConfig{
-	// 			ResourceManagerEndpoint: to.Ptr("https://management.azure.com/"),
-	// 			TargetCluster: &armcontainerservice.BootstrapTargetCluster{
-	// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1"),
-	// 			},
-	// 			TargetAgentPoolName: to.Ptr("flexnode1"),
-	// 			BootstrapToken: &armcontainerservice.BootstrapTokenInfo{
-	// 				Token: to.Ptr("<redacted-bootstrap-token>"),
-	// 			},
-	// 		},
-	// 		Components: &armcontainerservice.BootstrapComponentVersions{
-	// 			Kubernetes: to.Ptr("1.32.7"),
-	// 			Containerd: to.Ptr("2.0.4"),
-	// 			Runc: to.Ptr("1.2.1"),
-	// 		},
-	// 		Networking: &armcontainerservice.BootstrapNetworkingConfig{
-	// 			DNSServiceIP: to.Ptr("10.0.0.10"),
-	// 			CniVersion: to.Ptr("1.4.1"),
-	// 		},
-	// 		Node: &armcontainerservice.BootstrapNodeConfig{
-	// 			MaxPods: to.Ptr[int32](110),
-	// 			Labels: map[string]*string{
-	// 				"node-role": to.Ptr("edge"),
-	// 			},
-	// 			Taints: []*string{
-	// 				to.Ptr("aks.azure.com/flex-node=true:NoSchedule"),
-	// 			},
-	// 			Kubelet: &armcontainerservice.BootstrapKubeletConfig{
-	// 				ClusterFQDN: to.Ptr("cluster-xxxx.hcp.eastus2.azmk8s.io"),
-	// 				CaCertData: to.Ptr("<redacted-base64-pem-ca-cert>"),
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-07-02-preview/AgentPoolsUpdate_Scale.json
-func ExampleAgentPoolsClient_BeginUpdate_updateAgentPoolScaleVmss() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcontainerservice.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewAgentPoolsClient().BeginUpdate(ctx, "rg1", "clustername1", "agentpool1", armcontainerservice.AgentPoolUpdate{
-		Properties: &armcontainerservice.AgentPoolUpdateProperties{
-			Count: to.Ptr[int32](5),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcontainerservice.AgentPoolsClientUpdateResponse{
-	// 	AgentPool: armcontainerservice.AgentPool{
-	// 		Name: to.Ptr("agentpool1"),
-	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusters/agentPools"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
-	// 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
-	// 			Count: to.Ptr[int32](5),
-	// 			CurrentOrchestratorVersion: to.Ptr("1.9.6"),
-	// 			ETag: to.Ptr("ebwiyfneowv"),
-	// 			MaxPods: to.Ptr[int32](110),
-	// 			NodeImageVersion: to.Ptr("AKSUbuntu:1604:2020.03.11"),
-	// 			OrchestratorVersion: to.Ptr("1.9.6"),
-	// 			OSType: to.Ptr(armcontainerservice.OSTypeLinux),
-	// 			ProvisioningState: to.Ptr("Succeeded"),
-	// 			UpgradeSettings: &armcontainerservice.AgentPoolUpgradeSettings{
-	// 				MaxSurge: to.Ptr("33%"),
-	// 			},
-	// 			VMSize: to.Ptr("Standard_DS1_v2"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-07-02-preview/AgentPoolsUpdate_ScaleVMs.json
-func ExampleAgentPoolsClient_BeginUpdate_updateAgentPoolScaleVirtualMachines() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcontainerservice.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewAgentPoolsClient().BeginUpdate(ctx, "rg1", "clustername1", "agentpool1", armcontainerservice.AgentPoolUpdate{
-		Properties: &armcontainerservice.AgentPoolUpdateProperties{
-			VirtualMachinesProfile: &armcontainerservice.AgentPoolUpdateVirtualMachinesProfile{
-				Scale: &armcontainerservice.AgentPoolUpdateScaleProfile{
-					Manual: []*armcontainerservice.AgentPoolUpdateManualScaleProfile{
-						{
-							Count: to.Ptr[int32](5),
-							Size:  to.Ptr("Standard_D2_v2"),
-						},
-						{
-							Count: to.Ptr[int32](3),
-							Size:  to.Ptr("Standard_D2_v3"),
-						},
-					},
-				},
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcontainerservice.AgentPoolsClientUpdateResponse{
-	// 	AgentPool: armcontainerservice.AgentPool{
-	// 		Name: to.Ptr("agentpool1"),
-	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusters/agentPools"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
-	// 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
-	// 			Type: to.Ptr(armcontainerservice.AgentPoolTypeVirtualMachines),
-	// 			CurrentOrchestratorVersion: to.Ptr("1.9.6"),
-	// 			ETag: to.Ptr("ebwiyfneowv"),
-	// 			MaxPods: to.Ptr[int32](110),
-	// 			NodeImageVersion: to.Ptr("AKSUbuntu-1804gen2containerd-2021.09.11"),
-	// 			OrchestratorVersion: to.Ptr("1.9.6"),
-	// 			OSType: to.Ptr(armcontainerservice.OSTypeLinux),
-	// 			ProvisioningState: to.Ptr("Succeeded"),
-	// 			VirtualMachineNodesStatus: []*armcontainerservice.VirtualMachineNodes{
-	// 				{
-	// 					Count: to.Ptr[int32](5),
-	// 					Size: to.Ptr("Standard_D2_v2"),
-	// 				},
-	// 				{
-	// 					Count: to.Ptr[int32](3),
-	// 					Size: to.Ptr("Standard_D2_v3"),
-	// 				},
-	// 			},
-	// 			VirtualMachinesProfile: &armcontainerservice.VirtualMachinesProfile{
-	// 				Scale: &armcontainerservice.ScaleProfile{
-	// 					Manual: []*armcontainerservice.ManualScaleProfile{
-	// 						{
-	// 							Count: to.Ptr[int32](5),
-	// 							Size: to.Ptr("Standard_D2_v2"),
-	// 						},
-	// 						{
-	// 							Count: to.Ptr[int32](3),
-	// 							Size: to.Ptr("Standard_D2_v3"),
-	// 						},
-	// 					},
-	// 				},
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-07-02-preview/AgentPoolsUpgradeNodeImageVersion.json
-func ExampleAgentPoolsClient_BeginUpgradeNodeImageVersion() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcontainerservice.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewAgentPoolsClient().BeginUpgradeNodeImageVersion(ctx, "rg1", "clustername1", "agentpool1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcontainerservice.AgentPoolsClientUpgradeNodeImageVersionResponse{
-	// }
 }

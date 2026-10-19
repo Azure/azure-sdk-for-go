@@ -86,7 +86,7 @@ func TestCostControlsWireCreate(t *testing.T) {
 	request := transport.requests[0]
 	require.Equal(t, http.MethodPut, request.method)
 	require.Contains(t, request.url, "/costControls/"+testCostControlName)
-	require.NotEmpty(t, queryValue(t, request.url, "api-version"))
+	require.Equal(t, "2026-09-15-preview", queryValue(t, request.url, "api-version"))
 	require.Equal(t, "*", request.headers.Get("If-None-Match"))
 
 	var body map[string]any
@@ -94,11 +94,13 @@ func TestCostControlsWireCreate(t *testing.T) {
 	properties := body["properties"].(map[string]any)
 	rule := properties["rules"].([]any)[0].(map[string]any)
 	threshold := rule["thresholds"].([]any)[0].(map[string]any)
-	require.Equal(t, "account", rule["counterKey"].([]any)[0].(map[string]any)["type"])
-	require.Equal(t, "usd", rule["unit"])
+	require.Equal(t, "Account", rule["counterKey"].(map[string]any)["type"])
+	require.Equal(t, "Usd", rule["unit"])
+	require.Equal(t, "Month", rule["period"])
 	require.Equal(t, float64(25), rule["amount"])
-	require.Equal(t, "audit", threshold["action"])
-	require.Equal(t, float64(0), threshold["value"])
+	require.Equal(t, "Percentage", threshold["type"])
+	require.Equal(t, "Alert", threshold["action"])
+	require.Equal(t, float64(80), threshold["value"])
 }
 
 func TestCostControlsWireGet(t *testing.T) {
@@ -109,11 +111,11 @@ func TestCostControlsWireGet(t *testing.T) {
 
 	response, err := client.Get(context.Background(), testResourceGroup, testAccountName, testCostControlName, nil)
 	require.NoError(t, err)
-	require.Equal(t, armcognitiveservices.CostControlThresholdActionAudit,
+	require.Equal(t, armcognitiveservices.CostControlThresholdActionAlert,
 		*response.Properties.Rules[0].Thresholds[0].Action)
 	require.Equal(t, float64(25), *response.Properties.Rules[0].Amount)
 	require.Equal(t, http.MethodGet, transport.requests[0].method)
-	require.NotEmpty(t, queryValue(t, transport.requests[0].url, "api-version"))
+	require.Equal(t, "2026-09-15-preview", queryValue(t, transport.requests[0].url, "api-version"))
 }
 
 func TestCostControlsWireListPaging(t *testing.T) {
@@ -192,6 +194,7 @@ func TestCostControlsWireDeleteAndNotFound(t *testing.T) {
 }
 
 func newWireClient(t *testing.T, transport policy.Transporter) *armcognitiveservices.CostControlsClient {
+	t.Helper()
 	client, err := armcognitiveservices.NewCostControlsClient(testSubscriptionID, fakeCredential{}, &arm.ClientOptions{
 		ClientOptions: policy.ClientOptions{Transport: transport},
 	})
@@ -219,7 +222,7 @@ func response(request *http.Request, status int, body, etag string) *http.Respon
 }
 
 func costControlResponse(displayName string, amount float64, etag string) string {
-	return fmt.Sprintf(`{"id":"/subscriptions/%s/resourceGroups/%s/providers/Microsoft.CognitiveServices/accounts/%s/costControls/%s","name":"%s","type":"Microsoft.CognitiveServices/accounts/costControls","etag":%s,"properties":{"displayName":%q,"rules":[{"name":"account-budget","counterKey":[{"type":"account"}],"unit":"usd","amount":%g,"period":"month","recurring":true,"thresholds":[{"type":"percentage","value":0,"action":"audit"}]}]}}`,
+	return fmt.Sprintf(`{"id":"/subscriptions/%s/resourceGroups/%s/providers/Microsoft.CognitiveServices/accounts/%s/costControls/%s","name":"%s","type":"Microsoft.CognitiveServices/accounts/costControls","etag":%s,"properties":{"displayName":%q,"rules":[{"name":"account-budget","counterKey":{"type":"Account"},"unit":"Usd","amount":%g,"period":"Month","recurring":true,"thresholds":[{"type":"Percentage","value":80,"action":"Alert"}]}]}}`,
 		testSubscriptionID, testResourceGroup, testAccountName, testCostControlName, testCostControlName, etag, displayName, amount)
 }
 
@@ -233,22 +236,23 @@ func newCostControl(displayName string, amount float64) armcognitiveservices.Cos
 func newRule(amount float64) *armcognitiveservices.CostControlRule {
 	return &armcognitiveservices.CostControlRule{
 		Amount: ptr(amount),
-		CounterKey: []*armcognitiveservices.CostControlDimension{{
+		CounterKey: &armcognitiveservices.CostControlDimension{
 			Type: ptr(armcognitiveservices.CostControlDimensionTypeAccount),
-		}},
+		},
 		Name:      ptr("account-budget"),
 		Unit:      ptr(armcognitiveservices.CostControlUnitUsd),
 		Period:    ptr(armcognitiveservices.CostControlPeriodMonth),
 		Recurring: ptr(true),
 		Thresholds: []*armcognitiveservices.CostControlThreshold{{
 			Type:   ptr(armcognitiveservices.CostControlThresholdTypePercentage),
-			Value:  ptr(0.0),
-			Action: ptr(armcognitiveservices.CostControlThresholdActionAudit),
+			Value:  ptr(80.0),
+			Action: ptr(armcognitiveservices.CostControlThresholdActionAlert),
 		}},
 	}
 }
 
 func queryValue(t *testing.T, rawURL, key string) string {
+	t.Helper()
 	request, err := http.NewRequest(http.MethodGet, rawURL, nil)
 	require.NoError(t, err)
 	return request.URL.Query().Get(key)

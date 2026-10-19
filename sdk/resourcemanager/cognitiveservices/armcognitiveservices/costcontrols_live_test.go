@@ -27,7 +27,7 @@ const (
 
 func TestCostControlLifecycle(t *testing.T) {
 	stopRecording := testutil.StartRecording(t, pathToPackage)
-	defer stopRecording()
+	t.Cleanup(stopRecording)
 
 	subscriptionID := recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", recordedSubscriptionID)
 	resourceGroupName := recording.GetEnvVariable("AZURE_RESOURCE_GROUP", recordedResourceGroup)
@@ -50,14 +50,15 @@ func TestCostControlLifecycle(t *testing.T) {
 		}
 	})
 
+	costControl := newCostControl("SDK Cost Control lifecycle", 25)
+	costControl.Properties.Rules[0].Thresholds = nil
 	createdResponse, err := client.CreateOrUpdate(ctx, resourceGroupName, accountName, lifecycleControlName,
-		newCostControl("SDK Cost Control lifecycle", 25),
+		costControl,
 		&armcognitiveservices.CostControlsClientCreateOrUpdateOptions{IfNoneMatch: ptr("*")})
 	require.NoError(t, err)
 	created = true
 	require.Equal(t, lifecycleControlName, *createdResponse.Name)
-	require.Equal(t, armcognitiveservices.CostControlThresholdActionAudit,
-		*createdResponse.Properties.Rules[0].Thresholds[0].Action)
+	require.Empty(t, createdResponse.Properties.Rules[0].Thresholds)
 
 	fetched, err := client.Get(ctx, resourceGroupName, accountName, lifecycleControlName, nil)
 	require.NoError(t, err)
@@ -81,14 +82,17 @@ func TestCostControlLifecycle(t *testing.T) {
 	}
 	require.True(t, found)
 
+	updatedRule := newRule(50)
+	updatedRule.Thresholds = nil
 	updated, err := client.Update(ctx, resourceGroupName, accountName, lifecycleControlName,
 		armcognitiveservices.CostControlPatch{Properties: &armcognitiveservices.CostControlPatchProperties{
 			DisplayName: ptr("SDK Cost Control lifecycle updated"),
-			Rules:       []*armcognitiveservices.CostControlRule{newRule(50)},
+			Rules:       []*armcognitiveservices.CostControlRule{updatedRule},
 		}}, &armcognitiveservices.CostControlsClientUpdateOptions{IfMatch: fetched.Etag})
 	require.NoError(t, err)
 	require.Equal(t, "SDK Cost Control lifecycle updated", *updated.Properties.DisplayName)
 	require.Equal(t, float64(50), *updated.Properties.Rules[0].Amount)
+	require.Empty(t, updated.Properties.Rules[0].Thresholds)
 
 	fetchedAfterUpdate, err := client.Get(ctx, resourceGroupName, accountName, lifecycleControlName, nil)
 	require.NoError(t, err)
@@ -105,6 +109,7 @@ func TestCostControlLifecycle(t *testing.T) {
 }
 
 func addCostControlSanitizers(t *testing.T, subscriptionID, resourceGroupName, accountName string) {
+	t.Helper()
 	options := &recording.RecordingOptions{UseHTTPS: true, TestInstance: t}
 	require.NoError(t, recording.RemoveRegisteredSanitizers([]string{"AZSDK3493", "AZSDK3430"}, options))
 	require.NoError(t, recording.AddGeneralRegexSanitizer(recordedSubscriptionID,

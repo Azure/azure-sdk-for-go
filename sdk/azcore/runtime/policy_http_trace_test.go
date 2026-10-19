@@ -17,10 +17,62 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/sanitizer"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/tracing"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/stretchr/testify/require"
 )
+
+func TestHTTPTracePolicyCredentialTracingDisabled(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	endpoint := srv.URL() + "?service=credential-secret&token=visible"
+	expectedErr := &url.Error{Op: "Get", URL: endpoint, Err: errors.New("token request failed")}
+	srv.SetError(expectedErr)
+	credentialPipeline := NewPipeline("credential", "v1.0.0", PipelineOptions{}, &policy.ClientOptions{
+		Transport: srv,
+		Retry:     policy.RetryOptions{MaxRetries: -1},
+		Logging:   policy.LogOptions{AllowedQueryParams: []string{"token"}},
+	})
+	var spans []string
+	var description string
+	tr := sanitizer.WrapTracer(tracing.NewTracer(func(ctx context.Context, name string, _ *tracing.SpanOptions) (context.Context, tracing.Span) {
+		spans = append(spans, name)
+		return ctx, tracing.NewSpan(tracing.SpanImpl{
+			SetStatus: func(_ tracing.SpanStatus, desc string) { description = desc },
+		})
+	}, nil))
+	credential := mockCredential{
+		getTokenImpl: func(ctx context.Context, _ policy.TokenRequestOptions) (exported.AccessToken, error) {
+			require.Nil(t, ctx.Value(shared.CtxWithTracingTracer{}))
+			ctx, end := StartSpan(ctx, "Credential.GetToken", tracing.Tracer{}, nil)
+			req, err := NewRequest(ctx, http.MethodGet, endpoint)
+			require.NoError(t, err)
+			_, err = credentialPipeline.Do(req)
+			end(err)
+			return exported.AccessToken{}, err
+		},
+	}
+	servicePipeline := NewPipeline("service", "v1.0.0", PipelineOptions{
+		PerRetry: []policy.Policy{NewBearerTokenPolicy(credential, []string{"scope"}, &policy.BearerTokenOptions{
+			InsecureAllowCredentialWithHTTP: true,
+		})},
+	}, &policy.ClientOptions{
+		Transport: srv,
+		Retry:     policy.RetryOptions{MaxRetries: -1},
+		Logging:   policy.LogOptions{AllowedQueryParams: []string{"service"}},
+	})
+	ctx, end := StartSpan(context.Background(), "Service.Operation", tr, nil)
+	req, err := NewRequest(ctx, http.MethodGet, srv.URL()+"?service=visible&token=service-secret")
+	require.NoError(t, err)
+	_, err = servicePipeline.Do(req)
+	end(err)
+	require.ErrorIs(t, err, expectedErr)
+	require.Contains(t, err.Error(), "service=credential-secret")
+	require.Equal(t, []string{"Service.Operation"}, spans)
+	require.Contains(t, description, "?service=REDACTED&token=visible")
+	require.NotContains(t, description, "credential-secret")
+}
 
 func TestHTTPTracePolicy(t *testing.T) {
 	srv, close := mock.NewServer()

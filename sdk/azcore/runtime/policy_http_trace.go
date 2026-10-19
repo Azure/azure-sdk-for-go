@@ -60,7 +60,6 @@ func (h *httpTracePolicy) Do(req *policy.Request) (resp *http.Response, err erro
 			Kind:       tracing.SpanKindClient,
 			Attributes: attributes,
 		})
-		sanitizer.RecordURL(ctx, *req.Raw().URL, h.sanitizer)
 
 		defer func() {
 			if resp != nil {
@@ -79,6 +78,9 @@ func (h *httpTracePolicy) Do(req *policy.Request) (resp *http.Response, err erro
 
 		req = req.WithContext(ctx)
 	}
+	// Record even when this request's tracing is disabled: a credential request
+	// can still share URL state with a traced parent operation that reports its error.
+	sanitizer.RecordURL(req.Raw().Context(), *req.Raw().URL, h.sanitizer)
 	resp, err = req.Next()
 	return
 }

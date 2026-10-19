@@ -1,5 +1,11 @@
 # Release History
 
+## 1.11.1 (Unreleased)
+
+### Bugs Fixed
+
+- Administration clients now use HTTP when the connection string sets `UseDevelopmentEmulator=true`, preserving the endpoint's host and port. Previously, administration operations always used HTTPS, preventing native connections to the Service Bus emulator's HTTP management endpoint.
+
 ## 1.11.0 (2026-10-06)
 
 ### Features Added

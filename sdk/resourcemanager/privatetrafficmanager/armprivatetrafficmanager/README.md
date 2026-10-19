@@ -1,4 +1,4 @@
-# Azure Private Traffic Manager Module for Go
+# Azure Privatetrafficmanager Module for Go
 
 The `armprivatetrafficmanager` module provides operations for working with Azure Privatetrafficmanager.
 

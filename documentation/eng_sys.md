@@ -55,11 +55,11 @@ node --test eng\tools\pr-review\workflow.test.cjs
 
 The [validation workflow](https://github.com/Azure/azure-sdk-for-go/blob/main/.github/workflows/validate-pr-automation.yml) runs
 these tests without secrets or write permissions, including on fork PRs.
-Regenerate the management review lock file with gh-aw v0.88.7 after changing
+Regenerate the management review lock file with the latest gh-aw after changing
 its Markdown source:
 
 ```powershell
-gh extension install github/gh-aw --pin v0.88.7
+gh extension install github/gh-aw
 gh aw compile mgmt-review
 ```
 

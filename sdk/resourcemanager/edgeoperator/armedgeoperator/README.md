@@ -1,6 +1,6 @@
-# Azure Edgeoperator Module for Go
+# Azure Edge Operator Module for Go
 
-The `armedgeoperator` module provides operations for working with Azure Edgeoperator.
+The `armedgeoperator` module provides operations for working with Azure Edge Operator.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/edgeoperator/armedgeoperator)
 
@@ -15,7 +15,7 @@ The `armedgeoperator` module provides operations for working with Azure Edgeoper
 
 This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for versioning and dependency management.
 
-Install the Azure Edgeoperator module:
+Install the Azure Edge Operator module:
 
 ```sh
 go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/edgeoperator/armedgeoperator
@@ -23,7 +23,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/edgeoperator/armedg
 
 ## Authorization
 
-When creating a client, you will need to provide a credential for authenticating with Azure Edgeoperator.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
+When creating a client, you will need to provide a credential for authenticating with Azure Edge Operator.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
 
 ```go
 cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -33,7 +33,7 @@ For more information on authentication, please see the documentation for `aziden
 
 ## Client Factory
 
-Azure Edgeoperator module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
+Azure Edge Operator module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
 
 ```go
 clientFactory, err := armedgeoperator.NewClientFactory(<subscription ID>, cred, nil)

@@ -11,6 +11,7 @@
   ordered raw result metadata, and authoritative native completion. Results preserve HTTP 304 and
   207 without inferring transaction commitment or rollback. Prefix batches and transactional PATCH
   are not exposed.
+  See [PR 27708](https://github.com/Azure/azure-sdk-for-go/pull/27708).
 * Added database/container management: `Client.CreateDatabase`;
   `DatabaseClient.Read`, `DatabaseClient.Delete`, `DatabaseClient.CreateContainer`;
   `ContainerClient.Read`, `ContainerClient.Delete`; and the
@@ -95,7 +96,6 @@
 
 ### Bugs Fixed
 
-* Fixed transactional batch execution panicking on a nil context; it now returns an argument error.
 * Fixed `ReadItem` (and other reads) waiting out the native driver's own retry budget before
   returning on context cancellation, instead of returning promptly. Reads now abandon immediately
   once the context ends. Write calls also stop waiting when their context ends, but submitted
@@ -103,12 +103,6 @@
   See [PR 27662](https://github.com/Azure/azure-sdk-for-go/pull/27662).
 
 ### Other Changes
-
-* Clarified that batch read and upsert ETag options are forwarded to the native driver without
-  stronger conditional guarantees. Documented observed live-account behavior and creation-only
-  guidance without changing the Rust-compatible options or raw result handling.
-* Documented the native driver v0.2.0 batch content-response limitation: disabling write content
-  can also suppress HTTP 200 read bodies. Batch examples explicitly enable content when needed.
 
 ## 1.6.0-beta.2 (2026-08-03)
 

@@ -1,40 +1,124 @@
-pr:
-  branches:
-    include:
-    - main
-    - feature/*
-    - hotfix/*
-    - release/*
-    - pullrequest*
-  paths:
-    include:
-      - "*"
-    exclude:
-      - .github/skills/azsdk-common-*/**
+trigger: none
+pr: none
 
 parameters:
-  - name: Service
-    type: string
-    default: auto
-  - name: SkipPrValidation
-    type: boolean
-    default: false
-  # Switch to canary to test canary 1es branch. 1es template validation will set this parameter
-  # to canary on run.
-  - name: oneESTemplateTag
-    type: string
-    default: release
-    values:
-      - release
-      - canary
+  - name: Replicas
+    type: object
+    default: [A, B]
 
 extends:
-  template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
+  template: /eng/pipelines/templates/stages/1es-redirect.yml
   parameters:
-    oneESTemplateTag: ${{ parameters.oneESTemplateTag }}
-    SkipPrValidation: ${{ parameters.SkipPrValidation }}
-    # Short term hack to get 1es canary validation working until we can fix manual runs with 'auto'
-    ${{ if and(eq(parameters.oneESTemplateTag, 'canary'), eq(parameters.Service, 'auto')) }}:
-      ServiceDirectory: template/aztemplate
-    ${{ else }}:
-      ServiceDirectory: ${{ parameters.Service }}
+    oneESTemplateTag: release
+    stages:
+      - stage: Build
+        variables:
+          - template: /eng/pipelines/templates/variables/globals.yml
+          - template: /eng/pipelines/templates/variables/image.yml
+          - name: Packages
+            value: sdk/messaging/azservicebus
+          - name: System.Debug
+            value: true
+        jobs:
+          - ${{ each replica in parameters.Replicas }}:
+              - job: NugetBoundary_Windows1271_${{ replica }}
+                displayName: NuGet boundary Windows Go1.27.1 ${{ replica }}
+                timeoutInMinutes: 20
+                cancelTimeoutInMinutes: 2
+                pool:
+                  name: azsdk-pool
+                  image: windows-2022
+                  os: windows
+                templateContext:
+                  outputs:
+                    - output: pipelineArtifact
+                      targetPath: $(Build.ArtifactStagingDirectory)/go-nuget-boundary
+                      artifactName: NugetBoundary-$(System.JobName)-$(System.JobAttempt)
+                      condition: always()
+                      sbomEnabled: false
+                steps:
+                  - template: /eng/pipelines/templates/steps/sparse-checkout-for-servicedirectory.yml
+                    parameters:
+                      ServiceDirectory: messaging/azservicebus
+                  - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml
+                    parameters:
+                      AgentImage: windows
+                  - task: GoTool@0
+                    inputs:
+                      version: '1.27.1'
+                    displayName: Select Go Version
+                  - template: /eng/pipelines/templates/steps/create-go-workspace.yml
+                  - template: /eng/common/pipelines/templates/steps/save-package-properties.yml
+                    parameters:
+                      ServiceDirectory: messaging/azservicebus
+                      PackageInfoDirectory: $(Build.ArtifactStagingDirectory)/PackageInfo
+                  - template: /eng/pipelines/templates/steps/set-artifact-packages.yml
+                    parameters:
+                      ServiceDirectory: messaging/azservicebus
+                      PackageInfoDirectory: $(Build.ArtifactStagingDirectory)/PackageInfo
+                      IncludeIndirect: true
+                  - task: PowerShell@2
+                    displayName: Use azcore from main
+                    condition: eq(variables.UseAzcoreFromMain, 'true')
+                    env:
+                      GO111MODULE: 'on'
+                    inputs:
+                      targetType: filePath
+                      pwsh: true
+                      filePath: eng/scripts/Replace-azcore.ps1
+                      arguments: -ServiceDirectory "$(ChangedServices)"
+                  - task: PowerShell@2
+                    displayName: Build
+                    env:
+                      GO111MODULE: 'on'
+                    inputs:
+                      targetType: filePath
+                      pwsh: true
+                      filePath: eng/scripts/build.ps1
+                      arguments: -filter "$(Packages)"
+                  - task: PowerShell@2
+                    displayName: Vet
+                    env:
+                      GO111MODULE: 'on'
+                    inputs:
+                      targetType: filePath
+                      pwsh: true
+                      filePath: eng/scripts/build.ps1
+                      arguments: -vet -skipBuild -filter "$(Packages)"
+                  - pwsh: |
+                      go install github.com/jstemmer/go-junit-report/v2@v2.1.0
+                      if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+                    displayName: Install Junit Dependency
+                    retryCountOnTaskFailure: 3
+                  - pwsh: |
+                      go install github.com/boumenot/gocover-cobertura@v1.5.0
+                      if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+                    displayName: Install gocover-cobertura
+                    retryCountOnTaskFailure: 3
+                  - task: PowerShell@2
+                    displayName: Language Specific Certificate Trust
+                    inputs:
+                      pwsh: true
+                      filePath: eng/common/scripts/trust-proxy-certificate.ps1
+                  - task: PowerShell@2
+                    displayName: Capture NuGet metadata before install
+                    timeoutInMinutes: 2
+                    inputs:
+                      pwsh: true
+                      filePath: eng/scripts/Capture-GoNugetBoundary.ps1
+                      arguments: -Phase Before
+                  - task: PowerShell@2
+                    displayName: Capture native test-proxy install
+                    timeoutInMinutes: 5
+                    inputs:
+                      pwsh: true
+                      filePath: eng/scripts/Capture-GoNugetBoundary.ps1
+                      arguments: -Phase Install
+                  - task: PowerShell@2
+                    displayName: Capture NuGet metadata after install
+                    condition: always()
+                    timeoutInMinutes: 2
+                    inputs:
+                      pwsh: true
+                      filePath: eng/scripts/Capture-GoNugetBoundary.ps1
+                      arguments: -Phase After

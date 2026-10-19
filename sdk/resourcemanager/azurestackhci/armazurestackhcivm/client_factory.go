@@ -93,9 +93,9 @@ func (c *ClientFactory) NewMarketplaceGalleryImagesClient() *MarketplaceGalleryI
 	}
 }
 
-// NewNatGatewaysClient creates a new instance of NatGatewaysClient.
-func (c *ClientFactory) NewNatGatewaysClient() *NatGatewaysClient {
-	return &NatGatewaysClient{
+// NewNATGatewaysClient creates a new instance of NATGatewaysClient.
+func (c *ClientFactory) NewNATGatewaysClient() *NATGatewaysClient {
+	return &NATGatewaysClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

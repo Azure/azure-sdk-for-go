@@ -19,60 +19,60 @@ import (
 	"slices"
 )
 
-// NatGatewaysServer is a fake server for instances of the armazurestackhcivm.NatGatewaysClient type.
-type NatGatewaysServer struct {
-	// BeginCreateOrUpdate is the fake for method NatGatewaysClient.BeginCreateOrUpdate
+// NATGatewaysServer is a fake server for instances of the armazurestackhcivm.NATGatewaysClient type.
+type NATGatewaysServer struct {
+	// BeginCreateOrUpdate is the fake for method NATGatewaysClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, natGatewayName string, resource armazurestackhcivm.NatGateway, options *armazurestackhcivm.NatGatewaysClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armazurestackhcivm.NatGatewaysClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, natGatewayName string, resource armazurestackhcivm.NatGateway, options *armazurestackhcivm.NATGatewaysClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armazurestackhcivm.NATGatewaysClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
-	// BeginDelete is the fake for method NatGatewaysClient.BeginDelete
+	// BeginDelete is the fake for method NATGatewaysClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDelete func(ctx context.Context, resourceGroupName string, natGatewayName string, options *armazurestackhcivm.NatGatewaysClientBeginDeleteOptions) (resp azfake.PollerResponder[armazurestackhcivm.NatGatewaysClientDeleteResponse], errResp azfake.ErrorResponder)
+	BeginDelete func(ctx context.Context, resourceGroupName string, natGatewayName string, options *armazurestackhcivm.NATGatewaysClientBeginDeleteOptions) (resp azfake.PollerResponder[armazurestackhcivm.NATGatewaysClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// BeginUpdateTags is the fake for method NatGatewaysClient.BeginUpdateTags
+	// BeginUpdateTags is the fake for method NATGatewaysClient.BeginUpdateTags
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdateTags func(ctx context.Context, resourceGroupName string, natGatewayName string, properties armazurestackhcivm.NatGatewayTagsUpdate, options *armazurestackhcivm.NatGatewaysClientBeginUpdateTagsOptions) (resp azfake.PollerResponder[armazurestackhcivm.NatGatewaysClientUpdateTagsResponse], errResp azfake.ErrorResponder)
+	BeginUpdateTags func(ctx context.Context, resourceGroupName string, natGatewayName string, properties armazurestackhcivm.NatGatewayTagsUpdate, options *armazurestackhcivm.NATGatewaysClientBeginUpdateTagsOptions) (resp azfake.PollerResponder[armazurestackhcivm.NATGatewaysClientUpdateTagsResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method NatGatewaysClient.Get
+	// Get is the fake for method NATGatewaysClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, natGatewayName string, options *armazurestackhcivm.NatGatewaysClientGetOptions) (resp azfake.Responder[armazurestackhcivm.NatGatewaysClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, resourceGroupName string, natGatewayName string, options *armazurestackhcivm.NATGatewaysClientGetOptions) (resp azfake.Responder[armazurestackhcivm.NATGatewaysClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListAllPager is the fake for method NatGatewaysClient.NewListAllPager
+	// NewListAllPager is the fake for method NATGatewaysClient.NewListAllPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListAllPager func(options *armazurestackhcivm.NatGatewaysClientListAllOptions) (resp azfake.PagerResponder[armazurestackhcivm.NatGatewaysClientListAllResponse])
+	NewListAllPager func(options *armazurestackhcivm.NATGatewaysClientListAllOptions) (resp azfake.PagerResponder[armazurestackhcivm.NATGatewaysClientListAllResponse])
 
-	// NewListByResourceGroupPager is the fake for method NatGatewaysClient.NewListByResourceGroupPager
+	// NewListByResourceGroupPager is the fake for method NATGatewaysClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupPager func(resourceGroupName string, options *armazurestackhcivm.NatGatewaysClientListByResourceGroupOptions) (resp azfake.PagerResponder[armazurestackhcivm.NatGatewaysClientListByResourceGroupResponse])
+	NewListByResourceGroupPager func(resourceGroupName string, options *armazurestackhcivm.NATGatewaysClientListByResourceGroupOptions) (resp azfake.PagerResponder[armazurestackhcivm.NATGatewaysClientListByResourceGroupResponse])
 }
 
-// NewNatGatewaysServerTransport creates a new instance of NatGatewaysServerTransport with the provided implementation.
-// The returned NatGatewaysServerTransport instance is connected to an instance of armazurestackhcivm.NatGatewaysClient via the
+// NewNATGatewaysServerTransport creates a new instance of NATGatewaysServerTransport with the provided implementation.
+// The returned NATGatewaysServerTransport instance is connected to an instance of armazurestackhcivm.NATGatewaysClient via the
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
-func NewNatGatewaysServerTransport(srv *NatGatewaysServer) *NatGatewaysServerTransport {
-	return &NatGatewaysServerTransport{
+func NewNATGatewaysServerTransport(srv *NATGatewaysServer) *NATGatewaysServerTransport {
+	return &NATGatewaysServerTransport{
 		srv:                         srv,
-		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armazurestackhcivm.NatGatewaysClientCreateOrUpdateResponse]](),
-		beginDelete:                 newTracker[azfake.PollerResponder[armazurestackhcivm.NatGatewaysClientDeleteResponse]](),
-		beginUpdateTags:             newTracker[azfake.PollerResponder[armazurestackhcivm.NatGatewaysClientUpdateTagsResponse]](),
-		newListAllPager:             newTracker[azfake.PagerResponder[armazurestackhcivm.NatGatewaysClientListAllResponse]](),
-		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armazurestackhcivm.NatGatewaysClientListByResourceGroupResponse]](),
+		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armazurestackhcivm.NATGatewaysClientCreateOrUpdateResponse]](),
+		beginDelete:                 newTracker[azfake.PollerResponder[armazurestackhcivm.NATGatewaysClientDeleteResponse]](),
+		beginUpdateTags:             newTracker[azfake.PollerResponder[armazurestackhcivm.NATGatewaysClientUpdateTagsResponse]](),
+		newListAllPager:             newTracker[azfake.PagerResponder[armazurestackhcivm.NATGatewaysClientListAllResponse]](),
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armazurestackhcivm.NATGatewaysClientListByResourceGroupResponse]](),
 	}
 }
 
-// NatGatewaysServerTransport connects instances of armazurestackhcivm.NatGatewaysClient to instances of NatGatewaysServer.
-// Don't use this type directly, use NewNatGatewaysServerTransport instead.
-type NatGatewaysServerTransport struct {
-	srv                         *NatGatewaysServer
-	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armazurestackhcivm.NatGatewaysClientCreateOrUpdateResponse]]
-	beginDelete                 *tracker[azfake.PollerResponder[armazurestackhcivm.NatGatewaysClientDeleteResponse]]
-	beginUpdateTags             *tracker[azfake.PollerResponder[armazurestackhcivm.NatGatewaysClientUpdateTagsResponse]]
-	newListAllPager             *tracker[azfake.PagerResponder[armazurestackhcivm.NatGatewaysClientListAllResponse]]
-	newListByResourceGroupPager *tracker[azfake.PagerResponder[armazurestackhcivm.NatGatewaysClientListByResourceGroupResponse]]
+// NATGatewaysServerTransport connects instances of armazurestackhcivm.NATGatewaysClient to instances of NATGatewaysServer.
+// Don't use this type directly, use NewNATGatewaysServerTransport instead.
+type NATGatewaysServerTransport struct {
+	srv                         *NATGatewaysServer
+	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armazurestackhcivm.NATGatewaysClientCreateOrUpdateResponse]]
+	beginDelete                 *tracker[azfake.PollerResponder[armazurestackhcivm.NATGatewaysClientDeleteResponse]]
+	beginUpdateTags             *tracker[azfake.PollerResponder[armazurestackhcivm.NATGatewaysClientUpdateTagsResponse]]
+	newListAllPager             *tracker[azfake.PagerResponder[armazurestackhcivm.NATGatewaysClientListAllResponse]]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armazurestackhcivm.NATGatewaysClientListByResourceGroupResponse]]
 }
 
-// Do implements the policy.Transporter interface for NatGatewaysServerTransport.
-func (n *NatGatewaysServerTransport) Do(req *http.Request) (*http.Response, error) {
+// Do implements the policy.Transporter interface for NATGatewaysServerTransport.
+func (n *NATGatewaysServerTransport) Do(req *http.Request) (*http.Response, error) {
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
@@ -82,7 +82,7 @@ func (n *NatGatewaysServerTransport) Do(req *http.Request) (*http.Response, erro
 	return n.dispatchToMethodFake(req, method)
 }
 
-func (n *NatGatewaysServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+func (n *NATGatewaysServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
 	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
@@ -92,17 +92,17 @@ func (n *NatGatewaysServerTransport) dispatchToMethodFake(req *http.Request, met
 		}
 		if !intercepted {
 			switch method {
-			case "NatGatewaysClient.BeginCreateOrUpdate":
+			case "NATGatewaysClient.BeginCreateOrUpdate":
 				res.resp, res.err = n.dispatchBeginCreateOrUpdate(req)
-			case "NatGatewaysClient.BeginDelete":
+			case "NATGatewaysClient.BeginDelete":
 				res.resp, res.err = n.dispatchBeginDelete(req)
-			case "NatGatewaysClient.BeginUpdateTags":
+			case "NATGatewaysClient.BeginUpdateTags":
 				res.resp, res.err = n.dispatchBeginUpdateTags(req)
-			case "NatGatewaysClient.Get":
+			case "NATGatewaysClient.Get":
 				res.resp, res.err = n.dispatchGet(req)
-			case "NatGatewaysClient.NewListAllPager":
+			case "NATGatewaysClient.NewListAllPager":
 				res.resp, res.err = n.dispatchNewListAllPager(req)
-			case "NatGatewaysClient.NewListByResourceGroupPager":
+			case "NATGatewaysClient.NewListByResourceGroupPager":
 				res.resp, res.err = n.dispatchNewListByResourceGroupPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
@@ -120,7 +120,7 @@ func (n *NatGatewaysServerTransport) dispatchToMethodFake(req *http.Request, met
 	}
 }
 
-func (n *NatGatewaysServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
+func (n *NATGatewaysServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
 	if n.srv.BeginCreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
 	}
@@ -168,7 +168,7 @@ func (n *NatGatewaysServerTransport) dispatchBeginCreateOrUpdate(req *http.Reque
 	return resp, nil
 }
 
-func (n *NatGatewaysServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
+func (n *NATGatewaysServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
 	if n.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
@@ -212,7 +212,7 @@ func (n *NatGatewaysServerTransport) dispatchBeginDelete(req *http.Request) (*ht
 	return resp, nil
 }
 
-func (n *NatGatewaysServerTransport) dispatchBeginUpdateTags(req *http.Request) (*http.Response, error) {
+func (n *NATGatewaysServerTransport) dispatchBeginUpdateTags(req *http.Request) (*http.Response, error) {
 	if n.srv.BeginUpdateTags == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdateTags not implemented")}
 	}
@@ -260,7 +260,7 @@ func (n *NatGatewaysServerTransport) dispatchBeginUpdateTags(req *http.Request) 
 	return resp, nil
 }
 
-func (n *NatGatewaysServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+func (n *NATGatewaysServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if n.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
@@ -293,7 +293,7 @@ func (n *NatGatewaysServerTransport) dispatchGet(req *http.Request) (*http.Respo
 	return resp, nil
 }
 
-func (n *NatGatewaysServerTransport) dispatchNewListAllPager(req *http.Request) (*http.Response, error) {
+func (n *NATGatewaysServerTransport) dispatchNewListAllPager(req *http.Request) (*http.Response, error) {
 	if n.srv.NewListAllPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListAllPager not implemented")}
 	}
@@ -308,7 +308,7 @@ func (n *NatGatewaysServerTransport) dispatchNewListAllPager(req *http.Request) 
 		resp := n.srv.NewListAllPager(nil)
 		newListAllPager = &resp
 		n.newListAllPager.add(req, newListAllPager)
-		server.PagerResponderInjectNextLinks(newListAllPager, req, func(page *armazurestackhcivm.NatGatewaysClientListAllResponse, createLink func() string) {
+		server.PagerResponderInjectNextLinks(newListAllPager, req, func(page *armazurestackhcivm.NATGatewaysClientListAllResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
@@ -326,7 +326,7 @@ func (n *NatGatewaysServerTransport) dispatchNewListAllPager(req *http.Request) 
 	return resp, nil
 }
 
-func (n *NatGatewaysServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
+func (n *NATGatewaysServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
 	if n.srv.NewListByResourceGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
 	}
@@ -345,7 +345,7 @@ func (n *NatGatewaysServerTransport) dispatchNewListByResourceGroupPager(req *ht
 		resp := n.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
 		newListByResourceGroupPager = &resp
 		n.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armazurestackhcivm.NatGatewaysClientListByResourceGroupResponse, createLink func() string) {
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armazurestackhcivm.NATGatewaysClientListByResourceGroupResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
@@ -363,7 +363,7 @@ func (n *NatGatewaysServerTransport) dispatchNewListByResourceGroupPager(req *ht
 	return resp, nil
 }
 
-// set this to conditionally intercept incoming requests to NatGatewaysServerTransport
+// set this to conditionally intercept incoming requests to NATGatewaysServerTransport
 var natGatewaysServerTransportInterceptor interface {
 	// Do returns true if the server transport should use the returned response/error
 	Do(*http.Request) (*http.Response, error, bool)

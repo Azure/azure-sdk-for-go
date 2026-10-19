@@ -16,20 +16,20 @@ import (
 	"strings"
 )
 
-// NatGatewaysClient contains the methods for the NatGateways group.
-// Don't use this type directly, use NewNatGatewaysClient() instead.
+// NATGatewaysClient contains the methods for the NATGateways group.
+// Don't use this type directly, use NewNATGatewaysClient() instead.
 //
 // Generated from API version 2026-07-01-preview
-type NatGatewaysClient struct {
+type NATGatewaysClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewNatGatewaysClient creates a new instance of NatGatewaysClient with the specified values.
+// NewNATGatewaysClient creates a new instance of NATGatewaysClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
-func NewNatGatewaysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*NatGatewaysClient, error) {
+func NewNATGatewaysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*NATGatewaysClient, error) {
 	if subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
@@ -37,7 +37,7 @@ func NewNatGatewaysClient(subscriptionID string, credential azcore.TokenCredenti
 	if err != nil {
 		return nil, err
 	}
-	client := &NatGatewaysClient{
+	client := &NATGatewaysClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
@@ -50,20 +50,20 @@ func NewNatGatewaysClient(subscriptionID string, credential azcore.TokenCredenti
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - natGatewayName - Name of the nat gateway
 //   - resource - Resource create parameters.
-//   - options - NatGatewaysClientBeginCreateOrUpdateOptions contains the optional parameters for the NatGatewaysClient.BeginCreateOrUpdate
+//   - options - NATGatewaysClientBeginCreateOrUpdateOptions contains the optional parameters for the NATGatewaysClient.BeginCreateOrUpdate
 //     method.
-func (client *NatGatewaysClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, natGatewayName string, resource NatGateway, options *NatGatewaysClientBeginCreateOrUpdateOptions) (*runtime.Poller[NatGatewaysClientCreateOrUpdateResponse], error) {
+func (client *NATGatewaysClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, natGatewayName string, resource NatGateway, options *NATGatewaysClientBeginCreateOrUpdateOptions) (*runtime.Poller[NATGatewaysClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, natGatewayName, resource, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NatGatewaysClientCreateOrUpdateResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NATGatewaysClientCreateOrUpdateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NatGatewaysClientCreateOrUpdateResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NATGatewaysClientCreateOrUpdateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
@@ -72,9 +72,9 @@ func (client *NatGatewaysClient) BeginCreateOrUpdate(ctx context.Context, resour
 // createOrUpdate - The operation to create or update a natGateway. Please note some properties can be set only during NatGateway
 // creation.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *NatGatewaysClient) createOrUpdate(ctx context.Context, resourceGroupName string, natGatewayName string, resource NatGateway, options *NatGatewaysClientBeginCreateOrUpdateOptions) (*http.Response, error) {
+func (client *NATGatewaysClient) createOrUpdate(ctx context.Context, resourceGroupName string, natGatewayName string, resource NatGateway, options *NATGatewaysClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "NatGatewaysClient.BeginCreateOrUpdate"
+	const operationName = "NATGatewaysClient.BeginCreateOrUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
@@ -93,7 +93,7 @@ func (client *NatGatewaysClient) createOrUpdate(ctx context.Context, resourceGro
 }
 
 // createOrUpdateCreateRequest creates the createOrUpdate request.
-func (client *NatGatewaysClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, natGatewayName string, resource NatGateway, _ *NatGatewaysClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *NATGatewaysClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, natGatewayName string, resource NatGateway, _ *NATGatewaysClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/natGateways/{natGatewayName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -126,19 +126,19 @@ func (client *NatGatewaysClient) createOrUpdateCreateRequest(ctx context.Context
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - natGatewayName - Name of the nat gateway
-//   - options - NatGatewaysClientBeginDeleteOptions contains the optional parameters for the NatGatewaysClient.BeginDelete method.
-func (client *NatGatewaysClient) BeginDelete(ctx context.Context, resourceGroupName string, natGatewayName string, options *NatGatewaysClientBeginDeleteOptions) (*runtime.Poller[NatGatewaysClientDeleteResponse], error) {
+//   - options - NATGatewaysClientBeginDeleteOptions contains the optional parameters for the NATGatewaysClient.BeginDelete method.
+func (client *NATGatewaysClient) BeginDelete(ctx context.Context, resourceGroupName string, natGatewayName string, options *NATGatewaysClientBeginDeleteOptions) (*runtime.Poller[NATGatewaysClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, natGatewayName, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NatGatewaysClientDeleteResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NATGatewaysClientDeleteResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NatGatewaysClientDeleteResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NATGatewaysClientDeleteResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
@@ -146,9 +146,9 @@ func (client *NatGatewaysClient) BeginDelete(ctx context.Context, resourceGroupN
 
 // deleteOperation - The operation to delete a natGateway.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *NatGatewaysClient) deleteOperation(ctx context.Context, resourceGroupName string, natGatewayName string, options *NatGatewaysClientBeginDeleteOptions) (*http.Response, error) {
+func (client *NATGatewaysClient) deleteOperation(ctx context.Context, resourceGroupName string, natGatewayName string, options *NATGatewaysClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
-	const operationName = "NatGatewaysClient.BeginDelete"
+	const operationName = "NATGatewaysClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
@@ -167,7 +167,7 @@ func (client *NatGatewaysClient) deleteOperation(ctx context.Context, resourceGr
 }
 
 // deleteCreateRequest creates the delete request.
-func (client *NatGatewaysClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, natGatewayName string, _ *NatGatewaysClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *NATGatewaysClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, natGatewayName string, _ *NATGatewaysClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/natGateways/{natGatewayName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -196,20 +196,20 @@ func (client *NatGatewaysClient) deleteCreateRequest(ctx context.Context, resour
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - natGatewayName - Name of the nat gateway
 //   - properties - The resource properties to be updated.
-//   - options - NatGatewaysClientBeginUpdateTagsOptions contains the optional parameters for the NatGatewaysClient.BeginUpdateTags
+//   - options - NATGatewaysClientBeginUpdateTagsOptions contains the optional parameters for the NATGatewaysClient.BeginUpdateTags
 //     method.
-func (client *NatGatewaysClient) BeginUpdateTags(ctx context.Context, resourceGroupName string, natGatewayName string, properties NatGatewayTagsUpdate, options *NatGatewaysClientBeginUpdateTagsOptions) (*runtime.Poller[NatGatewaysClientUpdateTagsResponse], error) {
+func (client *NATGatewaysClient) BeginUpdateTags(ctx context.Context, resourceGroupName string, natGatewayName string, properties NatGatewayTagsUpdate, options *NATGatewaysClientBeginUpdateTagsOptions) (*runtime.Poller[NATGatewaysClientUpdateTagsResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.updateTags(ctx, resourceGroupName, natGatewayName, properties, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NatGatewaysClientUpdateTagsResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NATGatewaysClientUpdateTagsResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NatGatewaysClientUpdateTagsResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NATGatewaysClientUpdateTagsResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
@@ -217,9 +217,9 @@ func (client *NatGatewaysClient) BeginUpdateTags(ctx context.Context, resourceGr
 
 // updateTags - Updates a natGateway tags.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *NatGatewaysClient) updateTags(ctx context.Context, resourceGroupName string, natGatewayName string, properties NatGatewayTagsUpdate, options *NatGatewaysClientBeginUpdateTagsOptions) (*http.Response, error) {
+func (client *NATGatewaysClient) updateTags(ctx context.Context, resourceGroupName string, natGatewayName string, properties NatGatewayTagsUpdate, options *NATGatewaysClientBeginUpdateTagsOptions) (*http.Response, error) {
 	var err error
-	const operationName = "NatGatewaysClient.BeginUpdateTags"
+	const operationName = "NATGatewaysClient.BeginUpdateTags"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
@@ -238,7 +238,7 @@ func (client *NatGatewaysClient) updateTags(ctx context.Context, resourceGroupNa
 }
 
 // updateTagsCreateRequest creates the updateTags request.
-func (client *NatGatewaysClient) updateTagsCreateRequest(ctx context.Context, resourceGroupName string, natGatewayName string, properties NatGatewayTagsUpdate, _ *NatGatewaysClientBeginUpdateTagsOptions) (*policy.Request, error) {
+func (client *NATGatewaysClient) updateTagsCreateRequest(ctx context.Context, resourceGroupName string, natGatewayName string, properties NatGatewayTagsUpdate, _ *NATGatewaysClientBeginUpdateTagsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/natGateways/{natGatewayName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -271,26 +271,26 @@ func (client *NatGatewaysClient) updateTagsCreateRequest(ctx context.Context, re
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - natGatewayName - Name of the nat gateway
-//   - options - NatGatewaysClientGetOptions contains the optional parameters for the NatGatewaysClient.Get method.
-func (client *NatGatewaysClient) Get(ctx context.Context, resourceGroupName string, natGatewayName string, options *NatGatewaysClientGetOptions) (NatGatewaysClientGetResponse, error) {
+//   - options - NATGatewaysClientGetOptions contains the optional parameters for the NATGatewaysClient.Get method.
+func (client *NATGatewaysClient) Get(ctx context.Context, resourceGroupName string, natGatewayName string, options *NATGatewaysClientGetOptions) (NATGatewaysClientGetResponse, error) {
 	var err error
-	const operationName = "NatGatewaysClient.Get"
+	const operationName = "NATGatewaysClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, natGatewayName, options)
 	if err != nil {
-		return NatGatewaysClientGetResponse{}, err
+		return NATGatewaysClientGetResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return NatGatewaysClientGetResponse{}, err
+		return NATGatewaysClientGetResponse{}, err
 	}
 	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
-func (client *NatGatewaysClient) getCreateRequest(ctx context.Context, resourceGroupName string, natGatewayName string, _ *NatGatewaysClientGetOptions) (*policy.Request, error) {
+func (client *NATGatewaysClient) getCreateRequest(ctx context.Context, resourceGroupName string, natGatewayName string, _ *NATGatewaysClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/natGateways/{natGatewayName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -316,38 +316,38 @@ func (client *NatGatewaysClient) getCreateRequest(ctx context.Context, resourceG
 }
 
 // getHandleResponse handles the Get response.
-func (client *NatGatewaysClient) getHandleResponse(resp *http.Response, successCodes ...int) (NatGatewaysClientGetResponse, error) {
-	result := NatGatewaysClientGetResponse{}
+func (client *NATGatewaysClient) getHandleResponse(resp *http.Response, successCodes ...int) (NATGatewaysClientGetResponse, error) {
+	result := NATGatewaysClientGetResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NatGateway); err != nil {
-		return NatGatewaysClientGetResponse{}, err
+		return NATGatewaysClientGetResponse{}, err
 	}
 	return result, nil
 }
 
 // NewListAllPager - Lists all of the natGateways in the specified subscription. Use the nextLink property in the response
 // to get the next page of NatGateway.
-//   - options - NatGatewaysClientListAllOptions contains the optional parameters for the NatGatewaysClient.NewListAllPager method.
-func (client *NatGatewaysClient) NewListAllPager(options *NatGatewaysClientListAllOptions) *runtime.Pager[NatGatewaysClientListAllResponse] {
-	return runtime.NewPager(runtime.PagingHandler[NatGatewaysClientListAllResponse]{
-		More: func(page NatGatewaysClientListAllResponse) bool {
+//   - options - NATGatewaysClientListAllOptions contains the optional parameters for the NATGatewaysClient.NewListAllPager method.
+func (client *NATGatewaysClient) NewListAllPager(options *NATGatewaysClientListAllOptions) *runtime.Pager[NATGatewaysClientListAllResponse] {
+	return runtime.NewPager(runtime.PagingHandler[NATGatewaysClientListAllResponse]{
+		More: func(page NATGatewaysClientListAllResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *NatGatewaysClientListAllResponse) (NatGatewaysClientListAllResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "NatGatewaysClient.NewListAllPager")
+		Fetcher: func(ctx context.Context, page *NATGatewaysClientListAllResponse) (NATGatewaysClientListAllResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "NATGatewaysClient.NewListAllPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
 			}
 			req, err := client.listAllCreateRequest(ctx, nextLink, options)
 			if err != nil {
-				return NatGatewaysClientListAllResponse{}, err
+				return NATGatewaysClientListAllResponse{}, err
 			}
 			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
-				return NatGatewaysClientListAllResponse{}, err
+				return NATGatewaysClientListAllResponse{}, err
 			}
 			return client.listAllHandleResponse(resp, http.StatusOK)
 		},
@@ -356,7 +356,7 @@ func (client *NatGatewaysClient) NewListAllPager(options *NatGatewaysClientListA
 }
 
 // listAllCreateRequest creates the ListAll request.
-func (client *NatGatewaysClient) listAllCreateRequest(ctx context.Context, nextLink string, _ *NatGatewaysClientListAllOptions) (*policy.Request, error) {
+func (client *NATGatewaysClient) listAllCreateRequest(ctx context.Context, nextLink string, _ *NATGatewaysClientListAllOptions) (*policy.Request, error) {
 	firstPage := nextLink == ""
 	var req *policy.Request
 	var err error
@@ -383,13 +383,13 @@ func (client *NatGatewaysClient) listAllCreateRequest(ctx context.Context, nextL
 }
 
 // listAllHandleResponse handles the ListAll response.
-func (client *NatGatewaysClient) listAllHandleResponse(resp *http.Response, successCodes ...int) (NatGatewaysClientListAllResponse, error) {
-	result := NatGatewaysClientListAllResponse{}
+func (client *NATGatewaysClient) listAllHandleResponse(resp *http.Response, successCodes ...int) (NATGatewaysClientListAllResponse, error) {
+	result := NATGatewaysClientListAllResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NatGatewayListResult); err != nil {
-		return NatGatewaysClientListAllResponse{}, err
+		return NATGatewaysClientListAllResponse{}, err
 	}
 	return result, nil
 }
@@ -397,26 +397,26 @@ func (client *NatGatewaysClient) listAllHandleResponse(resp *http.Response, succ
 // NewListByResourceGroupPager - Lists all of the natGateways in the specified resource group. Use the nextLink property in
 // the response to get the next page of NatGateway.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - options - NatGatewaysClientListByResourceGroupOptions contains the optional parameters for the NatGatewaysClient.NewListByResourceGroupPager
+//   - options - NATGatewaysClientListByResourceGroupOptions contains the optional parameters for the NATGatewaysClient.NewListByResourceGroupPager
 //     method.
-func (client *NatGatewaysClient) NewListByResourceGroupPager(resourceGroupName string, options *NatGatewaysClientListByResourceGroupOptions) *runtime.Pager[NatGatewaysClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PagingHandler[NatGatewaysClientListByResourceGroupResponse]{
-		More: func(page NatGatewaysClientListByResourceGroupResponse) bool {
+func (client *NATGatewaysClient) NewListByResourceGroupPager(resourceGroupName string, options *NATGatewaysClientListByResourceGroupOptions) *runtime.Pager[NATGatewaysClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PagingHandler[NATGatewaysClientListByResourceGroupResponse]{
+		More: func(page NATGatewaysClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *NatGatewaysClientListByResourceGroupResponse) (NatGatewaysClientListByResourceGroupResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "NatGatewaysClient.NewListByResourceGroupPager")
+		Fetcher: func(ctx context.Context, page *NATGatewaysClientListByResourceGroupResponse) (NATGatewaysClientListByResourceGroupResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "NATGatewaysClient.NewListByResourceGroupPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
 			}
 			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
 			if err != nil {
-				return NatGatewaysClientListByResourceGroupResponse{}, err
+				return NATGatewaysClientListByResourceGroupResponse{}, err
 			}
 			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
-				return NatGatewaysClientListByResourceGroupResponse{}, err
+				return NATGatewaysClientListByResourceGroupResponse{}, err
 			}
 			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
 		},
@@ -425,7 +425,7 @@ func (client *NatGatewaysClient) NewListByResourceGroupPager(resourceGroupName s
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *NatGatewaysClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *NatGatewaysClientListByResourceGroupOptions) (*policy.Request, error) {
+func (client *NATGatewaysClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *NATGatewaysClientListByResourceGroupOptions) (*policy.Request, error) {
 	firstPage := nextLink == ""
 	var req *policy.Request
 	var err error
@@ -456,13 +456,13 @@ func (client *NatGatewaysClient) listByResourceGroupCreateRequest(ctx context.Co
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *NatGatewaysClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (NatGatewaysClientListByResourceGroupResponse, error) {
-	result := NatGatewaysClientListByResourceGroupResponse{}
+func (client *NATGatewaysClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (NATGatewaysClientListByResourceGroupResponse, error) {
+	result := NATGatewaysClientListByResourceGroupResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NatGatewayListResult); err != nil {
-		return NatGatewaysClientListByResourceGroupResponse{}, err
+		return NATGatewaysClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }

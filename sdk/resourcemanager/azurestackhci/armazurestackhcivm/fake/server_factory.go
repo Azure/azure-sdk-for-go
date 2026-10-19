@@ -39,8 +39,8 @@ type ServerFactory struct {
 	// MarketplaceGalleryImagesServer contains the fakes for client MarketplaceGalleryImagesClient
 	MarketplaceGalleryImagesServer MarketplaceGalleryImagesServer
 
-	// NatGatewaysServer contains the fakes for client NatGatewaysClient
-	NatGatewaysServer NatGatewaysServer
+	// NATGatewaysServer contains the fakes for client NATGatewaysClient
+	NATGatewaysServer NATGatewaysServer
 
 	// NetworkInterfacesServer contains the fakes for client NetworkInterfacesClient
 	NetworkInterfacesServer NetworkInterfacesServer
@@ -98,7 +98,7 @@ type ServerFactoryTransport struct {
 	trLoadBalancersServer            *LoadBalancersServerTransport
 	trLogicalNetworksServer          *LogicalNetworksServerTransport
 	trMarketplaceGalleryImagesServer *MarketplaceGalleryImagesServerTransport
-	trNatGatewaysServer              *NatGatewaysServerTransport
+	trNATGatewaysServer              *NATGatewaysServerTransport
 	trNetworkInterfacesServer        *NetworkInterfacesServerTransport
 	trNetworkSecurityGroupsServer    *NetworkSecurityGroupsServerTransport
 	trOperationsServer               *OperationsServerTransport
@@ -161,9 +161,9 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewMarketplaceGalleryImagesServerTransport(&s.srv.MarketplaceGalleryImagesServer)
 		})
 		resp, err = s.trMarketplaceGalleryImagesServer.Do(req)
-	case "NatGatewaysClient":
-		initServer(&s.trMu, &s.trNatGatewaysServer, func() *NatGatewaysServerTransport { return NewNatGatewaysServerTransport(&s.srv.NatGatewaysServer) })
-		resp, err = s.trNatGatewaysServer.Do(req)
+	case "NATGatewaysClient":
+		initServer(&s.trMu, &s.trNATGatewaysServer, func() *NATGatewaysServerTransport { return NewNATGatewaysServerTransport(&s.srv.NATGatewaysServer) })
+		resp, err = s.trNATGatewaysServer.Do(req)
 	case "NetworkInterfacesClient":
 		initServer(&s.trMu, &s.trNetworkInterfacesServer, func() *NetworkInterfacesServerTransport {
 			return NewNetworkInterfacesServerTransport(&s.srv.NetworkInterfacesServer)

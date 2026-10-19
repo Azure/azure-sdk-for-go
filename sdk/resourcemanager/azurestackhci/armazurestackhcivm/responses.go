@@ -208,37 +208,37 @@ type MarketplaceGalleryImagesClientUpdateResponse struct {
 	MarketplaceGalleryImage
 }
 
-// NatGatewaysClientCreateOrUpdateResponse contains the response from method NatGatewaysClient.BeginCreateOrUpdate.
-type NatGatewaysClientCreateOrUpdateResponse struct {
+// NATGatewaysClientCreateOrUpdateResponse contains the response from method NATGatewaysClient.BeginCreateOrUpdate.
+type NATGatewaysClientCreateOrUpdateResponse struct {
 	// The NatGateway resource definition.
 	NatGateway
 }
 
-// NatGatewaysClientDeleteResponse contains the response from method NatGatewaysClient.BeginDelete.
-type NatGatewaysClientDeleteResponse struct {
+// NATGatewaysClientDeleteResponse contains the response from method NATGatewaysClient.BeginDelete.
+type NATGatewaysClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
-// NatGatewaysClientGetResponse contains the response from method NatGatewaysClient.Get.
-type NatGatewaysClientGetResponse struct {
+// NATGatewaysClientGetResponse contains the response from method NATGatewaysClient.Get.
+type NATGatewaysClientGetResponse struct {
 	// The NatGateway resource definition.
 	NatGateway
 }
 
-// NatGatewaysClientListAllResponse contains the response from method NatGatewaysClient.NewListAllPager.
-type NatGatewaysClientListAllResponse struct {
+// NATGatewaysClientListAllResponse contains the response from method NATGatewaysClient.NewListAllPager.
+type NATGatewaysClientListAllResponse struct {
 	// The response of a NatGateway list operation.
 	NatGatewayListResult
 }
 
-// NatGatewaysClientListByResourceGroupResponse contains the response from method NatGatewaysClient.NewListByResourceGroupPager.
-type NatGatewaysClientListByResourceGroupResponse struct {
+// NATGatewaysClientListByResourceGroupResponse contains the response from method NATGatewaysClient.NewListByResourceGroupPager.
+type NATGatewaysClientListByResourceGroupResponse struct {
 	// The response of a NatGateway list operation.
 	NatGatewayListResult
 }
 
-// NatGatewaysClientUpdateTagsResponse contains the response from method NatGatewaysClient.BeginUpdateTags.
-type NatGatewaysClientUpdateTagsResponse struct {
+// NATGatewaysClientUpdateTagsResponse contains the response from method NATGatewaysClient.BeginUpdateTags.
+type NATGatewaysClientUpdateTagsResponse struct {
 	// The NatGateway resource definition.
 	NatGateway
 }

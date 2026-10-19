@@ -13,7 +13,7 @@ import (
 )
 
 // Generated from example definition: 2026-07-01-preview/NatGateways_CreateOrUpdate.json
-func ExampleNatGatewaysClient_BeginCreateOrUpdate() {
+func ExampleNATGatewaysClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -23,7 +23,7 @@ func ExampleNatGatewaysClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewNatGatewaysClient().BeginCreateOrUpdate(ctx, "test-rg", "test-nat-gw", armazurestackhcivm.NatGateway{
+	poller, err := clientFactory.NewNATGatewaysClient().BeginCreateOrUpdate(ctx, "test-rg", "test-nat-gw", armazurestackhcivm.NatGateway{
 		ExtendedLocation: &armazurestackhcivm.ExtendedLocation{
 			Name: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/dogfoodarc/providers/Microsoft.ExtendedLocation/customLocations/dogfood-location"),
 			Type: to.Ptr(armazurestackhcivm.ExtendedLocationTypesCustomLocation),
@@ -47,7 +47,7 @@ func ExampleNatGatewaysClient_BeginCreateOrUpdate() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armazurestackhcivm.NatGatewaysClientCreateOrUpdateResponse{
+	// res = armazurestackhcivm.NATGatewaysClientCreateOrUpdateResponse{
 	// 	NatGateway: armazurestackhcivm.NatGateway{
 	// 		Name: to.Ptr("test-nat-gw"),
 	// 		Type: to.Ptr("Microsoft.AzureStackHCI/natGateways"),
@@ -70,7 +70,7 @@ func ExampleNatGatewaysClient_BeginCreateOrUpdate() {
 }
 
 // Generated from example definition: 2026-07-01-preview/NatGateways_Delete.json
-func ExampleNatGatewaysClient_BeginDelete() {
+func ExampleNATGatewaysClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -80,7 +80,7 @@ func ExampleNatGatewaysClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewNatGatewaysClient().BeginDelete(ctx, "test-rg", "test-nat-gw", nil)
+	poller, err := clientFactory.NewNATGatewaysClient().BeginDelete(ctx, "test-rg", "test-nat-gw", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -91,7 +91,7 @@ func ExampleNatGatewaysClient_BeginDelete() {
 }
 
 // Generated from example definition: 2026-07-01-preview/NatGateways_UpdateTags.json
-func ExampleNatGatewaysClient_BeginUpdateTags() {
+func ExampleNATGatewaysClient_BeginUpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -101,7 +101,7 @@ func ExampleNatGatewaysClient_BeginUpdateTags() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewNatGatewaysClient().BeginUpdateTags(ctx, "testrg", "testnatgw", armazurestackhcivm.NatGatewayTagsUpdate{
+	poller, err := clientFactory.NewNATGatewaysClient().BeginUpdateTags(ctx, "testrg", "testnatgw", armazurestackhcivm.NatGatewayTagsUpdate{
 		Tags: map[string]*string{
 			"tag1": to.Ptr("value1"),
 			"tag2": to.Ptr("value2"),
@@ -117,7 +117,7 @@ func ExampleNatGatewaysClient_BeginUpdateTags() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armazurestackhcivm.NatGatewaysClientUpdateTagsResponse{
+	// res = armazurestackhcivm.NATGatewaysClientUpdateTagsResponse{
 	// 	NatGateway: armazurestackhcivm.NatGateway{
 	// 		Name: to.Ptr("testnatgw"),
 	// 		Type: to.Ptr("Microsoft.AzureStackHCI/natGateways"),
@@ -149,7 +149,7 @@ func ExampleNatGatewaysClient_BeginUpdateTags() {
 }
 
 // Generated from example definition: 2026-07-01-preview/NatGateways_Get.json
-func ExampleNatGatewaysClient_Get() {
+func ExampleNATGatewaysClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -159,14 +159,14 @@ func ExampleNatGatewaysClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewNatGatewaysClient().Get(ctx, "test-rg", "test-nat-gw", nil)
+	res, err := clientFactory.NewNATGatewaysClient().Get(ctx, "test-rg", "test-nat-gw", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armazurestackhcivm.NatGatewaysClientGetResponse{
+	// res = armazurestackhcivm.NATGatewaysClientGetResponse{
 	// 	NatGateway: armazurestackhcivm.NatGateway{
 	// 		Name: to.Ptr("test-nat-gw"),
 	// 		Type: to.Ptr("Microsoft.AzureStackHCI/natGateways"),
@@ -194,7 +194,7 @@ func ExampleNatGatewaysClient_Get() {
 }
 
 // Generated from example definition: 2026-07-01-preview/NatGateways_ListAll.json
-func ExampleNatGatewaysClient_NewListAllPager() {
+func ExampleNATGatewaysClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -204,7 +204,7 @@ func ExampleNatGatewaysClient_NewListAllPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewNatGatewaysClient().NewListAllPager(nil)
+	pager := clientFactory.NewNATGatewaysClient().NewListAllPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -215,7 +215,7 @@ func ExampleNatGatewaysClient_NewListAllPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armazurestackhcivm.NatGatewaysClientListAllResponse{
+		// page = armazurestackhcivm.NATGatewaysClientListAllResponse{
 		// 	NatGatewayListResult: armazurestackhcivm.NatGatewayListResult{
 		// 		Value: []*armazurestackhcivm.NatGateway{
 		// 			{
@@ -248,7 +248,7 @@ func ExampleNatGatewaysClient_NewListAllPager() {
 }
 
 // Generated from example definition: 2026-07-01-preview/NatGateways_ListByResourceGroup.json
-func ExampleNatGatewaysClient_NewListByResourceGroupPager() {
+func ExampleNATGatewaysClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -258,7 +258,7 @@ func ExampleNatGatewaysClient_NewListByResourceGroupPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewNatGatewaysClient().NewListByResourceGroupPager("test-rg", nil)
+	pager := clientFactory.NewNATGatewaysClient().NewListByResourceGroupPager("test-rg", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -269,7 +269,7 @@ func ExampleNatGatewaysClient_NewListByResourceGroupPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armazurestackhcivm.NatGatewaysClientListByResourceGroupResponse{
+		// page = armazurestackhcivm.NATGatewaysClientListByResourceGroupResponse{
 		// 	NatGatewayListResult: armazurestackhcivm.NatGatewayListResult{
 		// 		Value: []*armazurestackhcivm.NatGateway{
 		// 			{

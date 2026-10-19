@@ -1,6 +1,6 @@
 # Release History
 
-## 0.2.0 (2026-10-15)
+## 0.2.0 (2026-10-19)
 ### Breaking Changes
 
 - Struct `VMImageRepositoryCredentials` has been removed
@@ -21,9 +21,16 @@
 - New enum type `LoadBalancerRuleTransportProtocol` with values `LoadBalancerRuleTransportProtocolAll`, `LoadBalancerRuleTransportProtocolTCP`, `LoadBalancerRuleTransportProtocolUDP`
 - New enum type `Origin` with values `OriginSystem`, `OriginUser`, `OriginUserSystem`
 - New enum type `PublicIPAddressType` with values `PublicIPAddressTypeIPv4`, `PublicIPAddressTypeIPv6`
+- New function `NewNATGatewaysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*NATGatewaysClient, error)`
+- New function `*NATGatewaysClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, natGatewayName string, resource NatGateway, options *NATGatewaysClientBeginCreateOrUpdateOptions) (*runtime.Poller[NATGatewaysClientCreateOrUpdateResponse], error)`
+- New function `*NATGatewaysClient.BeginDelete(ctx context.Context, resourceGroupName string, natGatewayName string, options *NATGatewaysClientBeginDeleteOptions) (*runtime.Poller[NATGatewaysClientDeleteResponse], error)`
+- New function `*NATGatewaysClient.Get(ctx context.Context, resourceGroupName string, natGatewayName string, options *NATGatewaysClientGetOptions) (NATGatewaysClientGetResponse, error)`
+- New function `*NATGatewaysClient.NewListAllPager(options *NATGatewaysClientListAllOptions) *runtime.Pager[NATGatewaysClientListAllResponse]`
+- New function `*NATGatewaysClient.NewListByResourceGroupPager(resourceGroupName string, options *NATGatewaysClientListByResourceGroupOptions) *runtime.Pager[NATGatewaysClientListByResourceGroupResponse]`
+- New function `*NATGatewaysClient.BeginUpdateTags(ctx context.Context, resourceGroupName string, natGatewayName string, properties NatGatewayTagsUpdate, options *NATGatewaysClientBeginUpdateTagsOptions) (*runtime.Poller[NATGatewaysClientUpdateTagsResponse], error)`
 - New function `*ClientFactory.NewInboundRulesClient() *InboundRulesClient`
 - New function `*ClientFactory.NewLoadBalancersClient() *LoadBalancersClient`
-- New function `*ClientFactory.NewNatGatewaysClient() *NatGatewaysClient`
+- New function `*ClientFactory.NewNATGatewaysClient() *NATGatewaysClient`
 - New function `*ClientFactory.NewOperationsClient() *OperationsClient`
 - New function `*ClientFactory.NewPublicIPAddressesClient() *PublicIPAddressesClient`
 - New function `*ClientFactory.NewSnapshotsClient() *SnapshotsClient`
@@ -71,13 +78,6 @@
 - New function `*VirtualNetworksClient.NewListAllPager(options *VirtualNetworksClientListAllOptions) *runtime.Pager[VirtualNetworksClientListAllResponse]`
 - New function `*VirtualNetworksClient.NewListByResourceGroupPager(resourceGroupName string, options *VirtualNetworksClientListByResourceGroupOptions) *runtime.Pager[VirtualNetworksClientListByResourceGroupResponse]`
 - New function `*VirtualNetworksClient.BeginUpdateTags(ctx context.Context, resourceGroupName string, virtualNetworkName string, properties VirtualNetworkTagsUpdate, options *VirtualNetworksClientBeginUpdateTagsOptions) (*runtime.Poller[VirtualNetworksClientUpdateTagsResponse], error)`
-- New function `NewNatGatewaysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*NatGatewaysClient, error)`
-- New function `*NatGatewaysClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, natGatewayName string, resource NatGateway, options *NatGatewaysClientBeginCreateOrUpdateOptions) (*runtime.Poller[NatGatewaysClientCreateOrUpdateResponse], error)`
-- New function `*NatGatewaysClient.BeginDelete(ctx context.Context, resourceGroupName string, natGatewayName string, options *NatGatewaysClientBeginDeleteOptions) (*runtime.Poller[NatGatewaysClientDeleteResponse], error)`
-- New function `*NatGatewaysClient.Get(ctx context.Context, resourceGroupName string, natGatewayName string, options *NatGatewaysClientGetOptions) (NatGatewaysClientGetResponse, error)`
-- New function `*NatGatewaysClient.NewListAllPager(options *NatGatewaysClientListAllOptions) *runtime.Pager[NatGatewaysClientListAllResponse]`
-- New function `*NatGatewaysClient.NewListByResourceGroupPager(resourceGroupName string, options *NatGatewaysClientListByResourceGroupOptions) *runtime.Pager[NatGatewaysClientListByResourceGroupResponse]`
-- New function `*NatGatewaysClient.BeginUpdateTags(ctx context.Context, resourceGroupName string, natGatewayName string, properties NatGatewayTagsUpdate, options *NatGatewaysClientBeginUpdateTagsOptions) (*runtime.Poller[NatGatewaysClientUpdateTagsResponse], error)`
 - New struct `BackendAddressPool`
 - New struct `BackendAddressPoolProperties`
 - New struct `CreationData`

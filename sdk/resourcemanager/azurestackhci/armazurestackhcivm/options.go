@@ -211,38 +211,38 @@ type MarketplaceGalleryImagesClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NatGatewaysClientBeginCreateOrUpdateOptions contains the optional parameters for the NatGatewaysClient.BeginCreateOrUpdate
+// NATGatewaysClientBeginCreateOrUpdateOptions contains the optional parameters for the NATGatewaysClient.BeginCreateOrUpdate
 // method.
-type NatGatewaysClientBeginCreateOrUpdateOptions struct {
+type NATGatewaysClientBeginCreateOrUpdateOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
-// NatGatewaysClientBeginDeleteOptions contains the optional parameters for the NatGatewaysClient.BeginDelete method.
-type NatGatewaysClientBeginDeleteOptions struct {
+// NATGatewaysClientBeginDeleteOptions contains the optional parameters for the NATGatewaysClient.BeginDelete method.
+type NATGatewaysClientBeginDeleteOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
-// NatGatewaysClientBeginUpdateTagsOptions contains the optional parameters for the NatGatewaysClient.BeginUpdateTags method.
-type NatGatewaysClientBeginUpdateTagsOptions struct {
+// NATGatewaysClientBeginUpdateTagsOptions contains the optional parameters for the NATGatewaysClient.BeginUpdateTags method.
+type NATGatewaysClientBeginUpdateTagsOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
-// NatGatewaysClientGetOptions contains the optional parameters for the NatGatewaysClient.Get method.
-type NatGatewaysClientGetOptions struct {
+// NATGatewaysClientGetOptions contains the optional parameters for the NATGatewaysClient.Get method.
+type NATGatewaysClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NatGatewaysClientListAllOptions contains the optional parameters for the NatGatewaysClient.NewListAllPager method.
-type NatGatewaysClientListAllOptions struct {
+// NATGatewaysClientListAllOptions contains the optional parameters for the NATGatewaysClient.NewListAllPager method.
+type NATGatewaysClientListAllOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NatGatewaysClientListByResourceGroupOptions contains the optional parameters for the NatGatewaysClient.NewListByResourceGroupPager
+// NATGatewaysClientListByResourceGroupOptions contains the optional parameters for the NATGatewaysClient.NewListByResourceGroupPager
 // method.
-type NatGatewaysClientListByResourceGroupOptions struct {
+type NATGatewaysClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 

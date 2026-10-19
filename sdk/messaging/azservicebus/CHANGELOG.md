@@ -1,6 +1,6 @@
 # Release History
 
-## 1.11.1 (Unreleased)
+## 1.11.1-beta.1 (Unreleased)
 
 ### Bugs Fixed
 

@@ -3027,14 +3027,11 @@ func (d *DirectoryRecordedTestsSuite) TestDirListFilesAndDirsIncludeAllSMB() {
 	_require.Nil(dir.Properties.FileMode)
 }
 
-// newMockListClient returns a Client whose transport returns body as a single 200 OK List Directories and Files response.
-func newMockListClient(t *testing.T, body string) (*directory.Client, *testcommon.MockTransport) {
-	transport := testcommon.NewMockTransport(testcommon.MockResponse{StatusCode: http.StatusOK, Body: body})
-	client, err := directory.NewClientWithNoCredential("https://account.file.core.windows.net/share/dir", &directory.ClientOptions{
-		ClientOptions: testcommon.MockClientOptions(transport),
-	})
-	require.NoError(t, err)
-	return client, transport
+// newMockListClient returns a Client whose mock server returns body as a single 200 OK List Directories and Files response.
+func newMockListClient(t *testing.T, body string) (*directory.Client, *mock.Server) {
+	client, srv := newMockDirectoryClient(t)
+	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(body)))
+	return client, srv
 }
 
 func listFirstPage(t *testing.T, client *directory.Client, options *directory.ListFilesAndDirectoriesOptions) directory.ListFilesAndDirectoriesResponse {
@@ -3346,13 +3343,16 @@ func TestListFilesAndDirectoriesIncludeQueryMocked(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			client, transport := newMockListClient(t, emptyListFilesAndDirectoriesXML)
+			client, srv := newMockDirectoryClient(t)
+			// the list response is only returned when the include parameter is sent as expected
+			srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(emptyListFilesAndDirectoriesXML)),
+				mock.WithPredicate(func(req *http.Request) bool {
+					_, ok := req.URL.Query()["include"]
+					return req.URL.Query().Get("include") == tc.expected && ok == (tc.expected != "")
+				}))
+			srv.AppendResponse(mock.WithStatusCode(http.StatusBadRequest))
 			_ = listFirstPage(t, client, &directory.ListFilesAndDirectoriesOptions{Include: tc.include})
-			require.Len(t, transport.Requests, 1)
-			query := transport.Requests[0].URL.Query()
-			require.Equal(t, tc.expected, query.Get("include"))
-			_, ok := query["include"]
-			require.Equal(t, tc.expected != "", ok)
+			require.Equal(t, 1, srv.Requests())
 		})
 	}
 }

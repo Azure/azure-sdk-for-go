@@ -369,8 +369,8 @@ func (s *ServiceRecordedTestsSuite) TestListSharesCreationTime() {
 
 func TestListSharesCreationTimeMocked(t *testing.T) {
 	_require := require.New(t)
-	client, err := service.NewClientWithNoCredential("https://account.file.core.windows.net/", &service.ClientOptions{
-		ClientOptions: testcommon.MockClientOptions(testcommon.NewMockTransport(testcommon.MockResponse{StatusCode: http.StatusOK, Body: `<?xml version="1.0" encoding="utf-8"?>
+	client, srv := newMockServiceClient(t)
+	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(`<?xml version="1.0" encoding="utf-8"?>
 <EnumerationResults ServiceEndpoint="https://account.file.core.windows.net/">
   <Shares>
     <Share>
@@ -392,9 +392,7 @@ func TestListSharesCreationTimeMocked(t *testing.T) {
     </Share>
   </Shares>
   <NextMarker />
-</EnumerationResults>`})),
-	})
-	_require.NoError(err)
+</EnumerationResults>`)))
 
 	resp, err := client.NewListSharesPager(nil).NextPage(context.Background())
 	_require.NoError(err)

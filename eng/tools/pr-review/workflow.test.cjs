@@ -377,19 +377,65 @@ test("compiled reviewer retains validated targets in both agent and publisher co
   assert.ok(safeOutputs.indexOf("Reject stale review outputs") < safeOutputs.indexOf("Process Safe Outputs"));
 });
 
-test("the actual safe-output guard blocks a changed or closed PR", async () => {
+test("the actual safe-output guard cleans up rejected reviews without consuming new requests", async (t) => {
   const source = text("mgmt-review.md");
   const script = source.split("    - name: Reject stale review outputs\n")[1]
     .split("  threat-detection:")[0].split("        script: |\n")[1]
     .split("\n").map((line) => line.slice(10)).join("\n");
   const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor;
-  const guard = new AsyncFunction("github", "context", "process", script);
-  const state = fixture();
+  const guard = new AsyncFunction("github", "context", "process", "core", script);
   const process = { env: { REVIEW_PR_NUMBER: "42", REVIEW_HEAD_SHA: sha } };
-  await guard(state.github, state.context, process);
-  state.pr.head.sha = nextSha;
-  await assert.rejects(guard(state.github, state.context, process), /No review outputs/);
-  state.pr.head.sha = sha;
-  state.pr.state = "closed";
-  await assert.rejects(guard(state.github, state.context, process), /No review outputs/);
+  const run = (state) => guard(state.github, state.context, process, state.core);
+
+  await t.test("current head proceeds without removing labels", async () => {
+    const state = fixture();
+    state.pr.labels = [{ name: needed }, { name: progress }];
+    await run(state);
+    assert.deepEqual(state.pr.labels, [{ name: needed }, { name: progress }]);
+    assert.equal(state.calls.removals.length, 0);
+  });
+
+  for (const [name, mutate] of [
+    ["changed head", (state) => state.pr.head.sha = nextSha],
+    ["closed PR", (state) => state.pr.state = "closed"],
+  ]) {
+    await t.test(name, async () => {
+      const state = fixture();
+      state.pr.labels = [{ name: needed }, { name: progress }];
+      mutate(state);
+      await assert.rejects(run(state), /No review outputs/);
+      assert.deepEqual(state.pr.labels, [{ name: needed }]);
+      assert.deepEqual(state.calls.removals, [{
+        ...state.context.repo,
+        issue_number: 42,
+        name: progress,
+      }]);
+    });
+  }
+
+  await t.test("already-absent in-progress label still rejects stale output", async () => {
+    const state = fixture();
+    state.pr.head.sha = nextSha;
+    state.github.rest.issues.removeLabel = async (request) => {
+      state.calls.removals.push(request);
+      throw Object.assign(new Error("Label not found"), { status: 404 });
+    };
+    await assert.rejects(run(state), /No review outputs/);
+    assert.deepEqual(state.pr.labels, [{ name: needed }]);
+    assert.deepEqual(state.calls.removals.map((request) => request.name), [progress]);
+    assert.ok(state.calls.logs.includes("The in-progress label was already removed."));
+  });
+
+  await t.test("cleanup failures are surfaced and no other labels are touched", async () => {
+    const state = fixture();
+    state.pr.labels = [{ name: needed }, { name: progress }];
+    state.pr.head.sha = nextSha;
+    state.github.rest.issues.removeLabel = async (request) => {
+      state.calls.removals.push(request);
+      throw Object.assign(new Error("Label cleanup denied"), { status: 403 });
+    };
+    await assert.rejects(run(state), /Label cleanup denied/);
+    assert.deepEqual(state.pr.labels, [{ name: needed }, { name: progress }]);
+    assert.deepEqual(state.calls.removals.map((request) => request.name), [progress]);
+  });
 });

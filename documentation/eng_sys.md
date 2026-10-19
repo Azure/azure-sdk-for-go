@@ -16,9 +16,9 @@ check out or execute PR code.
 
 ### Management review
 
-Apply `mgmt-review-needed` to request a review. The [review intake](../.github/workflows/pr-review-intake.yml)
-wakes the [router](../.github/workflows/pr-review-router.yml), which dispatches the
-[management reviewer](../.github/workflows/mgmt-review.md) on the default branch.
+Apply `mgmt-review-needed` to request a review. The [review intake](https://github.com/Azure/azure-sdk-for-go/blob/main/.github/workflows/pr-review-intake.yml)
+wakes the [router](https://github.com/Azure/azure-sdk-for-go/blob/main/.github/workflows/pr-review-router.yml), which dispatches the
+[management reviewer](https://github.com/Azure/azure-sdk-for-go/blob/main/.github/workflows/mgmt-review.md) on the default branch.
 This follows the design in [Azure/azure-sdk-for-js#40034](https://github.com/Azure/azure-sdk-for-js/pull/40034),
 with only Go's management reviewer enabled.
 The router and reviewer independently verify the intake workflow, its current
@@ -37,8 +37,11 @@ Requests for a PR are serialized rather than cancelling an active review.
 The reviewer claims the exact label event, marks the PR `mgmt-review-in-progress`,
 and publishes only while the reviewed head is still current and the PR is open.
 Completion replaces the in-progress label with `mgmt-review-analyzed`.
+If publication is rejected because the head changed or the PR closed, trusted
+cleanup removes only the in-progress label and preserves any newly applied
+`mgmt-review-needed` label.
 
-The shared [GitHub Event Processor](../.github/workflows/event-processor.yml)
+The shared [GitHub Event Processor](https://github.com/Azure/azure-sdk-for-go/blob/main/.github/workflows/event-processor.yml)
 is outside this migration and continues to use `pull_request_target`, matching
 the scope of the JS migration.
 
@@ -50,7 +53,7 @@ Run the focused tests from the repository root:
 node --test eng\tools\pr-review\workflow.test.cjs
 ```
 
-The [validation workflow](../.github/workflows/validate-pr-automation.yml) runs
+The [validation workflow](https://github.com/Azure/azure-sdk-for-go/blob/main/.github/workflows/validate-pr-automation.yml) runs
 these tests without secrets or write permissions, including on fork PRs.
 Regenerate the management review lock file with gh-aw v0.88.7 after changing
 its Markdown source:

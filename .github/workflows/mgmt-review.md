@@ -87,6 +87,16 @@ safe-outputs:
             pull_number: Number(process.env.REVIEW_PR_NUMBER),
           });
           if (pr.state !== 'open' || pr.head.sha !== process.env.REVIEW_HEAD_SHA) {
+            try {
+              await github.rest.issues.removeLabel({
+                ...context.repo,
+                issue_number: pr.number,
+                name: 'mgmt-review-in-progress',
+              });
+            } catch (error) {
+              if (error.status !== 404) throw error;
+              core.info('The in-progress label was already removed.');
+            }
             throw new Error('The PR changed or closed during review. No review outputs were published; request a new review.');
           }
   threat-detection:

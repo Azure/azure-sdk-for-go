@@ -62,7 +62,7 @@ func (client *TenantLevelSharedGalleryInvitesClient) BeginTenantLevelGalleryShar
 	}
 }
 
-// TenantLevelGallerySharingAccept - Accept sharing of a tenant-level shared gallery.
+// tenantLevelGallerySharingAccept - Accept sharing of a tenant-level shared gallery.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *TenantLevelSharedGalleryInvitesClient) tenantLevelGallerySharingAccept(ctx context.Context, location string, sharedGallerySubscriptionID string, sharedGalleryName string, options *TenantLevelSharedGalleryInvitesClientBeginTenantLevelGallerySharingAcceptOptions) (*http.Response, error) {
 	var err error
@@ -84,7 +84,7 @@ func (client *TenantLevelSharedGalleryInvitesClient) tenantLevelGallerySharingAc
 	return httpResp, nil
 }
 
-// tenantLevelGallerySharingAcceptCreateRequest creates the TenantLevelGallerySharingAccept request.
+// tenantLevelGallerySharingAcceptCreateRequest creates the tenantLevelGallerySharingAccept request.
 func (client *TenantLevelSharedGalleryInvitesClient) tenantLevelGallerySharingAcceptCreateRequest(ctx context.Context, location string, sharedGallerySubscriptionID string, sharedGalleryName string, _ *TenantLevelSharedGalleryInvitesClientBeginTenantLevelGallerySharingAcceptOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Compute/locations/{location}/tenantLevelSharedGallerySubscriptions/{sharedGallerySubscriptionId}/sharedGalleries/{sharedGalleryName}/accept"
 	if location == "" {
@@ -133,7 +133,7 @@ func (client *TenantLevelSharedGalleryInvitesClient) BeginTenantLevelGalleryShar
 	}
 }
 
-// TenantLevelGallerySharingReject - Reject sharing of a tenant-level shared gallery.
+// tenantLevelGallerySharingReject - Reject sharing of a tenant-level shared gallery.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *TenantLevelSharedGalleryInvitesClient) tenantLevelGallerySharingReject(ctx context.Context, location string, sharedGallerySubscriptionID string, sharedGalleryName string, options *TenantLevelSharedGalleryInvitesClientBeginTenantLevelGallerySharingRejectOptions) (*http.Response, error) {
 	var err error
@@ -155,7 +155,7 @@ func (client *TenantLevelSharedGalleryInvitesClient) tenantLevelGallerySharingRe
 	return httpResp, nil
 }
 
-// tenantLevelGallerySharingRejectCreateRequest creates the TenantLevelGallerySharingReject request.
+// tenantLevelGallerySharingRejectCreateRequest creates the tenantLevelGallerySharingReject request.
 func (client *TenantLevelSharedGalleryInvitesClient) tenantLevelGallerySharingRejectCreateRequest(ctx context.Context, location string, sharedGallerySubscriptionID string, sharedGalleryName string, _ *TenantLevelSharedGalleryInvitesClientBeginTenantLevelGallerySharingRejectOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Compute/locations/{location}/tenantLevelSharedGallerySubscriptions/{sharedGallerySubscriptionId}/sharedGalleries/{sharedGalleryName}/reject"
 	if location == "" {

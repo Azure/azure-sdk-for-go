@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v8"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v9"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -30,6 +30,10 @@ type GalleryImageVersionsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, galleryName string, galleryImageName string, galleryImageVersionName string, options *armcompute.GalleryImageVersionsClientBeginDeleteOptions) (resp azfake.PollerResponder[armcompute.GalleryImageVersionsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method GalleryImageVersionsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK
+	BeginUpdate func(ctx context.Context, resourceGroupName string, galleryName string, galleryImageName string, galleryImageVersionName string, galleryImageVersion armcompute.GalleryImageVersionUpdate, options *armcompute.GalleryImageVersionsClientBeginUpdateOptions) (resp azfake.PollerResponder[armcompute.GalleryImageVersionsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method GalleryImageVersionsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, galleryName string, galleryImageName string, galleryImageVersionName string, options *armcompute.GalleryImageVersionsClientGetOptions) (resp azfake.Responder[armcompute.GalleryImageVersionsClientGetResponse], errResp azfake.ErrorResponder)
@@ -37,10 +41,6 @@ type GalleryImageVersionsServer struct {
 	// NewListByGalleryImagePager is the fake for method GalleryImageVersionsClient.NewListByGalleryImagePager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByGalleryImagePager func(resourceGroupName string, galleryName string, galleryImageName string, options *armcompute.GalleryImageVersionsClientListByGalleryImageOptions) (resp azfake.PagerResponder[armcompute.GalleryImageVersionsClientListByGalleryImageResponse])
-
-	// BeginUpdate is the fake for method GalleryImageVersionsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK
-	BeginUpdate func(ctx context.Context, resourceGroupName string, galleryName string, galleryImageName string, galleryImageVersionName string, galleryImageVersion armcompute.GalleryImageVersionUpdate, options *armcompute.GalleryImageVersionsClientBeginUpdateOptions) (resp azfake.PollerResponder[armcompute.GalleryImageVersionsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewGalleryImageVersionsServerTransport creates a new instance of GalleryImageVersionsServerTransport with the provided implementation.
@@ -51,8 +51,8 @@ func NewGalleryImageVersionsServerTransport(srv *GalleryImageVersionsServer) *Ga
 		srv:                        srv,
 		beginCreateOrUpdate:        newTracker[azfake.PollerResponder[armcompute.GalleryImageVersionsClientCreateOrUpdateResponse]](),
 		beginDelete:                newTracker[azfake.PollerResponder[armcompute.GalleryImageVersionsClientDeleteResponse]](),
-		newListByGalleryImagePager: newTracker[azfake.PagerResponder[armcompute.GalleryImageVersionsClientListByGalleryImageResponse]](),
 		beginUpdate:                newTracker[azfake.PollerResponder[armcompute.GalleryImageVersionsClientUpdateResponse]](),
+		newListByGalleryImagePager: newTracker[azfake.PagerResponder[armcompute.GalleryImageVersionsClientListByGalleryImageResponse]](),
 	}
 }
 
@@ -62,8 +62,8 @@ type GalleryImageVersionsServerTransport struct {
 	srv                        *GalleryImageVersionsServer
 	beginCreateOrUpdate        *tracker[azfake.PollerResponder[armcompute.GalleryImageVersionsClientCreateOrUpdateResponse]]
 	beginDelete                *tracker[azfake.PollerResponder[armcompute.GalleryImageVersionsClientDeleteResponse]]
-	newListByGalleryImagePager *tracker[azfake.PagerResponder[armcompute.GalleryImageVersionsClientListByGalleryImageResponse]]
 	beginUpdate                *tracker[azfake.PollerResponder[armcompute.GalleryImageVersionsClientUpdateResponse]]
+	newListByGalleryImagePager *tracker[azfake.PagerResponder[armcompute.GalleryImageVersionsClientListByGalleryImageResponse]]
 }
 
 // Do implements the policy.Transporter interface for GalleryImageVersionsServerTransport.
@@ -91,12 +91,12 @@ func (g *GalleryImageVersionsServerTransport) dispatchToMethodFake(req *http.Req
 				res.resp, res.err = g.dispatchBeginCreateOrUpdate(req)
 			case "GalleryImageVersionsClient.BeginDelete":
 				res.resp, res.err = g.dispatchBeginDelete(req)
+			case "GalleryImageVersionsClient.BeginUpdate":
+				res.resp, res.err = g.dispatchBeginUpdate(req)
 			case "GalleryImageVersionsClient.Get":
 				res.resp, res.err = g.dispatchGet(req)
 			case "GalleryImageVersionsClient.NewListByGalleryImagePager":
 				res.resp, res.err = g.dispatchNewListByGalleryImagePager(req)
-			case "GalleryImageVersionsClient.BeginUpdate":
-				res.resp, res.err = g.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -232,6 +232,62 @@ func (g *GalleryImageVersionsServerTransport) dispatchBeginDelete(req *http.Requ
 	return resp, nil
 }
 
+func (g *GalleryImageVersionsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if g.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := g.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/galleries/(?P<galleryName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/images/(?P<galleryImageName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/versions/(?P<galleryImageVersionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 6 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armcompute.GalleryImageVersionUpdate](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		galleryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("galleryName")])
+		if err != nil {
+			return nil, err
+		}
+		galleryImageNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("galleryImageName")])
+		if err != nil {
+			return nil, err
+		}
+		galleryImageVersionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("galleryImageVersionName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := g.srv.BeginUpdate(req.Context(), resourceGroupNameParam, galleryNameParam, galleryImageNameParam, galleryImageVersionNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		g.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		g.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		g.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (g *GalleryImageVersionsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if g.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -323,62 +379,6 @@ func (g *GalleryImageVersionsServerTransport) dispatchNewListByGalleryImagePager
 	if !server.PagerResponderMore(newListByGalleryImagePager) {
 		g.newListByGalleryImagePager.remove(req)
 	}
-	return resp, nil
-}
-
-func (g *GalleryImageVersionsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if g.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := g.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/galleries/(?P<galleryName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/images/(?P<galleryImageName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/versions/(?P<galleryImageVersionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 6 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcompute.GalleryImageVersionUpdate](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		galleryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("galleryName")])
-		if err != nil {
-			return nil, err
-		}
-		galleryImageNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("galleryImageName")])
-		if err != nil {
-			return nil, err
-		}
-		galleryImageVersionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("galleryImageVersionName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := g.srv.BeginUpdate(req.Context(), resourceGroupNameParam, galleryNameParam, galleryImageNameParam, galleryImageVersionNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		g.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		g.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		g.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

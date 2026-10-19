@@ -68,7 +68,7 @@ func (client *GallerySharingProfileClient) BeginUpdate(ctx context.Context, reso
 	}
 }
 
-// Update - Update sharing profile of a gallery.
+// update - Update sharing profile of a gallery.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *GallerySharingProfileClient) update(ctx context.Context, resourceGroupName string, galleryName string, sharingUpdate SharingUpdate, options *GallerySharingProfileClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
@@ -90,7 +90,7 @@ func (client *GallerySharingProfileClient) update(ctx context.Context, resourceG
 	return httpResp, nil
 }
 
-// updateCreateRequest creates the Update request.
+// updateCreateRequest creates the update request.
 func (client *GallerySharingProfileClient) updateCreateRequest(ctx context.Context, resourceGroupName string, galleryName string, sharingUpdate SharingUpdate, _ *GallerySharingProfileClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/share"
 	if client.subscriptionID == "" {

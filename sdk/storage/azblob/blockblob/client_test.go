@@ -19,6 +19,7 @@ import (
 	"slices"
 	"strconv"
 	"strings"
+	"sync"
 	"testing"
 	"time"
 
@@ -6244,22 +6245,46 @@ func (s *BlockBlobRecordedTestsSuite) TestBlockGetAccountInfo() {
 }
 
 type fakeBlockBlob struct {
+	mu          sync.Mutex
 	totalStaged int64
+	// putBlobSizes, stagedBlockSizes and commitCount record the Put Blob, Put Block and
+	// Put Block List requests received, so tests can tell single-shot uploads from partitioned ones.
+	putBlobSizes     []int64
+	stagedBlockSizes []int64
+	commitCount      int
+	// validatedRequests counts the Put Blob and Put Block requests that carried a transactional checksum.
+	validatedRequests int
 }
 
 func (f *fakeBlockBlob) Do(req *http.Request) (*http.Response, error) {
 	// verify that the number of bytes read matches what was specified
 	data := make([]byte, req.ContentLength)
-	read, err := req.Body.Read(data)
+	read, err := io.ReadFull(req.Body, data)
 	if err != nil && !errors.Is(err, io.EOF) {
 		return nil, err
 	} else if int64(read) < req.ContentLength {
 		return nil, fmt.Errorf("expected %d bytes, read %d", req.ContentLength, read)
 	}
-	qp := req.URL.Query()
-	if comp := qp.Get("comp"); comp == "block" {
+	f.mu.Lock()
+	defer f.mu.Unlock()
+	validated := hasRawHeader(req.Header, "x-ms-content-crc64") || hasRawHeader(req.Header, "x-ms-structured-body")
+	switch req.URL.Query().Get("comp") {
+	case "block":
 		// staging a block, record its size
 		f.totalStaged += int64(read)
+		f.stagedBlockSizes = append(f.stagedBlockSizes, int64(read))
+		if validated {
+			f.validatedRequests++
+		}
+	case "blocklist":
+		f.commitCount++
+	case "":
+		if req.Method == http.MethodPut {
+			f.putBlobSizes = append(f.putBlobSizes, int64(read))
+			if validated {
+				f.validatedRequests++
+			}
+		}
 	}
 	return &http.Response{
 		Request:    req,
@@ -6281,7 +6306,7 @@ func TestUploadBufferUnevenBlockSize(t *testing.T) {
 	require.NotNil(t, client)
 
 	// create fake source that's not evenly divisible by 50000 (max number of blocks)
-	// and greater than MaxUploadBlobBytes (256MB) so that it doesn't fit into a single upload.
+	// and larger than the default block size so that it doesn't fit into a single upload.
 
 	buffer := make([]byte, 263*1024*1024)
 	for i := 0; i < len(buffer); i++ {
@@ -6306,7 +6331,7 @@ func TestUploadBufferEvenBlockSize(t *testing.T) {
 	require.NotNil(t, client)
 
 	// create fake source that's evenly divisible by 50000 (max number of blocks)
-	// and greater than MaxUploadBlobBytes (256MB) so that it doesn't fit into a single upload.
+	// and larger than the default block size so that it doesn't fit into a single upload.
 
 	buffer := make([]byte, 270000000)
 	for i := 0; i < len(buffer); i++ {
@@ -6318,6 +6343,144 @@ func TestUploadBufferEvenBlockSize(t *testing.T) {
 	})
 	require.NoError(t, err)
 	require.Equal(t, int64(len(buffer)), fbb.totalStaged)
+}
+
+// hasRawHeader reports whether a header is set, looking it up both canonically and with the
+// wire casing the generated clients use when assigning directly into the header map.
+func hasRawHeader(h http.Header, name string) bool {
+	return h.Get(name) != "" || len(h[name]) > 0
+}
+
+func newFakeBlockBlobClient(t *testing.T) (*blockblob.Client, *fakeBlockBlob) {
+	t.Helper()
+	fbb := &fakeBlockBlob{}
+	client, err := blockblob.NewClientWithNoCredential("https://fake/blob/path", &blockblob.ClientOptions{
+		ClientOptions: policy.ClientOptions{
+			Transport: fbb,
+		},
+	})
+	require.NoError(t, err)
+	return client, fbb
+}
+
+// TestUploadBufferSingleUploadDefaultThreshold verifies that, without an explicit BlockSize, content that
+// fits in the default block size is uploaded with a single Put Blob request. Content of exactly one block
+// fits, so it's uploaded with a single request too.
+func TestUploadBufferSingleUploadDefaultThreshold(t *testing.T) {
+	for _, size := range []int64{0, 1, blob.DefaultDownloadBlockSize - 1, blob.DefaultDownloadBlockSize} {
+		t.Run(strconv.FormatInt(size, 10), func(t *testing.T) {
+			client, fbb := newFakeBlockBlobClient(t)
+
+			_, err := client.UploadBuffer(context.Background(), make([]byte, size), nil)
+			require.NoError(t, err)
+			require.Equal(t, []int64{size}, fbb.putBlobSizes, "expected a single Put Blob request")
+			require.Empty(t, fbb.stagedBlockSizes)
+			require.Zero(t, fbb.commitCount)
+		})
+	}
+}
+
+// TestUploadBufferMultipleUploadDefaultThreshold verifies that, without an explicit BlockSize, content larger
+// than the default block size is staged in default sized blocks rather than sent with a single Put Blob request
+// (previously, content of up to MaxUploadBlobBytes was uploaded with a single request).
+func TestUploadBufferMultipleUploadDefaultThreshold(t *testing.T) {
+	client, fbb := newFakeBlockBlobClient(t)
+
+	size := blob.DefaultDownloadBlockSize + 1
+	_, err := client.UploadBuffer(context.Background(), make([]byte, size), &blockblob.UploadBufferOptions{Concurrency: 1})
+	require.NoError(t, err)
+	require.Empty(t, fbb.putBlobSizes, "content larger than the default block size should not use Put Blob")
+	require.Equal(t, []int64{blob.DefaultDownloadBlockSize, 1}, fbb.stagedBlockSizes)
+	require.Equal(t, 1, fbb.commitCount)
+}
+
+// TestUploadFileMultipleUploadDefaultThreshold verifies UploadFile partitions the same way as UploadBuffer.
+func TestUploadFileMultipleUploadDefaultThreshold(t *testing.T) {
+	client, fbb := newFakeBlockBlobClient(t)
+
+	size := 2*blob.DefaultDownloadBlockSize + 1
+	file, err := os.CreateTemp(t.TempDir(), "upload")
+	require.NoError(t, err)
+	defer file.Close()
+	_, err = file.Write(make([]byte, size))
+	require.NoError(t, err)
+
+	_, err = client.UploadFile(context.Background(), file, &blockblob.UploadFileOptions{Concurrency: 1})
+	require.NoError(t, err)
+	require.Empty(t, fbb.putBlobSizes)
+	require.Equal(t, []int64{blob.DefaultDownloadBlockSize, blob.DefaultDownloadBlockSize, 1}, fbb.stagedBlockSizes)
+	require.Equal(t, 1, fbb.commitCount)
+}
+
+// TestUploadBufferExplicitBlockSize verifies an explicitly set BlockSize is respected, both as the size of each
+// staged block and as the largest content uploaded with a single Put Blob request.
+func TestUploadBufferExplicitBlockSize(t *testing.T) {
+	const blockSize = 1024 * 1024
+
+	t.Run("single", func(t *testing.T) {
+		client, fbb := newFakeBlockBlobClient(t)
+
+		// larger than the default block size but no larger than the explicit one
+		size := int64(8 * blockSize)
+		_, err := client.UploadBuffer(context.Background(), make([]byte, size), &blockblob.UploadBufferOptions{
+			BlockSize: 2 * blob.DefaultDownloadBlockSize,
+		})
+		require.NoError(t, err)
+		require.Equal(t, []int64{size}, fbb.putBlobSizes)
+		require.Empty(t, fbb.stagedBlockSizes)
+		require.Zero(t, fbb.commitCount)
+	})
+
+	t.Run("partitioned", func(t *testing.T) {
+		client, fbb := newFakeBlockBlobClient(t)
+
+		// smaller than the default block size but larger than the explicit one
+		size := int64(2*blockSize + 1)
+		_, err := client.UploadBuffer(context.Background(), make([]byte, size), &blockblob.UploadBufferOptions{
+			BlockSize:   blockSize,
+			Concurrency: 1,
+		})
+		require.NoError(t, err)
+		require.Empty(t, fbb.putBlobSizes)
+		require.Equal(t, []int64{blockSize, blockSize, 1}, fbb.stagedBlockSizes)
+		require.Equal(t, 1, fbb.commitCount)
+	})
+}
+
+// TestUploadBufferDefaultThresholdWithTransferValidation verifies transactional validation doesn't change the
+// default single upload threshold, and that every request still carries a checksum.
+func TestUploadBufferDefaultThresholdWithTransferValidation(t *testing.T) {
+	for name, tv := range map[string]blob.TransferValidationType{
+		"CRC64":                  blob.TransferValidationTypeComputeCRC64(),
+		"StructuredMessageCRC64": blob.TransferValidationTypeComputeStructuredMessageCRC64(0),
+	} {
+		t.Run(name, func(t *testing.T) {
+			t.Run("single", func(t *testing.T) {
+				client, fbb := newFakeBlockBlobClient(t)
+
+				_, err := client.UploadBuffer(context.Background(), make([]byte, blob.DefaultDownloadBlockSize), &blockblob.UploadBufferOptions{
+					TransactionalValidation: tv,
+				})
+				require.NoError(t, err)
+				require.Len(t, fbb.putBlobSizes, 1)
+				require.Empty(t, fbb.stagedBlockSizes)
+				require.Equal(t, 1, fbb.validatedRequests)
+			})
+
+			t.Run("partitioned", func(t *testing.T) {
+				client, fbb := newFakeBlockBlobClient(t)
+
+				_, err := client.UploadBuffer(context.Background(), make([]byte, blob.DefaultDownloadBlockSize+1), &blockblob.UploadBufferOptions{
+					TransactionalValidation: tv,
+				})
+				require.NoError(t, err)
+				require.Empty(t, fbb.putBlobSizes)
+				require.Len(t, fbb.stagedBlockSizes, 2)
+				require.Equal(t, 1, fbb.commitCount)
+				require.Equal(t, 2, fbb.validatedRequests)
+			})
+		})
+	}
 }
 
 func TestUploadLogEvent(t *testing.T) {
@@ -6346,7 +6509,7 @@ func TestUploadLogEvent(t *testing.T) {
 	require.NotNil(t, client)
 
 	// create fake source that's evenly divisible by 50000 (max number of blocks)
-	// and greater than MaxUploadBlobBytes (256MB) so that it doesn't fit into a single upload.
+	// and larger than the default block size so that it doesn't fit into a single upload.
 
 	buffer := make([]byte, 270000000)
 	for i := 0; i < len(buffer); i++ {

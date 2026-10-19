@@ -287,13 +287,27 @@ type ListFilesAndDirectoriesOptions struct {
 
 // ListFilesInclude specifies one or more datasets to include in the response.
 type ListFilesInclude struct {
+	// Timestamps and ETag are supported for SMB and NFS shares.
+	// Attributes and PermissionKey are only applicable to SMB shares.
 	Timestamps, ETag, Attributes, PermissionKey bool
-	Permissions, LinkCount, NfsAttributes       bool
+
+	// Permissions, LinkCount and NfsAttributes are only applicable to NFS shares.
+	// They are supported in service version 2027-03-07 and above.
+	Permissions, LinkCount, NfsAttributes bool
+
+	// All includes all datasets applicable to the share. When set, the literal value "All" is sent to the
+	// service and the other fields are ignored.
+	// Supported in service version 2027-03-07 and above.
+	All bool
 }
 
 func (l ListFilesInclude) format() []generated.ListFilesIncludeType {
 	if reflect.ValueOf(l).IsZero() {
 		return nil
+	}
+
+	if l.All {
+		return []generated.ListFilesIncludeType{ListFilesIncludeTypeAll}
 	}
 
 	var include []generated.ListFilesIncludeType
@@ -334,6 +348,10 @@ type File = generated.File
 
 // FileProperty - File properties.
 type FileProperty = generated.FileProperty
+
+// The NFS-only item types below report their name as a StringEncoded. If the service returns the name URL-encoded,
+// it is decoded before being returned and StringEncoded.Encoded is set to false. If the name cannot be decoded, it is
+// returned as sent by the service and StringEncoded.Encoded remains true.
 
 // BlockDeviceItem - A listed block device item (NFS only).
 type BlockDeviceItem = generated.BlockDeviceItem

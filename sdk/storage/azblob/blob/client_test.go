@@ -16,6 +16,7 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"sync"
 	"sync/atomic"
 	"testing"
 	"time"
@@ -4549,6 +4550,10 @@ func (s *BlobRecordedTestsSuite) TestBlobClientCustomAudience() {
 type fakeDownloadBlob struct {
 	contentSize int64
 	numGets     uint64
+
+	// ranges records the x-ms-range header of each request, in the order sent.
+	mu     sync.Mutex
+	ranges []string
 }
 
 // nolint
@@ -4558,6 +4563,9 @@ func (f *fakeDownloadBlob) Do(req *http.Request) (*http.Response, error) {
 	etag := `"test-etag-12345"`
 
 	if rangeValues, ok := req.Header["x-ms-range"]; ok && len(rangeValues) > 0 {
+		f.mu.Lock()
+		f.ranges = append(f.ranges, rangeValues[0])
+		f.mu.Unlock()
 		var start, end int64
 		fmt.Sscanf(rangeValues[0], "bytes=%d-%d", &start, &end)
 		if end >= f.contentSize {
@@ -4655,6 +4663,52 @@ func TestDownloadSmallBlobSkipsParallelRequests(t *testing.T) {
 	for i := int64(0); i < fileSize; i++ {
 		_require.Equal(byte(i%251), buff[i], "data mismatch at offset %d", i)
 	}
+}
+
+// TestDownloadDefaultInitialBlockSize verifies the initial range of a download defaults to the same
+// size as the subsequent ranges, so a blob no larger than one block is downloaded with a single request.
+func TestDownloadDefaultInitialBlockSize(t *testing.T) {
+	for _, fileSize := range []int64{blob.DefaultDownloadBlockSize, blob.DefaultDownloadBlockSize + 1, 2*blob.DefaultDownloadBlockSize + 1} {
+		t.Run(strconv.FormatInt(fileSize, 10), func(t *testing.T) {
+			_require := require.New(t)
+			fbb := &fakeDownloadBlob{contentSize: fileSize}
+
+			blobClient, err := blockblob.NewClientWithNoCredential("https://fake/blob/path", &blockblob.ClientOptions{
+				ClientOptions: policy.ClientOptions{Transport: fbb},
+			})
+			_require.NoError(err)
+
+			n, err := blobClient.DownloadBuffer(context.Background(), make([]byte, fileSize), nil)
+			_require.NoError(err)
+			_require.Equal(fileSize, n)
+			_require.Equal(uint64(((fileSize-1)/blob.DefaultDownloadBlockSize)+1), atomic.LoadUint64(&fbb.numGets))
+			_require.Equal(fmt.Sprintf("bytes=0-%d", blob.DefaultDownloadBlockSize-1), fbb.ranges[0])
+		})
+	}
+}
+
+// TestDownloadExplicitBlockSizeInitialRange verifies an explicitly set BlockSize applies to the initial range too.
+func TestDownloadExplicitBlockSizeInitialRange(t *testing.T) {
+	_require := require.New(t)
+
+	fileSize := int64(2*1024*1024 + 1)
+	blockSize := int64(1024 * 1024)
+	fbb := &fakeDownloadBlob{contentSize: fileSize}
+
+	blobClient, err := blockblob.NewClientWithNoCredential("https://fake/blob/path", &blockblob.ClientOptions{
+		ClientOptions: policy.ClientOptions{Transport: fbb},
+	})
+	_require.NoError(err)
+
+	tmp, err := os.CreateTemp(t.TempDir(), "")
+	_require.NoError(err)
+	defer func() { _ = tmp.Close() }()
+
+	n, err := blobClient.DownloadFile(context.Background(), tmp, &blob.DownloadFileOptions{BlockSize: blockSize})
+	_require.NoError(err)
+	_require.Equal(fileSize, n)
+	_require.Equal(uint64(3), atomic.LoadUint64(&fbb.numGets))
+	_require.Equal(fmt.Sprintf("bytes=0-%d", blockSize-1), fbb.ranges[0])
 }
 
 func TestDownloadETagConsistency(t *testing.T) {

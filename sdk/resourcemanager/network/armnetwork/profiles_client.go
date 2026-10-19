@@ -51,7 +51,7 @@ func NewProfilesClient(subscriptionID string, credential azcore.TokenCredential,
 //   - options - ProfilesClientBeginDeleteOptions contains the optional parameters for the ProfilesClient.BeginDelete method.
 func (client *ProfilesClient) BeginDelete(ctx context.Context, resourceGroupName string, networkProfileName string, options *ProfilesClientBeginDeleteOptions) (*runtime.Poller[ProfilesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, networkProfileName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, networkProfileName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -66,9 +66,9 @@ func (client *ProfilesClient) BeginDelete(ctx context.Context, resourceGroupName
 	}
 }
 
-// delete - Deletes the specified network profile.
+// deleteOperation - Deletes the specified network profile.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *ProfilesClient) delete(ctx context.Context, resourceGroupName string, networkProfileName string, options *ProfilesClientBeginDeleteOptions) (*http.Response, error) {
+func (client *ProfilesClient) deleteOperation(ctx context.Context, resourceGroupName string, networkProfileName string, options *ProfilesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ProfilesClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)

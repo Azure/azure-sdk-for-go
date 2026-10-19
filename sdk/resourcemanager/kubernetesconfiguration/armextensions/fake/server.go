@@ -30,6 +30,10 @@ type Server struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, extensionName string, options *armextensions.ClientBeginDeleteOptions) (resp azfake.PollerResponder[armextensions.ClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method Client.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, extensionName string, patchExtension armextensions.PatchExtension, options *armextensions.ClientBeginUpdateOptions) (resp azfake.PollerResponder[armextensions.ClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method Client.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, extensionName string, options *armextensions.ClientGetOptions) (resp azfake.Responder[armextensions.ClientGetResponse], errResp azfake.ErrorResponder)
@@ -37,10 +41,6 @@ type Server struct {
 	// NewListPager is the fake for method Client.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, options *armextensions.ClientListOptions) (resp azfake.PagerResponder[armextensions.ClientListResponse])
-
-	// BeginUpdate is the fake for method Client.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, extensionName string, patchExtension armextensions.PatchExtension, options *armextensions.ClientBeginUpdateOptions) (resp azfake.PollerResponder[armextensions.ClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewServerTransport creates a new instance of ServerTransport with the provided implementation.
@@ -51,8 +51,8 @@ func NewServerTransport(srv *Server) *ServerTransport {
 		srv:          srv,
 		beginCreate:  newTracker[azfake.PollerResponder[armextensions.ClientCreateResponse]](),
 		beginDelete:  newTracker[azfake.PollerResponder[armextensions.ClientDeleteResponse]](),
-		newListPager: newTracker[azfake.PagerResponder[armextensions.ClientListResponse]](),
 		beginUpdate:  newTracker[azfake.PollerResponder[armextensions.ClientUpdateResponse]](),
+		newListPager: newTracker[azfake.PagerResponder[armextensions.ClientListResponse]](),
 	}
 }
 
@@ -62,8 +62,8 @@ type ServerTransport struct {
 	srv          *Server
 	beginCreate  *tracker[azfake.PollerResponder[armextensions.ClientCreateResponse]]
 	beginDelete  *tracker[azfake.PollerResponder[armextensions.ClientDeleteResponse]]
-	newListPager *tracker[azfake.PagerResponder[armextensions.ClientListResponse]]
 	beginUpdate  *tracker[azfake.PollerResponder[armextensions.ClientUpdateResponse]]
+	newListPager *tracker[azfake.PagerResponder[armextensions.ClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for ServerTransport.
@@ -91,12 +91,12 @@ func (s *ServerTransport) dispatchToMethodFake(req *http.Request, method string)
 				res.resp, res.err = s.dispatchBeginCreate(req)
 			case "Client.BeginDelete":
 				res.resp, res.err = s.dispatchBeginDelete(req)
+			case "Client.BeginUpdate":
+				res.resp, res.err = s.dispatchBeginUpdate(req)
 			case "Client.Get":
 				res.resp, res.err = s.dispatchGet(req)
 			case "Client.NewListPager":
 				res.resp, res.err = s.dispatchNewListPager(req)
-			case "Client.BeginUpdate":
-				res.resp, res.err = s.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -240,6 +240,66 @@ func (s *ServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response
 	return resp, nil
 }
 
+func (s *ServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if s.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := s.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/(?P<clusterRp>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/(?P<clusterResourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.KubernetesConfiguration/extensions/(?P<extensionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 7 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armextensions.PatchExtension](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		clusterRpParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterRp")])
+		if err != nil {
+			return nil, err
+		}
+		clusterResourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterResourceName")])
+		if err != nil {
+			return nil, err
+		}
+		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
+		if err != nil {
+			return nil, err
+		}
+		extensionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("extensionName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := s.srv.BeginUpdate(req.Context(), resourceGroupNameParam, clusterRpParam, clusterResourceNameParam, clusterNameParam, extensionNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		s.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		s.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		s.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (s *ServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if s.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -331,66 +391,6 @@ func (s *ServerTransport) dispatchNewListPager(req *http.Request) (*http.Respons
 	if !server.PagerResponderMore(newListPager) {
 		s.newListPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (s *ServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if s.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := s.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/(?P<clusterRp>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/(?P<clusterResourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.KubernetesConfiguration/extensions/(?P<extensionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 7 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armextensions.PatchExtension](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		clusterRpParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterRp")])
-		if err != nil {
-			return nil, err
-		}
-		clusterResourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterResourceName")])
-		if err != nil {
-			return nil, err
-		}
-		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
-		if err != nil {
-			return nil, err
-		}
-		extensionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("extensionName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := s.srv.BeginUpdate(req.Context(), resourceGroupNameParam, clusterRpParam, clusterResourceNameParam, clusterNameParam, extensionNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		s.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		s.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		s.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

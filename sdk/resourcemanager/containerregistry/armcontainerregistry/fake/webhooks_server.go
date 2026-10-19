@@ -29,6 +29,10 @@ type WebhooksServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, registryName string, webhookName string, options *armcontainerregistry.WebhooksClientBeginDeleteOptions) (resp azfake.PollerResponder[armcontainerregistry.WebhooksClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method WebhooksClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	BeginUpdate func(ctx context.Context, resourceGroupName string, registryName string, webhookName string, webhookUpdateParameters armcontainerregistry.WebhookUpdateParameters, options *armcontainerregistry.WebhooksClientBeginUpdateOptions) (resp azfake.PollerResponder[armcontainerregistry.WebhooksClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method WebhooksClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, registryName string, webhookName string, options *armcontainerregistry.WebhooksClientGetOptions) (resp azfake.Responder[armcontainerregistry.WebhooksClientGetResponse], errResp azfake.ErrorResponder)
@@ -37,21 +41,17 @@ type WebhooksServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetCallbackConfig func(ctx context.Context, resourceGroupName string, registryName string, webhookName string, options *armcontainerregistry.WebhooksClientGetCallbackConfigOptions) (resp azfake.Responder[armcontainerregistry.WebhooksClientGetCallbackConfigResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method WebhooksClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, registryName string, options *armcontainerregistry.WebhooksClientListOptions) (resp azfake.PagerResponder[armcontainerregistry.WebhooksClientListResponse])
-
 	// NewListEventsPager is the fake for method WebhooksClient.NewListEventsPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListEventsPager func(resourceGroupName string, registryName string, webhookName string, options *armcontainerregistry.WebhooksClientListEventsOptions) (resp azfake.PagerResponder[armcontainerregistry.WebhooksClientListEventsResponse])
 
+	// NewListPager is the fake for method WebhooksClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(resourceGroupName string, registryName string, options *armcontainerregistry.WebhooksClientListOptions) (resp azfake.PagerResponder[armcontainerregistry.WebhooksClientListResponse])
+
 	// Ping is the fake for method WebhooksClient.Ping
 	// HTTP status codes to indicate success: http.StatusOK
 	Ping func(ctx context.Context, resourceGroupName string, registryName string, webhookName string, options *armcontainerregistry.WebhooksClientPingOptions) (resp azfake.Responder[armcontainerregistry.WebhooksClientPingResponse], errResp azfake.ErrorResponder)
-
-	// BeginUpdate is the fake for method WebhooksClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginUpdate func(ctx context.Context, resourceGroupName string, registryName string, webhookName string, webhookUpdateParameters armcontainerregistry.WebhookUpdateParameters, options *armcontainerregistry.WebhooksClientBeginUpdateOptions) (resp azfake.PollerResponder[armcontainerregistry.WebhooksClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewWebhooksServerTransport creates a new instance of WebhooksServerTransport with the provided implementation.
@@ -62,9 +62,9 @@ func NewWebhooksServerTransport(srv *WebhooksServer) *WebhooksServerTransport {
 		srv:                srv,
 		beginCreate:        newTracker[azfake.PollerResponder[armcontainerregistry.WebhooksClientCreateResponse]](),
 		beginDelete:        newTracker[azfake.PollerResponder[armcontainerregistry.WebhooksClientDeleteResponse]](),
-		newListPager:       newTracker[azfake.PagerResponder[armcontainerregistry.WebhooksClientListResponse]](),
-		newListEventsPager: newTracker[azfake.PagerResponder[armcontainerregistry.WebhooksClientListEventsResponse]](),
 		beginUpdate:        newTracker[azfake.PollerResponder[armcontainerregistry.WebhooksClientUpdateResponse]](),
+		newListEventsPager: newTracker[azfake.PagerResponder[armcontainerregistry.WebhooksClientListEventsResponse]](),
+		newListPager:       newTracker[azfake.PagerResponder[armcontainerregistry.WebhooksClientListResponse]](),
 	}
 }
 
@@ -74,9 +74,9 @@ type WebhooksServerTransport struct {
 	srv                *WebhooksServer
 	beginCreate        *tracker[azfake.PollerResponder[armcontainerregistry.WebhooksClientCreateResponse]]
 	beginDelete        *tracker[azfake.PollerResponder[armcontainerregistry.WebhooksClientDeleteResponse]]
-	newListPager       *tracker[azfake.PagerResponder[armcontainerregistry.WebhooksClientListResponse]]
-	newListEventsPager *tracker[azfake.PagerResponder[armcontainerregistry.WebhooksClientListEventsResponse]]
 	beginUpdate        *tracker[azfake.PollerResponder[armcontainerregistry.WebhooksClientUpdateResponse]]
+	newListEventsPager *tracker[azfake.PagerResponder[armcontainerregistry.WebhooksClientListEventsResponse]]
+	newListPager       *tracker[azfake.PagerResponder[armcontainerregistry.WebhooksClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for WebhooksServerTransport.
@@ -104,18 +104,18 @@ func (w *WebhooksServerTransport) dispatchToMethodFake(req *http.Request, method
 				res.resp, res.err = w.dispatchBeginCreate(req)
 			case "WebhooksClient.BeginDelete":
 				res.resp, res.err = w.dispatchBeginDelete(req)
+			case "WebhooksClient.BeginUpdate":
+				res.resp, res.err = w.dispatchBeginUpdate(req)
 			case "WebhooksClient.Get":
 				res.resp, res.err = w.dispatchGet(req)
 			case "WebhooksClient.GetCallbackConfig":
 				res.resp, res.err = w.dispatchGetCallbackConfig(req)
-			case "WebhooksClient.NewListPager":
-				res.resp, res.err = w.dispatchNewListPager(req)
 			case "WebhooksClient.NewListEventsPager":
 				res.resp, res.err = w.dispatchNewListEventsPager(req)
+			case "WebhooksClient.NewListPager":
+				res.resp, res.err = w.dispatchNewListPager(req)
 			case "WebhooksClient.Ping":
 				res.resp, res.err = w.dispatchPing(req)
-			case "WebhooksClient.BeginUpdate":
-				res.resp, res.err = w.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -232,6 +232,58 @@ func (w *WebhooksServerTransport) dispatchBeginDelete(req *http.Request) (*http.
 	return resp, nil
 }
 
+func (w *WebhooksServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if w.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := w.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerRegistry/registries/(?P<registryName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/webhooks/(?P<webhookName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armcontainerregistry.WebhookUpdateParameters](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		registryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
+		if err != nil {
+			return nil, err
+		}
+		webhookNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("webhookName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := w.srv.BeginUpdate(req.Context(), resourceGroupNameParam, registryNameParam, webhookNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		w.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		w.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		w.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (w *WebhooksServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if w.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -306,47 +358,6 @@ func (w *WebhooksServerTransport) dispatchGetCallbackConfig(req *http.Request) (
 	return resp, nil
 }
 
-func (w *WebhooksServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if w.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := w.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerRegistry/registries/(?P<registryName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/webhooks`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		registryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := w.srv.NewListPager(resourceGroupNameParam, registryNameParam, nil)
-		newListPager = &resp
-		w.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcontainerregistry.WebhooksClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		w.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		w.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (w *WebhooksServerTransport) dispatchNewListEventsPager(req *http.Request) (*http.Response, error) {
 	if w.srv.NewListEventsPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListEventsPager not implemented")}
@@ -392,6 +403,47 @@ func (w *WebhooksServerTransport) dispatchNewListEventsPager(req *http.Request) 
 	return resp, nil
 }
 
+func (w *WebhooksServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if w.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := w.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerRegistry/registries/(?P<registryName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/webhooks`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		registryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := w.srv.NewListPager(resourceGroupNameParam, registryNameParam, nil)
+		newListPager = &resp
+		w.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcontainerregistry.WebhooksClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		w.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		w.newListPager.remove(req)
+	}
+	return resp, nil
+}
+
 func (w *WebhooksServerTransport) dispatchPing(req *http.Request) (*http.Response, error) {
 	if w.srv.Ping == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Ping not implemented")}
@@ -426,58 +478,6 @@ func (w *WebhooksServerTransport) dispatchPing(req *http.Request) (*http.Respons
 	if err != nil {
 		return nil, err
 	}
-	return resp, nil
-}
-
-func (w *WebhooksServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if w.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := w.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerRegistry/registries/(?P<registryName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/webhooks/(?P<webhookName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcontainerregistry.WebhookUpdateParameters](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		registryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
-		if err != nil {
-			return nil, err
-		}
-		webhookNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("webhookName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := w.srv.BeginUpdate(req.Context(), resourceGroupNameParam, registryNameParam, webhookNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		w.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
-		w.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		w.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

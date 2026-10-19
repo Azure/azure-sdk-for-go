@@ -268,6 +268,213 @@ func ExampleHcpOpenShiftClustersClient_BeginDelete() {
 	}
 }
 
+// Generated from example definition: 2026-09-01-preview/HcpOpenShiftClusters_RequestAdminCredential_MaximumSet_Gen.json
+func ExampleHcpOpenShiftClustersClient_BeginRequestAdminCredential() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armredhatopenshifthcp.NewClientFactory("FDEA43EA-0230-4A7D-BDEE-F3AFF2183B1D", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewHcpOpenShiftClustersClient().BeginRequestAdminCredential(ctx, "rgopenapi", "hcpCluster-name", armredhatopenshifthcp.HcpOpenShiftClusterAdminCredentialRequest{
+		CertificateSigningRequest: to.Ptr("-----BEGIN CERTIFICATE REQUEST-----\nMIIBhTCB7wIBADBFMQswCQYDVQQGEwJVUzELMAkGA1UECAwCQ0ExDjAMBgNVBAoM\nBVRlc3QxGTAXBgNVBAMMEHRlc3QuZXhhbXBsZS5jb20wdjAQBgcqhkjOPQIBBgUr\ngQQAIgNiAARIm+7hphQ7m8kzCB5keJ3lPVQvsEH6ABXz0kIvxkNF7+OBFCdPJIBT\nksaGJnJFfPUROYGJIo7FMOO/vEqE9gHqRCVao0RPDaZLtceCYqbeI0vFhW7qTmYL\nNp/RTer7C0+gITAfBgkqhkiG9w0BCQ4xEjAQMA4GA1UdEQQHMAWCA2FiYzAKBggq\nhkjOPQQDAgNoADBlAjBLQDR3K8k1XPFH3Y0oEFYrBi3L4FOX0kz0aK/JuFJN/kBP\nA2ViVNHl+5iVxvpJE5sCMQCF+nPr18qRaib09BHSBKl+ZVpXC1K3PN/VGjYv+Zjl\nK8eCiPwwRBpRMbqMSXxlS3Q=\n-----END CERTIFICATE REQUEST-----\n"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armredhatopenshifthcp.HcpOpenShiftClustersClientRequestAdminCredentialResponse{
+	// 	HcpOpenShiftClusterAdminCredential: armredhatopenshifthcp.HcpOpenShiftClusterAdminCredential{
+	// 		Kubeconfig: to.Ptr("apiVersion: v1\nclusters:\n- cluster:\n    server: https://api.example.com:6443\n  name: cluster\ncontexts:\n- context:\n    cluster: cluster\n    user: admin\n  name: admin\ncurrent-context: admin\nkind: Config\nusers:\n- name: admin\n  user:\n    client-certificate-data: LS0tLS1C...\n"),
+	// 		ExpirationTimestamp: to.Ptr(time.Date(2025, time.April, 23, 5, 55, 13, 791000000, time.UTC)),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-09-01-preview/HcpOpenShiftClusters_RevokeCredentials_MaximumSet_Gen.json
+func ExampleHcpOpenShiftClustersClient_BeginRevokeCredentials() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armredhatopenshifthcp.NewClientFactory("FDEA43EA-0230-4A7D-BDEE-F3AFF2183B1D", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewHcpOpenShiftClustersClient().BeginRevokeCredentials(ctx, "rgopenapi", "hcpCluster-name", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-09-01-preview/HcpOpenShiftClusters_Update_MaximumSet_Gen.json
+func ExampleHcpOpenShiftClustersClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armredhatopenshifthcp.NewClientFactory("FDEA43EA-0230-4A7D-BDEE-F3AFF2183B1D", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewHcpOpenShiftClustersClient().BeginUpdate(ctx, "rgopenapi", "hcpCluster-name", armredhatopenshifthcp.HcpOpenShiftCluster{
+		Identity: &armredhatopenshifthcp.ManagedServiceIdentity{
+			Type: to.Ptr(armredhatopenshifthcp.ManagedServiceIdentityTypeUserAssigned),
+			UserAssignedIdentities: map[string]*armredhatopenshifthcp.UserAssignedIdentity{
+				"/subscriptions/FDEA43EA-0230-4A7D-BDEE-F3AFF2183B1D/resourceGroups/rgopenapi/providers/Microsoft.ManagedIdentity/userAssignedIdentities/serviceMI": {},
+			},
+		},
+		Tags: map[string]*string{
+			"key4965": to.Ptr("gadonynrfuc"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armredhatopenshifthcp.HcpOpenShiftClustersClientUpdateResponse{
+	// 	HcpOpenShiftCluster: armredhatopenshifthcp.HcpOpenShiftCluster{
+	// 		Properties: &armredhatopenshifthcp.HcpOpenShiftClusterProperties{
+	// 			Version: &armredhatopenshifthcp.VersionProfile{
+	// 				ChannelGroup: to.Ptr("stable"),
+	// 				ID: to.Ptr("4.12"),
+	// 			},
+	// 			DNS: &armredhatopenshifthcp.DNSProfile{
+	// 				BaseDomainPrefix: to.Ptr("jcldjrtyebhrlxs"),
+	// 				BaseDomain: to.Ptr("yubrqcgqdhgqfkobjqm"),
+	// 			},
+	// 			Network: &armredhatopenshifthcp.NetworkProfile{
+	// 				NetworkType: to.Ptr(armredhatopenshifthcp.NetworkTypeOVNKubernetes),
+	// 				PodCIDR: to.Ptr("10.128.0.0/14"),
+	// 				ServiceCIDR: to.Ptr("172.30.0.0/16"),
+	// 				MachineCIDR: to.Ptr("10.0.0.0/16"),
+	// 				HostPrefix: to.Ptr[int32](21),
+	// 			},
+	// 			API: &armredhatopenshifthcp.APIProfile{
+	// 				Visibility: to.Ptr(armredhatopenshifthcp.VisibilityPublic),
+	// 				URL: to.Ptr("https://api.test.shrd.usw3test.hcp.osadev.cloud:443"),
+	// 				AuthorizedCIDRs: []*string{
+	// 					to.Ptr("172.16.0.0/12"),
+	// 					to.Ptr("203.0.113.0/24"),
+	// 				},
+	// 			},
+	// 			Ingress: &armredhatopenshifthcp.IngressProfile{
+	// 				Type: to.Ptr(armredhatopenshifthcp.IngressTypePublic),
+	// 			},
+	// 			Platform: &armredhatopenshifthcp.PlatformProfile{
+	// 				ManagedResourceGroup: to.Ptr("nhyhywrxupo"),
+	// 				SubnetID: to.Ptr("/subscriptions/FDEA43EA-0230-4A7D-BDEE-F3AFF2183B1D/resourceGroups/resourceGroupName/providers/Microsoft.Network/virtualNetworks/hcp-network-example/subnets/example-subnet"),
+	// 				VnetIntegrationSubnetID: to.Ptr("/subscriptions/FDEA43EA-0230-4A7D-BDEE-F3AFF2183B1D/resourceGroups/resourceGroupName/providers/Microsoft.Network/virtualNetworks/hcp-network-example/subnets/vnet-integration-subnet"),
+	// 				OutboundType: to.Ptr(armredhatopenshifthcp.OutboundTypeLoadBalancer),
+	// 				NetworkSecurityGroupID: to.Ptr("/subscriptions/FDEA43EA-0230-4A7D-BDEE-F3AFF2183B1D/resourceGroups/resourceGroupName/providers/Microsoft.Network/networkSecurityGroups/nsg-example"),
+	// 				OperatorsAuthentication: &armredhatopenshifthcp.OperatorsAuthenticationProfile{
+	// 					UserAssignedIdentities: &armredhatopenshifthcp.UserAssignedIdentitiesProfile{
+	// 						ControlPlaneOperators: map[string]*string{
+	// 						},
+	// 						DataPlaneOperators: map[string]*string{
+	// 						},
+	// 						ServiceManagedIdentity: to.Ptr("/subscriptions/FDEA43EA-0230-4A7D-BDEE-F3AFF2183B1D/resourceGroups/rgopenapi/providers/Microsoft.ManagedIdentity/userAssignedIdentities/serviceMI"),
+	// 					},
+	// 				},
+	// 				IssuerURL: to.Ptr("https://oidc.contoso.com"),
+	// 			},
+	// 			ProvisioningState: to.Ptr(armredhatopenshifthcp.ProvisioningStateSucceeded),
+	// 			Console: &armredhatopenshifthcp.ConsoleProfile{
+	// 				URL: to.Ptr("https://console.test.shrd.usw3test.hcp.osadev.cloud"),
+	// 			},
+	// 			Autoscaling: &armredhatopenshifthcp.ClusterAutoscalingProfile{
+	// 				MaxNodesTotal: to.Ptr[int32](0),
+	// 				MaxPodGracePeriodSeconds: to.Ptr[int32](0),
+	// 				MaxNodeProvisionTimeSeconds: to.Ptr[int32](0),
+	// 				PodPriorityThreshold: to.Ptr[int32](1),
+	// 			},
+	// 			Etcd: &armredhatopenshifthcp.EtcdProfile{
+	// 				DataEncryption: &armredhatopenshifthcp.EtcdDataEncryptionProfile{
+	// 					KeyManagementMode: to.Ptr(armredhatopenshifthcp.EtcdDataEncryptionKeyManagementModeTypeCustomerManaged),
+	// 					CustomerManaged: &armredhatopenshifthcp.CustomerManagedEncryptionProfile{
+	// 						EncryptionType: to.Ptr(armredhatopenshifthcp.CustomerManagedEncryptionTypeKms),
+	// 						Kms: &armredhatopenshifthcp.KmsEncryptionProfile{
+	// 							VaultName: to.Ptr("my-cool-vault"),
+	// 							Visibility: to.Ptr(armredhatopenshifthcp.KeyVaultVisibilityPublic),
+	// 							ActiveKey: &armredhatopenshifthcp.KmsKey{
+	// 								Name: to.Ptr("my-cool-key"),
+	// 								Version: to.Ptr("8e73e7d1fd7d4a87b730f676fc77d3a6"),
+	// 							},
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 			ImageDigestMirrors: []*armredhatopenshifthcp.ImageDigestMirror{
+	// 				{
+	// 					Source: to.Ptr("registry.example.com/image1"),
+	// 					Mirrors: []*string{
+	// 						to.Ptr("mirror1.example.com/image1"),
+	// 						to.Ptr("mirror2.example.com/image1"),
+	// 					},
+	// 				},
+	// 				{
+	// 					Source: to.Ptr("registry.example.com/image2"),
+	// 					Mirrors: []*string{
+	// 						to.Ptr("mirror1.example.com/image2"),
+	// 					},
+	// 				},
+	// 			},
+	// 			NodeDrainTimeoutMinutes: to.Ptr[int32](20),
+	// 			ClusterImageRegistry: &armredhatopenshifthcp.ClusterImageRegistryProfile{
+	// 				State: to.Ptr(armredhatopenshifthcp.ClusterImageRegistryStateEnabled),
+	// 			},
+	// 		},
+	// 		Identity: &armredhatopenshifthcp.ManagedServiceIdentity{
+	// 			PrincipalID: to.Ptr("e5867472-f0ed-4fc1-80e1-59b4c0256adb"),
+	// 			TenantID: to.Ptr("2a58de3b-8a38-44cd-8f33-4bd5b91479c1"),
+	// 			Type: to.Ptr(armredhatopenshifthcp.ManagedServiceIdentityTypeUserAssigned),
+	// 			UserAssignedIdentities: map[string]*armredhatopenshifthcp.UserAssignedIdentity{
+	// 				"/subscriptions/FDEA43EA-0230-4A7D-BDEE-F3AFF2183B1D/resourceGroups/rgopenapi/providers/Microsoft.ManagedIdentity/userAssignedIdentities/serviceMI": &armredhatopenshifthcp.UserAssignedIdentity{
+	// 					PrincipalID: to.Ptr("15a1e2d8-41ae-4068-8ea9-a80f2cdd94c3"),
+	// 					ClientID: to.Ptr("a60f3156-367f-4303-bb21-7a41b3c41cb9"),
+	// 				},
+	// 			},
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"key4181": to.Ptr("leaswtidajsjtgmqawhdl"),
+	// 		},
+	// 		Location: to.Ptr("ayecbdqonsqfowbq"),
+	// 		ID: to.Ptr("/subscriptions/FDEA43EA-0230-4A7D-BDEE-F3AFF2183B1D/resourceGroups/resourceGroupName/providers/Microsoft.RedHatOpenShift/resourceType/resourceName"),
+	// 		Name: to.Ptr("vuwzuwooutjavgdhoatz"),
+	// 		Type: to.Ptr("utiyj"),
+	// 		SystemData: &armredhatopenshifthcp.SystemData{
+	// 			CreatedBy: to.Ptr("lsrkqcuijqfp"),
+	// 			CreatedByType: to.Ptr(armredhatopenshifthcp.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.March, 27, 14, 57, 32, 578000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("tgpmwu"),
+	// 			LastModifiedByType: to.Ptr(armredhatopenshifthcp.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.March, 27, 14, 57, 32, 578000000, time.UTC)),
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2026-09-01-preview/HcpOpenShiftClusters_Get_MaximumSet_Gen.json
 func ExampleHcpOpenShiftClustersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -701,211 +908,4 @@ func ExampleHcpOpenShiftClustersClient_NewListBySubscriptionPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-09-01-preview/HcpOpenShiftClusters_RequestAdminCredential_MaximumSet_Gen.json
-func ExampleHcpOpenShiftClustersClient_BeginRequestAdminCredential() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armredhatopenshifthcp.NewClientFactory("FDEA43EA-0230-4A7D-BDEE-F3AFF2183B1D", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewHcpOpenShiftClustersClient().BeginRequestAdminCredential(ctx, "rgopenapi", "hcpCluster-name", armredhatopenshifthcp.HcpOpenShiftClusterAdminCredentialRequest{
-		CertificateSigningRequest: to.Ptr("-----BEGIN CERTIFICATE REQUEST-----\nMIIBhTCB7wIBADBFMQswCQYDVQQGEwJVUzELMAkGA1UECAwCQ0ExDjAMBgNVBAoM\nBVRlc3QxGTAXBgNVBAMMEHRlc3QuZXhhbXBsZS5jb20wdjAQBgcqhkjOPQIBBgUr\ngQQAIgNiAARIm+7hphQ7m8kzCB5keJ3lPVQvsEH6ABXz0kIvxkNF7+OBFCdPJIBT\nksaGJnJFfPUROYGJIo7FMOO/vEqE9gHqRCVao0RPDaZLtceCYqbeI0vFhW7qTmYL\nNp/RTer7C0+gITAfBgkqhkiG9w0BCQ4xEjAQMA4GA1UdEQQHMAWCA2FiYzAKBggq\nhkjOPQQDAgNoADBlAjBLQDR3K8k1XPFH3Y0oEFYrBi3L4FOX0kz0aK/JuFJN/kBP\nA2ViVNHl+5iVxvpJE5sCMQCF+nPr18qRaib09BHSBKl+ZVpXC1K3PN/VGjYv+Zjl\nK8eCiPwwRBpRMbqMSXxlS3Q=\n-----END CERTIFICATE REQUEST-----\n"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armredhatopenshifthcp.HcpOpenShiftClustersClientRequestAdminCredentialResponse{
-	// 	HcpOpenShiftClusterAdminCredential: armredhatopenshifthcp.HcpOpenShiftClusterAdminCredential{
-	// 		Kubeconfig: to.Ptr("apiVersion: v1\nclusters:\n- cluster:\n    server: https://api.example.com:6443\n  name: cluster\ncontexts:\n- context:\n    cluster: cluster\n    user: admin\n  name: admin\ncurrent-context: admin\nkind: Config\nusers:\n- name: admin\n  user:\n    client-certificate-data: LS0tLS1C...\n"),
-	// 		ExpirationTimestamp: to.Ptr(time.Date(2025, time.April, 23, 5, 55, 13, 791000000, time.UTC)),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-09-01-preview/HcpOpenShiftClusters_RevokeCredentials_MaximumSet_Gen.json
-func ExampleHcpOpenShiftClustersClient_BeginRevokeCredentials() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armredhatopenshifthcp.NewClientFactory("FDEA43EA-0230-4A7D-BDEE-F3AFF2183B1D", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewHcpOpenShiftClustersClient().BeginRevokeCredentials(ctx, "rgopenapi", "hcpCluster-name", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2026-09-01-preview/HcpOpenShiftClusters_Update_MaximumSet_Gen.json
-func ExampleHcpOpenShiftClustersClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armredhatopenshifthcp.NewClientFactory("FDEA43EA-0230-4A7D-BDEE-F3AFF2183B1D", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewHcpOpenShiftClustersClient().BeginUpdate(ctx, "rgopenapi", "hcpCluster-name", armredhatopenshifthcp.HcpOpenShiftCluster{
-		Identity: &armredhatopenshifthcp.ManagedServiceIdentity{
-			Type: to.Ptr(armredhatopenshifthcp.ManagedServiceIdentityTypeUserAssigned),
-			UserAssignedIdentities: map[string]*armredhatopenshifthcp.UserAssignedIdentity{
-				"/subscriptions/FDEA43EA-0230-4A7D-BDEE-F3AFF2183B1D/resourceGroups/rgopenapi/providers/Microsoft.ManagedIdentity/userAssignedIdentities/serviceMI": {},
-			},
-		},
-		Tags: map[string]*string{
-			"key4965": to.Ptr("gadonynrfuc"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armredhatopenshifthcp.HcpOpenShiftClustersClientUpdateResponse{
-	// 	HcpOpenShiftCluster: armredhatopenshifthcp.HcpOpenShiftCluster{
-	// 		Properties: &armredhatopenshifthcp.HcpOpenShiftClusterProperties{
-	// 			Version: &armredhatopenshifthcp.VersionProfile{
-	// 				ChannelGroup: to.Ptr("stable"),
-	// 				ID: to.Ptr("4.12"),
-	// 			},
-	// 			DNS: &armredhatopenshifthcp.DNSProfile{
-	// 				BaseDomainPrefix: to.Ptr("jcldjrtyebhrlxs"),
-	// 				BaseDomain: to.Ptr("yubrqcgqdhgqfkobjqm"),
-	// 			},
-	// 			Network: &armredhatopenshifthcp.NetworkProfile{
-	// 				NetworkType: to.Ptr(armredhatopenshifthcp.NetworkTypeOVNKubernetes),
-	// 				PodCIDR: to.Ptr("10.128.0.0/14"),
-	// 				ServiceCIDR: to.Ptr("172.30.0.0/16"),
-	// 				MachineCIDR: to.Ptr("10.0.0.0/16"),
-	// 				HostPrefix: to.Ptr[int32](21),
-	// 			},
-	// 			API: &armredhatopenshifthcp.APIProfile{
-	// 				Visibility: to.Ptr(armredhatopenshifthcp.VisibilityPublic),
-	// 				URL: to.Ptr("https://api.test.shrd.usw3test.hcp.osadev.cloud:443"),
-	// 				AuthorizedCIDRs: []*string{
-	// 					to.Ptr("172.16.0.0/12"),
-	// 					to.Ptr("203.0.113.0/24"),
-	// 				},
-	// 			},
-	// 			Ingress: &armredhatopenshifthcp.IngressProfile{
-	// 				Type: to.Ptr(armredhatopenshifthcp.IngressTypePublic),
-	// 			},
-	// 			Platform: &armredhatopenshifthcp.PlatformProfile{
-	// 				ManagedResourceGroup: to.Ptr("nhyhywrxupo"),
-	// 				SubnetID: to.Ptr("/subscriptions/FDEA43EA-0230-4A7D-BDEE-F3AFF2183B1D/resourceGroups/resourceGroupName/providers/Microsoft.Network/virtualNetworks/hcp-network-example/subnets/example-subnet"),
-	// 				VnetIntegrationSubnetID: to.Ptr("/subscriptions/FDEA43EA-0230-4A7D-BDEE-F3AFF2183B1D/resourceGroups/resourceGroupName/providers/Microsoft.Network/virtualNetworks/hcp-network-example/subnets/vnet-integration-subnet"),
-	// 				OutboundType: to.Ptr(armredhatopenshifthcp.OutboundTypeLoadBalancer),
-	// 				NetworkSecurityGroupID: to.Ptr("/subscriptions/FDEA43EA-0230-4A7D-BDEE-F3AFF2183B1D/resourceGroups/resourceGroupName/providers/Microsoft.Network/networkSecurityGroups/nsg-example"),
-	// 				OperatorsAuthentication: &armredhatopenshifthcp.OperatorsAuthenticationProfile{
-	// 					UserAssignedIdentities: &armredhatopenshifthcp.UserAssignedIdentitiesProfile{
-	// 						ControlPlaneOperators: map[string]*string{
-	// 						},
-	// 						DataPlaneOperators: map[string]*string{
-	// 						},
-	// 						ServiceManagedIdentity: to.Ptr("/subscriptions/FDEA43EA-0230-4A7D-BDEE-F3AFF2183B1D/resourceGroups/rgopenapi/providers/Microsoft.ManagedIdentity/userAssignedIdentities/serviceMI"),
-	// 					},
-	// 				},
-	// 				IssuerURL: to.Ptr("https://oidc.contoso.com"),
-	// 			},
-	// 			ProvisioningState: to.Ptr(armredhatopenshifthcp.ProvisioningStateSucceeded),
-	// 			Console: &armredhatopenshifthcp.ConsoleProfile{
-	// 				URL: to.Ptr("https://console.test.shrd.usw3test.hcp.osadev.cloud"),
-	// 			},
-	// 			Autoscaling: &armredhatopenshifthcp.ClusterAutoscalingProfile{
-	// 				MaxNodesTotal: to.Ptr[int32](0),
-	// 				MaxPodGracePeriodSeconds: to.Ptr[int32](0),
-	// 				MaxNodeProvisionTimeSeconds: to.Ptr[int32](0),
-	// 				PodPriorityThreshold: to.Ptr[int32](1),
-	// 			},
-	// 			Etcd: &armredhatopenshifthcp.EtcdProfile{
-	// 				DataEncryption: &armredhatopenshifthcp.EtcdDataEncryptionProfile{
-	// 					KeyManagementMode: to.Ptr(armredhatopenshifthcp.EtcdDataEncryptionKeyManagementModeTypeCustomerManaged),
-	// 					CustomerManaged: &armredhatopenshifthcp.CustomerManagedEncryptionProfile{
-	// 						EncryptionType: to.Ptr(armredhatopenshifthcp.CustomerManagedEncryptionTypeKms),
-	// 						Kms: &armredhatopenshifthcp.KmsEncryptionProfile{
-	// 							VaultName: to.Ptr("my-cool-vault"),
-	// 							Visibility: to.Ptr(armredhatopenshifthcp.KeyVaultVisibilityPublic),
-	// 							ActiveKey: &armredhatopenshifthcp.KmsKey{
-	// 								Name: to.Ptr("my-cool-key"),
-	// 								Version: to.Ptr("8e73e7d1fd7d4a87b730f676fc77d3a6"),
-	// 							},
-	// 						},
-	// 					},
-	// 				},
-	// 			},
-	// 			ImageDigestMirrors: []*armredhatopenshifthcp.ImageDigestMirror{
-	// 				{
-	// 					Source: to.Ptr("registry.example.com/image1"),
-	// 					Mirrors: []*string{
-	// 						to.Ptr("mirror1.example.com/image1"),
-	// 						to.Ptr("mirror2.example.com/image1"),
-	// 					},
-	// 				},
-	// 				{
-	// 					Source: to.Ptr("registry.example.com/image2"),
-	// 					Mirrors: []*string{
-	// 						to.Ptr("mirror1.example.com/image2"),
-	// 					},
-	// 				},
-	// 			},
-	// 			NodeDrainTimeoutMinutes: to.Ptr[int32](20),
-	// 			ClusterImageRegistry: &armredhatopenshifthcp.ClusterImageRegistryProfile{
-	// 				State: to.Ptr(armredhatopenshifthcp.ClusterImageRegistryStateEnabled),
-	// 			},
-	// 		},
-	// 		Identity: &armredhatopenshifthcp.ManagedServiceIdentity{
-	// 			PrincipalID: to.Ptr("e5867472-f0ed-4fc1-80e1-59b4c0256adb"),
-	// 			TenantID: to.Ptr("2a58de3b-8a38-44cd-8f33-4bd5b91479c1"),
-	// 			Type: to.Ptr(armredhatopenshifthcp.ManagedServiceIdentityTypeUserAssigned),
-	// 			UserAssignedIdentities: map[string]*armredhatopenshifthcp.UserAssignedIdentity{
-	// 				"/subscriptions/FDEA43EA-0230-4A7D-BDEE-F3AFF2183B1D/resourceGroups/rgopenapi/providers/Microsoft.ManagedIdentity/userAssignedIdentities/serviceMI": &armredhatopenshifthcp.UserAssignedIdentity{
-	// 					PrincipalID: to.Ptr("15a1e2d8-41ae-4068-8ea9-a80f2cdd94c3"),
-	// 					ClientID: to.Ptr("a60f3156-367f-4303-bb21-7a41b3c41cb9"),
-	// 				},
-	// 			},
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"key4181": to.Ptr("leaswtidajsjtgmqawhdl"),
-	// 		},
-	// 		Location: to.Ptr("ayecbdqonsqfowbq"),
-	// 		ID: to.Ptr("/subscriptions/FDEA43EA-0230-4A7D-BDEE-F3AFF2183B1D/resourceGroups/resourceGroupName/providers/Microsoft.RedHatOpenShift/resourceType/resourceName"),
-	// 		Name: to.Ptr("vuwzuwooutjavgdhoatz"),
-	// 		Type: to.Ptr("utiyj"),
-	// 		SystemData: &armredhatopenshifthcp.SystemData{
-	// 			CreatedBy: to.Ptr("lsrkqcuijqfp"),
-	// 			CreatedByType: to.Ptr(armredhatopenshifthcp.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2024, time.March, 27, 14, 57, 32, 578000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("tgpmwu"),
-	// 			LastModifiedByType: to.Ptr(armredhatopenshifthcp.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.March, 27, 14, 57, 32, 578000000, time.UTC)),
-	// 		},
-	// 	},
-	// }
 }

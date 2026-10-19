@@ -143,8 +143,8 @@ func ExampleSnapshotsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-07-02-preview/SnapshotsList.json
-func ExampleSnapshotsClient_NewListPager() {
+// Generated from example definition: 2026-07-02-preview/SnapshotsListByResourceGroup.json
+func ExampleSnapshotsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -154,7 +154,7 @@ func ExampleSnapshotsClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewSnapshotsClient().NewListPager(nil)
+	pager := clientFactory.NewSnapshotsClient().NewListByResourceGroupPager("rg1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -165,7 +165,7 @@ func ExampleSnapshotsClient_NewListPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcontainerservice.SnapshotsClientListResponse{
+		// page = armcontainerservice.SnapshotsClientListByResourceGroupResponse{
 		// 	SnapshotListResult: armcontainerservice.SnapshotListResult{
 		// 		Value: []*armcontainerservice.Snapshot{
 		// 			{
@@ -201,8 +201,8 @@ func ExampleSnapshotsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-07-02-preview/SnapshotsListByResourceGroup.json
-func ExampleSnapshotsClient_NewListByResourceGroupPager() {
+// Generated from example definition: 2026-07-02-preview/SnapshotsList.json
+func ExampleSnapshotsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -212,7 +212,7 @@ func ExampleSnapshotsClient_NewListByResourceGroupPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewSnapshotsClient().NewListByResourceGroupPager("rg1", nil)
+	pager := clientFactory.NewSnapshotsClient().NewListPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -223,7 +223,7 @@ func ExampleSnapshotsClient_NewListByResourceGroupPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcontainerservice.SnapshotsClientListByResourceGroupResponse{
+		// page = armcontainerservice.SnapshotsClientListResponse{
 		// 	SnapshotListResult: armcontainerservice.SnapshotListResult{
 		// 		Value: []*armcontainerservice.Snapshot{
 		// 			{

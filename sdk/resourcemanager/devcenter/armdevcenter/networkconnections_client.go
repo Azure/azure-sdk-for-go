@@ -69,7 +69,7 @@ func (client *NetworkConnectionsClient) BeginCreateOrUpdate(ctx context.Context,
 	}
 }
 
-// CreateOrUpdate - Creates or updates a Network Connections resource.
+// createOrUpdate - Creates or updates a Network Connections resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *NetworkConnectionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, networkConnectionName string, body NetworkConnection, options *NetworkConnectionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *NetworkConnectionsClient) createOrUpdate(ctx context.Context, reso
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *NetworkConnectionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, networkConnectionName string, body NetworkConnection, _ *NetworkConnectionsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/networkConnections/{networkConnectionName}"
 	if client.subscriptionID == "" {
@@ -144,7 +144,7 @@ func (client *NetworkConnectionsClient) BeginDelete(ctx context.Context, resourc
 	}
 }
 
-// Delete - Deletes a Network Connections resource.
+// deleteOperation - Deletes a Network Connections resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *NetworkConnectionsClient) deleteOperation(ctx context.Context, resourceGroupName string, networkConnectionName string, options *NetworkConnectionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -166,7 +166,7 @@ func (client *NetworkConnectionsClient) deleteOperation(ctx context.Context, res
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *NetworkConnectionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, networkConnectionName string, _ *NetworkConnectionsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/networkConnections/{networkConnectionName}"
 	if client.subscriptionID == "" {
@@ -188,6 +188,154 @@ func (client *NetworkConnectionsClient) deleteCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20260101Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginRunHealthChecks - Triggers a new health check run. The execution and health check result can be tracked via the network
+// Connection health check details.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - networkConnectionName - Name of the Network Connection that can be applied to a Pool.
+//   - options - NetworkConnectionsClientBeginRunHealthChecksOptions contains the optional parameters for the NetworkConnectionsClient.BeginRunHealthChecks
+//     method.
+func (client *NetworkConnectionsClient) BeginRunHealthChecks(ctx context.Context, resourceGroupName string, networkConnectionName string, options *NetworkConnectionsClientBeginRunHealthChecksOptions) (*runtime.Poller[NetworkConnectionsClientRunHealthChecksResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.runHealthChecks(ctx, resourceGroupName, networkConnectionName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NetworkConnectionsClientRunHealthChecksResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NetworkConnectionsClientRunHealthChecksResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// runHealthChecks - Triggers a new health check run. The execution and health check result can be tracked via the network
+// Connection health check details.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *NetworkConnectionsClient) runHealthChecks(ctx context.Context, resourceGroupName string, networkConnectionName string, options *NetworkConnectionsClientBeginRunHealthChecksOptions) (*http.Response, error) {
+	var err error
+	const operationName = "NetworkConnectionsClient.BeginRunHealthChecks"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.runHealthChecksCreateRequest(ctx, resourceGroupName, networkConnectionName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// runHealthChecksCreateRequest creates the runHealthChecks request.
+func (client *NetworkConnectionsClient) runHealthChecksCreateRequest(ctx context.Context, resourceGroupName string, networkConnectionName string, _ *NetworkConnectionsClientBeginRunHealthChecksOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/networkConnections/{networkConnectionName}/runHealthChecks"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if networkConnectionName == "" {
+		return nil, errors.New("parameter networkConnectionName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{networkConnectionName}", url.PathEscape(networkConnectionName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - Partially updates a Network Connection.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - networkConnectionName - Name of the Network Connection that can be applied to a Pool.
+//   - body - Represents network connection
+//   - options - NetworkConnectionsClientBeginUpdateOptions contains the optional parameters for the NetworkConnectionsClient.BeginUpdate
+//     method.
+func (client *NetworkConnectionsClient) BeginUpdate(ctx context.Context, resourceGroupName string, networkConnectionName string, body NetworkConnectionUpdate, options *NetworkConnectionsClientBeginUpdateOptions) (*runtime.Poller[NetworkConnectionsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, networkConnectionName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NetworkConnectionsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NetworkConnectionsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Partially updates a Network Connection.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *NetworkConnectionsClient) update(ctx context.Context, resourceGroupName string, networkConnectionName string, body NetworkConnectionUpdate, options *NetworkConnectionsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "NetworkConnectionsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, networkConnectionName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *NetworkConnectionsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, networkConnectionName string, body NetworkConnectionUpdate, _ *NetworkConnectionsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/networkConnections/{networkConnectionName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if networkConnectionName == "" {
+		return nil, errors.New("parameter networkConnectionName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{networkConnectionName}", url.PathEscape(networkConnectionName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -616,152 +764,4 @@ func (client *NetworkConnectionsClient) listOutboundNetworkDependenciesEndpoints
 		return NetworkConnectionsClientListOutboundNetworkDependenciesEndpointsResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginRunHealthChecks - Triggers a new health check run. The execution and health check result can be tracked via the network
-// Connection health check details.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - networkConnectionName - Name of the Network Connection that can be applied to a Pool.
-//   - options - NetworkConnectionsClientBeginRunHealthChecksOptions contains the optional parameters for the NetworkConnectionsClient.BeginRunHealthChecks
-//     method.
-func (client *NetworkConnectionsClient) BeginRunHealthChecks(ctx context.Context, resourceGroupName string, networkConnectionName string, options *NetworkConnectionsClientBeginRunHealthChecksOptions) (*runtime.Poller[NetworkConnectionsClientRunHealthChecksResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.runHealthChecks(ctx, resourceGroupName, networkConnectionName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NetworkConnectionsClientRunHealthChecksResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NetworkConnectionsClientRunHealthChecksResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// RunHealthChecks - Triggers a new health check run. The execution and health check result can be tracked via the network
-// Connection health check details.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *NetworkConnectionsClient) runHealthChecks(ctx context.Context, resourceGroupName string, networkConnectionName string, options *NetworkConnectionsClientBeginRunHealthChecksOptions) (*http.Response, error) {
-	var err error
-	const operationName = "NetworkConnectionsClient.BeginRunHealthChecks"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.runHealthChecksCreateRequest(ctx, resourceGroupName, networkConnectionName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// runHealthChecksCreateRequest creates the RunHealthChecks request.
-func (client *NetworkConnectionsClient) runHealthChecksCreateRequest(ctx context.Context, resourceGroupName string, networkConnectionName string, _ *NetworkConnectionsClientBeginRunHealthChecksOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/networkConnections/{networkConnectionName}/runHealthChecks"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if networkConnectionName == "" {
-		return nil, errors.New("parameter networkConnectionName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{networkConnectionName}", url.PathEscape(networkConnectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
-}
-
-// BeginUpdate - Partially updates a Network Connection.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - networkConnectionName - Name of the Network Connection that can be applied to a Pool.
-//   - body - Represents network connection
-//   - options - NetworkConnectionsClientBeginUpdateOptions contains the optional parameters for the NetworkConnectionsClient.BeginUpdate
-//     method.
-func (client *NetworkConnectionsClient) BeginUpdate(ctx context.Context, resourceGroupName string, networkConnectionName string, body NetworkConnectionUpdate, options *NetworkConnectionsClientBeginUpdateOptions) (*runtime.Poller[NetworkConnectionsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, networkConnectionName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NetworkConnectionsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NetworkConnectionsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Partially updates a Network Connection.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *NetworkConnectionsClient) update(ctx context.Context, resourceGroupName string, networkConnectionName string, body NetworkConnectionUpdate, options *NetworkConnectionsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "NetworkConnectionsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, networkConnectionName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *NetworkConnectionsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, networkConnectionName string, body NetworkConnectionUpdate, _ *NetworkConnectionsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/networkConnections/{networkConnectionName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if networkConnectionName == "" {
-		return nil, errors.New("parameter networkConnectionName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{networkConnectionName}", url.PathEscape(networkConnectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

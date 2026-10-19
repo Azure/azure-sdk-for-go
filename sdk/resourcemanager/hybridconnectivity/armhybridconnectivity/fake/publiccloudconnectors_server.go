@@ -25,6 +25,10 @@ type PublicCloudConnectorsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, publicCloudConnector string, resource armhybridconnectivity.PublicCloudConnector, options *armhybridconnectivity.PublicCloudConnectorsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armhybridconnectivity.PublicCloudConnectorsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
+	// BeginTestPermissions is the fake for method PublicCloudConnectorsClient.BeginTestPermissions
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginTestPermissions func(ctx context.Context, resourceGroupName string, publicCloudConnector string, options *armhybridconnectivity.PublicCloudConnectorsClientBeginTestPermissionsOptions) (resp azfake.PollerResponder[armhybridconnectivity.PublicCloudConnectorsClientTestPermissionsResponse], errResp azfake.ErrorResponder)
+
 	// Delete is the fake for method PublicCloudConnectorsClient.Delete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
 	Delete func(ctx context.Context, resourceGroupName string, publicCloudConnector string, options *armhybridconnectivity.PublicCloudConnectorsClientDeleteOptions) (resp azfake.Responder[armhybridconnectivity.PublicCloudConnectorsClientDeleteResponse], errResp azfake.ErrorResponder)
@@ -41,10 +45,6 @@ type PublicCloudConnectorsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armhybridconnectivity.PublicCloudConnectorsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armhybridconnectivity.PublicCloudConnectorsClientListBySubscriptionResponse])
 
-	// BeginTestPermissions is the fake for method PublicCloudConnectorsClient.BeginTestPermissions
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginTestPermissions func(ctx context.Context, resourceGroupName string, publicCloudConnector string, options *armhybridconnectivity.PublicCloudConnectorsClientBeginTestPermissionsOptions) (resp azfake.PollerResponder[armhybridconnectivity.PublicCloudConnectorsClientTestPermissionsResponse], errResp azfake.ErrorResponder)
-
 	// Update is the fake for method PublicCloudConnectorsClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
 	Update func(ctx context.Context, resourceGroupName string, publicCloudConnector string, properties armhybridconnectivity.PublicCloudConnectorUpdate, options *armhybridconnectivity.PublicCloudConnectorsClientUpdateOptions) (resp azfake.Responder[armhybridconnectivity.PublicCloudConnectorsClientUpdateResponse], errResp azfake.ErrorResponder)
@@ -57,9 +57,9 @@ func NewPublicCloudConnectorsServerTransport(srv *PublicCloudConnectorsServer) *
 	return &PublicCloudConnectorsServerTransport{
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armhybridconnectivity.PublicCloudConnectorsClientCreateOrUpdateResponse]](),
+		beginTestPermissions:        newTracker[azfake.PollerResponder[armhybridconnectivity.PublicCloudConnectorsClientTestPermissionsResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armhybridconnectivity.PublicCloudConnectorsClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armhybridconnectivity.PublicCloudConnectorsClientListBySubscriptionResponse]](),
-		beginTestPermissions:        newTracker[azfake.PollerResponder[armhybridconnectivity.PublicCloudConnectorsClientTestPermissionsResponse]](),
 	}
 }
 
@@ -68,9 +68,9 @@ func NewPublicCloudConnectorsServerTransport(srv *PublicCloudConnectorsServer) *
 type PublicCloudConnectorsServerTransport struct {
 	srv                         *PublicCloudConnectorsServer
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armhybridconnectivity.PublicCloudConnectorsClientCreateOrUpdateResponse]]
+	beginTestPermissions        *tracker[azfake.PollerResponder[armhybridconnectivity.PublicCloudConnectorsClientTestPermissionsResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armhybridconnectivity.PublicCloudConnectorsClientListByResourceGroupResponse]]
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armhybridconnectivity.PublicCloudConnectorsClientListBySubscriptionResponse]]
-	beginTestPermissions        *tracker[azfake.PollerResponder[armhybridconnectivity.PublicCloudConnectorsClientTestPermissionsResponse]]
 }
 
 // Do implements the policy.Transporter interface for PublicCloudConnectorsServerTransport.
@@ -96,6 +96,8 @@ func (p *PublicCloudConnectorsServerTransport) dispatchToMethodFake(req *http.Re
 			switch method {
 			case "PublicCloudConnectorsClient.BeginCreateOrUpdate":
 				res.resp, res.err = p.dispatchBeginCreateOrUpdate(req)
+			case "PublicCloudConnectorsClient.BeginTestPermissions":
+				res.resp, res.err = p.dispatchBeginTestPermissions(req)
 			case "PublicCloudConnectorsClient.Delete":
 				res.resp, res.err = p.dispatchDelete(req)
 			case "PublicCloudConnectorsClient.Get":
@@ -104,8 +106,6 @@ func (p *PublicCloudConnectorsServerTransport) dispatchToMethodFake(req *http.Re
 				res.resp, res.err = p.dispatchNewListByResourceGroupPager(req)
 			case "PublicCloudConnectorsClient.NewListBySubscriptionPager":
 				res.resp, res.err = p.dispatchNewListBySubscriptionPager(req)
-			case "PublicCloudConnectorsClient.BeginTestPermissions":
-				res.resp, res.err = p.dispatchBeginTestPermissions(req)
 			case "PublicCloudConnectorsClient.Update":
 				res.resp, res.err = p.dispatchUpdate(req)
 			default:
@@ -167,6 +167,50 @@ func (p *PublicCloudConnectorsServerTransport) dispatchBeginCreateOrUpdate(req *
 	}
 	if !server.PollerResponderMore(beginCreateOrUpdate) {
 		p.beginCreateOrUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (p *PublicCloudConnectorsServerTransport) dispatchBeginTestPermissions(req *http.Request) (*http.Response, error) {
+	if p.srv.BeginTestPermissions == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginTestPermissions not implemented")}
+	}
+	beginTestPermissions := p.beginTestPermissions.get(req)
+	if beginTestPermissions == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.HybridConnectivity/publicCloudConnectors/(?P<publicCloudConnector>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/testPermissions`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		publicCloudConnectorParam, err := url.PathUnescape(matches[regex.SubexpIndex("publicCloudConnector")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := p.srv.BeginTestPermissions(req.Context(), resourceGroupNameParam, publicCloudConnectorParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginTestPermissions = &respr
+		p.beginTestPermissions.add(req, beginTestPermissions)
+	}
+
+	resp, err := server.PollerResponderNext(beginTestPermissions, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		p.beginTestPermissions.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginTestPermissions) {
+		p.beginTestPermissions.remove(req)
 	}
 
 	return resp, nil
@@ -305,50 +349,6 @@ func (p *PublicCloudConnectorsServerTransport) dispatchNewListBySubscriptionPage
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		p.newListBySubscriptionPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (p *PublicCloudConnectorsServerTransport) dispatchBeginTestPermissions(req *http.Request) (*http.Response, error) {
-	if p.srv.BeginTestPermissions == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginTestPermissions not implemented")}
-	}
-	beginTestPermissions := p.beginTestPermissions.get(req)
-	if beginTestPermissions == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.HybridConnectivity/publicCloudConnectors/(?P<publicCloudConnector>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/testPermissions`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		publicCloudConnectorParam, err := url.PathUnescape(matches[regex.SubexpIndex("publicCloudConnector")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := p.srv.BeginTestPermissions(req.Context(), resourceGroupNameParam, publicCloudConnectorParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginTestPermissions = &respr
-		p.beginTestPermissions.add(req, beginTestPermissions)
-	}
-
-	resp, err := server.PollerResponderNext(beginTestPermissions, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		p.beginTestPermissions.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginTestPermissions) {
-		p.beginTestPermissions.remove(req)
-	}
-
 	return resp, nil
 }
 

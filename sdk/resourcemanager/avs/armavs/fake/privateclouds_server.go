@@ -29,26 +29,6 @@ type PrivateCloudsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, privateCloudName string, options *armavs.PrivateCloudsClientBeginDeleteOptions) (resp azfake.PollerResponder[armavs.PrivateCloudsClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method PrivateCloudsClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, privateCloudName string, options *armavs.PrivateCloudsClientGetOptions) (resp azfake.Responder[armavs.PrivateCloudsClientGetResponse], errResp azfake.ErrorResponder)
-
-	// GetVcfLicense is the fake for method PrivateCloudsClient.GetVcfLicense
-	// HTTP status codes to indicate success: http.StatusOK
-	GetVcfLicense func(ctx context.Context, resourceGroupName string, privateCloudName string, options *armavs.PrivateCloudsClientGetVcfLicenseOptions) (resp azfake.Responder[armavs.PrivateCloudsClientGetVcfLicenseResponse], errResp azfake.ErrorResponder)
-
-	// NewListPager is the fake for method PrivateCloudsClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, options *armavs.PrivateCloudsClientListOptions) (resp azfake.PagerResponder[armavs.PrivateCloudsClientListResponse])
-
-	// ListAdminCredentials is the fake for method PrivateCloudsClient.ListAdminCredentials
-	// HTTP status codes to indicate success: http.StatusOK
-	ListAdminCredentials func(ctx context.Context, resourceGroupName string, privateCloudName string, options *armavs.PrivateCloudsClientListAdminCredentialsOptions) (resp azfake.Responder[armavs.PrivateCloudsClientListAdminCredentialsResponse], errResp azfake.ErrorResponder)
-
-	// NewListInSubscriptionPager is the fake for method PrivateCloudsClient.NewListInSubscriptionPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListInSubscriptionPager func(options *armavs.PrivateCloudsClientListInSubscriptionOptions) (resp azfake.PagerResponder[armavs.PrivateCloudsClientListInSubscriptionResponse])
-
 	// BeginRotateNsxtPassword is the fake for method PrivateCloudsClient.BeginRotateNsxtPassword
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginRotateNsxtPassword func(ctx context.Context, resourceGroupName string, privateCloudName string, options *armavs.PrivateCloudsClientBeginRotateNsxtPasswordOptions) (resp azfake.PollerResponder[armavs.PrivateCloudsClientRotateNsxtPasswordResponse], errResp azfake.ErrorResponder)
@@ -60,6 +40,26 @@ type PrivateCloudsServer struct {
 	// BeginUpdate is the fake for method PrivateCloudsClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginUpdate func(ctx context.Context, resourceGroupName string, privateCloudName string, privateCloudUpdate armavs.PrivateCloudUpdate, options *armavs.PrivateCloudsClientBeginUpdateOptions) (resp azfake.PollerResponder[armavs.PrivateCloudsClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method PrivateCloudsClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, privateCloudName string, options *armavs.PrivateCloudsClientGetOptions) (resp azfake.Responder[armavs.PrivateCloudsClientGetResponse], errResp azfake.ErrorResponder)
+
+	// GetVcfLicense is the fake for method PrivateCloudsClient.GetVcfLicense
+	// HTTP status codes to indicate success: http.StatusOK
+	GetVcfLicense func(ctx context.Context, resourceGroupName string, privateCloudName string, options *armavs.PrivateCloudsClientGetVcfLicenseOptions) (resp azfake.Responder[armavs.PrivateCloudsClientGetVcfLicenseResponse], errResp azfake.ErrorResponder)
+
+	// ListAdminCredentials is the fake for method PrivateCloudsClient.ListAdminCredentials
+	// HTTP status codes to indicate success: http.StatusOK
+	ListAdminCredentials func(ctx context.Context, resourceGroupName string, privateCloudName string, options *armavs.PrivateCloudsClientListAdminCredentialsOptions) (resp azfake.Responder[armavs.PrivateCloudsClientListAdminCredentialsResponse], errResp azfake.ErrorResponder)
+
+	// NewListInSubscriptionPager is the fake for method PrivateCloudsClient.NewListInSubscriptionPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListInSubscriptionPager func(options *armavs.PrivateCloudsClientListInSubscriptionOptions) (resp azfake.PagerResponder[armavs.PrivateCloudsClientListInSubscriptionResponse])
+
+	// NewListPager is the fake for method PrivateCloudsClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(resourceGroupName string, options *armavs.PrivateCloudsClientListOptions) (resp azfake.PagerResponder[armavs.PrivateCloudsClientListResponse])
 }
 
 // NewPrivateCloudsServerTransport creates a new instance of PrivateCloudsServerTransport with the provided implementation.
@@ -70,11 +70,11 @@ func NewPrivateCloudsServerTransport(srv *PrivateCloudsServer) *PrivateCloudsSer
 		srv:                        srv,
 		beginCreateOrUpdate:        newTracker[azfake.PollerResponder[armavs.PrivateCloudsClientCreateOrUpdateResponse]](),
 		beginDelete:                newTracker[azfake.PollerResponder[armavs.PrivateCloudsClientDeleteResponse]](),
-		newListPager:               newTracker[azfake.PagerResponder[armavs.PrivateCloudsClientListResponse]](),
-		newListInSubscriptionPager: newTracker[azfake.PagerResponder[armavs.PrivateCloudsClientListInSubscriptionResponse]](),
 		beginRotateNsxtPassword:    newTracker[azfake.PollerResponder[armavs.PrivateCloudsClientRotateNsxtPasswordResponse]](),
 		beginRotateVcenterPassword: newTracker[azfake.PollerResponder[armavs.PrivateCloudsClientRotateVcenterPasswordResponse]](),
 		beginUpdate:                newTracker[azfake.PollerResponder[armavs.PrivateCloudsClientUpdateResponse]](),
+		newListInSubscriptionPager: newTracker[azfake.PagerResponder[armavs.PrivateCloudsClientListInSubscriptionResponse]](),
+		newListPager:               newTracker[azfake.PagerResponder[armavs.PrivateCloudsClientListResponse]](),
 	}
 }
 
@@ -84,11 +84,11 @@ type PrivateCloudsServerTransport struct {
 	srv                        *PrivateCloudsServer
 	beginCreateOrUpdate        *tracker[azfake.PollerResponder[armavs.PrivateCloudsClientCreateOrUpdateResponse]]
 	beginDelete                *tracker[azfake.PollerResponder[armavs.PrivateCloudsClientDeleteResponse]]
-	newListPager               *tracker[azfake.PagerResponder[armavs.PrivateCloudsClientListResponse]]
-	newListInSubscriptionPager *tracker[azfake.PagerResponder[armavs.PrivateCloudsClientListInSubscriptionResponse]]
 	beginRotateNsxtPassword    *tracker[azfake.PollerResponder[armavs.PrivateCloudsClientRotateNsxtPasswordResponse]]
 	beginRotateVcenterPassword *tracker[azfake.PollerResponder[armavs.PrivateCloudsClientRotateVcenterPasswordResponse]]
 	beginUpdate                *tracker[azfake.PollerResponder[armavs.PrivateCloudsClientUpdateResponse]]
+	newListInSubscriptionPager *tracker[azfake.PagerResponder[armavs.PrivateCloudsClientListInSubscriptionResponse]]
+	newListPager               *tracker[azfake.PagerResponder[armavs.PrivateCloudsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for PrivateCloudsServerTransport.
@@ -116,22 +116,22 @@ func (p *PrivateCloudsServerTransport) dispatchToMethodFake(req *http.Request, m
 				res.resp, res.err = p.dispatchBeginCreateOrUpdate(req)
 			case "PrivateCloudsClient.BeginDelete":
 				res.resp, res.err = p.dispatchBeginDelete(req)
-			case "PrivateCloudsClient.Get":
-				res.resp, res.err = p.dispatchGet(req)
-			case "PrivateCloudsClient.GetVcfLicense":
-				res.resp, res.err = p.dispatchGetVcfLicense(req)
-			case "PrivateCloudsClient.NewListPager":
-				res.resp, res.err = p.dispatchNewListPager(req)
-			case "PrivateCloudsClient.ListAdminCredentials":
-				res.resp, res.err = p.dispatchListAdminCredentials(req)
-			case "PrivateCloudsClient.NewListInSubscriptionPager":
-				res.resp, res.err = p.dispatchNewListInSubscriptionPager(req)
 			case "PrivateCloudsClient.BeginRotateNsxtPassword":
 				res.resp, res.err = p.dispatchBeginRotateNsxtPassword(req)
 			case "PrivateCloudsClient.BeginRotateVcenterPassword":
 				res.resp, res.err = p.dispatchBeginRotateVcenterPassword(req)
 			case "PrivateCloudsClient.BeginUpdate":
 				res.resp, res.err = p.dispatchBeginUpdate(req)
+			case "PrivateCloudsClient.Get":
+				res.resp, res.err = p.dispatchGet(req)
+			case "PrivateCloudsClient.GetVcfLicense":
+				res.resp, res.err = p.dispatchGetVcfLicense(req)
+			case "PrivateCloudsClient.ListAdminCredentials":
+				res.resp, res.err = p.dispatchListAdminCredentials(req)
+			case "PrivateCloudsClient.NewListInSubscriptionPager":
+				res.resp, res.err = p.dispatchNewListInSubscriptionPager(req)
+			case "PrivateCloudsClient.NewListPager":
+				res.resp, res.err = p.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -237,175 +237,6 @@ func (p *PrivateCloudsServerTransport) dispatchBeginDelete(req *http.Request) (*
 		p.beginDelete.remove(req)
 	}
 
-	return resp, nil
-}
-
-func (p *PrivateCloudsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if p.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AVS/privateClouds/(?P<privateCloudName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	privateCloudNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("privateCloudName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := p.srv.Get(req.Context(), resourceGroupNameParam, privateCloudNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).PrivateCloud, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (p *PrivateCloudsServerTransport) dispatchGetVcfLicense(req *http.Request) (*http.Response, error) {
-	if p.srv.GetVcfLicense == nil {
-		return nil, &nonRetriableError{errors.New("fake for method GetVcfLicense not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AVS/privateClouds/(?P<privateCloudName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getVcfLicense`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	privateCloudNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("privateCloudName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := p.srv.GetVcfLicense(req.Context(), resourceGroupNameParam, privateCloudNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).VcfLicenseClassification, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (p *PrivateCloudsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if p.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := p.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AVS/privateClouds`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := p.srv.NewListPager(resourceGroupNameParam, nil)
-		newListPager = &resp
-		p.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armavs.PrivateCloudsClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		p.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		p.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (p *PrivateCloudsServerTransport) dispatchListAdminCredentials(req *http.Request) (*http.Response, error) {
-	if p.srv.ListAdminCredentials == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListAdminCredentials not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AVS/privateClouds/(?P<privateCloudName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listAdminCredentials`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	privateCloudNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("privateCloudName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := p.srv.ListAdminCredentials(req.Context(), resourceGroupNameParam, privateCloudNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AdminCredentials, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (p *PrivateCloudsServerTransport) dispatchNewListInSubscriptionPager(req *http.Request) (*http.Response, error) {
-	if p.srv.NewListInSubscriptionPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListInSubscriptionPager not implemented")}
-	}
-	newListInSubscriptionPager := p.newListInSubscriptionPager.get(req)
-	if newListInSubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AVS/privateClouds`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := p.srv.NewListInSubscriptionPager(nil)
-		newListInSubscriptionPager = &resp
-		p.newListInSubscriptionPager.add(req, newListInSubscriptionPager)
-		server.PagerResponderInjectNextLinks(newListInSubscriptionPager, req, func(page *armavs.PrivateCloudsClientListInSubscriptionResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListInSubscriptionPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		p.newListInSubscriptionPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListInSubscriptionPager) {
-		p.newListInSubscriptionPager.remove(req)
-	}
 	return resp, nil
 }
 
@@ -542,6 +373,175 @@ func (p *PrivateCloudsServerTransport) dispatchBeginUpdate(req *http.Request) (*
 		p.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (p *PrivateCloudsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if p.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AVS/privateClouds/(?P<privateCloudName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	privateCloudNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("privateCloudName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := p.srv.Get(req.Context(), resourceGroupNameParam, privateCloudNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).PrivateCloud, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (p *PrivateCloudsServerTransport) dispatchGetVcfLicense(req *http.Request) (*http.Response, error) {
+	if p.srv.GetVcfLicense == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetVcfLicense not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AVS/privateClouds/(?P<privateCloudName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getVcfLicense`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	privateCloudNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("privateCloudName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := p.srv.GetVcfLicense(req.Context(), resourceGroupNameParam, privateCloudNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).VcfLicenseClassification, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (p *PrivateCloudsServerTransport) dispatchListAdminCredentials(req *http.Request) (*http.Response, error) {
+	if p.srv.ListAdminCredentials == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListAdminCredentials not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AVS/privateClouds/(?P<privateCloudName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listAdminCredentials`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	privateCloudNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("privateCloudName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := p.srv.ListAdminCredentials(req.Context(), resourceGroupNameParam, privateCloudNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AdminCredentials, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (p *PrivateCloudsServerTransport) dispatchNewListInSubscriptionPager(req *http.Request) (*http.Response, error) {
+	if p.srv.NewListInSubscriptionPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListInSubscriptionPager not implemented")}
+	}
+	newListInSubscriptionPager := p.newListInSubscriptionPager.get(req)
+	if newListInSubscriptionPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AVS/privateClouds`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := p.srv.NewListInSubscriptionPager(nil)
+		newListInSubscriptionPager = &resp
+		p.newListInSubscriptionPager.add(req, newListInSubscriptionPager)
+		server.PagerResponderInjectNextLinks(newListInSubscriptionPager, req, func(page *armavs.PrivateCloudsClientListInSubscriptionResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListInSubscriptionPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		p.newListInSubscriptionPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListInSubscriptionPager) {
+		p.newListInSubscriptionPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (p *PrivateCloudsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if p.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := p.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AVS/privateClouds`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := p.srv.NewListPager(resourceGroupNameParam, nil)
+		newListPager = &resp
+		p.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armavs.PrivateCloudsClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		p.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		p.newListPager.remove(req)
+	}
 	return resp, nil
 }
 

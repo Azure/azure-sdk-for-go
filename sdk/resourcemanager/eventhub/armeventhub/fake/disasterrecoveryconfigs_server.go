@@ -49,17 +49,17 @@ type DisasterRecoveryConfigsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetAuthorizationRule func(ctx context.Context, resourceGroupName string, namespaceName string, alias string, authorizationRuleName string, options *armeventhub.DisasterRecoveryConfigsClientGetAuthorizationRuleOptions) (resp azfake.Responder[armeventhub.DisasterRecoveryConfigsClientGetAuthorizationRuleResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method DisasterRecoveryConfigsClient.NewListPager
+	// ListKeys is the fake for method DisasterRecoveryConfigsClient.ListKeys
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, namespaceName string, options *armeventhub.DisasterRecoveryConfigsClientListOptions) (resp azfake.PagerResponder[armeventhub.DisasterRecoveryConfigsClientListResponse])
+	ListKeys func(ctx context.Context, resourceGroupName string, namespaceName string, alias string, authorizationRuleName string, options *armeventhub.DisasterRecoveryConfigsClientListKeysOptions) (resp azfake.Responder[armeventhub.DisasterRecoveryConfigsClientListKeysResponse], errResp azfake.ErrorResponder)
 
 	// NewListAuthorizationRulesPager is the fake for method DisasterRecoveryConfigsClient.NewListAuthorizationRulesPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListAuthorizationRulesPager func(resourceGroupName string, namespaceName string, alias string, options *armeventhub.DisasterRecoveryConfigsClientListAuthorizationRulesOptions) (resp azfake.PagerResponder[armeventhub.DisasterRecoveryConfigsClientListAuthorizationRulesResponse])
 
-	// ListKeys is the fake for method DisasterRecoveryConfigsClient.ListKeys
+	// NewListPager is the fake for method DisasterRecoveryConfigsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	ListKeys func(ctx context.Context, resourceGroupName string, namespaceName string, alias string, authorizationRuleName string, options *armeventhub.DisasterRecoveryConfigsClientListKeysOptions) (resp azfake.Responder[armeventhub.DisasterRecoveryConfigsClientListKeysResponse], errResp azfake.ErrorResponder)
+	NewListPager func(resourceGroupName string, namespaceName string, options *armeventhub.DisasterRecoveryConfigsClientListOptions) (resp azfake.PagerResponder[armeventhub.DisasterRecoveryConfigsClientListResponse])
 }
 
 // NewDisasterRecoveryConfigsServerTransport creates a new instance of DisasterRecoveryConfigsServerTransport with the provided implementation.
@@ -68,8 +68,8 @@ type DisasterRecoveryConfigsServer struct {
 func NewDisasterRecoveryConfigsServerTransport(srv *DisasterRecoveryConfigsServer) *DisasterRecoveryConfigsServerTransport {
 	return &DisasterRecoveryConfigsServerTransport{
 		srv:                            srv,
-		newListPager:                   newTracker[azfake.PagerResponder[armeventhub.DisasterRecoveryConfigsClientListResponse]](),
 		newListAuthorizationRulesPager: newTracker[azfake.PagerResponder[armeventhub.DisasterRecoveryConfigsClientListAuthorizationRulesResponse]](),
+		newListPager:                   newTracker[azfake.PagerResponder[armeventhub.DisasterRecoveryConfigsClientListResponse]](),
 	}
 }
 
@@ -77,8 +77,8 @@ func NewDisasterRecoveryConfigsServerTransport(srv *DisasterRecoveryConfigsServe
 // Don't use this type directly, use NewDisasterRecoveryConfigsServerTransport instead.
 type DisasterRecoveryConfigsServerTransport struct {
 	srv                            *DisasterRecoveryConfigsServer
-	newListPager                   *tracker[azfake.PagerResponder[armeventhub.DisasterRecoveryConfigsClientListResponse]]
 	newListAuthorizationRulesPager *tracker[azfake.PagerResponder[armeventhub.DisasterRecoveryConfigsClientListAuthorizationRulesResponse]]
+	newListPager                   *tracker[azfake.PagerResponder[armeventhub.DisasterRecoveryConfigsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for DisasterRecoveryConfigsServerTransport.
@@ -116,12 +116,12 @@ func (d *DisasterRecoveryConfigsServerTransport) dispatchToMethodFake(req *http.
 				res.resp, res.err = d.dispatchGet(req)
 			case "DisasterRecoveryConfigsClient.GetAuthorizationRule":
 				res.resp, res.err = d.dispatchGetAuthorizationRule(req)
-			case "DisasterRecoveryConfigsClient.NewListPager":
-				res.resp, res.err = d.dispatchNewListPager(req)
-			case "DisasterRecoveryConfigsClient.NewListAuthorizationRulesPager":
-				res.resp, res.err = d.dispatchNewListAuthorizationRulesPager(req)
 			case "DisasterRecoveryConfigsClient.ListKeys":
 				res.resp, res.err = d.dispatchListKeys(req)
+			case "DisasterRecoveryConfigsClient.NewListAuthorizationRulesPager":
+				res.resp, res.err = d.dispatchNewListAuthorizationRulesPager(req)
+			case "DisasterRecoveryConfigsClient.NewListPager":
+				res.resp, res.err = d.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -405,43 +405,43 @@ func (d *DisasterRecoveryConfigsServerTransport) dispatchGetAuthorizationRule(re
 	return resp, nil
 }
 
-func (d *DisasterRecoveryConfigsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if d.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+func (d *DisasterRecoveryConfigsServerTransport) dispatchListKeys(req *http.Request) (*http.Response, error) {
+	if d.srv.ListKeys == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListKeys not implemented")}
 	}
-	newListPager := d.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventHub/namespaces/(?P<namespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/disasterRecoveryConfigs`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		namespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("namespaceName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := d.srv.NewListPager(resourceGroupNameParam, namespaceNameParam, nil)
-		newListPager = &resp
-		d.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armeventhub.DisasterRecoveryConfigsClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventHub/namespaces/(?P<namespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/disasterRecoveryConfigs/(?P<alias>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/authorizationRules/(?P<authorizationRuleName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listKeys`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 6 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resp, err := server.PagerResponderNext(newListPager, req)
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
 	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		d.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	namespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("namespaceName")])
+	if err != nil {
+		return nil, err
 	}
-	if !server.PagerResponderMore(newListPager) {
-		d.newListPager.remove(req)
+	aliasParam, err := url.PathUnescape(matches[regex.SubexpIndex("alias")])
+	if err != nil {
+		return nil, err
+	}
+	authorizationRuleNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("authorizationRuleName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := d.srv.ListKeys(req.Context(), resourceGroupNameParam, namespaceNameParam, aliasParam, authorizationRuleNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AccessKeys, req)
+	if err != nil {
+		return nil, err
 	}
 	return resp, nil
 }
@@ -491,43 +491,43 @@ func (d *DisasterRecoveryConfigsServerTransport) dispatchNewListAuthorizationRul
 	return resp, nil
 }
 
-func (d *DisasterRecoveryConfigsServerTransport) dispatchListKeys(req *http.Request) (*http.Response, error) {
-	if d.srv.ListKeys == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListKeys not implemented")}
+func (d *DisasterRecoveryConfigsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if d.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventHub/namespaces/(?P<namespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/disasterRecoveryConfigs/(?P<alias>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/authorizationRules/(?P<authorizationRuleName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listKeys`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 6 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	newListPager := d.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventHub/namespaces/(?P<namespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/disasterRecoveryConfigs`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		namespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("namespaceName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := d.srv.NewListPager(resourceGroupNameParam, namespaceNameParam, nil)
+		newListPager = &resp
+		d.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armeventhub.DisasterRecoveryConfigsClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
 	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
-	namespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("namespaceName")])
-	if err != nil {
-		return nil, err
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		d.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	aliasParam, err := url.PathUnescape(matches[regex.SubexpIndex("alias")])
-	if err != nil {
-		return nil, err
-	}
-	authorizationRuleNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("authorizationRuleName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := d.srv.ListKeys(req.Context(), resourceGroupNameParam, namespaceNameParam, aliasParam, authorizationRuleNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AccessKeys, req)
-	if err != nil {
-		return nil, err
+	if !server.PagerResponderMore(newListPager) {
+		d.newListPager.remove(req)
 	}
 	return resp, nil
 }

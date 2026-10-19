@@ -101,6 +101,73 @@ func (client *PublishersClient) getHandleResponse(resp *http.Response, successCo
 	return result, nil
 }
 
+// NewListBySubscriptionPager - List Publisher resources by subscription ID
+//   - options - PublishersClientListBySubscriptionOptions contains the optional parameters for the PublishersClient.NewListBySubscriptionPager
+//     method.
+func (client *PublishersClient) NewListBySubscriptionPager(options *PublishersClientListBySubscriptionOptions) *runtime.Pager[PublishersClientListBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PagingHandler[PublishersClientListBySubscriptionResponse]{
+		More: func(page PublishersClientListBySubscriptionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *PublishersClientListBySubscriptionResponse) (PublishersClientListBySubscriptionResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PublishersClient.NewListBySubscriptionPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listBySubscriptionCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return PublishersClientListBySubscriptionResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return PublishersClientListBySubscriptionResponse{}, err
+			}
+			return client.listBySubscriptionHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listBySubscriptionCreateRequest creates the ListBySubscription request.
+func (client *PublishersClient) listBySubscriptionCreateRequest(ctx context.Context, nextLink string, _ *PublishersClientListBySubscriptionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.EdgeMarketplace/publishers"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20251001Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listBySubscriptionHandleResponse handles the ListBySubscription response.
+func (client *PublishersClient) listBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (PublishersClientListBySubscriptionResponse, error) {
+	result := PublishersClientListBySubscriptionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PublisherListResult); err != nil {
+		return PublishersClientListBySubscriptionResponse{}, err
+	}
+	return result, nil
+}
+
 // NewListPager - List Publisher resources by parent
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
 //   - options - PublishersClientListOptions contains the optional parameters for the PublishersClient.NewListPager method.
@@ -179,73 +246,6 @@ func (client *PublishersClient) listHandleResponse(resp *http.Response, successC
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PublisherListResult); err != nil {
 		return PublishersClientListResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListBySubscriptionPager - List Publisher resources by subscription ID
-//   - options - PublishersClientListBySubscriptionOptions contains the optional parameters for the PublishersClient.NewListBySubscriptionPager
-//     method.
-func (client *PublishersClient) NewListBySubscriptionPager(options *PublishersClientListBySubscriptionOptions) *runtime.Pager[PublishersClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PagingHandler[PublishersClientListBySubscriptionResponse]{
-		More: func(page PublishersClientListBySubscriptionResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *PublishersClientListBySubscriptionResponse) (PublishersClientListBySubscriptionResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PublishersClient.NewListBySubscriptionPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listBySubscriptionCreateRequest(ctx, nextLink, options)
-			if err != nil {
-				return PublishersClientListBySubscriptionResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return PublishersClientListBySubscriptionResponse{}, err
-			}
-			return client.listBySubscriptionHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *PublishersClient) listBySubscriptionCreateRequest(ctx context.Context, nextLink string, _ *PublishersClientListBySubscriptionOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.EdgeMarketplace/publishers"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20251001Preview)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *PublishersClient) listBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (PublishersClientListBySubscriptionResponse, error) {
-	result := PublishersClientListBySubscriptionResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.PublisherListResult); err != nil {
-		return PublishersClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
 }

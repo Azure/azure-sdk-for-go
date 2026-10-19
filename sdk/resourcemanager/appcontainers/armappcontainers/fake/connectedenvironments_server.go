@@ -21,10 +21,6 @@ import (
 
 // ConnectedEnvironmentsServer is a fake server for instances of the armappcontainers.ConnectedEnvironmentsClient type.
 type ConnectedEnvironmentsServer struct {
-	// CheckNameAvailability is the fake for method ConnectedEnvironmentsClient.CheckNameAvailability
-	// HTTP status codes to indicate success: http.StatusOK
-	CheckNameAvailability func(ctx context.Context, resourceGroupName string, connectedEnvironmentName string, checkNameAvailabilityRequest armappcontainers.CheckNameAvailabilityRequest, options *armappcontainers.ConnectedEnvironmentsClientCheckNameAvailabilityOptions) (resp azfake.Responder[armappcontainers.ConnectedEnvironmentsClientCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
-
 	// BeginCreateOrUpdate is the fake for method ConnectedEnvironmentsClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, connectedEnvironmentName string, environmentEnvelope armappcontainers.ConnectedEnvironment, options *armappcontainers.ConnectedEnvironmentsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armappcontainers.ConnectedEnvironmentsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -32,6 +28,10 @@ type ConnectedEnvironmentsServer struct {
 	// BeginDelete is the fake for method ConnectedEnvironmentsClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, connectedEnvironmentName string, options *armappcontainers.ConnectedEnvironmentsClientBeginDeleteOptions) (resp azfake.PollerResponder[armappcontainers.ConnectedEnvironmentsClientDeleteResponse], errResp azfake.ErrorResponder)
+
+	// CheckNameAvailability is the fake for method ConnectedEnvironmentsClient.CheckNameAvailability
+	// HTTP status codes to indicate success: http.StatusOK
+	CheckNameAvailability func(ctx context.Context, resourceGroupName string, connectedEnvironmentName string, checkNameAvailabilityRequest armappcontainers.CheckNameAvailabilityRequest, options *armappcontainers.ConnectedEnvironmentsClientCheckNameAvailabilityOptions) (resp azfake.Responder[armappcontainers.ConnectedEnvironmentsClientCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method ConnectedEnvironmentsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -94,12 +94,12 @@ func (c *ConnectedEnvironmentsServerTransport) dispatchToMethodFake(req *http.Re
 		}
 		if !intercepted {
 			switch method {
-			case "ConnectedEnvironmentsClient.CheckNameAvailability":
-				res.resp, res.err = c.dispatchCheckNameAvailability(req)
 			case "ConnectedEnvironmentsClient.BeginCreateOrUpdate":
 				res.resp, res.err = c.dispatchBeginCreateOrUpdate(req)
 			case "ConnectedEnvironmentsClient.BeginDelete":
 				res.resp, res.err = c.dispatchBeginDelete(req)
+			case "ConnectedEnvironmentsClient.CheckNameAvailability":
+				res.resp, res.err = c.dispatchCheckNameAvailability(req)
 			case "ConnectedEnvironmentsClient.Get":
 				res.resp, res.err = c.dispatchGet(req)
 			case "ConnectedEnvironmentsClient.NewListByResourceGroupPager":
@@ -122,43 +122,6 @@ func (c *ConnectedEnvironmentsServerTransport) dispatchToMethodFake(req *http.Re
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (c *ConnectedEnvironmentsServerTransport) dispatchCheckNameAvailability(req *http.Request) (*http.Response, error) {
-	if c.srv.CheckNameAvailability == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CheckNameAvailability not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.App/connectedEnvironments/(?P<connectedEnvironmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/checkNameAvailability`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armappcontainers.CheckNameAvailabilityRequest](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	connectedEnvironmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("connectedEnvironmentName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := c.srv.CheckNameAvailability(req.Context(), resourceGroupNameParam, connectedEnvironmentNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CheckNameAvailabilityResponse, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (c *ConnectedEnvironmentsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -250,6 +213,43 @@ func (c *ConnectedEnvironmentsServerTransport) dispatchBeginDelete(req *http.Req
 		c.beginDelete.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (c *ConnectedEnvironmentsServerTransport) dispatchCheckNameAvailability(req *http.Request) (*http.Response, error) {
+	if c.srv.CheckNameAvailability == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CheckNameAvailability not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.App/connectedEnvironments/(?P<connectedEnvironmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/checkNameAvailability`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armappcontainers.CheckNameAvailabilityRequest](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	connectedEnvironmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("connectedEnvironmentName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := c.srv.CheckNameAvailability(req.Context(), resourceGroupNameParam, connectedEnvironmentNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CheckNameAvailabilityResponse, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 

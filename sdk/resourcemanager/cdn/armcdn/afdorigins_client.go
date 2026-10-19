@@ -71,7 +71,7 @@ func (client *AFDOriginsClient) BeginCreate(ctx context.Context, resourceGroupNa
 	}
 }
 
-// Create - Creates a new origin within the specified origin group.
+// create - Creates a new origin within the specified origin group.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AFDOriginsClient) create(ctx context.Context, resourceGroupName string, profileName string, originGroupName string, originName string, origin AFDOrigin, options *AFDOriginsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
@@ -93,7 +93,7 @@ func (client *AFDOriginsClient) create(ctx context.Context, resourceGroupName st
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *AFDOriginsClient) createCreateRequest(ctx context.Context, resourceGroupName string, profileName string, originGroupName string, originName string, origin AFDOrigin, _ *AFDOriginsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/originGroups/{originGroupName}/origins/{originName}"
 	if client.subscriptionID == "" {
@@ -157,7 +157,7 @@ func (client *AFDOriginsClient) BeginDelete(ctx context.Context, resourceGroupNa
 	}
 }
 
-// Delete - Deletes an existing origin within an origin group.
+// deleteOperation - Deletes an existing origin within an origin group.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AFDOriginsClient) deleteOperation(ctx context.Context, resourceGroupName string, profileName string, originGroupName string, originName string, options *AFDOriginsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -179,7 +179,7 @@ func (client *AFDOriginsClient) deleteOperation(ctx context.Context, resourceGro
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *AFDOriginsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, profileName string, originGroupName string, originName string, _ *AFDOriginsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/originGroups/{originGroupName}/origins/{originName}"
 	if client.subscriptionID == "" {
@@ -209,6 +209,92 @@ func (client *AFDOriginsClient) deleteCreateRequest(ctx context.Context, resourc
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20250601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - Updates an existing origin within an origin group.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
+//     resource group.
+//   - originGroupName - Name of the origin group which is unique within the endpoint.
+//   - originName - Name of the origin which is unique within the profile.
+//   - originUpdateProperties - Origin properties
+//   - options - AFDOriginsClientBeginUpdateOptions contains the optional parameters for the AFDOriginsClient.BeginUpdate method.
+func (client *AFDOriginsClient) BeginUpdate(ctx context.Context, resourceGroupName string, profileName string, originGroupName string, originName string, originUpdateProperties AFDOriginUpdateParameters, options *AFDOriginsClientBeginUpdateOptions) (*runtime.Poller[AFDOriginsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, profileName, originGroupName, originName, originUpdateProperties, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AFDOriginsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AFDOriginsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Updates an existing origin within an origin group.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *AFDOriginsClient) update(ctx context.Context, resourceGroupName string, profileName string, originGroupName string, originName string, originUpdateProperties AFDOriginUpdateParameters, options *AFDOriginsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "AFDOriginsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, profileName, originGroupName, originName, originUpdateProperties, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *AFDOriginsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, profileName string, originGroupName string, originName string, originUpdateProperties AFDOriginUpdateParameters, _ *AFDOriginsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/originGroups/{originGroupName}/origins/{originName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if profileName == "" {
+		return nil, errors.New("parameter profileName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{profileName}", url.PathEscape(profileName))
+	if originGroupName == "" {
+		return nil, errors.New("parameter originGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{originGroupName}", url.PathEscape(originGroupName))
+	if originName == "" {
+		return nil, errors.New("parameter originName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{originName}", url.PathEscape(originName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, originUpdateProperties); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -364,90 +450,4 @@ func (client *AFDOriginsClient) listByOriginGroupHandleResponse(resp *http.Respo
 		return AFDOriginsClientListByOriginGroupResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Updates an existing origin within an origin group.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
-//     resource group.
-//   - originGroupName - Name of the origin group which is unique within the endpoint.
-//   - originName - Name of the origin which is unique within the profile.
-//   - originUpdateProperties - Origin properties
-//   - options - AFDOriginsClientBeginUpdateOptions contains the optional parameters for the AFDOriginsClient.BeginUpdate method.
-func (client *AFDOriginsClient) BeginUpdate(ctx context.Context, resourceGroupName string, profileName string, originGroupName string, originName string, originUpdateProperties AFDOriginUpdateParameters, options *AFDOriginsClientBeginUpdateOptions) (*runtime.Poller[AFDOriginsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, profileName, originGroupName, originName, originUpdateProperties, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AFDOriginsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AFDOriginsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Updates an existing origin within an origin group.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *AFDOriginsClient) update(ctx context.Context, resourceGroupName string, profileName string, originGroupName string, originName string, originUpdateProperties AFDOriginUpdateParameters, options *AFDOriginsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "AFDOriginsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, profileName, originGroupName, originName, originUpdateProperties, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *AFDOriginsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, profileName string, originGroupName string, originName string, originUpdateProperties AFDOriginUpdateParameters, _ *AFDOriginsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/originGroups/{originGroupName}/origins/{originName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if profileName == "" {
-		return nil, errors.New("parameter profileName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{profileName}", url.PathEscape(profileName))
-	if originGroupName == "" {
-		return nil, errors.New("parameter originGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{originGroupName}", url.PathEscape(originGroupName))
-	if originName == "" {
-		return nil, errors.New("parameter originName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{originName}", url.PathEscape(originName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, originUpdateProperties); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

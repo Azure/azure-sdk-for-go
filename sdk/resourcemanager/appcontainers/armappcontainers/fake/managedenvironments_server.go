@@ -21,10 +21,6 @@ import (
 
 // ManagedEnvironmentsServer is a fake server for instances of the armappcontainers.ManagedEnvironmentsClient type.
 type ManagedEnvironmentsServer struct {
-	// CheckMigrationEligibility is the fake for method ManagedEnvironmentsClient.CheckMigrationEligibility
-	// HTTP status codes to indicate success: http.StatusOK
-	CheckMigrationEligibility func(ctx context.Context, resourceGroupName string, environmentName string, body armappcontainers.CheckMigrationEligibilityRequest, options *armappcontainers.ManagedEnvironmentsClientCheckMigrationEligibilityOptions) (resp azfake.Responder[armappcontainers.ManagedEnvironmentsClientCheckMigrationEligibilityResponse], errResp azfake.ErrorResponder)
-
 	// BeginCreateOrUpdate is the fake for method ManagedEnvironmentsClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, environmentName string, environmentEnvelope armappcontainers.ManagedEnvironment, options *armappcontainers.ManagedEnvironmentsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armappcontainers.ManagedEnvironmentsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -32,6 +28,14 @@ type ManagedEnvironmentsServer struct {
 	// BeginDelete is the fake for method ManagedEnvironmentsClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, environmentName string, options *armappcontainers.ManagedEnvironmentsClientBeginDeleteOptions) (resp azfake.PollerResponder[armappcontainers.ManagedEnvironmentsClientDeleteResponse], errResp azfake.ErrorResponder)
+
+	// BeginUpdate is the fake for method ManagedEnvironmentsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, environmentName string, environmentEnvelope armappcontainers.ManagedEnvironment, options *armappcontainers.ManagedEnvironmentsClientBeginUpdateOptions) (resp azfake.PollerResponder[armappcontainers.ManagedEnvironmentsClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// CheckMigrationEligibility is the fake for method ManagedEnvironmentsClient.CheckMigrationEligibility
+	// HTTP status codes to indicate success: http.StatusOK
+	CheckMigrationEligibility func(ctx context.Context, resourceGroupName string, environmentName string, body armappcontainers.CheckMigrationEligibilityRequest, options *armappcontainers.ManagedEnvironmentsClientCheckMigrationEligibilityOptions) (resp azfake.Responder[armappcontainers.ManagedEnvironmentsClientCheckMigrationEligibilityResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method ManagedEnvironmentsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -52,10 +56,6 @@ type ManagedEnvironmentsServer struct {
 	// NewListWorkloadProfileStatesPager is the fake for method ManagedEnvironmentsClient.NewListWorkloadProfileStatesPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListWorkloadProfileStatesPager func(resourceGroupName string, environmentName string, options *armappcontainers.ManagedEnvironmentsClientListWorkloadProfileStatesOptions) (resp azfake.PagerResponder[armappcontainers.ManagedEnvironmentsClientListWorkloadProfileStatesResponse])
-
-	// BeginUpdate is the fake for method ManagedEnvironmentsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, environmentName string, environmentEnvelope armappcontainers.ManagedEnvironment, options *armappcontainers.ManagedEnvironmentsClientBeginUpdateOptions) (resp azfake.PollerResponder[armappcontainers.ManagedEnvironmentsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewManagedEnvironmentsServerTransport creates a new instance of ManagedEnvironmentsServerTransport with the provided implementation.
@@ -66,10 +66,10 @@ func NewManagedEnvironmentsServerTransport(srv *ManagedEnvironmentsServer) *Mana
 		srv:                               srv,
 		beginCreateOrUpdate:               newTracker[azfake.PollerResponder[armappcontainers.ManagedEnvironmentsClientCreateOrUpdateResponse]](),
 		beginDelete:                       newTracker[azfake.PollerResponder[armappcontainers.ManagedEnvironmentsClientDeleteResponse]](),
+		beginUpdate:                       newTracker[azfake.PollerResponder[armappcontainers.ManagedEnvironmentsClientUpdateResponse]](),
 		newListByResourceGroupPager:       newTracker[azfake.PagerResponder[armappcontainers.ManagedEnvironmentsClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:        newTracker[azfake.PagerResponder[armappcontainers.ManagedEnvironmentsClientListBySubscriptionResponse]](),
 		newListWorkloadProfileStatesPager: newTracker[azfake.PagerResponder[armappcontainers.ManagedEnvironmentsClientListWorkloadProfileStatesResponse]](),
-		beginUpdate:                       newTracker[azfake.PollerResponder[armappcontainers.ManagedEnvironmentsClientUpdateResponse]](),
 	}
 }
 
@@ -79,10 +79,10 @@ type ManagedEnvironmentsServerTransport struct {
 	srv                               *ManagedEnvironmentsServer
 	beginCreateOrUpdate               *tracker[azfake.PollerResponder[armappcontainers.ManagedEnvironmentsClientCreateOrUpdateResponse]]
 	beginDelete                       *tracker[azfake.PollerResponder[armappcontainers.ManagedEnvironmentsClientDeleteResponse]]
+	beginUpdate                       *tracker[azfake.PollerResponder[armappcontainers.ManagedEnvironmentsClientUpdateResponse]]
 	newListByResourceGroupPager       *tracker[azfake.PagerResponder[armappcontainers.ManagedEnvironmentsClientListByResourceGroupResponse]]
 	newListBySubscriptionPager        *tracker[azfake.PagerResponder[armappcontainers.ManagedEnvironmentsClientListBySubscriptionResponse]]
 	newListWorkloadProfileStatesPager *tracker[azfake.PagerResponder[armappcontainers.ManagedEnvironmentsClientListWorkloadProfileStatesResponse]]
-	beginUpdate                       *tracker[azfake.PollerResponder[armappcontainers.ManagedEnvironmentsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for ManagedEnvironmentsServerTransport.
@@ -106,12 +106,14 @@ func (m *ManagedEnvironmentsServerTransport) dispatchToMethodFake(req *http.Requ
 		}
 		if !intercepted {
 			switch method {
-			case "ManagedEnvironmentsClient.CheckMigrationEligibility":
-				res.resp, res.err = m.dispatchCheckMigrationEligibility(req)
 			case "ManagedEnvironmentsClient.BeginCreateOrUpdate":
 				res.resp, res.err = m.dispatchBeginCreateOrUpdate(req)
 			case "ManagedEnvironmentsClient.BeginDelete":
 				res.resp, res.err = m.dispatchBeginDelete(req)
+			case "ManagedEnvironmentsClient.BeginUpdate":
+				res.resp, res.err = m.dispatchBeginUpdate(req)
+			case "ManagedEnvironmentsClient.CheckMigrationEligibility":
+				res.resp, res.err = m.dispatchCheckMigrationEligibility(req)
 			case "ManagedEnvironmentsClient.Get":
 				res.resp, res.err = m.dispatchGet(req)
 			case "ManagedEnvironmentsClient.GetAuthToken":
@@ -122,8 +124,6 @@ func (m *ManagedEnvironmentsServerTransport) dispatchToMethodFake(req *http.Requ
 				res.resp, res.err = m.dispatchNewListBySubscriptionPager(req)
 			case "ManagedEnvironmentsClient.NewListWorkloadProfileStatesPager":
 				res.resp, res.err = m.dispatchNewListWorkloadProfileStatesPager(req)
-			case "ManagedEnvironmentsClient.BeginUpdate":
-				res.resp, res.err = m.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -138,43 +138,6 @@ func (m *ManagedEnvironmentsServerTransport) dispatchToMethodFake(req *http.Requ
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (m *ManagedEnvironmentsServerTransport) dispatchCheckMigrationEligibility(req *http.Request) (*http.Response, error) {
-	if m.srv.CheckMigrationEligibility == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CheckMigrationEligibility not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.App/managedEnvironments/(?P<environmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/checkMigrationEligibility`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armappcontainers.CheckMigrationEligibilityRequest](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	environmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("environmentName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := m.srv.CheckMigrationEligibility(req.Context(), resourceGroupNameParam, environmentNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CheckMigrationEligibilityResponse, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (m *ManagedEnvironmentsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -266,6 +229,91 @@ func (m *ManagedEnvironmentsServerTransport) dispatchBeginDelete(req *http.Reque
 		m.beginDelete.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (m *ManagedEnvironmentsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if m.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := m.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.App/managedEnvironments/(?P<environmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armappcontainers.ManagedEnvironment](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		environmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("environmentName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := m.srv.BeginUpdate(req.Context(), resourceGroupNameParam, environmentNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		m.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		m.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		m.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (m *ManagedEnvironmentsServerTransport) dispatchCheckMigrationEligibility(req *http.Request) (*http.Response, error) {
+	if m.srv.CheckMigrationEligibility == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CheckMigrationEligibility not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.App/managedEnvironments/(?P<environmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/checkMigrationEligibility`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armappcontainers.CheckMigrationEligibilityRequest](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	environmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("environmentName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := m.srv.CheckMigrationEligibility(req.Context(), resourceGroupNameParam, environmentNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CheckMigrationEligibilityResponse, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 
@@ -443,54 +491,6 @@ func (m *ManagedEnvironmentsServerTransport) dispatchNewListWorkloadProfileState
 	if !server.PagerResponderMore(newListWorkloadProfileStatesPager) {
 		m.newListWorkloadProfileStatesPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (m *ManagedEnvironmentsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if m.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := m.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.App/managedEnvironments/(?P<environmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armappcontainers.ManagedEnvironment](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		environmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("environmentName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := m.srv.BeginUpdate(req.Context(), resourceGroupNameParam, environmentNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		m.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		m.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		m.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

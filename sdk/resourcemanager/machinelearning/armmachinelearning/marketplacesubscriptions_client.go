@@ -72,7 +72,7 @@ func (client *MarketplaceSubscriptionsClient) BeginCreateOrUpdate(ctx context.Co
 	}
 }
 
-// CreateOrUpdate - Create or update Marketplace Subscription (asynchronous).
+// createOrUpdate - Create or update Marketplace Subscription (asynchronous).
 //
 // Create or update Marketplace Subscription (asynchronous).
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -96,7 +96,7 @@ func (client *MarketplaceSubscriptionsClient) createOrUpdate(ctx context.Context
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *MarketplaceSubscriptionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, name string, body MarketplaceSubscription, _ *MarketplaceSubscriptionsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/marketplaceSubscriptions/{name}"
 	if client.subscriptionID == "" {
@@ -156,7 +156,7 @@ func (client *MarketplaceSubscriptionsClient) BeginDelete(ctx context.Context, r
 	}
 }
 
-// Delete - Delete Marketplace Subscription (asynchronous).
+// deleteOperation - Delete Marketplace Subscription (asynchronous).
 //
 // Delete Marketplace Subscription (asynchronous).
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -180,7 +180,7 @@ func (client *MarketplaceSubscriptionsClient) deleteOperation(ctx context.Contex
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *MarketplaceSubscriptionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, name string, _ *MarketplaceSubscriptionsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/marketplaceSubscriptions/{name}"
 	if client.subscriptionID == "" {

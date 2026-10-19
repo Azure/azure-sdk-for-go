@@ -33,6 +33,14 @@ type ManagedCCFServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, appName string, options *armconfidentialledger.ManagedCCFClientBeginDeleteOptions) (resp azfake.PollerResponder[armconfidentialledger.ManagedCCFClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginRestore is the fake for method ManagedCCFClient.BeginRestore
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginRestore func(ctx context.Context, resourceGroupName string, appName string, managedCCF armconfidentialledger.ManagedCCFRestore, options *armconfidentialledger.ManagedCCFClientBeginRestoreOptions) (resp azfake.PollerResponder[armconfidentialledger.ManagedCCFClientRestoreResponse], errResp azfake.ErrorResponder)
+
+	// BeginUpdate is the fake for method ManagedCCFClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, appName string, managedCCF armconfidentialledger.ManagedCCF, options *armconfidentialledger.ManagedCCFClientBeginUpdateOptions) (resp azfake.PollerResponder[armconfidentialledger.ManagedCCFClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method ManagedCCFClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, appName string, options *armconfidentialledger.ManagedCCFClientGetOptions) (resp azfake.Responder[armconfidentialledger.ManagedCCFClientGetResponse], errResp azfake.ErrorResponder)
@@ -44,14 +52,6 @@ type ManagedCCFServer struct {
 	// NewListBySubscriptionPager is the fake for method ManagedCCFClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armconfidentialledger.ManagedCCFClientListBySubscriptionOptions) (resp azfake.PagerResponder[armconfidentialledger.ManagedCCFClientListBySubscriptionResponse])
-
-	// BeginRestore is the fake for method ManagedCCFClient.BeginRestore
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginRestore func(ctx context.Context, resourceGroupName string, appName string, managedCCF armconfidentialledger.ManagedCCFRestore, options *armconfidentialledger.ManagedCCFClientBeginRestoreOptions) (resp azfake.PollerResponder[armconfidentialledger.ManagedCCFClientRestoreResponse], errResp azfake.ErrorResponder)
-
-	// BeginUpdate is the fake for method ManagedCCFClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, appName string, managedCCF armconfidentialledger.ManagedCCF, options *armconfidentialledger.ManagedCCFClientBeginUpdateOptions) (resp azfake.PollerResponder[armconfidentialledger.ManagedCCFClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewManagedCCFServerTransport creates a new instance of ManagedCCFServerTransport with the provided implementation.
@@ -63,10 +63,10 @@ func NewManagedCCFServerTransport(srv *ManagedCCFServer) *ManagedCCFServerTransp
 		beginBackup:                 newTracker[azfake.PollerResponder[armconfidentialledger.ManagedCCFClientBackupResponse]](),
 		beginCreate:                 newTracker[azfake.PollerResponder[armconfidentialledger.ManagedCCFClientCreateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armconfidentialledger.ManagedCCFClientDeleteResponse]](),
-		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armconfidentialledger.ManagedCCFClientListByResourceGroupResponse]](),
-		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armconfidentialledger.ManagedCCFClientListBySubscriptionResponse]](),
 		beginRestore:                newTracker[azfake.PollerResponder[armconfidentialledger.ManagedCCFClientRestoreResponse]](),
 		beginUpdate:                 newTracker[azfake.PollerResponder[armconfidentialledger.ManagedCCFClientUpdateResponse]](),
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armconfidentialledger.ManagedCCFClientListByResourceGroupResponse]](),
+		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armconfidentialledger.ManagedCCFClientListBySubscriptionResponse]](),
 	}
 }
 
@@ -77,10 +77,10 @@ type ManagedCCFServerTransport struct {
 	beginBackup                 *tracker[azfake.PollerResponder[armconfidentialledger.ManagedCCFClientBackupResponse]]
 	beginCreate                 *tracker[azfake.PollerResponder[armconfidentialledger.ManagedCCFClientCreateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armconfidentialledger.ManagedCCFClientDeleteResponse]]
-	newListByResourceGroupPager *tracker[azfake.PagerResponder[armconfidentialledger.ManagedCCFClientListByResourceGroupResponse]]
-	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armconfidentialledger.ManagedCCFClientListBySubscriptionResponse]]
 	beginRestore                *tracker[azfake.PollerResponder[armconfidentialledger.ManagedCCFClientRestoreResponse]]
 	beginUpdate                 *tracker[azfake.PollerResponder[armconfidentialledger.ManagedCCFClientUpdateResponse]]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armconfidentialledger.ManagedCCFClientListByResourceGroupResponse]]
+	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armconfidentialledger.ManagedCCFClientListBySubscriptionResponse]]
 }
 
 // Do implements the policy.Transporter interface for ManagedCCFServerTransport.
@@ -110,16 +110,16 @@ func (m *ManagedCCFServerTransport) dispatchToMethodFake(req *http.Request, meth
 				res.resp, res.err = m.dispatchBeginCreate(req)
 			case "ManagedCCFClient.BeginDelete":
 				res.resp, res.err = m.dispatchBeginDelete(req)
+			case "ManagedCCFClient.BeginRestore":
+				res.resp, res.err = m.dispatchBeginRestore(req)
+			case "ManagedCCFClient.BeginUpdate":
+				res.resp, res.err = m.dispatchBeginUpdate(req)
 			case "ManagedCCFClient.Get":
 				res.resp, res.err = m.dispatchGet(req)
 			case "ManagedCCFClient.NewListByResourceGroupPager":
 				res.resp, res.err = m.dispatchNewListByResourceGroupPager(req)
 			case "ManagedCCFClient.NewListBySubscriptionPager":
 				res.resp, res.err = m.dispatchNewListBySubscriptionPager(req)
-			case "ManagedCCFClient.BeginRestore":
-				res.resp, res.err = m.dispatchBeginRestore(req)
-			case "ManagedCCFClient.BeginUpdate":
-				res.resp, res.err = m.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -276,6 +276,102 @@ func (m *ManagedCCFServerTransport) dispatchBeginDelete(req *http.Request) (*htt
 	return resp, nil
 }
 
+func (m *ManagedCCFServerTransport) dispatchBeginRestore(req *http.Request) (*http.Response, error) {
+	if m.srv.BeginRestore == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginRestore not implemented")}
+	}
+	beginRestore := m.beginRestore.get(req)
+	if beginRestore == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ConfidentialLedger/managedCCFs/(?P<appName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/restore`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armconfidentialledger.ManagedCCFRestore](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		appNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("appName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := m.srv.BeginRestore(req.Context(), resourceGroupNameParam, appNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginRestore = &respr
+		m.beginRestore.add(req, beginRestore)
+	}
+
+	resp, err := server.PollerResponderNext(beginRestore, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		m.beginRestore.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginRestore) {
+		m.beginRestore.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (m *ManagedCCFServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if m.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := m.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ConfidentialLedger/managedCCFs/(?P<appName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armconfidentialledger.ManagedCCF](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		appNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("appName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := m.srv.BeginUpdate(req.Context(), resourceGroupNameParam, appNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		m.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		m.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		m.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (m *ManagedCCFServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if m.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -392,102 +488,6 @@ func (m *ManagedCCFServerTransport) dispatchNewListBySubscriptionPager(req *http
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		m.newListBySubscriptionPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (m *ManagedCCFServerTransport) dispatchBeginRestore(req *http.Request) (*http.Response, error) {
-	if m.srv.BeginRestore == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginRestore not implemented")}
-	}
-	beginRestore := m.beginRestore.get(req)
-	if beginRestore == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ConfidentialLedger/managedCCFs/(?P<appName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/restore`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armconfidentialledger.ManagedCCFRestore](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		appNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("appName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := m.srv.BeginRestore(req.Context(), resourceGroupNameParam, appNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginRestore = &respr
-		m.beginRestore.add(req, beginRestore)
-	}
-
-	resp, err := server.PollerResponderNext(beginRestore, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		m.beginRestore.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginRestore) {
-		m.beginRestore.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (m *ManagedCCFServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if m.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := m.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ConfidentialLedger/managedCCFs/(?P<appName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armconfidentialledger.ManagedCCF](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		appNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("appName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := m.srv.BeginUpdate(req.Context(), resourceGroupNameParam, appNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		m.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		m.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		m.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

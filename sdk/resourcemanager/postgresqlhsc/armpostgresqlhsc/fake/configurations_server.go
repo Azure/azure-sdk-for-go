@@ -21,6 +21,14 @@ import (
 
 // ConfigurationsServer is a fake server for instances of the armpostgresqlhsc.ConfigurationsClient type.
 type ConfigurationsServer struct {
+	// BeginUpdateOnCoordinator is the fake for method ConfigurationsClient.BeginUpdateOnCoordinator
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	BeginUpdateOnCoordinator func(ctx context.Context, resourceGroupName string, clusterName string, configurationName string, parameters armpostgresqlhsc.ServerConfiguration, options *armpostgresqlhsc.ConfigurationsClientBeginUpdateOnCoordinatorOptions) (resp azfake.PollerResponder[armpostgresqlhsc.ConfigurationsClientUpdateOnCoordinatorResponse], errResp azfake.ErrorResponder)
+
+	// BeginUpdateOnNode is the fake for method ConfigurationsClient.BeginUpdateOnNode
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	BeginUpdateOnNode func(ctx context.Context, resourceGroupName string, clusterName string, configurationName string, parameters armpostgresqlhsc.ServerConfiguration, options *armpostgresqlhsc.ConfigurationsClientBeginUpdateOnNodeOptions) (resp azfake.PollerResponder[armpostgresqlhsc.ConfigurationsClientUpdateOnNodeResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method ConfigurationsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, clusterName string, configurationName string, options *armpostgresqlhsc.ConfigurationsClientGetOptions) (resp azfake.Responder[armpostgresqlhsc.ConfigurationsClientGetResponse], errResp azfake.ErrorResponder)
@@ -40,14 +48,6 @@ type ConfigurationsServer struct {
 	// NewListByServerPager is the fake for method ConfigurationsClient.NewListByServerPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByServerPager func(resourceGroupName string, clusterName string, serverName string, options *armpostgresqlhsc.ConfigurationsClientListByServerOptions) (resp azfake.PagerResponder[armpostgresqlhsc.ConfigurationsClientListByServerResponse])
-
-	// BeginUpdateOnCoordinator is the fake for method ConfigurationsClient.BeginUpdateOnCoordinator
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginUpdateOnCoordinator func(ctx context.Context, resourceGroupName string, clusterName string, configurationName string, parameters armpostgresqlhsc.ServerConfiguration, options *armpostgresqlhsc.ConfigurationsClientBeginUpdateOnCoordinatorOptions) (resp azfake.PollerResponder[armpostgresqlhsc.ConfigurationsClientUpdateOnCoordinatorResponse], errResp azfake.ErrorResponder)
-
-	// BeginUpdateOnNode is the fake for method ConfigurationsClient.BeginUpdateOnNode
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginUpdateOnNode func(ctx context.Context, resourceGroupName string, clusterName string, configurationName string, parameters armpostgresqlhsc.ServerConfiguration, options *armpostgresqlhsc.ConfigurationsClientBeginUpdateOnNodeOptions) (resp azfake.PollerResponder[armpostgresqlhsc.ConfigurationsClientUpdateOnNodeResponse], errResp azfake.ErrorResponder)
 }
 
 // NewConfigurationsServerTransport creates a new instance of ConfigurationsServerTransport with the provided implementation.
@@ -56,10 +56,10 @@ type ConfigurationsServer struct {
 func NewConfigurationsServerTransport(srv *ConfigurationsServer) *ConfigurationsServerTransport {
 	return &ConfigurationsServerTransport{
 		srv:                      srv,
-		newListByClusterPager:    newTracker[azfake.PagerResponder[armpostgresqlhsc.ConfigurationsClientListByClusterResponse]](),
-		newListByServerPager:     newTracker[azfake.PagerResponder[armpostgresqlhsc.ConfigurationsClientListByServerResponse]](),
 		beginUpdateOnCoordinator: newTracker[azfake.PollerResponder[armpostgresqlhsc.ConfigurationsClientUpdateOnCoordinatorResponse]](),
 		beginUpdateOnNode:        newTracker[azfake.PollerResponder[armpostgresqlhsc.ConfigurationsClientUpdateOnNodeResponse]](),
+		newListByClusterPager:    newTracker[azfake.PagerResponder[armpostgresqlhsc.ConfigurationsClientListByClusterResponse]](),
+		newListByServerPager:     newTracker[azfake.PagerResponder[armpostgresqlhsc.ConfigurationsClientListByServerResponse]](),
 	}
 }
 
@@ -67,10 +67,10 @@ func NewConfigurationsServerTransport(srv *ConfigurationsServer) *Configurations
 // Don't use this type directly, use NewConfigurationsServerTransport instead.
 type ConfigurationsServerTransport struct {
 	srv                      *ConfigurationsServer
-	newListByClusterPager    *tracker[azfake.PagerResponder[armpostgresqlhsc.ConfigurationsClientListByClusterResponse]]
-	newListByServerPager     *tracker[azfake.PagerResponder[armpostgresqlhsc.ConfigurationsClientListByServerResponse]]
 	beginUpdateOnCoordinator *tracker[azfake.PollerResponder[armpostgresqlhsc.ConfigurationsClientUpdateOnCoordinatorResponse]]
 	beginUpdateOnNode        *tracker[azfake.PollerResponder[armpostgresqlhsc.ConfigurationsClientUpdateOnNodeResponse]]
+	newListByClusterPager    *tracker[azfake.PagerResponder[armpostgresqlhsc.ConfigurationsClientListByClusterResponse]]
+	newListByServerPager     *tracker[azfake.PagerResponder[armpostgresqlhsc.ConfigurationsClientListByServerResponse]]
 }
 
 // Do implements the policy.Transporter interface for ConfigurationsServerTransport.
@@ -94,6 +94,10 @@ func (c *ConfigurationsServerTransport) dispatchToMethodFake(req *http.Request, 
 		}
 		if !intercepted {
 			switch method {
+			case "ConfigurationsClient.BeginUpdateOnCoordinator":
+				res.resp, res.err = c.dispatchBeginUpdateOnCoordinator(req)
+			case "ConfigurationsClient.BeginUpdateOnNode":
+				res.resp, res.err = c.dispatchBeginUpdateOnNode(req)
 			case "ConfigurationsClient.Get":
 				res.resp, res.err = c.dispatchGet(req)
 			case "ConfigurationsClient.GetCoordinator":
@@ -104,10 +108,6 @@ func (c *ConfigurationsServerTransport) dispatchToMethodFake(req *http.Request, 
 				res.resp, res.err = c.dispatchNewListByClusterPager(req)
 			case "ConfigurationsClient.NewListByServerPager":
 				res.resp, res.err = c.dispatchNewListByServerPager(req)
-			case "ConfigurationsClient.BeginUpdateOnCoordinator":
-				res.resp, res.err = c.dispatchBeginUpdateOnCoordinator(req)
-			case "ConfigurationsClient.BeginUpdateOnNode":
-				res.resp, res.err = c.dispatchBeginUpdateOnNode(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -122,6 +122,110 @@ func (c *ConfigurationsServerTransport) dispatchToMethodFake(req *http.Request, 
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
+}
+
+func (c *ConfigurationsServerTransport) dispatchBeginUpdateOnCoordinator(req *http.Request) (*http.Response, error) {
+	if c.srv.BeginUpdateOnCoordinator == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdateOnCoordinator not implemented")}
+	}
+	beginUpdateOnCoordinator := c.beginUpdateOnCoordinator.get(req)
+	if beginUpdateOnCoordinator == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DBforPostgreSQL/serverGroupsv2/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/coordinatorConfigurations/(?P<configurationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armpostgresqlhsc.ServerConfiguration](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
+		if err != nil {
+			return nil, err
+		}
+		configurationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("configurationName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := c.srv.BeginUpdateOnCoordinator(req.Context(), resourceGroupNameParam, clusterNameParam, configurationNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdateOnCoordinator = &respr
+		c.beginUpdateOnCoordinator.add(req, beginUpdateOnCoordinator)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdateOnCoordinator, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		c.beginUpdateOnCoordinator.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdateOnCoordinator) {
+		c.beginUpdateOnCoordinator.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (c *ConfigurationsServerTransport) dispatchBeginUpdateOnNode(req *http.Request) (*http.Response, error) {
+	if c.srv.BeginUpdateOnNode == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdateOnNode not implemented")}
+	}
+	beginUpdateOnNode := c.beginUpdateOnNode.get(req)
+	if beginUpdateOnNode == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DBforPostgreSQL/serverGroupsv2/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/nodeConfigurations/(?P<configurationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armpostgresqlhsc.ServerConfiguration](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
+		if err != nil {
+			return nil, err
+		}
+		configurationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("configurationName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := c.srv.BeginUpdateOnNode(req.Context(), resourceGroupNameParam, clusterNameParam, configurationNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdateOnNode = &respr
+		c.beginUpdateOnNode.add(req, beginUpdateOnNode)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdateOnNode, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		c.beginUpdateOnNode.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdateOnNode) {
+		c.beginUpdateOnNode.remove(req)
+	}
+
+	return resp, nil
 }
 
 func (c *ConfigurationsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
@@ -318,110 +422,6 @@ func (c *ConfigurationsServerTransport) dispatchNewListByServerPager(req *http.R
 	if !server.PagerResponderMore(newListByServerPager) {
 		c.newListByServerPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (c *ConfigurationsServerTransport) dispatchBeginUpdateOnCoordinator(req *http.Request) (*http.Response, error) {
-	if c.srv.BeginUpdateOnCoordinator == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdateOnCoordinator not implemented")}
-	}
-	beginUpdateOnCoordinator := c.beginUpdateOnCoordinator.get(req)
-	if beginUpdateOnCoordinator == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DBforPostgreSQL/serverGroupsv2/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/coordinatorConfigurations/(?P<configurationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armpostgresqlhsc.ServerConfiguration](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
-		if err != nil {
-			return nil, err
-		}
-		configurationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("configurationName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := c.srv.BeginUpdateOnCoordinator(req.Context(), resourceGroupNameParam, clusterNameParam, configurationNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdateOnCoordinator = &respr
-		c.beginUpdateOnCoordinator.add(req, beginUpdateOnCoordinator)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdateOnCoordinator, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
-		c.beginUpdateOnCoordinator.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdateOnCoordinator) {
-		c.beginUpdateOnCoordinator.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (c *ConfigurationsServerTransport) dispatchBeginUpdateOnNode(req *http.Request) (*http.Response, error) {
-	if c.srv.BeginUpdateOnNode == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdateOnNode not implemented")}
-	}
-	beginUpdateOnNode := c.beginUpdateOnNode.get(req)
-	if beginUpdateOnNode == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DBforPostgreSQL/serverGroupsv2/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/nodeConfigurations/(?P<configurationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armpostgresqlhsc.ServerConfiguration](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
-		if err != nil {
-			return nil, err
-		}
-		configurationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("configurationName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := c.srv.BeginUpdateOnNode(req.Context(), resourceGroupNameParam, clusterNameParam, configurationNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdateOnNode = &respr
-		c.beginUpdateOnNode.add(req, beginUpdateOnNode)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdateOnNode, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
-		c.beginUpdateOnNode.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdateOnNode) {
-		c.beginUpdateOnNode.remove(req)
-	}
-
 	return resp, nil
 }
 

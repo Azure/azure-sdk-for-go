@@ -69,7 +69,7 @@ func (client *ProjectsClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 	}
 }
 
-// CreateOrUpdate - Create a Project
+// createOrUpdate - Create a Project
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ProjectsClient) createOrUpdate(ctx context.Context, resourceGroupName string, organizationName string, projectName string, resource Project, options *ProjectsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *ProjectsClient) createOrUpdate(ctx context.Context, resourceGroupN
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ProjectsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, organizationName string, projectName string, resource Project, _ *ProjectsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/MongoDB.Atlas/organizations/{organizationName}/projects/{projectName}"
 	if client.subscriptionID == "" {
@@ -148,7 +148,7 @@ func (client *ProjectsClient) BeginDelete(ctx context.Context, resourceGroupName
 	}
 }
 
-// Delete - Delete a Project
+// deleteOperation - Delete a Project
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ProjectsClient) deleteOperation(ctx context.Context, resourceGroupName string, organizationName string, projectName string, options *ProjectsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -170,7 +170,7 @@ func (client *ProjectsClient) deleteOperation(ctx context.Context, resourceGroup
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ProjectsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, organizationName string, projectName string, _ *ProjectsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/MongoDB.Atlas/organizations/{organizationName}/projects/{projectName}"
 	if client.subscriptionID == "" {
@@ -264,6 +264,72 @@ func (client *ProjectsClient) getHandleResponse(resp *http.Response, successCode
 	return result, nil
 }
 
+// ListClusterTierRegions - List available regions by cluster tier for the project.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - organizationName - Name of the Organization resource
+//   - projectName - Name of the MongoDB Atlas Project resource.
+//   - options - ProjectsClientListClusterTierRegionsOptions contains the optional parameters for the ProjectsClient.ListClusterTierRegions
+//     method.
+func (client *ProjectsClient) ListClusterTierRegions(ctx context.Context, resourceGroupName string, organizationName string, projectName string, options *ProjectsClientListClusterTierRegionsOptions) (ProjectsClientListClusterTierRegionsResponse, error) {
+	var err error
+	const operationName = "ProjectsClient.ListClusterTierRegions"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listClusterTierRegionsCreateRequest(ctx, resourceGroupName, organizationName, projectName, options)
+	if err != nil {
+		return ProjectsClientListClusterTierRegionsResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ProjectsClientListClusterTierRegionsResponse{}, err
+	}
+	return client.listClusterTierRegionsHandleResponse(httpResp, http.StatusOK)
+}
+
+// listClusterTierRegionsCreateRequest creates the ListClusterTierRegions request.
+func (client *ProjectsClient) listClusterTierRegionsCreateRequest(ctx context.Context, resourceGroupName string, organizationName string, projectName string, _ *ProjectsClientListClusterTierRegionsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/MongoDB.Atlas/organizations/{organizationName}/projects/{projectName}/clusterTierRegions"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if organizationName == "" {
+		return nil, errors.New("parameter organizationName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{organizationName}", url.PathEscape(organizationName))
+	if projectName == "" {
+		return nil, errors.New("parameter projectName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{projectName}", url.PathEscape(projectName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260301Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listClusterTierRegionsHandleResponse handles the ListClusterTierRegions response.
+func (client *ProjectsClient) listClusterTierRegionsHandleResponse(resp *http.Response, successCodes ...int) (ProjectsClientListClusterTierRegionsResponse, error) {
+	result := ProjectsClientListClusterTierRegionsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RegionsByTierResponse); err != nil {
+		return ProjectsClientListClusterTierRegionsResponse{}, err
+	}
+	return result, nil
+}
+
 // NewListPager - List Project resources by OrganizationResource
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - organizationName - Name of the Organization resource
@@ -336,72 +402,6 @@ func (client *ProjectsClient) listHandleResponse(resp *http.Response, successCod
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProjectListResult); err != nil {
 		return ProjectsClientListResponse{}, err
-	}
-	return result, nil
-}
-
-// ListClusterTierRegions - List available regions by cluster tier for the project.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - organizationName - Name of the Organization resource
-//   - projectName - Name of the MongoDB Atlas Project resource.
-//   - options - ProjectsClientListClusterTierRegionsOptions contains the optional parameters for the ProjectsClient.ListClusterTierRegions
-//     method.
-func (client *ProjectsClient) ListClusterTierRegions(ctx context.Context, resourceGroupName string, organizationName string, projectName string, options *ProjectsClientListClusterTierRegionsOptions) (ProjectsClientListClusterTierRegionsResponse, error) {
-	var err error
-	const operationName = "ProjectsClient.ListClusterTierRegions"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listClusterTierRegionsCreateRequest(ctx, resourceGroupName, organizationName, projectName, options)
-	if err != nil {
-		return ProjectsClientListClusterTierRegionsResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return ProjectsClientListClusterTierRegionsResponse{}, err
-	}
-	return client.listClusterTierRegionsHandleResponse(httpResp, http.StatusOK)
-}
-
-// listClusterTierRegionsCreateRequest creates the ListClusterTierRegions request.
-func (client *ProjectsClient) listClusterTierRegionsCreateRequest(ctx context.Context, resourceGroupName string, organizationName string, projectName string, _ *ProjectsClientListClusterTierRegionsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/MongoDB.Atlas/organizations/{organizationName}/projects/{projectName}/clusterTierRegions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if organizationName == "" {
-		return nil, errors.New("parameter organizationName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{organizationName}", url.PathEscape(organizationName))
-	if projectName == "" {
-		return nil, errors.New("parameter projectName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{projectName}", url.PathEscape(projectName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listClusterTierRegionsHandleResponse handles the ListClusterTierRegions response.
-func (client *ProjectsClient) listClusterTierRegionsHandleResponse(resp *http.Response, successCodes ...int) (ProjectsClientListClusterTierRegionsResponse, error) {
-	result := ProjectsClientListClusterTierRegionsResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.RegionsByTierResponse); err != nil {
-		return ProjectsClientListClusterTierRegionsResponse{}, err
 	}
 	return result, nil
 }

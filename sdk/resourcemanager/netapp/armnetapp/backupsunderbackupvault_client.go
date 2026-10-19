@@ -70,7 +70,7 @@ func (client *BackupsUnderBackupVaultClient) BeginRestoreFiles(ctx context.Conte
 	}
 }
 
-// RestoreFiles - Restore the specified files from the specified backup to the active filesystem
+// restoreFiles - Restore the specified files from the specified backup to the active filesystem
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *BackupsUnderBackupVaultClient) restoreFiles(ctx context.Context, resourceGroupName string, accountName string, backupVaultName string, backupName string, body BackupRestoreFiles, options *BackupsUnderBackupVaultClientBeginRestoreFilesOptions) (*http.Response, error) {
 	var err error
@@ -92,7 +92,7 @@ func (client *BackupsUnderBackupVaultClient) restoreFiles(ctx context.Context, r
 	return httpResp, nil
 }
 
-// restoreFilesCreateRequest creates the RestoreFiles request.
+// restoreFilesCreateRequest creates the restoreFiles request.
 func (client *BackupsUnderBackupVaultClient) restoreFilesCreateRequest(ctx context.Context, resourceGroupName string, accountName string, backupVaultName string, backupName string, body BackupRestoreFiles, _ *BackupsUnderBackupVaultClientBeginRestoreFilesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/backupVaults/{backupVaultName}/backups/{backupName}/restoreFiles"
 	if client.subscriptionID == "" {

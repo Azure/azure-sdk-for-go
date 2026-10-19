@@ -29,21 +29,9 @@ type SnapshotsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, snapshotName string, options *armcompute.SnapshotsClientBeginDeleteOptions) (resp azfake.PollerResponder[armcompute.SnapshotsClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method SnapshotsClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, snapshotName string, options *armcompute.SnapshotsClientGetOptions) (resp azfake.Responder[armcompute.SnapshotsClientGetResponse], errResp azfake.ErrorResponder)
-
 	// BeginGrantAccess is the fake for method SnapshotsClient.BeginGrantAccess
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginGrantAccess func(ctx context.Context, resourceGroupName string, snapshotName string, grantAccessData armcompute.GrantAccessData, options *armcompute.SnapshotsClientBeginGrantAccessOptions) (resp azfake.PollerResponder[armcompute.SnapshotsClientGrantAccessResponse], errResp azfake.ErrorResponder)
-
-	// NewListPager is the fake for method SnapshotsClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armcompute.SnapshotsClientListOptions) (resp azfake.PagerResponder[armcompute.SnapshotsClientListResponse])
-
-	// NewListByResourceGroupPager is the fake for method SnapshotsClient.NewListByResourceGroupPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupPager func(resourceGroupName string, options *armcompute.SnapshotsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armcompute.SnapshotsClientListByResourceGroupResponse])
 
 	// BeginRevokeAccess is the fake for method SnapshotsClient.BeginRevokeAccess
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
@@ -60,6 +48,18 @@ type SnapshotsServer struct {
 	// BeginUpdateImmutabilityPolicyLock is the fake for method SnapshotsClient.BeginUpdateImmutabilityPolicyLock
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdateImmutabilityPolicyLock func(ctx context.Context, resourceGroupName string, snapshotName string, immutabilityPolicyData armcompute.ImmutabilityPolicyLockData, options *armcompute.SnapshotsClientBeginUpdateImmutabilityPolicyLockOptions) (resp azfake.PollerResponder[armcompute.SnapshotsClientUpdateImmutabilityPolicyLockResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method SnapshotsClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, snapshotName string, options *armcompute.SnapshotsClientGetOptions) (resp azfake.Responder[armcompute.SnapshotsClientGetResponse], errResp azfake.ErrorResponder)
+
+	// NewListByResourceGroupPager is the fake for method SnapshotsClient.NewListByResourceGroupPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByResourceGroupPager func(resourceGroupName string, options *armcompute.SnapshotsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armcompute.SnapshotsClientListByResourceGroupResponse])
+
+	// NewListPager is the fake for method SnapshotsClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armcompute.SnapshotsClientListOptions) (resp azfake.PagerResponder[armcompute.SnapshotsClientListResponse])
 }
 
 // NewSnapshotsServerTransport creates a new instance of SnapshotsServerTransport with the provided implementation.
@@ -71,12 +71,12 @@ func NewSnapshotsServerTransport(srv *SnapshotsServer) *SnapshotsServerTransport
 		beginCreateOrUpdate:               newTracker[azfake.PollerResponder[armcompute.SnapshotsClientCreateOrUpdateResponse]](),
 		beginDelete:                       newTracker[azfake.PollerResponder[armcompute.SnapshotsClientDeleteResponse]](),
 		beginGrantAccess:                  newTracker[azfake.PollerResponder[armcompute.SnapshotsClientGrantAccessResponse]](),
-		newListPager:                      newTracker[azfake.PagerResponder[armcompute.SnapshotsClientListResponse]](),
-		newListByResourceGroupPager:       newTracker[azfake.PagerResponder[armcompute.SnapshotsClientListByResourceGroupResponse]](),
 		beginRevokeAccess:                 newTracker[azfake.PollerResponder[armcompute.SnapshotsClientRevokeAccessResponse]](),
 		beginUpdate:                       newTracker[azfake.PollerResponder[armcompute.SnapshotsClientUpdateResponse]](),
 		beginUpdateImmutabilityPolicy:     newTracker[azfake.PollerResponder[armcompute.SnapshotsClientUpdateImmutabilityPolicyResponse]](),
 		beginUpdateImmutabilityPolicyLock: newTracker[azfake.PollerResponder[armcompute.SnapshotsClientUpdateImmutabilityPolicyLockResponse]](),
+		newListByResourceGroupPager:       newTracker[azfake.PagerResponder[armcompute.SnapshotsClientListByResourceGroupResponse]](),
+		newListPager:                      newTracker[azfake.PagerResponder[armcompute.SnapshotsClientListResponse]](),
 	}
 }
 
@@ -87,12 +87,12 @@ type SnapshotsServerTransport struct {
 	beginCreateOrUpdate               *tracker[azfake.PollerResponder[armcompute.SnapshotsClientCreateOrUpdateResponse]]
 	beginDelete                       *tracker[azfake.PollerResponder[armcompute.SnapshotsClientDeleteResponse]]
 	beginGrantAccess                  *tracker[azfake.PollerResponder[armcompute.SnapshotsClientGrantAccessResponse]]
-	newListPager                      *tracker[azfake.PagerResponder[armcompute.SnapshotsClientListResponse]]
-	newListByResourceGroupPager       *tracker[azfake.PagerResponder[armcompute.SnapshotsClientListByResourceGroupResponse]]
 	beginRevokeAccess                 *tracker[azfake.PollerResponder[armcompute.SnapshotsClientRevokeAccessResponse]]
 	beginUpdate                       *tracker[azfake.PollerResponder[armcompute.SnapshotsClientUpdateResponse]]
 	beginUpdateImmutabilityPolicy     *tracker[azfake.PollerResponder[armcompute.SnapshotsClientUpdateImmutabilityPolicyResponse]]
 	beginUpdateImmutabilityPolicyLock *tracker[azfake.PollerResponder[armcompute.SnapshotsClientUpdateImmutabilityPolicyLockResponse]]
+	newListByResourceGroupPager       *tracker[azfake.PagerResponder[armcompute.SnapshotsClientListByResourceGroupResponse]]
+	newListPager                      *tracker[azfake.PagerResponder[armcompute.SnapshotsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for SnapshotsServerTransport.
@@ -120,14 +120,8 @@ func (s *SnapshotsServerTransport) dispatchToMethodFake(req *http.Request, metho
 				res.resp, res.err = s.dispatchBeginCreateOrUpdate(req)
 			case "SnapshotsClient.BeginDelete":
 				res.resp, res.err = s.dispatchBeginDelete(req)
-			case "SnapshotsClient.Get":
-				res.resp, res.err = s.dispatchGet(req)
 			case "SnapshotsClient.BeginGrantAccess":
 				res.resp, res.err = s.dispatchBeginGrantAccess(req)
-			case "SnapshotsClient.NewListPager":
-				res.resp, res.err = s.dispatchNewListPager(req)
-			case "SnapshotsClient.NewListByResourceGroupPager":
-				res.resp, res.err = s.dispatchNewListByResourceGroupPager(req)
 			case "SnapshotsClient.BeginRevokeAccess":
 				res.resp, res.err = s.dispatchBeginRevokeAccess(req)
 			case "SnapshotsClient.BeginUpdate":
@@ -136,6 +130,12 @@ func (s *SnapshotsServerTransport) dispatchToMethodFake(req *http.Request, metho
 				res.resp, res.err = s.dispatchBeginUpdateImmutabilityPolicy(req)
 			case "SnapshotsClient.BeginUpdateImmutabilityPolicyLock":
 				res.resp, res.err = s.dispatchBeginUpdateImmutabilityPolicyLock(req)
+			case "SnapshotsClient.Get":
+				res.resp, res.err = s.dispatchGet(req)
+			case "SnapshotsClient.NewListByResourceGroupPager":
+				res.resp, res.err = s.dispatchNewListByResourceGroupPager(req)
+			case "SnapshotsClient.NewListPager":
+				res.resp, res.err = s.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -244,39 +244,6 @@ func (s *SnapshotsServerTransport) dispatchBeginDelete(req *http.Request) (*http
 	return resp, nil
 }
 
-func (s *SnapshotsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if s.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/snapshots/(?P<snapshotName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	snapshotNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("snapshotName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := s.srv.Get(req.Context(), resourceGroupNameParam, snapshotNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Snapshot, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (s *SnapshotsServerTransport) dispatchBeginGrantAccess(req *http.Request) (*http.Response, error) {
 	if s.srv.BeginGrantAccess == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginGrantAccess not implemented")}
@@ -322,76 +289,6 @@ func (s *SnapshotsServerTransport) dispatchBeginGrantAccess(req *http.Request) (
 		s.beginGrantAccess.remove(req)
 	}
 
-	return resp, nil
-}
-
-func (s *SnapshotsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if s.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := s.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/snapshots`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := s.srv.NewListPager(nil)
-		newListPager = &resp
-		s.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcompute.SnapshotsClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		s.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		s.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (s *SnapshotsServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
-	if s.srv.NewListByResourceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
-	}
-	newListByResourceGroupPager := s.newListByResourceGroupPager.get(req)
-	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/snapshots`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := s.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
-		newListByResourceGroupPager = &resp
-		s.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armcompute.SnapshotsClientListByResourceGroupResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		s.newListByResourceGroupPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByResourceGroupPager) {
-		s.newListByResourceGroupPager.remove(req)
-	}
 	return resp, nil
 }
 
@@ -580,6 +477,109 @@ func (s *SnapshotsServerTransport) dispatchBeginUpdateImmutabilityPolicyLock(req
 		s.beginUpdateImmutabilityPolicyLock.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (s *SnapshotsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if s.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/snapshots/(?P<snapshotName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	snapshotNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("snapshotName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.Get(req.Context(), resourceGroupNameParam, snapshotNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Snapshot, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (s *SnapshotsServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
+	if s.srv.NewListByResourceGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
+	}
+	newListByResourceGroupPager := s.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/snapshots`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := s.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
+		newListByResourceGroupPager = &resp
+		s.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armcompute.SnapshotsClientListByResourceGroupResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		s.newListByResourceGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		s.newListByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (s *SnapshotsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if s.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := s.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/snapshots`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := s.srv.NewListPager(nil)
+		newListPager = &resp
+		s.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcompute.SnapshotsClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		s.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		s.newListPager.remove(req)
+	}
 	return resp, nil
 }
 

@@ -73,7 +73,7 @@ func (client *FeaturestoreEntityContainersClient) BeginCreateOrUpdate(ctx contex
 	}
 }
 
-// CreateOrUpdate - Create or update container.
+// createOrUpdate - Create or update container.
 //
 // Create or update container.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -97,7 +97,7 @@ func (client *FeaturestoreEntityContainersClient) createOrUpdate(ctx context.Con
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *FeaturestoreEntityContainersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, name string, body FeaturestoreEntityContainer, _ *FeaturestoreEntityContainersClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/featurestoreEntities/{name}"
 	if client.subscriptionID == "" {
@@ -157,7 +157,7 @@ func (client *FeaturestoreEntityContainersClient) BeginDelete(ctx context.Contex
 	}
 }
 
-// Delete - Delete container.
+// deleteOperation - Delete container.
 //
 // Delete container.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -181,7 +181,7 @@ func (client *FeaturestoreEntityContainersClient) deleteOperation(ctx context.Co
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *FeaturestoreEntityContainersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, name string, _ *FeaturestoreEntityContainersClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/featurestoreEntities/{name}"
 	if client.subscriptionID == "" {

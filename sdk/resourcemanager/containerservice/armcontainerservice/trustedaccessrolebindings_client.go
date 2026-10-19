@@ -69,7 +69,7 @@ func (client *TrustedAccessRoleBindingsClient) BeginCreateOrUpdate(ctx context.C
 	}
 }
 
-// CreateOrUpdate - Create or update a trusted access role binding
+// createOrUpdate - Create or update a trusted access role binding
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *TrustedAccessRoleBindingsClient) createOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, trustedAccessRoleBindingName string, trustedAccessRoleBinding TrustedAccessRoleBinding, options *TrustedAccessRoleBindingsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *TrustedAccessRoleBindingsClient) createOrUpdate(ctx context.Contex
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *TrustedAccessRoleBindingsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, trustedAccessRoleBindingName string, trustedAccessRoleBinding TrustedAccessRoleBinding, _ *TrustedAccessRoleBindingsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/trustedAccessRoleBindings/{trustedAccessRoleBindingName}"
 	if client.subscriptionID == "" {
@@ -149,7 +149,7 @@ func (client *TrustedAccessRoleBindingsClient) BeginDelete(ctx context.Context, 
 	}
 }
 
-// Delete - Delete a trusted access role binding.
+// deleteOperation - Delete a trusted access role binding.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *TrustedAccessRoleBindingsClient) deleteOperation(ctx context.Context, resourceGroupName string, resourceName string, trustedAccessRoleBindingName string, options *TrustedAccessRoleBindingsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -171,7 +171,7 @@ func (client *TrustedAccessRoleBindingsClient) deleteOperation(ctx context.Conte
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *TrustedAccessRoleBindingsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, trustedAccessRoleBindingName string, _ *TrustedAccessRoleBindingsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/trustedAccessRoleBindings/{trustedAccessRoleBindingName}"
 	if client.subscriptionID == "" {

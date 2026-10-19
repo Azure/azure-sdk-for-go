@@ -70,7 +70,7 @@ func (client *ClustersClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 	}
 }
 
-// CreateOrUpdate - Create a Cluster
+// createOrUpdate - Create a Cluster
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ClustersClient) createOrUpdate(ctx context.Context, resourceGroupName string, organizationName string, projectName string, clusterName string, resource Cluster, options *ClustersClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -92,7 +92,7 @@ func (client *ClustersClient) createOrUpdate(ctx context.Context, resourceGroupN
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ClustersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, organizationName string, projectName string, clusterName string, resource Cluster, _ *ClustersClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/MongoDB.Atlas/organizations/{organizationName}/projects/{projectName}/clusters/{clusterName}"
 	if client.subscriptionID == "" {
@@ -154,7 +154,7 @@ func (client *ClustersClient) BeginDelete(ctx context.Context, resourceGroupName
 	}
 }
 
-// Delete - Delete a Cluster
+// deleteOperation - Delete a Cluster
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ClustersClient) deleteOperation(ctx context.Context, resourceGroupName string, organizationName string, projectName string, clusterName string, options *ClustersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -176,7 +176,7 @@ func (client *ClustersClient) deleteOperation(ctx context.Context, resourceGroup
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ClustersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, organizationName string, projectName string, clusterName string, _ *ClustersClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/MongoDB.Atlas/organizations/{organizationName}/projects/{projectName}/clusters/{clusterName}"
 	if client.subscriptionID == "" {

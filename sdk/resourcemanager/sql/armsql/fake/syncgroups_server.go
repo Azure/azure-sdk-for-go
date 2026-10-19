@@ -21,10 +21,6 @@ import (
 
 // SyncGroupsServer is a fake server for instances of the armsql.SyncGroupsClient type.
 type SyncGroupsServer struct {
-	// CancelSync is the fake for method SyncGroupsClient.CancelSync
-	// HTTP status codes to indicate success: http.StatusOK
-	CancelSync func(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, options *armsql.SyncGroupsClientCancelSyncOptions) (resp azfake.Responder[armsql.SyncGroupsClientCancelSyncResponse], errResp azfake.ErrorResponder)
-
 	// BeginCreateOrUpdate is the fake for method SyncGroupsClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated, http.StatusAccepted
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, parameters armsql.SyncGroup, options *armsql.SyncGroupsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armsql.SyncGroupsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -32,6 +28,18 @@ type SyncGroupsServer struct {
 	// BeginDelete is the fake for method SyncGroupsClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, options *armsql.SyncGroupsClientBeginDeleteOptions) (resp azfake.PollerResponder[armsql.SyncGroupsClientDeleteResponse], errResp azfake.ErrorResponder)
+
+	// BeginRefreshHubSchema is the fake for method SyncGroupsClient.BeginRefreshHubSchema
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginRefreshHubSchema func(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, options *armsql.SyncGroupsClientBeginRefreshHubSchemaOptions) (resp azfake.PollerResponder[armsql.SyncGroupsClientRefreshHubSchemaResponse], errResp azfake.ErrorResponder)
+
+	// BeginUpdate is the fake for method SyncGroupsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, parameters armsql.SyncGroup, options *armsql.SyncGroupsClientBeginUpdateOptions) (resp azfake.PollerResponder[armsql.SyncGroupsClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// CancelSync is the fake for method SyncGroupsClient.CancelSync
+	// HTTP status codes to indicate success: http.StatusOK
+	CancelSync func(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, options *armsql.SyncGroupsClientCancelSyncOptions) (resp azfake.Responder[armsql.SyncGroupsClientCancelSyncResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method SyncGroupsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -53,17 +61,9 @@ type SyncGroupsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListSyncDatabaseIDsPager func(locationName string, options *armsql.SyncGroupsClientListSyncDatabaseIDsOptions) (resp azfake.PagerResponder[armsql.SyncGroupsClientListSyncDatabaseIDsResponse])
 
-	// BeginRefreshHubSchema is the fake for method SyncGroupsClient.BeginRefreshHubSchema
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginRefreshHubSchema func(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, options *armsql.SyncGroupsClientBeginRefreshHubSchemaOptions) (resp azfake.PollerResponder[armsql.SyncGroupsClientRefreshHubSchemaResponse], errResp azfake.ErrorResponder)
-
 	// TriggerSync is the fake for method SyncGroupsClient.TriggerSync
 	// HTTP status codes to indicate success: http.StatusOK
 	TriggerSync func(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, options *armsql.SyncGroupsClientTriggerSyncOptions) (resp azfake.Responder[armsql.SyncGroupsClientTriggerSyncResponse], errResp azfake.ErrorResponder)
-
-	// BeginUpdate is the fake for method SyncGroupsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, parameters armsql.SyncGroup, options *armsql.SyncGroupsClientBeginUpdateOptions) (resp azfake.PollerResponder[armsql.SyncGroupsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewSyncGroupsServerTransport creates a new instance of SyncGroupsServerTransport with the provided implementation.
@@ -74,12 +74,12 @@ func NewSyncGroupsServerTransport(srv *SyncGroupsServer) *SyncGroupsServerTransp
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armsql.SyncGroupsClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armsql.SyncGroupsClientDeleteResponse]](),
+		beginRefreshHubSchema:       newTracker[azfake.PollerResponder[armsql.SyncGroupsClientRefreshHubSchemaResponse]](),
+		beginUpdate:                 newTracker[azfake.PollerResponder[armsql.SyncGroupsClientUpdateResponse]](),
 		newListByDatabasePager:      newTracker[azfake.PagerResponder[armsql.SyncGroupsClientListByDatabaseResponse]](),
 		newListHubSchemasPager:      newTracker[azfake.PagerResponder[armsql.SyncGroupsClientListHubSchemasResponse]](),
 		newListLogsPager:            newTracker[azfake.PagerResponder[armsql.SyncGroupsClientListLogsResponse]](),
 		newListSyncDatabaseIDsPager: newTracker[azfake.PagerResponder[armsql.SyncGroupsClientListSyncDatabaseIDsResponse]](),
-		beginRefreshHubSchema:       newTracker[azfake.PollerResponder[armsql.SyncGroupsClientRefreshHubSchemaResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armsql.SyncGroupsClientUpdateResponse]](),
 	}
 }
 
@@ -89,12 +89,12 @@ type SyncGroupsServerTransport struct {
 	srv                         *SyncGroupsServer
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armsql.SyncGroupsClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armsql.SyncGroupsClientDeleteResponse]]
+	beginRefreshHubSchema       *tracker[azfake.PollerResponder[armsql.SyncGroupsClientRefreshHubSchemaResponse]]
+	beginUpdate                 *tracker[azfake.PollerResponder[armsql.SyncGroupsClientUpdateResponse]]
 	newListByDatabasePager      *tracker[azfake.PagerResponder[armsql.SyncGroupsClientListByDatabaseResponse]]
 	newListHubSchemasPager      *tracker[azfake.PagerResponder[armsql.SyncGroupsClientListHubSchemasResponse]]
 	newListLogsPager            *tracker[azfake.PagerResponder[armsql.SyncGroupsClientListLogsResponse]]
 	newListSyncDatabaseIDsPager *tracker[azfake.PagerResponder[armsql.SyncGroupsClientListSyncDatabaseIDsResponse]]
-	beginRefreshHubSchema       *tracker[azfake.PollerResponder[armsql.SyncGroupsClientRefreshHubSchemaResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armsql.SyncGroupsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for SyncGroupsServerTransport.
@@ -118,12 +118,16 @@ func (s *SyncGroupsServerTransport) dispatchToMethodFake(req *http.Request, meth
 		}
 		if !intercepted {
 			switch method {
-			case "SyncGroupsClient.CancelSync":
-				res.resp, res.err = s.dispatchCancelSync(req)
 			case "SyncGroupsClient.BeginCreateOrUpdate":
 				res.resp, res.err = s.dispatchBeginCreateOrUpdate(req)
 			case "SyncGroupsClient.BeginDelete":
 				res.resp, res.err = s.dispatchBeginDelete(req)
+			case "SyncGroupsClient.BeginRefreshHubSchema":
+				res.resp, res.err = s.dispatchBeginRefreshHubSchema(req)
+			case "SyncGroupsClient.BeginUpdate":
+				res.resp, res.err = s.dispatchBeginUpdate(req)
+			case "SyncGroupsClient.CancelSync":
+				res.resp, res.err = s.dispatchCancelSync(req)
 			case "SyncGroupsClient.Get":
 				res.resp, res.err = s.dispatchGet(req)
 			case "SyncGroupsClient.NewListByDatabasePager":
@@ -134,12 +138,8 @@ func (s *SyncGroupsServerTransport) dispatchToMethodFake(req *http.Request, meth
 				res.resp, res.err = s.dispatchNewListLogsPager(req)
 			case "SyncGroupsClient.NewListSyncDatabaseIDsPager":
 				res.resp, res.err = s.dispatchNewListSyncDatabaseIDsPager(req)
-			case "SyncGroupsClient.BeginRefreshHubSchema":
-				res.resp, res.err = s.dispatchBeginRefreshHubSchema(req)
 			case "SyncGroupsClient.TriggerSync":
 				res.resp, res.err = s.dispatchTriggerSync(req)
-			case "SyncGroupsClient.BeginUpdate":
-				res.resp, res.err = s.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -154,47 +154,6 @@ func (s *SyncGroupsServerTransport) dispatchToMethodFake(req *http.Request, meth
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (s *SyncGroupsServerTransport) dispatchCancelSync(req *http.Request) (*http.Response, error) {
-	if s.srv.CancelSync == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CancelSync not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/servers/(?P<serverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/syncGroups/(?P<syncGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/cancelSync`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 6 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
-	if err != nil {
-		return nil, err
-	}
-	databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
-	if err != nil {
-		return nil, err
-	}
-	syncGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("syncGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := s.srv.CancelSync(req.Context(), resourceGroupNameParam, serverNameParam, databaseNameParam, syncGroupNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (s *SyncGroupsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -302,6 +261,155 @@ func (s *SyncGroupsServerTransport) dispatchBeginDelete(req *http.Request) (*htt
 		s.beginDelete.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (s *SyncGroupsServerTransport) dispatchBeginRefreshHubSchema(req *http.Request) (*http.Response, error) {
+	if s.srv.BeginRefreshHubSchema == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginRefreshHubSchema not implemented")}
+	}
+	beginRefreshHubSchema := s.beginRefreshHubSchema.get(req)
+	if beginRefreshHubSchema == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/servers/(?P<serverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/syncGroups/(?P<syncGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/refreshHubSchema`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 6 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
+		if err != nil {
+			return nil, err
+		}
+		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
+		if err != nil {
+			return nil, err
+		}
+		syncGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("syncGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := s.srv.BeginRefreshHubSchema(req.Context(), resourceGroupNameParam, serverNameParam, databaseNameParam, syncGroupNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginRefreshHubSchema = &respr
+		s.beginRefreshHubSchema.add(req, beginRefreshHubSchema)
+	}
+
+	resp, err := server.PollerResponderNext(beginRefreshHubSchema, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		s.beginRefreshHubSchema.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginRefreshHubSchema) {
+		s.beginRefreshHubSchema.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (s *SyncGroupsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if s.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := s.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/servers/(?P<serverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/syncGroups/(?P<syncGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 6 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armsql.SyncGroup](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
+		if err != nil {
+			return nil, err
+		}
+		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
+		if err != nil {
+			return nil, err
+		}
+		syncGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("syncGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := s.srv.BeginUpdate(req.Context(), resourceGroupNameParam, serverNameParam, databaseNameParam, syncGroupNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		s.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		s.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		s.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (s *SyncGroupsServerTransport) dispatchCancelSync(req *http.Request) (*http.Response, error) {
+	if s.srv.CancelSync == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CancelSync not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/servers/(?P<serverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/syncGroups/(?P<syncGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/cancelSync`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 6 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
+	if err != nil {
+		return nil, err
+	}
+	databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
+	if err != nil {
+		return nil, err
+	}
+	syncGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("syncGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.CancelSync(req.Context(), resourceGroupNameParam, serverNameParam, databaseNameParam, syncGroupNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.NewResponse(respContent, req, nil)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 
@@ -534,58 +642,6 @@ func (s *SyncGroupsServerTransport) dispatchNewListSyncDatabaseIDsPager(req *htt
 	return resp, nil
 }
 
-func (s *SyncGroupsServerTransport) dispatchBeginRefreshHubSchema(req *http.Request) (*http.Response, error) {
-	if s.srv.BeginRefreshHubSchema == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginRefreshHubSchema not implemented")}
-	}
-	beginRefreshHubSchema := s.beginRefreshHubSchema.get(req)
-	if beginRefreshHubSchema == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/servers/(?P<serverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/syncGroups/(?P<syncGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/refreshHubSchema`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 6 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
-		if err != nil {
-			return nil, err
-		}
-		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
-		if err != nil {
-			return nil, err
-		}
-		syncGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("syncGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := s.srv.BeginRefreshHubSchema(req.Context(), resourceGroupNameParam, serverNameParam, databaseNameParam, syncGroupNameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginRefreshHubSchema = &respr
-		s.beginRefreshHubSchema.add(req, beginRefreshHubSchema)
-	}
-
-	resp, err := server.PollerResponderNext(beginRefreshHubSchema, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		s.beginRefreshHubSchema.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginRefreshHubSchema) {
-		s.beginRefreshHubSchema.remove(req)
-	}
-
-	return resp, nil
-}
-
 func (s *SyncGroupsServerTransport) dispatchTriggerSync(req *http.Request) (*http.Response, error) {
 	if s.srv.TriggerSync == nil {
 		return nil, &nonRetriableError{errors.New("fake for method TriggerSync not implemented")}
@@ -624,62 +680,6 @@ func (s *SyncGroupsServerTransport) dispatchTriggerSync(req *http.Request) (*htt
 	if err != nil {
 		return nil, err
 	}
-	return resp, nil
-}
-
-func (s *SyncGroupsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if s.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := s.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/servers/(?P<serverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/syncGroups/(?P<syncGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 6 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armsql.SyncGroup](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
-		if err != nil {
-			return nil, err
-		}
-		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
-		if err != nil {
-			return nil, err
-		}
-		syncGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("syncGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := s.srv.BeginUpdate(req.Context(), resourceGroupNameParam, serverNameParam, databaseNameParam, syncGroupNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		s.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		s.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		s.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

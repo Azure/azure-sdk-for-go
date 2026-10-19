@@ -29,18 +29,6 @@ type NetworkTapRulesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, networkTapRuleName string, options *armmanagednetworkfabric.NetworkTapRulesClientBeginDeleteOptions) (resp azfake.PollerResponder[armmanagednetworkfabric.NetworkTapRulesClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method NetworkTapRulesClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, networkTapRuleName string, options *armmanagednetworkfabric.NetworkTapRulesClientGetOptions) (resp azfake.Responder[armmanagednetworkfabric.NetworkTapRulesClientGetResponse], errResp azfake.ErrorResponder)
-
-	// NewListByResourceGroupPager is the fake for method NetworkTapRulesClient.NewListByResourceGroupPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupPager func(resourceGroupName string, options *armmanagednetworkfabric.NetworkTapRulesClientListByResourceGroupOptions) (resp azfake.PagerResponder[armmanagednetworkfabric.NetworkTapRulesClientListByResourceGroupResponse])
-
-	// NewListBySubscriptionPager is the fake for method NetworkTapRulesClient.NewListBySubscriptionPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListBySubscriptionPager func(options *armmanagednetworkfabric.NetworkTapRulesClientListBySubscriptionOptions) (resp azfake.PagerResponder[armmanagednetworkfabric.NetworkTapRulesClientListBySubscriptionResponse])
-
 	// BeginResync is the fake for method NetworkTapRulesClient.BeginResync
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginResync func(ctx context.Context, resourceGroupName string, networkTapRuleName string, options *armmanagednetworkfabric.NetworkTapRulesClientBeginResyncOptions) (resp azfake.PollerResponder[armmanagednetworkfabric.NetworkTapRulesClientResyncResponse], errResp azfake.ErrorResponder)
@@ -56,6 +44,18 @@ type NetworkTapRulesServer struct {
 	// BeginValidateConfiguration is the fake for method NetworkTapRulesClient.BeginValidateConfiguration
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginValidateConfiguration func(ctx context.Context, resourceGroupName string, networkTapRuleName string, options *armmanagednetworkfabric.NetworkTapRulesClientBeginValidateConfigurationOptions) (resp azfake.PollerResponder[armmanagednetworkfabric.NetworkTapRulesClientValidateConfigurationResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method NetworkTapRulesClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, networkTapRuleName string, options *armmanagednetworkfabric.NetworkTapRulesClientGetOptions) (resp azfake.Responder[armmanagednetworkfabric.NetworkTapRulesClientGetResponse], errResp azfake.ErrorResponder)
+
+	// NewListByResourceGroupPager is the fake for method NetworkTapRulesClient.NewListByResourceGroupPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByResourceGroupPager func(resourceGroupName string, options *armmanagednetworkfabric.NetworkTapRulesClientListByResourceGroupOptions) (resp azfake.PagerResponder[armmanagednetworkfabric.NetworkTapRulesClientListByResourceGroupResponse])
+
+	// NewListBySubscriptionPager is the fake for method NetworkTapRulesClient.NewListBySubscriptionPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListBySubscriptionPager func(options *armmanagednetworkfabric.NetworkTapRulesClientListBySubscriptionOptions) (resp azfake.PagerResponder[armmanagednetworkfabric.NetworkTapRulesClientListBySubscriptionResponse])
 }
 
 // NewNetworkTapRulesServerTransport creates a new instance of NetworkTapRulesServerTransport with the provided implementation.
@@ -66,12 +66,12 @@ func NewNetworkTapRulesServerTransport(srv *NetworkTapRulesServer) *NetworkTapRu
 		srv:                            srv,
 		beginCreate:                    newTracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkTapRulesClientCreateResponse]](),
 		beginDelete:                    newTracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkTapRulesClientDeleteResponse]](),
-		newListByResourceGroupPager:    newTracker[azfake.PagerResponder[armmanagednetworkfabric.NetworkTapRulesClientListByResourceGroupResponse]](),
-		newListBySubscriptionPager:     newTracker[azfake.PagerResponder[armmanagednetworkfabric.NetworkTapRulesClientListBySubscriptionResponse]](),
 		beginResync:                    newTracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkTapRulesClientResyncResponse]](),
 		beginUpdate:                    newTracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkTapRulesClientUpdateResponse]](),
 		beginUpdateAdministrativeState: newTracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkTapRulesClientUpdateAdministrativeStateResponse]](),
 		beginValidateConfiguration:     newTracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkTapRulesClientValidateConfigurationResponse]](),
+		newListByResourceGroupPager:    newTracker[azfake.PagerResponder[armmanagednetworkfabric.NetworkTapRulesClientListByResourceGroupResponse]](),
+		newListBySubscriptionPager:     newTracker[azfake.PagerResponder[armmanagednetworkfabric.NetworkTapRulesClientListBySubscriptionResponse]](),
 	}
 }
 
@@ -81,12 +81,12 @@ type NetworkTapRulesServerTransport struct {
 	srv                            *NetworkTapRulesServer
 	beginCreate                    *tracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkTapRulesClientCreateResponse]]
 	beginDelete                    *tracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkTapRulesClientDeleteResponse]]
-	newListByResourceGroupPager    *tracker[azfake.PagerResponder[armmanagednetworkfabric.NetworkTapRulesClientListByResourceGroupResponse]]
-	newListBySubscriptionPager     *tracker[azfake.PagerResponder[armmanagednetworkfabric.NetworkTapRulesClientListBySubscriptionResponse]]
 	beginResync                    *tracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkTapRulesClientResyncResponse]]
 	beginUpdate                    *tracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkTapRulesClientUpdateResponse]]
 	beginUpdateAdministrativeState *tracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkTapRulesClientUpdateAdministrativeStateResponse]]
 	beginValidateConfiguration     *tracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkTapRulesClientValidateConfigurationResponse]]
+	newListByResourceGroupPager    *tracker[azfake.PagerResponder[armmanagednetworkfabric.NetworkTapRulesClientListByResourceGroupResponse]]
+	newListBySubscriptionPager     *tracker[azfake.PagerResponder[armmanagednetworkfabric.NetworkTapRulesClientListBySubscriptionResponse]]
 }
 
 // Do implements the policy.Transporter interface for NetworkTapRulesServerTransport.
@@ -114,12 +114,6 @@ func (n *NetworkTapRulesServerTransport) dispatchToMethodFake(req *http.Request,
 				res.resp, res.err = n.dispatchBeginCreate(req)
 			case "NetworkTapRulesClient.BeginDelete":
 				res.resp, res.err = n.dispatchBeginDelete(req)
-			case "NetworkTapRulesClient.Get":
-				res.resp, res.err = n.dispatchGet(req)
-			case "NetworkTapRulesClient.NewListByResourceGroupPager":
-				res.resp, res.err = n.dispatchNewListByResourceGroupPager(req)
-			case "NetworkTapRulesClient.NewListBySubscriptionPager":
-				res.resp, res.err = n.dispatchNewListBySubscriptionPager(req)
 			case "NetworkTapRulesClient.BeginResync":
 				res.resp, res.err = n.dispatchBeginResync(req)
 			case "NetworkTapRulesClient.BeginUpdate":
@@ -128,6 +122,12 @@ func (n *NetworkTapRulesServerTransport) dispatchToMethodFake(req *http.Request,
 				res.resp, res.err = n.dispatchBeginUpdateAdministrativeState(req)
 			case "NetworkTapRulesClient.BeginValidateConfiguration":
 				res.resp, res.err = n.dispatchBeginValidateConfiguration(req)
+			case "NetworkTapRulesClient.Get":
+				res.resp, res.err = n.dispatchGet(req)
+			case "NetworkTapRulesClient.NewListByResourceGroupPager":
+				res.resp, res.err = n.dispatchNewListByResourceGroupPager(req)
+			case "NetworkTapRulesClient.NewListBySubscriptionPager":
+				res.resp, res.err = n.dispatchNewListBySubscriptionPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -233,109 +233,6 @@ func (n *NetworkTapRulesServerTransport) dispatchBeginDelete(req *http.Request) 
 		n.beginDelete.remove(req)
 	}
 
-	return resp, nil
-}
-
-func (n *NetworkTapRulesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if n.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/networkTapRules/(?P<networkTapRuleName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	networkTapRuleNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkTapRuleName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := n.srv.Get(req.Context(), resourceGroupNameParam, networkTapRuleNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).NetworkTapRule, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (n *NetworkTapRulesServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
-	if n.srv.NewListByResourceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
-	}
-	newListByResourceGroupPager := n.newListByResourceGroupPager.get(req)
-	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/networkTapRules`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := n.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
-		newListByResourceGroupPager = &resp
-		n.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armmanagednetworkfabric.NetworkTapRulesClientListByResourceGroupResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		n.newListByResourceGroupPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByResourceGroupPager) {
-		n.newListByResourceGroupPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (n *NetworkTapRulesServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
-	if n.srv.NewListBySubscriptionPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
-	}
-	newListBySubscriptionPager := n.newListBySubscriptionPager.get(req)
-	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/networkTapRules`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := n.srv.NewListBySubscriptionPager(nil)
-		newListBySubscriptionPager = &resp
-		n.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
-		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armmanagednetworkfabric.NetworkTapRulesClientListBySubscriptionResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		n.newListBySubscriptionPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListBySubscriptionPager) {
-		n.newListBySubscriptionPager.remove(req)
-	}
 	return resp, nil
 }
 
@@ -520,6 +417,109 @@ func (n *NetworkTapRulesServerTransport) dispatchBeginValidateConfiguration(req 
 		n.beginValidateConfiguration.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (n *NetworkTapRulesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if n.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/networkTapRules/(?P<networkTapRuleName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	networkTapRuleNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkTapRuleName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := n.srv.Get(req.Context(), resourceGroupNameParam, networkTapRuleNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).NetworkTapRule, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (n *NetworkTapRulesServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
+	if n.srv.NewListByResourceGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
+	}
+	newListByResourceGroupPager := n.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/networkTapRules`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := n.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
+		newListByResourceGroupPager = &resp
+		n.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armmanagednetworkfabric.NetworkTapRulesClientListByResourceGroupResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		n.newListByResourceGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		n.newListByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (n *NetworkTapRulesServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
+	if n.srv.NewListBySubscriptionPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
+	}
+	newListBySubscriptionPager := n.newListBySubscriptionPager.get(req)
+	if newListBySubscriptionPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/networkTapRules`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := n.srv.NewListBySubscriptionPager(nil)
+		newListBySubscriptionPager = &resp
+		n.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
+		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armmanagednetworkfabric.NetworkTapRulesClientListBySubscriptionResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		n.newListBySubscriptionPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListBySubscriptionPager) {
+		n.newListBySubscriptionPager.remove(req)
+	}
 	return resp, nil
 }
 

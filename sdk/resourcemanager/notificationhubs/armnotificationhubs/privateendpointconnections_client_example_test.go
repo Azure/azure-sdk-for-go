@@ -33,6 +33,57 @@ func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
 	}
 }
 
+// Generated from example definition: 2023-10-01-preview/Namespaces/PrivateEndpointConnectionUpdate.json
+func ExamplePrivateEndpointConnectionsClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnotificationhubs.NewClientFactory("29cfa613-cbbc-4512-b1d6-1b3a92c7fa40", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewPrivateEndpointConnectionsClient().BeginUpdate(ctx, "5ktrial", "nh-sdk-ns", "nh-sdk-ns.1fa229cd-bf3f-47f0-8c49-afb36723997e", armnotificationhubs.PrivateEndpointConnectionResource{
+		Properties: &armnotificationhubs.PrivateEndpointConnectionProperties{
+			PrivateEndpoint: &armnotificationhubs.RemotePrivateEndpointConnection{},
+			PrivateLinkServiceConnectionState: &armnotificationhubs.RemotePrivateLinkServiceConnectionState{
+				Status: to.Ptr(armnotificationhubs.PrivateLinkConnectionStatusApproved),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnotificationhubs.PrivateEndpointConnectionsClientUpdateResponse{
+	// 	PrivateEndpointConnectionResource: armnotificationhubs.PrivateEndpointConnectionResource{
+	// 		Name: to.Ptr("nh-sdk-ns.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
+	// 		Type: to.Ptr("Microsoft.NotificationHubs/namespaces/privateEndpointConnections"),
+	// 		ID: to.Ptr("/subscriptions/29cfa613-cbbc-4512-b1d6-1b3a92c7fa40/resourcegroups/5ktrial/providers/Microsoft.NotificationHubs/namespaces/nh-sdk-ns/privateEndpointConnections/nh-sdk-ns.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
+	// 		Properties: &armnotificationhubs.PrivateEndpointConnectionProperties{
+	// 			GroupIDs: []*string{
+	// 				to.Ptr("namespace"),
+	// 			},
+	// 			PrivateEndpoint: &armnotificationhubs.RemotePrivateEndpointConnection{
+	// 				ID: to.Ptr("/subscriptions/29cfa613-cbbc-4512-b1d6-1b3a92c7fa40/resourcegroups/5ktrial/providers/Microsoft.Network/privateEndpoints/myPrivateEndpoint"),
+	// 			},
+	// 			PrivateLinkServiceConnectionState: &armnotificationhubs.RemotePrivateLinkServiceConnectionState{
+	// 				ActionsRequired: to.Ptr("None"),
+	// 				Status: to.Ptr(armnotificationhubs.PrivateLinkConnectionStatusApproved),
+	// 			},
+	// 			ProvisioningState: to.Ptr(armnotificationhubs.PrivateEndpointConnectionProvisioningStateSucceeded),
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2023-10-01-preview/Namespaces/PrivateEndpointConnectionGet.json
 func ExamplePrivateEndpointConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -110,6 +161,52 @@ func ExamplePrivateEndpointConnectionsClient_GetGroupID() {
 	// }
 }
 
+// Generated from example definition: 2023-10-01-preview/Namespaces/PrivateLinkResourceList.json
+func ExamplePrivateEndpointConnectionsClient_NewListGroupIDsPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnotificationhubs.NewClientFactory("29cfa613-cbbc-4512-b1d6-1b3a92c7fa40", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewPrivateEndpointConnectionsClient().NewListGroupIDsPager("5ktrial", "nh-sdk-ns", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armnotificationhubs.PrivateEndpointConnectionsClientListGroupIDsResponse{
+		// 	PrivateLinkResourceListResult: armnotificationhubs.PrivateLinkResourceListResult{
+		// 		Value: []*armnotificationhubs.PrivateLinkResource{
+		// 			{
+		// 				Name: to.Ptr("namespace"),
+		// 				Type: to.Ptr("Microsoft.NotificationHubs/namespaces/privateLinkResources"),
+		// 				ID: to.Ptr("/subscriptions/29cfa613-cbbc-4512-b1d6-1b3a92c7fa40/resourceGroups/5ktrial/providers/Microsoft.NotificationHubs/namespaces/nh-sdk-ns/privateLinkResources/namespace"),
+		// 				Properties: &armnotificationhubs.PrivateLinkResourceProperties{
+		// 					GroupID: to.Ptr("namespace"),
+		// 					RequiredMembers: []*string{
+		// 						to.Ptr("namespace"),
+		// 					},
+		// 					RequiredZoneNames: []*string{
+		// 						to.Ptr("privatelink.servicebus.windows.net"),
+		// 						to.Ptr("privatelink.notificationhub.windows.net"),
+		// 					},
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
 // Generated from example definition: 2023-10-01-preview/Namespaces/PrivateEndpointConnectionList.json
 func ExamplePrivateEndpointConnectionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -157,101 +254,4 @@ func ExamplePrivateEndpointConnectionsClient_NewListPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2023-10-01-preview/Namespaces/PrivateLinkResourceList.json
-func ExamplePrivateEndpointConnectionsClient_NewListGroupIDsPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnotificationhubs.NewClientFactory("29cfa613-cbbc-4512-b1d6-1b3a92c7fa40", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewPrivateEndpointConnectionsClient().NewListGroupIDsPager("5ktrial", "nh-sdk-ns", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnotificationhubs.PrivateEndpointConnectionsClientListGroupIDsResponse{
-		// 	PrivateLinkResourceListResult: armnotificationhubs.PrivateLinkResourceListResult{
-		// 		Value: []*armnotificationhubs.PrivateLinkResource{
-		// 			{
-		// 				Name: to.Ptr("namespace"),
-		// 				Type: to.Ptr("Microsoft.NotificationHubs/namespaces/privateLinkResources"),
-		// 				ID: to.Ptr("/subscriptions/29cfa613-cbbc-4512-b1d6-1b3a92c7fa40/resourceGroups/5ktrial/providers/Microsoft.NotificationHubs/namespaces/nh-sdk-ns/privateLinkResources/namespace"),
-		// 				Properties: &armnotificationhubs.PrivateLinkResourceProperties{
-		// 					GroupID: to.Ptr("namespace"),
-		// 					RequiredMembers: []*string{
-		// 						to.Ptr("namespace"),
-		// 					},
-		// 					RequiredZoneNames: []*string{
-		// 						to.Ptr("privatelink.servicebus.windows.net"),
-		// 						to.Ptr("privatelink.notificationhub.windows.net"),
-		// 					},
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2023-10-01-preview/Namespaces/PrivateEndpointConnectionUpdate.json
-func ExamplePrivateEndpointConnectionsClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnotificationhubs.NewClientFactory("29cfa613-cbbc-4512-b1d6-1b3a92c7fa40", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewPrivateEndpointConnectionsClient().BeginUpdate(ctx, "5ktrial", "nh-sdk-ns", "nh-sdk-ns.1fa229cd-bf3f-47f0-8c49-afb36723997e", armnotificationhubs.PrivateEndpointConnectionResource{
-		Properties: &armnotificationhubs.PrivateEndpointConnectionProperties{
-			PrivateEndpoint: &armnotificationhubs.RemotePrivateEndpointConnection{},
-			PrivateLinkServiceConnectionState: &armnotificationhubs.RemotePrivateLinkServiceConnectionState{
-				Status: to.Ptr(armnotificationhubs.PrivateLinkConnectionStatusApproved),
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnotificationhubs.PrivateEndpointConnectionsClientUpdateResponse{
-	// 	PrivateEndpointConnectionResource: armnotificationhubs.PrivateEndpointConnectionResource{
-	// 		Name: to.Ptr("nh-sdk-ns.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
-	// 		Type: to.Ptr("Microsoft.NotificationHubs/namespaces/privateEndpointConnections"),
-	// 		ID: to.Ptr("/subscriptions/29cfa613-cbbc-4512-b1d6-1b3a92c7fa40/resourcegroups/5ktrial/providers/Microsoft.NotificationHubs/namespaces/nh-sdk-ns/privateEndpointConnections/nh-sdk-ns.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
-	// 		Properties: &armnotificationhubs.PrivateEndpointConnectionProperties{
-	// 			GroupIDs: []*string{
-	// 				to.Ptr("namespace"),
-	// 			},
-	// 			PrivateEndpoint: &armnotificationhubs.RemotePrivateEndpointConnection{
-	// 				ID: to.Ptr("/subscriptions/29cfa613-cbbc-4512-b1d6-1b3a92c7fa40/resourcegroups/5ktrial/providers/Microsoft.Network/privateEndpoints/myPrivateEndpoint"),
-	// 			},
-	// 			PrivateLinkServiceConnectionState: &armnotificationhubs.RemotePrivateLinkServiceConnectionState{
-	// 				ActionsRequired: to.Ptr("None"),
-	// 				Status: to.Ptr(armnotificationhubs.PrivateLinkConnectionStatusApproved),
-	// 			},
-	// 			ProvisioningState: to.Ptr(armnotificationhubs.PrivateEndpointConnectionProvisioningStateSucceeded),
-	// 		},
-	// 	},
-	// }
 }

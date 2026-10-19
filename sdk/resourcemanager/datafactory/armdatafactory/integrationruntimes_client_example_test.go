@@ -12,6 +12,73 @@ import (
 	"log"
 )
 
+// Generated from example definition: 2018-06-01/IntegrationRuntimes_Start.json
+func ExampleIntegrationRuntimesClient_BeginStart() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdatafactory.NewClientFactory("12345678-1234-1234-1234-123456789012", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewIntegrationRuntimesClient().BeginStart(ctx, "exampleResourceGroup", "exampleFactoryName", "exampleManagedIntegrationRuntime", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdatafactory.IntegrationRuntimesClientStartResponse{
+	// 	IntegrationRuntimeStatusResponse: armdatafactory.IntegrationRuntimeStatusResponse{
+	// 		Name: to.Ptr("exampleManagedIntegrationRuntime"),
+	// 		Properties: &armdatafactory.ManagedIntegrationRuntimeStatus{
+	// 			Type: to.Ptr(armdatafactory.IntegrationRuntimeTypeManaged),
+	// 			DataFactoryName: to.Ptr("exampleFactoryName"),
+	// 			State: to.Ptr(armdatafactory.IntegrationRuntimeStateStarted),
+	// 			TypeProperties: &armdatafactory.ManagedIntegrationRuntimeStatusTypeProperties{
+	// 				CreateTime: to.Ptr(time.Date(2018, time.June, 13, 21, 11, 1, 869549400, time.UTC)),
+	// 				Nodes: []*armdatafactory.ManagedIntegrationRuntimeNode{
+	// 				},
+	// 				OtherErrors: []*armdatafactory.ManagedIntegrationRuntimeError{
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2018-06-01/IntegrationRuntimes_Stop.json
+func ExampleIntegrationRuntimesClient_BeginStop() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdatafactory.NewClientFactory("12345678-1234-1234-1234-123456789012", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewIntegrationRuntimesClient().BeginStop(ctx, "exampleResourceGroup", "exampleFactoryName", "exampleManagedIntegrationRuntime", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdatafactory.IntegrationRuntimesClientStopResponse{
+	// }
+}
+
 // Generated from example definition: 2018-06-01/IntegrationRuntimes_CreateLinkedIntegrationRuntime.json
 func ExampleIntegrationRuntimesClient_CreateLinkedIntegrationRuntime() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -359,47 +426,6 @@ func ExampleIntegrationRuntimesClient_ListAuthKeys() {
 	// }
 }
 
-// Generated from example definition: 2018-06-01/IntegrationRuntimes_ListByFactory.json
-func ExampleIntegrationRuntimesClient_NewListByFactoryPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdatafactory.NewClientFactory("12345678-1234-1234-1234-123456789012", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewIntegrationRuntimesClient().NewListByFactoryPager("exampleResourceGroup", "exampleFactoryName", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armdatafactory.IntegrationRuntimesClientListByFactoryResponse{
-		// 	IntegrationRuntimeListResponse: armdatafactory.IntegrationRuntimeListResponse{
-		// 		Value: []*armdatafactory.IntegrationRuntimeResource{
-		// 			{
-		// 				Name: to.Ptr("exampleIntegrationRuntime"),
-		// 				Type: to.Ptr("Microsoft.DataFactory/factories/integrationruntimes"),
-		// 				Etag: to.Ptr("0400f1a1-0000-0000-0000-5b2188640000"),
-		// 				ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/exampleResourceGroup/providers/Microsoft.DataFactory/factories/exampleFactoryName/integrationruntimes/exampleIntegrationRuntime"),
-		// 				Properties: &armdatafactory.SelfHostedIntegrationRuntime{
-		// 					Type: to.Ptr(armdatafactory.IntegrationRuntimeTypeSelfHosted),
-		// 					Description: to.Ptr("A selfhosted integration runtime"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
 // Generated from example definition: 2018-06-01/IntegrationRuntimes_ListOutboundNetworkDependenciesEndpoints.json
 func ExampleIntegrationRuntimesClient_ListOutboundNetworkDependenciesEndpoints() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -502,6 +528,47 @@ func ExampleIntegrationRuntimesClient_ListOutboundNetworkDependenciesEndpoints()
 	// }
 }
 
+// Generated from example definition: 2018-06-01/IntegrationRuntimes_ListByFactory.json
+func ExampleIntegrationRuntimesClient_NewListByFactoryPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdatafactory.NewClientFactory("12345678-1234-1234-1234-123456789012", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewIntegrationRuntimesClient().NewListByFactoryPager("exampleResourceGroup", "exampleFactoryName", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armdatafactory.IntegrationRuntimesClientListByFactoryResponse{
+		// 	IntegrationRuntimeListResponse: armdatafactory.IntegrationRuntimeListResponse{
+		// 		Value: []*armdatafactory.IntegrationRuntimeResource{
+		// 			{
+		// 				Name: to.Ptr("exampleIntegrationRuntime"),
+		// 				Type: to.Ptr("Microsoft.DataFactory/factories/integrationruntimes"),
+		// 				Etag: to.Ptr("0400f1a1-0000-0000-0000-5b2188640000"),
+		// 				ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/exampleResourceGroup/providers/Microsoft.DataFactory/factories/exampleFactoryName/integrationruntimes/exampleIntegrationRuntime"),
+		// 				Properties: &armdatafactory.SelfHostedIntegrationRuntime{
+		// 					Type: to.Ptr(armdatafactory.IntegrationRuntimeTypeSelfHosted),
+		// 					Description: to.Ptr("A selfhosted integration runtime"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
 // Generated from example definition: 2018-06-01/IntegrationRuntimes_RegenerateAuthKey.json
 func ExampleIntegrationRuntimesClient_RegenerateAuthKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -550,73 +617,6 @@ func ExampleIntegrationRuntimesClient_RemoveLinks() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdatafactory.IntegrationRuntimesClientRemoveLinksResponse{
-	// }
-}
-
-// Generated from example definition: 2018-06-01/IntegrationRuntimes_Start.json
-func ExampleIntegrationRuntimesClient_BeginStart() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdatafactory.NewClientFactory("12345678-1234-1234-1234-123456789012", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewIntegrationRuntimesClient().BeginStart(ctx, "exampleResourceGroup", "exampleFactoryName", "exampleManagedIntegrationRuntime", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdatafactory.IntegrationRuntimesClientStartResponse{
-	// 	IntegrationRuntimeStatusResponse: armdatafactory.IntegrationRuntimeStatusResponse{
-	// 		Name: to.Ptr("exampleManagedIntegrationRuntime"),
-	// 		Properties: &armdatafactory.ManagedIntegrationRuntimeStatus{
-	// 			Type: to.Ptr(armdatafactory.IntegrationRuntimeTypeManaged),
-	// 			DataFactoryName: to.Ptr("exampleFactoryName"),
-	// 			State: to.Ptr(armdatafactory.IntegrationRuntimeStateStarted),
-	// 			TypeProperties: &armdatafactory.ManagedIntegrationRuntimeStatusTypeProperties{
-	// 				CreateTime: to.Ptr(time.Date(2018, time.June, 13, 21, 11, 1, 869549400, time.UTC)),
-	// 				Nodes: []*armdatafactory.ManagedIntegrationRuntimeNode{
-	// 				},
-	// 				OtherErrors: []*armdatafactory.ManagedIntegrationRuntimeError{
-	// 				},
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2018-06-01/IntegrationRuntimes_Stop.json
-func ExampleIntegrationRuntimesClient_BeginStop() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdatafactory.NewClientFactory("12345678-1234-1234-1234-123456789012", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewIntegrationRuntimesClient().BeginStop(ctx, "exampleResourceGroup", "exampleFactoryName", "exampleManagedIntegrationRuntime", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdatafactory.IntegrationRuntimesClientStopResponse{
 	// }
 }
 

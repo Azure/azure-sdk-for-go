@@ -30,6 +30,10 @@ type MetricsConfigurationsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, clusterName string, metricsConfigurationName string, options *armnetworkcloud.MetricsConfigurationsClientBeginDeleteOptions) (resp azfake.PollerResponder[armnetworkcloud.MetricsConfigurationsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method MetricsConfigurationsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, clusterName string, metricsConfigurationName string, metricsConfigurationUpdateParameters armnetworkcloud.ClusterMetricsConfigurationPatchParameters, options *armnetworkcloud.MetricsConfigurationsClientBeginUpdateOptions) (resp azfake.PollerResponder[armnetworkcloud.MetricsConfigurationsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method MetricsConfigurationsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, clusterName string, metricsConfigurationName string, options *armnetworkcloud.MetricsConfigurationsClientGetOptions) (resp azfake.Responder[armnetworkcloud.MetricsConfigurationsClientGetResponse], errResp azfake.ErrorResponder)
@@ -37,10 +41,6 @@ type MetricsConfigurationsServer struct {
 	// NewListByClusterPager is the fake for method MetricsConfigurationsClient.NewListByClusterPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByClusterPager func(resourceGroupName string, clusterName string, options *armnetworkcloud.MetricsConfigurationsClientListByClusterOptions) (resp azfake.PagerResponder[armnetworkcloud.MetricsConfigurationsClientListByClusterResponse])
-
-	// BeginUpdate is the fake for method MetricsConfigurationsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, clusterName string, metricsConfigurationName string, metricsConfigurationUpdateParameters armnetworkcloud.ClusterMetricsConfigurationPatchParameters, options *armnetworkcloud.MetricsConfigurationsClientBeginUpdateOptions) (resp azfake.PollerResponder[armnetworkcloud.MetricsConfigurationsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewMetricsConfigurationsServerTransport creates a new instance of MetricsConfigurationsServerTransport with the provided implementation.
@@ -51,8 +51,8 @@ func NewMetricsConfigurationsServerTransport(srv *MetricsConfigurationsServer) *
 		srv:                   srv,
 		beginCreateOrUpdate:   newTracker[azfake.PollerResponder[armnetworkcloud.MetricsConfigurationsClientCreateOrUpdateResponse]](),
 		beginDelete:           newTracker[azfake.PollerResponder[armnetworkcloud.MetricsConfigurationsClientDeleteResponse]](),
-		newListByClusterPager: newTracker[azfake.PagerResponder[armnetworkcloud.MetricsConfigurationsClientListByClusterResponse]](),
 		beginUpdate:           newTracker[azfake.PollerResponder[armnetworkcloud.MetricsConfigurationsClientUpdateResponse]](),
+		newListByClusterPager: newTracker[azfake.PagerResponder[armnetworkcloud.MetricsConfigurationsClientListByClusterResponse]](),
 	}
 }
 
@@ -62,8 +62,8 @@ type MetricsConfigurationsServerTransport struct {
 	srv                   *MetricsConfigurationsServer
 	beginCreateOrUpdate   *tracker[azfake.PollerResponder[armnetworkcloud.MetricsConfigurationsClientCreateOrUpdateResponse]]
 	beginDelete           *tracker[azfake.PollerResponder[armnetworkcloud.MetricsConfigurationsClientDeleteResponse]]
-	newListByClusterPager *tracker[azfake.PagerResponder[armnetworkcloud.MetricsConfigurationsClientListByClusterResponse]]
 	beginUpdate           *tracker[azfake.PollerResponder[armnetworkcloud.MetricsConfigurationsClientUpdateResponse]]
+	newListByClusterPager *tracker[azfake.PagerResponder[armnetworkcloud.MetricsConfigurationsClientListByClusterResponse]]
 }
 
 // Do implements the policy.Transporter interface for MetricsConfigurationsServerTransport.
@@ -91,12 +91,12 @@ func (m *MetricsConfigurationsServerTransport) dispatchToMethodFake(req *http.Re
 				res.resp, res.err = m.dispatchBeginCreateOrUpdate(req)
 			case "MetricsConfigurationsClient.BeginDelete":
 				res.resp, res.err = m.dispatchBeginDelete(req)
+			case "MetricsConfigurationsClient.BeginUpdate":
+				res.resp, res.err = m.dispatchBeginUpdate(req)
 			case "MetricsConfigurationsClient.Get":
 				res.resp, res.err = m.dispatchGet(req)
 			case "MetricsConfigurationsClient.NewListByClusterPager":
 				res.resp, res.err = m.dispatchNewListByClusterPager(req)
-			case "MetricsConfigurationsClient.BeginUpdate":
-				res.resp, res.err = m.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -231,6 +231,67 @@ func (m *MetricsConfigurationsServerTransport) dispatchBeginDelete(req *http.Req
 	return resp, nil
 }
 
+func (m *MetricsConfigurationsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if m.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := m.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetworkCloud/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/metricsConfigurations/(?P<metricsConfigurationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armnetworkcloud.ClusterMetricsConfigurationPatchParameters](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
+		if err != nil {
+			return nil, err
+		}
+		metricsConfigurationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("metricsConfigurationName")])
+		if err != nil {
+			return nil, err
+		}
+		ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
+		ifNoneMatchParam := getOptional(getHeaderValue(req.Header, "If-None-Match"))
+		var options *armnetworkcloud.MetricsConfigurationsClientBeginUpdateOptions
+		if ifMatchParam != nil || ifNoneMatchParam != nil {
+			options = &armnetworkcloud.MetricsConfigurationsClientBeginUpdateOptions{
+				IfMatch:     ifMatchParam,
+				IfNoneMatch: ifNoneMatchParam,
+			}
+		}
+		respr, errRespr := m.srv.BeginUpdate(req.Context(), resourceGroupNameParam, clusterNameParam, metricsConfigurationNameParam, body, options)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		m.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		m.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		m.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (m *MetricsConfigurationsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if m.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -325,67 +386,6 @@ func (m *MetricsConfigurationsServerTransport) dispatchNewListByClusterPager(req
 	if !server.PagerResponderMore(newListByClusterPager) {
 		m.newListByClusterPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (m *MetricsConfigurationsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if m.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := m.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetworkCloud/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/metricsConfigurations/(?P<metricsConfigurationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armnetworkcloud.ClusterMetricsConfigurationPatchParameters](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
-		if err != nil {
-			return nil, err
-		}
-		metricsConfigurationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("metricsConfigurationName")])
-		if err != nil {
-			return nil, err
-		}
-		ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
-		ifNoneMatchParam := getOptional(getHeaderValue(req.Header, "If-None-Match"))
-		var options *armnetworkcloud.MetricsConfigurationsClientBeginUpdateOptions
-		if ifMatchParam != nil || ifNoneMatchParam != nil {
-			options = &armnetworkcloud.MetricsConfigurationsClientBeginUpdateOptions{
-				IfMatch:     ifMatchParam,
-				IfNoneMatch: ifNoneMatchParam,
-			}
-		}
-		respr, errRespr := m.srv.BeginUpdate(req.Context(), resourceGroupNameParam, clusterNameParam, metricsConfigurationNameParam, body, options)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		m.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		m.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		m.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

@@ -57,7 +57,7 @@ func NewReachabilityAnalysisRunsClient(subscriptionID string, credential azcore.
 //     method.
 func (client *ReachabilityAnalysisRunsClient) BeginDelete(ctx context.Context, resourceGroupName string, networkManagerName string, workspaceName string, reachabilityAnalysisRunName string, options *ReachabilityAnalysisRunsClientBeginDeleteOptions) (*runtime.Poller[ReachabilityAnalysisRunsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, networkManagerName, workspaceName, reachabilityAnalysisRunName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, networkManagerName, workspaceName, reachabilityAnalysisRunName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -72,11 +72,11 @@ func (client *ReachabilityAnalysisRunsClient) BeginDelete(ctx context.Context, r
 	}
 }
 
-// delete - Deletes Reachability Analysis Run.
+// deleteOperation - Deletes Reachability Analysis Run.
 //
 // Deletes Reachability Analysis Run.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *ReachabilityAnalysisRunsClient) delete(ctx context.Context, resourceGroupName string, networkManagerName string, workspaceName string, reachabilityAnalysisRunName string, options *ReachabilityAnalysisRunsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *ReachabilityAnalysisRunsClient) deleteOperation(ctx context.Context, resourceGroupName string, networkManagerName string, workspaceName string, reachabilityAnalysisRunName string, options *ReachabilityAnalysisRunsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReachabilityAnalysisRunsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)

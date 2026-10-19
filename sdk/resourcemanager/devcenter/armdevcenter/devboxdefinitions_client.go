@@ -70,7 +70,7 @@ func (client *DevBoxDefinitionsClient) BeginCreateOrUpdate(ctx context.Context, 
 	}
 }
 
-// CreateOrUpdate - Creates or updates a Dev Box definition.
+// createOrUpdate - Creates or updates a Dev Box definition.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *DevBoxDefinitionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, devCenterName string, devBoxDefinitionName string, body DevBoxDefinition, options *DevBoxDefinitionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -92,7 +92,7 @@ func (client *DevBoxDefinitionsClient) createOrUpdate(ctx context.Context, resou
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *DevBoxDefinitionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, devCenterName string, devBoxDefinitionName string, body DevBoxDefinition, _ *DevBoxDefinitionsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/devboxdefinitions/{devBoxDefinitionName}"
 	if client.subscriptionID == "" {
@@ -150,7 +150,7 @@ func (client *DevBoxDefinitionsClient) BeginDelete(ctx context.Context, resource
 	}
 }
 
-// Delete - Deletes a Dev Box definition.
+// deleteOperation - Deletes a Dev Box definition.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *DevBoxDefinitionsClient) deleteOperation(ctx context.Context, resourceGroupName string, devCenterName string, devBoxDefinitionName string, options *DevBoxDefinitionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -172,7 +172,7 @@ func (client *DevBoxDefinitionsClient) deleteOperation(ctx context.Context, reso
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *DevBoxDefinitionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, devCenterName string, devBoxDefinitionName string, _ *DevBoxDefinitionsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/devboxdefinitions/{devBoxDefinitionName}"
 	if client.subscriptionID == "" {
@@ -198,6 +198,87 @@ func (client *DevBoxDefinitionsClient) deleteCreateRequest(ctx context.Context, 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20260101Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - Partially updates a Dev Box definition.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - devCenterName - The name of the devcenter.
+//   - devBoxDefinitionName - The name of the Dev Box definition.
+//   - body - Represents a Dev Box definition.
+//   - options - DevBoxDefinitionsClientBeginUpdateOptions contains the optional parameters for the DevBoxDefinitionsClient.BeginUpdate
+//     method.
+func (client *DevBoxDefinitionsClient) BeginUpdate(ctx context.Context, resourceGroupName string, devCenterName string, devBoxDefinitionName string, body DevBoxDefinitionUpdate, options *DevBoxDefinitionsClientBeginUpdateOptions) (*runtime.Poller[DevBoxDefinitionsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, devCenterName, devBoxDefinitionName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DevBoxDefinitionsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DevBoxDefinitionsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Partially updates a Dev Box definition.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *DevBoxDefinitionsClient) update(ctx context.Context, resourceGroupName string, devCenterName string, devBoxDefinitionName string, body DevBoxDefinitionUpdate, options *DevBoxDefinitionsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "DevBoxDefinitionsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, devCenterName, devBoxDefinitionName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *DevBoxDefinitionsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, devCenterName string, devBoxDefinitionName string, body DevBoxDefinitionUpdate, _ *DevBoxDefinitionsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/devboxdefinitions/{devBoxDefinitionName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if devCenterName == "" {
+		return nil, errors.New("parameter devCenterName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{devCenterName}", url.PathEscape(devCenterName))
+	if devBoxDefinitionName == "" {
+		return nil, errors.New("parameter devBoxDefinitionName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{devBoxDefinitionName}", url.PathEscape(devBoxDefinitionName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -490,85 +571,4 @@ func (client *DevBoxDefinitionsClient) listByProjectHandleResponse(resp *http.Re
 		return DevBoxDefinitionsClientListByProjectResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Partially updates a Dev Box definition.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - devCenterName - The name of the devcenter.
-//   - devBoxDefinitionName - The name of the Dev Box definition.
-//   - body - Represents a Dev Box definition.
-//   - options - DevBoxDefinitionsClientBeginUpdateOptions contains the optional parameters for the DevBoxDefinitionsClient.BeginUpdate
-//     method.
-func (client *DevBoxDefinitionsClient) BeginUpdate(ctx context.Context, resourceGroupName string, devCenterName string, devBoxDefinitionName string, body DevBoxDefinitionUpdate, options *DevBoxDefinitionsClientBeginUpdateOptions) (*runtime.Poller[DevBoxDefinitionsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, devCenterName, devBoxDefinitionName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DevBoxDefinitionsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DevBoxDefinitionsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Partially updates a Dev Box definition.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *DevBoxDefinitionsClient) update(ctx context.Context, resourceGroupName string, devCenterName string, devBoxDefinitionName string, body DevBoxDefinitionUpdate, options *DevBoxDefinitionsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "DevBoxDefinitionsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, devCenterName, devBoxDefinitionName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *DevBoxDefinitionsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, devCenterName string, devBoxDefinitionName string, body DevBoxDefinitionUpdate, _ *DevBoxDefinitionsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/devboxdefinitions/{devBoxDefinitionName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if devCenterName == "" {
-		return nil, errors.New("parameter devCenterName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{devCenterName}", url.PathEscape(devCenterName))
-	if devBoxDefinitionName == "" {
-		return nil, errors.New("parameter devBoxDefinitionName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{devBoxDefinitionName}", url.PathEscape(devBoxDefinitionName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

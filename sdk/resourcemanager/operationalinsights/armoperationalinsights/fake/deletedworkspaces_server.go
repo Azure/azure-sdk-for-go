@@ -20,13 +20,13 @@ import (
 
 // DeletedWorkspacesServer is a fake server for instances of the armoperationalinsights.DeletedWorkspacesClient type.
 type DeletedWorkspacesServer struct {
-	// NewListPager is the fake for method DeletedWorkspacesClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armoperationalinsights.DeletedWorkspacesClientListOptions) (resp azfake.PagerResponder[armoperationalinsights.DeletedWorkspacesClientListResponse])
-
 	// NewListByResourceGroupPager is the fake for method DeletedWorkspacesClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, options *armoperationalinsights.DeletedWorkspacesClientListByResourceGroupOptions) (resp azfake.PagerResponder[armoperationalinsights.DeletedWorkspacesClientListByResourceGroupResponse])
+
+	// NewListPager is the fake for method DeletedWorkspacesClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armoperationalinsights.DeletedWorkspacesClientListOptions) (resp azfake.PagerResponder[armoperationalinsights.DeletedWorkspacesClientListResponse])
 }
 
 // NewDeletedWorkspacesServerTransport creates a new instance of DeletedWorkspacesServerTransport with the provided implementation.
@@ -35,8 +35,8 @@ type DeletedWorkspacesServer struct {
 func NewDeletedWorkspacesServerTransport(srv *DeletedWorkspacesServer) *DeletedWorkspacesServerTransport {
 	return &DeletedWorkspacesServerTransport{
 		srv:                         srv,
-		newListPager:                newTracker[azfake.PagerResponder[armoperationalinsights.DeletedWorkspacesClientListResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armoperationalinsights.DeletedWorkspacesClientListByResourceGroupResponse]](),
+		newListPager:                newTracker[azfake.PagerResponder[armoperationalinsights.DeletedWorkspacesClientListResponse]](),
 	}
 }
 
@@ -44,8 +44,8 @@ func NewDeletedWorkspacesServerTransport(srv *DeletedWorkspacesServer) *DeletedW
 // Don't use this type directly, use NewDeletedWorkspacesServerTransport instead.
 type DeletedWorkspacesServerTransport struct {
 	srv                         *DeletedWorkspacesServer
-	newListPager                *tracker[azfake.PagerResponder[armoperationalinsights.DeletedWorkspacesClientListResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armoperationalinsights.DeletedWorkspacesClientListByResourceGroupResponse]]
+	newListPager                *tracker[azfake.PagerResponder[armoperationalinsights.DeletedWorkspacesClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for DeletedWorkspacesServerTransport.
@@ -69,10 +69,10 @@ func (d *DeletedWorkspacesServerTransport) dispatchToMethodFake(req *http.Reques
 		}
 		if !intercepted {
 			switch method {
-			case "DeletedWorkspacesClient.NewListPager":
-				res.resp, res.err = d.dispatchNewListPager(req)
 			case "DeletedWorkspacesClient.NewListByResourceGroupPager":
 				res.resp, res.err = d.dispatchNewListByResourceGroupPager(req)
+			case "DeletedWorkspacesClient.NewListPager":
+				res.resp, res.err = d.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -87,39 +87,6 @@ func (d *DeletedWorkspacesServerTransport) dispatchToMethodFake(req *http.Reques
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (d *DeletedWorkspacesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if d.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := d.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.OperationalInsights/deletedWorkspaces`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := d.srv.NewListPager(nil)
-		newListPager = &resp
-		d.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armoperationalinsights.DeletedWorkspacesClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		d.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		d.newListPager.remove(req)
-	}
-	return resp, nil
 }
 
 func (d *DeletedWorkspacesServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
@@ -155,6 +122,39 @@ func (d *DeletedWorkspacesServerTransport) dispatchNewListByResourceGroupPager(r
 	}
 	if !server.PagerResponderMore(newListByResourceGroupPager) {
 		d.newListByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (d *DeletedWorkspacesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if d.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := d.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.OperationalInsights/deletedWorkspaces`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := d.srv.NewListPager(nil)
+		newListPager = &resp
+		d.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armoperationalinsights.DeletedWorkspacesClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		d.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		d.newListPager.remove(req)
 	}
 	return resp, nil
 }

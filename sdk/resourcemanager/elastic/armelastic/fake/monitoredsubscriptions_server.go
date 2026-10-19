@@ -29,6 +29,10 @@ type MonitoredSubscriptionsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, monitorName string, configurationName string, options *armelastic.MonitoredSubscriptionsClientBeginDeleteOptions) (resp azfake.PollerResponder[armelastic.MonitoredSubscriptionsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method MonitoredSubscriptionsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, monitorName string, configurationName string, body armelastic.MonitoredSubscriptionProperties, options *armelastic.MonitoredSubscriptionsClientBeginUpdateOptions) (resp azfake.PollerResponder[armelastic.MonitoredSubscriptionsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method MonitoredSubscriptionsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, monitorName string, configurationName string, options *armelastic.MonitoredSubscriptionsClientGetOptions) (resp azfake.Responder[armelastic.MonitoredSubscriptionsClientGetResponse], errResp azfake.ErrorResponder)
@@ -36,10 +40,6 @@ type MonitoredSubscriptionsServer struct {
 	// NewListPager is the fake for method MonitoredSubscriptionsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(resourceGroupName string, monitorName string, options *armelastic.MonitoredSubscriptionsClientListOptions) (resp azfake.PagerResponder[armelastic.MonitoredSubscriptionsClientListResponse])
-
-	// BeginUpdate is the fake for method MonitoredSubscriptionsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, monitorName string, configurationName string, body armelastic.MonitoredSubscriptionProperties, options *armelastic.MonitoredSubscriptionsClientBeginUpdateOptions) (resp azfake.PollerResponder[armelastic.MonitoredSubscriptionsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewMonitoredSubscriptionsServerTransport creates a new instance of MonitoredSubscriptionsServerTransport with the provided implementation.
@@ -50,8 +50,8 @@ func NewMonitoredSubscriptionsServerTransport(srv *MonitoredSubscriptionsServer)
 		srv:                 srv,
 		beginCreateorUpdate: newTracker[azfake.PollerResponder[armelastic.MonitoredSubscriptionsClientCreateorUpdateResponse]](),
 		beginDelete:         newTracker[azfake.PollerResponder[armelastic.MonitoredSubscriptionsClientDeleteResponse]](),
-		newListPager:        newTracker[azfake.PagerResponder[armelastic.MonitoredSubscriptionsClientListResponse]](),
 		beginUpdate:         newTracker[azfake.PollerResponder[armelastic.MonitoredSubscriptionsClientUpdateResponse]](),
+		newListPager:        newTracker[azfake.PagerResponder[armelastic.MonitoredSubscriptionsClientListResponse]](),
 	}
 }
 
@@ -61,8 +61,8 @@ type MonitoredSubscriptionsServerTransport struct {
 	srv                 *MonitoredSubscriptionsServer
 	beginCreateorUpdate *tracker[azfake.PollerResponder[armelastic.MonitoredSubscriptionsClientCreateorUpdateResponse]]
 	beginDelete         *tracker[azfake.PollerResponder[armelastic.MonitoredSubscriptionsClientDeleteResponse]]
-	newListPager        *tracker[azfake.PagerResponder[armelastic.MonitoredSubscriptionsClientListResponse]]
 	beginUpdate         *tracker[azfake.PollerResponder[armelastic.MonitoredSubscriptionsClientUpdateResponse]]
+	newListPager        *tracker[azfake.PagerResponder[armelastic.MonitoredSubscriptionsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for MonitoredSubscriptionsServerTransport.
@@ -90,12 +90,12 @@ func (m *MonitoredSubscriptionsServerTransport) dispatchToMethodFake(req *http.R
 				res.resp, res.err = m.dispatchBeginCreateorUpdate(req)
 			case "MonitoredSubscriptionsClient.BeginDelete":
 				res.resp, res.err = m.dispatchBeginDelete(req)
+			case "MonitoredSubscriptionsClient.BeginUpdate":
+				res.resp, res.err = m.dispatchBeginUpdate(req)
 			case "MonitoredSubscriptionsClient.Get":
 				res.resp, res.err = m.dispatchGet(req)
 			case "MonitoredSubscriptionsClient.NewListPager":
 				res.resp, res.err = m.dispatchNewListPager(req)
-			case "MonitoredSubscriptionsClient.BeginUpdate":
-				res.resp, res.err = m.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -212,6 +212,58 @@ func (m *MonitoredSubscriptionsServerTransport) dispatchBeginDelete(req *http.Re
 	return resp, nil
 }
 
+func (m *MonitoredSubscriptionsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if m.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := m.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Elastic/monitors/(?P<monitorName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/monitoredSubscriptions/(?P<configurationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armelastic.MonitoredSubscriptionProperties](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		monitorNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("monitorName")])
+		if err != nil {
+			return nil, err
+		}
+		configurationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("configurationName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := m.srv.BeginUpdate(req.Context(), resourceGroupNameParam, monitorNameParam, configurationNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		m.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		m.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		m.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (m *MonitoredSubscriptionsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if m.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -287,58 +339,6 @@ func (m *MonitoredSubscriptionsServerTransport) dispatchNewListPager(req *http.R
 	if !server.PagerResponderMore(newListPager) {
 		m.newListPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (m *MonitoredSubscriptionsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if m.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := m.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Elastic/monitors/(?P<monitorName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/monitoredSubscriptions/(?P<configurationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armelastic.MonitoredSubscriptionProperties](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		monitorNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("monitorName")])
-		if err != nil {
-			return nil, err
-		}
-		configurationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("configurationName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := m.srv.BeginUpdate(req.Context(), resourceGroupNameParam, monitorNameParam, configurationNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		m.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		m.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		m.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

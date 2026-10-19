@@ -12,6 +12,65 @@ import (
 	"log"
 )
 
+// Generated from example definition: 2026-06-02-preview/Gates_Update.json
+func ExampleGatesClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcontainerservicefleet.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewGatesClient().BeginUpdate(ctx, "rg1", "fleet1", "12345678-910a-bcde-f000-000000000000", armcontainerservicefleet.GatePatch{
+		Properties: &armcontainerservicefleet.GatePatchProperties{
+			State: to.Ptr(armcontainerservicefleet.GateStateCompleted),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcontainerservicefleet.GatesClientUpdateResponse{
+	// 	Gate: armcontainerservicefleet.Gate{
+	// 		ID: to.Ptr("/subscriptions/subid1/resourcegroups/rg1/providers/Microsoft.ContainerService/fleets/fleet-1/gates/12345678-910a-bcde-f000-000000000000"),
+	// 		Name: to.Ptr("12345678-910a-bcde-f000-000000000000"),
+	// 		Type: to.Ptr("Microsoft.ContainerService/fleets/gates"),
+	// 		SystemData: &armcontainerservicefleet.SystemData{
+	// 			CreatedBy: to.Ptr("someUser"),
+	// 			CreatedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(time.Date(2022, time.March, 23, 5, 40, 40, 657000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("someOtherUser"),
+	// 			LastModifiedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2022, time.March, 23, 5, 40, 40, 657000000, time.UTC)),
+	// 		},
+	// 		ETag: to.Ptr("kd30rkdfo49="),
+	// 		Properties: &armcontainerservicefleet.GateProperties{
+	// 			ProvisioningState: to.Ptr(armcontainerservicefleet.GateProvisioningStateSucceeded),
+	// 			DisplayName: to.Ptr("Perform health checks after Group 1"),
+	// 			Target: &armcontainerservicefleet.GateTarget{
+	// 				ID: to.Ptr("/subscriptions/subid1/resourcegroups/rg1/providers/Microsoft.ContainerService/fleets/fleet-1/updateRuns/run1"),
+	// 				UpdateRunProperties: &armcontainerservicefleet.UpdateRunGateTargetProperties{
+	// 					Name: to.Ptr("run1"),
+	// 					Stage: to.Ptr("stage1"),
+	// 					Group: to.Ptr("group1"),
+	// 					Timing: to.Ptr(armcontainerservicefleet.TimingAfter),
+	// 				},
+	// 			},
+	// 			GateType: to.Ptr(armcontainerservicefleet.GateTypeApproval),
+	// 			State: to.Ptr(armcontainerservicefleet.GateStateCompleted),
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2026-06-02-preview/Gates_Get.json
 func ExampleGatesClient_Get_getsAGateResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -212,63 +271,4 @@ func ExampleGatesClient_NewListByFleetPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-06-02-preview/Gates_Update.json
-func ExampleGatesClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcontainerservicefleet.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewGatesClient().BeginUpdate(ctx, "rg1", "fleet1", "12345678-910a-bcde-f000-000000000000", armcontainerservicefleet.GatePatch{
-		Properties: &armcontainerservicefleet.GatePatchProperties{
-			State: to.Ptr(armcontainerservicefleet.GateStateCompleted),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcontainerservicefleet.GatesClientUpdateResponse{
-	// 	Gate: armcontainerservicefleet.Gate{
-	// 		ID: to.Ptr("/subscriptions/subid1/resourcegroups/rg1/providers/Microsoft.ContainerService/fleets/fleet-1/gates/12345678-910a-bcde-f000-000000000000"),
-	// 		Name: to.Ptr("12345678-910a-bcde-f000-000000000000"),
-	// 		Type: to.Ptr("Microsoft.ContainerService/fleets/gates"),
-	// 		SystemData: &armcontainerservicefleet.SystemData{
-	// 			CreatedBy: to.Ptr("someUser"),
-	// 			CreatedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2022, time.March, 23, 5, 40, 40, 657000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("someOtherUser"),
-	// 			LastModifiedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2022, time.March, 23, 5, 40, 40, 657000000, time.UTC)),
-	// 		},
-	// 		ETag: to.Ptr("kd30rkdfo49="),
-	// 		Properties: &armcontainerservicefleet.GateProperties{
-	// 			ProvisioningState: to.Ptr(armcontainerservicefleet.GateProvisioningStateSucceeded),
-	// 			DisplayName: to.Ptr("Perform health checks after Group 1"),
-	// 			Target: &armcontainerservicefleet.GateTarget{
-	// 				ID: to.Ptr("/subscriptions/subid1/resourcegroups/rg1/providers/Microsoft.ContainerService/fleets/fleet-1/updateRuns/run1"),
-	// 				UpdateRunProperties: &armcontainerservicefleet.UpdateRunGateTargetProperties{
-	// 					Name: to.Ptr("run1"),
-	// 					Stage: to.Ptr("stage1"),
-	// 					Group: to.Ptr("group1"),
-	// 					Timing: to.Ptr(armcontainerservicefleet.TimingAfter),
-	// 				},
-	// 			},
-	// 			GateType: to.Ptr(armcontainerservicefleet.GateTypeApproval),
-	// 			State: to.Ptr(armcontainerservicefleet.GateStateCompleted),
-	// 		},
-	// 	},
-	// }
 }

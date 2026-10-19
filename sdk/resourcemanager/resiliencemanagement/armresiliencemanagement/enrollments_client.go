@@ -69,7 +69,7 @@ func (client *EnrollmentsClient) BeginCreateOrUpdate(ctx context.Context, resour
 	}
 }
 
-// CreateOrUpdate - Create or update an Enrollment.
+// createOrUpdate - Create or update an Enrollment.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *EnrollmentsClient) createOrUpdate(ctx context.Context, resourceGroupName string, usagePlanName string, enrollmentName string, resource Enrollment, options *EnrollmentsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *EnrollmentsClient) createOrUpdate(ctx context.Context, resourceGro
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *EnrollmentsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, usagePlanName string, enrollmentName string, resource Enrollment, _ *EnrollmentsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureResilienceManagement/usagePlans/{usagePlanName}/enrollments/{enrollmentName}"
 	if client.subscriptionID == "" {
@@ -148,7 +148,7 @@ func (client *EnrollmentsClient) BeginDelete(ctx context.Context, resourceGroupN
 	}
 }
 
-// Delete - Delete an Enrollment.
+// deleteOperation - Delete an Enrollment.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *EnrollmentsClient) deleteOperation(ctx context.Context, resourceGroupName string, usagePlanName string, enrollmentName string, options *EnrollmentsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -170,7 +170,7 @@ func (client *EnrollmentsClient) deleteOperation(ctx context.Context, resourceGr
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *EnrollmentsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, usagePlanName string, enrollmentName string, _ *EnrollmentsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureResilienceManagement/usagePlans/{usagePlanName}/enrollments/{enrollmentName}"
 	if client.subscriptionID == "" {

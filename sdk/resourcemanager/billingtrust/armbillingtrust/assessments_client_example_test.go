@@ -279,6 +279,31 @@ func ExampleAssessmentsClient_Get() {
 	// }
 }
 
+// Generated from example definition: 2026-03-17-preview/Assessments_ListUploadToken.json
+func ExampleAssessmentsClient_ListUploadToken() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbillingtrust.NewClientFactory(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewAssessmentsClient().ListUploadToken(ctx, "subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/billing-edu-rg/providers/Microsoft.Program/educationEnrollments/default", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armbillingtrust.AssessmentsClientListUploadTokenResponse{
+	// 	GenerateUploadTokenResponse: armbillingtrust.GenerateUploadTokenResponse{
+	// 		Token: to.Ptr("{upload-token}"),
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2026-03-17-preview/Assessments_List.json
 func ExampleAssessmentsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -326,29 +351,4 @@ func ExampleAssessmentsClient_NewListPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-03-17-preview/Assessments_ListUploadToken.json
-func ExampleAssessmentsClient_ListUploadToken() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armbillingtrust.NewClientFactory(cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewAssessmentsClient().ListUploadToken(ctx, "subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/billing-edu-rg/providers/Microsoft.Program/educationEnrollments/default", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armbillingtrust.AssessmentsClientListUploadTokenResponse{
-	// 	GenerateUploadTokenResponse: armbillingtrust.GenerateUploadTokenResponse{
-	// 		Token: to.Ptr("{upload-token}"),
-	// 	},
-	// }
 }

@@ -29,6 +29,10 @@ type OriginGroupsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, profileName string, endpointName string, originGroupName string, options *armcdn.OriginGroupsClientBeginDeleteOptions) (resp azfake.PollerResponder[armcdn.OriginGroupsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method OriginGroupsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, profileName string, endpointName string, originGroupName string, originGroupUpdateProperties armcdn.OriginGroupUpdateParameters, options *armcdn.OriginGroupsClientBeginUpdateOptions) (resp azfake.PollerResponder[armcdn.OriginGroupsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method OriginGroupsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, profileName string, endpointName string, originGroupName string, options *armcdn.OriginGroupsClientGetOptions) (resp azfake.Responder[armcdn.OriginGroupsClientGetResponse], errResp azfake.ErrorResponder)
@@ -36,10 +40,6 @@ type OriginGroupsServer struct {
 	// NewListByEndpointPager is the fake for method OriginGroupsClient.NewListByEndpointPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByEndpointPager func(resourceGroupName string, profileName string, endpointName string, options *armcdn.OriginGroupsClientListByEndpointOptions) (resp azfake.PagerResponder[armcdn.OriginGroupsClientListByEndpointResponse])
-
-	// BeginUpdate is the fake for method OriginGroupsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, profileName string, endpointName string, originGroupName string, originGroupUpdateProperties armcdn.OriginGroupUpdateParameters, options *armcdn.OriginGroupsClientBeginUpdateOptions) (resp azfake.PollerResponder[armcdn.OriginGroupsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewOriginGroupsServerTransport creates a new instance of OriginGroupsServerTransport with the provided implementation.
@@ -50,8 +50,8 @@ func NewOriginGroupsServerTransport(srv *OriginGroupsServer) *OriginGroupsServer
 		srv:                    srv,
 		beginCreate:            newTracker[azfake.PollerResponder[armcdn.OriginGroupsClientCreateResponse]](),
 		beginDelete:            newTracker[azfake.PollerResponder[armcdn.OriginGroupsClientDeleteResponse]](),
-		newListByEndpointPager: newTracker[azfake.PagerResponder[armcdn.OriginGroupsClientListByEndpointResponse]](),
 		beginUpdate:            newTracker[azfake.PollerResponder[armcdn.OriginGroupsClientUpdateResponse]](),
+		newListByEndpointPager: newTracker[azfake.PagerResponder[armcdn.OriginGroupsClientListByEndpointResponse]](),
 	}
 }
 
@@ -61,8 +61,8 @@ type OriginGroupsServerTransport struct {
 	srv                    *OriginGroupsServer
 	beginCreate            *tracker[azfake.PollerResponder[armcdn.OriginGroupsClientCreateResponse]]
 	beginDelete            *tracker[azfake.PollerResponder[armcdn.OriginGroupsClientDeleteResponse]]
-	newListByEndpointPager *tracker[azfake.PagerResponder[armcdn.OriginGroupsClientListByEndpointResponse]]
 	beginUpdate            *tracker[azfake.PollerResponder[armcdn.OriginGroupsClientUpdateResponse]]
+	newListByEndpointPager *tracker[azfake.PagerResponder[armcdn.OriginGroupsClientListByEndpointResponse]]
 }
 
 // Do implements the policy.Transporter interface for OriginGroupsServerTransport.
@@ -90,12 +90,12 @@ func (o *OriginGroupsServerTransport) dispatchToMethodFake(req *http.Request, me
 				res.resp, res.err = o.dispatchBeginCreate(req)
 			case "OriginGroupsClient.BeginDelete":
 				res.resp, res.err = o.dispatchBeginDelete(req)
+			case "OriginGroupsClient.BeginUpdate":
+				res.resp, res.err = o.dispatchBeginUpdate(req)
 			case "OriginGroupsClient.Get":
 				res.resp, res.err = o.dispatchGet(req)
 			case "OriginGroupsClient.NewListByEndpointPager":
 				res.resp, res.err = o.dispatchNewListByEndpointPager(req)
-			case "OriginGroupsClient.BeginUpdate":
-				res.resp, res.err = o.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -220,6 +220,62 @@ func (o *OriginGroupsServerTransport) dispatchBeginDelete(req *http.Request) (*h
 	return resp, nil
 }
 
+func (o *OriginGroupsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if o.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := o.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Cdn/profiles/(?P<profileName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/endpoints/(?P<endpointName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/originGroups/(?P<originGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 6 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armcdn.OriginGroupUpdateParameters](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		profileNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("profileName")])
+		if err != nil {
+			return nil, err
+		}
+		endpointNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("endpointName")])
+		if err != nil {
+			return nil, err
+		}
+		originGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("originGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := o.srv.BeginUpdate(req.Context(), resourceGroupNameParam, profileNameParam, endpointNameParam, originGroupNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		o.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		o.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		o.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (o *OriginGroupsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if o.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -303,62 +359,6 @@ func (o *OriginGroupsServerTransport) dispatchNewListByEndpointPager(req *http.R
 	if !server.PagerResponderMore(newListByEndpointPager) {
 		o.newListByEndpointPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (o *OriginGroupsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if o.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := o.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Cdn/profiles/(?P<profileName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/endpoints/(?P<endpointName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/originGroups/(?P<originGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 6 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcdn.OriginGroupUpdateParameters](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		profileNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("profileName")])
-		if err != nil {
-			return nil, err
-		}
-		endpointNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("endpointName")])
-		if err != nil {
-			return nil, err
-		}
-		originGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("originGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := o.srv.BeginUpdate(req.Context(), resourceGroupNameParam, profileNameParam, endpointNameParam, originGroupNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		o.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		o.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		o.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

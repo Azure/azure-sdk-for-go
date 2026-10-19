@@ -53,6 +53,34 @@ type GremlinResourcesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDeleteGremlinRoleDefinition func(ctx context.Context, resourceGroupName string, accountName string, roleDefinitionID string, options *armcosmos.GremlinResourcesClientBeginDeleteGremlinRoleDefinitionOptions) (resp azfake.PollerResponder[armcosmos.GremlinResourcesClientDeleteGremlinRoleDefinitionResponse], errResp azfake.ErrorResponder)
 
+	// BeginMigrateGremlinDatabaseToAutoscale is the fake for method GremlinResourcesClient.BeginMigrateGremlinDatabaseToAutoscale
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginMigrateGremlinDatabaseToAutoscale func(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *armcosmos.GremlinResourcesClientBeginMigrateGremlinDatabaseToAutoscaleOptions) (resp azfake.PollerResponder[armcosmos.GremlinResourcesClientMigrateGremlinDatabaseToAutoscaleResponse], errResp azfake.ErrorResponder)
+
+	// BeginMigrateGremlinDatabaseToManualThroughput is the fake for method GremlinResourcesClient.BeginMigrateGremlinDatabaseToManualThroughput
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginMigrateGremlinDatabaseToManualThroughput func(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *armcosmos.GremlinResourcesClientBeginMigrateGremlinDatabaseToManualThroughputOptions) (resp azfake.PollerResponder[armcosmos.GremlinResourcesClientMigrateGremlinDatabaseToManualThroughputResponse], errResp azfake.ErrorResponder)
+
+	// BeginMigrateGremlinGraphToAutoscale is the fake for method GremlinResourcesClient.BeginMigrateGremlinGraphToAutoscale
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginMigrateGremlinGraphToAutoscale func(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, options *armcosmos.GremlinResourcesClientBeginMigrateGremlinGraphToAutoscaleOptions) (resp azfake.PollerResponder[armcosmos.GremlinResourcesClientMigrateGremlinGraphToAutoscaleResponse], errResp azfake.ErrorResponder)
+
+	// BeginMigrateGremlinGraphToManualThroughput is the fake for method GremlinResourcesClient.BeginMigrateGremlinGraphToManualThroughput
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginMigrateGremlinGraphToManualThroughput func(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, options *armcosmos.GremlinResourcesClientBeginMigrateGremlinGraphToManualThroughputOptions) (resp azfake.PollerResponder[armcosmos.GremlinResourcesClientMigrateGremlinGraphToManualThroughputResponse], errResp azfake.ErrorResponder)
+
+	// BeginRetrieveContinuousBackupInformation is the fake for method GremlinResourcesClient.BeginRetrieveContinuousBackupInformation
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginRetrieveContinuousBackupInformation func(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, location armcosmos.ContinuousBackupRestoreLocation, options *armcosmos.GremlinResourcesClientBeginRetrieveContinuousBackupInformationOptions) (resp azfake.PollerResponder[armcosmos.GremlinResourcesClientRetrieveContinuousBackupInformationResponse], errResp azfake.ErrorResponder)
+
+	// BeginUpdateGremlinDatabaseThroughput is the fake for method GremlinResourcesClient.BeginUpdateGremlinDatabaseThroughput
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdateGremlinDatabaseThroughput func(ctx context.Context, resourceGroupName string, accountName string, databaseName string, updateThroughputParameters armcosmos.ThroughputSettingsUpdateParameters, options *armcosmos.GremlinResourcesClientBeginUpdateGremlinDatabaseThroughputOptions) (resp azfake.PollerResponder[armcosmos.GremlinResourcesClientUpdateGremlinDatabaseThroughputResponse], errResp azfake.ErrorResponder)
+
+	// BeginUpdateGremlinGraphThroughput is the fake for method GremlinResourcesClient.BeginUpdateGremlinGraphThroughput
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdateGremlinGraphThroughput func(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, updateThroughputParameters armcosmos.ThroughputSettingsUpdateParameters, options *armcosmos.GremlinResourcesClientBeginUpdateGremlinGraphThroughputOptions) (resp azfake.PollerResponder[armcosmos.GremlinResourcesClientUpdateGremlinGraphThroughputResponse], errResp azfake.ErrorResponder)
+
 	// GetGremlinDatabase is the fake for method GremlinResourcesClient.GetGremlinDatabase
 	// HTTP status codes to indicate success: http.StatusOK
 	GetGremlinDatabase func(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *armcosmos.GremlinResourcesClientGetGremlinDatabaseOptions) (resp azfake.Responder[armcosmos.GremlinResourcesClientGetGremlinDatabaseResponse], errResp azfake.ErrorResponder)
@@ -92,34 +120,6 @@ type GremlinResourcesServer struct {
 	// NewListGremlinRoleDefinitionsPager is the fake for method GremlinResourcesClient.NewListGremlinRoleDefinitionsPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListGremlinRoleDefinitionsPager func(resourceGroupName string, accountName string, options *armcosmos.GremlinResourcesClientListGremlinRoleDefinitionsOptions) (resp azfake.PagerResponder[armcosmos.GremlinResourcesClientListGremlinRoleDefinitionsResponse])
-
-	// BeginMigrateGremlinDatabaseToAutoscale is the fake for method GremlinResourcesClient.BeginMigrateGremlinDatabaseToAutoscale
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginMigrateGremlinDatabaseToAutoscale func(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *armcosmos.GremlinResourcesClientBeginMigrateGremlinDatabaseToAutoscaleOptions) (resp azfake.PollerResponder[armcosmos.GremlinResourcesClientMigrateGremlinDatabaseToAutoscaleResponse], errResp azfake.ErrorResponder)
-
-	// BeginMigrateGremlinDatabaseToManualThroughput is the fake for method GremlinResourcesClient.BeginMigrateGremlinDatabaseToManualThroughput
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginMigrateGremlinDatabaseToManualThroughput func(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *armcosmos.GremlinResourcesClientBeginMigrateGremlinDatabaseToManualThroughputOptions) (resp azfake.PollerResponder[armcosmos.GremlinResourcesClientMigrateGremlinDatabaseToManualThroughputResponse], errResp azfake.ErrorResponder)
-
-	// BeginMigrateGremlinGraphToAutoscale is the fake for method GremlinResourcesClient.BeginMigrateGremlinGraphToAutoscale
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginMigrateGremlinGraphToAutoscale func(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, options *armcosmos.GremlinResourcesClientBeginMigrateGremlinGraphToAutoscaleOptions) (resp azfake.PollerResponder[armcosmos.GremlinResourcesClientMigrateGremlinGraphToAutoscaleResponse], errResp azfake.ErrorResponder)
-
-	// BeginMigrateGremlinGraphToManualThroughput is the fake for method GremlinResourcesClient.BeginMigrateGremlinGraphToManualThroughput
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginMigrateGremlinGraphToManualThroughput func(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, options *armcosmos.GremlinResourcesClientBeginMigrateGremlinGraphToManualThroughputOptions) (resp azfake.PollerResponder[armcosmos.GremlinResourcesClientMigrateGremlinGraphToManualThroughputResponse], errResp azfake.ErrorResponder)
-
-	// BeginRetrieveContinuousBackupInformation is the fake for method GremlinResourcesClient.BeginRetrieveContinuousBackupInformation
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginRetrieveContinuousBackupInformation func(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, location armcosmos.ContinuousBackupRestoreLocation, options *armcosmos.GremlinResourcesClientBeginRetrieveContinuousBackupInformationOptions) (resp azfake.PollerResponder[armcosmos.GremlinResourcesClientRetrieveContinuousBackupInformationResponse], errResp azfake.ErrorResponder)
-
-	// BeginUpdateGremlinDatabaseThroughput is the fake for method GremlinResourcesClient.BeginUpdateGremlinDatabaseThroughput
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdateGremlinDatabaseThroughput func(ctx context.Context, resourceGroupName string, accountName string, databaseName string, updateThroughputParameters armcosmos.ThroughputSettingsUpdateParameters, options *armcosmos.GremlinResourcesClientBeginUpdateGremlinDatabaseThroughputOptions) (resp azfake.PollerResponder[armcosmos.GremlinResourcesClientUpdateGremlinDatabaseThroughputResponse], errResp azfake.ErrorResponder)
-
-	// BeginUpdateGremlinGraphThroughput is the fake for method GremlinResourcesClient.BeginUpdateGremlinGraphThroughput
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdateGremlinGraphThroughput func(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, updateThroughputParameters armcosmos.ThroughputSettingsUpdateParameters, options *armcosmos.GremlinResourcesClientBeginUpdateGremlinGraphThroughputOptions) (resp azfake.PollerResponder[armcosmos.GremlinResourcesClientUpdateGremlinGraphThroughputResponse], errResp azfake.ErrorResponder)
 }
 
 // NewGremlinResourcesServerTransport creates a new instance of GremlinResourcesServerTransport with the provided implementation.
@@ -136,10 +136,6 @@ func NewGremlinResourcesServerTransport(srv *GremlinResourcesServer) *GremlinRes
 		beginDeleteGremlinGraph:                       newTracker[azfake.PollerResponder[armcosmos.GremlinResourcesClientDeleteGremlinGraphResponse]](),
 		beginDeleteGremlinRoleAssignment:              newTracker[azfake.PollerResponder[armcosmos.GremlinResourcesClientDeleteGremlinRoleAssignmentResponse]](),
 		beginDeleteGremlinRoleDefinition:              newTracker[azfake.PollerResponder[armcosmos.GremlinResourcesClientDeleteGremlinRoleDefinitionResponse]](),
-		newListGremlinDatabasesPager:                  newTracker[azfake.PagerResponder[armcosmos.GremlinResourcesClientListGremlinDatabasesResponse]](),
-		newListGremlinGraphsPager:                     newTracker[azfake.PagerResponder[armcosmos.GremlinResourcesClientListGremlinGraphsResponse]](),
-		newListGremlinRoleAssignmentsPager:            newTracker[azfake.PagerResponder[armcosmos.GremlinResourcesClientListGremlinRoleAssignmentsResponse]](),
-		newListGremlinRoleDefinitionsPager:            newTracker[azfake.PagerResponder[armcosmos.GremlinResourcesClientListGremlinRoleDefinitionsResponse]](),
 		beginMigrateGremlinDatabaseToAutoscale:        newTracker[azfake.PollerResponder[armcosmos.GremlinResourcesClientMigrateGremlinDatabaseToAutoscaleResponse]](),
 		beginMigrateGremlinDatabaseToManualThroughput: newTracker[azfake.PollerResponder[armcosmos.GremlinResourcesClientMigrateGremlinDatabaseToManualThroughputResponse]](),
 		beginMigrateGremlinGraphToAutoscale:           newTracker[azfake.PollerResponder[armcosmos.GremlinResourcesClientMigrateGremlinGraphToAutoscaleResponse]](),
@@ -147,6 +143,10 @@ func NewGremlinResourcesServerTransport(srv *GremlinResourcesServer) *GremlinRes
 		beginRetrieveContinuousBackupInformation:      newTracker[azfake.PollerResponder[armcosmos.GremlinResourcesClientRetrieveContinuousBackupInformationResponse]](),
 		beginUpdateGremlinDatabaseThroughput:          newTracker[azfake.PollerResponder[armcosmos.GremlinResourcesClientUpdateGremlinDatabaseThroughputResponse]](),
 		beginUpdateGremlinGraphThroughput:             newTracker[azfake.PollerResponder[armcosmos.GremlinResourcesClientUpdateGremlinGraphThroughputResponse]](),
+		newListGremlinDatabasesPager:                  newTracker[azfake.PagerResponder[armcosmos.GremlinResourcesClientListGremlinDatabasesResponse]](),
+		newListGremlinGraphsPager:                     newTracker[azfake.PagerResponder[armcosmos.GremlinResourcesClientListGremlinGraphsResponse]](),
+		newListGremlinRoleAssignmentsPager:            newTracker[azfake.PagerResponder[armcosmos.GremlinResourcesClientListGremlinRoleAssignmentsResponse]](),
+		newListGremlinRoleDefinitionsPager:            newTracker[azfake.PagerResponder[armcosmos.GremlinResourcesClientListGremlinRoleDefinitionsResponse]](),
 	}
 }
 
@@ -162,10 +162,6 @@ type GremlinResourcesServerTransport struct {
 	beginDeleteGremlinGraph                       *tracker[azfake.PollerResponder[armcosmos.GremlinResourcesClientDeleteGremlinGraphResponse]]
 	beginDeleteGremlinRoleAssignment              *tracker[azfake.PollerResponder[armcosmos.GremlinResourcesClientDeleteGremlinRoleAssignmentResponse]]
 	beginDeleteGremlinRoleDefinition              *tracker[azfake.PollerResponder[armcosmos.GremlinResourcesClientDeleteGremlinRoleDefinitionResponse]]
-	newListGremlinDatabasesPager                  *tracker[azfake.PagerResponder[armcosmos.GremlinResourcesClientListGremlinDatabasesResponse]]
-	newListGremlinGraphsPager                     *tracker[azfake.PagerResponder[armcosmos.GremlinResourcesClientListGremlinGraphsResponse]]
-	newListGremlinRoleAssignmentsPager            *tracker[azfake.PagerResponder[armcosmos.GremlinResourcesClientListGremlinRoleAssignmentsResponse]]
-	newListGremlinRoleDefinitionsPager            *tracker[azfake.PagerResponder[armcosmos.GremlinResourcesClientListGremlinRoleDefinitionsResponse]]
 	beginMigrateGremlinDatabaseToAutoscale        *tracker[azfake.PollerResponder[armcosmos.GremlinResourcesClientMigrateGremlinDatabaseToAutoscaleResponse]]
 	beginMigrateGremlinDatabaseToManualThroughput *tracker[azfake.PollerResponder[armcosmos.GremlinResourcesClientMigrateGremlinDatabaseToManualThroughputResponse]]
 	beginMigrateGremlinGraphToAutoscale           *tracker[azfake.PollerResponder[armcosmos.GremlinResourcesClientMigrateGremlinGraphToAutoscaleResponse]]
@@ -173,6 +169,10 @@ type GremlinResourcesServerTransport struct {
 	beginRetrieveContinuousBackupInformation      *tracker[azfake.PollerResponder[armcosmos.GremlinResourcesClientRetrieveContinuousBackupInformationResponse]]
 	beginUpdateGremlinDatabaseThroughput          *tracker[azfake.PollerResponder[armcosmos.GremlinResourcesClientUpdateGremlinDatabaseThroughputResponse]]
 	beginUpdateGremlinGraphThroughput             *tracker[azfake.PollerResponder[armcosmos.GremlinResourcesClientUpdateGremlinGraphThroughputResponse]]
+	newListGremlinDatabasesPager                  *tracker[azfake.PagerResponder[armcosmos.GremlinResourcesClientListGremlinDatabasesResponse]]
+	newListGremlinGraphsPager                     *tracker[azfake.PagerResponder[armcosmos.GremlinResourcesClientListGremlinGraphsResponse]]
+	newListGremlinRoleAssignmentsPager            *tracker[azfake.PagerResponder[armcosmos.GremlinResourcesClientListGremlinRoleAssignmentsResponse]]
+	newListGremlinRoleDefinitionsPager            *tracker[azfake.PagerResponder[armcosmos.GremlinResourcesClientListGremlinRoleDefinitionsResponse]]
 }
 
 // Do implements the policy.Transporter interface for GremlinResourcesServerTransport.
@@ -212,6 +212,20 @@ func (g *GremlinResourcesServerTransport) dispatchToMethodFake(req *http.Request
 				res.resp, res.err = g.dispatchBeginDeleteGremlinRoleAssignment(req)
 			case "GremlinResourcesClient.BeginDeleteGremlinRoleDefinition":
 				res.resp, res.err = g.dispatchBeginDeleteGremlinRoleDefinition(req)
+			case "GremlinResourcesClient.BeginMigrateGremlinDatabaseToAutoscale":
+				res.resp, res.err = g.dispatchBeginMigrateGremlinDatabaseToAutoscale(req)
+			case "GremlinResourcesClient.BeginMigrateGremlinDatabaseToManualThroughput":
+				res.resp, res.err = g.dispatchBeginMigrateGremlinDatabaseToManualThroughput(req)
+			case "GremlinResourcesClient.BeginMigrateGremlinGraphToAutoscale":
+				res.resp, res.err = g.dispatchBeginMigrateGremlinGraphToAutoscale(req)
+			case "GremlinResourcesClient.BeginMigrateGremlinGraphToManualThroughput":
+				res.resp, res.err = g.dispatchBeginMigrateGremlinGraphToManualThroughput(req)
+			case "GremlinResourcesClient.BeginRetrieveContinuousBackupInformation":
+				res.resp, res.err = g.dispatchBeginRetrieveContinuousBackupInformation(req)
+			case "GremlinResourcesClient.BeginUpdateGremlinDatabaseThroughput":
+				res.resp, res.err = g.dispatchBeginUpdateGremlinDatabaseThroughput(req)
+			case "GremlinResourcesClient.BeginUpdateGremlinGraphThroughput":
+				res.resp, res.err = g.dispatchBeginUpdateGremlinGraphThroughput(req)
 			case "GremlinResourcesClient.GetGremlinDatabase":
 				res.resp, res.err = g.dispatchGetGremlinDatabase(req)
 			case "GremlinResourcesClient.GetGremlinDatabaseThroughput":
@@ -232,20 +246,6 @@ func (g *GremlinResourcesServerTransport) dispatchToMethodFake(req *http.Request
 				res.resp, res.err = g.dispatchNewListGremlinRoleAssignmentsPager(req)
 			case "GremlinResourcesClient.NewListGremlinRoleDefinitionsPager":
 				res.resp, res.err = g.dispatchNewListGremlinRoleDefinitionsPager(req)
-			case "GremlinResourcesClient.BeginMigrateGremlinDatabaseToAutoscale":
-				res.resp, res.err = g.dispatchBeginMigrateGremlinDatabaseToAutoscale(req)
-			case "GremlinResourcesClient.BeginMigrateGremlinDatabaseToManualThroughput":
-				res.resp, res.err = g.dispatchBeginMigrateGremlinDatabaseToManualThroughput(req)
-			case "GremlinResourcesClient.BeginMigrateGremlinGraphToAutoscale":
-				res.resp, res.err = g.dispatchBeginMigrateGremlinGraphToAutoscale(req)
-			case "GremlinResourcesClient.BeginMigrateGremlinGraphToManualThroughput":
-				res.resp, res.err = g.dispatchBeginMigrateGremlinGraphToManualThroughput(req)
-			case "GremlinResourcesClient.BeginRetrieveContinuousBackupInformation":
-				res.resp, res.err = g.dispatchBeginRetrieveContinuousBackupInformation(req)
-			case "GremlinResourcesClient.BeginUpdateGremlinDatabaseThroughput":
-				res.resp, res.err = g.dispatchBeginUpdateGremlinDatabaseThroughput(req)
-			case "GremlinResourcesClient.BeginUpdateGremlinGraphThroughput":
-				res.resp, res.err = g.dispatchBeginUpdateGremlinGraphThroughput(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -670,6 +670,370 @@ func (g *GremlinResourcesServerTransport) dispatchBeginDeleteGremlinRoleDefiniti
 	return resp, nil
 }
 
+func (g *GremlinResourcesServerTransport) dispatchBeginMigrateGremlinDatabaseToAutoscale(req *http.Request) (*http.Response, error) {
+	if g.srv.BeginMigrateGremlinDatabaseToAutoscale == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginMigrateGremlinDatabaseToAutoscale not implemented")}
+	}
+	beginMigrateGremlinDatabaseToAutoscale := g.beginMigrateGremlinDatabaseToAutoscale.get(req)
+	if beginMigrateGremlinDatabaseToAutoscale == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/gremlinDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/throughputSettings/default/migrateToAutoscale`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := g.srv.BeginMigrateGremlinDatabaseToAutoscale(req.Context(), resourceGroupNameParam, accountNameParam, databaseNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginMigrateGremlinDatabaseToAutoscale = &respr
+		g.beginMigrateGremlinDatabaseToAutoscale.add(req, beginMigrateGremlinDatabaseToAutoscale)
+	}
+
+	resp, err := server.PollerResponderNext(beginMigrateGremlinDatabaseToAutoscale, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		g.beginMigrateGremlinDatabaseToAutoscale.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginMigrateGremlinDatabaseToAutoscale) {
+		g.beginMigrateGremlinDatabaseToAutoscale.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (g *GremlinResourcesServerTransport) dispatchBeginMigrateGremlinDatabaseToManualThroughput(req *http.Request) (*http.Response, error) {
+	if g.srv.BeginMigrateGremlinDatabaseToManualThroughput == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginMigrateGremlinDatabaseToManualThroughput not implemented")}
+	}
+	beginMigrateGremlinDatabaseToManualThroughput := g.beginMigrateGremlinDatabaseToManualThroughput.get(req)
+	if beginMigrateGremlinDatabaseToManualThroughput == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/gremlinDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/throughputSettings/default/migrateToManualThroughput`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := g.srv.BeginMigrateGremlinDatabaseToManualThroughput(req.Context(), resourceGroupNameParam, accountNameParam, databaseNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginMigrateGremlinDatabaseToManualThroughput = &respr
+		g.beginMigrateGremlinDatabaseToManualThroughput.add(req, beginMigrateGremlinDatabaseToManualThroughput)
+	}
+
+	resp, err := server.PollerResponderNext(beginMigrateGremlinDatabaseToManualThroughput, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		g.beginMigrateGremlinDatabaseToManualThroughput.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginMigrateGremlinDatabaseToManualThroughput) {
+		g.beginMigrateGremlinDatabaseToManualThroughput.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (g *GremlinResourcesServerTransport) dispatchBeginMigrateGremlinGraphToAutoscale(req *http.Request) (*http.Response, error) {
+	if g.srv.BeginMigrateGremlinGraphToAutoscale == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginMigrateGremlinGraphToAutoscale not implemented")}
+	}
+	beginMigrateGremlinGraphToAutoscale := g.beginMigrateGremlinGraphToAutoscale.get(req)
+	if beginMigrateGremlinGraphToAutoscale == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/gremlinDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/graphs/(?P<graphName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/throughputSettings/default/migrateToAutoscale`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 6 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
+		if err != nil {
+			return nil, err
+		}
+		graphNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("graphName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := g.srv.BeginMigrateGremlinGraphToAutoscale(req.Context(), resourceGroupNameParam, accountNameParam, databaseNameParam, graphNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginMigrateGremlinGraphToAutoscale = &respr
+		g.beginMigrateGremlinGraphToAutoscale.add(req, beginMigrateGremlinGraphToAutoscale)
+	}
+
+	resp, err := server.PollerResponderNext(beginMigrateGremlinGraphToAutoscale, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		g.beginMigrateGremlinGraphToAutoscale.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginMigrateGremlinGraphToAutoscale) {
+		g.beginMigrateGremlinGraphToAutoscale.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (g *GremlinResourcesServerTransport) dispatchBeginMigrateGremlinGraphToManualThroughput(req *http.Request) (*http.Response, error) {
+	if g.srv.BeginMigrateGremlinGraphToManualThroughput == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginMigrateGremlinGraphToManualThroughput not implemented")}
+	}
+	beginMigrateGremlinGraphToManualThroughput := g.beginMigrateGremlinGraphToManualThroughput.get(req)
+	if beginMigrateGremlinGraphToManualThroughput == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/gremlinDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/graphs/(?P<graphName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/throughputSettings/default/migrateToManualThroughput`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 6 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
+		if err != nil {
+			return nil, err
+		}
+		graphNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("graphName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := g.srv.BeginMigrateGremlinGraphToManualThroughput(req.Context(), resourceGroupNameParam, accountNameParam, databaseNameParam, graphNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginMigrateGremlinGraphToManualThroughput = &respr
+		g.beginMigrateGremlinGraphToManualThroughput.add(req, beginMigrateGremlinGraphToManualThroughput)
+	}
+
+	resp, err := server.PollerResponderNext(beginMigrateGremlinGraphToManualThroughput, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		g.beginMigrateGremlinGraphToManualThroughput.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginMigrateGremlinGraphToManualThroughput) {
+		g.beginMigrateGremlinGraphToManualThroughput.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (g *GremlinResourcesServerTransport) dispatchBeginRetrieveContinuousBackupInformation(req *http.Request) (*http.Response, error) {
+	if g.srv.BeginRetrieveContinuousBackupInformation == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginRetrieveContinuousBackupInformation not implemented")}
+	}
+	beginRetrieveContinuousBackupInformation := g.beginRetrieveContinuousBackupInformation.get(req)
+	if beginRetrieveContinuousBackupInformation == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/gremlinDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/graphs/(?P<graphName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/retrieveContinuousBackupInformation`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 6 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armcosmos.ContinuousBackupRestoreLocation](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
+		if err != nil {
+			return nil, err
+		}
+		graphNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("graphName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := g.srv.BeginRetrieveContinuousBackupInformation(req.Context(), resourceGroupNameParam, accountNameParam, databaseNameParam, graphNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginRetrieveContinuousBackupInformation = &respr
+		g.beginRetrieveContinuousBackupInformation.add(req, beginRetrieveContinuousBackupInformation)
+	}
+
+	resp, err := server.PollerResponderNext(beginRetrieveContinuousBackupInformation, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		g.beginRetrieveContinuousBackupInformation.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginRetrieveContinuousBackupInformation) {
+		g.beginRetrieveContinuousBackupInformation.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (g *GremlinResourcesServerTransport) dispatchBeginUpdateGremlinDatabaseThroughput(req *http.Request) (*http.Response, error) {
+	if g.srv.BeginUpdateGremlinDatabaseThroughput == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdateGremlinDatabaseThroughput not implemented")}
+	}
+	beginUpdateGremlinDatabaseThroughput := g.beginUpdateGremlinDatabaseThroughput.get(req)
+	if beginUpdateGremlinDatabaseThroughput == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/gremlinDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/throughputSettings/default`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armcosmos.ThroughputSettingsUpdateParameters](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := g.srv.BeginUpdateGremlinDatabaseThroughput(req.Context(), resourceGroupNameParam, accountNameParam, databaseNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdateGremlinDatabaseThroughput = &respr
+		g.beginUpdateGremlinDatabaseThroughput.add(req, beginUpdateGremlinDatabaseThroughput)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdateGremlinDatabaseThroughput, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		g.beginUpdateGremlinDatabaseThroughput.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdateGremlinDatabaseThroughput) {
+		g.beginUpdateGremlinDatabaseThroughput.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (g *GremlinResourcesServerTransport) dispatchBeginUpdateGremlinGraphThroughput(req *http.Request) (*http.Response, error) {
+	if g.srv.BeginUpdateGremlinGraphThroughput == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdateGremlinGraphThroughput not implemented")}
+	}
+	beginUpdateGremlinGraphThroughput := g.beginUpdateGremlinGraphThroughput.get(req)
+	if beginUpdateGremlinGraphThroughput == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/gremlinDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/graphs/(?P<graphName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/throughputSettings/default`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 6 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armcosmos.ThroughputSettingsUpdateParameters](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
+		if err != nil {
+			return nil, err
+		}
+		graphNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("graphName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := g.srv.BeginUpdateGremlinGraphThroughput(req.Context(), resourceGroupNameParam, accountNameParam, databaseNameParam, graphNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdateGremlinGraphThroughput = &respr
+		g.beginUpdateGremlinGraphThroughput.add(req, beginUpdateGremlinGraphThroughput)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdateGremlinGraphThroughput, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		g.beginUpdateGremlinGraphThroughput.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdateGremlinGraphThroughput) {
+		g.beginUpdateGremlinGraphThroughput.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (g *GremlinResourcesServerTransport) dispatchGetGremlinDatabase(req *http.Request) (*http.Response, error) {
 	if g.srv.GetGremlinDatabase == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetGremlinDatabase not implemented")}
@@ -1065,370 +1429,6 @@ func (g *GremlinResourcesServerTransport) dispatchNewListGremlinRoleDefinitionsP
 	if !server.PagerResponderMore(newListGremlinRoleDefinitionsPager) {
 		g.newListGremlinRoleDefinitionsPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (g *GremlinResourcesServerTransport) dispatchBeginMigrateGremlinDatabaseToAutoscale(req *http.Request) (*http.Response, error) {
-	if g.srv.BeginMigrateGremlinDatabaseToAutoscale == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginMigrateGremlinDatabaseToAutoscale not implemented")}
-	}
-	beginMigrateGremlinDatabaseToAutoscale := g.beginMigrateGremlinDatabaseToAutoscale.get(req)
-	if beginMigrateGremlinDatabaseToAutoscale == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/gremlinDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/throughputSettings/default/migrateToAutoscale`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-		if err != nil {
-			return nil, err
-		}
-		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := g.srv.BeginMigrateGremlinDatabaseToAutoscale(req.Context(), resourceGroupNameParam, accountNameParam, databaseNameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginMigrateGremlinDatabaseToAutoscale = &respr
-		g.beginMigrateGremlinDatabaseToAutoscale.add(req, beginMigrateGremlinDatabaseToAutoscale)
-	}
-
-	resp, err := server.PollerResponderNext(beginMigrateGremlinDatabaseToAutoscale, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		g.beginMigrateGremlinDatabaseToAutoscale.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginMigrateGremlinDatabaseToAutoscale) {
-		g.beginMigrateGremlinDatabaseToAutoscale.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (g *GremlinResourcesServerTransport) dispatchBeginMigrateGremlinDatabaseToManualThroughput(req *http.Request) (*http.Response, error) {
-	if g.srv.BeginMigrateGremlinDatabaseToManualThroughput == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginMigrateGremlinDatabaseToManualThroughput not implemented")}
-	}
-	beginMigrateGremlinDatabaseToManualThroughput := g.beginMigrateGremlinDatabaseToManualThroughput.get(req)
-	if beginMigrateGremlinDatabaseToManualThroughput == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/gremlinDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/throughputSettings/default/migrateToManualThroughput`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-		if err != nil {
-			return nil, err
-		}
-		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := g.srv.BeginMigrateGremlinDatabaseToManualThroughput(req.Context(), resourceGroupNameParam, accountNameParam, databaseNameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginMigrateGremlinDatabaseToManualThroughput = &respr
-		g.beginMigrateGremlinDatabaseToManualThroughput.add(req, beginMigrateGremlinDatabaseToManualThroughput)
-	}
-
-	resp, err := server.PollerResponderNext(beginMigrateGremlinDatabaseToManualThroughput, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		g.beginMigrateGremlinDatabaseToManualThroughput.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginMigrateGremlinDatabaseToManualThroughput) {
-		g.beginMigrateGremlinDatabaseToManualThroughput.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (g *GremlinResourcesServerTransport) dispatchBeginMigrateGremlinGraphToAutoscale(req *http.Request) (*http.Response, error) {
-	if g.srv.BeginMigrateGremlinGraphToAutoscale == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginMigrateGremlinGraphToAutoscale not implemented")}
-	}
-	beginMigrateGremlinGraphToAutoscale := g.beginMigrateGremlinGraphToAutoscale.get(req)
-	if beginMigrateGremlinGraphToAutoscale == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/gremlinDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/graphs/(?P<graphName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/throughputSettings/default/migrateToAutoscale`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 6 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-		if err != nil {
-			return nil, err
-		}
-		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
-		if err != nil {
-			return nil, err
-		}
-		graphNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("graphName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := g.srv.BeginMigrateGremlinGraphToAutoscale(req.Context(), resourceGroupNameParam, accountNameParam, databaseNameParam, graphNameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginMigrateGremlinGraphToAutoscale = &respr
-		g.beginMigrateGremlinGraphToAutoscale.add(req, beginMigrateGremlinGraphToAutoscale)
-	}
-
-	resp, err := server.PollerResponderNext(beginMigrateGremlinGraphToAutoscale, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		g.beginMigrateGremlinGraphToAutoscale.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginMigrateGremlinGraphToAutoscale) {
-		g.beginMigrateGremlinGraphToAutoscale.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (g *GremlinResourcesServerTransport) dispatchBeginMigrateGremlinGraphToManualThroughput(req *http.Request) (*http.Response, error) {
-	if g.srv.BeginMigrateGremlinGraphToManualThroughput == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginMigrateGremlinGraphToManualThroughput not implemented")}
-	}
-	beginMigrateGremlinGraphToManualThroughput := g.beginMigrateGremlinGraphToManualThroughput.get(req)
-	if beginMigrateGremlinGraphToManualThroughput == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/gremlinDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/graphs/(?P<graphName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/throughputSettings/default/migrateToManualThroughput`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 6 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-		if err != nil {
-			return nil, err
-		}
-		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
-		if err != nil {
-			return nil, err
-		}
-		graphNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("graphName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := g.srv.BeginMigrateGremlinGraphToManualThroughput(req.Context(), resourceGroupNameParam, accountNameParam, databaseNameParam, graphNameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginMigrateGremlinGraphToManualThroughput = &respr
-		g.beginMigrateGremlinGraphToManualThroughput.add(req, beginMigrateGremlinGraphToManualThroughput)
-	}
-
-	resp, err := server.PollerResponderNext(beginMigrateGremlinGraphToManualThroughput, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		g.beginMigrateGremlinGraphToManualThroughput.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginMigrateGremlinGraphToManualThroughput) {
-		g.beginMigrateGremlinGraphToManualThroughput.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (g *GremlinResourcesServerTransport) dispatchBeginRetrieveContinuousBackupInformation(req *http.Request) (*http.Response, error) {
-	if g.srv.BeginRetrieveContinuousBackupInformation == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginRetrieveContinuousBackupInformation not implemented")}
-	}
-	beginRetrieveContinuousBackupInformation := g.beginRetrieveContinuousBackupInformation.get(req)
-	if beginRetrieveContinuousBackupInformation == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/gremlinDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/graphs/(?P<graphName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/retrieveContinuousBackupInformation`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 6 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcosmos.ContinuousBackupRestoreLocation](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-		if err != nil {
-			return nil, err
-		}
-		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
-		if err != nil {
-			return nil, err
-		}
-		graphNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("graphName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := g.srv.BeginRetrieveContinuousBackupInformation(req.Context(), resourceGroupNameParam, accountNameParam, databaseNameParam, graphNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginRetrieveContinuousBackupInformation = &respr
-		g.beginRetrieveContinuousBackupInformation.add(req, beginRetrieveContinuousBackupInformation)
-	}
-
-	resp, err := server.PollerResponderNext(beginRetrieveContinuousBackupInformation, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		g.beginRetrieveContinuousBackupInformation.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginRetrieveContinuousBackupInformation) {
-		g.beginRetrieveContinuousBackupInformation.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (g *GremlinResourcesServerTransport) dispatchBeginUpdateGremlinDatabaseThroughput(req *http.Request) (*http.Response, error) {
-	if g.srv.BeginUpdateGremlinDatabaseThroughput == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdateGremlinDatabaseThroughput not implemented")}
-	}
-	beginUpdateGremlinDatabaseThroughput := g.beginUpdateGremlinDatabaseThroughput.get(req)
-	if beginUpdateGremlinDatabaseThroughput == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/gremlinDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/throughputSettings/default`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcosmos.ThroughputSettingsUpdateParameters](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-		if err != nil {
-			return nil, err
-		}
-		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := g.srv.BeginUpdateGremlinDatabaseThroughput(req.Context(), resourceGroupNameParam, accountNameParam, databaseNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdateGremlinDatabaseThroughput = &respr
-		g.beginUpdateGremlinDatabaseThroughput.add(req, beginUpdateGremlinDatabaseThroughput)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdateGremlinDatabaseThroughput, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		g.beginUpdateGremlinDatabaseThroughput.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdateGremlinDatabaseThroughput) {
-		g.beginUpdateGremlinDatabaseThroughput.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (g *GremlinResourcesServerTransport) dispatchBeginUpdateGremlinGraphThroughput(req *http.Request) (*http.Response, error) {
-	if g.srv.BeginUpdateGremlinGraphThroughput == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdateGremlinGraphThroughput not implemented")}
-	}
-	beginUpdateGremlinGraphThroughput := g.beginUpdateGremlinGraphThroughput.get(req)
-	if beginUpdateGremlinGraphThroughput == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/gremlinDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/graphs/(?P<graphName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/throughputSettings/default`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 6 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcosmos.ThroughputSettingsUpdateParameters](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-		if err != nil {
-			return nil, err
-		}
-		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
-		if err != nil {
-			return nil, err
-		}
-		graphNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("graphName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := g.srv.BeginUpdateGremlinGraphThroughput(req.Context(), resourceGroupNameParam, accountNameParam, databaseNameParam, graphNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdateGremlinGraphThroughput = &respr
-		g.beginUpdateGremlinGraphThroughput.add(req, beginUpdateGremlinGraphThroughput)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdateGremlinGraphThroughput, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		g.beginUpdateGremlinGraphThroughput.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdateGremlinGraphThroughput) {
-		g.beginUpdateGremlinGraphThroughput.remove(req)
-	}
-
 	return resp, nil
 }
 

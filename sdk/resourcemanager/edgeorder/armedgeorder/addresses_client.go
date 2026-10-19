@@ -71,7 +71,7 @@ func (client *AddressesClient) BeginCreate(ctx context.Context, resourceGroupNam
 	}
 }
 
-// Create - Create a new address with the specified parameters. Existing address cannot be updated with this API and should
+// create - Create a new address with the specified parameters. Existing address cannot be updated with this API and should
 // instead be updated with the Update address API.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AddressesClient) create(ctx context.Context, resourceGroupName string, addressName string, addressResource AddressResource, options *AddressesClientBeginCreateOptions) (*http.Response, error) {
@@ -94,7 +94,7 @@ func (client *AddressesClient) create(ctx context.Context, resourceGroupName str
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *AddressesClient) createCreateRequest(ctx context.Context, resourceGroupName string, addressName string, addressResource AddressResource, _ *AddressesClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EdgeOrder/addresses/{addressName}"
 	if client.subscriptionID == "" {
@@ -147,7 +147,7 @@ func (client *AddressesClient) BeginDelete(ctx context.Context, resourceGroupNam
 	}
 }
 
-// Delete - Delete an address.
+// deleteOperation - Delete an address.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AddressesClient) deleteOperation(ctx context.Context, resourceGroupName string, addressName string, options *AddressesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -169,7 +169,7 @@ func (client *AddressesClient) deleteOperation(ctx context.Context, resourceGrou
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *AddressesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, addressName string, _ *AddressesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EdgeOrder/addresses/{addressName}"
 	if client.subscriptionID == "" {
@@ -191,6 +191,85 @@ func (client *AddressesClient) deleteCreateRequest(ctx context.Context, resource
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20240201)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - Update the properties of an existing address.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - addressName - The name of the address Resource within the specified resource group. address names must be between 3 and
+//     24 characters in length and use any alphanumeric and underscore only.
+//   - addressUpdateParameter - Address update parameters from request body.
+//   - options - AddressesClientBeginUpdateOptions contains the optional parameters for the AddressesClient.BeginUpdate method.
+func (client *AddressesClient) BeginUpdate(ctx context.Context, resourceGroupName string, addressName string, addressUpdateParameter AddressUpdateParameter, options *AddressesClientBeginUpdateOptions) (*runtime.Poller[AddressesClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, addressName, addressUpdateParameter, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AddressesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AddressesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update the properties of an existing address.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *AddressesClient) update(ctx context.Context, resourceGroupName string, addressName string, addressUpdateParameter AddressUpdateParameter, options *AddressesClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "AddressesClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, addressName, addressUpdateParameter, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *AddressesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, addressName string, addressUpdateParameter AddressUpdateParameter, options *AddressesClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EdgeOrder/addresses/{addressName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if addressName == "" {
+		return nil, errors.New("parameter addressName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{addressName}", url.PathEscape(addressName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20240201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if options != nil && options.IfMatch != nil {
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
+	}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, addressUpdateParameter); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -410,83 +489,4 @@ func (client *AddressesClient) listBySubscriptionHandleResponse(resp *http.Respo
 		return AddressesClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Update the properties of an existing address.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - addressName - The name of the address Resource within the specified resource group. address names must be between 3 and
-//     24 characters in length and use any alphanumeric and underscore only.
-//   - addressUpdateParameter - Address update parameters from request body.
-//   - options - AddressesClientBeginUpdateOptions contains the optional parameters for the AddressesClient.BeginUpdate method.
-func (client *AddressesClient) BeginUpdate(ctx context.Context, resourceGroupName string, addressName string, addressUpdateParameter AddressUpdateParameter, options *AddressesClientBeginUpdateOptions) (*runtime.Poller[AddressesClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, addressName, addressUpdateParameter, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AddressesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AddressesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update the properties of an existing address.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *AddressesClient) update(ctx context.Context, resourceGroupName string, addressName string, addressUpdateParameter AddressUpdateParameter, options *AddressesClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "AddressesClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, addressName, addressUpdateParameter, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *AddressesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, addressName string, addressUpdateParameter AddressUpdateParameter, options *AddressesClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EdgeOrder/addresses/{addressName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if addressName == "" {
-		return nil, errors.New("parameter addressName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{addressName}", url.PathEscape(addressName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240201)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
-	}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, addressUpdateParameter); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

@@ -22,13 +22,13 @@ import (
 
 // DomainsServer is a fake server for instances of the armdomainregistration.DomainsClient type.
 type DomainsServer struct {
-	// CheckAvailability is the fake for method DomainsClient.CheckAvailability
-	// HTTP status codes to indicate success: http.StatusOK
-	CheckAvailability func(ctx context.Context, identifier armdomainregistration.NameIdentifier, options *armdomainregistration.DomainsClientCheckAvailabilityOptions) (resp azfake.Responder[armdomainregistration.DomainsClientCheckAvailabilityResponse], errResp azfake.ErrorResponder)
-
 	// BeginCreateOrUpdate is the fake for method DomainsClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, domainName string, domain armdomainregistration.Domain, options *armdomainregistration.DomainsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armdomainregistration.DomainsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+
+	// CheckAvailability is the fake for method DomainsClient.CheckAvailability
+	// HTTP status codes to indicate success: http.StatusOK
+	CheckAvailability func(ctx context.Context, identifier armdomainregistration.NameIdentifier, options *armdomainregistration.DomainsClientCheckAvailabilityOptions) (resp azfake.Responder[armdomainregistration.DomainsClientCheckAvailabilityResponse], errResp azfake.ErrorResponder)
 
 	// CreateOrUpdateOwnershipIdentifier is the fake for method DomainsClient.CreateOrUpdateOwnershipIdentifier
 	// HTTP status codes to indicate success: http.StatusOK
@@ -54,10 +54,6 @@ type DomainsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetOwnershipIdentifier func(ctx context.Context, resourceGroupName string, domainName string, name string, options *armdomainregistration.DomainsClientGetOwnershipIdentifierOptions) (resp azfake.Responder[armdomainregistration.DomainsClientGetOwnershipIdentifierResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method DomainsClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armdomainregistration.DomainsClientListOptions) (resp azfake.PagerResponder[armdomainregistration.DomainsClientListResponse])
-
 	// NewListByResourceGroupPager is the fake for method DomainsClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, options *armdomainregistration.DomainsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armdomainregistration.DomainsClientListByResourceGroupResponse])
@@ -65,6 +61,10 @@ type DomainsServer struct {
 	// NewListOwnershipIdentifiersPager is the fake for method DomainsClient.NewListOwnershipIdentifiersPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListOwnershipIdentifiersPager func(resourceGroupName string, domainName string, options *armdomainregistration.DomainsClientListOwnershipIdentifiersOptions) (resp azfake.PagerResponder[armdomainregistration.DomainsClientListOwnershipIdentifiersResponse])
+
+	// NewListPager is the fake for method DomainsClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armdomainregistration.DomainsClientListOptions) (resp azfake.PagerResponder[armdomainregistration.DomainsClientListResponse])
 
 	// NewListRecommendationsPager is the fake for method DomainsClient.NewListRecommendationsPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -94,9 +94,9 @@ func NewDomainsServerTransport(srv *DomainsServer) *DomainsServerTransport {
 	return &DomainsServerTransport{
 		srv:                              srv,
 		beginCreateOrUpdate:              newTracker[azfake.PollerResponder[armdomainregistration.DomainsClientCreateOrUpdateResponse]](),
-		newListPager:                     newTracker[azfake.PagerResponder[armdomainregistration.DomainsClientListResponse]](),
 		newListByResourceGroupPager:      newTracker[azfake.PagerResponder[armdomainregistration.DomainsClientListByResourceGroupResponse]](),
 		newListOwnershipIdentifiersPager: newTracker[azfake.PagerResponder[armdomainregistration.DomainsClientListOwnershipIdentifiersResponse]](),
+		newListPager:                     newTracker[azfake.PagerResponder[armdomainregistration.DomainsClientListResponse]](),
 		newListRecommendationsPager:      newTracker[azfake.PagerResponder[armdomainregistration.DomainsClientListRecommendationsResponse]](),
 	}
 }
@@ -106,9 +106,9 @@ func NewDomainsServerTransport(srv *DomainsServer) *DomainsServerTransport {
 type DomainsServerTransport struct {
 	srv                              *DomainsServer
 	beginCreateOrUpdate              *tracker[azfake.PollerResponder[armdomainregistration.DomainsClientCreateOrUpdateResponse]]
-	newListPager                     *tracker[azfake.PagerResponder[armdomainregistration.DomainsClientListResponse]]
 	newListByResourceGroupPager      *tracker[azfake.PagerResponder[armdomainregistration.DomainsClientListByResourceGroupResponse]]
 	newListOwnershipIdentifiersPager *tracker[azfake.PagerResponder[armdomainregistration.DomainsClientListOwnershipIdentifiersResponse]]
+	newListPager                     *tracker[azfake.PagerResponder[armdomainregistration.DomainsClientListResponse]]
 	newListRecommendationsPager      *tracker[azfake.PagerResponder[armdomainregistration.DomainsClientListRecommendationsResponse]]
 }
 
@@ -133,10 +133,10 @@ func (d *DomainsServerTransport) dispatchToMethodFake(req *http.Request, method 
 		}
 		if !intercepted {
 			switch method {
-			case "DomainsClient.CheckAvailability":
-				res.resp, res.err = d.dispatchCheckAvailability(req)
 			case "DomainsClient.BeginCreateOrUpdate":
 				res.resp, res.err = d.dispatchBeginCreateOrUpdate(req)
+			case "DomainsClient.CheckAvailability":
+				res.resp, res.err = d.dispatchCheckAvailability(req)
 			case "DomainsClient.CreateOrUpdateOwnershipIdentifier":
 				res.resp, res.err = d.dispatchCreateOrUpdateOwnershipIdentifier(req)
 			case "DomainsClient.Delete":
@@ -149,12 +149,12 @@ func (d *DomainsServerTransport) dispatchToMethodFake(req *http.Request, method 
 				res.resp, res.err = d.dispatchGetControlCenterSsoRequest(req)
 			case "DomainsClient.GetOwnershipIdentifier":
 				res.resp, res.err = d.dispatchGetOwnershipIdentifier(req)
-			case "DomainsClient.NewListPager":
-				res.resp, res.err = d.dispatchNewListPager(req)
 			case "DomainsClient.NewListByResourceGroupPager":
 				res.resp, res.err = d.dispatchNewListByResourceGroupPager(req)
 			case "DomainsClient.NewListOwnershipIdentifiersPager":
 				res.resp, res.err = d.dispatchNewListOwnershipIdentifiersPager(req)
+			case "DomainsClient.NewListPager":
+				res.resp, res.err = d.dispatchNewListPager(req)
 			case "DomainsClient.NewListRecommendationsPager":
 				res.resp, res.err = d.dispatchNewListRecommendationsPager(req)
 			case "DomainsClient.Renew":
@@ -179,35 +179,6 @@ func (d *DomainsServerTransport) dispatchToMethodFake(req *http.Request, method 
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (d *DomainsServerTransport) dispatchCheckAvailability(req *http.Request) (*http.Response, error) {
-	if d.srv.CheckAvailability == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CheckAvailability not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DomainRegistration/checkDomainAvailability`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 2 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armdomainregistration.NameIdentifier](req)
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := d.srv.CheckAvailability(req.Context(), body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DomainAvailabilityCheckResult, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (d *DomainsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -255,6 +226,35 @@ func (d *DomainsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) 
 		d.beginCreateOrUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (d *DomainsServerTransport) dispatchCheckAvailability(req *http.Request) (*http.Response, error) {
+	if d.srv.CheckAvailability == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CheckAvailability not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DomainRegistration/checkDomainAvailability`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armdomainregistration.NameIdentifier](req)
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := d.srv.CheckAvailability(req.Context(), body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DomainAvailabilityCheckResult, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 
@@ -475,39 +475,6 @@ func (d *DomainsServerTransport) dispatchGetOwnershipIdentifier(req *http.Reques
 	return resp, nil
 }
 
-func (d *DomainsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if d.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := d.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DomainRegistration/domains`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := d.srv.NewListPager(nil)
-		newListPager = &resp
-		d.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armdomainregistration.DomainsClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		d.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		d.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (d *DomainsServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
 	if d.srv.NewListByResourceGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
@@ -582,6 +549,39 @@ func (d *DomainsServerTransport) dispatchNewListOwnershipIdentifiersPager(req *h
 	}
 	if !server.PagerResponderMore(newListOwnershipIdentifiersPager) {
 		d.newListOwnershipIdentifiersPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (d *DomainsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if d.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := d.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DomainRegistration/domains`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := d.srv.NewListPager(nil)
+		newListPager = &resp
+		d.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armdomainregistration.DomainsClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		d.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		d.newListPager.remove(req)
 	}
 	return resp, nil
 }

@@ -71,7 +71,7 @@ func (client *DatastoresClient) BeginCreateOrUpdate(ctx context.Context, resourc
 	}
 }
 
-// CreateOrUpdate - Create a Datastore
+// createOrUpdate - Create a Datastore
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *DatastoresClient) createOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, datastoreName string, datastore Datastore, options *DatastoresClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -93,7 +93,7 @@ func (client *DatastoresClient) createOrUpdate(ctx context.Context, resourceGrou
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *DatastoresClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, datastoreName string, datastore Datastore, _ *DatastoresClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/clusters/{clusterName}/datastores/{datastoreName}"
 	if client.subscriptionID == "" {
@@ -155,7 +155,7 @@ func (client *DatastoresClient) BeginDelete(ctx context.Context, resourceGroupNa
 	}
 }
 
-// Delete - Delete a Datastore
+// deleteOperation - Delete a Datastore
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *DatastoresClient) deleteOperation(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, datastoreName string, options *DatastoresClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -177,7 +177,7 @@ func (client *DatastoresClient) deleteOperation(ctx context.Context, resourceGro
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *DatastoresClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, datastoreName string, _ *DatastoresClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/clusters/{clusterName}/datastores/{datastoreName}"
 	if client.subscriptionID == "" {

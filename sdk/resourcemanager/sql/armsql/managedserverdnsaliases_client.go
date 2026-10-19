@@ -67,7 +67,7 @@ func (client *ManagedServerDNSAliasesClient) BeginAcquire(ctx context.Context, r
 	}
 }
 
-// Acquire - Acquires managed server DNS alias from another managed server.
+// acquire - Acquires managed server DNS alias from another managed server.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ManagedServerDNSAliasesClient) acquire(ctx context.Context, resourceGroupName string, managedInstanceName string, dnsAliasName string, parameters ManagedServerDNSAliasAcquisition, options *ManagedServerDNSAliasesClientBeginAcquireOptions) (*http.Response, error) {
 	var err error
@@ -89,7 +89,7 @@ func (client *ManagedServerDNSAliasesClient) acquire(ctx context.Context, resour
 	return httpResp, nil
 }
 
-// acquireCreateRequest creates the Acquire request.
+// acquireCreateRequest creates the acquire request.
 func (client *ManagedServerDNSAliasesClient) acquireCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, dnsAliasName string, parameters ManagedServerDNSAliasAcquisition, _ *ManagedServerDNSAliasesClientBeginAcquireOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/dnsAliases/{dnsAliasName}/acquire"
 	if client.subscriptionID == "" {
@@ -146,7 +146,7 @@ func (client *ManagedServerDNSAliasesClient) BeginCreateOrUpdate(ctx context.Con
 	}
 }
 
-// CreateOrUpdate - Creates a managed server DNS alias.
+// createOrUpdate - Creates a managed server DNS alias.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ManagedServerDNSAliasesClient) createOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, dnsAliasName string, parameters ManagedServerDNSAliasCreation, options *ManagedServerDNSAliasesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -168,7 +168,7 @@ func (client *ManagedServerDNSAliasesClient) createOrUpdate(ctx context.Context,
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ManagedServerDNSAliasesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, dnsAliasName string, parameters ManagedServerDNSAliasCreation, _ *ManagedServerDNSAliasesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/dnsAliases/{dnsAliasName}"
 	if client.subscriptionID == "" {
@@ -225,7 +225,7 @@ func (client *ManagedServerDNSAliasesClient) BeginDelete(ctx context.Context, re
 	}
 }
 
-// Delete - Deletes the managed server DNS alias with the given name.
+// deleteOperation - Deletes the managed server DNS alias with the given name.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ManagedServerDNSAliasesClient) deleteOperation(ctx context.Context, resourceGroupName string, managedInstanceName string, dnsAliasName string, options *ManagedServerDNSAliasesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -247,7 +247,7 @@ func (client *ManagedServerDNSAliasesClient) deleteOperation(ctx context.Context
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ManagedServerDNSAliasesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, dnsAliasName string, _ *ManagedServerDNSAliasesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/dnsAliases/{dnsAliasName}"
 	if client.subscriptionID == "" {

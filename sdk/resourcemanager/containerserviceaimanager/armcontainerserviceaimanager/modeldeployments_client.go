@@ -73,7 +73,7 @@ func (client *ModelDeploymentsClient) BeginCreateOrUpdate(ctx context.Context, r
 	}
 }
 
-// CreateOrUpdate - Create or update a `ModelDeployment`. This is a full-replace operation: any optional property omitted
+// createOrUpdate - Create or update a `ModelDeployment`. This is a full-replace operation: any optional property omitted
 // from the request body is reset to its default value, or cleared if it has no default. To safely modify a subset of fields,
 // perform a GET, modify the returned resource, and PUT it back using the returned ETag via the `If-Match` header to avoid
 // concurrent overwrites.
@@ -98,7 +98,7 @@ func (client *ModelDeploymentsClient) createOrUpdate(ctx context.Context, resour
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ModelDeploymentsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, aiManagerName string, namespaceName string, modelDeploymentName string, resource ModelDeployment, options *ModelDeploymentsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/aiManagers/{aiManagerName}/namespaces/{namespaceName}/modelDeployments/{modelDeploymentName}"
 	if client.subscriptionID == "" {
@@ -167,7 +167,7 @@ func (client *ModelDeploymentsClient) BeginDelete(ctx context.Context, resourceG
 	}
 }
 
-// Delete - Delete a ModelDeployment
+// deleteOperation - Delete a ModelDeployment
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ModelDeploymentsClient) deleteOperation(ctx context.Context, resourceGroupName string, aiManagerName string, namespaceName string, modelDeploymentName string, options *ModelDeploymentsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -189,7 +189,7 @@ func (client *ModelDeploymentsClient) deleteOperation(ctx context.Context, resou
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ModelDeploymentsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, aiManagerName string, namespaceName string, modelDeploymentName string, options *ModelDeploymentsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/aiManagers/{aiManagerName}/namespaces/{namespaceName}/modelDeployments/{modelDeploymentName}"
 	if client.subscriptionID == "" {

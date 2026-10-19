@@ -21,6 +21,10 @@ import (
 
 // PrivateEndpointConnectionsServer is a fake server for instances of the armredis.PrivateEndpointConnectionsClient type.
 type PrivateEndpointConnectionsServer struct {
+	// BeginPut is the fake for method PrivateEndpointConnectionsClient.BeginPut
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	BeginPut func(ctx context.Context, resourceGroupName string, cacheName string, privateEndpointConnectionName string, properties armredis.PrivateEndpointConnection, options *armredis.PrivateEndpointConnectionsClientBeginPutOptions) (resp azfake.PollerResponder[armredis.PrivateEndpointConnectionsClientPutResponse], errResp azfake.ErrorResponder)
+
 	// Delete is the fake for method PrivateEndpointConnectionsClient.Delete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
 	Delete func(ctx context.Context, resourceGroupName string, cacheName string, privateEndpointConnectionName string, options *armredis.PrivateEndpointConnectionsClientDeleteOptions) (resp azfake.Responder[armredis.PrivateEndpointConnectionsClientDeleteResponse], errResp azfake.ErrorResponder)
@@ -32,10 +36,6 @@ type PrivateEndpointConnectionsServer struct {
 	// NewListPager is the fake for method PrivateEndpointConnectionsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(resourceGroupName string, cacheName string, options *armredis.PrivateEndpointConnectionsClientListOptions) (resp azfake.PagerResponder[armredis.PrivateEndpointConnectionsClientListResponse])
-
-	// BeginPut is the fake for method PrivateEndpointConnectionsClient.BeginPut
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginPut func(ctx context.Context, resourceGroupName string, cacheName string, privateEndpointConnectionName string, properties armredis.PrivateEndpointConnection, options *armredis.PrivateEndpointConnectionsClientBeginPutOptions) (resp azfake.PollerResponder[armredis.PrivateEndpointConnectionsClientPutResponse], errResp azfake.ErrorResponder)
 }
 
 // NewPrivateEndpointConnectionsServerTransport creates a new instance of PrivateEndpointConnectionsServerTransport with the provided implementation.
@@ -44,8 +44,8 @@ type PrivateEndpointConnectionsServer struct {
 func NewPrivateEndpointConnectionsServerTransport(srv *PrivateEndpointConnectionsServer) *PrivateEndpointConnectionsServerTransport {
 	return &PrivateEndpointConnectionsServerTransport{
 		srv:          srv,
-		newListPager: newTracker[azfake.PagerResponder[armredis.PrivateEndpointConnectionsClientListResponse]](),
 		beginPut:     newTracker[azfake.PollerResponder[armredis.PrivateEndpointConnectionsClientPutResponse]](),
+		newListPager: newTracker[azfake.PagerResponder[armredis.PrivateEndpointConnectionsClientListResponse]](),
 	}
 }
 
@@ -53,8 +53,8 @@ func NewPrivateEndpointConnectionsServerTransport(srv *PrivateEndpointConnection
 // Don't use this type directly, use NewPrivateEndpointConnectionsServerTransport instead.
 type PrivateEndpointConnectionsServerTransport struct {
 	srv          *PrivateEndpointConnectionsServer
-	newListPager *tracker[azfake.PagerResponder[armredis.PrivateEndpointConnectionsClientListResponse]]
 	beginPut     *tracker[azfake.PollerResponder[armredis.PrivateEndpointConnectionsClientPutResponse]]
+	newListPager *tracker[azfake.PagerResponder[armredis.PrivateEndpointConnectionsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for PrivateEndpointConnectionsServerTransport.
@@ -78,14 +78,14 @@ func (p *PrivateEndpointConnectionsServerTransport) dispatchToMethodFake(req *ht
 		}
 		if !intercepted {
 			switch method {
+			case "PrivateEndpointConnectionsClient.BeginPut":
+				res.resp, res.err = p.dispatchBeginPut(req)
 			case "PrivateEndpointConnectionsClient.Delete":
 				res.resp, res.err = p.dispatchDelete(req)
 			case "PrivateEndpointConnectionsClient.Get":
 				res.resp, res.err = p.dispatchGet(req)
 			case "PrivateEndpointConnectionsClient.NewListPager":
 				res.resp, res.err = p.dispatchNewListPager(req)
-			case "PrivateEndpointConnectionsClient.BeginPut":
-				res.resp, res.err = p.dispatchBeginPut(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -100,6 +100,58 @@ func (p *PrivateEndpointConnectionsServerTransport) dispatchToMethodFake(req *ht
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
+}
+
+func (p *PrivateEndpointConnectionsServerTransport) dispatchBeginPut(req *http.Request) (*http.Response, error) {
+	if p.srv.BeginPut == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginPut not implemented")}
+	}
+	beginPut := p.beginPut.get(req)
+	if beginPut == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Cache/redis/(?P<cacheName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/privateEndpointConnections/(?P<privateEndpointConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armredis.PrivateEndpointConnection](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		cacheNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("cacheName")])
+		if err != nil {
+			return nil, err
+		}
+		privateEndpointConnectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("privateEndpointConnectionName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := p.srv.BeginPut(req.Context(), resourceGroupNameParam, cacheNameParam, privateEndpointConnectionNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginPut = &respr
+		p.beginPut.add(req, beginPut)
+	}
+
+	resp, err := server.PollerResponderNext(beginPut, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		p.beginPut.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginPut) {
+		p.beginPut.remove(req)
+	}
+
+	return resp, nil
 }
 
 func (p *PrivateEndpointConnectionsServerTransport) dispatchDelete(req *http.Request) (*http.Response, error) {
@@ -214,58 +266,6 @@ func (p *PrivateEndpointConnectionsServerTransport) dispatchNewListPager(req *ht
 	if !server.PagerResponderMore(newListPager) {
 		p.newListPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (p *PrivateEndpointConnectionsServerTransport) dispatchBeginPut(req *http.Request) (*http.Response, error) {
-	if p.srv.BeginPut == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginPut not implemented")}
-	}
-	beginPut := p.beginPut.get(req)
-	if beginPut == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Cache/redis/(?P<cacheName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/privateEndpointConnections/(?P<privateEndpointConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armredis.PrivateEndpointConnection](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		cacheNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("cacheName")])
-		if err != nil {
-			return nil, err
-		}
-		privateEndpointConnectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("privateEndpointConnectionName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := p.srv.BeginPut(req.Context(), resourceGroupNameParam, cacheNameParam, privateEndpointConnectionNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginPut = &respr
-		p.beginPut.add(req, beginPut)
-	}
-
-	resp, err := server.PollerResponderNext(beginPut, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
-		p.beginPut.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginPut) {
-		p.beginPut.remove(req)
-	}
-
 	return resp, nil
 }
 

@@ -26,13 +26,13 @@ type GrantsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, billingAccountName string, billingProfileName string, options *armeducation.GrantsClientGetOptions) (resp azfake.Responder[armeducation.GrantsClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method GrantsClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(billingAccountName string, billingProfileName string, options *armeducation.GrantsClientListOptions) (resp azfake.PagerResponder[armeducation.GrantsClientListResponse])
-
 	// NewListAllPager is the fake for method GrantsClient.NewListAllPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListAllPager func(options *armeducation.GrantsClientListAllOptions) (resp azfake.PagerResponder[armeducation.GrantsClientListAllResponse])
+
+	// NewListPager is the fake for method GrantsClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(billingAccountName string, billingProfileName string, options *armeducation.GrantsClientListOptions) (resp azfake.PagerResponder[armeducation.GrantsClientListResponse])
 }
 
 // NewGrantsServerTransport creates a new instance of GrantsServerTransport with the provided implementation.
@@ -41,8 +41,8 @@ type GrantsServer struct {
 func NewGrantsServerTransport(srv *GrantsServer) *GrantsServerTransport {
 	return &GrantsServerTransport{
 		srv:             srv,
-		newListPager:    newTracker[azfake.PagerResponder[armeducation.GrantsClientListResponse]](),
 		newListAllPager: newTracker[azfake.PagerResponder[armeducation.GrantsClientListAllResponse]](),
+		newListPager:    newTracker[azfake.PagerResponder[armeducation.GrantsClientListResponse]](),
 	}
 }
 
@@ -50,8 +50,8 @@ func NewGrantsServerTransport(srv *GrantsServer) *GrantsServerTransport {
 // Don't use this type directly, use NewGrantsServerTransport instead.
 type GrantsServerTransport struct {
 	srv             *GrantsServer
-	newListPager    *tracker[azfake.PagerResponder[armeducation.GrantsClientListResponse]]
 	newListAllPager *tracker[azfake.PagerResponder[armeducation.GrantsClientListAllResponse]]
+	newListPager    *tracker[azfake.PagerResponder[armeducation.GrantsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for GrantsServerTransport.
@@ -77,10 +77,10 @@ func (g *GrantsServerTransport) dispatchToMethodFake(req *http.Request, method s
 			switch method {
 			case "GrantsClient.Get":
 				res.resp, res.err = g.dispatchGet(req)
-			case "GrantsClient.NewListPager":
-				res.resp, res.err = g.dispatchNewListPager(req)
 			case "GrantsClient.NewListAllPager":
 				res.resp, res.err = g.dispatchNewListAllPager(req)
+			case "GrantsClient.NewListPager":
+				res.resp, res.err = g.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -141,6 +141,44 @@ func (g *GrantsServerTransport) dispatchGet(req *http.Request) (*http.Response, 
 	return resp, nil
 }
 
+func (g *GrantsServerTransport) dispatchNewListAllPager(req *http.Request) (*http.Response, error) {
+	if g.srv.NewListAllPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListAllPager not implemented")}
+	}
+	newListAllPager := g.newListAllPager.get(req)
+	if newListAllPager == nil {
+		qp := req.URL.Query()
+		includeAllocatedBudgetParam, err := parseOptional(qp.Get("includeAllocatedBudget"), strconv.ParseBool)
+		if err != nil {
+			return nil, err
+		}
+		var options *armeducation.GrantsClientListAllOptions
+		if includeAllocatedBudgetParam != nil {
+			options = &armeducation.GrantsClientListAllOptions{
+				IncludeAllocatedBudget: includeAllocatedBudgetParam,
+			}
+		}
+		resp := g.srv.NewListAllPager(options)
+		newListAllPager = &resp
+		g.newListAllPager.add(req, newListAllPager)
+		server.PagerResponderInjectNextLinks(newListAllPager, req, func(page *armeducation.GrantsClientListAllResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListAllPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		g.newListAllPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListAllPager) {
+		g.newListAllPager.remove(req)
+	}
+	return resp, nil
+}
+
 func (g *GrantsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
 	if g.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
@@ -189,44 +227,6 @@ func (g *GrantsServerTransport) dispatchNewListPager(req *http.Request) (*http.R
 	}
 	if !server.PagerResponderMore(newListPager) {
 		g.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (g *GrantsServerTransport) dispatchNewListAllPager(req *http.Request) (*http.Response, error) {
-	if g.srv.NewListAllPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListAllPager not implemented")}
-	}
-	newListAllPager := g.newListAllPager.get(req)
-	if newListAllPager == nil {
-		qp := req.URL.Query()
-		includeAllocatedBudgetParam, err := parseOptional(qp.Get("includeAllocatedBudget"), strconv.ParseBool)
-		if err != nil {
-			return nil, err
-		}
-		var options *armeducation.GrantsClientListAllOptions
-		if includeAllocatedBudgetParam != nil {
-			options = &armeducation.GrantsClientListAllOptions{
-				IncludeAllocatedBudget: includeAllocatedBudgetParam,
-			}
-		}
-		resp := g.srv.NewListAllPager(options)
-		newListAllPager = &resp
-		g.newListAllPager.add(req, newListAllPager)
-		server.PagerResponderInjectNextLinks(newListAllPager, req, func(page *armeducation.GrantsClientListAllResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListAllPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		g.newListAllPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListAllPager) {
-		g.newListAllPager.remove(req)
 	}
 	return resp, nil
 }

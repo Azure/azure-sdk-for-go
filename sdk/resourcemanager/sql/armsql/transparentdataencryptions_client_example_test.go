@@ -52,6 +52,76 @@ func ExampleTransparentDataEncryptionsClient_BeginCreateOrUpdate() {
 	// }
 }
 
+// Generated from example definition: 2026-08-01-preview/ResumeTransparentDataEncryptionUpdate.json
+func ExampleTransparentDataEncryptionsClient_BeginResume() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewTransparentDataEncryptionsClient().BeginResume(ctx, "securitytde-42-rg", "securitytde-42", "testdb", armsql.TransparentDataEncryptionNameCurrent, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsql.TransparentDataEncryptionsClientResumeResponse{
+	// 	LogicalDatabaseTransparentDataEncryption: armsql.LogicalDatabaseTransparentDataEncryption{
+	// 		Name: to.Ptr("current"),
+	// 		Type: to.Ptr("Microsoft.Sql/servers/databases/transparentDataEncryption"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/securitytde-42-rg/providers/Microsoft.Sql/servers/securitytde-42/databases/testdb/transparentDataEncryption/current"),
+	// 		Properties: &armsql.TransparentDataEncryptionProperties{
+	// 			ScanState: to.Ptr(armsql.TransparentDataEncryptionScanStateResume),
+	// 			State: to.Ptr(armsql.TransparentDataEncryptionStateEnabled),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-08-01-preview/SuspendTransparentDataEncryptionUpdate.json
+func ExampleTransparentDataEncryptionsClient_BeginSuspend() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewTransparentDataEncryptionsClient().BeginSuspend(ctx, "securitytde-42-rg", "securitytde-42", "testdb", armsql.TransparentDataEncryptionNameCurrent, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsql.TransparentDataEncryptionsClientSuspendResponse{
+	// 	LogicalDatabaseTransparentDataEncryption: armsql.LogicalDatabaseTransparentDataEncryption{
+	// 		Name: to.Ptr("current"),
+	// 		Type: to.Ptr("Microsoft.Sql/servers/databases/transparentDataEncryption"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/securitytde-42-rg/providers/Microsoft.Sql/servers/securitytde-42/databases/testdb/transparentDataEncryption/current"),
+	// 		Properties: &armsql.TransparentDataEncryptionProperties{
+	// 			ScanState: to.Ptr(armsql.TransparentDataEncryptionScanStateSuspend),
+	// 			State: to.Ptr(armsql.TransparentDataEncryptionStateEnabled),
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2026-08-01-preview/TransparentDataEncryptionGet.json
 func ExampleTransparentDataEncryptionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -121,74 +191,4 @@ func ExampleTransparentDataEncryptionsClient_NewListByDatabasePager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-08-01-preview/ResumeTransparentDataEncryptionUpdate.json
-func ExampleTransparentDataEncryptionsClient_BeginResume() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewTransparentDataEncryptionsClient().BeginResume(ctx, "securitytde-42-rg", "securitytde-42", "testdb", armsql.TransparentDataEncryptionNameCurrent, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armsql.TransparentDataEncryptionsClientResumeResponse{
-	// 	LogicalDatabaseTransparentDataEncryption: armsql.LogicalDatabaseTransparentDataEncryption{
-	// 		Name: to.Ptr("current"),
-	// 		Type: to.Ptr("Microsoft.Sql/servers/databases/transparentDataEncryption"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/securitytde-42-rg/providers/Microsoft.Sql/servers/securitytde-42/databases/testdb/transparentDataEncryption/current"),
-	// 		Properties: &armsql.TransparentDataEncryptionProperties{
-	// 			ScanState: to.Ptr(armsql.TransparentDataEncryptionScanStateResume),
-	// 			State: to.Ptr(armsql.TransparentDataEncryptionStateEnabled),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-08-01-preview/SuspendTransparentDataEncryptionUpdate.json
-func ExampleTransparentDataEncryptionsClient_BeginSuspend() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewTransparentDataEncryptionsClient().BeginSuspend(ctx, "securitytde-42-rg", "securitytde-42", "testdb", armsql.TransparentDataEncryptionNameCurrent, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armsql.TransparentDataEncryptionsClientSuspendResponse{
-	// 	LogicalDatabaseTransparentDataEncryption: armsql.LogicalDatabaseTransparentDataEncryption{
-	// 		Name: to.Ptr("current"),
-	// 		Type: to.Ptr("Microsoft.Sql/servers/databases/transparentDataEncryption"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/securitytde-42-rg/providers/Microsoft.Sql/servers/securitytde-42/databases/testdb/transparentDataEncryption/current"),
-	// 		Properties: &armsql.TransparentDataEncryptionProperties{
-	// 			ScanState: to.Ptr(armsql.TransparentDataEncryptionScanStateSuspend),
-	// 			State: to.Ptr(armsql.TransparentDataEncryptionStateEnabled),
-	// 		},
-	// 	},
-	// }
 }

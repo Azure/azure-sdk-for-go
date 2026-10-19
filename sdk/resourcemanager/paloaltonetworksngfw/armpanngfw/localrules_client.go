@@ -69,7 +69,7 @@ func (client *LocalRulesClient) BeginCreateOrUpdate(ctx context.Context, resourc
 	}
 }
 
-// CreateOrUpdate - Create a LocalRulesResource
+// createOrUpdate - Create a LocalRulesResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *LocalRulesClient) createOrUpdate(ctx context.Context, resourceGroupName string, localRulestackName string, priority string, resource LocalRulesResource, options *LocalRulesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *LocalRulesClient) createOrUpdate(ctx context.Context, resourceGrou
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *LocalRulesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, localRulestackName string, priority string, resource LocalRulesResource, _ *LocalRulesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/localRules/{priority}"
 	if client.subscriptionID == "" {
@@ -148,7 +148,7 @@ func (client *LocalRulesClient) BeginDelete(ctx context.Context, resourceGroupNa
 	}
 }
 
-// Delete - Delete a LocalRulesResource
+// deleteOperation - Delete a LocalRulesResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *LocalRulesClient) deleteOperation(ctx context.Context, resourceGroupName string, localRulestackName string, priority string, options *LocalRulesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -170,7 +170,7 @@ func (client *LocalRulesClient) deleteOperation(ctx context.Context, resourceGro
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *LocalRulesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, localRulestackName string, priority string, _ *LocalRulesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/localRules/{priority}"
 	if client.subscriptionID == "" {

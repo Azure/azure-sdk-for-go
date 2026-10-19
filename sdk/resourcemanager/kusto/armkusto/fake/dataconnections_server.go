@@ -21,10 +21,6 @@ import (
 
 // DataConnectionsServer is a fake server for instances of the armkusto.DataConnectionsClient type.
 type DataConnectionsServer struct {
-	// CheckNameAvailability is the fake for method DataConnectionsClient.CheckNameAvailability
-	// HTTP status codes to indicate success: http.StatusOK
-	CheckNameAvailability func(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, dataConnectionName armkusto.DataConnectionCheckNameRequest, options *armkusto.DataConnectionsClientCheckNameAvailabilityOptions) (resp azfake.Responder[armkusto.DataConnectionsClientCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
-
 	// BeginCreateOrUpdate is the fake for method DataConnectionsClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated, http.StatusAccepted
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, dataConnectionName string, parameters armkusto.DataConnectionClassification, options *armkusto.DataConnectionsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armkusto.DataConnectionsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -37,6 +33,14 @@ type DataConnectionsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, dataConnectionName string, options *armkusto.DataConnectionsClientBeginDeleteOptions) (resp azfake.PollerResponder[armkusto.DataConnectionsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method DataConnectionsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, dataConnectionName string, parameters armkusto.DataConnectionClassification, options *armkusto.DataConnectionsClientBeginUpdateOptions) (resp azfake.PollerResponder[armkusto.DataConnectionsClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// CheckNameAvailability is the fake for method DataConnectionsClient.CheckNameAvailability
+	// HTTP status codes to indicate success: http.StatusOK
+	CheckNameAvailability func(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, dataConnectionName armkusto.DataConnectionCheckNameRequest, options *armkusto.DataConnectionsClientCheckNameAvailabilityOptions) (resp azfake.Responder[armkusto.DataConnectionsClientCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method DataConnectionsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, dataConnectionName string, options *armkusto.DataConnectionsClientGetOptions) (resp azfake.Responder[armkusto.DataConnectionsClientGetResponse], errResp azfake.ErrorResponder)
@@ -44,10 +48,6 @@ type DataConnectionsServer struct {
 	// NewListByDatabasePager is the fake for method DataConnectionsClient.NewListByDatabasePager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByDatabasePager func(resourceGroupName string, clusterName string, databaseName string, options *armkusto.DataConnectionsClientListByDatabaseOptions) (resp azfake.PagerResponder[armkusto.DataConnectionsClientListByDatabaseResponse])
-
-	// BeginUpdate is the fake for method DataConnectionsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, dataConnectionName string, parameters armkusto.DataConnectionClassification, options *armkusto.DataConnectionsClientBeginUpdateOptions) (resp azfake.PollerResponder[armkusto.DataConnectionsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewDataConnectionsServerTransport creates a new instance of DataConnectionsServerTransport with the provided implementation.
@@ -59,8 +59,8 @@ func NewDataConnectionsServerTransport(srv *DataConnectionsServer) *DataConnecti
 		beginCreateOrUpdate:           newTracker[azfake.PollerResponder[armkusto.DataConnectionsClientCreateOrUpdateResponse]](),
 		beginDataConnectionValidation: newTracker[azfake.PollerResponder[armkusto.DataConnectionsClientDataConnectionValidationResponse]](),
 		beginDelete:                   newTracker[azfake.PollerResponder[armkusto.DataConnectionsClientDeleteResponse]](),
-		newListByDatabasePager:        newTracker[azfake.PagerResponder[armkusto.DataConnectionsClientListByDatabaseResponse]](),
 		beginUpdate:                   newTracker[azfake.PollerResponder[armkusto.DataConnectionsClientUpdateResponse]](),
+		newListByDatabasePager:        newTracker[azfake.PagerResponder[armkusto.DataConnectionsClientListByDatabaseResponse]](),
 	}
 }
 
@@ -71,8 +71,8 @@ type DataConnectionsServerTransport struct {
 	beginCreateOrUpdate           *tracker[azfake.PollerResponder[armkusto.DataConnectionsClientCreateOrUpdateResponse]]
 	beginDataConnectionValidation *tracker[azfake.PollerResponder[armkusto.DataConnectionsClientDataConnectionValidationResponse]]
 	beginDelete                   *tracker[azfake.PollerResponder[armkusto.DataConnectionsClientDeleteResponse]]
-	newListByDatabasePager        *tracker[azfake.PagerResponder[armkusto.DataConnectionsClientListByDatabaseResponse]]
 	beginUpdate                   *tracker[azfake.PollerResponder[armkusto.DataConnectionsClientUpdateResponse]]
+	newListByDatabasePager        *tracker[azfake.PagerResponder[armkusto.DataConnectionsClientListByDatabaseResponse]]
 }
 
 // Do implements the policy.Transporter interface for DataConnectionsServerTransport.
@@ -96,20 +96,20 @@ func (d *DataConnectionsServerTransport) dispatchToMethodFake(req *http.Request,
 		}
 		if !intercepted {
 			switch method {
-			case "DataConnectionsClient.CheckNameAvailability":
-				res.resp, res.err = d.dispatchCheckNameAvailability(req)
 			case "DataConnectionsClient.BeginCreateOrUpdate":
 				res.resp, res.err = d.dispatchBeginCreateOrUpdate(req)
 			case "DataConnectionsClient.BeginDataConnectionValidation":
 				res.resp, res.err = d.dispatchBeginDataConnectionValidation(req)
 			case "DataConnectionsClient.BeginDelete":
 				res.resp, res.err = d.dispatchBeginDelete(req)
+			case "DataConnectionsClient.BeginUpdate":
+				res.resp, res.err = d.dispatchBeginUpdate(req)
+			case "DataConnectionsClient.CheckNameAvailability":
+				res.resp, res.err = d.dispatchCheckNameAvailability(req)
 			case "DataConnectionsClient.Get":
 				res.resp, res.err = d.dispatchGet(req)
 			case "DataConnectionsClient.NewListByDatabasePager":
 				res.resp, res.err = d.dispatchNewListByDatabasePager(req)
-			case "DataConnectionsClient.BeginUpdate":
-				res.resp, res.err = d.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -124,47 +124,6 @@ func (d *DataConnectionsServerTransport) dispatchToMethodFake(req *http.Request,
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (d *DataConnectionsServerTransport) dispatchCheckNameAvailability(req *http.Request) (*http.Response, error) {
-	if d.srv.CheckNameAvailability == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CheckNameAvailability not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Kusto/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/checkNameAvailability`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armkusto.DataConnectionCheckNameRequest](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
-	if err != nil {
-		return nil, err
-	}
-	databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := d.srv.CheckNameAvailability(req.Context(), resourceGroupNameParam, clusterNameParam, databaseNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CheckNameResult, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (d *DataConnectionsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -331,6 +290,107 @@ func (d *DataConnectionsServerTransport) dispatchBeginDelete(req *http.Request) 
 	return resp, nil
 }
 
+func (d *DataConnectionsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if d.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := d.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Kusto/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/dataConnections/(?P<dataConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 6 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		raw, err := readRequestBody(req)
+		if err != nil {
+			return nil, err
+		}
+		body, err := unmarshalDataConnectionClassification(raw)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
+		if err != nil {
+			return nil, err
+		}
+		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
+		if err != nil {
+			return nil, err
+		}
+		dataConnectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("dataConnectionName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := d.srv.BeginUpdate(req.Context(), resourceGroupNameParam, clusterNameParam, databaseNameParam, dataConnectionNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		d.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated, http.StatusAccepted}, resp.StatusCode) {
+		d.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		d.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (d *DataConnectionsServerTransport) dispatchCheckNameAvailability(req *http.Request) (*http.Response, error) {
+	if d.srv.CheckNameAvailability == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CheckNameAvailability not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Kusto/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/checkNameAvailability`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armkusto.DataConnectionCheckNameRequest](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
+	if err != nil {
+		return nil, err
+	}
+	databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := d.srv.CheckNameAvailability(req.Context(), resourceGroupNameParam, clusterNameParam, databaseNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CheckNameResult, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (d *DataConnectionsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if d.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -414,66 +474,6 @@ func (d *DataConnectionsServerTransport) dispatchNewListByDatabasePager(req *htt
 	if !server.PagerResponderMore(newListByDatabasePager) {
 		d.newListByDatabasePager.remove(req)
 	}
-	return resp, nil
-}
-
-func (d *DataConnectionsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if d.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := d.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Kusto/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/dataConnections/(?P<dataConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 6 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		raw, err := readRequestBody(req)
-		if err != nil {
-			return nil, err
-		}
-		body, err := unmarshalDataConnectionClassification(raw)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
-		if err != nil {
-			return nil, err
-		}
-		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
-		if err != nil {
-			return nil, err
-		}
-		dataConnectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("dataConnectionName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := d.srv.BeginUpdate(req.Context(), resourceGroupNameParam, clusterNameParam, databaseNameParam, dataConnectionNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		d.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated, http.StatusAccepted}, resp.StatusCode) {
-		d.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		d.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

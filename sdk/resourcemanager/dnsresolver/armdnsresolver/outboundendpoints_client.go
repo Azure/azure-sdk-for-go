@@ -70,7 +70,7 @@ func (client *OutboundEndpointsClient) BeginCreateOrUpdate(ctx context.Context, 
 	}
 }
 
-// CreateOrUpdate - Creates or updates an outbound endpoint for a DNS resolver.
+// createOrUpdate - Creates or updates an outbound endpoint for a DNS resolver.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *OutboundEndpointsClient) createOrUpdate(ctx context.Context, resourceGroupName string, dnsResolverName string, outboundEndpointName string, parameters OutboundEndpoint, options *OutboundEndpointsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -92,7 +92,7 @@ func (client *OutboundEndpointsClient) createOrUpdate(ctx context.Context, resou
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *OutboundEndpointsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, dnsResolverName string, outboundEndpointName string, parameters OutboundEndpoint, options *OutboundEndpointsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsResolvers/{dnsResolverName}/outboundEndpoints/{outboundEndpointName}"
 	if client.subscriptionID == "" {
@@ -156,7 +156,7 @@ func (client *OutboundEndpointsClient) BeginDelete(ctx context.Context, resource
 	}
 }
 
-// Delete - Deletes an outbound endpoint for a DNS resolver. WARNING: This operation cannot be undone.
+// deleteOperation - Deletes an outbound endpoint for a DNS resolver. WARNING: This operation cannot be undone.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *OutboundEndpointsClient) deleteOperation(ctx context.Context, resourceGroupName string, dnsResolverName string, outboundEndpointName string, options *OutboundEndpointsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -178,7 +178,7 @@ func (client *OutboundEndpointsClient) deleteOperation(ctx context.Context, reso
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *OutboundEndpointsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, dnsResolverName string, outboundEndpointName string, options *OutboundEndpointsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsResolvers/{dnsResolverName}/outboundEndpoints/{outboundEndpointName}"
 	if client.subscriptionID == "" {
@@ -206,6 +206,90 @@ func (client *OutboundEndpointsClient) deleteCreateRequest(ctx context.Context, 
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["if-match"] = []string{*options.IfMatch}
+	}
+	return req, nil
+}
+
+// BeginUpdate - Updates an outbound endpoint for a DNS resolver.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - dnsResolverName - The name of the DNS resolver.
+//   - outboundEndpointName - The name of the outbound endpoint for the DNS resolver.
+//   - parameters - Parameters supplied to the Update operation.
+//   - options - OutboundEndpointsClientBeginUpdateOptions contains the optional parameters for the OutboundEndpointsClient.BeginUpdate
+//     method.
+func (client *OutboundEndpointsClient) BeginUpdate(ctx context.Context, resourceGroupName string, dnsResolverName string, outboundEndpointName string, parameters OutboundEndpointPatch, options *OutboundEndpointsClientBeginUpdateOptions) (*runtime.Poller[OutboundEndpointsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, dnsResolverName, outboundEndpointName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[OutboundEndpointsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[OutboundEndpointsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Updates an outbound endpoint for a DNS resolver.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *OutboundEndpointsClient) update(ctx context.Context, resourceGroupName string, dnsResolverName string, outboundEndpointName string, parameters OutboundEndpointPatch, options *OutboundEndpointsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "OutboundEndpointsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, dnsResolverName, outboundEndpointName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *OutboundEndpointsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, dnsResolverName string, outboundEndpointName string, parameters OutboundEndpointPatch, options *OutboundEndpointsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsResolvers/{dnsResolverName}/outboundEndpoints/{outboundEndpointName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if dnsResolverName == "" {
+		return nil, errors.New("parameter dnsResolverName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{dnsResolverName}", url.PathEscape(dnsResolverName))
+	if outboundEndpointName == "" {
+		return nil, errors.New("parameter outboundEndpointName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{outboundEndpointName}", url.PathEscape(outboundEndpointName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20251001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if options != nil && options.IfMatch != nil {
+		req.Raw().Header["if-match"] = []string{*options.IfMatch}
+	}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
 	}
 	return req, nil
 }
@@ -353,88 +437,4 @@ func (client *OutboundEndpointsClient) listHandleResponse(resp *http.Response, s
 		return OutboundEndpointsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Updates an outbound endpoint for a DNS resolver.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - dnsResolverName - The name of the DNS resolver.
-//   - outboundEndpointName - The name of the outbound endpoint for the DNS resolver.
-//   - parameters - Parameters supplied to the Update operation.
-//   - options - OutboundEndpointsClientBeginUpdateOptions contains the optional parameters for the OutboundEndpointsClient.BeginUpdate
-//     method.
-func (client *OutboundEndpointsClient) BeginUpdate(ctx context.Context, resourceGroupName string, dnsResolverName string, outboundEndpointName string, parameters OutboundEndpointPatch, options *OutboundEndpointsClientBeginUpdateOptions) (*runtime.Poller[OutboundEndpointsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, dnsResolverName, outboundEndpointName, parameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[OutboundEndpointsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[OutboundEndpointsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Updates an outbound endpoint for a DNS resolver.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *OutboundEndpointsClient) update(ctx context.Context, resourceGroupName string, dnsResolverName string, outboundEndpointName string, parameters OutboundEndpointPatch, options *OutboundEndpointsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "OutboundEndpointsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, dnsResolverName, outboundEndpointName, parameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *OutboundEndpointsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, dnsResolverName string, outboundEndpointName string, parameters OutboundEndpointPatch, options *OutboundEndpointsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsResolvers/{dnsResolverName}/outboundEndpoints/{outboundEndpointName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if dnsResolverName == "" {
-		return nil, errors.New("parameter dnsResolverName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{dnsResolverName}", url.PathEscape(dnsResolverName))
-	if outboundEndpointName == "" {
-		return nil, errors.New("parameter outboundEndpointName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{outboundEndpointName}", url.PathEscape(outboundEndpointName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251001Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["if-match"] = []string{*options.IfMatch}
-	}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

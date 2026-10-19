@@ -39,6 +39,83 @@ func NewReservationsClient(credential azcore.TokenCredential, options *arm.Clien
 	return client, nil
 }
 
+// BeginUpdateByBillingAccount - Update reservation by billing account.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - billingAccountName - The ID that uniquely identifies a billing account.
+//   - reservationOrderID - Order Id of the reservation
+//   - reservationID - Id of the reservation item
+//   - body - Request body for patching a reservation
+//   - options - ReservationsClientBeginUpdateByBillingAccountOptions contains the optional parameters for the ReservationsClient.BeginUpdateByBillingAccount
+//     method.
+func (client *ReservationsClient) BeginUpdateByBillingAccount(ctx context.Context, billingAccountName string, reservationOrderID string, reservationID string, body Patch, options *ReservationsClientBeginUpdateByBillingAccountOptions) (*runtime.Poller[ReservationsClientUpdateByBillingAccountResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.updateByBillingAccount(ctx, billingAccountName, reservationOrderID, reservationID, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ReservationsClientUpdateByBillingAccountResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ReservationsClientUpdateByBillingAccountResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// updateByBillingAccount - Update reservation by billing account.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ReservationsClient) updateByBillingAccount(ctx context.Context, billingAccountName string, reservationOrderID string, reservationID string, body Patch, options *ReservationsClientBeginUpdateByBillingAccountOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ReservationsClient.BeginUpdateByBillingAccount"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateByBillingAccountCreateRequest(ctx, billingAccountName, reservationOrderID, reservationID, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateByBillingAccountCreateRequest creates the updateByBillingAccount request.
+func (client *ReservationsClient) updateByBillingAccountCreateRequest(ctx context.Context, billingAccountName string, reservationOrderID string, reservationID string, body Patch, _ *ReservationsClientBeginUpdateByBillingAccountOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/reservationOrders/{reservationOrderId}/reservations/{reservationId}"
+	if billingAccountName == "" {
+		return nil, errors.New("parameter billingAccountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+	if reservationOrderID == "" {
+		return nil, errors.New("parameter reservationOrderID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{reservationOrderId}", url.PathEscape(reservationOrderID))
+	if reservationID == "" {
+		return nil, errors.New("parameter reservationID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{reservationId}", url.PathEscape(reservationID))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20240401)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
 // GetByReservationOrder - Get Reservation details in the billing account.
 //
 // Get specific Reservation details in the billing account.
@@ -358,81 +435,4 @@ func (client *ReservationsClient) listByReservationOrderHandleResponse(resp *htt
 		return ReservationsClientListByReservationOrderResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdateByBillingAccount - Update reservation by billing account.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - billingAccountName - The ID that uniquely identifies a billing account.
-//   - reservationOrderID - Order Id of the reservation
-//   - reservationID - Id of the reservation item
-//   - body - Request body for patching a reservation
-//   - options - ReservationsClientBeginUpdateByBillingAccountOptions contains the optional parameters for the ReservationsClient.BeginUpdateByBillingAccount
-//     method.
-func (client *ReservationsClient) BeginUpdateByBillingAccount(ctx context.Context, billingAccountName string, reservationOrderID string, reservationID string, body Patch, options *ReservationsClientBeginUpdateByBillingAccountOptions) (*runtime.Poller[ReservationsClientUpdateByBillingAccountResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.updateByBillingAccount(ctx, billingAccountName, reservationOrderID, reservationID, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ReservationsClientUpdateByBillingAccountResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ReservationsClientUpdateByBillingAccountResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// UpdateByBillingAccount - Update reservation by billing account.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ReservationsClient) updateByBillingAccount(ctx context.Context, billingAccountName string, reservationOrderID string, reservationID string, body Patch, options *ReservationsClientBeginUpdateByBillingAccountOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ReservationsClient.BeginUpdateByBillingAccount"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateByBillingAccountCreateRequest(ctx, billingAccountName, reservationOrderID, reservationID, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateByBillingAccountCreateRequest creates the UpdateByBillingAccount request.
-func (client *ReservationsClient) updateByBillingAccountCreateRequest(ctx context.Context, billingAccountName string, reservationOrderID string, reservationID string, body Patch, _ *ReservationsClientBeginUpdateByBillingAccountOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/reservationOrders/{reservationOrderId}/reservations/{reservationId}"
-	if billingAccountName == "" {
-		return nil, errors.New("parameter billingAccountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
-	if reservationOrderID == "" {
-		return nil, errors.New("parameter reservationOrderID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{reservationOrderId}", url.PathEscape(reservationOrderID))
-	if reservationID == "" {
-		return nil, errors.New("parameter reservationID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{reservationId}", url.PathEscape(reservationID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

@@ -220,72 +220,6 @@ func (client *SnapshotsClient) getHandleResponse(resp *http.Response, successCod
 	return result, nil
 }
 
-// NewListPager - Gets a list of snapshots in the specified subscription.
-//   - options - SnapshotsClientListOptions contains the optional parameters for the SnapshotsClient.NewListPager method.
-func (client *SnapshotsClient) NewListPager(options *SnapshotsClientListOptions) *runtime.Pager[SnapshotsClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[SnapshotsClientListResponse]{
-		More: func(page SnapshotsClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *SnapshotsClientListResponse) (SnapshotsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SnapshotsClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listCreateRequest(ctx, nextLink, options)
-			if err != nil {
-				return SnapshotsClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return SnapshotsClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *SnapshotsClient) listCreateRequest(ctx context.Context, nextLink string, _ *SnapshotsClientListOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/snapshots"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260702Preview)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *SnapshotsClient) listHandleResponse(resp *http.Response, successCodes ...int) (SnapshotsClientListResponse, error) {
-	result := SnapshotsClientListResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.SnapshotListResult); err != nil {
-		return SnapshotsClientListResponse{}, err
-	}
-	return result, nil
-}
-
 // NewListByResourceGroupPager - Lists snapshots in the specified subscription and resource group.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - SnapshotsClientListByResourceGroupOptions contains the optional parameters for the SnapshotsClient.NewListByResourceGroupPager
@@ -354,6 +288,72 @@ func (client *SnapshotsClient) listByResourceGroupHandleResponse(resp *http.Resp
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SnapshotListResult); err != nil {
 		return SnapshotsClientListByResourceGroupResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListPager - Gets a list of snapshots in the specified subscription.
+//   - options - SnapshotsClientListOptions contains the optional parameters for the SnapshotsClient.NewListPager method.
+func (client *SnapshotsClient) NewListPager(options *SnapshotsClientListOptions) *runtime.Pager[SnapshotsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[SnapshotsClientListResponse]{
+		More: func(page SnapshotsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *SnapshotsClientListResponse) (SnapshotsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SnapshotsClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return SnapshotsClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return SnapshotsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listCreateRequest creates the List request.
+func (client *SnapshotsClient) listCreateRequest(ctx context.Context, nextLink string, _ *SnapshotsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/snapshots"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260702Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listHandleResponse handles the List response.
+func (client *SnapshotsClient) listHandleResponse(resp *http.Response, successCodes ...int) (SnapshotsClientListResponse, error) {
+	result := SnapshotsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SnapshotListResult); err != nil {
+		return SnapshotsClientListResponse{}, err
 	}
 	return result, nil
 }

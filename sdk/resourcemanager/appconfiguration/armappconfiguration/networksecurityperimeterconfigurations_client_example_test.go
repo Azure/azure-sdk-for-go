@@ -11,6 +11,32 @@ import (
 	"log"
 )
 
+// Generated from example definition: 2025-08-01-preview/ConfigurationStoresReconcileNetworkSecurityPerimeterConfiguration.json
+func ExampleNetworkSecurityPerimeterConfigurationsClient_BeginReconcile() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappconfiguration.NewClientFactory("c80fb759-c965-4c6a-9110-9b2b2d038882", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewNetworkSecurityPerimeterConfigurationsClient().BeginReconcile(ctx, "myResourceGroup", "contoso", "804a12bb-1349-4228-81be-8fe888aae04e.myAssociationName", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armappconfiguration.NetworkSecurityPerimeterConfigurationsClientReconcileResponse{
+	// }
+}
+
 // Generated from example definition: 2025-08-01-preview/ConfigurationStoresGetNetworkSecurityPerimeterConfiguration.json
 func ExampleNetworkSecurityPerimeterConfigurationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -166,30 +192,4 @@ func ExampleNetworkSecurityPerimeterConfigurationsClient_NewListByConfigurationS
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2025-08-01-preview/ConfigurationStoresReconcileNetworkSecurityPerimeterConfiguration.json
-func ExampleNetworkSecurityPerimeterConfigurationsClient_BeginReconcile() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappconfiguration.NewClientFactory("c80fb759-c965-4c6a-9110-9b2b2d038882", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewNetworkSecurityPerimeterConfigurationsClient().BeginReconcile(ctx, "myResourceGroup", "contoso", "804a12bb-1349-4228-81be-8fe888aae04e.myAssociationName", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armappconfiguration.NetworkSecurityPerimeterConfigurationsClientReconcileResponse{
-	// }
 }

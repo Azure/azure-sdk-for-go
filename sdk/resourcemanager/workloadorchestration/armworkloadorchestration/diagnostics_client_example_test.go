@@ -94,6 +94,62 @@ func ExampleDiagnosticsClient_BeginDelete() {
 	}
 }
 
+// Generated from example definition: 2025-06-01/Diagnostics_Update_MaximumSet_Gen.json
+func ExampleDiagnosticsClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armworkloadorchestration.NewClientFactory("9D54FE4C-00AF-4836-8F48-B6A9C4E47192", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewDiagnosticsClient().BeginUpdate(ctx, "rgconfigurationmanager", "testname", armworkloadorchestration.DiagnosticUpdate{
+		Properties: &armworkloadorchestration.DiagnosticUpdateProperties{},
+		Tags: map[string]*string{
+			"key1922": to.Ptr("efraipifhmdfekwgunngrgvsc"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armworkloadorchestration.DiagnosticsClientUpdateResponse{
+	// 	Diagnostic: armworkloadorchestration.Diagnostic{
+	// 		Properties: &armworkloadorchestration.DiagnosticProperties{
+	// 			ProvisioningState: to.Ptr(armworkloadorchestration.ProvisioningStateSucceeded),
+	// 		},
+	// 		ExtendedLocation: &armworkloadorchestration.ExtendedLocation{
+	// 			Name: to.Ptr("szjrwimeqyiue"),
+	// 			Type: to.Ptr(armworkloadorchestration.ExtendedLocationTypeEdgeZone),
+	// 		},
+	// 		ETag: to.Ptr("oeib"),
+	// 		Tags: map[string]*string{
+	// 			"key4304": to.Ptr("mdrwpsdrcicagvximokxrrp"),
+	// 		},
+	// 		Location: to.Ptr("ouwfvnokjvivmjzqpupwrbsmls"),
+	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"),
+	// 		Name: to.Ptr("drohk"),
+	// 		Type: to.Ptr("kghs"),
+	// 		SystemData: &armworkloadorchestration.SystemData{
+	// 			CreatedBy: to.Ptr("nvjczgdguyvllp"),
+	// 			CreatedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.June, 9, 10, 11, 50, 747000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("uzbznzjgvaspvtqhyg"),
+	// 			LastModifiedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.June, 9, 10, 11, 50, 747000000, time.UTC)),
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2025-06-01/Diagnostics_Get_MaximumSet_Gen.json
 func ExampleDiagnosticsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -253,60 +309,4 @@ func ExampleDiagnosticsClient_NewListBySubscriptionPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2025-06-01/Diagnostics_Update_MaximumSet_Gen.json
-func ExampleDiagnosticsClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armworkloadorchestration.NewClientFactory("9D54FE4C-00AF-4836-8F48-B6A9C4E47192", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewDiagnosticsClient().BeginUpdate(ctx, "rgconfigurationmanager", "testname", armworkloadorchestration.DiagnosticUpdate{
-		Properties: &armworkloadorchestration.DiagnosticUpdateProperties{},
-		Tags: map[string]*string{
-			"key1922": to.Ptr("efraipifhmdfekwgunngrgvsc"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armworkloadorchestration.DiagnosticsClientUpdateResponse{
-	// 	Diagnostic: armworkloadorchestration.Diagnostic{
-	// 		Properties: &armworkloadorchestration.DiagnosticProperties{
-	// 			ProvisioningState: to.Ptr(armworkloadorchestration.ProvisioningStateSucceeded),
-	// 		},
-	// 		ExtendedLocation: &armworkloadorchestration.ExtendedLocation{
-	// 			Name: to.Ptr("szjrwimeqyiue"),
-	// 			Type: to.Ptr(armworkloadorchestration.ExtendedLocationTypeEdgeZone),
-	// 		},
-	// 		ETag: to.Ptr("oeib"),
-	// 		Tags: map[string]*string{
-	// 			"key4304": to.Ptr("mdrwpsdrcicagvximokxrrp"),
-	// 		},
-	// 		Location: to.Ptr("ouwfvnokjvivmjzqpupwrbsmls"),
-	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"),
-	// 		Name: to.Ptr("drohk"),
-	// 		Type: to.Ptr("kghs"),
-	// 		SystemData: &armworkloadorchestration.SystemData{
-	// 			CreatedBy: to.Ptr("nvjczgdguyvllp"),
-	// 			CreatedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2025, time.June, 9, 10, 11, 50, 747000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("uzbznzjgvaspvtqhyg"),
-	// 			LastModifiedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.June, 9, 10, 11, 50, 747000000, time.UTC)),
-	// 		},
-	// 	},
-	// }
 }

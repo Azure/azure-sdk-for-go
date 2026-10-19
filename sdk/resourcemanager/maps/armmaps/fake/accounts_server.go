@@ -33,14 +33,6 @@ type AccountsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, accountName string, options *armmaps.AccountsClientGetOptions) (resp azfake.Responder[armmaps.AccountsClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListByResourceGroupPager is the fake for method AccountsClient.NewListByResourceGroupPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupPager func(resourceGroupName string, options *armmaps.AccountsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armmaps.AccountsClientListByResourceGroupResponse])
-
-	// NewListBySubscriptionPager is the fake for method AccountsClient.NewListBySubscriptionPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListBySubscriptionPager func(options *armmaps.AccountsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armmaps.AccountsClientListBySubscriptionResponse])
-
 	// ListKeys is the fake for method AccountsClient.ListKeys
 	// HTTP status codes to indicate success: http.StatusOK
 	ListKeys func(ctx context.Context, resourceGroupName string, accountName string, options *armmaps.AccountsClientListKeysOptions) (resp azfake.Responder[armmaps.AccountsClientListKeysResponse], errResp azfake.ErrorResponder)
@@ -48,6 +40,14 @@ type AccountsServer struct {
 	// ListSas is the fake for method AccountsClient.ListSas
 	// HTTP status codes to indicate success: http.StatusOK
 	ListSas func(ctx context.Context, resourceGroupName string, accountName string, mapsAccountSasParameters armmaps.AccountSasParameters, options *armmaps.AccountsClientListSasOptions) (resp azfake.Responder[armmaps.AccountsClientListSasResponse], errResp azfake.ErrorResponder)
+
+	// NewListByResourceGroupPager is the fake for method AccountsClient.NewListByResourceGroupPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByResourceGroupPager func(resourceGroupName string, options *armmaps.AccountsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armmaps.AccountsClientListByResourceGroupResponse])
+
+	// NewListBySubscriptionPager is the fake for method AccountsClient.NewListBySubscriptionPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListBySubscriptionPager func(options *armmaps.AccountsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armmaps.AccountsClientListBySubscriptionResponse])
 
 	// RegenerateKeys is the fake for method AccountsClient.RegenerateKeys
 	// HTTP status codes to indicate success: http.StatusOK
@@ -104,14 +104,14 @@ func (a *AccountsServerTransport) dispatchToMethodFake(req *http.Request, method
 				res.resp, res.err = a.dispatchDelete(req)
 			case "AccountsClient.Get":
 				res.resp, res.err = a.dispatchGet(req)
-			case "AccountsClient.NewListByResourceGroupPager":
-				res.resp, res.err = a.dispatchNewListByResourceGroupPager(req)
-			case "AccountsClient.NewListBySubscriptionPager":
-				res.resp, res.err = a.dispatchNewListBySubscriptionPager(req)
 			case "AccountsClient.ListKeys":
 				res.resp, res.err = a.dispatchListKeys(req)
 			case "AccountsClient.ListSas":
 				res.resp, res.err = a.dispatchListSas(req)
+			case "AccountsClient.NewListByResourceGroupPager":
+				res.resp, res.err = a.dispatchNewListByResourceGroupPager(req)
+			case "AccountsClient.NewListBySubscriptionPager":
+				res.resp, res.err = a.dispatchNewListBySubscriptionPager(req)
 			case "AccountsClient.RegenerateKeys":
 				res.resp, res.err = a.dispatchRegenerateKeys(req)
 			case "AccountsClient.Update":
@@ -235,76 +235,6 @@ func (a *AccountsServerTransport) dispatchGet(req *http.Request) (*http.Response
 	return resp, nil
 }
 
-func (a *AccountsServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
-	if a.srv.NewListByResourceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
-	}
-	newListByResourceGroupPager := a.newListByResourceGroupPager.get(req)
-	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Maps/accounts`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := a.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
-		newListByResourceGroupPager = &resp
-		a.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armmaps.AccountsClientListByResourceGroupResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		a.newListByResourceGroupPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByResourceGroupPager) {
-		a.newListByResourceGroupPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (a *AccountsServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
-	if a.srv.NewListBySubscriptionPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
-	}
-	newListBySubscriptionPager := a.newListBySubscriptionPager.get(req)
-	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Maps/accounts`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := a.srv.NewListBySubscriptionPager(nil)
-		newListBySubscriptionPager = &resp
-		a.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
-		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armmaps.AccountsClientListBySubscriptionResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		a.newListBySubscriptionPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListBySubscriptionPager) {
-		a.newListBySubscriptionPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (a *AccountsServerTransport) dispatchListKeys(req *http.Request) (*http.Response, error) {
 	if a.srv.ListKeys == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListKeys not implemented")}
@@ -371,6 +301,76 @@ func (a *AccountsServerTransport) dispatchListSas(req *http.Request) (*http.Resp
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AccountSasToken, req)
 	if err != nil {
 		return nil, err
+	}
+	return resp, nil
+}
+
+func (a *AccountsServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
+	if a.srv.NewListByResourceGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
+	}
+	newListByResourceGroupPager := a.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Maps/accounts`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := a.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
+		newListByResourceGroupPager = &resp
+		a.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armmaps.AccountsClientListByResourceGroupResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		a.newListByResourceGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		a.newListByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (a *AccountsServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
+	if a.srv.NewListBySubscriptionPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
+	}
+	newListBySubscriptionPager := a.newListBySubscriptionPager.get(req)
+	if newListBySubscriptionPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Maps/accounts`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := a.srv.NewListBySubscriptionPager(nil)
+		newListBySubscriptionPager = &resp
+		a.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
+		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armmaps.AccountsClientListBySubscriptionResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		a.newListBySubscriptionPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListBySubscriptionPager) {
+		a.newListBySubscriptionPager.remove(req)
 	}
 	return resp, nil
 }

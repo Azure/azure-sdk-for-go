@@ -72,7 +72,7 @@ func (client *ManagedClustersClient) BeginAbortLatestOperation(ctx context.Conte
 	}
 }
 
-// AbortLatestOperation - Aborts last operation running on managed cluster.
+// abortLatestOperation - Aborts last operation running on managed cluster.
 //
 // Aborts the currently running operation on the managed cluster. The Managed Cluster will be moved to a Canceling state and
 // eventually to a Canceled state when cancellation finishes. If the operation completes before cancellation can take place,
@@ -98,7 +98,7 @@ func (client *ManagedClustersClient) abortLatestOperation(ctx context.Context, r
 	return httpResp, nil
 }
 
-// abortLatestOperationCreateRequest creates the AbortLatestOperation request.
+// abortLatestOperationCreateRequest creates the abortLatestOperation request.
 func (client *ManagedClustersClient) abortLatestOperationCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, _ *ManagedClustersClientBeginAbortLatestOperationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/abort"
 	if client.subscriptionID == "" {
@@ -147,7 +147,7 @@ func (client *ManagedClustersClient) BeginCreateOrUpdate(ctx context.Context, re
 	}
 }
 
-// CreateOrUpdate - Creates or updates a managed cluster.
+// createOrUpdate - Creates or updates a managed cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ManagedClustersClient) createOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, parameters ManagedCluster, options *ManagedClustersClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -169,7 +169,7 @@ func (client *ManagedClustersClient) createOrUpdate(ctx context.Context, resourc
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ManagedClustersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, parameters ManagedCluster, options *ManagedClustersClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}"
 	if client.subscriptionID == "" {
@@ -228,7 +228,7 @@ func (client *ManagedClustersClient) BeginDelete(ctx context.Context, resourceGr
 	}
 }
 
-// Delete - Deletes a managed cluster.
+// deleteOperation - Deletes a managed cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ManagedClustersClient) deleteOperation(ctx context.Context, resourceGroupName string, resourceName string, options *ManagedClustersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -250,7 +250,7 @@ func (client *ManagedClustersClient) deleteOperation(ctx context.Context, resour
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ManagedClustersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *ManagedClustersClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}"
 	if client.subscriptionID == "" {
@@ -277,6 +277,702 @@ func (client *ManagedClustersClient) deleteCreateRequest(ctx context.Context, re
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["if-match"] = []string{*options.IfMatch}
+	}
+	return req, nil
+}
+
+// BeginRebalanceLoadBalancers - Rebalance nodes across specific load balancers.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - The name of the managed cluster resource.
+//   - parameters - The names of the load balancers to be rebalanced. If set to empty, all load balancers will be rebalanced.
+//   - options - ManagedClustersClientBeginRebalanceLoadBalancersOptions contains the optional parameters for the ManagedClustersClient.BeginRebalanceLoadBalancers
+//     method.
+func (client *ManagedClustersClient) BeginRebalanceLoadBalancers(ctx context.Context, resourceGroupName string, resourceName string, parameters RebalanceLoadBalancersRequestBody, options *ManagedClustersClientBeginRebalanceLoadBalancersOptions) (*runtime.Poller[ManagedClustersClientRebalanceLoadBalancersResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.rebalanceLoadBalancers(ctx, resourceGroupName, resourceName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagedClustersClientRebalanceLoadBalancersResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ManagedClustersClientRebalanceLoadBalancersResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// rebalanceLoadBalancers - Rebalance nodes across specific load balancers.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ManagedClustersClient) rebalanceLoadBalancers(ctx context.Context, resourceGroupName string, resourceName string, parameters RebalanceLoadBalancersRequestBody, options *ManagedClustersClientBeginRebalanceLoadBalancersOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ManagedClustersClient.BeginRebalanceLoadBalancers"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.rebalanceLoadBalancersCreateRequest(ctx, resourceGroupName, resourceName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// rebalanceLoadBalancersCreateRequest creates the rebalanceLoadBalancers request.
+func (client *ManagedClustersClient) rebalanceLoadBalancersCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, parameters RebalanceLoadBalancersRequestBody, _ *ManagedClustersClientBeginRebalanceLoadBalancersOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/rebalanceLoadBalancers"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260702Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginResetAADProfile - Reset the AAD Profile of a managed cluster.
+//
+// **WARNING**: This API will be deprecated. Please see [AKS-managed Azure Active Directory integration](https://aka.ms/aks-managed-aad)
+// to update your cluster with AKS-managed Azure AD.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - The name of the managed cluster resource.
+//   - parameters - The AAD profile to set on the Managed Cluster
+//   - options - ManagedClustersClientBeginResetAADProfileOptions contains the optional parameters for the ManagedClustersClient.BeginResetAADProfile
+//     method.
+func (client *ManagedClustersClient) BeginResetAADProfile(ctx context.Context, resourceGroupName string, resourceName string, parameters ManagedClusterAADProfile, options *ManagedClustersClientBeginResetAADProfileOptions) (*runtime.Poller[ManagedClustersClientResetAADProfileResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.resetAADProfile(ctx, resourceGroupName, resourceName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagedClustersClientResetAADProfileResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ManagedClustersClientResetAADProfileResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// resetAADProfile - Reset the AAD Profile of a managed cluster.
+//
+// **WARNING**: This API will be deprecated. Please see [AKS-managed Azure Active Directory integration](https://aka.ms/aks-managed-aad)
+// to update your cluster with AKS-managed Azure AD.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ManagedClustersClient) resetAADProfile(ctx context.Context, resourceGroupName string, resourceName string, parameters ManagedClusterAADProfile, options *ManagedClustersClientBeginResetAADProfileOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ManagedClustersClient.BeginResetAADProfile"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.resetAADProfileCreateRequest(ctx, resourceGroupName, resourceName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// resetAADProfileCreateRequest creates the resetAADProfile request.
+func (client *ManagedClustersClient) resetAADProfileCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, parameters ManagedClusterAADProfile, _ *ManagedClustersClientBeginResetAADProfileOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/resetAADProfile"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260702Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginResetServicePrincipalProfile - Reset the Service Principal Profile of a managed cluster.
+//
+// This action cannot be performed on a cluster that is not using a service principal
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - The name of the managed cluster resource.
+//   - parameters - The service principal profile to set on the managed cluster.
+//   - options - ManagedClustersClientBeginResetServicePrincipalProfileOptions contains the optional parameters for the ManagedClustersClient.BeginResetServicePrincipalProfile
+//     method.
+func (client *ManagedClustersClient) BeginResetServicePrincipalProfile(ctx context.Context, resourceGroupName string, resourceName string, parameters ManagedClusterServicePrincipalProfile, options *ManagedClustersClientBeginResetServicePrincipalProfileOptions) (*runtime.Poller[ManagedClustersClientResetServicePrincipalProfileResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.resetServicePrincipalProfile(ctx, resourceGroupName, resourceName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagedClustersClientResetServicePrincipalProfileResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ManagedClustersClientResetServicePrincipalProfileResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// resetServicePrincipalProfile - Reset the Service Principal Profile of a managed cluster.
+//
+// This action cannot be performed on a cluster that is not using a service principal
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ManagedClustersClient) resetServicePrincipalProfile(ctx context.Context, resourceGroupName string, resourceName string, parameters ManagedClusterServicePrincipalProfile, options *ManagedClustersClientBeginResetServicePrincipalProfileOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ManagedClustersClient.BeginResetServicePrincipalProfile"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.resetServicePrincipalProfileCreateRequest(ctx, resourceGroupName, resourceName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// resetServicePrincipalProfileCreateRequest creates the resetServicePrincipalProfile request.
+func (client *ManagedClustersClient) resetServicePrincipalProfileCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, parameters ManagedClusterServicePrincipalProfile, _ *ManagedClustersClientBeginResetServicePrincipalProfileOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/resetServicePrincipalProfile"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260702Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginRotateClusterCertificates - Rotates the certificates of a managed cluster.
+//
+// See [Certificate rotation](https://docs.microsoft.com/azure/aks/certificate-rotation) for more details about rotating managed
+// cluster certificates.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - The name of the managed cluster resource.
+//   - options - ManagedClustersClientBeginRotateClusterCertificatesOptions contains the optional parameters for the ManagedClustersClient.BeginRotateClusterCertificates
+//     method.
+func (client *ManagedClustersClient) BeginRotateClusterCertificates(ctx context.Context, resourceGroupName string, resourceName string, options *ManagedClustersClientBeginRotateClusterCertificatesOptions) (*runtime.Poller[ManagedClustersClientRotateClusterCertificatesResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.rotateClusterCertificates(ctx, resourceGroupName, resourceName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagedClustersClientRotateClusterCertificatesResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ManagedClustersClientRotateClusterCertificatesResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// rotateClusterCertificates - Rotates the certificates of a managed cluster.
+//
+// See [Certificate rotation](https://docs.microsoft.com/azure/aks/certificate-rotation) for more details about rotating managed
+// cluster certificates.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ManagedClustersClient) rotateClusterCertificates(ctx context.Context, resourceGroupName string, resourceName string, options *ManagedClustersClientBeginRotateClusterCertificatesOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ManagedClustersClient.BeginRotateClusterCertificates"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.rotateClusterCertificatesCreateRequest(ctx, resourceGroupName, resourceName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// rotateClusterCertificatesCreateRequest creates the rotateClusterCertificates request.
+func (client *ManagedClustersClient) rotateClusterCertificatesCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, _ *ManagedClustersClientBeginRotateClusterCertificatesOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/rotateClusterCertificates"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260702Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginRotateServiceAccountSigningKeys - Rotates the service account signing keys of a managed cluster.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - The name of the managed cluster resource.
+//   - options - ManagedClustersClientBeginRotateServiceAccountSigningKeysOptions contains the optional parameters for the ManagedClustersClient.BeginRotateServiceAccountSigningKeys
+//     method.
+func (client *ManagedClustersClient) BeginRotateServiceAccountSigningKeys(ctx context.Context, resourceGroupName string, resourceName string, options *ManagedClustersClientBeginRotateServiceAccountSigningKeysOptions) (*runtime.Poller[ManagedClustersClientRotateServiceAccountSigningKeysResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.rotateServiceAccountSigningKeys(ctx, resourceGroupName, resourceName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagedClustersClientRotateServiceAccountSigningKeysResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ManagedClustersClientRotateServiceAccountSigningKeysResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// rotateServiceAccountSigningKeys - Rotates the service account signing keys of a managed cluster.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ManagedClustersClient) rotateServiceAccountSigningKeys(ctx context.Context, resourceGroupName string, resourceName string, options *ManagedClustersClientBeginRotateServiceAccountSigningKeysOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ManagedClustersClient.BeginRotateServiceAccountSigningKeys"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.rotateServiceAccountSigningKeysCreateRequest(ctx, resourceGroupName, resourceName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// rotateServiceAccountSigningKeysCreateRequest creates the rotateServiceAccountSigningKeys request.
+func (client *ManagedClustersClient) rotateServiceAccountSigningKeysCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, _ *ManagedClustersClientBeginRotateServiceAccountSigningKeysOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/rotateServiceAccountSigningKeys"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260702Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginRunCommand - Submits a command to run against the Managed Cluster.
+//
+// AKS will create a pod to run the command. This is primarily useful for private clusters. For more information see [AKS
+// Run Command](https://docs.microsoft.com/azure/aks/private-clusters#aks-run-command-preview).
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - The name of the managed cluster resource.
+//   - requestPayload - The run command request
+//   - options - ManagedClustersClientBeginRunCommandOptions contains the optional parameters for the ManagedClustersClient.BeginRunCommand
+//     method.
+func (client *ManagedClustersClient) BeginRunCommand(ctx context.Context, resourceGroupName string, resourceName string, requestPayload RunCommandRequest, options *ManagedClustersClientBeginRunCommandOptions) (*runtime.Poller[ManagedClustersClientRunCommandResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.runCommand(ctx, resourceGroupName, resourceName, requestPayload, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagedClustersClientRunCommandResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ManagedClustersClientRunCommandResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// runCommand - Submits a command to run against the Managed Cluster.
+//
+// AKS will create a pod to run the command. This is primarily useful for private clusters. For more information see [AKS
+// Run Command](https://docs.microsoft.com/azure/aks/private-clusters#aks-run-command-preview).
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ManagedClustersClient) runCommand(ctx context.Context, resourceGroupName string, resourceName string, requestPayload RunCommandRequest, options *ManagedClustersClientBeginRunCommandOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ManagedClustersClient.BeginRunCommand"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.runCommandCreateRequest(ctx, resourceGroupName, resourceName, requestPayload, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// runCommandCreateRequest creates the runCommand request.
+func (client *ManagedClustersClient) runCommandCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, requestPayload RunCommandRequest, _ *ManagedClustersClientBeginRunCommandOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/runCommand"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260702Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, requestPayload); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginStart - Starts a previously stopped Managed Cluster
+//
+// See [starting a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster) for more details about starting a cluster.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - The name of the managed cluster resource.
+//   - options - ManagedClustersClientBeginStartOptions contains the optional parameters for the ManagedClustersClient.BeginStart
+//     method.
+func (client *ManagedClustersClient) BeginStart(ctx context.Context, resourceGroupName string, resourceName string, options *ManagedClustersClientBeginStartOptions) (*runtime.Poller[ManagedClustersClientStartResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.start(ctx, resourceGroupName, resourceName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagedClustersClientStartResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ManagedClustersClientStartResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// start - Starts a previously stopped Managed Cluster
+//
+// See [starting a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster) for more details about starting a cluster.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ManagedClustersClient) start(ctx context.Context, resourceGroupName string, resourceName string, options *ManagedClustersClientBeginStartOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ManagedClustersClient.BeginStart"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.startCreateRequest(ctx, resourceGroupName, resourceName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// startCreateRequest creates the start request.
+func (client *ManagedClustersClient) startCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, _ *ManagedClustersClientBeginStartOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/start"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260702Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginStop - Stops a Managed Cluster
+//
+// This can only be performed on Azure Virtual Machine Scale set backed clusters. Stopping a cluster stops the control plane
+// and agent nodes entirely, while maintaining all object and cluster state. A cluster does not accrue charges while it is
+// stopped. See [stopping a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster) for more details about stopping
+// a cluster.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - The name of the managed cluster resource.
+//   - options - ManagedClustersClientBeginStopOptions contains the optional parameters for the ManagedClustersClient.BeginStop
+//     method.
+func (client *ManagedClustersClient) BeginStop(ctx context.Context, resourceGroupName string, resourceName string, options *ManagedClustersClientBeginStopOptions) (*runtime.Poller[ManagedClustersClientStopResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.stop(ctx, resourceGroupName, resourceName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagedClustersClientStopResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ManagedClustersClientStopResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// stop - Stops a Managed Cluster
+//
+// This can only be performed on Azure Virtual Machine Scale set backed clusters. Stopping a cluster stops the control plane
+// and agent nodes entirely, while maintaining all object and cluster state. A cluster does not accrue charges while it is
+// stopped. See [stopping a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster) for more details about stopping
+// a cluster.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ManagedClustersClient) stop(ctx context.Context, resourceGroupName string, resourceName string, options *ManagedClustersClientBeginStopOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ManagedClustersClient.BeginStop"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.stopCreateRequest(ctx, resourceGroupName, resourceName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// stopCreateRequest creates the stop request.
+func (client *ManagedClustersClient) stopCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, _ *ManagedClustersClientBeginStopOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/stop"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260702Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdateTags - Updates tags on a managed cluster.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - The name of the managed cluster resource.
+//   - parameters - Parameters supplied to the Update Managed Cluster Tags operation.
+//   - options - ManagedClustersClientBeginUpdateTagsOptions contains the optional parameters for the ManagedClustersClient.BeginUpdateTags
+//     method.
+func (client *ManagedClustersClient) BeginUpdateTags(ctx context.Context, resourceGroupName string, resourceName string, parameters TagsObject, options *ManagedClustersClientBeginUpdateTagsOptions) (*runtime.Poller[ManagedClustersClientUpdateTagsResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.updateTags(ctx, resourceGroupName, resourceName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagedClustersClientUpdateTagsResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ManagedClustersClientUpdateTagsResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// updateTags - Updates tags on a managed cluster.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ManagedClustersClient) updateTags(ctx context.Context, resourceGroupName string, resourceName string, parameters TagsObject, options *ManagedClustersClientBeginUpdateTagsOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ManagedClustersClient.BeginUpdateTags"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateTagsCreateRequest(ctx, resourceGroupName, resourceName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateTagsCreateRequest creates the updateTags request.
+func (client *ManagedClustersClient) updateTagsCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, parameters TagsObject, options *ManagedClustersClientBeginUpdateTagsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260702Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if options != nil && options.IfMatch != nil {
+		req.Raw().Header["if-match"] = []string{*options.IfMatch}
+	}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
 	}
 	return req, nil
 }
@@ -795,145 +1491,6 @@ func (client *ManagedClustersClient) getUpgradeProfileHandleResponse(resp *http.
 	return result, nil
 }
 
-// NewListPager - Gets a list of managed clusters in the specified subscription.
-//   - options - ManagedClustersClientListOptions contains the optional parameters for the ManagedClustersClient.NewListPager
-//     method.
-func (client *ManagedClustersClient) NewListPager(options *ManagedClustersClientListOptions) *runtime.Pager[ManagedClustersClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ManagedClustersClientListResponse]{
-		More: func(page ManagedClustersClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *ManagedClustersClientListResponse) (ManagedClustersClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ManagedClustersClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listCreateRequest(ctx, nextLink, options)
-			if err != nil {
-				return ManagedClustersClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ManagedClustersClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *ManagedClustersClient) listCreateRequest(ctx context.Context, nextLink string, _ *ManagedClustersClientListOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/managedClusters"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260702Preview)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *ManagedClustersClient) listHandleResponse(resp *http.Response, successCodes ...int) (ManagedClustersClientListResponse, error) {
-	result := ManagedClustersClientListResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedClusterListResult); err != nil {
-		return ManagedClustersClientListResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListByResourceGroupPager - Lists managed clusters in the specified subscription and resource group.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - options - ManagedClustersClientListByResourceGroupOptions contains the optional parameters for the ManagedClustersClient.NewListByResourceGroupPager
-//     method.
-func (client *ManagedClustersClient) NewListByResourceGroupPager(resourceGroupName string, options *ManagedClustersClientListByResourceGroupOptions) *runtime.Pager[ManagedClustersClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ManagedClustersClientListByResourceGroupResponse]{
-		More: func(page ManagedClustersClientListByResourceGroupResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *ManagedClustersClientListByResourceGroupResponse) (ManagedClustersClientListByResourceGroupResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ManagedClustersClient.NewListByResourceGroupPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
-			if err != nil {
-				return ManagedClustersClientListByResourceGroupResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ManagedClustersClientListByResourceGroupResponse{}, err
-			}
-			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *ManagedClustersClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *ManagedClustersClientListByResourceGroupOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		if resourceGroupName == "" {
-			return nil, errors.New("parameter resourceGroupName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260702Preview)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *ManagedClustersClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (ManagedClustersClientListByResourceGroupResponse, error) {
-	result := ManagedClustersClientListByResourceGroupResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedClusterListResult); err != nil {
-		return ManagedClustersClientListByResourceGroupResponse{}, err
-	}
-	return result, nil
-}
-
 // ListClusterAdminCredentials - Lists the admin credentials of a managed cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -1129,6 +1686,137 @@ func (client *ManagedClustersClient) listClusterUserCredentialsHandleResponse(re
 	return result, nil
 }
 
+// ListKubernetesVersions - Gets a list of supported Kubernetes versions in the specified subscription.
+//
+// Contains extra metadata on the version, including supported patch versions, capabilities, available upgrades, and details
+// on preview status of the version
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - location - The name of the Azure region.
+//   - options - ManagedClustersClientListKubernetesVersionsOptions contains the optional parameters for the ManagedClustersClient.ListKubernetesVersions
+//     method.
+func (client *ManagedClustersClient) ListKubernetesVersions(ctx context.Context, location string, options *ManagedClustersClientListKubernetesVersionsOptions) (ManagedClustersClientListKubernetesVersionsResponse, error) {
+	var err error
+	const operationName = "ManagedClustersClient.ListKubernetesVersions"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listKubernetesVersionsCreateRequest(ctx, location, options)
+	if err != nil {
+		return ManagedClustersClientListKubernetesVersionsResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ManagedClustersClientListKubernetesVersionsResponse{}, err
+	}
+	return client.listKubernetesVersionsHandleResponse(httpResp, http.StatusOK)
+}
+
+// listKubernetesVersionsCreateRequest creates the ListKubernetesVersions request.
+func (client *ManagedClustersClient) listKubernetesVersionsCreateRequest(ctx context.Context, location string, _ *ManagedClustersClientListKubernetesVersionsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/locations/{location}/kubernetesVersions"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if location == "" {
+		return nil, errors.New("parameter location cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260702Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listKubernetesVersionsHandleResponse handles the ListKubernetesVersions response.
+func (client *ManagedClustersClient) listKubernetesVersionsHandleResponse(resp *http.Response, successCodes ...int) (ManagedClustersClientListKubernetesVersionsResponse, error) {
+	result := ManagedClustersClientListKubernetesVersionsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.KubernetesVersionListResult); err != nil {
+		return ManagedClustersClientListKubernetesVersionsResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListByResourceGroupPager - Lists managed clusters in the specified subscription and resource group.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - options - ManagedClustersClientListByResourceGroupOptions contains the optional parameters for the ManagedClustersClient.NewListByResourceGroupPager
+//     method.
+func (client *ManagedClustersClient) NewListByResourceGroupPager(resourceGroupName string, options *ManagedClustersClientListByResourceGroupOptions) *runtime.Pager[ManagedClustersClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ManagedClustersClientListByResourceGroupResponse]{
+		More: func(page ManagedClustersClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *ManagedClustersClientListByResourceGroupResponse) (ManagedClustersClientListByResourceGroupResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ManagedClustersClient.NewListByResourceGroupPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
+			if err != nil {
+				return ManagedClustersClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ManagedClustersClientListByResourceGroupResponse{}, err
+			}
+			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listByResourceGroupCreateRequest creates the ListByResourceGroup request.
+func (client *ManagedClustersClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *ManagedClustersClientListByResourceGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260702Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listByResourceGroupHandleResponse handles the ListByResourceGroup response.
+func (client *ManagedClustersClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (ManagedClustersClientListByResourceGroupResponse, error) {
+	result := ManagedClustersClientListByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedClusterListResult); err != nil {
+		return ManagedClustersClientListByResourceGroupResponse{}, err
+	}
+	return result, nil
+}
+
 // NewListGuardrailsVersionsPager - Gets a list of supported Guardrails versions in the specified subscription and location.
 //
 // Contains list of Guardrails version along with its support info and whether it is a default version.
@@ -1199,65 +1887,6 @@ func (client *ManagedClustersClient) listGuardrailsVersionsHandleResponse(resp *
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GuardrailsAvailableVersionsList); err != nil {
 		return ManagedClustersClientListGuardrailsVersionsResponse{}, err
-	}
-	return result, nil
-}
-
-// ListKubernetesVersions - Gets a list of supported Kubernetes versions in the specified subscription.
-//
-// Contains extra metadata on the version, including supported patch versions, capabilities, available upgrades, and details
-// on preview status of the version
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - location - The name of the Azure region.
-//   - options - ManagedClustersClientListKubernetesVersionsOptions contains the optional parameters for the ManagedClustersClient.ListKubernetesVersions
-//     method.
-func (client *ManagedClustersClient) ListKubernetesVersions(ctx context.Context, location string, options *ManagedClustersClientListKubernetesVersionsOptions) (ManagedClustersClientListKubernetesVersionsResponse, error) {
-	var err error
-	const operationName = "ManagedClustersClient.ListKubernetesVersions"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listKubernetesVersionsCreateRequest(ctx, location, options)
-	if err != nil {
-		return ManagedClustersClientListKubernetesVersionsResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return ManagedClustersClientListKubernetesVersionsResponse{}, err
-	}
-	return client.listKubernetesVersionsHandleResponse(httpResp, http.StatusOK)
-}
-
-// listKubernetesVersionsCreateRequest creates the ListKubernetesVersions request.
-func (client *ManagedClustersClient) listKubernetesVersionsCreateRequest(ctx context.Context, location string, _ *ManagedClustersClientListKubernetesVersionsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/locations/{location}/kubernetesVersions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if location == "" {
-		return nil, errors.New("parameter location cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260702Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listKubernetesVersionsHandleResponse handles the ListKubernetesVersions response.
-func (client *ManagedClustersClient) listKubernetesVersionsHandleResponse(resp *http.Response, successCodes ...int) (ManagedClustersClientListKubernetesVersionsResponse, error) {
-	result := ManagedClustersClientListKubernetesVersionsResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.KubernetesVersionListResult); err != nil {
-		return ManagedClustersClientListKubernetesVersionsResponse{}, err
 	}
 	return result, nil
 }
@@ -1494,6 +2123,73 @@ func (client *ManagedClustersClient) listOutboundNetworkDependenciesEndpointsHan
 	return result, nil
 }
 
+// NewListPager - Gets a list of managed clusters in the specified subscription.
+//   - options - ManagedClustersClientListOptions contains the optional parameters for the ManagedClustersClient.NewListPager
+//     method.
+func (client *ManagedClustersClient) NewListPager(options *ManagedClustersClientListOptions) *runtime.Pager[ManagedClustersClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ManagedClustersClientListResponse]{
+		More: func(page ManagedClustersClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *ManagedClustersClientListResponse) (ManagedClustersClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ManagedClustersClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return ManagedClustersClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ManagedClustersClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listCreateRequest creates the List request.
+func (client *ManagedClustersClient) listCreateRequest(ctx context.Context, nextLink string, _ *ManagedClustersClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/managedClusters"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260702Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listHandleResponse handles the List response.
+func (client *ManagedClustersClient) listHandleResponse(resp *http.Response, successCodes ...int) (ManagedClustersClientListResponse, error) {
+	result := ManagedClustersClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedClusterListResult); err != nil {
+		return ManagedClustersClientListResponse{}, err
+	}
+	return result, nil
+}
+
 // NewListSafeguardsVersionsPager - Gets a list of supported Safeguards versions in the specified subscription and location.
 //
 // Contains list of Safeguards version along with its support info and whether it is a default version.
@@ -1566,700 +2262,4 @@ func (client *ManagedClustersClient) listSafeguardsVersionsHandleResponse(resp *
 		return ManagedClustersClientListSafeguardsVersionsResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginRebalanceLoadBalancers - Rebalance nodes across specific load balancers.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - resourceName - The name of the managed cluster resource.
-//   - parameters - The names of the load balancers to be rebalanced. If set to empty, all load balancers will be rebalanced.
-//   - options - ManagedClustersClientBeginRebalanceLoadBalancersOptions contains the optional parameters for the ManagedClustersClient.BeginRebalanceLoadBalancers
-//     method.
-func (client *ManagedClustersClient) BeginRebalanceLoadBalancers(ctx context.Context, resourceGroupName string, resourceName string, parameters RebalanceLoadBalancersRequestBody, options *ManagedClustersClientBeginRebalanceLoadBalancersOptions) (*runtime.Poller[ManagedClustersClientRebalanceLoadBalancersResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.rebalanceLoadBalancers(ctx, resourceGroupName, resourceName, parameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagedClustersClientRebalanceLoadBalancersResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ManagedClustersClientRebalanceLoadBalancersResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// RebalanceLoadBalancers - Rebalance nodes across specific load balancers.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ManagedClustersClient) rebalanceLoadBalancers(ctx context.Context, resourceGroupName string, resourceName string, parameters RebalanceLoadBalancersRequestBody, options *ManagedClustersClientBeginRebalanceLoadBalancersOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ManagedClustersClient.BeginRebalanceLoadBalancers"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.rebalanceLoadBalancersCreateRequest(ctx, resourceGroupName, resourceName, parameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// rebalanceLoadBalancersCreateRequest creates the RebalanceLoadBalancers request.
-func (client *ManagedClustersClient) rebalanceLoadBalancersCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, parameters RebalanceLoadBalancersRequestBody, _ *ManagedClustersClientBeginRebalanceLoadBalancersOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/rebalanceLoadBalancers"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if resourceName == "" {
-		return nil, errors.New("parameter resourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260702Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginResetAADProfile - Reset the AAD Profile of a managed cluster.
-//
-// **WARNING**: This API will be deprecated. Please see [AKS-managed Azure Active Directory integration](https://aka.ms/aks-managed-aad)
-// to update your cluster with AKS-managed Azure AD.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - resourceName - The name of the managed cluster resource.
-//   - parameters - The AAD profile to set on the Managed Cluster
-//   - options - ManagedClustersClientBeginResetAADProfileOptions contains the optional parameters for the ManagedClustersClient.BeginResetAADProfile
-//     method.
-func (client *ManagedClustersClient) BeginResetAADProfile(ctx context.Context, resourceGroupName string, resourceName string, parameters ManagedClusterAADProfile, options *ManagedClustersClientBeginResetAADProfileOptions) (*runtime.Poller[ManagedClustersClientResetAADProfileResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.resetAADProfile(ctx, resourceGroupName, resourceName, parameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagedClustersClientResetAADProfileResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ManagedClustersClientResetAADProfileResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// ResetAADProfile - Reset the AAD Profile of a managed cluster.
-//
-// **WARNING**: This API will be deprecated. Please see [AKS-managed Azure Active Directory integration](https://aka.ms/aks-managed-aad)
-// to update your cluster with AKS-managed Azure AD.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ManagedClustersClient) resetAADProfile(ctx context.Context, resourceGroupName string, resourceName string, parameters ManagedClusterAADProfile, options *ManagedClustersClientBeginResetAADProfileOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ManagedClustersClient.BeginResetAADProfile"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.resetAADProfileCreateRequest(ctx, resourceGroupName, resourceName, parameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// resetAADProfileCreateRequest creates the ResetAADProfile request.
-func (client *ManagedClustersClient) resetAADProfileCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, parameters ManagedClusterAADProfile, _ *ManagedClustersClientBeginResetAADProfileOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/resetAADProfile"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if resourceName == "" {
-		return nil, errors.New("parameter resourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260702Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginResetServicePrincipalProfile - Reset the Service Principal Profile of a managed cluster.
-//
-// This action cannot be performed on a cluster that is not using a service principal
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - resourceName - The name of the managed cluster resource.
-//   - parameters - The service principal profile to set on the managed cluster.
-//   - options - ManagedClustersClientBeginResetServicePrincipalProfileOptions contains the optional parameters for the ManagedClustersClient.BeginResetServicePrincipalProfile
-//     method.
-func (client *ManagedClustersClient) BeginResetServicePrincipalProfile(ctx context.Context, resourceGroupName string, resourceName string, parameters ManagedClusterServicePrincipalProfile, options *ManagedClustersClientBeginResetServicePrincipalProfileOptions) (*runtime.Poller[ManagedClustersClientResetServicePrincipalProfileResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.resetServicePrincipalProfile(ctx, resourceGroupName, resourceName, parameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagedClustersClientResetServicePrincipalProfileResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ManagedClustersClientResetServicePrincipalProfileResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// ResetServicePrincipalProfile - Reset the Service Principal Profile of a managed cluster.
-//
-// This action cannot be performed on a cluster that is not using a service principal
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ManagedClustersClient) resetServicePrincipalProfile(ctx context.Context, resourceGroupName string, resourceName string, parameters ManagedClusterServicePrincipalProfile, options *ManagedClustersClientBeginResetServicePrincipalProfileOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ManagedClustersClient.BeginResetServicePrincipalProfile"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.resetServicePrincipalProfileCreateRequest(ctx, resourceGroupName, resourceName, parameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// resetServicePrincipalProfileCreateRequest creates the ResetServicePrincipalProfile request.
-func (client *ManagedClustersClient) resetServicePrincipalProfileCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, parameters ManagedClusterServicePrincipalProfile, _ *ManagedClustersClientBeginResetServicePrincipalProfileOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/resetServicePrincipalProfile"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if resourceName == "" {
-		return nil, errors.New("parameter resourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260702Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginRotateClusterCertificates - Rotates the certificates of a managed cluster.
-//
-// See [Certificate rotation](https://docs.microsoft.com/azure/aks/certificate-rotation) for more details about rotating managed
-// cluster certificates.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - resourceName - The name of the managed cluster resource.
-//   - options - ManagedClustersClientBeginRotateClusterCertificatesOptions contains the optional parameters for the ManagedClustersClient.BeginRotateClusterCertificates
-//     method.
-func (client *ManagedClustersClient) BeginRotateClusterCertificates(ctx context.Context, resourceGroupName string, resourceName string, options *ManagedClustersClientBeginRotateClusterCertificatesOptions) (*runtime.Poller[ManagedClustersClientRotateClusterCertificatesResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.rotateClusterCertificates(ctx, resourceGroupName, resourceName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagedClustersClientRotateClusterCertificatesResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ManagedClustersClientRotateClusterCertificatesResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// RotateClusterCertificates - Rotates the certificates of a managed cluster.
-//
-// See [Certificate rotation](https://docs.microsoft.com/azure/aks/certificate-rotation) for more details about rotating managed
-// cluster certificates.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ManagedClustersClient) rotateClusterCertificates(ctx context.Context, resourceGroupName string, resourceName string, options *ManagedClustersClientBeginRotateClusterCertificatesOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ManagedClustersClient.BeginRotateClusterCertificates"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.rotateClusterCertificatesCreateRequest(ctx, resourceGroupName, resourceName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// rotateClusterCertificatesCreateRequest creates the RotateClusterCertificates request.
-func (client *ManagedClustersClient) rotateClusterCertificatesCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, _ *ManagedClustersClientBeginRotateClusterCertificatesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/rotateClusterCertificates"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if resourceName == "" {
-		return nil, errors.New("parameter resourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260702Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
-}
-
-// BeginRotateServiceAccountSigningKeys - Rotates the service account signing keys of a managed cluster.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - resourceName - The name of the managed cluster resource.
-//   - options - ManagedClustersClientBeginRotateServiceAccountSigningKeysOptions contains the optional parameters for the ManagedClustersClient.BeginRotateServiceAccountSigningKeys
-//     method.
-func (client *ManagedClustersClient) BeginRotateServiceAccountSigningKeys(ctx context.Context, resourceGroupName string, resourceName string, options *ManagedClustersClientBeginRotateServiceAccountSigningKeysOptions) (*runtime.Poller[ManagedClustersClientRotateServiceAccountSigningKeysResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.rotateServiceAccountSigningKeys(ctx, resourceGroupName, resourceName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagedClustersClientRotateServiceAccountSigningKeysResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ManagedClustersClientRotateServiceAccountSigningKeysResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// RotateServiceAccountSigningKeys - Rotates the service account signing keys of a managed cluster.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ManagedClustersClient) rotateServiceAccountSigningKeys(ctx context.Context, resourceGroupName string, resourceName string, options *ManagedClustersClientBeginRotateServiceAccountSigningKeysOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ManagedClustersClient.BeginRotateServiceAccountSigningKeys"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.rotateServiceAccountSigningKeysCreateRequest(ctx, resourceGroupName, resourceName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// rotateServiceAccountSigningKeysCreateRequest creates the RotateServiceAccountSigningKeys request.
-func (client *ManagedClustersClient) rotateServiceAccountSigningKeysCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, _ *ManagedClustersClientBeginRotateServiceAccountSigningKeysOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/rotateServiceAccountSigningKeys"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if resourceName == "" {
-		return nil, errors.New("parameter resourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260702Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
-}
-
-// BeginRunCommand - Submits a command to run against the Managed Cluster.
-//
-// AKS will create a pod to run the command. This is primarily useful for private clusters. For more information see [AKS
-// Run Command](https://docs.microsoft.com/azure/aks/private-clusters#aks-run-command-preview).
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - resourceName - The name of the managed cluster resource.
-//   - requestPayload - The run command request
-//   - options - ManagedClustersClientBeginRunCommandOptions contains the optional parameters for the ManagedClustersClient.BeginRunCommand
-//     method.
-func (client *ManagedClustersClient) BeginRunCommand(ctx context.Context, resourceGroupName string, resourceName string, requestPayload RunCommandRequest, options *ManagedClustersClientBeginRunCommandOptions) (*runtime.Poller[ManagedClustersClientRunCommandResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.runCommand(ctx, resourceGroupName, resourceName, requestPayload, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagedClustersClientRunCommandResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ManagedClustersClientRunCommandResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// RunCommand - Submits a command to run against the Managed Cluster.
-//
-// AKS will create a pod to run the command. This is primarily useful for private clusters. For more information see [AKS
-// Run Command](https://docs.microsoft.com/azure/aks/private-clusters#aks-run-command-preview).
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ManagedClustersClient) runCommand(ctx context.Context, resourceGroupName string, resourceName string, requestPayload RunCommandRequest, options *ManagedClustersClientBeginRunCommandOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ManagedClustersClient.BeginRunCommand"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.runCommandCreateRequest(ctx, resourceGroupName, resourceName, requestPayload, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// runCommandCreateRequest creates the RunCommand request.
-func (client *ManagedClustersClient) runCommandCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, requestPayload RunCommandRequest, _ *ManagedClustersClientBeginRunCommandOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/runCommand"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if resourceName == "" {
-		return nil, errors.New("parameter resourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260702Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, requestPayload); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginStart - Starts a previously stopped Managed Cluster
-//
-// See [starting a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster) for more details about starting a cluster.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - resourceName - The name of the managed cluster resource.
-//   - options - ManagedClustersClientBeginStartOptions contains the optional parameters for the ManagedClustersClient.BeginStart
-//     method.
-func (client *ManagedClustersClient) BeginStart(ctx context.Context, resourceGroupName string, resourceName string, options *ManagedClustersClientBeginStartOptions) (*runtime.Poller[ManagedClustersClientStartResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.start(ctx, resourceGroupName, resourceName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagedClustersClientStartResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ManagedClustersClientStartResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Start - Starts a previously stopped Managed Cluster
-//
-// See [starting a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster) for more details about starting a cluster.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ManagedClustersClient) start(ctx context.Context, resourceGroupName string, resourceName string, options *ManagedClustersClientBeginStartOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ManagedClustersClient.BeginStart"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.startCreateRequest(ctx, resourceGroupName, resourceName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// startCreateRequest creates the Start request.
-func (client *ManagedClustersClient) startCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, _ *ManagedClustersClientBeginStartOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/start"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if resourceName == "" {
-		return nil, errors.New("parameter resourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260702Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
-}
-
-// BeginStop - Stops a Managed Cluster
-//
-// This can only be performed on Azure Virtual Machine Scale set backed clusters. Stopping a cluster stops the control plane
-// and agent nodes entirely, while maintaining all object and cluster state. A cluster does not accrue charges while it is
-// stopped. See [stopping a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster) for more details about stopping
-// a cluster.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - resourceName - The name of the managed cluster resource.
-//   - options - ManagedClustersClientBeginStopOptions contains the optional parameters for the ManagedClustersClient.BeginStop
-//     method.
-func (client *ManagedClustersClient) BeginStop(ctx context.Context, resourceGroupName string, resourceName string, options *ManagedClustersClientBeginStopOptions) (*runtime.Poller[ManagedClustersClientStopResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.stop(ctx, resourceGroupName, resourceName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagedClustersClientStopResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ManagedClustersClientStopResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Stop - Stops a Managed Cluster
-//
-// This can only be performed on Azure Virtual Machine Scale set backed clusters. Stopping a cluster stops the control plane
-// and agent nodes entirely, while maintaining all object and cluster state. A cluster does not accrue charges while it is
-// stopped. See [stopping a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster) for more details about stopping
-// a cluster.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ManagedClustersClient) stop(ctx context.Context, resourceGroupName string, resourceName string, options *ManagedClustersClientBeginStopOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ManagedClustersClient.BeginStop"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.stopCreateRequest(ctx, resourceGroupName, resourceName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// stopCreateRequest creates the Stop request.
-func (client *ManagedClustersClient) stopCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, _ *ManagedClustersClientBeginStopOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/stop"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if resourceName == "" {
-		return nil, errors.New("parameter resourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260702Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
-}
-
-// BeginUpdateTags - Updates tags on a managed cluster.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - resourceName - The name of the managed cluster resource.
-//   - parameters - Parameters supplied to the Update Managed Cluster Tags operation.
-//   - options - ManagedClustersClientBeginUpdateTagsOptions contains the optional parameters for the ManagedClustersClient.BeginUpdateTags
-//     method.
-func (client *ManagedClustersClient) BeginUpdateTags(ctx context.Context, resourceGroupName string, resourceName string, parameters TagsObject, options *ManagedClustersClientBeginUpdateTagsOptions) (*runtime.Poller[ManagedClustersClientUpdateTagsResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.updateTags(ctx, resourceGroupName, resourceName, parameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagedClustersClientUpdateTagsResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ManagedClustersClientUpdateTagsResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// UpdateTags - Updates tags on a managed cluster.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ManagedClustersClient) updateTags(ctx context.Context, resourceGroupName string, resourceName string, parameters TagsObject, options *ManagedClustersClientBeginUpdateTagsOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ManagedClustersClient.BeginUpdateTags"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateTagsCreateRequest(ctx, resourceGroupName, resourceName, parameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateTagsCreateRequest creates the UpdateTags request.
-func (client *ManagedClustersClient) updateTagsCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, parameters TagsObject, options *ManagedClustersClientBeginUpdateTagsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if resourceName == "" {
-		return nil, errors.New("parameter resourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260702Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["if-match"] = []string{*options.IfMatch}
-	}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

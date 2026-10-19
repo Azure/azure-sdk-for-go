@@ -22,13 +22,13 @@ import (
 
 // ConnectorServer is a fake server for instances of the armconfluent.ConnectorClient type.
 type ConnectorServer struct {
-	// CreateOrUpdate is the fake for method ConnectorClient.CreateOrUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	CreateOrUpdate func(ctx context.Context, resourceGroupName string, organizationName string, environmentID string, clusterID string, connectorName string, body armconfluent.ConnectorResource, options *armconfluent.ConnectorClientCreateOrUpdateOptions) (resp azfake.Responder[armconfluent.ConnectorClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
-
 	// BeginDelete is the fake for method ConnectorClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, organizationName string, environmentID string, clusterID string, connectorName string, options *armconfluent.ConnectorClientBeginDeleteOptions) (resp azfake.PollerResponder[armconfluent.ConnectorClientDeleteResponse], errResp azfake.ErrorResponder)
+
+	// CreateOrUpdate is the fake for method ConnectorClient.CreateOrUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	CreateOrUpdate func(ctx context.Context, resourceGroupName string, organizationName string, environmentID string, clusterID string, connectorName string, body armconfluent.ConnectorResource, options *armconfluent.ConnectorClientCreateOrUpdateOptions) (resp azfake.Responder[armconfluent.ConnectorClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method ConnectorClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -79,10 +79,10 @@ func (c *ConnectorServerTransport) dispatchToMethodFake(req *http.Request, metho
 		}
 		if !intercepted {
 			switch method {
-			case "ConnectorClient.CreateOrUpdate":
-				res.resp, res.err = c.dispatchCreateOrUpdate(req)
 			case "ConnectorClient.BeginDelete":
 				res.resp, res.err = c.dispatchBeginDelete(req)
+			case "ConnectorClient.CreateOrUpdate":
+				res.resp, res.err = c.dispatchCreateOrUpdate(req)
 			case "ConnectorClient.Get":
 				res.resp, res.err = c.dispatchGet(req)
 			case "ConnectorClient.NewListPager":
@@ -101,55 +101,6 @@ func (c *ConnectorServerTransport) dispatchToMethodFake(req *http.Request, metho
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (c *ConnectorServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
-	if c.srv.CreateOrUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Confluent/organizations/(?P<organizationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/environments/(?P<environmentId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/clusters/(?P<clusterId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/connectors/(?P<connectorName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 7 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armconfluent.ConnectorResource](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	organizationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("organizationName")])
-	if err != nil {
-		return nil, err
-	}
-	environmentIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("environmentId")])
-	if err != nil {
-		return nil, err
-	}
-	clusterIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterId")])
-	if err != nil {
-		return nil, err
-	}
-	connectorNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("connectorName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := c.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, organizationNameParam, environmentIDParam, clusterIDParam, connectorNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ConnectorResource, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (c *ConnectorServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
@@ -205,6 +156,55 @@ func (c *ConnectorServerTransport) dispatchBeginDelete(req *http.Request) (*http
 		c.beginDelete.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (c *ConnectorServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
+	if c.srv.CreateOrUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Confluent/organizations/(?P<organizationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/environments/(?P<environmentId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/clusters/(?P<clusterId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/connectors/(?P<connectorName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 7 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armconfluent.ConnectorResource](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	organizationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("organizationName")])
+	if err != nil {
+		return nil, err
+	}
+	environmentIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("environmentId")])
+	if err != nil {
+		return nil, err
+	}
+	clusterIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterId")])
+	if err != nil {
+		return nil, err
+	}
+	connectorNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("connectorName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := c.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, organizationNameParam, environmentIDParam, clusterIDParam, connectorNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ConnectorResource, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 

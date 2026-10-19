@@ -69,7 +69,7 @@ func (client *AlertRuleClient) BeginTriggerRuleRun(ctx context.Context, resource
 	}
 }
 
-// TriggerRuleRun - triggers analytics rule run
+// triggerRuleRun - triggers analytics rule run
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AlertRuleClient) triggerRuleRun(ctx context.Context, resourceGroupName string, workspaceName string, ruleID string, analyticsRuleRunTriggerParameter AnalyticsRuleRunTrigger, options *AlertRuleClientBeginTriggerRuleRunOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *AlertRuleClient) triggerRuleRun(ctx context.Context, resourceGroup
 	return httpResp, nil
 }
 
-// triggerRuleRunCreateRequest creates the TriggerRuleRun request.
+// triggerRuleRunCreateRequest creates the triggerRuleRun request.
 func (client *AlertRuleClient) triggerRuleRunCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, ruleID string, analyticsRuleRunTriggerParameter AnalyticsRuleRunTrigger, _ *AlertRuleClientBeginTriggerRuleRunOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/alertRules/{ruleId}/triggerRuleRun"
 	if client.subscriptionID == "" {

@@ -220,72 +220,6 @@ func (client *Client) getHandleResponse(resp *http.Response, successCodes ...int
 	return result, nil
 }
 
-// NewListPager - Gets a list of all Azure Arc PrivateLinkScopes within a subscription.
-//   - options - ClientListOptions contains the optional parameters for the Client.NewListPager method.
-func (client *Client) NewListPager(options *ClientListOptions) *runtime.Pager[ClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ClientListResponse]{
-		More: func(page ClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *ClientListResponse) (ClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "Client.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listCreateRequest(ctx, nextLink, options)
-			if err != nil {
-				return ClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *Client) listCreateRequest(ctx context.Context, nextLink string, _ *ClientListOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.KubernetesConfiguration/privateLinkScopes"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20241101Preview)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *Client) listHandleResponse(resp *http.Response, successCodes ...int) (ClientListResponse, error) {
-	result := ClientListResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.KubernetesConfigurationPrivateLinkScopeListResult); err != nil {
-		return ClientListResponse{}, err
-	}
-	return result, nil
-}
-
 // NewListByResourceGroupPager - Gets a list of Azure Arc PrivateLinkScopes within a resource group.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ClientListByResourceGroupOptions contains the optional parameters for the Client.NewListByResourceGroupPager
@@ -354,6 +288,72 @@ func (client *Client) listByResourceGroupHandleResponse(resp *http.Response, suc
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KubernetesConfigurationPrivateLinkScopeListResult); err != nil {
 		return ClientListByResourceGroupResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListPager - Gets a list of all Azure Arc PrivateLinkScopes within a subscription.
+//   - options - ClientListOptions contains the optional parameters for the Client.NewListPager method.
+func (client *Client) NewListPager(options *ClientListOptions) *runtime.Pager[ClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ClientListResponse]{
+		More: func(page ClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *ClientListResponse) (ClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "Client.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return ClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listCreateRequest creates the List request.
+func (client *Client) listCreateRequest(ctx context.Context, nextLink string, _ *ClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.KubernetesConfiguration/privateLinkScopes"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20241101Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listHandleResponse handles the List response.
+func (client *Client) listHandleResponse(resp *http.Response, successCodes ...int) (ClientListResponse, error) {
+	result := ClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.KubernetesConfigurationPrivateLinkScopeListResult); err != nil {
+		return ClientListResponse{}, err
 	}
 	return result, nil
 }

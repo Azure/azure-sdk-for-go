@@ -378,56 +378,6 @@ func ExampleDatabasesClient_BeginForceUnlink() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01-preview/RedisEnterpriseDatabasesGet.json
-func ExampleDatabasesClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armredisenterprise.NewClientFactory("e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewDatabasesClient().Get(ctx, "rg1", "cache1", "default", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armredisenterprise.DatabasesClientGetResponse{
-	// 	Database: armredisenterprise.Database{
-	// 		Name: to.Ptr("cache1/default"),
-	// 		Type: to.Ptr("Microsoft.Cache/redisEnterprise/databases"),
-	// 		ID: to.Ptr("/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Cache/redisEnterprise/cache1/databases/default"),
-	// 		Properties: &armredisenterprise.DatabaseCreateProperties{
-	// 			AccessKeysAuthentication: to.Ptr(armredisenterprise.AccessKeysAuthenticationEnabled),
-	// 			ClientProtocol: to.Ptr(armredisenterprise.ProtocolEncrypted),
-	// 			ClusteringPolicy: to.Ptr(armredisenterprise.ClusteringPolicyOSSCluster),
-	// 			DeferUpgrade: to.Ptr(armredisenterprise.DeferUpgradeSettingNotDeferred),
-	// 			EvictionPolicy: to.Ptr(armredisenterprise.EvictionPolicyAllKeysLRU),
-	// 			NotifyKeyspaceEvents: to.Ptr(""),
-	// 			Modules: []*armredisenterprise.Module{
-	// 				{
-	// 					Name: to.Ptr("RediSearch"),
-	// 					Args: to.Ptr(""),
-	// 					Version: to.Ptr("1.0.0"),
-	// 				},
-	// 			},
-	// 			Persistence: &armredisenterprise.Persistence{
-	// 				RdbEnabled: to.Ptr(true),
-	// 				RdbFrequency: to.Ptr(armredisenterprise.RdbFrequencyTwelveH),
-	// 			},
-	// 			Port: to.Ptr[int32](10000),
-	// 			ProvisioningState: to.Ptr(armredisenterprise.ProvisioningStateSucceeded),
-	// 			RedisVersion: to.Ptr("6.0"),
-	// 			ResourceState: to.Ptr(armredisenterprise.ResourceStateRunning),
-	// 		},
-	// 	},
-	// }
-}
-
 // Generated from example definition: 2026-06-01-preview/RedisEnterpriseDatabasesImport.json
 func ExampleDatabasesClient_BeginImport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -456,91 +406,6 @@ func ExampleDatabasesClient_BeginImport() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armredisenterprise.DatabasesClientImportResponse{
-	// }
-}
-
-// Generated from example definition: 2026-06-01-preview/RedisEnterpriseDatabasesListByCluster.json
-func ExampleDatabasesClient_NewListByClusterPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armredisenterprise.NewClientFactory("e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewDatabasesClient().NewListByClusterPager("rg1", "cache1", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armredisenterprise.DatabasesClientListByClusterResponse{
-		// 	DatabaseList: armredisenterprise.DatabaseList{
-		// 		Value: []*armredisenterprise.Database{
-		// 			{
-		// 				Name: to.Ptr("cache1/default"),
-		// 				Type: to.Ptr("Microsoft.Cache/redisEnterprise/databases"),
-		// 				ID: to.Ptr("/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Cache/redisEnterprise/cache1/databases/default"),
-		// 				Properties: &armredisenterprise.DatabaseCreateProperties{
-		// 					AccessKeysAuthentication: to.Ptr(armredisenterprise.AccessKeysAuthenticationDisabled),
-		// 					ClientProtocol: to.Ptr(armredisenterprise.ProtocolEncrypted),
-		// 					ClusteringPolicy: to.Ptr(armredisenterprise.ClusteringPolicyOSSCluster),
-		// 					DeferUpgrade: to.Ptr(armredisenterprise.DeferUpgradeSettingNotDeferred),
-		// 					EvictionPolicy: to.Ptr(armredisenterprise.EvictionPolicyAllKeysLRU),
-		// 					NotifyKeyspaceEvents: to.Ptr(""),
-		// 					Modules: []*armredisenterprise.Module{
-		// 						{
-		// 							Name: to.Ptr("RediSearch"),
-		// 							Args: to.Ptr(""),
-		// 							Version: to.Ptr("1.0.0"),
-		// 						},
-		// 					},
-		// 					Persistence: &armredisenterprise.Persistence{
-		// 						RdbEnabled: to.Ptr(true),
-		// 						RdbFrequency: to.Ptr(armredisenterprise.RdbFrequencyTwelveH),
-		// 					},
-		// 					Port: to.Ptr[int32](10000),
-		// 					ProvisioningState: to.Ptr(armredisenterprise.ProvisioningStateSucceeded),
-		// 					RedisVersion: to.Ptr("6.0"),
-		// 					ResourceState: to.Ptr(armredisenterprise.ResourceStateRunning),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-06-01-preview/RedisEnterpriseDatabasesListKeys.json
-func ExampleDatabasesClient_ListKeys() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armredisenterprise.NewClientFactory("e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewDatabasesClient().ListKeys(ctx, "rg1", "cache1", "default", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armredisenterprise.DatabasesClientListKeysResponse{
-	// 	AccessKeys: armredisenterprise.AccessKeys{
-	// 		PrimaryKey: to.Ptr("<primaryKey>"),
-	// 		SecondaryKey: to.Ptr("<secondaryKey>"),
-	// 	},
 	// }
 }
 
@@ -710,5 +575,140 @@ func ExampleDatabasesClient_BeginUpgradeDBRedisVersion() {
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-06-01-preview/RedisEnterpriseDatabasesGet.json
+func ExampleDatabasesClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armredisenterprise.NewClientFactory("e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewDatabasesClient().Get(ctx, "rg1", "cache1", "default", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armredisenterprise.DatabasesClientGetResponse{
+	// 	Database: armredisenterprise.Database{
+	// 		Name: to.Ptr("cache1/default"),
+	// 		Type: to.Ptr("Microsoft.Cache/redisEnterprise/databases"),
+	// 		ID: to.Ptr("/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Cache/redisEnterprise/cache1/databases/default"),
+	// 		Properties: &armredisenterprise.DatabaseCreateProperties{
+	// 			AccessKeysAuthentication: to.Ptr(armredisenterprise.AccessKeysAuthenticationEnabled),
+	// 			ClientProtocol: to.Ptr(armredisenterprise.ProtocolEncrypted),
+	// 			ClusteringPolicy: to.Ptr(armredisenterprise.ClusteringPolicyOSSCluster),
+	// 			DeferUpgrade: to.Ptr(armredisenterprise.DeferUpgradeSettingNotDeferred),
+	// 			EvictionPolicy: to.Ptr(armredisenterprise.EvictionPolicyAllKeysLRU),
+	// 			NotifyKeyspaceEvents: to.Ptr(""),
+	// 			Modules: []*armredisenterprise.Module{
+	// 				{
+	// 					Name: to.Ptr("RediSearch"),
+	// 					Args: to.Ptr(""),
+	// 					Version: to.Ptr("1.0.0"),
+	// 				},
+	// 			},
+	// 			Persistence: &armredisenterprise.Persistence{
+	// 				RdbEnabled: to.Ptr(true),
+	// 				RdbFrequency: to.Ptr(armredisenterprise.RdbFrequencyTwelveH),
+	// 			},
+	// 			Port: to.Ptr[int32](10000),
+	// 			ProvisioningState: to.Ptr(armredisenterprise.ProvisioningStateSucceeded),
+	// 			RedisVersion: to.Ptr("6.0"),
+	// 			ResourceState: to.Ptr(armredisenterprise.ResourceStateRunning),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-06-01-preview/RedisEnterpriseDatabasesListKeys.json
+func ExampleDatabasesClient_ListKeys() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armredisenterprise.NewClientFactory("e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewDatabasesClient().ListKeys(ctx, "rg1", "cache1", "default", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armredisenterprise.DatabasesClientListKeysResponse{
+	// 	AccessKeys: armredisenterprise.AccessKeys{
+	// 		PrimaryKey: to.Ptr("<primaryKey>"),
+	// 		SecondaryKey: to.Ptr("<secondaryKey>"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-06-01-preview/RedisEnterpriseDatabasesListByCluster.json
+func ExampleDatabasesClient_NewListByClusterPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armredisenterprise.NewClientFactory("e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewDatabasesClient().NewListByClusterPager("rg1", "cache1", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armredisenterprise.DatabasesClientListByClusterResponse{
+		// 	DatabaseList: armredisenterprise.DatabaseList{
+		// 		Value: []*armredisenterprise.Database{
+		// 			{
+		// 				Name: to.Ptr("cache1/default"),
+		// 				Type: to.Ptr("Microsoft.Cache/redisEnterprise/databases"),
+		// 				ID: to.Ptr("/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Cache/redisEnterprise/cache1/databases/default"),
+		// 				Properties: &armredisenterprise.DatabaseCreateProperties{
+		// 					AccessKeysAuthentication: to.Ptr(armredisenterprise.AccessKeysAuthenticationDisabled),
+		// 					ClientProtocol: to.Ptr(armredisenterprise.ProtocolEncrypted),
+		// 					ClusteringPolicy: to.Ptr(armredisenterprise.ClusteringPolicyOSSCluster),
+		// 					DeferUpgrade: to.Ptr(armredisenterprise.DeferUpgradeSettingNotDeferred),
+		// 					EvictionPolicy: to.Ptr(armredisenterprise.EvictionPolicyAllKeysLRU),
+		// 					NotifyKeyspaceEvents: to.Ptr(""),
+		// 					Modules: []*armredisenterprise.Module{
+		// 						{
+		// 							Name: to.Ptr("RediSearch"),
+		// 							Args: to.Ptr(""),
+		// 							Version: to.Ptr("1.0.0"),
+		// 						},
+		// 					},
+		// 					Persistence: &armredisenterprise.Persistence{
+		// 						RdbEnabled: to.Ptr(true),
+		// 						RdbFrequency: to.Ptr(armredisenterprise.RdbFrequencyTwelveH),
+		// 					},
+		// 					Port: to.Ptr[int32](10000),
+		// 					ProvisioningState: to.Ptr(armredisenterprise.ProvisioningStateSucceeded),
+		// 					RedisVersion: to.Ptr("6.0"),
+		// 					ResourceState: to.Ptr(armredisenterprise.ResourceStateRunning),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
 	}
 }

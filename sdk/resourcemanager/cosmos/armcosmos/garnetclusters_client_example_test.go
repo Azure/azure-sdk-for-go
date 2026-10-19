@@ -87,6 +87,55 @@ func ExampleGarnetClustersClient_BeginDelete() {
 	}
 }
 
+// Generated from example definition: 2026-04-01-preview/CosmosDBGarnetClusterPatch.json
+func ExampleGarnetClustersClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcosmos.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewGarnetClustersClient().BeginUpdate(ctx, "garnet-prod-rg", "garnet-prod", armcosmos.GarnetClusterResourcePatch{
+		Properties: &armcosmos.GarnetClusterResourcePatchProperties{
+			ClusterType:          to.Ptr(armcosmos.ClusterTypeProduction),
+			AuthenticationMethod: to.Ptr(armcosmos.GarnetAuthenticationTypeEntra),
+			Persistence:          to.Ptr(true),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcosmos.GarnetClustersClientUpdateResponse{
+	// 	GarnetClusterResource: armcosmos.GarnetClusterResource{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/garnet-prod-rg/providers/Microsoft.DocumentDB/garnetClusters/garnet-prod"),
+	// 		Name: to.Ptr("garnet-prod"),
+	// 		Type: to.Ptr("Microsoft.DocumentDB/garnetClusters"),
+	// 		Location: to.Ptr("West US"),
+	// 		Tags: map[string]*string{
+	// 		},
+	// 		Properties: &armcosmos.GarnetClusterResourceProperties{
+	// 			ProvisioningState: to.Ptr(armcosmos.GarnetCacheProvisioningStateSucceeded),
+	// 			SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/customer-vnet-rg/providers/Microsoft.Network/virtualNetworks/customer-vnet/subnets/management"),
+	// 			ShardCount: to.Ptr[int32](4),
+	// 			NodeSKU: to.Ptr("Standard_DS13_v2"),
+	// 			ReplicationFactor: to.Ptr[int32](2),
+	// 			AuthenticationMethod: to.Ptr(armcosmos.GarnetAuthenticationTypeEntra),
+	// 			Persistence: to.Ptr(true),
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2026-04-01-preview/CosmosDBGarnetClusterGet.json
 func ExampleGarnetClustersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -246,53 +295,4 @@ func ExampleGarnetClustersClient_NewListBySubscriptionPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-04-01-preview/CosmosDBGarnetClusterPatch.json
-func ExampleGarnetClustersClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewGarnetClustersClient().BeginUpdate(ctx, "garnet-prod-rg", "garnet-prod", armcosmos.GarnetClusterResourcePatch{
-		Properties: &armcosmos.GarnetClusterResourcePatchProperties{
-			ClusterType:          to.Ptr(armcosmos.ClusterTypeProduction),
-			AuthenticationMethod: to.Ptr(armcosmos.GarnetAuthenticationTypeEntra),
-			Persistence:          to.Ptr(true),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcosmos.GarnetClustersClientUpdateResponse{
-	// 	GarnetClusterResource: armcosmos.GarnetClusterResource{
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/garnet-prod-rg/providers/Microsoft.DocumentDB/garnetClusters/garnet-prod"),
-	// 		Name: to.Ptr("garnet-prod"),
-	// 		Type: to.Ptr("Microsoft.DocumentDB/garnetClusters"),
-	// 		Location: to.Ptr("West US"),
-	// 		Tags: map[string]*string{
-	// 		},
-	// 		Properties: &armcosmos.GarnetClusterResourceProperties{
-	// 			ProvisioningState: to.Ptr(armcosmos.GarnetCacheProvisioningStateSucceeded),
-	// 			SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/customer-vnet-rg/providers/Microsoft.Network/virtualNetworks/customer-vnet/subnets/management"),
-	// 			ShardCount: to.Ptr[int32](4),
-	// 			NodeSKU: to.Ptr("Standard_DS13_v2"),
-	// 			ReplicationFactor: to.Ptr[int32](2),
-	// 			AuthenticationMethod: to.Ptr(armcosmos.GarnetAuthenticationTypeEntra),
-	// 			Persistence: to.Ptr(true),
-	// 		},
-	// 	},
-	// }
 }

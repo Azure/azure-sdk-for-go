@@ -44,6 +44,80 @@ func NewSchemasClient(subscriptionID string, credential azcore.TokenCredential, 
 	return client, nil
 }
 
+// BeginDelete - Delete a Schema
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - schemaRegistryName - Schema registry name parameter.
+//   - schemaName - Schema name parameter.
+//   - options - SchemasClientBeginDeleteOptions contains the optional parameters for the SchemasClient.BeginDelete method.
+func (client *SchemasClient) BeginDelete(ctx context.Context, resourceGroupName string, schemaRegistryName string, schemaName string, options *SchemasClientBeginDeleteOptions) (*runtime.Poller[SchemasClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, schemaRegistryName, schemaName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SchemasClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SchemasClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// deleteOperation - Delete a Schema
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *SchemasClient) deleteOperation(ctx context.Context, resourceGroupName string, schemaRegistryName string, schemaName string, options *SchemasClientBeginDeleteOptions) (*http.Response, error) {
+	var err error
+	const operationName = "SchemasClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, schemaRegistryName, schemaName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// deleteCreateRequest creates the delete request.
+func (client *SchemasClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, schemaRegistryName string, schemaName string, _ *SchemasClientBeginDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/schemaRegistries/{schemaRegistryName}/schemas/{schemaName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if schemaRegistryName == "" {
+		return nil, errors.New("parameter schemaRegistryName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{schemaRegistryName}", url.PathEscape(schemaRegistryName))
+	if schemaName == "" {
+		return nil, errors.New("parameter schemaName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{schemaName}", url.PathEscape(schemaName))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260301Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
 // CreateOrReplace - Create a Schema
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -112,80 +186,6 @@ func (client *SchemasClient) createOrReplaceHandleResponse(resp *http.Response, 
 		return SchemasClientCreateOrReplaceResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginDelete - Delete a Schema
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - schemaRegistryName - Schema registry name parameter.
-//   - schemaName - Schema name parameter.
-//   - options - SchemasClientBeginDeleteOptions contains the optional parameters for the SchemasClient.BeginDelete method.
-func (client *SchemasClient) BeginDelete(ctx context.Context, resourceGroupName string, schemaRegistryName string, schemaName string, options *SchemasClientBeginDeleteOptions) (*runtime.Poller[SchemasClientDeleteResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, schemaRegistryName, schemaName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SchemasClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SchemasClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Delete - Delete a Schema
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *SchemasClient) deleteOperation(ctx context.Context, resourceGroupName string, schemaRegistryName string, schemaName string, options *SchemasClientBeginDeleteOptions) (*http.Response, error) {
-	var err error
-	const operationName = "SchemasClient.BeginDelete"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, schemaRegistryName, schemaName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// deleteCreateRequest creates the Delete request.
-func (client *SchemasClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, schemaRegistryName string, schemaName string, _ *SchemasClientBeginDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/schemaRegistries/{schemaRegistryName}/schemas/{schemaName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if schemaRegistryName == "" {
-		return nil, errors.New("parameter schemaRegistryName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{schemaRegistryName}", url.PathEscape(schemaRegistryName))
-	if schemaName == "" {
-		return nil, errors.New("parameter schemaName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{schemaName}", url.PathEscape(schemaName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
 }
 
 // Get - Get a Schema

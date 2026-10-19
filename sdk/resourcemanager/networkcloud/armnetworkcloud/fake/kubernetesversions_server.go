@@ -30,6 +30,10 @@ type KubernetesVersionsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, kubernetesVersionName string, options *armnetworkcloud.KubernetesVersionsClientBeginDeleteOptions) (resp azfake.PollerResponder[armnetworkcloud.KubernetesVersionsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method KubernetesVersionsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, kubernetesVersionName string, kubernetesVersionPatchParameters armnetworkcloud.KubernetesVersionPatchParameters, options *armnetworkcloud.KubernetesVersionsClientBeginUpdateOptions) (resp azfake.PollerResponder[armnetworkcloud.KubernetesVersionsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method KubernetesVersionsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, kubernetesVersionName string, options *armnetworkcloud.KubernetesVersionsClientGetOptions) (resp azfake.Responder[armnetworkcloud.KubernetesVersionsClientGetResponse], errResp azfake.ErrorResponder)
@@ -41,10 +45,6 @@ type KubernetesVersionsServer struct {
 	// NewListBySubscriptionPager is the fake for method KubernetesVersionsClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armnetworkcloud.KubernetesVersionsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armnetworkcloud.KubernetesVersionsClientListBySubscriptionResponse])
-
-	// BeginUpdate is the fake for method KubernetesVersionsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, kubernetesVersionName string, kubernetesVersionPatchParameters armnetworkcloud.KubernetesVersionPatchParameters, options *armnetworkcloud.KubernetesVersionsClientBeginUpdateOptions) (resp azfake.PollerResponder[armnetworkcloud.KubernetesVersionsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewKubernetesVersionsServerTransport creates a new instance of KubernetesVersionsServerTransport with the provided implementation.
@@ -55,9 +55,9 @@ func NewKubernetesVersionsServerTransport(srv *KubernetesVersionsServer) *Kubern
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armnetworkcloud.KubernetesVersionsClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armnetworkcloud.KubernetesVersionsClientDeleteResponse]](),
+		beginUpdate:                 newTracker[azfake.PollerResponder[armnetworkcloud.KubernetesVersionsClientUpdateResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armnetworkcloud.KubernetesVersionsClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armnetworkcloud.KubernetesVersionsClientListBySubscriptionResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armnetworkcloud.KubernetesVersionsClientUpdateResponse]](),
 	}
 }
 
@@ -67,9 +67,9 @@ type KubernetesVersionsServerTransport struct {
 	srv                         *KubernetesVersionsServer
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armnetworkcloud.KubernetesVersionsClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armnetworkcloud.KubernetesVersionsClientDeleteResponse]]
+	beginUpdate                 *tracker[azfake.PollerResponder[armnetworkcloud.KubernetesVersionsClientUpdateResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armnetworkcloud.KubernetesVersionsClientListByResourceGroupResponse]]
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armnetworkcloud.KubernetesVersionsClientListBySubscriptionResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armnetworkcloud.KubernetesVersionsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for KubernetesVersionsServerTransport.
@@ -97,14 +97,14 @@ func (k *KubernetesVersionsServerTransport) dispatchToMethodFake(req *http.Reque
 				res.resp, res.err = k.dispatchBeginCreateOrUpdate(req)
 			case "KubernetesVersionsClient.BeginDelete":
 				res.resp, res.err = k.dispatchBeginDelete(req)
+			case "KubernetesVersionsClient.BeginUpdate":
+				res.resp, res.err = k.dispatchBeginUpdate(req)
 			case "KubernetesVersionsClient.Get":
 				res.resp, res.err = k.dispatchGet(req)
 			case "KubernetesVersionsClient.NewListByResourceGroupPager":
 				res.resp, res.err = k.dispatchNewListByResourceGroupPager(req)
 			case "KubernetesVersionsClient.NewListBySubscriptionPager":
 				res.resp, res.err = k.dispatchNewListBySubscriptionPager(req)
-			case "KubernetesVersionsClient.BeginUpdate":
-				res.resp, res.err = k.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -226,6 +226,63 @@ func (k *KubernetesVersionsServerTransport) dispatchBeginDelete(req *http.Reques
 	}
 	if !server.PollerResponderMore(beginDelete) {
 		k.beginDelete.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (k *KubernetesVersionsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if k.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := k.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetworkCloud/kubernetesVersions/(?P<kubernetesVersionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armnetworkcloud.KubernetesVersionPatchParameters](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		kubernetesVersionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("kubernetesVersionName")])
+		if err != nil {
+			return nil, err
+		}
+		ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
+		ifNoneMatchParam := getOptional(getHeaderValue(req.Header, "If-None-Match"))
+		var options *armnetworkcloud.KubernetesVersionsClientBeginUpdateOptions
+		if ifMatchParam != nil || ifNoneMatchParam != nil {
+			options = &armnetworkcloud.KubernetesVersionsClientBeginUpdateOptions{
+				IfMatch:     ifMatchParam,
+				IfNoneMatch: ifNoneMatchParam,
+			}
+		}
+		respr, errRespr := k.srv.BeginUpdate(req.Context(), resourceGroupNameParam, kubernetesVersionNameParam, body, options)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		k.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		k.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		k.beginUpdate.remove(req)
 	}
 
 	return resp, nil
@@ -369,63 +426,6 @@ func (k *KubernetesVersionsServerTransport) dispatchNewListBySubscriptionPager(r
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		k.newListBySubscriptionPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (k *KubernetesVersionsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if k.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := k.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetworkCloud/kubernetesVersions/(?P<kubernetesVersionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armnetworkcloud.KubernetesVersionPatchParameters](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		kubernetesVersionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("kubernetesVersionName")])
-		if err != nil {
-			return nil, err
-		}
-		ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
-		ifNoneMatchParam := getOptional(getHeaderValue(req.Header, "If-None-Match"))
-		var options *armnetworkcloud.KubernetesVersionsClientBeginUpdateOptions
-		if ifMatchParam != nil || ifNoneMatchParam != nil {
-			options = &armnetworkcloud.KubernetesVersionsClientBeginUpdateOptions{
-				IfMatch:     ifMatchParam,
-				IfNoneMatch: ifNoneMatchParam,
-			}
-		}
-		respr, errRespr := k.srv.BeginUpdate(req.Context(), resourceGroupNameParam, kubernetesVersionNameParam, body, options)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		k.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		k.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		k.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

@@ -70,7 +70,7 @@ func (client *AddonsClient) BeginCreateOrUpdate(ctx context.Context, resourceGro
 	}
 }
 
-// CreateOrUpdate - Create a Addon
+// createOrUpdate - Create a Addon
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AddonsClient) createOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, addonName string, addon Addon, options *AddonsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -92,7 +92,7 @@ func (client *AddonsClient) createOrUpdate(ctx context.Context, resourceGroupNam
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *AddonsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, addonName string, addon Addon, _ *AddonsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/addons/{addonName}"
 	if client.subscriptionID == "" {
@@ -149,7 +149,7 @@ func (client *AddonsClient) BeginDelete(ctx context.Context, resourceGroupName s
 	}
 }
 
-// Delete - Delete a Addon
+// deleteOperation - Delete a Addon
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AddonsClient) deleteOperation(ctx context.Context, resourceGroupName string, privateCloudName string, addonName string, options *AddonsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -171,7 +171,7 @@ func (client *AddonsClient) deleteOperation(ctx context.Context, resourceGroupNa
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *AddonsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, addonName string, _ *AddonsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/addons/{addonName}"
 	if client.subscriptionID == "" {

@@ -586,6 +586,242 @@ func ExampleClustersClient_BeginCreateOrUpdate_putAClusterWithMinimumParameters(
 	// }
 }
 
+// Generated from example definition: 2026-03-01-preview/ClusterPatchOperation_example.json
+func ExampleClustersClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armservicefabric.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewClustersClient().BeginUpdate(ctx, "resRg", "myCluster", armservicefabric.ClusterUpdateParameters{
+		Properties: &armservicefabric.ClusterPropertiesUpdateParameters{
+			EnableHTTPGatewayExclusiveAuthMode: to.Ptr(true),
+			EventStoreServiceEnabled:           to.Ptr(true),
+			NodeTypes: []*armservicefabric.NodeTypeDescription{
+				{
+					Name: to.Ptr("nt1vm"),
+					ApplicationPorts: &armservicefabric.EndpointRangeDescription{
+						EndPort:   to.Ptr[int32](30000),
+						StartPort: to.Ptr[int32](20000),
+					},
+					ClientConnectionEndpointPort: to.Ptr[int32](19000),
+					DurabilityLevel:              to.Ptr(armservicefabric.DurabilityLevelBronze),
+					EphemeralPorts: &armservicefabric.EndpointRangeDescription{
+						EndPort:   to.Ptr[int32](64000),
+						StartPort: to.Ptr[int32](49000),
+					},
+					HTTPGatewayEndpointPort:          to.Ptr[int32](19007),
+					HTTPGatewayTokenAuthEndpointPort: to.Ptr[int32](19081),
+					IsPrimary:                        to.Ptr(true),
+					VMInstanceCount:                  to.Ptr[int32](5),
+				},
+				{
+					Name: to.Ptr("testnt1"),
+					ApplicationPorts: &armservicefabric.EndpointRangeDescription{
+						EndPort:   to.Ptr[int32](2000),
+						StartPort: to.Ptr[int32](1000),
+					},
+					ClientConnectionEndpointPort: to.Ptr[int32](0),
+					DurabilityLevel:              to.Ptr(armservicefabric.DurabilityLevelBronze),
+					EphemeralPorts: &armservicefabric.EndpointRangeDescription{
+						EndPort:   to.Ptr[int32](4000),
+						StartPort: to.Ptr[int32](3000),
+					},
+					HTTPGatewayEndpointPort:          to.Ptr[int32](0),
+					HTTPGatewayTokenAuthEndpointPort: to.Ptr[int32](19081),
+					IsPrimary:                        to.Ptr(false),
+					VMInstanceCount:                  to.Ptr[int32](3),
+				},
+			},
+			ReliabilityLevel:              to.Ptr(armservicefabric.ReliabilityLevelBronze),
+			UpgradeMode:                   to.Ptr(armservicefabric.UpgradeModeAutomatic),
+			UpgradePauseEndTimestampUTC:   to.Ptr(time.Date(2021, time.June, 25, 22, 0, 0, 0, time.UTC)),
+			UpgradePauseStartTimestampUTC: to.Ptr(time.Date(2021, time.June, 21, 22, 0, 0, 0, time.UTC)),
+			UpgradeWave:                   to.Ptr(armservicefabric.ClusterUpgradeCadence("Wave")),
+		},
+		Tags: map[string]*string{
+			"a": to.Ptr("b"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armservicefabric.ClustersClientUpdateResponse{
+	// 	Cluster: armservicefabric.Cluster{
+	// 		Name: to.Ptr("myCluster"),
+	// 		Type: to.Ptr("Microsoft.ServiceFabric/clusters"),
+	// 		Etag: to.Ptr("W/\"636462502169240744\""),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/resRg/providers/Microsoft.ServiceFabric/clusters/myCluster"),
+	// 		Location: to.Ptr("eastus"),
+	// 		Properties: &armservicefabric.ClusterProperties{
+	// 			AvailableClusterVersions: []*armservicefabric.ClusterVersionDetails{
+	// 				{
+	// 					CodeVersion: to.Ptr("6.1.480.9494"),
+	// 					Environment: to.Ptr(armservicefabric.ClusterEnvironmentWindows),
+	// 					SupportExpiryUTC: to.Ptr("2018-06-15T23:59:59.9999999"),
+	// 				},
+	// 			},
+	// 			CertificateCommonNames: &armservicefabric.ServerCertificateCommonNames{
+	// 				CommonNames: []*armservicefabric.ServerCertificateCommonName{
+	// 					{
+	// 						CertificateCommonName: to.Ptr("abc.com"),
+	// 						CertificateIssuerThumbprint: to.Ptr("12599211F8F14C90AFA9532AD79A6F2CA1C00622"),
+	// 					},
+	// 				},
+	// 				X509StoreName: to.Ptr(armservicefabric.StoreNameMy),
+	// 			},
+	// 			ClientCertificateCommonNames: []*armservicefabric.ClientCertificateCommonName{
+	// 			},
+	// 			ClientCertificateThumbprints: []*armservicefabric.ClientCertificateThumbprint{
+	// 			},
+	// 			ClusterCodeVersion: to.Ptr("6.1.480.9494"),
+	// 			ClusterEndpoint: to.Ptr("https://eastus.servicefabric.azure.com"),
+	// 			ClusterID: to.Ptr("92584666-9889-4ae8-8d02-91902923d37f"),
+	// 			ClusterState: to.Ptr(armservicefabric.ClusterStateWaitingForNodes),
+	// 			DiagnosticsStorageAccountConfig: &armservicefabric.DiagnosticsStorageAccountConfig{
+	// 				BlobEndpoint: to.Ptr("https://diag.blob.core.windows.net/"),
+	// 				ProtectedAccountKeyName: to.Ptr("StorageAccountKey1"),
+	// 				QueueEndpoint: to.Ptr("https://diag.queue.core.windows.net/"),
+	// 				StorageAccountName: to.Ptr("diag"),
+	// 				TableEndpoint: to.Ptr("https://diag.table.core.windows.net/"),
+	// 			},
+	// 			EnableHTTPGatewayExclusiveAuthMode: to.Ptr(true),
+	// 			EventStoreServiceEnabled: to.Ptr(true),
+	// 			FabricSettings: []*armservicefabric.SettingsSectionDescription{
+	// 				{
+	// 					Name: to.Ptr("UpgradeService"),
+	// 					Parameters: []*armservicefabric.SettingsParameterDescription{
+	// 						{
+	// 							Name: to.Ptr("AppPollIntervalInSeconds"),
+	// 							Value: to.Ptr("60"),
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 			ManagementEndpoint: to.Ptr("http://myCluster.eastus.cloudapp.azure.com:19080"),
+	// 			NodeTypes: []*armservicefabric.NodeTypeDescription{
+	// 				{
+	// 					Name: to.Ptr("nt1vm"),
+	// 					ApplicationPorts: &armservicefabric.EndpointRangeDescription{
+	// 						EndPort: to.Ptr[int32](30000),
+	// 						StartPort: to.Ptr[int32](20000),
+	// 					},
+	// 					ClientConnectionEndpointPort: to.Ptr[int32](19000),
+	// 					DurabilityLevel: to.Ptr(armservicefabric.DurabilityLevelBronze),
+	// 					EphemeralPorts: &armservicefabric.EndpointRangeDescription{
+	// 						EndPort: to.Ptr[int32](64000),
+	// 						StartPort: to.Ptr[int32](49000),
+	// 					},
+	// 					HTTPGatewayEndpointPort: to.Ptr[int32](19007),
+	// 					HTTPGatewayTokenAuthEndpointPort: to.Ptr[int32](19081),
+	// 					IsPrimary: to.Ptr(true),
+	// 					VMInstanceCount: to.Ptr[int32](5),
+	// 				},
+	// 				{
+	// 					Name: to.Ptr("testnt1"),
+	// 					ApplicationPorts: &armservicefabric.EndpointRangeDescription{
+	// 						EndPort: to.Ptr[int32](2000),
+	// 						StartPort: to.Ptr[int32](1000),
+	// 					},
+	// 					ClientConnectionEndpointPort: to.Ptr[int32](0),
+	// 					DurabilityLevel: to.Ptr(armservicefabric.DurabilityLevelBronze),
+	// 					EphemeralPorts: &armservicefabric.EndpointRangeDescription{
+	// 						EndPort: to.Ptr[int32](4000),
+	// 						StartPort: to.Ptr[int32](3000),
+	// 					},
+	// 					HTTPGatewayEndpointPort: to.Ptr[int32](0),
+	// 					HTTPGatewayTokenAuthEndpointPort: to.Ptr[int32](19081),
+	// 					IsPrimary: to.Ptr(false),
+	// 					VMInstanceCount: to.Ptr[int32](3),
+	// 				},
+	// 			},
+	// 			Notifications: []*armservicefabric.Notification{
+	// 				{
+	// 					IsEnabled: to.Ptr(true),
+	// 					NotificationCategory: to.Ptr(armservicefabric.NotificationCategoryWaveProgress),
+	// 					NotificationLevel: to.Ptr(armservicefabric.NotificationLevelCritical),
+	// 					NotificationTargets: []*armservicefabric.NotificationTarget{
+	// 						{
+	// 							NotificationChannel: to.Ptr(armservicefabric.NotificationChannelEmailUser),
+	// 							Receivers: []*string{
+	// 								to.Ptr("****@microsoft.com"),
+	// 								to.Ptr("****@microsoft.com"),
+	// 							},
+	// 						},
+	// 						{
+	// 							NotificationChannel: to.Ptr(armservicefabric.NotificationChannelEmailSubscription),
+	// 							Receivers: []*string{
+	// 								to.Ptr("Owner"),
+	// 								to.Ptr("AccountAdmin"),
+	// 							},
+	// 						},
+	// 					},
+	// 				},
+	// 				{
+	// 					IsEnabled: to.Ptr(true),
+	// 					NotificationCategory: to.Ptr(armservicefabric.NotificationCategoryWaveProgress),
+	// 					NotificationLevel: to.Ptr(armservicefabric.NotificationLevelAll),
+	// 					NotificationTargets: []*armservicefabric.NotificationTarget{
+	// 						{
+	// 							NotificationChannel: to.Ptr(armservicefabric.NotificationChannelEmailUser),
+	// 							Receivers: []*string{
+	// 								to.Ptr("****@microsoft.com"),
+	// 								to.Ptr("****@microsoft.com"),
+	// 							},
+	// 						},
+	// 						{
+	// 							NotificationChannel: to.Ptr(armservicefabric.NotificationChannelEmailSubscription),
+	// 							Receivers: []*string{
+	// 								to.Ptr("Owner"),
+	// 								to.Ptr("AccountAdmin"),
+	// 							},
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 			ProvisioningState: to.Ptr(armservicefabric.ProvisioningStateSucceeded),
+	// 			ReliabilityLevel: to.Ptr(armservicefabric.ReliabilityLevelBronze),
+	// 			UpgradeDescription: &armservicefabric.ClusterUpgradePolicy{
+	// 				DeltaHealthPolicy: &armservicefabric.ClusterUpgradeDeltaHealthPolicy{
+	// 					MaxPercentDeltaUnhealthyApplications: to.Ptr[int32](0),
+	// 					MaxPercentDeltaUnhealthyNodes: to.Ptr[int32](0),
+	// 					MaxPercentUpgradeDomainDeltaUnhealthyNodes: to.Ptr[int32](0),
+	// 				},
+	// 				ForceRestart: to.Ptr(false),
+	// 				HealthCheckRetryTimeout: to.Ptr("00:05:00"),
+	// 				HealthCheckStableDuration: to.Ptr("00:00:30"),
+	// 				HealthCheckWaitDuration: to.Ptr("00:00:30"),
+	// 				HealthPolicy: &armservicefabric.ClusterHealthPolicy{
+	// 					MaxPercentUnhealthyApplications: to.Ptr[int32](0),
+	// 					MaxPercentUnhealthyNodes: to.Ptr[int32](0),
+	// 				},
+	// 				UpgradeDomainTimeout: to.Ptr("00:15:00"),
+	// 				UpgradeReplicaSetCheckTimeout: to.Ptr("00:10:00"),
+	// 				UpgradeTimeout: to.Ptr("01:00:00"),
+	// 			},
+	// 			UpgradeMode: to.Ptr(armservicefabric.UpgradeModeAutomatic),
+	// 			UpgradePauseEndTimestampUTC: to.Ptr(time.Date(2021, time.June, 25, 22, 0, 0, 0, time.UTC)),
+	// 			UpgradePauseStartTimestampUTC: to.Ptr(time.Date(2021, time.June, 21, 22, 0, 0, 0, time.UTC)),
+	// 			UpgradeWave: to.Ptr(armservicefabric.ClusterUpgradeCadenceWave2),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"a": to.Ptr("b"),
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2026-03-01-preview/ClusterDeleteOperation_example.json
 func ExampleClustersClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -777,8 +1013,8 @@ func ExampleClustersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/ClusterListOperation_example.json
-func ExampleClustersClient_NewListPager() {
+// Generated from example definition: 2026-03-01-preview/ListUpgradableVersionsMinMax_example.json
+func ExampleClustersClient_ListUpgradableVersions_getMinimumAndMaximumCodeVersions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -788,260 +1024,54 @@ func ExampleClustersClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewClustersClient().NewListPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armservicefabric.ClustersClientListResponse{
-		// 	ClusterListResult: armservicefabric.ClusterListResult{
-		// 		NextLink: to.Ptr("http://examplelink.com"),
-		// 		Value: []*armservicefabric.Cluster{
-		// 			{
-		// 				Name: to.Ptr("myCluster"),
-		// 				Type: to.Ptr("Microsoft.ServiceFabric/clusters"),
-		// 				Etag: to.Ptr("W/\"636462502169240745\""),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/resRg/providers/Microsoft.ServiceFabric/clusters/myCluster"),
-		// 				Location: to.Ptr("eastus"),
-		// 				Properties: &armservicefabric.ClusterProperties{
-		// 					AddOnFeatures: []*armservicefabric.AddOnFeatures{
-		// 						to.Ptr(armservicefabric.AddOnFeaturesRepairManager),
-		// 						to.Ptr(armservicefabric.AddOnFeaturesDNSService),
-		// 						to.Ptr(armservicefabric.AddOnFeaturesBackupRestoreService),
-		// 						to.Ptr(armservicefabric.AddOnFeaturesResourceMonitorService),
-		// 					},
-		// 					AvailableClusterVersions: []*armservicefabric.ClusterVersionDetails{
-		// 						{
-		// 							CodeVersion: to.Ptr("6.1.480.9494"),
-		// 							Environment: to.Ptr(armservicefabric.ClusterEnvironmentWindows),
-		// 							SupportExpiryUTC: to.Ptr("2018-06-15T23:59:59.9999999"),
-		// 						},
-		// 					},
-		// 					AzureActiveDirectory: &armservicefabric.AzureActiveDirectory{
-		// 						ClientApplication: to.Ptr("d151ad89-4bce-4ae8-b3d1-1dc79679fa75"),
-		// 						ClusterApplication: to.Ptr("5886372e-7bf4-4878-a497-8098aba608ae"),
-		// 						TenantID: to.Ptr("6abcc6a0-8666-43f1-87b8-172cf86a9f9c"),
-		// 					},
-		// 					CertificateCommonNames: &armservicefabric.ServerCertificateCommonNames{
-		// 						CommonNames: []*armservicefabric.ServerCertificateCommonName{
-		// 							{
-		// 								CertificateCommonName: to.Ptr("abc.com"),
-		// 								CertificateIssuerThumbprint: to.Ptr("12599211F8F14C90AFA9532AD79A6F2CA1C00622"),
-		// 							},
-		// 						},
-		// 						X509StoreName: to.Ptr(armservicefabric.StoreNameMy),
-		// 					},
-		// 					ClientCertificateCommonNames: []*armservicefabric.ClientCertificateCommonName{
-		// 						{
-		// 							CertificateCommonName: to.Ptr("abc.com"),
-		// 							CertificateIssuerThumbprint: to.Ptr("5F3660C715EBBDA31DB1FFDCF508302348DE8E7A"),
-		// 							IsAdmin: to.Ptr(true),
-		// 						},
-		// 					},
-		// 					ClientCertificateThumbprints: []*armservicefabric.ClientCertificateThumbprint{
-		// 						{
-		// 							CertificateThumbprint: to.Ptr("5F3660C715EBBDA31DB1FFDCF508302348DE8E7A"),
-		// 							IsAdmin: to.Ptr(false),
-		// 						},
-		// 					},
-		// 					ClusterCodeVersion: to.Ptr("6.1.480.9494"),
-		// 					ClusterEndpoint: to.Ptr("https://eastus.servicefabric.azure.com"),
-		// 					ClusterID: to.Ptr("92584666-9889-4ae8-8d02-91902923d37f"),
-		// 					ClusterState: to.Ptr(armservicefabric.ClusterStateWaitingForNodes),
-		// 					DiagnosticsStorageAccountConfig: &armservicefabric.DiagnosticsStorageAccountConfig{
-		// 						BlobEndpoint: to.Ptr("https://diag.blob.core.windows.net/"),
-		// 						ProtectedAccountKeyName: to.Ptr("StorageAccountKey1"),
-		// 						QueueEndpoint: to.Ptr("https://diag.queue.core.windows.net/"),
-		// 						StorageAccountName: to.Ptr("diag"),
-		// 						TableEndpoint: to.Ptr("https://diag.table.core.windows.net/"),
-		// 					},
-		// 					FabricSettings: []*armservicefabric.SettingsSectionDescription{
-		// 						{
-		// 							Name: to.Ptr("UpgradeService"),
-		// 							Parameters: []*armservicefabric.SettingsParameterDescription{
-		// 								{
-		// 									Name: to.Ptr("AppPollIntervalInSeconds"),
-		// 									Value: to.Ptr("60"),
-		// 								},
-		// 							},
-		// 						},
-		// 					},
-		// 					ManagementEndpoint: to.Ptr("https://myCluster.eastus.cloudapp.azure.com:19080"),
-		// 					NodeTypes: []*armservicefabric.NodeTypeDescription{
-		// 						{
-		// 							Name: to.Ptr("nt1vm"),
-		// 							ApplicationPorts: &armservicefabric.EndpointRangeDescription{
-		// 								EndPort: to.Ptr[int32](30000),
-		// 								StartPort: to.Ptr[int32](20000),
-		// 							},
-		// 							ClientConnectionEndpointPort: to.Ptr[int32](19000),
-		// 							DurabilityLevel: to.Ptr(armservicefabric.DurabilityLevelBronze),
-		// 							EphemeralPorts: &armservicefabric.EndpointRangeDescription{
-		// 								EndPort: to.Ptr[int32](64000),
-		// 								StartPort: to.Ptr[int32](49000),
-		// 							},
-		// 							HTTPGatewayEndpointPort: to.Ptr[int32](19007),
-		// 							IsPrimary: to.Ptr(true),
-		// 							VMInstanceCount: to.Ptr[int32](5),
-		// 						},
-		// 					},
-		// 					ProvisioningState: to.Ptr(armservicefabric.ProvisioningStateSucceeded),
-		// 					ReliabilityLevel: to.Ptr(armservicefabric.ReliabilityLevelSilver),
-		// 					ReverseProxyCertificateCommonNames: &armservicefabric.ServerCertificateCommonNames{
-		// 						CommonNames: []*armservicefabric.ServerCertificateCommonName{
-		// 							{
-		// 								CertificateCommonName: to.Ptr("abc.com"),
-		// 								CertificateIssuerThumbprint: to.Ptr("12599211F8F14C90AFA9532AD79A6F2CA1C00622"),
-		// 							},
-		// 						},
-		// 						X509StoreName: to.Ptr(armservicefabric.StoreNameMy),
-		// 					},
-		// 					UpgradeDescription: &armservicefabric.ClusterUpgradePolicy{
-		// 						DeltaHealthPolicy: &armservicefabric.ClusterUpgradeDeltaHealthPolicy{
-		// 							ApplicationDeltaHealthPolicies: map[string]*armservicefabric.ApplicationDeltaHealthPolicy{
-		// 								"fabric:/myApp1": &armservicefabric.ApplicationDeltaHealthPolicy{
-		// 									DefaultServiceTypeDeltaHealthPolicy: &armservicefabric.ServiceTypeDeltaHealthPolicy{
-		// 										MaxPercentDeltaUnhealthyServices: to.Ptr[int32](0),
-		// 									},
-		// 									ServiceTypeDeltaHealthPolicies: map[string]*armservicefabric.ServiceTypeDeltaHealthPolicy{
-		// 										"myServiceType1": &armservicefabric.ServiceTypeDeltaHealthPolicy{
-		// 											MaxPercentDeltaUnhealthyServices: to.Ptr[int32](0),
-		// 										},
-		// 									},
-		// 								},
-		// 							},
-		// 							MaxPercentDeltaUnhealthyApplications: to.Ptr[int32](0),
-		// 							MaxPercentDeltaUnhealthyNodes: to.Ptr[int32](0),
-		// 							MaxPercentUpgradeDomainDeltaUnhealthyNodes: to.Ptr[int32](0),
-		// 						},
-		// 						ForceRestart: to.Ptr(false),
-		// 						HealthCheckRetryTimeout: to.Ptr("00:05:00"),
-		// 						HealthCheckStableDuration: to.Ptr("00:00:30"),
-		// 						HealthCheckWaitDuration: to.Ptr("00:00:30"),
-		// 						HealthPolicy: &armservicefabric.ClusterHealthPolicy{
-		// 							ApplicationHealthPolicies: map[string]*armservicefabric.ApplicationHealthPolicy{
-		// 								"fabric:/myApp1": &armservicefabric.ApplicationHealthPolicy{
-		// 									DefaultServiceTypeHealthPolicy: &armservicefabric.ServiceTypeHealthPolicy{
-		// 										MaxPercentUnhealthyServices: to.Ptr[int32](0),
-		// 									},
-		// 									ServiceTypeHealthPolicies: map[string]*armservicefabric.ServiceTypeHealthPolicy{
-		// 										"myServiceType1": &armservicefabric.ServiceTypeHealthPolicy{
-		// 											MaxPercentUnhealthyServices: to.Ptr[int32](100),
-		// 										},
-		// 									},
-		// 								},
-		// 							},
-		// 							MaxPercentUnhealthyApplications: to.Ptr[int32](0),
-		// 							MaxPercentUnhealthyNodes: to.Ptr[int32](0),
-		// 						},
-		// 						UpgradeDomainTimeout: to.Ptr("00:15:00"),
-		// 						UpgradeReplicaSetCheckTimeout: to.Ptr("00:10:00"),
-		// 						UpgradeTimeout: to.Ptr("01:00:00"),
-		// 					},
-		// 					UpgradeMode: to.Ptr(armservicefabric.UpgradeModeManual),
-		// 					VMImage: to.Ptr("Windows"),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("myCluster2"),
-		// 				Type: to.Ptr("Microsoft.ServiceFabric/clusters"),
-		// 				Etag: to.Ptr("W/\"636462502164040075\""),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/resRg/providers/Microsoft.ServiceFabric/clusters/myCluster2"),
-		// 				Location: to.Ptr("eastus"),
-		// 				Properties: &armservicefabric.ClusterProperties{
-		// 					AddOnFeatures: []*armservicefabric.AddOnFeatures{
-		// 						to.Ptr(armservicefabric.AddOnFeaturesRepairManager),
-		// 					},
-		// 					AvailableClusterVersions: []*armservicefabric.ClusterVersionDetails{
-		// 						{
-		// 							CodeVersion: to.Ptr("6.1.187.1"),
-		// 							Environment: to.Ptr(armservicefabric.ClusterEnvironmentLinux),
-		// 							SupportExpiryUTC: to.Ptr("2018-06-15T23:59:59.9999999"),
-		// 						},
-		// 					},
-		// 					ClientCertificateCommonNames: []*armservicefabric.ClientCertificateCommonName{
-		// 					},
-		// 					ClientCertificateThumbprints: []*armservicefabric.ClientCertificateThumbprint{
-		// 					},
-		// 					ClusterCodeVersion: to.Ptr("6.1.187.1"),
-		// 					ClusterEndpoint: to.Ptr("https://eastus.servicefabric.azure.com"),
-		// 					ClusterID: to.Ptr("2747e469-b24e-4039-8a0a-46151419523f"),
-		// 					ClusterState: to.Ptr(armservicefabric.ClusterStateWaitingForNodes),
-		// 					DiagnosticsStorageAccountConfig: &armservicefabric.DiagnosticsStorageAccountConfig{
-		// 						BlobEndpoint: to.Ptr("https://diag.blob.core.windows.net/"),
-		// 						ProtectedAccountKeyName: to.Ptr("StorageAccountKey1"),
-		// 						QueueEndpoint: to.Ptr("https://diag.queue.core.windows.net/"),
-		// 						StorageAccountName: to.Ptr("diag"),
-		// 						TableEndpoint: to.Ptr("https://diag.table.core.windows.net/"),
-		// 					},
-		// 					FabricSettings: []*armservicefabric.SettingsSectionDescription{
-		// 						{
-		// 							Name: to.Ptr("UpgradeService"),
-		// 							Parameters: []*armservicefabric.SettingsParameterDescription{
-		// 								{
-		// 									Name: to.Ptr("AppPollIntervalInSeconds"),
-		// 									Value: to.Ptr("60"),
-		// 								},
-		// 							},
-		// 						},
-		// 					},
-		// 					ManagementEndpoint: to.Ptr("http://myCluster2.eastus.cloudapp.azure.com:19080"),
-		// 					NodeTypes: []*armservicefabric.NodeTypeDescription{
-		// 						{
-		// 							Name: to.Ptr("nt1vm"),
-		// 							ApplicationPorts: &armservicefabric.EndpointRangeDescription{
-		// 								EndPort: to.Ptr[int32](30000),
-		// 								StartPort: to.Ptr[int32](20000),
-		// 							},
-		// 							ClientConnectionEndpointPort: to.Ptr[int32](19000),
-		// 							DurabilityLevel: to.Ptr(armservicefabric.DurabilityLevelBronze),
-		// 							EphemeralPorts: &armservicefabric.EndpointRangeDescription{
-		// 								EndPort: to.Ptr[int32](64000),
-		// 								StartPort: to.Ptr[int32](49000),
-		// 							},
-		// 							HTTPGatewayEndpointPort: to.Ptr[int32](19007),
-		// 							IsPrimary: to.Ptr(true),
-		// 							VMInstanceCount: to.Ptr[int32](5),
-		// 						},
-		// 					},
-		// 					ProvisioningState: to.Ptr(armservicefabric.ProvisioningStateSucceeded),
-		// 					ReliabilityLevel: to.Ptr(armservicefabric.ReliabilityLevelSilver),
-		// 					UpgradeDescription: &armservicefabric.ClusterUpgradePolicy{
-		// 						DeltaHealthPolicy: &armservicefabric.ClusterUpgradeDeltaHealthPolicy{
-		// 							MaxPercentDeltaUnhealthyApplications: to.Ptr[int32](0),
-		// 							MaxPercentDeltaUnhealthyNodes: to.Ptr[int32](0),
-		// 							MaxPercentUpgradeDomainDeltaUnhealthyNodes: to.Ptr[int32](0),
-		// 						},
-		// 						ForceRestart: to.Ptr(false),
-		// 						HealthCheckRetryTimeout: to.Ptr("00:05:00"),
-		// 						HealthCheckStableDuration: to.Ptr("00:00:30"),
-		// 						HealthCheckWaitDuration: to.Ptr("00:00:30"),
-		// 						HealthPolicy: &armservicefabric.ClusterHealthPolicy{
-		// 							MaxPercentUnhealthyApplications: to.Ptr[int32](0),
-		// 							MaxPercentUnhealthyNodes: to.Ptr[int32](0),
-		// 						},
-		// 						UpgradeDomainTimeout: to.Ptr("00:15:00"),
-		// 						UpgradeReplicaSetCheckTimeout: to.Ptr("00:10:00"),
-		// 						UpgradeTimeout: to.Ptr("01:00:00"),
-		// 					},
-		// 					UpgradeMode: to.Ptr(armservicefabric.UpgradeModeManual),
-		// 					VMImage: to.Ptr("Ubuntu"),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
+	res, err := clientFactory.NewClustersClient().ListUpgradableVersions(ctx, "resRg", "myCluster", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
 	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armservicefabric.ClustersClientListUpgradableVersionsResponse{
+	// 	UpgradableVersionPathResult: armservicefabric.UpgradableVersionPathResult{
+	// 		SupportedPath: []*string{
+	// 			to.Ptr("7.0.0.0"),
+	// 			to.Ptr("7.2.0.0"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-03-01-preview/ListUpgradableVersionsPath_example.json
+func ExampleClustersClient_ListUpgradableVersions_getUpgradePath() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armservicefabric.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewClustersClient().ListUpgradableVersions(ctx, "resRg", "myCluster", &armservicefabric.ClustersClientListUpgradableVersionsOptions{
+		VersionsDescription: &armservicefabric.UpgradableVersionsDescription{
+			TargetVersion: to.Ptr("7.2.432.9590"),
+		}})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armservicefabric.ClustersClientListUpgradableVersionsResponse{
+	// 	UpgradableVersionPathResult: armservicefabric.UpgradableVersionPathResult{
+	// 		SupportedPath: []*string{
+	// 			to.Ptr("6.4.664.9590"),
+	// 			to.Ptr("7.0.466.9590"),
+	// 			to.Ptr("7.0.470.9590"),
+	// 			to.Ptr("7.2.432.9590"),
+	// 		},
+	// 	},
+	// }
 }
 
 // Generated from example definition: 2026-03-01-preview/ClusterListByResourceGroupOperation_example.json
@@ -1311,8 +1341,8 @@ func ExampleClustersClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/ListUpgradableVersionsMinMax_example.json
-func ExampleClustersClient_ListUpgradableVersions_getMinimumAndMaximumCodeVersions() {
+// Generated from example definition: 2026-03-01-preview/ClusterListOperation_example.json
+func ExampleClustersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1322,288 +1352,258 @@ func ExampleClustersClient_ListUpgradableVersions_getMinimumAndMaximumCodeVersio
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewClustersClient().ListUpgradableVersions(ctx, "resRg", "myCluster", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
+	pager := clientFactory.NewClustersClient().NewListPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armservicefabric.ClustersClientListResponse{
+		// 	ClusterListResult: armservicefabric.ClusterListResult{
+		// 		NextLink: to.Ptr("http://examplelink.com"),
+		// 		Value: []*armservicefabric.Cluster{
+		// 			{
+		// 				Name: to.Ptr("myCluster"),
+		// 				Type: to.Ptr("Microsoft.ServiceFabric/clusters"),
+		// 				Etag: to.Ptr("W/\"636462502169240745\""),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/resRg/providers/Microsoft.ServiceFabric/clusters/myCluster"),
+		// 				Location: to.Ptr("eastus"),
+		// 				Properties: &armservicefabric.ClusterProperties{
+		// 					AddOnFeatures: []*armservicefabric.AddOnFeatures{
+		// 						to.Ptr(armservicefabric.AddOnFeaturesRepairManager),
+		// 						to.Ptr(armservicefabric.AddOnFeaturesDNSService),
+		// 						to.Ptr(armservicefabric.AddOnFeaturesBackupRestoreService),
+		// 						to.Ptr(armservicefabric.AddOnFeaturesResourceMonitorService),
+		// 					},
+		// 					AvailableClusterVersions: []*armservicefabric.ClusterVersionDetails{
+		// 						{
+		// 							CodeVersion: to.Ptr("6.1.480.9494"),
+		// 							Environment: to.Ptr(armservicefabric.ClusterEnvironmentWindows),
+		// 							SupportExpiryUTC: to.Ptr("2018-06-15T23:59:59.9999999"),
+		// 						},
+		// 					},
+		// 					AzureActiveDirectory: &armservicefabric.AzureActiveDirectory{
+		// 						ClientApplication: to.Ptr("d151ad89-4bce-4ae8-b3d1-1dc79679fa75"),
+		// 						ClusterApplication: to.Ptr("5886372e-7bf4-4878-a497-8098aba608ae"),
+		// 						TenantID: to.Ptr("6abcc6a0-8666-43f1-87b8-172cf86a9f9c"),
+		// 					},
+		// 					CertificateCommonNames: &armservicefabric.ServerCertificateCommonNames{
+		// 						CommonNames: []*armservicefabric.ServerCertificateCommonName{
+		// 							{
+		// 								CertificateCommonName: to.Ptr("abc.com"),
+		// 								CertificateIssuerThumbprint: to.Ptr("12599211F8F14C90AFA9532AD79A6F2CA1C00622"),
+		// 							},
+		// 						},
+		// 						X509StoreName: to.Ptr(armservicefabric.StoreNameMy),
+		// 					},
+		// 					ClientCertificateCommonNames: []*armservicefabric.ClientCertificateCommonName{
+		// 						{
+		// 							CertificateCommonName: to.Ptr("abc.com"),
+		// 							CertificateIssuerThumbprint: to.Ptr("5F3660C715EBBDA31DB1FFDCF508302348DE8E7A"),
+		// 							IsAdmin: to.Ptr(true),
+		// 						},
+		// 					},
+		// 					ClientCertificateThumbprints: []*armservicefabric.ClientCertificateThumbprint{
+		// 						{
+		// 							CertificateThumbprint: to.Ptr("5F3660C715EBBDA31DB1FFDCF508302348DE8E7A"),
+		// 							IsAdmin: to.Ptr(false),
+		// 						},
+		// 					},
+		// 					ClusterCodeVersion: to.Ptr("6.1.480.9494"),
+		// 					ClusterEndpoint: to.Ptr("https://eastus.servicefabric.azure.com"),
+		// 					ClusterID: to.Ptr("92584666-9889-4ae8-8d02-91902923d37f"),
+		// 					ClusterState: to.Ptr(armservicefabric.ClusterStateWaitingForNodes),
+		// 					DiagnosticsStorageAccountConfig: &armservicefabric.DiagnosticsStorageAccountConfig{
+		// 						BlobEndpoint: to.Ptr("https://diag.blob.core.windows.net/"),
+		// 						ProtectedAccountKeyName: to.Ptr("StorageAccountKey1"),
+		// 						QueueEndpoint: to.Ptr("https://diag.queue.core.windows.net/"),
+		// 						StorageAccountName: to.Ptr("diag"),
+		// 						TableEndpoint: to.Ptr("https://diag.table.core.windows.net/"),
+		// 					},
+		// 					FabricSettings: []*armservicefabric.SettingsSectionDescription{
+		// 						{
+		// 							Name: to.Ptr("UpgradeService"),
+		// 							Parameters: []*armservicefabric.SettingsParameterDescription{
+		// 								{
+		// 									Name: to.Ptr("AppPollIntervalInSeconds"),
+		// 									Value: to.Ptr("60"),
+		// 								},
+		// 							},
+		// 						},
+		// 					},
+		// 					ManagementEndpoint: to.Ptr("https://myCluster.eastus.cloudapp.azure.com:19080"),
+		// 					NodeTypes: []*armservicefabric.NodeTypeDescription{
+		// 						{
+		// 							Name: to.Ptr("nt1vm"),
+		// 							ApplicationPorts: &armservicefabric.EndpointRangeDescription{
+		// 								EndPort: to.Ptr[int32](30000),
+		// 								StartPort: to.Ptr[int32](20000),
+		// 							},
+		// 							ClientConnectionEndpointPort: to.Ptr[int32](19000),
+		// 							DurabilityLevel: to.Ptr(armservicefabric.DurabilityLevelBronze),
+		// 							EphemeralPorts: &armservicefabric.EndpointRangeDescription{
+		// 								EndPort: to.Ptr[int32](64000),
+		// 								StartPort: to.Ptr[int32](49000),
+		// 							},
+		// 							HTTPGatewayEndpointPort: to.Ptr[int32](19007),
+		// 							IsPrimary: to.Ptr(true),
+		// 							VMInstanceCount: to.Ptr[int32](5),
+		// 						},
+		// 					},
+		// 					ProvisioningState: to.Ptr(armservicefabric.ProvisioningStateSucceeded),
+		// 					ReliabilityLevel: to.Ptr(armservicefabric.ReliabilityLevelSilver),
+		// 					ReverseProxyCertificateCommonNames: &armservicefabric.ServerCertificateCommonNames{
+		// 						CommonNames: []*armservicefabric.ServerCertificateCommonName{
+		// 							{
+		// 								CertificateCommonName: to.Ptr("abc.com"),
+		// 								CertificateIssuerThumbprint: to.Ptr("12599211F8F14C90AFA9532AD79A6F2CA1C00622"),
+		// 							},
+		// 						},
+		// 						X509StoreName: to.Ptr(armservicefabric.StoreNameMy),
+		// 					},
+		// 					UpgradeDescription: &armservicefabric.ClusterUpgradePolicy{
+		// 						DeltaHealthPolicy: &armservicefabric.ClusterUpgradeDeltaHealthPolicy{
+		// 							ApplicationDeltaHealthPolicies: map[string]*armservicefabric.ApplicationDeltaHealthPolicy{
+		// 								"fabric:/myApp1": &armservicefabric.ApplicationDeltaHealthPolicy{
+		// 									DefaultServiceTypeDeltaHealthPolicy: &armservicefabric.ServiceTypeDeltaHealthPolicy{
+		// 										MaxPercentDeltaUnhealthyServices: to.Ptr[int32](0),
+		// 									},
+		// 									ServiceTypeDeltaHealthPolicies: map[string]*armservicefabric.ServiceTypeDeltaHealthPolicy{
+		// 										"myServiceType1": &armservicefabric.ServiceTypeDeltaHealthPolicy{
+		// 											MaxPercentDeltaUnhealthyServices: to.Ptr[int32](0),
+		// 										},
+		// 									},
+		// 								},
+		// 							},
+		// 							MaxPercentDeltaUnhealthyApplications: to.Ptr[int32](0),
+		// 							MaxPercentDeltaUnhealthyNodes: to.Ptr[int32](0),
+		// 							MaxPercentUpgradeDomainDeltaUnhealthyNodes: to.Ptr[int32](0),
+		// 						},
+		// 						ForceRestart: to.Ptr(false),
+		// 						HealthCheckRetryTimeout: to.Ptr("00:05:00"),
+		// 						HealthCheckStableDuration: to.Ptr("00:00:30"),
+		// 						HealthCheckWaitDuration: to.Ptr("00:00:30"),
+		// 						HealthPolicy: &armservicefabric.ClusterHealthPolicy{
+		// 							ApplicationHealthPolicies: map[string]*armservicefabric.ApplicationHealthPolicy{
+		// 								"fabric:/myApp1": &armservicefabric.ApplicationHealthPolicy{
+		// 									DefaultServiceTypeHealthPolicy: &armservicefabric.ServiceTypeHealthPolicy{
+		// 										MaxPercentUnhealthyServices: to.Ptr[int32](0),
+		// 									},
+		// 									ServiceTypeHealthPolicies: map[string]*armservicefabric.ServiceTypeHealthPolicy{
+		// 										"myServiceType1": &armservicefabric.ServiceTypeHealthPolicy{
+		// 											MaxPercentUnhealthyServices: to.Ptr[int32](100),
+		// 										},
+		// 									},
+		// 								},
+		// 							},
+		// 							MaxPercentUnhealthyApplications: to.Ptr[int32](0),
+		// 							MaxPercentUnhealthyNodes: to.Ptr[int32](0),
+		// 						},
+		// 						UpgradeDomainTimeout: to.Ptr("00:15:00"),
+		// 						UpgradeReplicaSetCheckTimeout: to.Ptr("00:10:00"),
+		// 						UpgradeTimeout: to.Ptr("01:00:00"),
+		// 					},
+		// 					UpgradeMode: to.Ptr(armservicefabric.UpgradeModeManual),
+		// 					VMImage: to.Ptr("Windows"),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("myCluster2"),
+		// 				Type: to.Ptr("Microsoft.ServiceFabric/clusters"),
+		// 				Etag: to.Ptr("W/\"636462502164040075\""),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/resRg/providers/Microsoft.ServiceFabric/clusters/myCluster2"),
+		// 				Location: to.Ptr("eastus"),
+		// 				Properties: &armservicefabric.ClusterProperties{
+		// 					AddOnFeatures: []*armservicefabric.AddOnFeatures{
+		// 						to.Ptr(armservicefabric.AddOnFeaturesRepairManager),
+		// 					},
+		// 					AvailableClusterVersions: []*armservicefabric.ClusterVersionDetails{
+		// 						{
+		// 							CodeVersion: to.Ptr("6.1.187.1"),
+		// 							Environment: to.Ptr(armservicefabric.ClusterEnvironmentLinux),
+		// 							SupportExpiryUTC: to.Ptr("2018-06-15T23:59:59.9999999"),
+		// 						},
+		// 					},
+		// 					ClientCertificateCommonNames: []*armservicefabric.ClientCertificateCommonName{
+		// 					},
+		// 					ClientCertificateThumbprints: []*armservicefabric.ClientCertificateThumbprint{
+		// 					},
+		// 					ClusterCodeVersion: to.Ptr("6.1.187.1"),
+		// 					ClusterEndpoint: to.Ptr("https://eastus.servicefabric.azure.com"),
+		// 					ClusterID: to.Ptr("2747e469-b24e-4039-8a0a-46151419523f"),
+		// 					ClusterState: to.Ptr(armservicefabric.ClusterStateWaitingForNodes),
+		// 					DiagnosticsStorageAccountConfig: &armservicefabric.DiagnosticsStorageAccountConfig{
+		// 						BlobEndpoint: to.Ptr("https://diag.blob.core.windows.net/"),
+		// 						ProtectedAccountKeyName: to.Ptr("StorageAccountKey1"),
+		// 						QueueEndpoint: to.Ptr("https://diag.queue.core.windows.net/"),
+		// 						StorageAccountName: to.Ptr("diag"),
+		// 						TableEndpoint: to.Ptr("https://diag.table.core.windows.net/"),
+		// 					},
+		// 					FabricSettings: []*armservicefabric.SettingsSectionDescription{
+		// 						{
+		// 							Name: to.Ptr("UpgradeService"),
+		// 							Parameters: []*armservicefabric.SettingsParameterDescription{
+		// 								{
+		// 									Name: to.Ptr("AppPollIntervalInSeconds"),
+		// 									Value: to.Ptr("60"),
+		// 								},
+		// 							},
+		// 						},
+		// 					},
+		// 					ManagementEndpoint: to.Ptr("http://myCluster2.eastus.cloudapp.azure.com:19080"),
+		// 					NodeTypes: []*armservicefabric.NodeTypeDescription{
+		// 						{
+		// 							Name: to.Ptr("nt1vm"),
+		// 							ApplicationPorts: &armservicefabric.EndpointRangeDescription{
+		// 								EndPort: to.Ptr[int32](30000),
+		// 								StartPort: to.Ptr[int32](20000),
+		// 							},
+		// 							ClientConnectionEndpointPort: to.Ptr[int32](19000),
+		// 							DurabilityLevel: to.Ptr(armservicefabric.DurabilityLevelBronze),
+		// 							EphemeralPorts: &armservicefabric.EndpointRangeDescription{
+		// 								EndPort: to.Ptr[int32](64000),
+		// 								StartPort: to.Ptr[int32](49000),
+		// 							},
+		// 							HTTPGatewayEndpointPort: to.Ptr[int32](19007),
+		// 							IsPrimary: to.Ptr(true),
+		// 							VMInstanceCount: to.Ptr[int32](5),
+		// 						},
+		// 					},
+		// 					ProvisioningState: to.Ptr(armservicefabric.ProvisioningStateSucceeded),
+		// 					ReliabilityLevel: to.Ptr(armservicefabric.ReliabilityLevelSilver),
+		// 					UpgradeDescription: &armservicefabric.ClusterUpgradePolicy{
+		// 						DeltaHealthPolicy: &armservicefabric.ClusterUpgradeDeltaHealthPolicy{
+		// 							MaxPercentDeltaUnhealthyApplications: to.Ptr[int32](0),
+		// 							MaxPercentDeltaUnhealthyNodes: to.Ptr[int32](0),
+		// 							MaxPercentUpgradeDomainDeltaUnhealthyNodes: to.Ptr[int32](0),
+		// 						},
+		// 						ForceRestart: to.Ptr(false),
+		// 						HealthCheckRetryTimeout: to.Ptr("00:05:00"),
+		// 						HealthCheckStableDuration: to.Ptr("00:00:30"),
+		// 						HealthCheckWaitDuration: to.Ptr("00:00:30"),
+		// 						HealthPolicy: &armservicefabric.ClusterHealthPolicy{
+		// 							MaxPercentUnhealthyApplications: to.Ptr[int32](0),
+		// 							MaxPercentUnhealthyNodes: to.Ptr[int32](0),
+		// 						},
+		// 						UpgradeDomainTimeout: to.Ptr("00:15:00"),
+		// 						UpgradeReplicaSetCheckTimeout: to.Ptr("00:10:00"),
+		// 						UpgradeTimeout: to.Ptr("01:00:00"),
+		// 					},
+		// 					UpgradeMode: to.Ptr(armservicefabric.UpgradeModeManual),
+		// 					VMImage: to.Ptr("Ubuntu"),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
 	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armservicefabric.ClustersClientListUpgradableVersionsResponse{
-	// 	UpgradableVersionPathResult: armservicefabric.UpgradableVersionPathResult{
-	// 		SupportedPath: []*string{
-	// 			to.Ptr("7.0.0.0"),
-	// 			to.Ptr("7.2.0.0"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-03-01-preview/ListUpgradableVersionsPath_example.json
-func ExampleClustersClient_ListUpgradableVersions_getUpgradePath() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armservicefabric.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewClustersClient().ListUpgradableVersions(ctx, "resRg", "myCluster", &armservicefabric.ClustersClientListUpgradableVersionsOptions{
-		VersionsDescription: &armservicefabric.UpgradableVersionsDescription{
-			TargetVersion: to.Ptr("7.2.432.9590"),
-		}})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armservicefabric.ClustersClientListUpgradableVersionsResponse{
-	// 	UpgradableVersionPathResult: armservicefabric.UpgradableVersionPathResult{
-	// 		SupportedPath: []*string{
-	// 			to.Ptr("6.4.664.9590"),
-	// 			to.Ptr("7.0.466.9590"),
-	// 			to.Ptr("7.0.470.9590"),
-	// 			to.Ptr("7.2.432.9590"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-03-01-preview/ClusterPatchOperation_example.json
-func ExampleClustersClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armservicefabric.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewClustersClient().BeginUpdate(ctx, "resRg", "myCluster", armservicefabric.ClusterUpdateParameters{
-		Properties: &armservicefabric.ClusterPropertiesUpdateParameters{
-			EnableHTTPGatewayExclusiveAuthMode: to.Ptr(true),
-			EventStoreServiceEnabled:           to.Ptr(true),
-			NodeTypes: []*armservicefabric.NodeTypeDescription{
-				{
-					Name: to.Ptr("nt1vm"),
-					ApplicationPorts: &armservicefabric.EndpointRangeDescription{
-						EndPort:   to.Ptr[int32](30000),
-						StartPort: to.Ptr[int32](20000),
-					},
-					ClientConnectionEndpointPort: to.Ptr[int32](19000),
-					DurabilityLevel:              to.Ptr(armservicefabric.DurabilityLevelBronze),
-					EphemeralPorts: &armservicefabric.EndpointRangeDescription{
-						EndPort:   to.Ptr[int32](64000),
-						StartPort: to.Ptr[int32](49000),
-					},
-					HTTPGatewayEndpointPort:          to.Ptr[int32](19007),
-					HTTPGatewayTokenAuthEndpointPort: to.Ptr[int32](19081),
-					IsPrimary:                        to.Ptr(true),
-					VMInstanceCount:                  to.Ptr[int32](5),
-				},
-				{
-					Name: to.Ptr("testnt1"),
-					ApplicationPorts: &armservicefabric.EndpointRangeDescription{
-						EndPort:   to.Ptr[int32](2000),
-						StartPort: to.Ptr[int32](1000),
-					},
-					ClientConnectionEndpointPort: to.Ptr[int32](0),
-					DurabilityLevel:              to.Ptr(armservicefabric.DurabilityLevelBronze),
-					EphemeralPorts: &armservicefabric.EndpointRangeDescription{
-						EndPort:   to.Ptr[int32](4000),
-						StartPort: to.Ptr[int32](3000),
-					},
-					HTTPGatewayEndpointPort:          to.Ptr[int32](0),
-					HTTPGatewayTokenAuthEndpointPort: to.Ptr[int32](19081),
-					IsPrimary:                        to.Ptr(false),
-					VMInstanceCount:                  to.Ptr[int32](3),
-				},
-			},
-			ReliabilityLevel:              to.Ptr(armservicefabric.ReliabilityLevelBronze),
-			UpgradeMode:                   to.Ptr(armservicefabric.UpgradeModeAutomatic),
-			UpgradePauseEndTimestampUTC:   to.Ptr(time.Date(2021, time.June, 25, 22, 0, 0, 0, time.UTC)),
-			UpgradePauseStartTimestampUTC: to.Ptr(time.Date(2021, time.June, 21, 22, 0, 0, 0, time.UTC)),
-			UpgradeWave:                   to.Ptr(armservicefabric.ClusterUpgradeCadence("Wave")),
-		},
-		Tags: map[string]*string{
-			"a": to.Ptr("b"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armservicefabric.ClustersClientUpdateResponse{
-	// 	Cluster: armservicefabric.Cluster{
-	// 		Name: to.Ptr("myCluster"),
-	// 		Type: to.Ptr("Microsoft.ServiceFabric/clusters"),
-	// 		Etag: to.Ptr("W/\"636462502169240744\""),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/resRg/providers/Microsoft.ServiceFabric/clusters/myCluster"),
-	// 		Location: to.Ptr("eastus"),
-	// 		Properties: &armservicefabric.ClusterProperties{
-	// 			AvailableClusterVersions: []*armservicefabric.ClusterVersionDetails{
-	// 				{
-	// 					CodeVersion: to.Ptr("6.1.480.9494"),
-	// 					Environment: to.Ptr(armservicefabric.ClusterEnvironmentWindows),
-	// 					SupportExpiryUTC: to.Ptr("2018-06-15T23:59:59.9999999"),
-	// 				},
-	// 			},
-	// 			CertificateCommonNames: &armservicefabric.ServerCertificateCommonNames{
-	// 				CommonNames: []*armservicefabric.ServerCertificateCommonName{
-	// 					{
-	// 						CertificateCommonName: to.Ptr("abc.com"),
-	// 						CertificateIssuerThumbprint: to.Ptr("12599211F8F14C90AFA9532AD79A6F2CA1C00622"),
-	// 					},
-	// 				},
-	// 				X509StoreName: to.Ptr(armservicefabric.StoreNameMy),
-	// 			},
-	// 			ClientCertificateCommonNames: []*armservicefabric.ClientCertificateCommonName{
-	// 			},
-	// 			ClientCertificateThumbprints: []*armservicefabric.ClientCertificateThumbprint{
-	// 			},
-	// 			ClusterCodeVersion: to.Ptr("6.1.480.9494"),
-	// 			ClusterEndpoint: to.Ptr("https://eastus.servicefabric.azure.com"),
-	// 			ClusterID: to.Ptr("92584666-9889-4ae8-8d02-91902923d37f"),
-	// 			ClusterState: to.Ptr(armservicefabric.ClusterStateWaitingForNodes),
-	// 			DiagnosticsStorageAccountConfig: &armservicefabric.DiagnosticsStorageAccountConfig{
-	// 				BlobEndpoint: to.Ptr("https://diag.blob.core.windows.net/"),
-	// 				ProtectedAccountKeyName: to.Ptr("StorageAccountKey1"),
-	// 				QueueEndpoint: to.Ptr("https://diag.queue.core.windows.net/"),
-	// 				StorageAccountName: to.Ptr("diag"),
-	// 				TableEndpoint: to.Ptr("https://diag.table.core.windows.net/"),
-	// 			},
-	// 			EnableHTTPGatewayExclusiveAuthMode: to.Ptr(true),
-	// 			EventStoreServiceEnabled: to.Ptr(true),
-	// 			FabricSettings: []*armservicefabric.SettingsSectionDescription{
-	// 				{
-	// 					Name: to.Ptr("UpgradeService"),
-	// 					Parameters: []*armservicefabric.SettingsParameterDescription{
-	// 						{
-	// 							Name: to.Ptr("AppPollIntervalInSeconds"),
-	// 							Value: to.Ptr("60"),
-	// 						},
-	// 					},
-	// 				},
-	// 			},
-	// 			ManagementEndpoint: to.Ptr("http://myCluster.eastus.cloudapp.azure.com:19080"),
-	// 			NodeTypes: []*armservicefabric.NodeTypeDescription{
-	// 				{
-	// 					Name: to.Ptr("nt1vm"),
-	// 					ApplicationPorts: &armservicefabric.EndpointRangeDescription{
-	// 						EndPort: to.Ptr[int32](30000),
-	// 						StartPort: to.Ptr[int32](20000),
-	// 					},
-	// 					ClientConnectionEndpointPort: to.Ptr[int32](19000),
-	// 					DurabilityLevel: to.Ptr(armservicefabric.DurabilityLevelBronze),
-	// 					EphemeralPorts: &armservicefabric.EndpointRangeDescription{
-	// 						EndPort: to.Ptr[int32](64000),
-	// 						StartPort: to.Ptr[int32](49000),
-	// 					},
-	// 					HTTPGatewayEndpointPort: to.Ptr[int32](19007),
-	// 					HTTPGatewayTokenAuthEndpointPort: to.Ptr[int32](19081),
-	// 					IsPrimary: to.Ptr(true),
-	// 					VMInstanceCount: to.Ptr[int32](5),
-	// 				},
-	// 				{
-	// 					Name: to.Ptr("testnt1"),
-	// 					ApplicationPorts: &armservicefabric.EndpointRangeDescription{
-	// 						EndPort: to.Ptr[int32](2000),
-	// 						StartPort: to.Ptr[int32](1000),
-	// 					},
-	// 					ClientConnectionEndpointPort: to.Ptr[int32](0),
-	// 					DurabilityLevel: to.Ptr(armservicefabric.DurabilityLevelBronze),
-	// 					EphemeralPorts: &armservicefabric.EndpointRangeDescription{
-	// 						EndPort: to.Ptr[int32](4000),
-	// 						StartPort: to.Ptr[int32](3000),
-	// 					},
-	// 					HTTPGatewayEndpointPort: to.Ptr[int32](0),
-	// 					HTTPGatewayTokenAuthEndpointPort: to.Ptr[int32](19081),
-	// 					IsPrimary: to.Ptr(false),
-	// 					VMInstanceCount: to.Ptr[int32](3),
-	// 				},
-	// 			},
-	// 			Notifications: []*armservicefabric.Notification{
-	// 				{
-	// 					IsEnabled: to.Ptr(true),
-	// 					NotificationCategory: to.Ptr(armservicefabric.NotificationCategoryWaveProgress),
-	// 					NotificationLevel: to.Ptr(armservicefabric.NotificationLevelCritical),
-	// 					NotificationTargets: []*armservicefabric.NotificationTarget{
-	// 						{
-	// 							NotificationChannel: to.Ptr(armservicefabric.NotificationChannelEmailUser),
-	// 							Receivers: []*string{
-	// 								to.Ptr("****@microsoft.com"),
-	// 								to.Ptr("****@microsoft.com"),
-	// 							},
-	// 						},
-	// 						{
-	// 							NotificationChannel: to.Ptr(armservicefabric.NotificationChannelEmailSubscription),
-	// 							Receivers: []*string{
-	// 								to.Ptr("Owner"),
-	// 								to.Ptr("AccountAdmin"),
-	// 							},
-	// 						},
-	// 					},
-	// 				},
-	// 				{
-	// 					IsEnabled: to.Ptr(true),
-	// 					NotificationCategory: to.Ptr(armservicefabric.NotificationCategoryWaveProgress),
-	// 					NotificationLevel: to.Ptr(armservicefabric.NotificationLevelAll),
-	// 					NotificationTargets: []*armservicefabric.NotificationTarget{
-	// 						{
-	// 							NotificationChannel: to.Ptr(armservicefabric.NotificationChannelEmailUser),
-	// 							Receivers: []*string{
-	// 								to.Ptr("****@microsoft.com"),
-	// 								to.Ptr("****@microsoft.com"),
-	// 							},
-	// 						},
-	// 						{
-	// 							NotificationChannel: to.Ptr(armservicefabric.NotificationChannelEmailSubscription),
-	// 							Receivers: []*string{
-	// 								to.Ptr("Owner"),
-	// 								to.Ptr("AccountAdmin"),
-	// 							},
-	// 						},
-	// 					},
-	// 				},
-	// 			},
-	// 			ProvisioningState: to.Ptr(armservicefabric.ProvisioningStateSucceeded),
-	// 			ReliabilityLevel: to.Ptr(armservicefabric.ReliabilityLevelBronze),
-	// 			UpgradeDescription: &armservicefabric.ClusterUpgradePolicy{
-	// 				DeltaHealthPolicy: &armservicefabric.ClusterUpgradeDeltaHealthPolicy{
-	// 					MaxPercentDeltaUnhealthyApplications: to.Ptr[int32](0),
-	// 					MaxPercentDeltaUnhealthyNodes: to.Ptr[int32](0),
-	// 					MaxPercentUpgradeDomainDeltaUnhealthyNodes: to.Ptr[int32](0),
-	// 				},
-	// 				ForceRestart: to.Ptr(false),
-	// 				HealthCheckRetryTimeout: to.Ptr("00:05:00"),
-	// 				HealthCheckStableDuration: to.Ptr("00:00:30"),
-	// 				HealthCheckWaitDuration: to.Ptr("00:00:30"),
-	// 				HealthPolicy: &armservicefabric.ClusterHealthPolicy{
-	// 					MaxPercentUnhealthyApplications: to.Ptr[int32](0),
-	// 					MaxPercentUnhealthyNodes: to.Ptr[int32](0),
-	// 				},
-	// 				UpgradeDomainTimeout: to.Ptr("00:15:00"),
-	// 				UpgradeReplicaSetCheckTimeout: to.Ptr("00:10:00"),
-	// 				UpgradeTimeout: to.Ptr("01:00:00"),
-	// 			},
-	// 			UpgradeMode: to.Ptr(armservicefabric.UpgradeModeAutomatic),
-	// 			UpgradePauseEndTimestampUTC: to.Ptr(time.Date(2021, time.June, 25, 22, 0, 0, 0, time.UTC)),
-	// 			UpgradePauseStartTimestampUTC: to.Ptr(time.Date(2021, time.June, 21, 22, 0, 0, 0, time.UTC)),
-	// 			UpgradeWave: to.Ptr(armservicefabric.ClusterUpgradeCadenceWave2),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"a": to.Ptr("b"),
-	// 		},
-	// 	},
-	// }
 }

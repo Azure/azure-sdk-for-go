@@ -29,6 +29,10 @@ type DicomServicesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, dicomServiceName string, workspaceName string, options *armhealthcareapis.DicomServicesClientBeginDeleteOptions) (resp azfake.PollerResponder[armhealthcareapis.DicomServicesClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method DicomServicesClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, dicomServiceName string, workspaceName string, dicomservicePatchResource armhealthcareapis.DicomServicePatchResource, options *armhealthcareapis.DicomServicesClientBeginUpdateOptions) (resp azfake.PollerResponder[armhealthcareapis.DicomServicesClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method DicomServicesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, workspaceName string, dicomServiceName string, options *armhealthcareapis.DicomServicesClientGetOptions) (resp azfake.Responder[armhealthcareapis.DicomServicesClientGetResponse], errResp azfake.ErrorResponder)
@@ -36,10 +40,6 @@ type DicomServicesServer struct {
 	// NewListByWorkspacePager is the fake for method DicomServicesClient.NewListByWorkspacePager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByWorkspacePager func(resourceGroupName string, workspaceName string, options *armhealthcareapis.DicomServicesClientListByWorkspaceOptions) (resp azfake.PagerResponder[armhealthcareapis.DicomServicesClientListByWorkspaceResponse])
-
-	// BeginUpdate is the fake for method DicomServicesClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, dicomServiceName string, workspaceName string, dicomservicePatchResource armhealthcareapis.DicomServicePatchResource, options *armhealthcareapis.DicomServicesClientBeginUpdateOptions) (resp azfake.PollerResponder[armhealthcareapis.DicomServicesClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewDicomServicesServerTransport creates a new instance of DicomServicesServerTransport with the provided implementation.
@@ -50,8 +50,8 @@ func NewDicomServicesServerTransport(srv *DicomServicesServer) *DicomServicesSer
 		srv:                     srv,
 		beginCreateOrUpdate:     newTracker[azfake.PollerResponder[armhealthcareapis.DicomServicesClientCreateOrUpdateResponse]](),
 		beginDelete:             newTracker[azfake.PollerResponder[armhealthcareapis.DicomServicesClientDeleteResponse]](),
-		newListByWorkspacePager: newTracker[azfake.PagerResponder[armhealthcareapis.DicomServicesClientListByWorkspaceResponse]](),
 		beginUpdate:             newTracker[azfake.PollerResponder[armhealthcareapis.DicomServicesClientUpdateResponse]](),
+		newListByWorkspacePager: newTracker[azfake.PagerResponder[armhealthcareapis.DicomServicesClientListByWorkspaceResponse]](),
 	}
 }
 
@@ -61,8 +61,8 @@ type DicomServicesServerTransport struct {
 	srv                     *DicomServicesServer
 	beginCreateOrUpdate     *tracker[azfake.PollerResponder[armhealthcareapis.DicomServicesClientCreateOrUpdateResponse]]
 	beginDelete             *tracker[azfake.PollerResponder[armhealthcareapis.DicomServicesClientDeleteResponse]]
-	newListByWorkspacePager *tracker[azfake.PagerResponder[armhealthcareapis.DicomServicesClientListByWorkspaceResponse]]
 	beginUpdate             *tracker[azfake.PollerResponder[armhealthcareapis.DicomServicesClientUpdateResponse]]
+	newListByWorkspacePager *tracker[azfake.PagerResponder[armhealthcareapis.DicomServicesClientListByWorkspaceResponse]]
 }
 
 // Do implements the policy.Transporter interface for DicomServicesServerTransport.
@@ -90,12 +90,12 @@ func (d *DicomServicesServerTransport) dispatchToMethodFake(req *http.Request, m
 				res.resp, res.err = d.dispatchBeginCreateOrUpdate(req)
 			case "DicomServicesClient.BeginDelete":
 				res.resp, res.err = d.dispatchBeginDelete(req)
+			case "DicomServicesClient.BeginUpdate":
+				res.resp, res.err = d.dispatchBeginUpdate(req)
 			case "DicomServicesClient.Get":
 				res.resp, res.err = d.dispatchGet(req)
 			case "DicomServicesClient.NewListByWorkspacePager":
 				res.resp, res.err = d.dispatchNewListByWorkspacePager(req)
-			case "DicomServicesClient.BeginUpdate":
-				res.resp, res.err = d.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -212,6 +212,58 @@ func (d *DicomServicesServerTransport) dispatchBeginDelete(req *http.Request) (*
 	return resp, nil
 }
 
+func (d *DicomServicesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if d.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := d.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.HealthcareApis/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/dicomservices/(?P<dicomServiceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armhealthcareapis.DicomServicePatchResource](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		dicomServiceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("dicomServiceName")])
+		if err != nil {
+			return nil, err
+		}
+		workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := d.srv.BeginUpdate(req.Context(), resourceGroupNameParam, dicomServiceNameParam, workspaceNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		d.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		d.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		d.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (d *DicomServicesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if d.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -287,58 +339,6 @@ func (d *DicomServicesServerTransport) dispatchNewListByWorkspacePager(req *http
 	if !server.PagerResponderMore(newListByWorkspacePager) {
 		d.newListByWorkspacePager.remove(req)
 	}
-	return resp, nil
-}
-
-func (d *DicomServicesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if d.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := d.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.HealthcareApis/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/dicomservices/(?P<dicomServiceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armhealthcareapis.DicomServicePatchResource](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		dicomServiceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("dicomServiceName")])
-		if err != nil {
-			return nil, err
-		}
-		workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := d.srv.BeginUpdate(req.Context(), resourceGroupNameParam, dicomServiceNameParam, workspaceNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		d.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		d.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		d.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

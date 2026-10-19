@@ -44,73 +44,6 @@ func NewDeletedWorkspacesClient(subscriptionID string, credential azcore.TokenCr
 	return client, nil
 }
 
-// NewListPager - Gets recently deleted workspaces in a subscription, available for recovery.
-//   - options - DeletedWorkspacesClientListOptions contains the optional parameters for the DeletedWorkspacesClient.NewListPager
-//     method.
-func (client *DeletedWorkspacesClient) NewListPager(options *DeletedWorkspacesClientListOptions) *runtime.Pager[DeletedWorkspacesClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[DeletedWorkspacesClientListResponse]{
-		More: func(page DeletedWorkspacesClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *DeletedWorkspacesClientListResponse) (DeletedWorkspacesClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DeletedWorkspacesClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listCreateRequest(ctx, nextLink, options)
-			if err != nil {
-				return DeletedWorkspacesClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return DeletedWorkspacesClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *DeletedWorkspacesClient) listCreateRequest(ctx context.Context, nextLink string, _ *DeletedWorkspacesClientListOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.OperationalInsights/deletedWorkspaces"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250701)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *DeletedWorkspacesClient) listHandleResponse(resp *http.Response, successCodes ...int) (DeletedWorkspacesClientListResponse, error) {
-	result := DeletedWorkspacesClientListResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.WorkspaceListResult); err != nil {
-		return DeletedWorkspacesClientListResponse{}, err
-	}
-	return result, nil
-}
-
 // NewListByResourceGroupPager - Gets recently deleted workspaces in a resource group, available for recovery.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - DeletedWorkspacesClientListByResourceGroupOptions contains the optional parameters for the DeletedWorkspacesClient.NewListByResourceGroupPager
@@ -179,6 +112,73 @@ func (client *DeletedWorkspacesClient) listByResourceGroupHandleResponse(resp *h
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkspaceListResult); err != nil {
 		return DeletedWorkspacesClientListByResourceGroupResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListPager - Gets recently deleted workspaces in a subscription, available for recovery.
+//   - options - DeletedWorkspacesClientListOptions contains the optional parameters for the DeletedWorkspacesClient.NewListPager
+//     method.
+func (client *DeletedWorkspacesClient) NewListPager(options *DeletedWorkspacesClientListOptions) *runtime.Pager[DeletedWorkspacesClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[DeletedWorkspacesClientListResponse]{
+		More: func(page DeletedWorkspacesClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *DeletedWorkspacesClientListResponse) (DeletedWorkspacesClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DeletedWorkspacesClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return DeletedWorkspacesClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return DeletedWorkspacesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listCreateRequest creates the List request.
+func (client *DeletedWorkspacesClient) listCreateRequest(ctx context.Context, nextLink string, _ *DeletedWorkspacesClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.OperationalInsights/deletedWorkspaces"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250701)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listHandleResponse handles the List response.
+func (client *DeletedWorkspacesClient) listHandleResponse(resp *http.Response, successCodes ...int) (DeletedWorkspacesClientListResponse, error) {
+	result := DeletedWorkspacesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.WorkspaceListResult); err != nil {
+		return DeletedWorkspacesClientListResponse{}, err
 	}
 	return result, nil
 }

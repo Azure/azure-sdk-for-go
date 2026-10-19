@@ -56,7 +56,7 @@ func NewRoutingRulesClient(subscriptionID string, credential azcore.TokenCredent
 //     method.
 func (client *RoutingRulesClient) BeginDelete(ctx context.Context, resourceGroupName string, networkManagerName string, configurationName string, ruleCollectionName string, ruleName string, options *RoutingRulesClientBeginDeleteOptions) (*runtime.Poller[RoutingRulesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, networkManagerName, configurationName, ruleCollectionName, ruleName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, networkManagerName, configurationName, ruleCollectionName, ruleName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -71,9 +71,9 @@ func (client *RoutingRulesClient) BeginDelete(ctx context.Context, resourceGroup
 	}
 }
 
-// delete - Deletes a routing rule.
+// deleteOperation - Deletes a routing rule.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *RoutingRulesClient) delete(ctx context.Context, resourceGroupName string, networkManagerName string, configurationName string, ruleCollectionName string, ruleName string, options *RoutingRulesClientBeginDeleteOptions) (*http.Response, error) {
+func (client *RoutingRulesClient) deleteOperation(ctx context.Context, resourceGroupName string, networkManagerName string, configurationName string, ruleCollectionName string, ruleName string, options *RoutingRulesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RoutingRulesClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)

@@ -70,7 +70,7 @@ func (client *StorageTargetClient) BeginFlush(ctx context.Context, resourceGroup
 	}
 }
 
-// Flush - Tells the cache to write all dirty data to the Storage Target's backend storage. Client requests to this storage
+// flush - Tells the cache to write all dirty data to the Storage Target's backend storage. Client requests to this storage
 // target's namespace will return errors until the flush operation completes.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *StorageTargetClient) flush(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetClientBeginFlushOptions) (*http.Response, error) {
@@ -93,7 +93,7 @@ func (client *StorageTargetClient) flush(ctx context.Context, resourceGroupName 
 	return httpResp, nil
 }
 
-// flushCreateRequest creates the Flush request.
+// flushCreateRequest creates the flush request.
 func (client *StorageTargetClient) flushCreateRequest(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, _ *StorageTargetClientBeginFlushOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/storageTargets/{storageTargetName}/flush"
 	if client.subscriptionID == "" {
@@ -148,7 +148,7 @@ func (client *StorageTargetClient) BeginInvalidate(ctx context.Context, resource
 	}
 }
 
-// Invalidate - Invalidate all cached data for a storage target. Cached files are discarded and fetched from the back end
+// invalidate - Invalidate all cached data for a storage target. Cached files are discarded and fetched from the back end
 // on the next request.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *StorageTargetClient) invalidate(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetClientBeginInvalidateOptions) (*http.Response, error) {
@@ -171,7 +171,7 @@ func (client *StorageTargetClient) invalidate(ctx context.Context, resourceGroup
 	return httpResp, nil
 }
 
-// invalidateCreateRequest creates the Invalidate request.
+// invalidateCreateRequest creates the invalidate request.
 func (client *StorageTargetClient) invalidateCreateRequest(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, _ *StorageTargetClientBeginInvalidateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/storageTargets/{storageTargetName}/invalidate"
 	if client.subscriptionID == "" {
@@ -225,7 +225,7 @@ func (client *StorageTargetClient) BeginResume(ctx context.Context, resourceGrou
 	}
 }
 
-// Resume - Resumes client access to a previously suspended storage target.
+// resume - Resumes client access to a previously suspended storage target.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *StorageTargetClient) resume(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetClientBeginResumeOptions) (*http.Response, error) {
 	var err error
@@ -247,7 +247,7 @@ func (client *StorageTargetClient) resume(ctx context.Context, resourceGroupName
 	return httpResp, nil
 }
 
-// resumeCreateRequest creates the Resume request.
+// resumeCreateRequest creates the resume request.
 func (client *StorageTargetClient) resumeCreateRequest(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, _ *StorageTargetClientBeginResumeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/storageTargets/{storageTargetName}/resume"
 	if client.subscriptionID == "" {
@@ -301,7 +301,7 @@ func (client *StorageTargetClient) BeginSuspend(ctx context.Context, resourceGro
 	}
 }
 
-// Suspend - Suspends client access to a storage target.
+// suspend - Suspends client access to a storage target.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *StorageTargetClient) suspend(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetClientBeginSuspendOptions) (*http.Response, error) {
 	var err error
@@ -323,7 +323,7 @@ func (client *StorageTargetClient) suspend(ctx context.Context, resourceGroupNam
 	return httpResp, nil
 }
 
-// suspendCreateRequest creates the Suspend request.
+// suspendCreateRequest creates the suspend request.
 func (client *StorageTargetClient) suspendCreateRequest(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, _ *StorageTargetClientBeginSuspendOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/storageTargets/{storageTargetName}/suspend"
 	if client.subscriptionID == "" {

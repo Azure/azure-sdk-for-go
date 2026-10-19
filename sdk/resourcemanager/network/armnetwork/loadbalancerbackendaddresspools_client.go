@@ -134,7 +134,7 @@ func (client *LoadBalancerBackendAddressPoolsClient) createOrUpdateCreateRequest
 //     method.
 func (client *LoadBalancerBackendAddressPoolsClient) BeginDelete(ctx context.Context, resourceGroupName string, loadBalancerName string, backendAddressPoolName string, options *LoadBalancerBackendAddressPoolsClientBeginDeleteOptions) (*runtime.Poller[LoadBalancerBackendAddressPoolsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, loadBalancerName, backendAddressPoolName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, loadBalancerName, backendAddressPoolName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -149,9 +149,9 @@ func (client *LoadBalancerBackendAddressPoolsClient) BeginDelete(ctx context.Con
 	}
 }
 
-// delete - Deletes the specified load balancer backend address pool.
+// deleteOperation - Deletes the specified load balancer backend address pool.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *LoadBalancerBackendAddressPoolsClient) delete(ctx context.Context, resourceGroupName string, loadBalancerName string, backendAddressPoolName string, options *LoadBalancerBackendAddressPoolsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *LoadBalancerBackendAddressPoolsClient) deleteOperation(ctx context.Context, resourceGroupName string, loadBalancerName string, backendAddressPoolName string, options *LoadBalancerBackendAddressPoolsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "LoadBalancerBackendAddressPoolsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)

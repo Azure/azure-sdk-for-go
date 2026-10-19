@@ -33,13 +33,13 @@ type ProjectsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, organizationName string, projectName string, options *armmongodbatlas.ProjectsClientGetOptions) (resp azfake.Responder[armmongodbatlas.ProjectsClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method ProjectsClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, organizationName string, options *armmongodbatlas.ProjectsClientListOptions) (resp azfake.PagerResponder[armmongodbatlas.ProjectsClientListResponse])
-
 	// ListClusterTierRegions is the fake for method ProjectsClient.ListClusterTierRegions
 	// HTTP status codes to indicate success: http.StatusOK
 	ListClusterTierRegions func(ctx context.Context, resourceGroupName string, organizationName string, projectName string, options *armmongodbatlas.ProjectsClientListClusterTierRegionsOptions) (resp azfake.Responder[armmongodbatlas.ProjectsClientListClusterTierRegionsResponse], errResp azfake.ErrorResponder)
+
+	// NewListPager is the fake for method ProjectsClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(resourceGroupName string, organizationName string, options *armmongodbatlas.ProjectsClientListOptions) (resp azfake.PagerResponder[armmongodbatlas.ProjectsClientListResponse])
 
 	// TierLimitReached is the fake for method ProjectsClient.TierLimitReached
 	// HTTP status codes to indicate success: http.StatusOK
@@ -94,10 +94,10 @@ func (p *ProjectsServerTransport) dispatchToMethodFake(req *http.Request, method
 				res.resp, res.err = p.dispatchBeginDelete(req)
 			case "ProjectsClient.Get":
 				res.resp, res.err = p.dispatchGet(req)
-			case "ProjectsClient.NewListPager":
-				res.resp, res.err = p.dispatchNewListPager(req)
 			case "ProjectsClient.ListClusterTierRegions":
 				res.resp, res.err = p.dispatchListClusterTierRegions(req)
+			case "ProjectsClient.NewListPager":
+				res.resp, res.err = p.dispatchNewListPager(req)
 			case "ProjectsClient.TierLimitReached":
 				res.resp, res.err = p.dispatchTierLimitReached(req)
 			default:
@@ -253,6 +253,43 @@ func (p *ProjectsServerTransport) dispatchGet(req *http.Request) (*http.Response
 	return resp, nil
 }
 
+func (p *ProjectsServerTransport) dispatchListClusterTierRegions(req *http.Request) (*http.Response, error) {
+	if p.srv.ListClusterTierRegions == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListClusterTierRegions not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/MongoDB\.Atlas/organizations/(?P<organizationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/projects/(?P<projectName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/clusterTierRegions`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	organizationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("organizationName")])
+	if err != nil {
+		return nil, err
+	}
+	projectNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("projectName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := p.srv.ListClusterTierRegions(req.Context(), resourceGroupNameParam, organizationNameParam, projectNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RegionsByTierResponse, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (p *ProjectsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
 	if p.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
@@ -290,43 +327,6 @@ func (p *ProjectsServerTransport) dispatchNewListPager(req *http.Request) (*http
 	}
 	if !server.PagerResponderMore(newListPager) {
 		p.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (p *ProjectsServerTransport) dispatchListClusterTierRegions(req *http.Request) (*http.Response, error) {
-	if p.srv.ListClusterTierRegions == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListClusterTierRegions not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/MongoDB\.Atlas/organizations/(?P<organizationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/projects/(?P<projectName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/clusterTierRegions`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	organizationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("organizationName")])
-	if err != nil {
-		return nil, err
-	}
-	projectNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("projectName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := p.srv.ListClusterTierRegions(req.Context(), resourceGroupNameParam, organizationNameParam, projectNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RegionsByTierResponse, req)
-	if err != nil {
-		return nil, err
 	}
 	return resp, nil
 }

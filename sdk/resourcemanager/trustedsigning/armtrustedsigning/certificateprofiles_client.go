@@ -70,7 +70,7 @@ func (client *CertificateProfilesClient) BeginCreate(ctx context.Context, resour
 	}
 }
 
-// Create - Create a certificate profile.
+// create - Create a certificate profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *CertificateProfilesClient) create(ctx context.Context, resourceGroupName string, accountName string, profileName string, resource CertificateProfile, options *CertificateProfilesClientBeginCreateOptions) (*http.Response, error) {
 	var err error
@@ -92,7 +92,7 @@ func (client *CertificateProfilesClient) create(ctx context.Context, resourceGro
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *CertificateProfilesClient) createCreateRequest(ctx context.Context, resourceGroupName string, accountName string, profileName string, resource CertificateProfile, _ *CertificateProfilesClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CodeSigning/codeSigningAccounts/{accountName}/certificateProfiles/{profileName}"
 	if client.subscriptionID == "" {
@@ -150,7 +150,7 @@ func (client *CertificateProfilesClient) BeginDelete(ctx context.Context, resour
 	}
 }
 
-// Delete - Delete a certificate profile.
+// deleteOperation - Delete a certificate profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *CertificateProfilesClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, profileName string, options *CertificateProfilesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -172,7 +172,7 @@ func (client *CertificateProfilesClient) deleteOperation(ctx context.Context, re
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *CertificateProfilesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, profileName string, _ *CertificateProfilesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CodeSigning/codeSigningAccounts/{accountName}/certificateProfiles/{profileName}"
 	if client.subscriptionID == "" {

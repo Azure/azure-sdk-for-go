@@ -69,7 +69,7 @@ func (client *NetworkToNetworkInterconnectsClient) BeginCreate(ctx context.Conte
 	}
 }
 
-// Create - Configuration used to setup CE-PE connectivity PUT Method.
+// create - Configuration used to setup CE-PE connectivity PUT Method.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *NetworkToNetworkInterconnectsClient) create(ctx context.Context, resourceGroupName string, networkFabricName string, networkToNetworkInterconnectName string, body NetworkToNetworkInterconnect, options *NetworkToNetworkInterconnectsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *NetworkToNetworkInterconnectsClient) create(ctx context.Context, r
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *NetworkToNetworkInterconnectsClient) createCreateRequest(ctx context.Context, resourceGroupName string, networkFabricName string, networkToNetworkInterconnectName string, body NetworkToNetworkInterconnect, _ *NetworkToNetworkInterconnectsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/networkToNetworkInterconnects/{networkToNetworkInterconnectName}"
 	if client.subscriptionID == "" {
@@ -149,7 +149,7 @@ func (client *NetworkToNetworkInterconnectsClient) BeginDelete(ctx context.Conte
 	}
 }
 
-// Delete - Implements NetworkToNetworkInterconnects DELETE method.
+// deleteOperation - Implements NetworkToNetworkInterconnects DELETE method.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *NetworkToNetworkInterconnectsClient) deleteOperation(ctx context.Context, resourceGroupName string, networkFabricName string, networkToNetworkInterconnectName string, options *NetworkToNetworkInterconnectsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -171,7 +171,7 @@ func (client *NetworkToNetworkInterconnectsClient) deleteOperation(ctx context.C
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *NetworkToNetworkInterconnectsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, networkFabricName string, networkToNetworkInterconnectName string, _ *NetworkToNetworkInterconnectsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/networkToNetworkInterconnects/{networkToNetworkInterconnectName}"
 	if client.subscriptionID == "" {
@@ -197,6 +197,330 @@ func (client *NetworkToNetworkInterconnectsClient) deleteCreateRequest(ctx conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20250715)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - Update certain properties of the Network To NetworkInterconnects resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - networkFabricName - Name of the Network Fabric.
+//   - networkToNetworkInterconnectName - Name of the Network to Network Interconnect.
+//   - body - Network to Network Interconnect properties to update.
+//   - options - NetworkToNetworkInterconnectsClientBeginUpdateOptions contains the optional parameters for the NetworkToNetworkInterconnectsClient.BeginUpdate
+//     method.
+func (client *NetworkToNetworkInterconnectsClient) BeginUpdate(ctx context.Context, resourceGroupName string, networkFabricName string, networkToNetworkInterconnectName string, body NetworkToNetworkInterconnectPatch, options *NetworkToNetworkInterconnectsClientBeginUpdateOptions) (*runtime.Poller[NetworkToNetworkInterconnectsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, networkFabricName, networkToNetworkInterconnectName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NetworkToNetworkInterconnectsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NetworkToNetworkInterconnectsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update certain properties of the Network To NetworkInterconnects resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *NetworkToNetworkInterconnectsClient) update(ctx context.Context, resourceGroupName string, networkFabricName string, networkToNetworkInterconnectName string, body NetworkToNetworkInterconnectPatch, options *NetworkToNetworkInterconnectsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "NetworkToNetworkInterconnectsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, networkFabricName, networkToNetworkInterconnectName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *NetworkToNetworkInterconnectsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, networkFabricName string, networkToNetworkInterconnectName string, body NetworkToNetworkInterconnectPatch, _ *NetworkToNetworkInterconnectsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/networkToNetworkInterconnects/{networkToNetworkInterconnectName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if networkFabricName == "" {
+		return nil, errors.New("parameter networkFabricName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{networkFabricName}", url.PathEscape(networkFabricName))
+	if networkToNetworkInterconnectName == "" {
+		return nil, errors.New("parameter networkToNetworkInterconnectName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{networkToNetworkInterconnectName}", url.PathEscape(networkToNetworkInterconnectName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginUpdateAdministrativeState - Updates the Admin State.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - networkFabricName - Name of the Network Fabric.
+//   - networkToNetworkInterconnectName - Name of the Network to Network Interconnect.
+//   - body - Request payload.
+//   - options - NetworkToNetworkInterconnectsClientBeginUpdateAdministrativeStateOptions contains the optional parameters for
+//     the NetworkToNetworkInterconnectsClient.BeginUpdateAdministrativeState method.
+func (client *NetworkToNetworkInterconnectsClient) BeginUpdateAdministrativeState(ctx context.Context, resourceGroupName string, networkFabricName string, networkToNetworkInterconnectName string, body UpdateAdministrativeState, options *NetworkToNetworkInterconnectsClientBeginUpdateAdministrativeStateOptions) (*runtime.Poller[NetworkToNetworkInterconnectsClientUpdateAdministrativeStateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.updateAdministrativeState(ctx, resourceGroupName, networkFabricName, networkToNetworkInterconnectName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NetworkToNetworkInterconnectsClientUpdateAdministrativeStateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NetworkToNetworkInterconnectsClientUpdateAdministrativeStateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// updateAdministrativeState - Updates the Admin State.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *NetworkToNetworkInterconnectsClient) updateAdministrativeState(ctx context.Context, resourceGroupName string, networkFabricName string, networkToNetworkInterconnectName string, body UpdateAdministrativeState, options *NetworkToNetworkInterconnectsClientBeginUpdateAdministrativeStateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "NetworkToNetworkInterconnectsClient.BeginUpdateAdministrativeState"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateAdministrativeStateCreateRequest(ctx, resourceGroupName, networkFabricName, networkToNetworkInterconnectName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateAdministrativeStateCreateRequest creates the updateAdministrativeState request.
+func (client *NetworkToNetworkInterconnectsClient) updateAdministrativeStateCreateRequest(ctx context.Context, resourceGroupName string, networkFabricName string, networkToNetworkInterconnectName string, body UpdateAdministrativeState, _ *NetworkToNetworkInterconnectsClientBeginUpdateAdministrativeStateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/networkToNetworkInterconnects/{networkToNetworkInterconnectName}/updateAdministrativeState"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if networkFabricName == "" {
+		return nil, errors.New("parameter networkFabricName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{networkFabricName}", url.PathEscape(networkFabricName))
+	if networkToNetworkInterconnectName == "" {
+		return nil, errors.New("parameter networkToNetworkInterconnectName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{networkToNetworkInterconnectName}", url.PathEscape(networkToNetworkInterconnectName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginUpdateBfdAdministrativeState - Updates the Admin State.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - networkFabricName - Name of the Network Fabric.
+//   - networkToNetworkInterconnectName - Name of the Network to Network Interconnect.
+//   - body - Request payload.
+//   - options - NetworkToNetworkInterconnectsClientBeginUpdateBfdAdministrativeStateOptions contains the optional parameters
+//     for the NetworkToNetworkInterconnectsClient.BeginUpdateBfdAdministrativeState method.
+func (client *NetworkToNetworkInterconnectsClient) BeginUpdateBfdAdministrativeState(ctx context.Context, resourceGroupName string, networkFabricName string, networkToNetworkInterconnectName string, body NniUpdateBfdAdministrativeStateRequest, options *NetworkToNetworkInterconnectsClientBeginUpdateBfdAdministrativeStateOptions) (*runtime.Poller[NetworkToNetworkInterconnectsClientUpdateBfdAdministrativeStateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.updateBfdAdministrativeState(ctx, resourceGroupName, networkFabricName, networkToNetworkInterconnectName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NetworkToNetworkInterconnectsClientUpdateBfdAdministrativeStateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NetworkToNetworkInterconnectsClientUpdateBfdAdministrativeStateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// updateBfdAdministrativeState - Updates the Admin State.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *NetworkToNetworkInterconnectsClient) updateBfdAdministrativeState(ctx context.Context, resourceGroupName string, networkFabricName string, networkToNetworkInterconnectName string, body NniUpdateBfdAdministrativeStateRequest, options *NetworkToNetworkInterconnectsClientBeginUpdateBfdAdministrativeStateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "NetworkToNetworkInterconnectsClient.BeginUpdateBfdAdministrativeState"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateBfdAdministrativeStateCreateRequest(ctx, resourceGroupName, networkFabricName, networkToNetworkInterconnectName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateBfdAdministrativeStateCreateRequest creates the updateBfdAdministrativeState request.
+func (client *NetworkToNetworkInterconnectsClient) updateBfdAdministrativeStateCreateRequest(ctx context.Context, resourceGroupName string, networkFabricName string, networkToNetworkInterconnectName string, body NniUpdateBfdAdministrativeStateRequest, _ *NetworkToNetworkInterconnectsClientBeginUpdateBfdAdministrativeStateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/networkToNetworkInterconnects/{networkToNetworkInterconnectName}/updateBfdAdministrativeState"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if networkFabricName == "" {
+		return nil, errors.New("parameter networkFabricName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{networkFabricName}", url.PathEscape(networkFabricName))
+	if networkToNetworkInterconnectName == "" {
+		return nil, errors.New("parameter networkToNetworkInterconnectName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{networkToNetworkInterconnectName}", url.PathEscape(networkToNetworkInterconnectName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginUpdateNpbStaticRouteBfdAdministrativeState - Updates the NPB Static Route BFD Administrative State.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - networkFabricName - Name of the Network Fabric.
+//   - networkToNetworkInterconnectName - Name of the Network to Network Interconnect.
+//   - body - Request payload.
+//   - options - NetworkToNetworkInterconnectsClientBeginUpdateNpbStaticRouteBfdAdministrativeStateOptions contains the optional
+//     parameters for the NetworkToNetworkInterconnectsClient.BeginUpdateNpbStaticRouteBfdAdministrativeState method.
+func (client *NetworkToNetworkInterconnectsClient) BeginUpdateNpbStaticRouteBfdAdministrativeState(ctx context.Context, resourceGroupName string, networkFabricName string, networkToNetworkInterconnectName string, body UpdateAdministrativeState, options *NetworkToNetworkInterconnectsClientBeginUpdateNpbStaticRouteBfdAdministrativeStateOptions) (*runtime.Poller[NetworkToNetworkInterconnectsClientUpdateNpbStaticRouteBfdAdministrativeStateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.updateNpbStaticRouteBfdAdministrativeState(ctx, resourceGroupName, networkFabricName, networkToNetworkInterconnectName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NetworkToNetworkInterconnectsClientUpdateNpbStaticRouteBfdAdministrativeStateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NetworkToNetworkInterconnectsClientUpdateNpbStaticRouteBfdAdministrativeStateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// updateNpbStaticRouteBfdAdministrativeState - Updates the NPB Static Route BFD Administrative State.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *NetworkToNetworkInterconnectsClient) updateNpbStaticRouteBfdAdministrativeState(ctx context.Context, resourceGroupName string, networkFabricName string, networkToNetworkInterconnectName string, body UpdateAdministrativeState, options *NetworkToNetworkInterconnectsClientBeginUpdateNpbStaticRouteBfdAdministrativeStateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "NetworkToNetworkInterconnectsClient.BeginUpdateNpbStaticRouteBfdAdministrativeState"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateNpbStaticRouteBfdAdministrativeStateCreateRequest(ctx, resourceGroupName, networkFabricName, networkToNetworkInterconnectName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateNpbStaticRouteBfdAdministrativeStateCreateRequest creates the updateNpbStaticRouteBfdAdministrativeState request.
+func (client *NetworkToNetworkInterconnectsClient) updateNpbStaticRouteBfdAdministrativeStateCreateRequest(ctx context.Context, resourceGroupName string, networkFabricName string, networkToNetworkInterconnectName string, body UpdateAdministrativeState, _ *NetworkToNetworkInterconnectsClientBeginUpdateNpbStaticRouteBfdAdministrativeStateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/networkToNetworkInterconnects/{networkToNetworkInterconnectName}/updateNpbStaticRouteBfdAdministrativeState"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if networkFabricName == "" {
+		return nil, errors.New("parameter networkFabricName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{networkFabricName}", url.PathEscape(networkFabricName))
+	if networkToNetworkInterconnectName == "" {
+		return nil, errors.New("parameter networkToNetworkInterconnectName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{networkToNetworkInterconnectName}", url.PathEscape(networkToNetworkInterconnectName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -341,328 +665,4 @@ func (client *NetworkToNetworkInterconnectsClient) listByNetworkFabricHandleResp
 		return NetworkToNetworkInterconnectsClientListByNetworkFabricResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Update certain properties of the Network To NetworkInterconnects resource.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - networkFabricName - Name of the Network Fabric.
-//   - networkToNetworkInterconnectName - Name of the Network to Network Interconnect.
-//   - body - Network to Network Interconnect properties to update.
-//   - options - NetworkToNetworkInterconnectsClientBeginUpdateOptions contains the optional parameters for the NetworkToNetworkInterconnectsClient.BeginUpdate
-//     method.
-func (client *NetworkToNetworkInterconnectsClient) BeginUpdate(ctx context.Context, resourceGroupName string, networkFabricName string, networkToNetworkInterconnectName string, body NetworkToNetworkInterconnectPatch, options *NetworkToNetworkInterconnectsClientBeginUpdateOptions) (*runtime.Poller[NetworkToNetworkInterconnectsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, networkFabricName, networkToNetworkInterconnectName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NetworkToNetworkInterconnectsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NetworkToNetworkInterconnectsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update certain properties of the Network To NetworkInterconnects resource.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *NetworkToNetworkInterconnectsClient) update(ctx context.Context, resourceGroupName string, networkFabricName string, networkToNetworkInterconnectName string, body NetworkToNetworkInterconnectPatch, options *NetworkToNetworkInterconnectsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "NetworkToNetworkInterconnectsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, networkFabricName, networkToNetworkInterconnectName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *NetworkToNetworkInterconnectsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, networkFabricName string, networkToNetworkInterconnectName string, body NetworkToNetworkInterconnectPatch, _ *NetworkToNetworkInterconnectsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/networkToNetworkInterconnects/{networkToNetworkInterconnectName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if networkFabricName == "" {
-		return nil, errors.New("parameter networkFabricName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{networkFabricName}", url.PathEscape(networkFabricName))
-	if networkToNetworkInterconnectName == "" {
-		return nil, errors.New("parameter networkToNetworkInterconnectName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{networkToNetworkInterconnectName}", url.PathEscape(networkToNetworkInterconnectName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginUpdateAdministrativeState - Updates the Admin State.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - networkFabricName - Name of the Network Fabric.
-//   - networkToNetworkInterconnectName - Name of the Network to Network Interconnect.
-//   - body - Request payload.
-//   - options - NetworkToNetworkInterconnectsClientBeginUpdateAdministrativeStateOptions contains the optional parameters for
-//     the NetworkToNetworkInterconnectsClient.BeginUpdateAdministrativeState method.
-func (client *NetworkToNetworkInterconnectsClient) BeginUpdateAdministrativeState(ctx context.Context, resourceGroupName string, networkFabricName string, networkToNetworkInterconnectName string, body UpdateAdministrativeState, options *NetworkToNetworkInterconnectsClientBeginUpdateAdministrativeStateOptions) (*runtime.Poller[NetworkToNetworkInterconnectsClientUpdateAdministrativeStateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.updateAdministrativeState(ctx, resourceGroupName, networkFabricName, networkToNetworkInterconnectName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NetworkToNetworkInterconnectsClientUpdateAdministrativeStateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NetworkToNetworkInterconnectsClientUpdateAdministrativeStateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// UpdateAdministrativeState - Updates the Admin State.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *NetworkToNetworkInterconnectsClient) updateAdministrativeState(ctx context.Context, resourceGroupName string, networkFabricName string, networkToNetworkInterconnectName string, body UpdateAdministrativeState, options *NetworkToNetworkInterconnectsClientBeginUpdateAdministrativeStateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "NetworkToNetworkInterconnectsClient.BeginUpdateAdministrativeState"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateAdministrativeStateCreateRequest(ctx, resourceGroupName, networkFabricName, networkToNetworkInterconnectName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateAdministrativeStateCreateRequest creates the UpdateAdministrativeState request.
-func (client *NetworkToNetworkInterconnectsClient) updateAdministrativeStateCreateRequest(ctx context.Context, resourceGroupName string, networkFabricName string, networkToNetworkInterconnectName string, body UpdateAdministrativeState, _ *NetworkToNetworkInterconnectsClientBeginUpdateAdministrativeStateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/networkToNetworkInterconnects/{networkToNetworkInterconnectName}/updateAdministrativeState"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if networkFabricName == "" {
-		return nil, errors.New("parameter networkFabricName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{networkFabricName}", url.PathEscape(networkFabricName))
-	if networkToNetworkInterconnectName == "" {
-		return nil, errors.New("parameter networkToNetworkInterconnectName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{networkToNetworkInterconnectName}", url.PathEscape(networkToNetworkInterconnectName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginUpdateBfdAdministrativeState - Updates the Admin State.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - networkFabricName - Name of the Network Fabric.
-//   - networkToNetworkInterconnectName - Name of the Network to Network Interconnect.
-//   - body - Request payload.
-//   - options - NetworkToNetworkInterconnectsClientBeginUpdateBfdAdministrativeStateOptions contains the optional parameters
-//     for the NetworkToNetworkInterconnectsClient.BeginUpdateBfdAdministrativeState method.
-func (client *NetworkToNetworkInterconnectsClient) BeginUpdateBfdAdministrativeState(ctx context.Context, resourceGroupName string, networkFabricName string, networkToNetworkInterconnectName string, body NniUpdateBfdAdministrativeStateRequest, options *NetworkToNetworkInterconnectsClientBeginUpdateBfdAdministrativeStateOptions) (*runtime.Poller[NetworkToNetworkInterconnectsClientUpdateBfdAdministrativeStateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.updateBfdAdministrativeState(ctx, resourceGroupName, networkFabricName, networkToNetworkInterconnectName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NetworkToNetworkInterconnectsClientUpdateBfdAdministrativeStateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NetworkToNetworkInterconnectsClientUpdateBfdAdministrativeStateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// UpdateBfdAdministrativeState - Updates the Admin State.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *NetworkToNetworkInterconnectsClient) updateBfdAdministrativeState(ctx context.Context, resourceGroupName string, networkFabricName string, networkToNetworkInterconnectName string, body NniUpdateBfdAdministrativeStateRequest, options *NetworkToNetworkInterconnectsClientBeginUpdateBfdAdministrativeStateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "NetworkToNetworkInterconnectsClient.BeginUpdateBfdAdministrativeState"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateBfdAdministrativeStateCreateRequest(ctx, resourceGroupName, networkFabricName, networkToNetworkInterconnectName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateBfdAdministrativeStateCreateRequest creates the UpdateBfdAdministrativeState request.
-func (client *NetworkToNetworkInterconnectsClient) updateBfdAdministrativeStateCreateRequest(ctx context.Context, resourceGroupName string, networkFabricName string, networkToNetworkInterconnectName string, body NniUpdateBfdAdministrativeStateRequest, _ *NetworkToNetworkInterconnectsClientBeginUpdateBfdAdministrativeStateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/networkToNetworkInterconnects/{networkToNetworkInterconnectName}/updateBfdAdministrativeState"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if networkFabricName == "" {
-		return nil, errors.New("parameter networkFabricName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{networkFabricName}", url.PathEscape(networkFabricName))
-	if networkToNetworkInterconnectName == "" {
-		return nil, errors.New("parameter networkToNetworkInterconnectName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{networkToNetworkInterconnectName}", url.PathEscape(networkToNetworkInterconnectName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginUpdateNpbStaticRouteBfdAdministrativeState - Updates the NPB Static Route BFD Administrative State.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - networkFabricName - Name of the Network Fabric.
-//   - networkToNetworkInterconnectName - Name of the Network to Network Interconnect.
-//   - body - Request payload.
-//   - options - NetworkToNetworkInterconnectsClientBeginUpdateNpbStaticRouteBfdAdministrativeStateOptions contains the optional
-//     parameters for the NetworkToNetworkInterconnectsClient.BeginUpdateNpbStaticRouteBfdAdministrativeState method.
-func (client *NetworkToNetworkInterconnectsClient) BeginUpdateNpbStaticRouteBfdAdministrativeState(ctx context.Context, resourceGroupName string, networkFabricName string, networkToNetworkInterconnectName string, body UpdateAdministrativeState, options *NetworkToNetworkInterconnectsClientBeginUpdateNpbStaticRouteBfdAdministrativeStateOptions) (*runtime.Poller[NetworkToNetworkInterconnectsClientUpdateNpbStaticRouteBfdAdministrativeStateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.updateNpbStaticRouteBfdAdministrativeState(ctx, resourceGroupName, networkFabricName, networkToNetworkInterconnectName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NetworkToNetworkInterconnectsClientUpdateNpbStaticRouteBfdAdministrativeStateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NetworkToNetworkInterconnectsClientUpdateNpbStaticRouteBfdAdministrativeStateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// UpdateNpbStaticRouteBfdAdministrativeState - Updates the NPB Static Route BFD Administrative State.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *NetworkToNetworkInterconnectsClient) updateNpbStaticRouteBfdAdministrativeState(ctx context.Context, resourceGroupName string, networkFabricName string, networkToNetworkInterconnectName string, body UpdateAdministrativeState, options *NetworkToNetworkInterconnectsClientBeginUpdateNpbStaticRouteBfdAdministrativeStateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "NetworkToNetworkInterconnectsClient.BeginUpdateNpbStaticRouteBfdAdministrativeState"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateNpbStaticRouteBfdAdministrativeStateCreateRequest(ctx, resourceGroupName, networkFabricName, networkToNetworkInterconnectName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateNpbStaticRouteBfdAdministrativeStateCreateRequest creates the UpdateNpbStaticRouteBfdAdministrativeState request.
-func (client *NetworkToNetworkInterconnectsClient) updateNpbStaticRouteBfdAdministrativeStateCreateRequest(ctx context.Context, resourceGroupName string, networkFabricName string, networkToNetworkInterconnectName string, body UpdateAdministrativeState, _ *NetworkToNetworkInterconnectsClientBeginUpdateNpbStaticRouteBfdAdministrativeStateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/networkToNetworkInterconnects/{networkToNetworkInterconnectName}/updateNpbStaticRouteBfdAdministrativeState"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if networkFabricName == "" {
-		return nil, errors.New("parameter networkFabricName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{networkFabricName}", url.PathEscape(networkFabricName))
-	if networkToNetworkInterconnectName == "" {
-		return nil, errors.New("parameter networkToNetworkInterconnectName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{networkToNetworkInterconnectName}", url.PathEscape(networkToNetworkInterconnectName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

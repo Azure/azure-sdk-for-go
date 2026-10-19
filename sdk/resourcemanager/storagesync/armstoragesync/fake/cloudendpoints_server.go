@@ -33,14 +33,6 @@ type CloudEndpointsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, options *armstoragesync.CloudEndpointsClientBeginDeleteOptions) (resp azfake.PollerResponder[armstoragesync.CloudEndpointsClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method CloudEndpointsClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, options *armstoragesync.CloudEndpointsClientGetOptions) (resp azfake.Responder[armstoragesync.CloudEndpointsClientGetResponse], errResp azfake.ErrorResponder)
-
-	// NewListBySyncGroupPager is the fake for method CloudEndpointsClient.NewListBySyncGroupPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListBySyncGroupPager func(resourceGroupName string, storageSyncServiceName string, syncGroupName string, options *armstoragesync.CloudEndpointsClientListBySyncGroupOptions) (resp azfake.PagerResponder[armstoragesync.CloudEndpointsClientListBySyncGroupResponse])
-
 	// BeginPostBackup is the fake for method CloudEndpointsClient.BeginPostBackup
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginPostBackup func(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, parameters armstoragesync.BackupRequest, options *armstoragesync.CloudEndpointsClientBeginPostBackupOptions) (resp azfake.PollerResponder[armstoragesync.CloudEndpointsClientPostBackupResponse], errResp azfake.ErrorResponder)
@@ -57,10 +49,6 @@ type CloudEndpointsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginPreRestore func(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, parameters armstoragesync.PreRestoreRequest, options *armstoragesync.CloudEndpointsClientBeginPreRestoreOptions) (resp azfake.PollerResponder[armstoragesync.CloudEndpointsClientPreRestoreResponse], errResp azfake.ErrorResponder)
 
-	// Restoreheartbeat is the fake for method CloudEndpointsClient.Restoreheartbeat
-	// HTTP status codes to indicate success: http.StatusOK
-	Restoreheartbeat func(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, options *armstoragesync.CloudEndpointsClientRestoreheartbeatOptions) (resp azfake.Responder[armstoragesync.CloudEndpointsClientRestoreheartbeatResponse], errResp azfake.ErrorResponder)
-
 	// BeginTriggerChangeDetection is the fake for method CloudEndpointsClient.BeginTriggerChangeDetection
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginTriggerChangeDetection func(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, parameters armstoragesync.TriggerChangeDetectionParameters, options *armstoragesync.CloudEndpointsClientBeginTriggerChangeDetectionOptions) (resp azfake.PollerResponder[armstoragesync.CloudEndpointsClientTriggerChangeDetectionResponse], errResp azfake.ErrorResponder)
@@ -68,6 +56,18 @@ type CloudEndpointsServer struct {
 	// BeginUpdate is the fake for method CloudEndpointsClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, properties armstoragesync.CloudEndpointUpdateParameters, options *armstoragesync.CloudEndpointsClientBeginUpdateOptions) (resp azfake.PollerResponder[armstoragesync.CloudEndpointsClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method CloudEndpointsClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, options *armstoragesync.CloudEndpointsClientGetOptions) (resp azfake.Responder[armstoragesync.CloudEndpointsClientGetResponse], errResp azfake.ErrorResponder)
+
+	// NewListBySyncGroupPager is the fake for method CloudEndpointsClient.NewListBySyncGroupPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListBySyncGroupPager func(resourceGroupName string, storageSyncServiceName string, syncGroupName string, options *armstoragesync.CloudEndpointsClientListBySyncGroupOptions) (resp azfake.PagerResponder[armstoragesync.CloudEndpointsClientListBySyncGroupResponse])
+
+	// Restoreheartbeat is the fake for method CloudEndpointsClient.Restoreheartbeat
+	// HTTP status codes to indicate success: http.StatusOK
+	Restoreheartbeat func(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, options *armstoragesync.CloudEndpointsClientRestoreheartbeatOptions) (resp azfake.Responder[armstoragesync.CloudEndpointsClientRestoreheartbeatResponse], errResp azfake.ErrorResponder)
 }
 
 // NewCloudEndpointsServerTransport creates a new instance of CloudEndpointsServerTransport with the provided implementation.
@@ -78,13 +78,13 @@ func NewCloudEndpointsServerTransport(srv *CloudEndpointsServer) *CloudEndpoints
 		srv:                         srv,
 		beginCreate:                 newTracker[azfake.PollerResponder[armstoragesync.CloudEndpointsClientCreateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armstoragesync.CloudEndpointsClientDeleteResponse]](),
-		newListBySyncGroupPager:     newTracker[azfake.PagerResponder[armstoragesync.CloudEndpointsClientListBySyncGroupResponse]](),
 		beginPostBackup:             newTracker[azfake.PollerResponder[armstoragesync.CloudEndpointsClientPostBackupResponse]](),
 		beginPostRestore:            newTracker[azfake.PollerResponder[armstoragesync.CloudEndpointsClientPostRestoreResponse]](),
 		beginPreBackup:              newTracker[azfake.PollerResponder[armstoragesync.CloudEndpointsClientPreBackupResponse]](),
 		beginPreRestore:             newTracker[azfake.PollerResponder[armstoragesync.CloudEndpointsClientPreRestoreResponse]](),
 		beginTriggerChangeDetection: newTracker[azfake.PollerResponder[armstoragesync.CloudEndpointsClientTriggerChangeDetectionResponse]](),
 		beginUpdate:                 newTracker[azfake.PollerResponder[armstoragesync.CloudEndpointsClientUpdateResponse]](),
+		newListBySyncGroupPager:     newTracker[azfake.PagerResponder[armstoragesync.CloudEndpointsClientListBySyncGroupResponse]](),
 	}
 }
 
@@ -94,13 +94,13 @@ type CloudEndpointsServerTransport struct {
 	srv                         *CloudEndpointsServer
 	beginCreate                 *tracker[azfake.PollerResponder[armstoragesync.CloudEndpointsClientCreateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armstoragesync.CloudEndpointsClientDeleteResponse]]
-	newListBySyncGroupPager     *tracker[azfake.PagerResponder[armstoragesync.CloudEndpointsClientListBySyncGroupResponse]]
 	beginPostBackup             *tracker[azfake.PollerResponder[armstoragesync.CloudEndpointsClientPostBackupResponse]]
 	beginPostRestore            *tracker[azfake.PollerResponder[armstoragesync.CloudEndpointsClientPostRestoreResponse]]
 	beginPreBackup              *tracker[azfake.PollerResponder[armstoragesync.CloudEndpointsClientPreBackupResponse]]
 	beginPreRestore             *tracker[azfake.PollerResponder[armstoragesync.CloudEndpointsClientPreRestoreResponse]]
 	beginTriggerChangeDetection *tracker[azfake.PollerResponder[armstoragesync.CloudEndpointsClientTriggerChangeDetectionResponse]]
 	beginUpdate                 *tracker[azfake.PollerResponder[armstoragesync.CloudEndpointsClientUpdateResponse]]
+	newListBySyncGroupPager     *tracker[azfake.PagerResponder[armstoragesync.CloudEndpointsClientListBySyncGroupResponse]]
 }
 
 // Do implements the policy.Transporter interface for CloudEndpointsServerTransport.
@@ -130,10 +130,6 @@ func (c *CloudEndpointsServerTransport) dispatchToMethodFake(req *http.Request, 
 				res.resp, res.err = c.dispatchBeginCreate(req)
 			case "CloudEndpointsClient.BeginDelete":
 				res.resp, res.err = c.dispatchBeginDelete(req)
-			case "CloudEndpointsClient.Get":
-				res.resp, res.err = c.dispatchGet(req)
-			case "CloudEndpointsClient.NewListBySyncGroupPager":
-				res.resp, res.err = c.dispatchNewListBySyncGroupPager(req)
 			case "CloudEndpointsClient.BeginPostBackup":
 				res.resp, res.err = c.dispatchBeginPostBackup(req)
 			case "CloudEndpointsClient.BeginPostRestore":
@@ -142,12 +138,16 @@ func (c *CloudEndpointsServerTransport) dispatchToMethodFake(req *http.Request, 
 				res.resp, res.err = c.dispatchBeginPreBackup(req)
 			case "CloudEndpointsClient.BeginPreRestore":
 				res.resp, res.err = c.dispatchBeginPreRestore(req)
-			case "CloudEndpointsClient.Restoreheartbeat":
-				res.resp, res.err = c.dispatchRestoreheartbeat(req)
 			case "CloudEndpointsClient.BeginTriggerChangeDetection":
 				res.resp, res.err = c.dispatchBeginTriggerChangeDetection(req)
 			case "CloudEndpointsClient.BeginUpdate":
 				res.resp, res.err = c.dispatchBeginUpdate(req)
+			case "CloudEndpointsClient.Get":
+				res.resp, res.err = c.dispatchGet(req)
+			case "CloudEndpointsClient.NewListBySyncGroupPager":
+				res.resp, res.err = c.dispatchNewListBySyncGroupPager(req)
+			case "CloudEndpointsClient.Restoreheartbeat":
+				res.resp, res.err = c.dispatchRestoreheartbeat(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -316,98 +316,6 @@ func (c *CloudEndpointsServerTransport) dispatchBeginDelete(req *http.Request) (
 		c.beginDelete.remove(req)
 	}
 
-	return resp, nil
-}
-
-func (c *CloudEndpointsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if c.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.StorageSync/storageSyncServices/(?P<storageSyncServiceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/syncGroups/(?P<syncGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/cloudEndpoints/(?P<cloudEndpointName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 6 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	storageSyncServiceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("storageSyncServiceName")])
-	if err != nil {
-		return nil, err
-	}
-	syncGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("syncGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	cloudEndpointNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("cloudEndpointName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := c.srv.Get(req.Context(), resourceGroupNameParam, storageSyncServiceNameParam, syncGroupNameParam, cloudEndpointNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CloudEndpoint, req)
-	if err != nil {
-		return nil, err
-	}
-	if val := server.GetResponse(respr).XMSCorrelationRequestID; val != nil {
-		resp.Header.Set("X-Ms-Correlation-Request-Id", *val)
-	}
-	if val := server.GetResponse(respr).XMSRequestID; val != nil {
-		resp.Header.Set("X-Ms-Request-Id", *val)
-	}
-	return resp, nil
-}
-
-func (c *CloudEndpointsServerTransport) dispatchNewListBySyncGroupPager(req *http.Request) (*http.Response, error) {
-	if c.srv.NewListBySyncGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListBySyncGroupPager not implemented")}
-	}
-	newListBySyncGroupPager := c.newListBySyncGroupPager.get(req)
-	if newListBySyncGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.StorageSync/storageSyncServices/(?P<storageSyncServiceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/syncGroups/(?P<syncGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/cloudEndpoints`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		storageSyncServiceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("storageSyncServiceName")])
-		if err != nil {
-			return nil, err
-		}
-		syncGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("syncGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := c.srv.NewListBySyncGroupPager(resourceGroupNameParam, storageSyncServiceNameParam, syncGroupNameParam, nil)
-		newListBySyncGroupPager = &resp
-		c.newListBySyncGroupPager.add(req, newListBySyncGroupPager)
-		server.PagerResponderInjectNextLinks(newListBySyncGroupPager, req, func(page *armstoragesync.CloudEndpointsClientListBySyncGroupResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListBySyncGroupPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		c.newListBySyncGroupPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListBySyncGroupPager) {
-		c.newListBySyncGroupPager.remove(req)
-	}
 	return resp, nil
 }
 
@@ -635,53 +543,6 @@ func (c *CloudEndpointsServerTransport) dispatchBeginPreRestore(req *http.Reques
 	return resp, nil
 }
 
-func (c *CloudEndpointsServerTransport) dispatchRestoreheartbeat(req *http.Request) (*http.Response, error) {
-	if c.srv.Restoreheartbeat == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Restoreheartbeat not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.StorageSync/storageSyncServices/(?P<storageSyncServiceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/syncGroups/(?P<syncGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/cloudEndpoints/(?P<cloudEndpointName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/restoreheartbeat`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 6 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	storageSyncServiceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("storageSyncServiceName")])
-	if err != nil {
-		return nil, err
-	}
-	syncGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("syncGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	cloudEndpointNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("cloudEndpointName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := c.srv.Restoreheartbeat(req.Context(), resourceGroupNameParam, storageSyncServiceNameParam, syncGroupNameParam, cloudEndpointNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
-	}
-	if val := server.GetResponse(respr).XMSCorrelationRequestID; val != nil {
-		resp.Header.Set("X-Ms-Correlation-Request-Id", *val)
-	}
-	if val := server.GetResponse(respr).XMSRequestID; val != nil {
-		resp.Header.Set("X-Ms-Request-Id", *val)
-	}
-	return resp, nil
-}
-
 func (c *CloudEndpointsServerTransport) dispatchBeginTriggerChangeDetection(req *http.Request) (*http.Response, error) {
 	if c.srv.BeginTriggerChangeDetection == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginTriggerChangeDetection not implemented")}
@@ -791,6 +652,145 @@ func (c *CloudEndpointsServerTransport) dispatchBeginUpdate(req *http.Request) (
 		c.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (c *CloudEndpointsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if c.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.StorageSync/storageSyncServices/(?P<storageSyncServiceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/syncGroups/(?P<syncGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/cloudEndpoints/(?P<cloudEndpointName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 6 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	storageSyncServiceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("storageSyncServiceName")])
+	if err != nil {
+		return nil, err
+	}
+	syncGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("syncGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	cloudEndpointNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("cloudEndpointName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := c.srv.Get(req.Context(), resourceGroupNameParam, storageSyncServiceNameParam, syncGroupNameParam, cloudEndpointNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CloudEndpoint, req)
+	if err != nil {
+		return nil, err
+	}
+	if val := server.GetResponse(respr).XMSCorrelationRequestID; val != nil {
+		resp.Header.Set("X-Ms-Correlation-Request-Id", *val)
+	}
+	if val := server.GetResponse(respr).XMSRequestID; val != nil {
+		resp.Header.Set("X-Ms-Request-Id", *val)
+	}
+	return resp, nil
+}
+
+func (c *CloudEndpointsServerTransport) dispatchNewListBySyncGroupPager(req *http.Request) (*http.Response, error) {
+	if c.srv.NewListBySyncGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListBySyncGroupPager not implemented")}
+	}
+	newListBySyncGroupPager := c.newListBySyncGroupPager.get(req)
+	if newListBySyncGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.StorageSync/storageSyncServices/(?P<storageSyncServiceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/syncGroups/(?P<syncGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/cloudEndpoints`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		storageSyncServiceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("storageSyncServiceName")])
+		if err != nil {
+			return nil, err
+		}
+		syncGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("syncGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := c.srv.NewListBySyncGroupPager(resourceGroupNameParam, storageSyncServiceNameParam, syncGroupNameParam, nil)
+		newListBySyncGroupPager = &resp
+		c.newListBySyncGroupPager.add(req, newListBySyncGroupPager)
+		server.PagerResponderInjectNextLinks(newListBySyncGroupPager, req, func(page *armstoragesync.CloudEndpointsClientListBySyncGroupResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListBySyncGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		c.newListBySyncGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListBySyncGroupPager) {
+		c.newListBySyncGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (c *CloudEndpointsServerTransport) dispatchRestoreheartbeat(req *http.Request) (*http.Response, error) {
+	if c.srv.Restoreheartbeat == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Restoreheartbeat not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.StorageSync/storageSyncServices/(?P<storageSyncServiceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/syncGroups/(?P<syncGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/cloudEndpoints/(?P<cloudEndpointName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/restoreheartbeat`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 6 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	storageSyncServiceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("storageSyncServiceName")])
+	if err != nil {
+		return nil, err
+	}
+	syncGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("syncGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	cloudEndpointNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("cloudEndpointName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := c.srv.Restoreheartbeat(req.Context(), resourceGroupNameParam, storageSyncServiceNameParam, syncGroupNameParam, cloudEndpointNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.NewResponse(respContent, req, nil)
+	if err != nil {
+		return nil, err
+	}
+	if val := server.GetResponse(respr).XMSCorrelationRequestID; val != nil {
+		resp.Header.Set("X-Ms-Correlation-Request-Id", *val)
+	}
+	if val := server.GetResponse(respr).XMSRequestID; val != nil {
+		resp.Header.Set("X-Ms-Request-Id", *val)
+	}
 	return resp, nil
 }
 

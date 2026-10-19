@@ -69,7 +69,7 @@ func (client *ElasticCapacityPoolsClient) BeginChangeZone(ctx context.Context, r
 	}
 }
 
-// ChangeZone - Moves pool to another zone
+// changeZone - Moves pool to another zone
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ElasticCapacityPoolsClient) changeZone(ctx context.Context, resourceGroupName string, accountName string, poolName string, body ChangeZoneRequest, options *ElasticCapacityPoolsClientBeginChangeZoneOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *ElasticCapacityPoolsClient) changeZone(ctx context.Context, resour
 	return httpResp, nil
 }
 
-// changeZoneCreateRequest creates the ChangeZone request.
+// changeZoneCreateRequest creates the changeZone request.
 func (client *ElasticCapacityPoolsClient) changeZoneCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, body ChangeZoneRequest, _ *ElasticCapacityPoolsClientBeginChangeZoneOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/elasticAccounts/{accountName}/elasticCapacityPools/{poolName}/changeZone"
 	if client.subscriptionID == "" {
@@ -111,6 +111,245 @@ func (client *ElasticCapacityPoolsClient) changeZoneCreateRequest(ctx context.Co
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260615Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginCreateOrUpdate - Create or update the specified NetApp Elastic Capacity Pool within the resource group and NetApp
+// Elastic Account
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of the ElasticAccount
+//   - poolName - The name of the ElasticCapacityPool
+//   - body - Resource create parameters.
+//   - options - ElasticCapacityPoolsClientBeginCreateOrUpdateOptions contains the optional parameters for the ElasticCapacityPoolsClient.BeginCreateOrUpdate
+//     method.
+func (client *ElasticCapacityPoolsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, poolName string, body ElasticCapacityPool, options *ElasticCapacityPoolsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ElasticCapacityPoolsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, accountName, poolName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ElasticCapacityPoolsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ElasticCapacityPoolsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// createOrUpdate - Create or update the specified NetApp Elastic Capacity Pool within the resource group and NetApp Elastic
+// Account
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ElasticCapacityPoolsClient) createOrUpdate(ctx context.Context, resourceGroupName string, accountName string, poolName string, body ElasticCapacityPool, options *ElasticCapacityPoolsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ElasticCapacityPoolsClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, accountName, poolName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// createOrUpdateCreateRequest creates the createOrUpdate request.
+func (client *ElasticCapacityPoolsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, body ElasticCapacityPool, _ *ElasticCapacityPoolsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/elasticAccounts/{accountName}/elasticCapacityPools/{poolName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if poolName == "" {
+		return nil, errors.New("parameter poolName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260615Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginDelete - Delete the specified NetApp Elastic Capacity Pool
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of the ElasticAccount
+//   - poolName - The name of the ElasticCapacityPool
+//   - options - ElasticCapacityPoolsClientBeginDeleteOptions contains the optional parameters for the ElasticCapacityPoolsClient.BeginDelete
+//     method.
+func (client *ElasticCapacityPoolsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, poolName string, options *ElasticCapacityPoolsClientBeginDeleteOptions) (*runtime.Poller[ElasticCapacityPoolsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, poolName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ElasticCapacityPoolsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ElasticCapacityPoolsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// deleteOperation - Delete the specified NetApp Elastic Capacity Pool
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ElasticCapacityPoolsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, poolName string, options *ElasticCapacityPoolsClientBeginDeleteOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ElasticCapacityPoolsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, poolName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// deleteCreateRequest creates the delete request.
+func (client *ElasticCapacityPoolsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, _ *ElasticCapacityPoolsClientBeginDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/elasticAccounts/{accountName}/elasticCapacityPools/{poolName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if poolName == "" {
+		return nil, errors.New("parameter poolName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260615Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - Patch the specified NetApp Elastic Capacity Pool
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of the ElasticAccount
+//   - poolName - The name of the ElasticCapacityPool
+//   - body - The resource properties to be updated.
+//   - options - ElasticCapacityPoolsClientBeginUpdateOptions contains the optional parameters for the ElasticCapacityPoolsClient.BeginUpdate
+//     method.
+func (client *ElasticCapacityPoolsClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, poolName string, body ElasticCapacityPoolUpdate, options *ElasticCapacityPoolsClientBeginUpdateOptions) (*runtime.Poller[ElasticCapacityPoolsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, accountName, poolName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ElasticCapacityPoolsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ElasticCapacityPoolsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Patch the specified NetApp Elastic Capacity Pool
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ElasticCapacityPoolsClient) update(ctx context.Context, resourceGroupName string, accountName string, poolName string, body ElasticCapacityPoolUpdate, options *ElasticCapacityPoolsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ElasticCapacityPoolsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, poolName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *ElasticCapacityPoolsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, body ElasticCapacityPoolUpdate, _ *ElasticCapacityPoolsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/elasticAccounts/{accountName}/elasticCapacityPools/{poolName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if poolName == "" {
+		return nil, errors.New("parameter poolName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -194,164 +433,6 @@ func (client *ElasticCapacityPoolsClient) checkVolumeFilePathAvailabilityHandleR
 		return ElasticCapacityPoolsClientCheckVolumeFilePathAvailabilityResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginCreateOrUpdate - Create or update the specified NetApp Elastic Capacity Pool within the resource group and NetApp
-// Elastic Account
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - accountName - The name of the ElasticAccount
-//   - poolName - The name of the ElasticCapacityPool
-//   - body - Resource create parameters.
-//   - options - ElasticCapacityPoolsClientBeginCreateOrUpdateOptions contains the optional parameters for the ElasticCapacityPoolsClient.BeginCreateOrUpdate
-//     method.
-func (client *ElasticCapacityPoolsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, poolName string, body ElasticCapacityPool, options *ElasticCapacityPoolsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ElasticCapacityPoolsClientCreateOrUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.createOrUpdate(ctx, resourceGroupName, accountName, poolName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ElasticCapacityPoolsClientCreateOrUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ElasticCapacityPoolsClientCreateOrUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// CreateOrUpdate - Create or update the specified NetApp Elastic Capacity Pool within the resource group and NetApp Elastic
-// Account
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ElasticCapacityPoolsClient) createOrUpdate(ctx context.Context, resourceGroupName string, accountName string, poolName string, body ElasticCapacityPool, options *ElasticCapacityPoolsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ElasticCapacityPoolsClient.BeginCreateOrUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, accountName, poolName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ElasticCapacityPoolsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, body ElasticCapacityPool, _ *ElasticCapacityPoolsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/elasticAccounts/{accountName}/elasticCapacityPools/{poolName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if poolName == "" {
-		return nil, errors.New("parameter poolName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260615Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginDelete - Delete the specified NetApp Elastic Capacity Pool
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - accountName - The name of the ElasticAccount
-//   - poolName - The name of the ElasticCapacityPool
-//   - options - ElasticCapacityPoolsClientBeginDeleteOptions contains the optional parameters for the ElasticCapacityPoolsClient.BeginDelete
-//     method.
-func (client *ElasticCapacityPoolsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, poolName string, options *ElasticCapacityPoolsClientBeginDeleteOptions) (*runtime.Poller[ElasticCapacityPoolsClientDeleteResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, poolName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ElasticCapacityPoolsClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ElasticCapacityPoolsClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Delete - Delete the specified NetApp Elastic Capacity Pool
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ElasticCapacityPoolsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, poolName string, options *ElasticCapacityPoolsClientBeginDeleteOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ElasticCapacityPoolsClient.BeginDelete"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, poolName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// deleteCreateRequest creates the Delete request.
-func (client *ElasticCapacityPoolsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, _ *ElasticCapacityPoolsClientBeginDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/elasticAccounts/{accountName}/elasticCapacityPools/{poolName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if poolName == "" {
-		return nil, errors.New("parameter poolName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260615Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
 }
 
 // Get - Get the NetApp Elastic Capacity Pool
@@ -495,85 +576,4 @@ func (client *ElasticCapacityPoolsClient) listByElasticAccountHandleResponse(res
 		return ElasticCapacityPoolsClientListByElasticAccountResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Patch the specified NetApp Elastic Capacity Pool
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - accountName - The name of the ElasticAccount
-//   - poolName - The name of the ElasticCapacityPool
-//   - body - The resource properties to be updated.
-//   - options - ElasticCapacityPoolsClientBeginUpdateOptions contains the optional parameters for the ElasticCapacityPoolsClient.BeginUpdate
-//     method.
-func (client *ElasticCapacityPoolsClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, poolName string, body ElasticCapacityPoolUpdate, options *ElasticCapacityPoolsClientBeginUpdateOptions) (*runtime.Poller[ElasticCapacityPoolsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, accountName, poolName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ElasticCapacityPoolsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ElasticCapacityPoolsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Patch the specified NetApp Elastic Capacity Pool
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ElasticCapacityPoolsClient) update(ctx context.Context, resourceGroupName string, accountName string, poolName string, body ElasticCapacityPoolUpdate, options *ElasticCapacityPoolsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ElasticCapacityPoolsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, poolName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *ElasticCapacityPoolsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, body ElasticCapacityPoolUpdate, _ *ElasticCapacityPoolsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/elasticAccounts/{accountName}/elasticCapacityPools/{poolName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if poolName == "" {
-		return nil, errors.New("parameter poolName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260615Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

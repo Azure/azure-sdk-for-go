@@ -38,46 +38,6 @@ func ExamplePrivateEndpointConnectionClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-08-01/PrivateEndpointConnection/GetPrivateEndpointConnection.json
-func ExamplePrivateEndpointConnectionClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewPrivateEndpointConnectionClient().Get(ctx, "gaallavaultbvtd2msi", "gaallaRG", "gaallatestpe2.5704c932-249a-490b-a142-1396838cd3b", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armrecoveryservicesbackup.PrivateEndpointConnectionClientGetResponse{
-	// 	PrivateEndpointConnectionResource: armrecoveryservicesbackup.PrivateEndpointConnectionResource{
-	// 		Name: to.Ptr("gaallatestpe1.3592346090307038890.backup.5704c932-249a-490b-a142-1396838cd3b"),
-	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/privateEndpointConnections"),
-	// 		ID: to.Ptr("/subscriptions/04cf684a-d41f-4550-9f70-7708a3a2283b/resourceGroups/gaallaRG/providers/Microsoft.RecoveryServicesBVTD2/vaults/gaallavaultbvtd2msi/privateEndpointConnections/gaallatestpe3.3592346090307038890.backup.5704c932-249a-490b-a142-1396838cd3b"),
-	// 		Properties: &armrecoveryservicesbackup.PrivateEndpointConnection{
-	// 			GroupIDs: []*armrecoveryservicesbackup.VaultSubResourceType{
-	// 				to.Ptr(armrecoveryservicesbackup.VaultSubResourceTypeAzureBackupSecondary),
-	// 			},
-	// 			PrivateEndpoint: &armrecoveryservicesbackup.PrivateEndpoint{
-	// 				ID: to.Ptr("/subscriptions/04cf684a-d41f-4550-9f70-7708a3a2283b/resourceGroups/gaallaRG/providers/Microsoft.Network/privateEndpoints/gaallatestpe3"),
-	// 			},
-	// 			PrivateLinkServiceConnectionState: &armrecoveryservicesbackup.PrivateLinkServiceConnectionState{
-	// 				Description: to.Ptr("Approved by johndoe@company.com"),
-	// 				Status: to.Ptr(armrecoveryservicesbackup.PrivateEndpointConnectionStatusApproved),
-	// 			},
-	// 			ProvisioningState: to.Ptr(armrecoveryservicesbackup.ProvisioningStatePending),
-	// 		},
-	// 	},
-	// }
-}
-
 // Generated from example definition: 2026-08-01/PrivateEndpointConnection/PutPrivateEndpointConnection.json
 func ExamplePrivateEndpointConnectionClient_BeginPut() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -131,6 +91,46 @@ func ExamplePrivateEndpointConnectionClient_BeginPut() {
 	// 				Status: to.Ptr(armrecoveryservicesbackup.PrivateEndpointConnectionStatusApproved),
 	// 			},
 	// 			ProvisioningState: to.Ptr(armrecoveryservicesbackup.ProvisioningStateSucceeded),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-08-01/PrivateEndpointConnection/GetPrivateEndpointConnection.json
+func ExamplePrivateEndpointConnectionClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewPrivateEndpointConnectionClient().Get(ctx, "gaallavaultbvtd2msi", "gaallaRG", "gaallatestpe2.5704c932-249a-490b-a142-1396838cd3b", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armrecoveryservicesbackup.PrivateEndpointConnectionClientGetResponse{
+	// 	PrivateEndpointConnectionResource: armrecoveryservicesbackup.PrivateEndpointConnectionResource{
+	// 		Name: to.Ptr("gaallatestpe1.3592346090307038890.backup.5704c932-249a-490b-a142-1396838cd3b"),
+	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/privateEndpointConnections"),
+	// 		ID: to.Ptr("/subscriptions/04cf684a-d41f-4550-9f70-7708a3a2283b/resourceGroups/gaallaRG/providers/Microsoft.RecoveryServicesBVTD2/vaults/gaallavaultbvtd2msi/privateEndpointConnections/gaallatestpe3.3592346090307038890.backup.5704c932-249a-490b-a142-1396838cd3b"),
+	// 		Properties: &armrecoveryservicesbackup.PrivateEndpointConnection{
+	// 			GroupIDs: []*armrecoveryservicesbackup.VaultSubResourceType{
+	// 				to.Ptr(armrecoveryservicesbackup.VaultSubResourceTypeAzureBackupSecondary),
+	// 			},
+	// 			PrivateEndpoint: &armrecoveryservicesbackup.PrivateEndpoint{
+	// 				ID: to.Ptr("/subscriptions/04cf684a-d41f-4550-9f70-7708a3a2283b/resourceGroups/gaallaRG/providers/Microsoft.Network/privateEndpoints/gaallatestpe3"),
+	// 			},
+	// 			PrivateLinkServiceConnectionState: &armrecoveryservicesbackup.PrivateLinkServiceConnectionState{
+	// 				Description: to.Ptr("Approved by johndoe@company.com"),
+	// 				Status: to.Ptr(armrecoveryservicesbackup.PrivateEndpointConnectionStatusApproved),
+	// 			},
+	// 			ProvisioningState: to.Ptr(armrecoveryservicesbackup.ProvisioningStatePending),
 	// 		},
 	// 	},
 	// }

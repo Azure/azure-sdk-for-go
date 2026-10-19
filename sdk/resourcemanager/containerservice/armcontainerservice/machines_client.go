@@ -70,7 +70,7 @@ func (client *MachinesClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 	}
 }
 
-// CreateOrUpdate - Creates or updates a machine in the specified agent pool.
+// createOrUpdate - Creates or updates a machine in the specified agent pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *MachinesClient) createOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, machineName string, parameters Machine, options *MachinesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -92,7 +92,7 @@ func (client *MachinesClient) createOrUpdate(ctx context.Context, resourceGroupN
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *MachinesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, machineName string, parameters Machine, options *MachinesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/agentPools/{agentPoolName}/machines/{machineName}"
 	if client.subscriptionID == "" {

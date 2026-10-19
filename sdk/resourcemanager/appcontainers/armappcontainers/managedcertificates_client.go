@@ -71,7 +71,7 @@ func (client *ManagedCertificatesClient) BeginCreateOrUpdate(ctx context.Context
 	}
 }
 
-// CreateOrUpdate - Create or Update a Managed Certificate.
+// createOrUpdate - Create or Update a Managed Certificate.
 //
 // Create or Update a Managed Certificate.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -95,7 +95,7 @@ func (client *ManagedCertificatesClient) createOrUpdate(ctx context.Context, res
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ManagedCertificatesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, environmentName string, managedCertificateName string, managedCertificateEnvelope ManagedCertificate, _ *ManagedCertificatesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/managedCertificates/{managedCertificateName}"
 	if client.subscriptionID == "" {

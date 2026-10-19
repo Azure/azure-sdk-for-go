@@ -30,6 +30,10 @@ type CloudServicesNetworksServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, cloudServicesNetworkName string, options *armnetworkcloud.CloudServicesNetworksClientBeginDeleteOptions) (resp azfake.PollerResponder[armnetworkcloud.CloudServicesNetworksClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method CloudServicesNetworksClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, cloudServicesNetworkName string, cloudServicesNetworkUpdateParameters armnetworkcloud.CloudServicesNetworkPatchParameters, options *armnetworkcloud.CloudServicesNetworksClientBeginUpdateOptions) (resp azfake.PollerResponder[armnetworkcloud.CloudServicesNetworksClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method CloudServicesNetworksClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, cloudServicesNetworkName string, options *armnetworkcloud.CloudServicesNetworksClientGetOptions) (resp azfake.Responder[armnetworkcloud.CloudServicesNetworksClientGetResponse], errResp azfake.ErrorResponder)
@@ -41,10 +45,6 @@ type CloudServicesNetworksServer struct {
 	// NewListBySubscriptionPager is the fake for method CloudServicesNetworksClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armnetworkcloud.CloudServicesNetworksClientListBySubscriptionOptions) (resp azfake.PagerResponder[armnetworkcloud.CloudServicesNetworksClientListBySubscriptionResponse])
-
-	// BeginUpdate is the fake for method CloudServicesNetworksClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, cloudServicesNetworkName string, cloudServicesNetworkUpdateParameters armnetworkcloud.CloudServicesNetworkPatchParameters, options *armnetworkcloud.CloudServicesNetworksClientBeginUpdateOptions) (resp azfake.PollerResponder[armnetworkcloud.CloudServicesNetworksClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewCloudServicesNetworksServerTransport creates a new instance of CloudServicesNetworksServerTransport with the provided implementation.
@@ -55,9 +55,9 @@ func NewCloudServicesNetworksServerTransport(srv *CloudServicesNetworksServer) *
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armnetworkcloud.CloudServicesNetworksClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armnetworkcloud.CloudServicesNetworksClientDeleteResponse]](),
+		beginUpdate:                 newTracker[azfake.PollerResponder[armnetworkcloud.CloudServicesNetworksClientUpdateResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armnetworkcloud.CloudServicesNetworksClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armnetworkcloud.CloudServicesNetworksClientListBySubscriptionResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armnetworkcloud.CloudServicesNetworksClientUpdateResponse]](),
 	}
 }
 
@@ -67,9 +67,9 @@ type CloudServicesNetworksServerTransport struct {
 	srv                         *CloudServicesNetworksServer
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armnetworkcloud.CloudServicesNetworksClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armnetworkcloud.CloudServicesNetworksClientDeleteResponse]]
+	beginUpdate                 *tracker[azfake.PollerResponder[armnetworkcloud.CloudServicesNetworksClientUpdateResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armnetworkcloud.CloudServicesNetworksClientListByResourceGroupResponse]]
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armnetworkcloud.CloudServicesNetworksClientListBySubscriptionResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armnetworkcloud.CloudServicesNetworksClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for CloudServicesNetworksServerTransport.
@@ -97,14 +97,14 @@ func (c *CloudServicesNetworksServerTransport) dispatchToMethodFake(req *http.Re
 				res.resp, res.err = c.dispatchBeginCreateOrUpdate(req)
 			case "CloudServicesNetworksClient.BeginDelete":
 				res.resp, res.err = c.dispatchBeginDelete(req)
+			case "CloudServicesNetworksClient.BeginUpdate":
+				res.resp, res.err = c.dispatchBeginUpdate(req)
 			case "CloudServicesNetworksClient.Get":
 				res.resp, res.err = c.dispatchGet(req)
 			case "CloudServicesNetworksClient.NewListByResourceGroupPager":
 				res.resp, res.err = c.dispatchNewListByResourceGroupPager(req)
 			case "CloudServicesNetworksClient.NewListBySubscriptionPager":
 				res.resp, res.err = c.dispatchNewListBySubscriptionPager(req)
-			case "CloudServicesNetworksClient.BeginUpdate":
-				res.resp, res.err = c.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -226,6 +226,63 @@ func (c *CloudServicesNetworksServerTransport) dispatchBeginDelete(req *http.Req
 	}
 	if !server.PollerResponderMore(beginDelete) {
 		c.beginDelete.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (c *CloudServicesNetworksServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if c.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := c.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetworkCloud/cloudServicesNetworks/(?P<cloudServicesNetworkName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armnetworkcloud.CloudServicesNetworkPatchParameters](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		cloudServicesNetworkNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("cloudServicesNetworkName")])
+		if err != nil {
+			return nil, err
+		}
+		ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
+		ifNoneMatchParam := getOptional(getHeaderValue(req.Header, "If-None-Match"))
+		var options *armnetworkcloud.CloudServicesNetworksClientBeginUpdateOptions
+		if ifMatchParam != nil || ifNoneMatchParam != nil {
+			options = &armnetworkcloud.CloudServicesNetworksClientBeginUpdateOptions{
+				IfMatch:     ifMatchParam,
+				IfNoneMatch: ifNoneMatchParam,
+			}
+		}
+		respr, errRespr := c.srv.BeginUpdate(req.Context(), resourceGroupNameParam, cloudServicesNetworkNameParam, body, options)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		c.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		c.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		c.beginUpdate.remove(req)
 	}
 
 	return resp, nil
@@ -369,63 +426,6 @@ func (c *CloudServicesNetworksServerTransport) dispatchNewListBySubscriptionPage
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		c.newListBySubscriptionPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (c *CloudServicesNetworksServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if c.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := c.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetworkCloud/cloudServicesNetworks/(?P<cloudServicesNetworkName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armnetworkcloud.CloudServicesNetworkPatchParameters](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		cloudServicesNetworkNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("cloudServicesNetworkName")])
-		if err != nil {
-			return nil, err
-		}
-		ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
-		ifNoneMatchParam := getOptional(getHeaderValue(req.Header, "If-None-Match"))
-		var options *armnetworkcloud.CloudServicesNetworksClientBeginUpdateOptions
-		if ifMatchParam != nil || ifNoneMatchParam != nil {
-			options = &armnetworkcloud.CloudServicesNetworksClientBeginUpdateOptions{
-				IfMatch:     ifMatchParam,
-				IfNoneMatch: ifNoneMatchParam,
-			}
-		}
-		respr, errRespr := c.srv.BeginUpdate(req.Context(), resourceGroupNameParam, cloudServicesNetworkNameParam, body, options)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		c.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		c.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		c.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

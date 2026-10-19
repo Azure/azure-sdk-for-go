@@ -29,6 +29,10 @@ type AutoImportJobsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, amlFilesystemName string, autoImportJobName string, options *armstoragecache.AutoImportJobsClientBeginDeleteOptions) (resp azfake.PollerResponder[armstoragecache.AutoImportJobsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method AutoImportJobsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, amlFilesystemName string, autoImportJobName string, autoImportJob armstoragecache.AutoImportJobUpdate, options *armstoragecache.AutoImportJobsClientBeginUpdateOptions) (resp azfake.PollerResponder[armstoragecache.AutoImportJobsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method AutoImportJobsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, amlFilesystemName string, autoImportJobName string, options *armstoragecache.AutoImportJobsClientGetOptions) (resp azfake.Responder[armstoragecache.AutoImportJobsClientGetResponse], errResp azfake.ErrorResponder)
@@ -36,10 +40,6 @@ type AutoImportJobsServer struct {
 	// NewListByAmlFilesystemPager is the fake for method AutoImportJobsClient.NewListByAmlFilesystemPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByAmlFilesystemPager func(resourceGroupName string, amlFilesystemName string, options *armstoragecache.AutoImportJobsClientListByAmlFilesystemOptions) (resp azfake.PagerResponder[armstoragecache.AutoImportJobsClientListByAmlFilesystemResponse])
-
-	// BeginUpdate is the fake for method AutoImportJobsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, amlFilesystemName string, autoImportJobName string, autoImportJob armstoragecache.AutoImportJobUpdate, options *armstoragecache.AutoImportJobsClientBeginUpdateOptions) (resp azfake.PollerResponder[armstoragecache.AutoImportJobsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewAutoImportJobsServerTransport creates a new instance of AutoImportJobsServerTransport with the provided implementation.
@@ -50,8 +50,8 @@ func NewAutoImportJobsServerTransport(srv *AutoImportJobsServer) *AutoImportJobs
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armstoragecache.AutoImportJobsClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armstoragecache.AutoImportJobsClientDeleteResponse]](),
-		newListByAmlFilesystemPager: newTracker[azfake.PagerResponder[armstoragecache.AutoImportJobsClientListByAmlFilesystemResponse]](),
 		beginUpdate:                 newTracker[azfake.PollerResponder[armstoragecache.AutoImportJobsClientUpdateResponse]](),
+		newListByAmlFilesystemPager: newTracker[azfake.PagerResponder[armstoragecache.AutoImportJobsClientListByAmlFilesystemResponse]](),
 	}
 }
 
@@ -61,8 +61,8 @@ type AutoImportJobsServerTransport struct {
 	srv                         *AutoImportJobsServer
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armstoragecache.AutoImportJobsClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armstoragecache.AutoImportJobsClientDeleteResponse]]
-	newListByAmlFilesystemPager *tracker[azfake.PagerResponder[armstoragecache.AutoImportJobsClientListByAmlFilesystemResponse]]
 	beginUpdate                 *tracker[azfake.PollerResponder[armstoragecache.AutoImportJobsClientUpdateResponse]]
+	newListByAmlFilesystemPager *tracker[azfake.PagerResponder[armstoragecache.AutoImportJobsClientListByAmlFilesystemResponse]]
 }
 
 // Do implements the policy.Transporter interface for AutoImportJobsServerTransport.
@@ -90,12 +90,12 @@ func (a *AutoImportJobsServerTransport) dispatchToMethodFake(req *http.Request, 
 				res.resp, res.err = a.dispatchBeginCreateOrUpdate(req)
 			case "AutoImportJobsClient.BeginDelete":
 				res.resp, res.err = a.dispatchBeginDelete(req)
+			case "AutoImportJobsClient.BeginUpdate":
+				res.resp, res.err = a.dispatchBeginUpdate(req)
 			case "AutoImportJobsClient.Get":
 				res.resp, res.err = a.dispatchGet(req)
 			case "AutoImportJobsClient.NewListByAmlFilesystemPager":
 				res.resp, res.err = a.dispatchNewListByAmlFilesystemPager(req)
-			case "AutoImportJobsClient.BeginUpdate":
-				res.resp, res.err = a.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -212,6 +212,58 @@ func (a *AutoImportJobsServerTransport) dispatchBeginDelete(req *http.Request) (
 	return resp, nil
 }
 
+func (a *AutoImportJobsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if a.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := a.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.StorageCache/amlFilesystems/(?P<amlFilesystemName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/autoImportJobs/(?P<autoImportJobName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armstoragecache.AutoImportJobUpdate](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		amlFilesystemNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("amlFilesystemName")])
+		if err != nil {
+			return nil, err
+		}
+		autoImportJobNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("autoImportJobName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := a.srv.BeginUpdate(req.Context(), resourceGroupNameParam, amlFilesystemNameParam, autoImportJobNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		a.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		a.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		a.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (a *AutoImportJobsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if a.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -287,58 +339,6 @@ func (a *AutoImportJobsServerTransport) dispatchNewListByAmlFilesystemPager(req 
 	if !server.PagerResponderMore(newListByAmlFilesystemPager) {
 		a.newListByAmlFilesystemPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (a *AutoImportJobsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if a.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := a.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.StorageCache/amlFilesystems/(?P<amlFilesystemName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/autoImportJobs/(?P<autoImportJobName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armstoragecache.AutoImportJobUpdate](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		amlFilesystemNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("amlFilesystemName")])
-		if err != nil {
-			return nil, err
-		}
-		autoImportJobNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("autoImportJobName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := a.srv.BeginUpdate(req.Context(), resourceGroupNameParam, amlFilesystemNameParam, autoImportJobNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		a.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		a.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		a.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

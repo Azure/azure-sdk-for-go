@@ -241,8 +241,8 @@ func ExampleBotsClient_GetCheckNameAvailability() {
 	// }
 }
 
-// Generated from example definition: 2023-09-15-preview/ListBotsBySubscription.json
-func ExampleBotsClient_NewListPager() {
+// Generated from example definition: 2023-09-15-preview/ListBotsByResourceGroup.json
+func ExampleBotsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -252,7 +252,7 @@ func ExampleBotsClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewBotsClient().NewListPager(nil)
+	pager := clientFactory.NewBotsClient().NewListByResourceGroupPager("OneResourceGroupName", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -263,14 +263,14 @@ func ExampleBotsClient_NewListPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armbotservice.BotsClientListResponse{
+		// page = armbotservice.BotsClientListByResourceGroupResponse{
 		// 	BotResponseList: armbotservice.BotResponseList{
 		// 		Value: []*armbotservice.Bot{
 		// 			{
 		// 				Name: to.Ptr("samplebotname"),
 		// 				Type: to.Ptr("Microsoft.BotService/botServices"),
 		// 				Etag: to.Ptr("etag1"),
-		// 				ID: to.Ptr("/subscriptions/subscription-id/providers/Microsoft.BotService/botServices"),
+		// 				ID: to.Ptr("/subscriptions/subscription-id/resourceGroups/OneResourceGroupName/providers/Microsoft.BotService/botServices"),
 		// 				Kind: to.Ptr(armbotservice.KindSdk),
 		// 				Location: to.Ptr("West US"),
 		// 				Properties: &armbotservice.BotProperties{
@@ -313,8 +313,8 @@ func ExampleBotsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2023-09-15-preview/ListBotsByResourceGroup.json
-func ExampleBotsClient_NewListByResourceGroupPager() {
+// Generated from example definition: 2023-09-15-preview/ListBotsBySubscription.json
+func ExampleBotsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -324,7 +324,7 @@ func ExampleBotsClient_NewListByResourceGroupPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewBotsClient().NewListByResourceGroupPager("OneResourceGroupName", nil)
+	pager := clientFactory.NewBotsClient().NewListPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -335,14 +335,14 @@ func ExampleBotsClient_NewListByResourceGroupPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armbotservice.BotsClientListByResourceGroupResponse{
+		// page = armbotservice.BotsClientListResponse{
 		// 	BotResponseList: armbotservice.BotResponseList{
 		// 		Value: []*armbotservice.Bot{
 		// 			{
 		// 				Name: to.Ptr("samplebotname"),
 		// 				Type: to.Ptr("Microsoft.BotService/botServices"),
 		// 				Etag: to.Ptr("etag1"),
-		// 				ID: to.Ptr("/subscriptions/subscription-id/resourceGroups/OneResourceGroupName/providers/Microsoft.BotService/botServices"),
+		// 				ID: to.Ptr("/subscriptions/subscription-id/providers/Microsoft.BotService/botServices"),
 		// 				Kind: to.Ptr(armbotservice.KindSdk),
 		// 				Location: to.Ptr("West US"),
 		// 				Properties: &armbotservice.BotProperties{

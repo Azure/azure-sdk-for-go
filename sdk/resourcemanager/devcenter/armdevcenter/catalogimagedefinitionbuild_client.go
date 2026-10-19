@@ -70,7 +70,7 @@ func (client *CatalogImageDefinitionBuildClient) BeginCancel(ctx context.Context
 	}
 }
 
-// Cancel - Cancels the specified build for an image definition.
+// cancel - Cancels the specified build for an image definition.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *CatalogImageDefinitionBuildClient) cancel(ctx context.Context, resourceGroupName string, devCenterName string, catalogName string, imageDefinitionName string, buildName string, options *CatalogImageDefinitionBuildClientBeginCancelOptions) (*http.Response, error) {
 	var err error
@@ -92,7 +92,7 @@ func (client *CatalogImageDefinitionBuildClient) cancel(ctx context.Context, res
 	return httpResp, nil
 }
 
-// cancelCreateRequest creates the Cancel request.
+// cancelCreateRequest creates the cancel request.
 func (client *CatalogImageDefinitionBuildClient) cancelCreateRequest(ctx context.Context, resourceGroupName string, devCenterName string, catalogName string, imageDefinitionName string, buildName string, _ *CatalogImageDefinitionBuildClientBeginCancelOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/catalogs/{catalogName}/imageDefinitions/{imageDefinitionName}/builds/{buildName}/cancel"
 	if client.subscriptionID == "" {

@@ -40,52 +40,6 @@ func ExampleVirtualMachineScaleSetsClient_BeginApproveRollingUpgrade() {
 	}
 }
 
-// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_ConvertToSinglePlacementGroup_MaximumSet_Gen.json
-func ExampleVirtualMachineScaleSetsClient_ConvertToSinglePlacementGroup_virtualMachineScaleSetConvertToSinglePlacementGroupMaximumSetGen() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewVirtualMachineScaleSetsClient().ConvertToSinglePlacementGroup(ctx, "rgcompute", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", armcompute.VMScaleSetConvertToSinglePlacementGroupInput{
-		ActivePlacementGroupID: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaa"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcompute.VirtualMachineScaleSetsClientConvertToSinglePlacementGroupResponse{
-	// }
-}
-
-// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_ConvertToSinglePlacementGroup_MinimumSet_Gen.json
-func ExampleVirtualMachineScaleSetsClient_ConvertToSinglePlacementGroup_virtualMachineScaleSetConvertToSinglePlacementGroupMinimumSetGen() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewVirtualMachineScaleSetsClient().ConvertToSinglePlacementGroup(ctx, "rgcompute", "aaaaaaaaaaaaa", armcompute.VMScaleSetConvertToSinglePlacementGroupInput{}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcompute.VirtualMachineScaleSetsClientConvertToSinglePlacementGroupResponse{
-	// }
-}
-
 // Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_CreateA_WithDiffOsDiskUsingDiffDiskPlacement.json
 func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWithEphemeralOSDisksUsingPlacementProperty() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -10232,2172 +10186,6 @@ func ExampleVirtualMachineScaleSetsClient_BeginDeleteInstances_virtualMachineSca
 	// }
 }
 
-// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_ForceRecoveryServiceFabricPlatformUpdateDomainWalk_MaximumSet_Gen.json
-func ExampleVirtualMachineScaleSetsClient_ForceRecoveryServiceFabricPlatformUpdateDomainWalk_virtualMachineScaleSetForceRecoveryServiceFabricPlatformUpdateDomainWalkMaximumSetGen() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewVirtualMachineScaleSetsClient().ForceRecoveryServiceFabricPlatformUpdateDomainWalk(ctx, "rgcompute", "aaaaaaaaaaaaaaaa", 30, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcompute.VirtualMachineScaleSetsClientForceRecoveryServiceFabricPlatformUpdateDomainWalkResponse{
-	// 	RecoveryWalkResponse: armcompute.RecoveryWalkResponse{
-	// 		WalkPerformed: to.Ptr(true),
-	// 		NextPlatformUpdateDomain: to.Ptr[int32](7),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_ForceRecoveryServiceFabricPlatformUpdateDomainWalk_MinimumSet_Gen.json
-func ExampleVirtualMachineScaleSetsClient_ForceRecoveryServiceFabricPlatformUpdateDomainWalk_virtualMachineScaleSetForceRecoveryServiceFabricPlatformUpdateDomainWalkMinimumSetGen() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewVirtualMachineScaleSetsClient().ForceRecoveryServiceFabricPlatformUpdateDomainWalk(ctx, "rgcompute", "aaaaaaaaaaaa", 9, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcompute.VirtualMachineScaleSetsClientForceRecoveryServiceFabricPlatformUpdateDomainWalkResponse{
-	// 	RecoveryWalkResponse: armcompute.RecoveryWalkResponse{
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Get.json
-func ExampleVirtualMachineScaleSetsClient_Get_getAVirtualMachineScaleSet() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewVirtualMachineScaleSetsClient().Get(ctx, "myResourceGroup", "myVirtualMachineScaleSet", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcompute.VirtualMachineScaleSetsClientGetResponse{
-	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
-	// 		Name: to.Ptr("myVirtualMachineScaleSet"),
-	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachineScaleSets/myVirtualMachineScaleSet"),
-	// 		Type: to.Ptr("Microsoft.Compute/virtualMachineScaleSets"),
-	// 		Location: to.Ptr("westus"),
-	// 		Tags: map[string]*string{
-	// 			"myTag1": to.Ptr("tagValue1"),
-	// 		},
-	// 		SKU: &armcompute.SKU{
-	// 			Name: to.Ptr("Standard_D2s_v3"),
-	// 			Tier: to.Ptr("Standard"),
-	// 			Capacity: to.Ptr[int64](4),
-	// 		},
-	// 		Etag: to.Ptr("\"1\""),
-	// 		Properties: &armcompute.VirtualMachineScaleSetProperties{
-	// 			SinglePlacementGroup: to.Ptr(false),
-	// 			UpgradePolicy: &armcompute.UpgradePolicy{
-	// 				Mode: to.Ptr(armcompute.UpgradeModeAutomatic),
-	// 				AutomaticOSUpgradePolicy: &armcompute.AutomaticOSUpgradePolicy{
-	// 					EnableAutomaticOSUpgrade: to.Ptr(false),
-	// 				},
-	// 			},
-	// 			VirtualMachineProfile: &armcompute.VirtualMachineScaleSetVMProfile{
-	// 				StorageProfile: &armcompute.VirtualMachineScaleSetStorageProfile{
-	// 					OSDisk: &armcompute.VirtualMachineScaleSetOSDisk{
-	// 						CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
-	// 						Caching: to.Ptr(armcompute.CachingTypesReadWrite),
-	// 						ManagedDisk: &armcompute.VirtualMachineScaleSetManagedDiskParameters{
-	// 							StorageAccountType: to.Ptr(armcompute.StorageAccountTypesPremiumLRS),
-	// 						},
-	// 						DiskSizeGB: to.Ptr[int32](30),
-	// 					},
-	// 					ImageReference: &armcompute.ImageReference{
-	// 						Publisher: to.Ptr("azuredatabricks"),
-	// 						Offer: to.Ptr("databricks"),
-	// 						SKU: to.Ptr("databricksworker"),
-	// 						Version: to.Ptr("3.15.2"),
-	// 					},
-	// 					DataDisks: []*armcompute.VirtualMachineScaleSetDataDisk{
-	// 					},
-	// 				},
-	// 				ApplicationProfile: &armcompute.ApplicationProfile{
-	// 					GalleryApplications: []*armcompute.VMGalleryApplication{
-	// 						{
-	// 							Tags: to.Ptr("myTag1"),
-	// 							Order: to.Ptr[int32](1),
-	// 							PackageReferenceID: to.Ptr("/subscriptions/32c17a9e-aa7b-4ba5-a45b-e324116b6fdb/resourceGroups/myresourceGroupName2/providers/Microsoft.Compute/galleries/myGallery1/applications/MyApplication1/versions/1.0"),
-	// 							ConfigurationReference: to.Ptr("https://mystorageaccount.blob.core.windows.net/configurations/settings.config"),
-	// 						},
-	// 						{
-	// 							PackageReferenceID: to.Ptr("/subscriptions/32c17a9e-aa7b-4ba5-a45b-e324116b6fdg/resourceGroups/myresourceGroupName3/providers/Microsoft.Compute/galleries/myGallery2/applications/MyApplication2/versions/1.1"),
-	// 						},
-	// 					},
-	// 				},
-	// 				UserData: to.Ptr("RXhhbXBsZSBVc2VyRGF0YQ=="),
-	// 				OSProfile: &armcompute.VirtualMachineScaleSetOSProfile{
-	// 					ComputerNamePrefix: to.Ptr("myVirtualMachineScaleSet"),
-	// 					AdminUsername: to.Ptr("admin"),
-	// 					LinuxConfiguration: &armcompute.LinuxConfiguration{
-	// 						DisablePasswordAuthentication: to.Ptr(false),
-	// 					},
-	// 				},
-	// 				NetworkProfile: &armcompute.VirtualMachineScaleSetNetworkProfile{
-	// 					NetworkInterfaceConfigurations: []*armcompute.VirtualMachineScaleSetNetworkConfiguration{
-	// 						{
-	// 							Name: to.Ptr("myNic"),
-	// 							Properties: &armcompute.VirtualMachineScaleSetNetworkConfigurationProperties{
-	// 								Primary: to.Ptr(true),
-	// 								IPConfigurations: []*armcompute.VirtualMachineScaleSetIPConfiguration{
-	// 									{
-	// 										Name: to.Ptr("myIPConfig"),
-	// 										Properties: &armcompute.VirtualMachineScaleSetIPConfigurationProperties{
-	// 											Primary: to.Ptr(true),
-	// 											Subnet: &armcompute.APIEntityReference{
-	// 												ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/myVNet/subnets/mySubnet"),
-	// 											},
-	// 										},
-	// 									},
-	// 								},
-	// 								NetworkSecurityGroup: &armcompute.SubResource{
-	// 									ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkSecurityGroups/myNetworkSecurityGroup"),
-	// 								},
-	// 							},
-	// 						},
-	// 					},
-	// 				},
-	// 				TimeCreated: to.Ptr(time.Date(2023, time.September, 27, 1, 3, 40, 313846900, time.UTC)),
-	// 			},
-	// 			ProvisioningState: to.Ptr("succeeded"),
-	// 			Overprovision: to.Ptr(false),
-	// 			DoNotRunExtensionsOnOverprovisionedVMs: to.Ptr(false),
-	// 			PlatformFaultDomainCount: to.Ptr[int32](1),
-	// 			HostGroup: &armcompute.SubResource{
-	// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/hostGroups/myHostGroup"),
-	// 			},
-	// 			TimeCreated: to.Ptr(time.Date(2021, time.June, 27, 1, 2, 38, 313846900, time.UTC)),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Get_AutoPlacedOnDedicatedHostGroup.json
-func ExampleVirtualMachineScaleSetsClient_Get_getAVirtualMachineScaleSetPlacedOnADedicatedHostGroupThroughAutomaticPlacement() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewVirtualMachineScaleSetsClient().Get(ctx, "myResourceGroup", "myVirtualMachineScaleSet", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcompute.VirtualMachineScaleSetsClientGetResponse{
-	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
-	// 		Name: to.Ptr("myVirtualMachineScaleSet"),
-	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachineScaleSets/myVirtualMachineScaleSet"),
-	// 		Type: to.Ptr("Microsoft.Compute/virtualMachineScaleSets"),
-	// 		Location: to.Ptr("West US"),
-	// 		Tags: map[string]*string{
-	// 			"myTag1": to.Ptr("tagValue1"),
-	// 		},
-	// 		SKU: &armcompute.SKU{
-	// 			Name: to.Ptr("Standard_D2s_v3"),
-	// 			Tier: to.Ptr("Standard"),
-	// 			Capacity: to.Ptr[int64](4),
-	// 		},
-	// 		Properties: &armcompute.VirtualMachineScaleSetProperties{
-	// 			SinglePlacementGroup: to.Ptr(false),
-	// 			UpgradePolicy: &armcompute.UpgradePolicy{
-	// 				Mode: to.Ptr(armcompute.UpgradeModeAutomatic),
-	// 				AutomaticOSUpgradePolicy: &armcompute.AutomaticOSUpgradePolicy{
-	// 					EnableAutomaticOSUpgrade: to.Ptr(false),
-	// 				},
-	// 			},
-	// 			VirtualMachineProfile: &armcompute.VirtualMachineScaleSetVMProfile{
-	// 				StorageProfile: &armcompute.VirtualMachineScaleSetStorageProfile{
-	// 					OSDisk: &armcompute.VirtualMachineScaleSetOSDisk{
-	// 						CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
-	// 						Caching: to.Ptr(armcompute.CachingTypesReadWrite),
-	// 						ManagedDisk: &armcompute.VirtualMachineScaleSetManagedDiskParameters{
-	// 							StorageAccountType: to.Ptr(armcompute.StorageAccountTypesPremiumLRS),
-	// 						},
-	// 						DiskSizeGB: to.Ptr[int32](30),
-	// 					},
-	// 					ImageReference: &armcompute.ImageReference{
-	// 						Publisher: to.Ptr("azuredatabricks"),
-	// 						Offer: to.Ptr("databricks"),
-	// 						SKU: to.Ptr("databricksworker"),
-	// 						Version: to.Ptr("3.15.2"),
-	// 					},
-	// 					DataDisks: []*armcompute.VirtualMachineScaleSetDataDisk{
-	// 					},
-	// 				},
-	// 				OSProfile: &armcompute.VirtualMachineScaleSetOSProfile{
-	// 					ComputerNamePrefix: to.Ptr("myVirtualMachineScaleSet"),
-	// 					AdminUsername: to.Ptr("admin"),
-	// 					LinuxConfiguration: &armcompute.LinuxConfiguration{
-	// 						DisablePasswordAuthentication: to.Ptr(false),
-	// 					},
-	// 				},
-	// 				NetworkProfile: &armcompute.VirtualMachineScaleSetNetworkProfile{
-	// 					NetworkInterfaceConfigurations: []*armcompute.VirtualMachineScaleSetNetworkConfiguration{
-	// 						{
-	// 							Name: to.Ptr("myNic"),
-	// 							Properties: &armcompute.VirtualMachineScaleSetNetworkConfigurationProperties{
-	// 								Primary: to.Ptr(true),
-	// 								IPConfigurations: []*armcompute.VirtualMachineScaleSetIPConfiguration{
-	// 									{
-	// 										Name: to.Ptr("myIPConfig"),
-	// 										Properties: &armcompute.VirtualMachineScaleSetIPConfigurationProperties{
-	// 											Primary: to.Ptr(true),
-	// 											Subnet: &armcompute.APIEntityReference{
-	// 												ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/myVNet/subnets/mySubnet"),
-	// 											},
-	// 										},
-	// 									},
-	// 								},
-	// 								NetworkSecurityGroup: &armcompute.SubResource{
-	// 									ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkSecurityGroups/myNetworkSecurityGroup"),
-	// 								},
-	// 							},
-	// 						},
-	// 					},
-	// 				},
-	// 			},
-	// 			ProvisioningState: to.Ptr("succeeded"),
-	// 			Overprovision: to.Ptr(false),
-	// 			DoNotRunExtensionsOnOverprovisionedVMs: to.Ptr(false),
-	// 			PlatformFaultDomainCount: to.Ptr[int32](1),
-	// 			HostGroup: &armcompute.SubResource{
-	// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/hostGroups/myHostGroup"),
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Get_WithDiskControllerType.json
-func ExampleVirtualMachineScaleSetsClient_Get_getVMScaleSetVMWithDiskControllerType() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewVirtualMachineScaleSetsClient().Get(ctx, "myResourceGroup", "myVirtualMachineScaleSet", &armcompute.VirtualMachineScaleSetsClientGetOptions{
-		Expand: to.Ptr(armcompute.ExpandTypesForGetVMScaleSetsUserData)})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcompute.VirtualMachineScaleSetsClientGetResponse{
-	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
-	// 		Name: to.Ptr("myVirtualMachineScaleSet"),
-	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachineScaleSets/myVirtualMachineScaleSet"),
-	// 		Type: to.Ptr("Microsoft.Compute/virtualMachineScaleSets"),
-	// 		Location: to.Ptr("westus"),
-	// 		Tags: map[string]*string{
-	// 			"myTag1": to.Ptr("tagValue1"),
-	// 		},
-	// 		SKU: &armcompute.SKU{
-	// 			Name: to.Ptr("Standard_D2s_v3"),
-	// 			Tier: to.Ptr("Standard"),
-	// 			Capacity: to.Ptr[int64](4),
-	// 		},
-	// 		Properties: &armcompute.VirtualMachineScaleSetProperties{
-	// 			SinglePlacementGroup: to.Ptr(false),
-	// 			UpgradePolicy: &armcompute.UpgradePolicy{
-	// 				Mode: to.Ptr(armcompute.UpgradeModeAutomatic),
-	// 				AutomaticOSUpgradePolicy: &armcompute.AutomaticOSUpgradePolicy{
-	// 					EnableAutomaticOSUpgrade: to.Ptr(false),
-	// 				},
-	// 			},
-	// 			VirtualMachineProfile: &armcompute.VirtualMachineScaleSetVMProfile{
-	// 				StorageProfile: &armcompute.VirtualMachineScaleSetStorageProfile{
-	// 					OSDisk: &armcompute.VirtualMachineScaleSetOSDisk{
-	// 						CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
-	// 						Caching: to.Ptr(armcompute.CachingTypesReadWrite),
-	// 						ManagedDisk: &armcompute.VirtualMachineScaleSetManagedDiskParameters{
-	// 							StorageAccountType: to.Ptr(armcompute.StorageAccountTypesPremiumLRS),
-	// 						},
-	// 						DiskSizeGB: to.Ptr[int32](30),
-	// 					},
-	// 					ImageReference: &armcompute.ImageReference{
-	// 						Publisher: to.Ptr("azuredatabricks"),
-	// 						Offer: to.Ptr("databricks"),
-	// 						SKU: to.Ptr("databricksworker"),
-	// 						Version: to.Ptr("3.15.2"),
-	// 					},
-	// 					DataDisks: []*armcompute.VirtualMachineScaleSetDataDisk{
-	// 					},
-	// 					DiskControllerType: to.Ptr("NVMe"),
-	// 				},
-	// 				ApplicationProfile: &armcompute.ApplicationProfile{
-	// 					GalleryApplications: []*armcompute.VMGalleryApplication{
-	// 						{
-	// 							Tags: to.Ptr("myTag1"),
-	// 							Order: to.Ptr[int32](1),
-	// 							PackageReferenceID: to.Ptr("/subscriptions/32c17a9e-aa7b-4ba5-a45b-e324116b6fdb/resourceGroups/myresourceGroupName2/providers/Microsoft.Compute/galleries/myGallery1/applications/MyApplication1/versions/1.0"),
-	// 							ConfigurationReference: to.Ptr("https://mystorageaccount.blob.core.windows.net/configurations/settings.config"),
-	// 						},
-	// 						{
-	// 							PackageReferenceID: to.Ptr("/subscriptions/32c17a9e-aa7b-4ba5-a45b-e324116b6fdg/resourceGroups/myresourceGroupName3/providers/Microsoft.Compute/galleries/myGallery2/applications/MyApplication2/versions/1.1"),
-	// 						},
-	// 					},
-	// 				},
-	// 				UserData: to.Ptr("RXhhbXBsZSBVc2VyRGF0YQ=="),
-	// 				OSProfile: &armcompute.VirtualMachineScaleSetOSProfile{
-	// 					ComputerNamePrefix: to.Ptr("myVirtualMachineScaleSet"),
-	// 					AdminUsername: to.Ptr("admin"),
-	// 					LinuxConfiguration: &armcompute.LinuxConfiguration{
-	// 						DisablePasswordAuthentication: to.Ptr(false),
-	// 					},
-	// 				},
-	// 				NetworkProfile: &armcompute.VirtualMachineScaleSetNetworkProfile{
-	// 					NetworkInterfaceConfigurations: []*armcompute.VirtualMachineScaleSetNetworkConfiguration{
-	// 						{
-	// 							Name: to.Ptr("myNic"),
-	// 							Properties: &armcompute.VirtualMachineScaleSetNetworkConfigurationProperties{
-	// 								Primary: to.Ptr(true),
-	// 								IPConfigurations: []*armcompute.VirtualMachineScaleSetIPConfiguration{
-	// 									{
-	// 										Name: to.Ptr("myIPConfig"),
-	// 										Properties: &armcompute.VirtualMachineScaleSetIPConfigurationProperties{
-	// 											Primary: to.Ptr(true),
-	// 											Subnet: &armcompute.APIEntityReference{
-	// 												ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/myVNet/subnets/mySubnet"),
-	// 											},
-	// 										},
-	// 									},
-	// 								},
-	// 								NetworkSecurityGroup: &armcompute.SubResource{
-	// 									ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkSecurityGroups/myNetworkSecurityGroup"),
-	// 								},
-	// 							},
-	// 						},
-	// 					},
-	// 				},
-	// 			},
-	// 			ProvisioningState: to.Ptr("succeeded"),
-	// 			Overprovision: to.Ptr(false),
-	// 			DoNotRunExtensionsOnOverprovisionedVMs: to.Ptr(false),
-	// 			PlatformFaultDomainCount: to.Ptr[int32](1),
-	// 			HostGroup: &armcompute.SubResource{
-	// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/hostGroups/myHostGroup"),
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Get_WithUserData.json
-func ExampleVirtualMachineScaleSetsClient_Get_getAVirtualMachineScaleSetWithUserData() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewVirtualMachineScaleSetsClient().Get(ctx, "myResourceGroup", "myVirtualMachineScaleSet", &armcompute.VirtualMachineScaleSetsClientGetOptions{
-		Expand: to.Ptr(armcompute.ExpandTypesForGetVMScaleSetsUserData)})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcompute.VirtualMachineScaleSetsClientGetResponse{
-	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
-	// 		Name: to.Ptr("myVirtualMachineScaleSet"),
-	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachineScaleSets/myVirtualMachineScaleSet"),
-	// 		Type: to.Ptr("Microsoft.Compute/virtualMachineScaleSets"),
-	// 		Location: to.Ptr("westus"),
-	// 		Tags: map[string]*string{
-	// 			"myTag1": to.Ptr("tagValue1"),
-	// 		},
-	// 		SKU: &armcompute.SKU{
-	// 			Name: to.Ptr("Standard_D2s_v3"),
-	// 			Tier: to.Ptr("Standard"),
-	// 			Capacity: to.Ptr[int64](4),
-	// 		},
-	// 		Properties: &armcompute.VirtualMachineScaleSetProperties{
-	// 			SinglePlacementGroup: to.Ptr(false),
-	// 			UpgradePolicy: &armcompute.UpgradePolicy{
-	// 				Mode: to.Ptr(armcompute.UpgradeModeAutomatic),
-	// 				AutomaticOSUpgradePolicy: &armcompute.AutomaticOSUpgradePolicy{
-	// 					EnableAutomaticOSUpgrade: to.Ptr(false),
-	// 				},
-	// 			},
-	// 			VirtualMachineProfile: &armcompute.VirtualMachineScaleSetVMProfile{
-	// 				StorageProfile: &armcompute.VirtualMachineScaleSetStorageProfile{
-	// 					OSDisk: &armcompute.VirtualMachineScaleSetOSDisk{
-	// 						CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
-	// 						Caching: to.Ptr(armcompute.CachingTypesReadWrite),
-	// 						ManagedDisk: &armcompute.VirtualMachineScaleSetManagedDiskParameters{
-	// 							StorageAccountType: to.Ptr(armcompute.StorageAccountTypesPremiumLRS),
-	// 						},
-	// 						DiskSizeGB: to.Ptr[int32](30),
-	// 					},
-	// 					ImageReference: &armcompute.ImageReference{
-	// 						Publisher: to.Ptr("azuredatabricks"),
-	// 						Offer: to.Ptr("databricks"),
-	// 						SKU: to.Ptr("databricksworker"),
-	// 						Version: to.Ptr("3.15.2"),
-	// 					},
-	// 					DataDisks: []*armcompute.VirtualMachineScaleSetDataDisk{
-	// 					},
-	// 				},
-	// 				ApplicationProfile: &armcompute.ApplicationProfile{
-	// 					GalleryApplications: []*armcompute.VMGalleryApplication{
-	// 						{
-	// 							Tags: to.Ptr("myTag1"),
-	// 							Order: to.Ptr[int32](1),
-	// 							PackageReferenceID: to.Ptr("/subscriptions/32c17a9e-aa7b-4ba5-a45b-e324116b6fdb/resourceGroups/myresourceGroupName2/providers/Microsoft.Compute/galleries/myGallery1/applications/MyApplication1/versions/1.0"),
-	// 							ConfigurationReference: to.Ptr("https://mystorageaccount.blob.core.windows.net/configurations/settings.config"),
-	// 						},
-	// 						{
-	// 							PackageReferenceID: to.Ptr("/subscriptions/32c17a9e-aa7b-4ba5-a45b-e324116b6fdg/resourceGroups/myresourceGroupName3/providers/Microsoft.Compute/galleries/myGallery2/applications/MyApplication2/versions/1.1"),
-	// 						},
-	// 					},
-	// 				},
-	// 				UserData: to.Ptr("RXhhbXBsZSBVc2VyRGF0YQ=="),
-	// 				OSProfile: &armcompute.VirtualMachineScaleSetOSProfile{
-	// 					ComputerNamePrefix: to.Ptr("myVirtualMachineScaleSet"),
-	// 					AdminUsername: to.Ptr("admin"),
-	// 					LinuxConfiguration: &armcompute.LinuxConfiguration{
-	// 						DisablePasswordAuthentication: to.Ptr(false),
-	// 					},
-	// 				},
-	// 				NetworkProfile: &armcompute.VirtualMachineScaleSetNetworkProfile{
-	// 					NetworkInterfaceConfigurations: []*armcompute.VirtualMachineScaleSetNetworkConfiguration{
-	// 						{
-	// 							Name: to.Ptr("myNic"),
-	// 							Properties: &armcompute.VirtualMachineScaleSetNetworkConfigurationProperties{
-	// 								Primary: to.Ptr(true),
-	// 								IPConfigurations: []*armcompute.VirtualMachineScaleSetIPConfiguration{
-	// 									{
-	// 										Name: to.Ptr("myIPConfig"),
-	// 										Properties: &armcompute.VirtualMachineScaleSetIPConfigurationProperties{
-	// 											Primary: to.Ptr(true),
-	// 											Subnet: &armcompute.APIEntityReference{
-	// 												ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/myVNet/subnets/mySubnet"),
-	// 											},
-	// 										},
-	// 									},
-	// 								},
-	// 								NetworkSecurityGroup: &armcompute.SubResource{
-	// 									ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkSecurityGroups/myNetworkSecurityGroup"),
-	// 								},
-	// 							},
-	// 						},
-	// 					},
-	// 				},
-	// 			},
-	// 			ProvisioningState: to.Ptr("succeeded"),
-	// 			Overprovision: to.Ptr(false),
-	// 			DoNotRunExtensionsOnOverprovisionedVMs: to.Ptr(false),
-	// 			PlatformFaultDomainCount: to.Ptr[int32](1),
-	// 			HostGroup: &armcompute.SubResource{
-	// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/hostGroups/myHostGroup"),
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_GetInstanceView_MaximumSet_Gen.json
-func ExampleVirtualMachineScaleSetsClient_GetInstanceView_virtualMachineScaleSetGetInstanceViewMaximumSetGen() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewVirtualMachineScaleSetsClient().GetInstanceView(ctx, "rgcompute", "aaaaaaaaaaaaaaa", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcompute.VirtualMachineScaleSetsClientGetInstanceViewResponse{
-	// 	VirtualMachineScaleSetInstanceView: armcompute.VirtualMachineScaleSetInstanceView{
-	// 		VirtualMachine: &armcompute.VirtualMachineScaleSetInstanceViewStatusesSummary{
-	// 			StatusesSummary: []*armcompute.VirtualMachineStatusCodeCount{
-	// 				{
-	// 					Code: to.Ptr("aa"),
-	// 					Count: to.Ptr[int32](21),
-	// 				},
-	// 			},
-	// 		},
-	// 		Extensions: []*armcompute.VirtualMachineScaleSetVMExtensionsSummary{
-	// 			{
-	// 				Name: to.Ptr("aaaaaaaaaaa"),
-	// 				StatusesSummary: []*armcompute.VirtualMachineStatusCodeCount{
-	// 					{
-	// 						Code: to.Ptr("aa"),
-	// 						Count: to.Ptr[int32](21),
-	// 					},
-	// 				},
-	// 			},
-	// 		},
-	// 		Statuses: []*armcompute.InstanceViewStatus{
-	// 			{
-	// 				Code: to.Ptr("ProvisioningState/succeeded"),
-	// 				Level: to.Ptr(armcompute.StatusLevelTypesInfo),
-	// 				DisplayStatus: to.Ptr("Provisioning succeeded"),
-	// 				Message: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaa"),
-	// 				Time: to.Ptr(time.Date(2021, time.November, 30, 12, 58, 26, 526000000, time.UTC)),
-	// 			},
-	// 		},
-	// 		OrchestrationServices: []*armcompute.OrchestrationServiceSummary{
-	// 			{
-	// 				ServiceName: to.Ptr(armcompute.OrchestrationServiceNamesAutomaticRepairs),
-	// 				ServiceState: to.Ptr(armcompute.OrchestrationServiceStateNotRunning),
-	// 			},
-	// 			{
-	// 				ServiceName: to.Ptr(armcompute.OrchestrationServiceNamesAutomaticZoneRebalancing),
-	// 				ServiceState: to.Ptr(armcompute.OrchestrationServiceStateRunning),
-	// 				LatestOperationStatus: to.Ptr(armcompute.OrchestrationServiceOperationStatusInProgress),
-	// 				LastStatusChangeTime: to.Ptr(time.Date(2025, time.July, 9, 13, 26, 28, 360000000, time.UTC)),
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_GetInstanceView_MinimumSet_Gen.json
-func ExampleVirtualMachineScaleSetsClient_GetInstanceView_virtualMachineScaleSetGetInstanceViewMinimumSetGen() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewVirtualMachineScaleSetsClient().GetInstanceView(ctx, "rgcompute", "aaaaaaaaaaaaaaa", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcompute.VirtualMachineScaleSetsClientGetInstanceViewResponse{
-	// 	VirtualMachineScaleSetInstanceView: armcompute.VirtualMachineScaleSetInstanceView{
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_GetOSUpgradeHistory_MaximumSet_Gen.json
-func ExampleVirtualMachineScaleSetsClient_NewGetOSUpgradeHistoryPager_virtualMachineScaleSetGetOSUpgradeHistoryMaximumSetGen() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewVirtualMachineScaleSetsClient().NewGetOSUpgradeHistoryPager("rgcompute", "aaaaaa", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcompute.VirtualMachineScaleSetsClientGetOSUpgradeHistoryResponse{
-		// 	VirtualMachineScaleSetListOSUpgradeHistory: armcompute.VirtualMachineScaleSetListOSUpgradeHistory{
-		// 		Value: []*armcompute.UpgradeOperationHistoricalStatusInfo{
-		// 			{
-		// 				Properties: &armcompute.UpgradeOperationHistoricalStatusInfoProperties{
-		// 					RunningStatus: &armcompute.UpgradeOperationHistoryStatus{
-		// 						Code: to.Ptr(armcompute.UpgradeStateRollingForward),
-		// 						StartTime: to.Ptr(time.Date(2021, time.November, 30, 13, 5, 40, 442000000, time.UTC)),
-		// 						EndTime: to.Ptr(time.Date(2021, time.November, 30, 13, 5, 40, 443000000, time.UTC)),
-		// 					},
-		// 					Progress: &armcompute.RollingUpgradeProgressInfo{
-		// 						SuccessfulInstanceCount: to.Ptr[int32](6),
-		// 						FailedInstanceCount: to.Ptr[int32](25),
-		// 						InProgressInstanceCount: to.Ptr[int32](20),
-		// 						PendingInstanceCount: to.Ptr[int32](27),
-		// 					},
-		// 					Error: &armcompute.APIError{
-		// 						Details: []*armcompute.APIErrorBase{
-		// 							{
-		// 								Code: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaa"),
-		// 								Target: to.Ptr("aaaa"),
-		// 								Message: to.Ptr("aa"),
-		// 							},
-		// 						},
-		// 						Innererror: &armcompute.InnerError{
-		// 							Exceptiontype: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
-		// 							Errordetail: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaa"),
-		// 						},
-		// 						Code: to.Ptr("aaaaaaa"),
-		// 						Target: to.Ptr("aaaaaaa"),
-		// 						Message: to.Ptr("aaaaaaaaa"),
-		// 					},
-		// 					StartedBy: to.Ptr(armcompute.UpgradeOperationInvokerUnknown),
-		// 					TargetImageReference: &armcompute.ImageReference{
-		// 						SKU: to.Ptr("2016-Datacenter"),
-		// 						Publisher: to.Ptr("MicrosoftWindowsServer"),
-		// 						Version: to.Ptr("latest"),
-		// 						Offer: to.Ptr("WindowsServer"),
-		// 						ExactVersion: to.Ptr("aaaaaaa"),
-		// 						SharedGalleryImageID: to.Ptr("aaaaaa"),
-		// 						ID: to.Ptr("aaaaaaaaaaaaaaaaaaa"),
-		// 					},
-		// 					RollbackInfo: &armcompute.RollbackStatusInfo{
-		// 						SuccessfullyRolledbackInstanceCount: to.Ptr[int32](12),
-		// 						FailedRolledbackInstanceCount: to.Ptr[int32](2),
-		// 						RollbackError: &armcompute.APIError{
-		// 							Details: []*armcompute.APIErrorBase{
-		// 								{
-		// 									Code: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaa"),
-		// 									Target: to.Ptr("aaaa"),
-		// 									Message: to.Ptr("aa"),
-		// 								},
-		// 							},
-		// 							Innererror: &armcompute.InnerError{
-		// 								Exceptiontype: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
-		// 								Errordetail: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaa"),
-		// 							},
-		// 							Code: to.Ptr("aaaaaaa"),
-		// 							Target: to.Ptr("aaaaaaa"),
-		// 							Message: to.Ptr("aaaaaaaaa"),
-		// 						},
-		// 					},
-		// 				},
-		// 				Type: to.Ptr("aaaaaaaaaaaaaaaaaaa"),
-		// 				Location: to.Ptr("aaaaaaaaaaaaa"),
-		// 			},
-		// 		},
-		// 		NextLink: to.Ptr("a://example.com/aaaaaaaaa"),
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_GetOSUpgradeHistory_MinimumSet_Gen.json
-func ExampleVirtualMachineScaleSetsClient_NewGetOSUpgradeHistoryPager_virtualMachineScaleSetGetOSUpgradeHistoryMinimumSetGen() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewVirtualMachineScaleSetsClient().NewGetOSUpgradeHistoryPager("rgcompute", "aaaaaaaaaaaaaaaaaaaaaaaaaa", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcompute.VirtualMachineScaleSetsClientGetOSUpgradeHistoryResponse{
-		// 	VirtualMachineScaleSetListOSUpgradeHistory: armcompute.VirtualMachineScaleSetListOSUpgradeHistory{
-		// 		Value: []*armcompute.UpgradeOperationHistoricalStatusInfo{
-		// 			{
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_List_MaximumSet_Gen.json
-func ExampleVirtualMachineScaleSetsClient_NewListPager_virtualMachineScaleSetListMaximumSetGen() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewVirtualMachineScaleSetsClient().NewListPager("rgcompute", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcompute.VirtualMachineScaleSetsClientListResponse{
-		// 	VirtualMachineScaleSetListResult: armcompute.VirtualMachineScaleSetListResult{
-		// 		Value: []*armcompute.VirtualMachineScaleSet{
-		// 			{
-		// 				Name: to.Ptr("{virtualMachineScaleSetName}"),
-		// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{virtualMachineScaleSetName}"),
-		// 				Type: to.Ptr("Microsoft.Compute/virtualMachineScaleSets"),
-		// 				Location: to.Ptr("eastus"),
-		// 				Tags: map[string]*string{
-		// 				},
-		// 				SKU: &armcompute.SKU{
-		// 					Name: to.Ptr("Standard_D2s_v3"),
-		// 					Tier: to.Ptr("Standard"),
-		// 					Capacity: to.Ptr[int64](4),
-		// 				},
-		// 				Properties: &armcompute.VirtualMachineScaleSetProperties{
-		// 					SinglePlacementGroup: to.Ptr(true),
-		// 					UpgradePolicy: &armcompute.UpgradePolicy{
-		// 						Mode: to.Ptr(armcompute.UpgradeModeAutomatic),
-		// 						AutomaticOSUpgradePolicy: &armcompute.AutomaticOSUpgradePolicy{
-		// 							EnableAutomaticOSUpgrade: to.Ptr(true),
-		// 							DisableAutomaticRollback: to.Ptr(true),
-		// 							UseRollingUpgradePolicy: to.Ptr(true),
-		// 							OSRollingUpgradeDeferral: to.Ptr(true),
-		// 						},
-		// 						RollingUpgradePolicy: &armcompute.RollingUpgradePolicy{
-		// 							MaxBatchInstancePercent: to.Ptr[int32](49),
-		// 							MaxUnhealthyInstancePercent: to.Ptr[int32](81),
-		// 							MaxUnhealthyUpgradedInstancePercent: to.Ptr[int32](98),
-		// 							PauseTimeBetweenBatches: to.Ptr("aaaaaaaaaaaaaaa"),
-		// 							EnableCrossZoneUpgrade: to.Ptr(true),
-		// 							PrioritizeUnhealthyInstances: to.Ptr(true),
-		// 							RollbackFailedInstancesOnPolicyBreach: to.Ptr(true),
-		// 							MaxSurge: to.Ptr(true),
-		// 						},
-		// 					},
-		// 					VirtualMachineProfile: &armcompute.VirtualMachineScaleSetVMProfile{
-		// 						StorageProfile: &armcompute.VirtualMachineScaleSetStorageProfile{
-		// 							OSDisk: &armcompute.VirtualMachineScaleSetOSDisk{
-		// 								CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
-		// 								Caching: to.Ptr(armcompute.CachingTypesReadWrite),
-		// 								ManagedDisk: &armcompute.VirtualMachineScaleSetManagedDiskParameters{
-		// 									StorageAccountType: to.Ptr(armcompute.StorageAccountTypesPremiumLRS),
-		// 									DiskEncryptionSet: &armcompute.DiskEncryptionSetParameters{
-		// 										ID: to.Ptr("aaaaaaaaaaaa"),
-		// 									},
-		// 								},
-		// 								DiskSizeGB: to.Ptr[int32](30),
-		// 								Name: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaa"),
-		// 								WriteAcceleratorEnabled: to.Ptr(true),
-		// 								DiffDiskSettings: &armcompute.DiffDiskSettings{
-		// 									Option: to.Ptr(armcompute.DiffDiskOptionsLocal),
-		// 									Placement: to.Ptr(armcompute.DiffDiskPlacementCacheDisk),
-		// 								},
-		// 								OSType: to.Ptr(armcompute.OperatingSystemTypesWindows),
-		// 								Image: &armcompute.VirtualHardDisk{
-		// 									URI: to.Ptr("https://{storageAccountName}.blob.core.windows.net/{containerName}/{vhdName}.vhd"),
-		// 								},
-		// 								VhdContainers: []*string{
-		// 									to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
-		// 								},
-		// 							},
-		// 							ImageReference: &armcompute.ImageReference{
-		// 								Publisher: to.Ptr("azuredatabricks"),
-		// 								Offer: to.Ptr("databricks"),
-		// 								SKU: to.Ptr("databricksworker"),
-		// 								Version: to.Ptr("3.15.2"),
-		// 								ExactVersion: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaa"),
-		// 								SharedGalleryImageID: to.Ptr("aaaaaaaaaaaaaaaaaaaaaa"),
-		// 								ID: to.Ptr("aaaaaaaaaa"),
-		// 							},
-		// 							DataDisks: []*armcompute.VirtualMachineScaleSetDataDisk{
-		// 							},
-		// 						},
-		// 						OSProfile: &armcompute.VirtualMachineScaleSetOSProfile{
-		// 							ComputerNamePrefix: to.Ptr("{virtualMachineScaleSetName}"),
-		// 							AdminUsername: to.Ptr("admin"),
-		// 							LinuxConfiguration: &armcompute.LinuxConfiguration{
-		// 								DisablePasswordAuthentication: to.Ptr(true),
-		// 								SSH: &armcompute.SSHConfiguration{
-		// 									PublicKeys: []*armcompute.SSHPublicKey{
-		// 										{
-		// 											Path: to.Ptr("aaa"),
-		// 											KeyData: to.Ptr("aaaaaa"),
-		// 										},
-		// 									},
-		// 								},
-		// 								ProvisionVMAgent: to.Ptr(true),
-		// 								PatchSettings: &armcompute.LinuxPatchSettings{
-		// 									PatchMode: to.Ptr(armcompute.LinuxVMGuestPatchModeImageDefault),
-		// 									AssessmentMode: to.Ptr(armcompute.LinuxPatchAssessmentModeImageDefault),
-		// 								},
-		// 							},
-		// 							CustomData: to.Ptr("aaaaaaaaaaaaaaaaaa"),
-		// 							WindowsConfiguration: &armcompute.WindowsConfiguration{
-		// 								ProvisionVMAgent: to.Ptr(true),
-		// 								EnableAutomaticUpdates: to.Ptr(true),
-		// 								TimeZone: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
-		// 								AdditionalUnattendContent: []*armcompute.AdditionalUnattendContent{
-		// 									{
-		// 										PassName: to.Ptr("OobeSystem"),
-		// 										ComponentName: to.Ptr("Microsoft-Windows-Shell-Setup"),
-		// 										SettingName: to.Ptr(armcompute.SettingNamesAutoLogon),
-		// 										Content: to.Ptr("aaaaaaaaaaaaaaaaaaaa"),
-		// 									},
-		// 								},
-		// 								PatchSettings: &armcompute.PatchSettings{
-		// 									PatchMode: to.Ptr(armcompute.WindowsVMGuestPatchModeManual),
-		// 									EnableHotpatching: to.Ptr(true),
-		// 									AssessmentMode: to.Ptr(armcompute.WindowsPatchAssessmentModeImageDefault),
-		// 								},
-		// 								WinRM: &armcompute.WinRMConfiguration{
-		// 									Listeners: []*armcompute.WinRMListener{
-		// 										{
-		// 											Protocol: to.Ptr(armcompute.ProtocolTypesHTTP),
-		// 											CertificateURL: to.Ptr("aaaaaaaaaaaaaaaaaaaaaa"),
-		// 										},
-		// 									},
-		// 								},
-		// 							},
-		// 							Secrets: []*armcompute.VaultSecretGroup{
-		// 								{
-		// 									SourceVault: &armcompute.SubResource{
-		// 										ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
-		// 									},
-		// 									VaultCertificates: []*armcompute.VaultCertificate{
-		// 										{
-		// 											CertificateURL: to.Ptr("aaaaaaa"),
-		// 											CertificateStore: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaa"),
-		// 										},
-		// 									},
-		// 								},
-		// 							},
-		// 						},
-		// 						NetworkProfile: &armcompute.VirtualMachineScaleSetNetworkProfile{
-		// 							NetworkInterfaceConfigurations: []*armcompute.VirtualMachineScaleSetNetworkConfiguration{
-		// 								{
-		// 									Name: to.Ptr("myNic"),
-		// 									Properties: &armcompute.VirtualMachineScaleSetNetworkConfigurationProperties{
-		// 										Primary: to.Ptr(true),
-		// 										IPConfigurations: []*armcompute.VirtualMachineScaleSetIPConfiguration{
-		// 											{
-		// 												Name: to.Ptr("myIPConfig"),
-		// 												Properties: &armcompute.VirtualMachineScaleSetIPConfigurationProperties{
-		// 													Primary: to.Ptr(true),
-		// 													Subnet: &armcompute.APIEntityReference{
-		// 														ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/myVNet/subnets/mySubnet"),
-		// 													},
-		// 													PublicIPAddressConfiguration: &armcompute.VirtualMachineScaleSetPublicIPAddressConfiguration{
-		// 														Name: to.Ptr("aaaaaaaaaaaaaaaaaa"),
-		// 														Properties: &armcompute.VirtualMachineScaleSetPublicIPAddressConfigurationProperties{
-		// 															IdleTimeoutInMinutes: to.Ptr[int32](18),
-		// 															DNSSettings: &armcompute.VirtualMachineScaleSetPublicIPAddressConfigurationDNSSettings{
-		// 																DomainNameLabel: to.Ptr("aaaaaaaaaaaaaaaaaa"),
-		// 															},
-		// 															IPTags: []*armcompute.VirtualMachineScaleSetIPTag{
-		// 																{
-		// 																	IPTagType: to.Ptr("aaaaaaa"),
-		// 																	Tag: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaa"),
-		// 																},
-		// 															},
-		// 															PublicIPPrefix: &armcompute.SubResource{
-		// 																ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
-		// 															},
-		// 															PublicIPAddressVersion: to.Ptr(armcompute.IPVersionIPv4),
-		// 															DeleteOption: to.Ptr(armcompute.DeleteOptionsDelete),
-		// 														},
-		// 														SKU: &armcompute.PublicIPAddressSKU{
-		// 															Name: to.Ptr(armcompute.PublicIPAddressSKUNameBasic),
-		// 															Tier: to.Ptr(armcompute.PublicIPAddressSKUTierRegional),
-		// 														},
-		// 													},
-		// 													PrivateIPAddressVersion: to.Ptr(armcompute.IPVersionIPv4),
-		// 													ApplicationGatewayBackendAddressPools: []*armcompute.SubResource{
-		// 														{
-		// 															ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
-		// 														},
-		// 													},
-		// 													ApplicationSecurityGroups: []*armcompute.SubResource{
-		// 														{
-		// 															ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
-		// 														},
-		// 													},
-		// 													LoadBalancerBackendAddressPools: []*armcompute.SubResource{
-		// 														{
-		// 															ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
-		// 														},
-		// 													},
-		// 													LoadBalancerInboundNatPools: []*armcompute.SubResource{
-		// 														{
-		// 															ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
-		// 														},
-		// 													},
-		// 												},
-		// 											},
-		// 										},
-		// 										NetworkSecurityGroup: &armcompute.SubResource{
-		// 											ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkSecurityGroups/myNetworkSecurityGroup"),
-		// 										},
-		// 										EnableAcceleratedNetworking: to.Ptr(true),
-		// 										EnableFpga: to.Ptr(true),
-		// 										DNSSettings: &armcompute.VirtualMachineScaleSetNetworkConfigurationDNSSettings{
-		// 											DNSServers: []*string{
-		// 												to.Ptr("aaaaaaaaaaaa"),
-		// 											},
-		// 										},
-		// 										EnableIPForwarding: to.Ptr(true),
-		// 										DeleteOption: to.Ptr(armcompute.DeleteOptionsDelete),
-		// 									},
-		// 								},
-		// 							},
-		// 							HealthProbe: &armcompute.APIEntityReference{
-		// 								ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/restorePointCollections/rpcName/restorePoints/restorePointName/diskRestorePoints/testingexcludedisk_OsDisk_1_74cdaedcea50483d9833c96adefa100f_22b4bdfe-6c54-4f72-84d8-85d8860f0c57"),
-		// 							},
-		// 							NetworkAPIVersion: to.Ptr(armcompute.NetworkAPIVersionTwoThousandTwenty1101),
-		// 						},
-		// 						SecurityProfile: &armcompute.SecurityProfile{
-		// 							UefiSettings: &armcompute.UefiSettings{
-		// 								SecureBootEnabled: to.Ptr(true),
-		// 								VTpmEnabled: to.Ptr(true),
-		// 							},
-		// 							EncryptionAtHost: to.Ptr(true),
-		// 							SecurityType: to.Ptr(armcompute.SecurityTypesTrustedLaunch),
-		// 						},
-		// 						DiagnosticsProfile: &armcompute.DiagnosticsProfile{
-		// 							BootDiagnostics: &armcompute.BootDiagnostics{
-		// 								Enabled: to.Ptr(true),
-		// 								StorageURI: to.Ptr("aaaaaaaaaaaaaaaaaaa"),
-		// 							},
-		// 						},
-		// 						ExtensionProfile: &armcompute.VirtualMachineScaleSetExtensionProfile{
-		// 							Extensions: []*armcompute.VirtualMachineScaleSetExtension{
-		// 								{
-		// 									Name: to.Ptr("aa"),
-		// 									Type: to.Ptr("aaaaa"),
-		// 									Properties: &armcompute.VirtualMachineScaleSetExtensionProperties{
-		// 										ForceUpdateTag: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaa"),
-		// 										Publisher: to.Ptr("aaaaaaaaaaaaa"),
-		// 										Type: to.Ptr("aaaaaaaa"),
-		// 										TypeHandlerVersion: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaa"),
-		// 										AutoUpgradeMinorVersion: to.Ptr(true),
-		// 										EnableAutomaticUpgrade: to.Ptr(true),
-		// 										Settings: map[string]any{
-		// 										},
-		// 										ProtectedSettings: map[string]any{
-		// 										},
-		// 										ProvisioningState: to.Ptr("aaaaaaaaaaaaaa"),
-		// 										ProvisionAfterExtensions: []*string{
-		// 											to.Ptr("aaaaaaaaaaaaaa"),
-		// 										},
-		// 										SuppressFailures: to.Ptr(true),
-		// 									},
-		// 									ID: to.Ptr("aaaaaaaaaaaaaaaaaaaaaa"),
-		// 								},
-		// 							},
-		// 							ExtensionsTimeBudget: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaa"),
-		// 						},
-		// 						LicenseType: to.Ptr("aaaa"),
-		// 						Priority: to.Ptr(armcompute.VirtualMachinePriorityTypesRegular),
-		// 						EvictionPolicy: to.Ptr(armcompute.VirtualMachineEvictionPolicyTypesDeallocate),
-		// 						BillingProfile: &armcompute.BillingProfile{
-		// 							MaxPrice: to.Ptr[float64](4),
-		// 						},
-		// 						ScheduledEventsProfile: &armcompute.ScheduledEventsProfile{
-		// 							TerminateNotificationProfile: &armcompute.TerminateNotificationProfile{
-		// 								NotBeforeTimeout: to.Ptr("aa"),
-		// 								Enable: to.Ptr(true),
-		// 							},
-		// 						},
-		// 						UserData: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaa"),
-		// 						CapacityReservation: &armcompute.CapacityReservationProfile{
-		// 							CapacityReservationGroup: &armcompute.SubResource{
-		// 								ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
-		// 							},
-		// 						},
-		// 						ApplicationProfile: &armcompute.ApplicationProfile{
-		// 							GalleryApplications: []*armcompute.VMGalleryApplication{
-		// 								{
-		// 									Tags: to.Ptr("aaaaaaaaaaa"),
-		// 									Order: to.Ptr[int32](29),
-		// 									PackageReferenceID: to.Ptr("aaaaaaaaaa"),
-		// 									ConfigurationReference: to.Ptr("aaaaa"),
-		// 								},
-		// 							},
-		// 						},
-		// 					},
-		// 					ProvisioningState: to.Ptr("succeeded"),
-		// 					Overprovision: to.Ptr(true),
-		// 					DoNotRunExtensionsOnOverprovisionedVMs: to.Ptr(true),
-		// 					PlatformFaultDomainCount: to.Ptr[int32](1),
-		// 					AutomaticRepairsPolicy: &armcompute.AutomaticRepairsPolicy{
-		// 						Enabled: to.Ptr(true),
-		// 						GracePeriod: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaa"),
-		// 					},
-		// 					UniqueID: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaa"),
-		// 					ZoneBalance: to.Ptr(true),
-		// 					ProximityPlacementGroup: &armcompute.SubResource{
-		// 						ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
-		// 					},
-		// 					HostGroup: &armcompute.SubResource{
-		// 						ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
-		// 					},
-		// 					AdditionalCapabilities: &armcompute.AdditionalCapabilities{
-		// 						UltraSSDEnabled: to.Ptr(true),
-		// 						HibernationEnabled: to.Ptr(true),
-		// 					},
-		// 					ScaleInPolicy: &armcompute.ScaleInPolicy{
-		// 						Rules: []*armcompute.VirtualMachineScaleSetScaleInRules{
-		// 							to.Ptr(armcompute.VirtualMachineScaleSetScaleInRulesDefault),
-		// 						},
-		// 						ForceDeletion: to.Ptr(true),
-		// 					},
-		// 					OrchestrationMode: to.Ptr(armcompute.OrchestrationModeUniform),
-		// 					SpotRestorePolicy: &armcompute.SpotRestorePolicy{
-		// 						Enabled: to.Ptr(true),
-		// 						RestoreTimeout: to.Ptr("aaaaaaaaaa"),
-		// 					},
-		// 				},
-		// 				Plan: &armcompute.Plan{
-		// 					Name: to.Ptr("aaaaaaaaaa"),
-		// 					Publisher: to.Ptr("aaaaaaaaaaaaaaaaaaaaaa"),
-		// 					Product: to.Ptr("aaaaaaaaaaaaaaaaaaaa"),
-		// 					PromotionCode: to.Ptr("aaaaaaaaaaaaaaaaaaaa"),
-		// 				},
-		// 				Identity: &armcompute.VirtualMachineScaleSetIdentity{
-		// 					PrincipalID: to.Ptr("aaaaaaaaaaaaaaa"),
-		// 					TenantID: to.Ptr("aaaaaaaaaaaaaaaa"),
-		// 					Type: to.Ptr(armcompute.ResourceIdentityTypeSystemAssigned),
-		// 					UserAssignedIdentities: map[string]*armcompute.UserAssignedIdentitiesValue{
-		// 						"key3951": &armcompute.UserAssignedIdentitiesValue{
-		// 							PrincipalID: to.Ptr("aaaa"),
-		// 							ClientID: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaa"),
-		// 						},
-		// 					},
-		// 				},
-		// 				Zones: []*string{
-		// 					to.Ptr("aaaaaaa"),
-		// 				},
-		// 				ExtendedLocation: &armcompute.ExtendedLocation{
-		// 					Name: to.Ptr("aaaaaaaaaaaaaaaaaaaaa"),
-		// 					Type: to.Ptr(armcompute.ExtendedLocationTypesEdgeZone),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("{virtualMachineScaleSetName}"),
-		// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{virtualMachineScaleSetName}1"),
-		// 				Type: to.Ptr("Microsoft.Compute/virtualMachineScaleSets"),
-		// 				Location: to.Ptr("eastus"),
-		// 				Tags: map[string]*string{
-		// 				},
-		// 				SKU: &armcompute.SKU{
-		// 					Name: to.Ptr("Standard_D2s_v3"),
-		// 					Tier: to.Ptr("Standard"),
-		// 					Capacity: to.Ptr[int64](4),
-		// 				},
-		// 				Properties: &armcompute.VirtualMachineScaleSetProperties{
-		// 					SinglePlacementGroup: to.Ptr(true),
-		// 					UpgradePolicy: &armcompute.UpgradePolicy{
-		// 						Mode: to.Ptr(armcompute.UpgradeModeAutomatic),
-		// 						AutomaticOSUpgradePolicy: &armcompute.AutomaticOSUpgradePolicy{
-		// 							EnableAutomaticOSUpgrade: to.Ptr(true),
-		// 							DisableAutomaticRollback: to.Ptr(true),
-		// 							UseRollingUpgradePolicy: to.Ptr(true),
-		// 							OSRollingUpgradeDeferral: to.Ptr(true),
-		// 						},
-		// 						RollingUpgradePolicy: &armcompute.RollingUpgradePolicy{
-		// 							MaxBatchInstancePercent: to.Ptr[int32](49),
-		// 							MaxUnhealthyInstancePercent: to.Ptr[int32](81),
-		// 							MaxUnhealthyUpgradedInstancePercent: to.Ptr[int32](98),
-		// 							PauseTimeBetweenBatches: to.Ptr("aaaaaaaaaaaaaaa"),
-		// 							EnableCrossZoneUpgrade: to.Ptr(true),
-		// 							PrioritizeUnhealthyInstances: to.Ptr(true),
-		// 							MaxSurge: to.Ptr(true),
-		// 						},
-		// 					},
-		// 					VirtualMachineProfile: &armcompute.VirtualMachineScaleSetVMProfile{
-		// 						StorageProfile: &armcompute.VirtualMachineScaleSetStorageProfile{
-		// 							OSDisk: &armcompute.VirtualMachineScaleSetOSDisk{
-		// 								CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
-		// 								Caching: to.Ptr(armcompute.CachingTypesReadWrite),
-		// 								ManagedDisk: &armcompute.VirtualMachineScaleSetManagedDiskParameters{
-		// 									StorageAccountType: to.Ptr(armcompute.StorageAccountTypesPremiumLRS),
-		// 									DiskEncryptionSet: &armcompute.DiskEncryptionSetParameters{
-		// 										ID: to.Ptr("aaaaaaaaaaaa"),
-		// 									},
-		// 								},
-		// 								DiskSizeGB: to.Ptr[int32](30),
-		// 								Name: to.Ptr("a"),
-		// 								WriteAcceleratorEnabled: to.Ptr(true),
-		// 								DiffDiskSettings: &armcompute.DiffDiskSettings{
-		// 									Option: to.Ptr(armcompute.DiffDiskOptionsLocal),
-		// 									Placement: to.Ptr(armcompute.DiffDiskPlacementCacheDisk),
-		// 								},
-		// 								OSType: to.Ptr(armcompute.OperatingSystemTypesWindows),
-		// 								Image: &armcompute.VirtualHardDisk{
-		// 									URI: to.Ptr("https://{storageAccountName}.blob.core.windows.net/{containerName}/{vhdName}.vhd"),
-		// 								},
-		// 								VhdContainers: []*string{
-		// 									to.Ptr("aaaaaaaaaaaaaaaa"),
-		// 								},
-		// 							},
-		// 							ImageReference: &armcompute.ImageReference{
-		// 								Publisher: to.Ptr("azuredatabricks"),
-		// 								Offer: to.Ptr("databricks"),
-		// 								SKU: to.Ptr("databricksworker"),
-		// 								Version: to.Ptr("3.15.2"),
-		// 								ExactVersion: to.Ptr("aa"),
-		// 								SharedGalleryImageID: to.Ptr("aaaaaaa"),
-		// 								ID: to.Ptr("aaa"),
-		// 							},
-		// 							DataDisks: []*armcompute.VirtualMachineScaleSetDataDisk{
-		// 							},
-		// 						},
-		// 						OSProfile: &armcompute.VirtualMachineScaleSetOSProfile{
-		// 							ComputerNamePrefix: to.Ptr("{virtualMachineScaleSetName}"),
-		// 							AdminUsername: to.Ptr("admin"),
-		// 							LinuxConfiguration: &armcompute.LinuxConfiguration{
-		// 								DisablePasswordAuthentication: to.Ptr(true),
-		// 								SSH: &armcompute.SSHConfiguration{
-		// 									PublicKeys: []*armcompute.SSHPublicKey{
-		// 										{
-		// 											Path: to.Ptr("aaa"),
-		// 											KeyData: to.Ptr("aaaaaa"),
-		// 										},
-		// 									},
-		// 								},
-		// 								ProvisionVMAgent: to.Ptr(true),
-		// 								PatchSettings: &armcompute.LinuxPatchSettings{
-		// 									PatchMode: to.Ptr(armcompute.LinuxVMGuestPatchModeImageDefault),
-		// 									AssessmentMode: to.Ptr(armcompute.LinuxPatchAssessmentModeImageDefault),
-		// 								},
-		// 							},
-		// 							CustomData: to.Ptr("a"),
-		// 							WindowsConfiguration: &armcompute.WindowsConfiguration{
-		// 								ProvisionVMAgent: to.Ptr(true),
-		// 								EnableAutomaticUpdates: to.Ptr(true),
-		// 								TimeZone: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
-		// 								AdditionalUnattendContent: []*armcompute.AdditionalUnattendContent{
-		// 									{
-		// 										PassName: to.Ptr("OobeSystem"),
-		// 										ComponentName: to.Ptr("Microsoft-Windows-Shell-Setup"),
-		// 										SettingName: to.Ptr(armcompute.SettingNamesAutoLogon),
-		// 										Content: to.Ptr("aaaaaaaaaaaaaaaaaaaa"),
-		// 									},
-		// 								},
-		// 								PatchSettings: &armcompute.PatchSettings{
-		// 									PatchMode: to.Ptr(armcompute.WindowsVMGuestPatchModeManual),
-		// 									EnableHotpatching: to.Ptr(true),
-		// 									AssessmentMode: to.Ptr(armcompute.WindowsPatchAssessmentModeImageDefault),
-		// 								},
-		// 								WinRM: &armcompute.WinRMConfiguration{
-		// 									Listeners: []*armcompute.WinRMListener{
-		// 										{
-		// 											Protocol: to.Ptr(armcompute.ProtocolTypesHTTP),
-		// 											CertificateURL: to.Ptr("aaaaaaaaaaaaaaaaaaaaaa"),
-		// 										},
-		// 									},
-		// 								},
-		// 							},
-		// 							Secrets: []*armcompute.VaultSecretGroup{
-		// 								{
-		// 									SourceVault: &armcompute.SubResource{
-		// 										ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
-		// 									},
-		// 									VaultCertificates: []*armcompute.VaultCertificate{
-		// 										{
-		// 											CertificateURL: to.Ptr("aaaaaaa"),
-		// 											CertificateStore: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaa"),
-		// 										},
-		// 									},
-		// 								},
-		// 							},
-		// 						},
-		// 						NetworkProfile: &armcompute.VirtualMachineScaleSetNetworkProfile{
-		// 							NetworkInterfaceConfigurations: []*armcompute.VirtualMachineScaleSetNetworkConfiguration{
-		// 								{
-		// 									Name: to.Ptr("myNic1"),
-		// 									Properties: &armcompute.VirtualMachineScaleSetNetworkConfigurationProperties{
-		// 										Primary: to.Ptr(true),
-		// 										IPConfigurations: []*armcompute.VirtualMachineScaleSetIPConfiguration{
-		// 											{
-		// 												Name: to.Ptr("myIPConfig"),
-		// 												Properties: &armcompute.VirtualMachineScaleSetIPConfigurationProperties{
-		// 													Primary: to.Ptr(true),
-		// 													Subnet: &armcompute.APIEntityReference{
-		// 														ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/myVNet/subnets/mySubnet"),
-		// 													},
-		// 													PublicIPAddressConfiguration: &armcompute.VirtualMachineScaleSetPublicIPAddressConfiguration{
-		// 														Name: to.Ptr("aaaaaaaaaaaaaaaaaa"),
-		// 														Properties: &armcompute.VirtualMachineScaleSetPublicIPAddressConfigurationProperties{
-		// 															IdleTimeoutInMinutes: to.Ptr[int32](18),
-		// 															DNSSettings: &armcompute.VirtualMachineScaleSetPublicIPAddressConfigurationDNSSettings{
-		// 																DomainNameLabel: to.Ptr("aaaaaaaaaaaaaaaaaa"),
-		// 															},
-		// 															IPTags: []*armcompute.VirtualMachineScaleSetIPTag{
-		// 																{
-		// 																	IPTagType: to.Ptr("aaaaaaa"),
-		// 																	Tag: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaa"),
-		// 																},
-		// 															},
-		// 															PublicIPPrefix: &armcompute.SubResource{
-		// 																ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
-		// 															},
-		// 															PublicIPAddressVersion: to.Ptr(armcompute.IPVersionIPv4),
-		// 															DeleteOption: to.Ptr(armcompute.DeleteOptionsDelete),
-		// 														},
-		// 														SKU: &armcompute.PublicIPAddressSKU{
-		// 															Name: to.Ptr(armcompute.PublicIPAddressSKUNameBasic),
-		// 															Tier: to.Ptr(armcompute.PublicIPAddressSKUTierRegional),
-		// 														},
-		// 													},
-		// 													PrivateIPAddressVersion: to.Ptr(armcompute.IPVersionIPv4),
-		// 													ApplicationGatewayBackendAddressPools: []*armcompute.SubResource{
-		// 														{
-		// 															ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
-		// 														},
-		// 													},
-		// 													ApplicationSecurityGroups: []*armcompute.SubResource{
-		// 														{
-		// 															ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
-		// 														},
-		// 													},
-		// 													LoadBalancerBackendAddressPools: []*armcompute.SubResource{
-		// 														{
-		// 															ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
-		// 														},
-		// 													},
-		// 													LoadBalancerInboundNatPools: []*armcompute.SubResource{
-		// 														{
-		// 															ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
-		// 														},
-		// 													},
-		// 												},
-		// 											},
-		// 										},
-		// 										NetworkSecurityGroup: &armcompute.SubResource{
-		// 											ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkSecurityGroups/myNetworkSecurityGroup"),
-		// 										},
-		// 										EnableAcceleratedNetworking: to.Ptr(true),
-		// 										EnableFpga: to.Ptr(true),
-		// 										DNSSettings: &armcompute.VirtualMachineScaleSetNetworkConfigurationDNSSettings{
-		// 											DNSServers: []*string{
-		// 												to.Ptr("aaaaaaaaaaaa"),
-		// 											},
-		// 										},
-		// 										EnableIPForwarding: to.Ptr(true),
-		// 										DeleteOption: to.Ptr(armcompute.DeleteOptionsDelete),
-		// 									},
-		// 								},
-		// 							},
-		// 							HealthProbe: &armcompute.APIEntityReference{
-		// 								ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/restorePointCollections/rpcName/restorePoints/restorePointName/diskRestorePoints/testingexcludedisk_OsDisk_1_74cdaedcea50483d9833c96adefa100f_22b4bdfe-6c54-4f72-84d8-85d8860f0c57"),
-		// 							},
-		// 							NetworkAPIVersion: to.Ptr(armcompute.NetworkAPIVersionTwoThousandTwenty1101),
-		// 						},
-		// 						SecurityProfile: &armcompute.SecurityProfile{
-		// 							UefiSettings: &armcompute.UefiSettings{
-		// 								SecureBootEnabled: to.Ptr(true),
-		// 								VTpmEnabled: to.Ptr(true),
-		// 							},
-		// 							EncryptionAtHost: to.Ptr(true),
-		// 							SecurityType: to.Ptr(armcompute.SecurityTypesTrustedLaunch),
-		// 						},
-		// 						DiagnosticsProfile: &armcompute.DiagnosticsProfile{
-		// 							BootDiagnostics: &armcompute.BootDiagnostics{
-		// 								Enabled: to.Ptr(true),
-		// 								StorageURI: to.Ptr("aaaaaaaaaaaaaaaaaaa"),
-		// 							},
-		// 						},
-		// 						ExtensionProfile: &armcompute.VirtualMachineScaleSetExtensionProfile{
-		// 							Extensions: []*armcompute.VirtualMachineScaleSetExtension{
-		// 								{
-		// 									Name: to.Ptr("aa"),
-		// 									Type: to.Ptr("aaaaa"),
-		// 									Properties: &armcompute.VirtualMachineScaleSetExtensionProperties{
-		// 										ForceUpdateTag: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaa"),
-		// 										Publisher: to.Ptr("aaaaaaaaaaaaa"),
-		// 										Type: to.Ptr("aaaaaaaa"),
-		// 										TypeHandlerVersion: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaa"),
-		// 										AutoUpgradeMinorVersion: to.Ptr(true),
-		// 										EnableAutomaticUpgrade: to.Ptr(true),
-		// 										Settings: map[string]any{
-		// 										},
-		// 										ProtectedSettings: map[string]any{
-		// 										},
-		// 										ProvisioningState: to.Ptr("aaaaaaaaaaaaaa"),
-		// 										ProvisionAfterExtensions: []*string{
-		// 											to.Ptr("aaaaaaaaaaaaaa"),
-		// 										},
-		// 										SuppressFailures: to.Ptr(true),
-		// 									},
-		// 									ID: to.Ptr("aaaaaaaaaaaaaaaaaaaaaa"),
-		// 								},
-		// 							},
-		// 							ExtensionsTimeBudget: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaa"),
-		// 						},
-		// 						LicenseType: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaa"),
-		// 						Priority: to.Ptr(armcompute.VirtualMachinePriorityTypesRegular),
-		// 						EvictionPolicy: to.Ptr(armcompute.VirtualMachineEvictionPolicyTypesDeallocate),
-		// 						BillingProfile: &armcompute.BillingProfile{
-		// 							MaxPrice: to.Ptr[float64](4),
-		// 						},
-		// 						ScheduledEventsProfile: &armcompute.ScheduledEventsProfile{
-		// 							TerminateNotificationProfile: &armcompute.TerminateNotificationProfile{
-		// 								NotBeforeTimeout: to.Ptr("aa"),
-		// 								Enable: to.Ptr(true),
-		// 							},
-		// 						},
-		// 						UserData: to.Ptr("aaaaaaaaaaaaaaaaaaaaaa"),
-		// 						CapacityReservation: &armcompute.CapacityReservationProfile{
-		// 							CapacityReservationGroup: &armcompute.SubResource{
-		// 								ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
-		// 							},
-		// 						},
-		// 						ApplicationProfile: &armcompute.ApplicationProfile{
-		// 							GalleryApplications: []*armcompute.VMGalleryApplication{
-		// 								{
-		// 									Tags: to.Ptr("aaaaaaaaaaa"),
-		// 									Order: to.Ptr[int32](29),
-		// 									PackageReferenceID: to.Ptr("aaaaaaaaaa"),
-		// 									ConfigurationReference: to.Ptr("aaaaa"),
-		// 								},
-		// 							},
-		// 						},
-		// 					},
-		// 					ProvisioningState: to.Ptr("succeeded"),
-		// 					Overprovision: to.Ptr(true),
-		// 					DoNotRunExtensionsOnOverprovisionedVMs: to.Ptr(true),
-		// 					PlatformFaultDomainCount: to.Ptr[int32](1),
-		// 					AutomaticRepairsPolicy: &armcompute.AutomaticRepairsPolicy{
-		// 						Enabled: to.Ptr(true),
-		// 						GracePeriod: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaa"),
-		// 					},
-		// 					UniqueID: to.Ptr("aaaaa"),
-		// 					ZoneBalance: to.Ptr(true),
-		// 					ProximityPlacementGroup: &armcompute.SubResource{
-		// 						ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
-		// 					},
-		// 					HostGroup: &armcompute.SubResource{
-		// 						ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
-		// 					},
-		// 					AdditionalCapabilities: &armcompute.AdditionalCapabilities{
-		// 						UltraSSDEnabled: to.Ptr(true),
-		// 						HibernationEnabled: to.Ptr(true),
-		// 					},
-		// 					ScaleInPolicy: &armcompute.ScaleInPolicy{
-		// 						Rules: []*armcompute.VirtualMachineScaleSetScaleInRules{
-		// 							to.Ptr(armcompute.VirtualMachineScaleSetScaleInRulesDefault),
-		// 						},
-		// 						ForceDeletion: to.Ptr(true),
-		// 					},
-		// 					OrchestrationMode: to.Ptr(armcompute.OrchestrationModeUniform),
-		// 					SpotRestorePolicy: &armcompute.SpotRestorePolicy{
-		// 						Enabled: to.Ptr(true),
-		// 						RestoreTimeout: to.Ptr("aaaaaaaaaa"),
-		// 					},
-		// 				},
-		// 				Plan: &armcompute.Plan{
-		// 					Name: to.Ptr("aaaaaaaaaa"),
-		// 					Publisher: to.Ptr("aaaaaaaaaaaaaaaaaaaaaa"),
-		// 					Product: to.Ptr("aaaaaaaaaaaaaaaaaaaa"),
-		// 					PromotionCode: to.Ptr("aaaaaaaaaaaaaaaaaaaa"),
-		// 				},
-		// 				Identity: &armcompute.VirtualMachineScaleSetIdentity{
-		// 					PrincipalID: to.Ptr("aaaaaaaaaaaaaaa"),
-		// 					TenantID: to.Ptr("aaaaaaaaaaaaaaaa"),
-		// 					Type: to.Ptr(armcompute.ResourceIdentityTypeSystemAssigned),
-		// 					UserAssignedIdentities: map[string]*armcompute.UserAssignedIdentitiesValue{
-		// 						"key3951": &armcompute.UserAssignedIdentitiesValue{
-		// 							PrincipalID: to.Ptr("aaaa"),
-		// 							ClientID: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaa"),
-		// 						},
-		// 					},
-		// 				},
-		// 				Zones: []*string{
-		// 					to.Ptr("aaaaaaaa"),
-		// 				},
-		// 				ExtendedLocation: &armcompute.ExtendedLocation{
-		// 					Name: to.Ptr("aaaaaaaaaaaaaaaaaaaaa"),
-		// 					Type: to.Ptr(armcompute.ExtendedLocationTypesEdgeZone),
-		// 				},
-		// 			},
-		// 		},
-		// 		NextLink: to.Ptr("a://example.com/aaaaaaaaaaaaaaaaaaa"),
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_List_MinimumSet_Gen.json
-func ExampleVirtualMachineScaleSetsClient_NewListPager_virtualMachineScaleSetListMinimumSetGen() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewVirtualMachineScaleSetsClient().NewListPager("rgcompute", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcompute.VirtualMachineScaleSetsClientListResponse{
-		// 	VirtualMachineScaleSetListResult: armcompute.VirtualMachineScaleSetListResult{
-		// 		Value: []*armcompute.VirtualMachineScaleSet{
-		// 			{
-		// 				Location: to.Ptr("eastus"),
-		// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/rgcompute/providers/Microsoft.Compute/virtualMachineScaleSets/{virtualMachineScaleSetName}"),
-		// 			},
-		// 			{
-		// 				Location: to.Ptr("eastus"),
-		// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/rgcompute/providers/Microsoft.Compute/virtualMachineScaleSets/{virtualMachineScaleSetName}"),
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_ListAll_MaximumSet_Gen.json
-func ExampleVirtualMachineScaleSetsClient_NewListAllPager_virtualMachineScaleSetListAllMaximumSetGen() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewVirtualMachineScaleSetsClient().NewListAllPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcompute.VirtualMachineScaleSetsClientListAllResponse{
-		// 	VirtualMachineScaleSetListWithLinkResult: armcompute.VirtualMachineScaleSetListWithLinkResult{
-		// 		Value: []*armcompute.VirtualMachineScaleSet{
-		// 			{
-		// 				SKU: &armcompute.SKU{
-		// 					Tier: to.Ptr("Standard"),
-		// 					Capacity: to.Ptr[int64](3),
-		// 					Name: to.Ptr("Standard_D1_v2"),
-		// 				},
-		// 				Location: to.Ptr("westus"),
-		// 				Properties: &armcompute.VirtualMachineScaleSetProperties{
-		// 					Overprovision: to.Ptr(true),
-		// 					VirtualMachineProfile: &armcompute.VirtualMachineScaleSetVMProfile{
-		// 						StorageProfile: &armcompute.VirtualMachineScaleSetStorageProfile{
-		// 							ImageReference: &armcompute.ImageReference{
-		// 								SKU: to.Ptr("2016-Datacenter"),
-		// 								Publisher: to.Ptr("MicrosoftWindowsServer"),
-		// 								Version: to.Ptr("latest"),
-		// 								Offer: to.Ptr("WindowsServer"),
-		// 								ExactVersion: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
-		// 								SharedGalleryImageID: to.Ptr("aaaaaaaaaaaaaaaaaaaaaa"),
-		// 								ID: to.Ptr("a"),
-		// 							},
-		// 							OSDisk: &armcompute.VirtualMachineScaleSetOSDisk{
-		// 								Caching: to.Ptr(armcompute.CachingTypesReadWrite),
-		// 								ManagedDisk: &armcompute.VirtualMachineScaleSetManagedDiskParameters{
-		// 									StorageAccountType: to.Ptr(armcompute.StorageAccountTypesStandardLRS),
-		// 									DiskEncryptionSet: &armcompute.DiskEncryptionSetParameters{
-		// 										ID: to.Ptr("aaaaaaaaaaaa"),
-		// 									},
-		// 								},
-		// 								CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
-		// 								Name: to.Ptr("aaaaaaaaaaaaaaa"),
-		// 								WriteAcceleratorEnabled: to.Ptr(true),
-		// 								DiffDiskSettings: &armcompute.DiffDiskSettings{
-		// 									Option: to.Ptr(armcompute.DiffDiskOptionsLocal),
-		// 									Placement: to.Ptr(armcompute.DiffDiskPlacementCacheDisk),
-		// 								},
-		// 								DiskSizeGB: to.Ptr[int32](30),
-		// 								OSType: to.Ptr(armcompute.OperatingSystemTypesWindows),
-		// 								Image: &armcompute.VirtualHardDisk{
-		// 									URI: to.Ptr("https://{storageAccountName}.blob.core.windows.net/{containerName}/{vhdName}.vhd"),
-		// 								},
-		// 								VhdContainers: []*string{
-		// 									to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaa"),
-		// 								},
-		// 							},
-		// 							DataDisks: []*armcompute.VirtualMachineScaleSetDataDisk{
-		// 								{
-		// 									Name: to.Ptr("aaaaaaaaaaaaaa"),
-		// 									Lun: to.Ptr[int32](24),
-		// 									Caching: to.Ptr(armcompute.CachingTypesNone),
-		// 									WriteAcceleratorEnabled: to.Ptr(true),
-		// 									CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
-		// 									DiskSizeGB: to.Ptr[int32](11),
-		// 									ManagedDisk: &armcompute.VirtualMachineScaleSetManagedDiskParameters{
-		// 										StorageAccountType: to.Ptr(armcompute.StorageAccountTypesStandardLRS),
-		// 										DiskEncryptionSet: &armcompute.DiskEncryptionSetParameters{
-		// 											ID: to.Ptr("aaaaaaaaaaaa"),
-		// 										},
-		// 									},
-		// 									DiskIOPSReadWrite: to.Ptr[int64](11),
-		// 									DiskMBpsReadWrite: to.Ptr[int64](13),
-		// 								},
-		// 							},
-		// 						},
-		// 						OSProfile: &armcompute.VirtualMachineScaleSetOSProfile{
-		// 							ComputerNamePrefix: to.Ptr("{vmss-name}"),
-		// 							AdminUsername: to.Ptr("{your-username}"),
-		// 							CustomData: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaa"),
-		// 							WindowsConfiguration: &armcompute.WindowsConfiguration{
-		// 								ProvisionVMAgent: to.Ptr(true),
-		// 								EnableAutomaticUpdates: to.Ptr(true),
-		// 								TimeZone: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
-		// 								AdditionalUnattendContent: []*armcompute.AdditionalUnattendContent{
-		// 									{
-		// 										PassName: to.Ptr("OobeSystem"),
-		// 										ComponentName: to.Ptr("Microsoft-Windows-Shell-Setup"),
-		// 										SettingName: to.Ptr(armcompute.SettingNamesAutoLogon),
-		// 										Content: to.Ptr("aaaaaaaaaaaaaaaaaaaa"),
-		// 									},
-		// 								},
-		// 								PatchSettings: &armcompute.PatchSettings{
-		// 									PatchMode: to.Ptr(armcompute.WindowsVMGuestPatchModeManual),
-		// 									EnableHotpatching: to.Ptr(true),
-		// 									AssessmentMode: to.Ptr(armcompute.WindowsPatchAssessmentModeImageDefault),
-		// 								},
-		// 								WinRM: &armcompute.WinRMConfiguration{
-		// 									Listeners: []*armcompute.WinRMListener{
-		// 										{
-		// 											Protocol: to.Ptr(armcompute.ProtocolTypesHTTP),
-		// 											CertificateURL: to.Ptr("aaaaaaaaaaaaaaaaaaaaaa"),
-		// 										},
-		// 									},
-		// 								},
-		// 							},
-		// 							LinuxConfiguration: &armcompute.LinuxConfiguration{
-		// 								DisablePasswordAuthentication: to.Ptr(true),
-		// 								SSH: &armcompute.SSHConfiguration{
-		// 									PublicKeys: []*armcompute.SSHPublicKey{
-		// 										{
-		// 											Path: to.Ptr("aaa"),
-		// 											KeyData: to.Ptr("aaaaaa"),
-		// 										},
-		// 									},
-		// 								},
-		// 								ProvisionVMAgent: to.Ptr(true),
-		// 								PatchSettings: &armcompute.LinuxPatchSettings{
-		// 									PatchMode: to.Ptr(armcompute.LinuxVMGuestPatchModeImageDefault),
-		// 									AssessmentMode: to.Ptr(armcompute.LinuxPatchAssessmentModeImageDefault),
-		// 								},
-		// 							},
-		// 							Secrets: []*armcompute.VaultSecretGroup{
-		// 								{
-		// 									SourceVault: &armcompute.SubResource{
-		// 										ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
-		// 									},
-		// 									VaultCertificates: []*armcompute.VaultCertificate{
-		// 										{
-		// 											CertificateURL: to.Ptr("aaaaaaa"),
-		// 											CertificateStore: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaa"),
-		// 										},
-		// 									},
-		// 								},
-		// 							},
-		// 						},
-		// 						NetworkProfile: &armcompute.VirtualMachineScaleSetNetworkProfile{
-		// 							NetworkInterfaceConfigurations: []*armcompute.VirtualMachineScaleSetNetworkConfiguration{
-		// 								{
-		// 									Name: to.Ptr("{vmss-name}"),
-		// 									Properties: &armcompute.VirtualMachineScaleSetNetworkConfigurationProperties{
-		// 										Primary: to.Ptr(true),
-		// 										EnableIPForwarding: to.Ptr(true),
-		// 										IPConfigurations: []*armcompute.VirtualMachineScaleSetIPConfiguration{
-		// 											{
-		// 												Name: to.Ptr("{vmss-name}"),
-		// 												Properties: &armcompute.VirtualMachineScaleSetIPConfigurationProperties{
-		// 													Subnet: &armcompute.APIEntityReference{
-		// 														ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/{existing-virtual-network-name}/subnets/{existing-subnet-name}"),
-		// 													},
-		// 													Primary: to.Ptr(true),
-		// 													PublicIPAddressConfiguration: &armcompute.VirtualMachineScaleSetPublicIPAddressConfiguration{
-		// 														Name: to.Ptr("aaaaaaaaaaaaaaaaaa"),
-		// 														Properties: &armcompute.VirtualMachineScaleSetPublicIPAddressConfigurationProperties{
-		// 															IdleTimeoutInMinutes: to.Ptr[int32](18),
-		// 															DNSSettings: &armcompute.VirtualMachineScaleSetPublicIPAddressConfigurationDNSSettings{
-		// 																DomainNameLabel: to.Ptr("aaaaaaaaaaaaaaaaaa"),
-		// 																DomainNameLabelScope: to.Ptr(armcompute.DomainNameLabelScopeTypesTenantReuse),
-		// 															},
-		// 															IPTags: []*armcompute.VirtualMachineScaleSetIPTag{
-		// 																{
-		// 																	IPTagType: to.Ptr("aaaaaaa"),
-		// 																	Tag: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaa"),
-		// 																},
-		// 															},
-		// 															PublicIPPrefix: &armcompute.SubResource{
-		// 																ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
-		// 															},
-		// 															PublicIPAddressVersion: to.Ptr(armcompute.IPVersionIPv4),
-		// 															DeleteOption: to.Ptr(armcompute.DeleteOptionsDelete),
-		// 														},
-		// 														SKU: &armcompute.PublicIPAddressSKU{
-		// 															Name: to.Ptr(armcompute.PublicIPAddressSKUNameBasic),
-		// 															Tier: to.Ptr(armcompute.PublicIPAddressSKUTierRegional),
-		// 														},
-		// 													},
-		// 													PrivateIPAddressVersion: to.Ptr(armcompute.IPVersionIPv4),
-		// 													ApplicationGatewayBackendAddressPools: []*armcompute.SubResource{
-		// 														{
-		// 															ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
-		// 														},
-		// 													},
-		// 													ApplicationSecurityGroups: []*armcompute.SubResource{
-		// 														{
-		// 															ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
-		// 														},
-		// 													},
-		// 													LoadBalancerBackendAddressPools: []*armcompute.SubResource{
-		// 														{
-		// 															ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
-		// 														},
-		// 													},
-		// 													LoadBalancerInboundNatPools: []*armcompute.SubResource{
-		// 														{
-		// 															ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
-		// 														},
-		// 													},
-		// 												},
-		// 											},
-		// 										},
-		// 										EnableAcceleratedNetworking: to.Ptr(true),
-		// 										EnableFpga: to.Ptr(true),
-		// 										NetworkSecurityGroup: &armcompute.SubResource{
-		// 											ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
-		// 										},
-		// 										DNSSettings: &armcompute.VirtualMachineScaleSetNetworkConfigurationDNSSettings{
-		// 											DNSServers: []*string{
-		// 												to.Ptr("aaaaaaaaaaaa"),
-		// 											},
-		// 										},
-		// 										DeleteOption: to.Ptr(armcompute.DeleteOptionsDelete),
-		// 									},
-		// 								},
-		// 							},
-		// 							HealthProbe: &armcompute.APIEntityReference{
-		// 								ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/restorePointCollections/rpcName/restorePoints/restorePointName/diskRestorePoints/testingexcludedisk_OsDisk_1_74cdaedcea50483d9833c96adefa100f_22b4bdfe-6c54-4f72-84d8-85d8860f0c57"),
-		// 							},
-		// 							NetworkAPIVersion: to.Ptr(armcompute.NetworkAPIVersionTwoThousandTwenty1101),
-		// 						},
-		// 						SecurityProfile: &armcompute.SecurityProfile{
-		// 							UefiSettings: &armcompute.UefiSettings{
-		// 								SecureBootEnabled: to.Ptr(true),
-		// 								VTpmEnabled: to.Ptr(true),
-		// 							},
-		// 							EncryptionAtHost: to.Ptr(true),
-		// 							SecurityType: to.Ptr(armcompute.SecurityTypesTrustedLaunch),
-		// 						},
-		// 						DiagnosticsProfile: &armcompute.DiagnosticsProfile{
-		// 							BootDiagnostics: &armcompute.BootDiagnostics{
-		// 								Enabled: to.Ptr(true),
-		// 								StorageURI: to.Ptr("aaaaaaaaaaaaaaaaaaa"),
-		// 							},
-		// 						},
-		// 						ExtensionProfile: &armcompute.VirtualMachineScaleSetExtensionProfile{
-		// 							Extensions: []*armcompute.VirtualMachineScaleSetExtension{
-		// 								{
-		// 									Name: to.Ptr("aa"),
-		// 									Type: to.Ptr("aaaaa"),
-		// 									Properties: &armcompute.VirtualMachineScaleSetExtensionProperties{
-		// 										ForceUpdateTag: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaa"),
-		// 										Publisher: to.Ptr("aaaaaaaaaaaaa"),
-		// 										Type: to.Ptr("aaaaaaaa"),
-		// 										TypeHandlerVersion: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaa"),
-		// 										AutoUpgradeMinorVersion: to.Ptr(true),
-		// 										EnableAutomaticUpgrade: to.Ptr(true),
-		// 										Settings: map[string]any{
-		// 										},
-		// 										ProtectedSettings: map[string]any{
-		// 										},
-		// 										ProvisioningState: to.Ptr("aaaaaaaaaaaaaa"),
-		// 										ProvisionAfterExtensions: []*string{
-		// 											to.Ptr("aaaaaaaaaaaaaa"),
-		// 										},
-		// 										SuppressFailures: to.Ptr(true),
-		// 									},
-		// 									ID: to.Ptr("aaaaaaaaaaaaaaaaaaaaaa"),
-		// 								},
-		// 							},
-		// 							ExtensionsTimeBudget: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaa"),
-		// 						},
-		// 						LicenseType: to.Ptr("aaaaaaaaaa"),
-		// 						Priority: to.Ptr(armcompute.VirtualMachinePriorityTypesRegular),
-		// 						EvictionPolicy: to.Ptr(armcompute.VirtualMachineEvictionPolicyTypesDeallocate),
-		// 						BillingProfile: &armcompute.BillingProfile{
-		// 							MaxPrice: to.Ptr[float64](4),
-		// 						},
-		// 						ScheduledEventsProfile: &armcompute.ScheduledEventsProfile{
-		// 							TerminateNotificationProfile: &armcompute.TerminateNotificationProfile{
-		// 								NotBeforeTimeout: to.Ptr("aa"),
-		// 								Enable: to.Ptr(true),
-		// 							},
-		// 						},
-		// 						UserData: to.Ptr("aaa"),
-		// 						CapacityReservation: &armcompute.CapacityReservationProfile{
-		// 							CapacityReservationGroup: &armcompute.SubResource{
-		// 								ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
-		// 							},
-		// 						},
-		// 						ApplicationProfile: &armcompute.ApplicationProfile{
-		// 							GalleryApplications: []*armcompute.VMGalleryApplication{
-		// 								{
-		// 									Tags: to.Ptr("aaaaaaaaaaa"),
-		// 									Order: to.Ptr[int32](29),
-		// 									PackageReferenceID: to.Ptr("aaaaaaaaaa"),
-		// 									ConfigurationReference: to.Ptr("aaaaa"),
-		// 								},
-		// 							},
-		// 						},
-		// 					},
-		// 					UpgradePolicy: &armcompute.UpgradePolicy{
-		// 						Mode: to.Ptr(armcompute.UpgradeModeManual),
-		// 						RollingUpgradePolicy: &armcompute.RollingUpgradePolicy{
-		// 							MaxBatchInstancePercent: to.Ptr[int32](49),
-		// 							MaxUnhealthyInstancePercent: to.Ptr[int32](81),
-		// 							MaxUnhealthyUpgradedInstancePercent: to.Ptr[int32](98),
-		// 							PauseTimeBetweenBatches: to.Ptr("aaaaaaaaaaaaaaa"),
-		// 							EnableCrossZoneUpgrade: to.Ptr(true),
-		// 							PrioritizeUnhealthyInstances: to.Ptr(true),
-		// 							RollbackFailedInstancesOnPolicyBreach: to.Ptr(true),
-		// 							MaxSurge: to.Ptr(true),
-		// 						},
-		// 						AutomaticOSUpgradePolicy: &armcompute.AutomaticOSUpgradePolicy{
-		// 							EnableAutomaticOSUpgrade: to.Ptr(true),
-		// 							DisableAutomaticRollback: to.Ptr(true),
-		// 							OSRollingUpgradeDeferral: to.Ptr(true),
-		// 						},
-		// 					},
-		// 					AutomaticRepairsPolicy: &armcompute.AutomaticRepairsPolicy{
-		// 						Enabled: to.Ptr(true),
-		// 						GracePeriod: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaa"),
-		// 					},
-		// 					ProvisioningState: to.Ptr("succeeded"),
-		// 					DoNotRunExtensionsOnOverprovisionedVMs: to.Ptr(true),
-		// 					UniqueID: to.Ptr("aaaaaaaa"),
-		// 					SinglePlacementGroup: to.Ptr(true),
-		// 					ZoneBalance: to.Ptr(true),
-		// 					PlatformFaultDomainCount: to.Ptr[int32](1),
-		// 					ProximityPlacementGroup: &armcompute.SubResource{
-		// 						ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
-		// 					},
-		// 					HostGroup: &armcompute.SubResource{
-		// 						ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
-		// 					},
-		// 					AdditionalCapabilities: &armcompute.AdditionalCapabilities{
-		// 						UltraSSDEnabled: to.Ptr(true),
-		// 						HibernationEnabled: to.Ptr(true),
-		// 					},
-		// 					ScaleInPolicy: &armcompute.ScaleInPolicy{
-		// 						Rules: []*armcompute.VirtualMachineScaleSetScaleInRules{
-		// 							to.Ptr(armcompute.VirtualMachineScaleSetScaleInRulesDefault),
-		// 						},
-		// 						ForceDeletion: to.Ptr(true),
-		// 					},
-		// 					OrchestrationMode: to.Ptr(armcompute.OrchestrationModeUniform),
-		// 					SpotRestorePolicy: &armcompute.SpotRestorePolicy{
-		// 						Enabled: to.Ptr(true),
-		// 						RestoreTimeout: to.Ptr("aaaaaaaaaa"),
-		// 					},
-		// 				},
-		// 				Plan: &armcompute.Plan{
-		// 					Name: to.Ptr("aaaaaaaaaa"),
-		// 					Publisher: to.Ptr("aaaaaaaaaaaaaaaaaaaaaa"),
-		// 					Product: to.Ptr("aaaaaaaaaaaaaaaaaaaa"),
-		// 					PromotionCode: to.Ptr("aaaaaaaaaaaaaaaaaaaa"),
-		// 				},
-		// 				Identity: &armcompute.VirtualMachineScaleSetIdentity{
-		// 					PrincipalID: to.Ptr("aaaaaaaaaaaaaaa"),
-		// 					TenantID: to.Ptr("aaaaaaaaaaaaaaaa"),
-		// 					Type: to.Ptr(armcompute.ResourceIdentityTypeSystemAssigned),
-		// 					UserAssignedIdentities: map[string]*armcompute.UserAssignedIdentitiesValue{
-		// 						"key3951": &armcompute.UserAssignedIdentitiesValue{
-		// 							PrincipalID: to.Ptr("aaaa"),
-		// 							ClientID: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaa"),
-		// 						},
-		// 					},
-		// 				},
-		// 				Zones: []*string{
-		// 					to.Ptr("aaaaaaaaaaaaaaaaaaaa"),
-		// 				},
-		// 				ExtendedLocation: &armcompute.ExtendedLocation{
-		// 					Name: to.Ptr("aaaaaaaaaaaaaaaaaaaaa"),
-		// 					Type: to.Ptr(armcompute.ExtendedLocationTypesEdgeZone),
-		// 				},
-		// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{virtualMachineScaleSetName}"),
-		// 				Name: to.Ptr("{virtualMachineScaleSetName}"),
-		// 				Type: to.Ptr("Microsoft.Compute/virtualMachineScaleSets"),
-		// 				Tags: map[string]*string{
-		// 					"key8425": to.Ptr("aaa"),
-		// 				},
-		// 			},
-		// 		},
-		// 		NextLink: to.Ptr("a://example.com/aaaa"),
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_ListAll_MinimumSet_Gen.json
-func ExampleVirtualMachineScaleSetsClient_NewListAllPager_virtualMachineScaleSetListAllMinimumSetGen() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewVirtualMachineScaleSetsClient().NewListAllPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcompute.VirtualMachineScaleSetsClientListAllResponse{
-		// 	VirtualMachineScaleSetListWithLinkResult: armcompute.VirtualMachineScaleSetListWithLinkResult{
-		// 		Value: []*armcompute.VirtualMachineScaleSet{
-		// 			{
-		// 				Location: to.Ptr("westus"),
-		// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{virtualMachineScaleSetName}"),
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_ListBySubscription_ByLocation.json
-func ExampleVirtualMachineScaleSetsClient_NewListByLocationPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewVirtualMachineScaleSetsClient().NewListByLocationPager("eastus", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcompute.VirtualMachineScaleSetsClientListByLocationResponse{
-		// 	VirtualMachineScaleSetListResult: armcompute.VirtualMachineScaleSetListResult{
-		// 		Value: []*armcompute.VirtualMachineScaleSet{
-		// 			{
-		// 				Name: to.Ptr("{virtualMachineScaleSetName}"),
-		// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{virtualMachineScaleSetName}"),
-		// 				Type: to.Ptr("Microsoft.Compute/virtualMachineScaleSets"),
-		// 				Location: to.Ptr("eastus"),
-		// 				Tags: map[string]*string{
-		// 					"myTag1": to.Ptr("tagValue1"),
-		// 				},
-		// 				SKU: &armcompute.SKU{
-		// 					Name: to.Ptr("Standard_D2s_v3"),
-		// 					Tier: to.Ptr("Standard"),
-		// 					Capacity: to.Ptr[int64](4),
-		// 				},
-		// 				Properties: &armcompute.VirtualMachineScaleSetProperties{
-		// 					SinglePlacementGroup: to.Ptr(false),
-		// 					UpgradePolicy: &armcompute.UpgradePolicy{
-		// 						Mode: to.Ptr(armcompute.UpgradeModeAutomatic),
-		// 						AutomaticOSUpgradePolicy: &armcompute.AutomaticOSUpgradePolicy{
-		// 							EnableAutomaticOSUpgrade: to.Ptr(false),
-		// 						},
-		// 					},
-		// 					VirtualMachineProfile: &armcompute.VirtualMachineScaleSetVMProfile{
-		// 						StorageProfile: &armcompute.VirtualMachineScaleSetStorageProfile{
-		// 							OSDisk: &armcompute.VirtualMachineScaleSetOSDisk{
-		// 								CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
-		// 								Caching: to.Ptr(armcompute.CachingTypesReadWrite),
-		// 								ManagedDisk: &armcompute.VirtualMachineScaleSetManagedDiskParameters{
-		// 									StorageAccountType: to.Ptr(armcompute.StorageAccountTypesPremiumLRS),
-		// 								},
-		// 								DiskSizeGB: to.Ptr[int32](30),
-		// 							},
-		// 							ImageReference: &armcompute.ImageReference{
-		// 								Publisher: to.Ptr("azuredatabricks"),
-		// 								Offer: to.Ptr("databricks"),
-		// 								SKU: to.Ptr("databricksworker"),
-		// 								Version: to.Ptr("3.15.2"),
-		// 							},
-		// 							DataDisks: []*armcompute.VirtualMachineScaleSetDataDisk{
-		// 							},
-		// 						},
-		// 						OSProfile: &armcompute.VirtualMachineScaleSetOSProfile{
-		// 							ComputerNamePrefix: to.Ptr("{virtualMachineScaleSetName}"),
-		// 							AdminUsername: to.Ptr("admin"),
-		// 							LinuxConfiguration: &armcompute.LinuxConfiguration{
-		// 								DisablePasswordAuthentication: to.Ptr(false),
-		// 							},
-		// 						},
-		// 						NetworkProfile: &armcompute.VirtualMachineScaleSetNetworkProfile{
-		// 							NetworkInterfaceConfigurations: []*armcompute.VirtualMachineScaleSetNetworkConfiguration{
-		// 								{
-		// 									Name: to.Ptr("myNic"),
-		// 									Properties: &armcompute.VirtualMachineScaleSetNetworkConfigurationProperties{
-		// 										Primary: to.Ptr(true),
-		// 										IPConfigurations: []*armcompute.VirtualMachineScaleSetIPConfiguration{
-		// 											{
-		// 												Name: to.Ptr("myIPConfig"),
-		// 												Properties: &armcompute.VirtualMachineScaleSetIPConfigurationProperties{
-		// 													Primary: to.Ptr(true),
-		// 													Subnet: &armcompute.APIEntityReference{
-		// 														ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/myVNet/subnets/mySubnet"),
-		// 													},
-		// 												},
-		// 											},
-		// 										},
-		// 										NetworkSecurityGroup: &armcompute.SubResource{
-		// 											ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkSecurityGroups/myNetworkSecurityGroup"),
-		// 										},
-		// 									},
-		// 								},
-		// 							},
-		// 						},
-		// 					},
-		// 					ProvisioningState: to.Ptr("succeeded"),
-		// 					Overprovision: to.Ptr(false),
-		// 					DoNotRunExtensionsOnOverprovisionedVMs: to.Ptr(false),
-		// 					PlatformFaultDomainCount: to.Ptr[int32](1),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("{virtualMachineScaleSetName}"),
-		// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{virtualMachineScaleSetName}1"),
-		// 				Type: to.Ptr("Microsoft.Compute/virtualMachineScaleSets"),
-		// 				Location: to.Ptr("eastus"),
-		// 				Tags: map[string]*string{
-		// 					"myTag1": to.Ptr("tagValue2"),
-		// 				},
-		// 				SKU: &armcompute.SKU{
-		// 					Name: to.Ptr("Standard_D2s_v3"),
-		// 					Tier: to.Ptr("Standard"),
-		// 					Capacity: to.Ptr[int64](4),
-		// 				},
-		// 				Properties: &armcompute.VirtualMachineScaleSetProperties{
-		// 					SinglePlacementGroup: to.Ptr(false),
-		// 					UpgradePolicy: &armcompute.UpgradePolicy{
-		// 						Mode: to.Ptr(armcompute.UpgradeModeAutomatic),
-		// 						AutomaticOSUpgradePolicy: &armcompute.AutomaticOSUpgradePolicy{
-		// 							EnableAutomaticOSUpgrade: to.Ptr(false),
-		// 						},
-		// 					},
-		// 					VirtualMachineProfile: &armcompute.VirtualMachineScaleSetVMProfile{
-		// 						StorageProfile: &armcompute.VirtualMachineScaleSetStorageProfile{
-		// 							OSDisk: &armcompute.VirtualMachineScaleSetOSDisk{
-		// 								CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
-		// 								Caching: to.Ptr(armcompute.CachingTypesReadWrite),
-		// 								ManagedDisk: &armcompute.VirtualMachineScaleSetManagedDiskParameters{
-		// 									StorageAccountType: to.Ptr(armcompute.StorageAccountTypesPremiumLRS),
-		// 								},
-		// 								DiskSizeGB: to.Ptr[int32](30),
-		// 							},
-		// 							ImageReference: &armcompute.ImageReference{
-		// 								Publisher: to.Ptr("azuredatabricks"),
-		// 								Offer: to.Ptr("databricks"),
-		// 								SKU: to.Ptr("databricksworker"),
-		// 								Version: to.Ptr("3.15.2"),
-		// 							},
-		// 							DataDisks: []*armcompute.VirtualMachineScaleSetDataDisk{
-		// 							},
-		// 						},
-		// 						OSProfile: &armcompute.VirtualMachineScaleSetOSProfile{
-		// 							ComputerNamePrefix: to.Ptr("{virtualMachineScaleSetName}"),
-		// 							AdminUsername: to.Ptr("admin"),
-		// 							LinuxConfiguration: &armcompute.LinuxConfiguration{
-		// 								DisablePasswordAuthentication: to.Ptr(false),
-		// 							},
-		// 						},
-		// 						NetworkProfile: &armcompute.VirtualMachineScaleSetNetworkProfile{
-		// 							NetworkInterfaceConfigurations: []*armcompute.VirtualMachineScaleSetNetworkConfiguration{
-		// 								{
-		// 									Name: to.Ptr("myNic1"),
-		// 									Properties: &armcompute.VirtualMachineScaleSetNetworkConfigurationProperties{
-		// 										Primary: to.Ptr(true),
-		// 										IPConfigurations: []*armcompute.VirtualMachineScaleSetIPConfiguration{
-		// 											{
-		// 												Name: to.Ptr("myIPConfig"),
-		// 												Properties: &armcompute.VirtualMachineScaleSetIPConfigurationProperties{
-		// 													Primary: to.Ptr(true),
-		// 													Subnet: &armcompute.APIEntityReference{
-		// 														ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/myVNet/subnets/mySubnet"),
-		// 													},
-		// 												},
-		// 											},
-		// 										},
-		// 										NetworkSecurityGroup: &armcompute.SubResource{
-		// 											ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkSecurityGroups/myNetworkSecurityGroup"),
-		// 										},
-		// 									},
-		// 								},
-		// 							},
-		// 						},
-		// 					},
-		// 					ProvisioningState: to.Ptr("succeeded"),
-		// 					Overprovision: to.Ptr(false),
-		// 					DoNotRunExtensionsOnOverprovisionedVMs: to.Ptr(false),
-		// 					PlatformFaultDomainCount: to.Ptr[int32](1),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_ListSkus_MaximumSet_Gen.json
-func ExampleVirtualMachineScaleSetsClient_NewListSKUsPager_virtualMachineScaleSetListSkusMaximumSetGen() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewVirtualMachineScaleSetsClient().NewListSKUsPager("rgcompute", "aaaaaa", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcompute.VirtualMachineScaleSetsClientListSKUsResponse{
-		// 	VirtualMachineScaleSetListSKUsResult: armcompute.VirtualMachineScaleSetListSKUsResult{
-		// 		Value: []*armcompute.VirtualMachineScaleSetSKU{
-		// 			{
-		// 				ResourceType: to.Ptr("aaaaaaaaaaaaaaaaa"),
-		// 				SKU: &armcompute.SKU{
-		// 					Name: to.Ptr("DSv3-Type1"),
-		// 					Tier: to.Ptr("aaa"),
-		// 					Capacity: to.Ptr[int64](7),
-		// 				},
-		// 				Capacity: &armcompute.VirtualMachineScaleSetSKUCapacity{
-		// 					Minimum: to.Ptr[int64](22),
-		// 					Maximum: to.Ptr[int64](27),
-		// 					DefaultCapacity: to.Ptr[int64](20),
-		// 					ScaleType: to.Ptr(armcompute.VirtualMachineScaleSetSKUScaleTypeAutomatic),
-		// 				},
-		// 			},
-		// 		},
-		// 		NextLink: to.Ptr("a://example.com/aaaaaaaaaaaaaa"),
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_ListSkus_MinimumSet_Gen.json
-func ExampleVirtualMachineScaleSetsClient_NewListSKUsPager_virtualMachineScaleSetListSkusMinimumSetGen() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewVirtualMachineScaleSetsClient().NewListSKUsPager("rgcompute", "aaaaaaaaaaaaaaaa", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcompute.VirtualMachineScaleSetsClientListSKUsResponse{
-		// 	VirtualMachineScaleSetListSKUsResult: armcompute.VirtualMachineScaleSetListSKUsResult{
-		// 		Value: []*armcompute.VirtualMachineScaleSetSKU{
-		// 			{
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
 // Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_MigrateVMAvailabilityZone.json
 func ExampleVirtualMachineScaleSetsClient_BeginMigrateVMAvailabilityZone() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -13732,4 +11520,2216 @@ func ExampleVirtualMachineScaleSetsClient_BeginUpdateInstances_virtualMachineSca
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetsClientUpdateInstancesResponse{
 	// }
+}
+
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_ConvertToSinglePlacementGroup_MaximumSet_Gen.json
+func ExampleVirtualMachineScaleSetsClient_ConvertToSinglePlacementGroup_virtualMachineScaleSetConvertToSinglePlacementGroupMaximumSetGen() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewVirtualMachineScaleSetsClient().ConvertToSinglePlacementGroup(ctx, "rgcompute", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", armcompute.VMScaleSetConvertToSinglePlacementGroupInput{
+		ActivePlacementGroupID: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaa"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcompute.VirtualMachineScaleSetsClientConvertToSinglePlacementGroupResponse{
+	// }
+}
+
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_ConvertToSinglePlacementGroup_MinimumSet_Gen.json
+func ExampleVirtualMachineScaleSetsClient_ConvertToSinglePlacementGroup_virtualMachineScaleSetConvertToSinglePlacementGroupMinimumSetGen() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewVirtualMachineScaleSetsClient().ConvertToSinglePlacementGroup(ctx, "rgcompute", "aaaaaaaaaaaaa", armcompute.VMScaleSetConvertToSinglePlacementGroupInput{}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcompute.VirtualMachineScaleSetsClientConvertToSinglePlacementGroupResponse{
+	// }
+}
+
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_ForceRecoveryServiceFabricPlatformUpdateDomainWalk_MaximumSet_Gen.json
+func ExampleVirtualMachineScaleSetsClient_ForceRecoveryServiceFabricPlatformUpdateDomainWalk_virtualMachineScaleSetForceRecoveryServiceFabricPlatformUpdateDomainWalkMaximumSetGen() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewVirtualMachineScaleSetsClient().ForceRecoveryServiceFabricPlatformUpdateDomainWalk(ctx, "rgcompute", "aaaaaaaaaaaaaaaa", 30, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcompute.VirtualMachineScaleSetsClientForceRecoveryServiceFabricPlatformUpdateDomainWalkResponse{
+	// 	RecoveryWalkResponse: armcompute.RecoveryWalkResponse{
+	// 		WalkPerformed: to.Ptr(true),
+	// 		NextPlatformUpdateDomain: to.Ptr[int32](7),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_ForceRecoveryServiceFabricPlatformUpdateDomainWalk_MinimumSet_Gen.json
+func ExampleVirtualMachineScaleSetsClient_ForceRecoveryServiceFabricPlatformUpdateDomainWalk_virtualMachineScaleSetForceRecoveryServiceFabricPlatformUpdateDomainWalkMinimumSetGen() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewVirtualMachineScaleSetsClient().ForceRecoveryServiceFabricPlatformUpdateDomainWalk(ctx, "rgcompute", "aaaaaaaaaaaa", 9, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcompute.VirtualMachineScaleSetsClientForceRecoveryServiceFabricPlatformUpdateDomainWalkResponse{
+	// 	RecoveryWalkResponse: armcompute.RecoveryWalkResponse{
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Get.json
+func ExampleVirtualMachineScaleSetsClient_Get_getAVirtualMachineScaleSet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewVirtualMachineScaleSetsClient().Get(ctx, "myResourceGroup", "myVirtualMachineScaleSet", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcompute.VirtualMachineScaleSetsClientGetResponse{
+	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
+	// 		Name: to.Ptr("myVirtualMachineScaleSet"),
+	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachineScaleSets/myVirtualMachineScaleSet"),
+	// 		Type: to.Ptr("Microsoft.Compute/virtualMachineScaleSets"),
+	// 		Location: to.Ptr("westus"),
+	// 		Tags: map[string]*string{
+	// 			"myTag1": to.Ptr("tagValue1"),
+	// 		},
+	// 		SKU: &armcompute.SKU{
+	// 			Name: to.Ptr("Standard_D2s_v3"),
+	// 			Tier: to.Ptr("Standard"),
+	// 			Capacity: to.Ptr[int64](4),
+	// 		},
+	// 		Etag: to.Ptr("\"1\""),
+	// 		Properties: &armcompute.VirtualMachineScaleSetProperties{
+	// 			SinglePlacementGroup: to.Ptr(false),
+	// 			UpgradePolicy: &armcompute.UpgradePolicy{
+	// 				Mode: to.Ptr(armcompute.UpgradeModeAutomatic),
+	// 				AutomaticOSUpgradePolicy: &armcompute.AutomaticOSUpgradePolicy{
+	// 					EnableAutomaticOSUpgrade: to.Ptr(false),
+	// 				},
+	// 			},
+	// 			VirtualMachineProfile: &armcompute.VirtualMachineScaleSetVMProfile{
+	// 				StorageProfile: &armcompute.VirtualMachineScaleSetStorageProfile{
+	// 					OSDisk: &armcompute.VirtualMachineScaleSetOSDisk{
+	// 						CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
+	// 						Caching: to.Ptr(armcompute.CachingTypesReadWrite),
+	// 						ManagedDisk: &armcompute.VirtualMachineScaleSetManagedDiskParameters{
+	// 							StorageAccountType: to.Ptr(armcompute.StorageAccountTypesPremiumLRS),
+	// 						},
+	// 						DiskSizeGB: to.Ptr[int32](30),
+	// 					},
+	// 					ImageReference: &armcompute.ImageReference{
+	// 						Publisher: to.Ptr("azuredatabricks"),
+	// 						Offer: to.Ptr("databricks"),
+	// 						SKU: to.Ptr("databricksworker"),
+	// 						Version: to.Ptr("3.15.2"),
+	// 					},
+	// 					DataDisks: []*armcompute.VirtualMachineScaleSetDataDisk{
+	// 					},
+	// 				},
+	// 				ApplicationProfile: &armcompute.ApplicationProfile{
+	// 					GalleryApplications: []*armcompute.VMGalleryApplication{
+	// 						{
+	// 							Tags: to.Ptr("myTag1"),
+	// 							Order: to.Ptr[int32](1),
+	// 							PackageReferenceID: to.Ptr("/subscriptions/32c17a9e-aa7b-4ba5-a45b-e324116b6fdb/resourceGroups/myresourceGroupName2/providers/Microsoft.Compute/galleries/myGallery1/applications/MyApplication1/versions/1.0"),
+	// 							ConfigurationReference: to.Ptr("https://mystorageaccount.blob.core.windows.net/configurations/settings.config"),
+	// 						},
+	// 						{
+	// 							PackageReferenceID: to.Ptr("/subscriptions/32c17a9e-aa7b-4ba5-a45b-e324116b6fdg/resourceGroups/myresourceGroupName3/providers/Microsoft.Compute/galleries/myGallery2/applications/MyApplication2/versions/1.1"),
+	// 						},
+	// 					},
+	// 				},
+	// 				UserData: to.Ptr("RXhhbXBsZSBVc2VyRGF0YQ=="),
+	// 				OSProfile: &armcompute.VirtualMachineScaleSetOSProfile{
+	// 					ComputerNamePrefix: to.Ptr("myVirtualMachineScaleSet"),
+	// 					AdminUsername: to.Ptr("admin"),
+	// 					LinuxConfiguration: &armcompute.LinuxConfiguration{
+	// 						DisablePasswordAuthentication: to.Ptr(false),
+	// 					},
+	// 				},
+	// 				NetworkProfile: &armcompute.VirtualMachineScaleSetNetworkProfile{
+	// 					NetworkInterfaceConfigurations: []*armcompute.VirtualMachineScaleSetNetworkConfiguration{
+	// 						{
+	// 							Name: to.Ptr("myNic"),
+	// 							Properties: &armcompute.VirtualMachineScaleSetNetworkConfigurationProperties{
+	// 								Primary: to.Ptr(true),
+	// 								IPConfigurations: []*armcompute.VirtualMachineScaleSetIPConfiguration{
+	// 									{
+	// 										Name: to.Ptr("myIPConfig"),
+	// 										Properties: &armcompute.VirtualMachineScaleSetIPConfigurationProperties{
+	// 											Primary: to.Ptr(true),
+	// 											Subnet: &armcompute.APIEntityReference{
+	// 												ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/myVNet/subnets/mySubnet"),
+	// 											},
+	// 										},
+	// 									},
+	// 								},
+	// 								NetworkSecurityGroup: &armcompute.SubResource{
+	// 									ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkSecurityGroups/myNetworkSecurityGroup"),
+	// 								},
+	// 							},
+	// 						},
+	// 					},
+	// 				},
+	// 				TimeCreated: to.Ptr(time.Date(2023, time.September, 27, 1, 3, 40, 313846900, time.UTC)),
+	// 			},
+	// 			ProvisioningState: to.Ptr("succeeded"),
+	// 			Overprovision: to.Ptr(false),
+	// 			DoNotRunExtensionsOnOverprovisionedVMs: to.Ptr(false),
+	// 			PlatformFaultDomainCount: to.Ptr[int32](1),
+	// 			HostGroup: &armcompute.SubResource{
+	// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/hostGroups/myHostGroup"),
+	// 			},
+	// 			TimeCreated: to.Ptr(time.Date(2021, time.June, 27, 1, 2, 38, 313846900, time.UTC)),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Get_AutoPlacedOnDedicatedHostGroup.json
+func ExampleVirtualMachineScaleSetsClient_Get_getAVirtualMachineScaleSetPlacedOnADedicatedHostGroupThroughAutomaticPlacement() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewVirtualMachineScaleSetsClient().Get(ctx, "myResourceGroup", "myVirtualMachineScaleSet", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcompute.VirtualMachineScaleSetsClientGetResponse{
+	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
+	// 		Name: to.Ptr("myVirtualMachineScaleSet"),
+	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachineScaleSets/myVirtualMachineScaleSet"),
+	// 		Type: to.Ptr("Microsoft.Compute/virtualMachineScaleSets"),
+	// 		Location: to.Ptr("West US"),
+	// 		Tags: map[string]*string{
+	// 			"myTag1": to.Ptr("tagValue1"),
+	// 		},
+	// 		SKU: &armcompute.SKU{
+	// 			Name: to.Ptr("Standard_D2s_v3"),
+	// 			Tier: to.Ptr("Standard"),
+	// 			Capacity: to.Ptr[int64](4),
+	// 		},
+	// 		Properties: &armcompute.VirtualMachineScaleSetProperties{
+	// 			SinglePlacementGroup: to.Ptr(false),
+	// 			UpgradePolicy: &armcompute.UpgradePolicy{
+	// 				Mode: to.Ptr(armcompute.UpgradeModeAutomatic),
+	// 				AutomaticOSUpgradePolicy: &armcompute.AutomaticOSUpgradePolicy{
+	// 					EnableAutomaticOSUpgrade: to.Ptr(false),
+	// 				},
+	// 			},
+	// 			VirtualMachineProfile: &armcompute.VirtualMachineScaleSetVMProfile{
+	// 				StorageProfile: &armcompute.VirtualMachineScaleSetStorageProfile{
+	// 					OSDisk: &armcompute.VirtualMachineScaleSetOSDisk{
+	// 						CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
+	// 						Caching: to.Ptr(armcompute.CachingTypesReadWrite),
+	// 						ManagedDisk: &armcompute.VirtualMachineScaleSetManagedDiskParameters{
+	// 							StorageAccountType: to.Ptr(armcompute.StorageAccountTypesPremiumLRS),
+	// 						},
+	// 						DiskSizeGB: to.Ptr[int32](30),
+	// 					},
+	// 					ImageReference: &armcompute.ImageReference{
+	// 						Publisher: to.Ptr("azuredatabricks"),
+	// 						Offer: to.Ptr("databricks"),
+	// 						SKU: to.Ptr("databricksworker"),
+	// 						Version: to.Ptr("3.15.2"),
+	// 					},
+	// 					DataDisks: []*armcompute.VirtualMachineScaleSetDataDisk{
+	// 					},
+	// 				},
+	// 				OSProfile: &armcompute.VirtualMachineScaleSetOSProfile{
+	// 					ComputerNamePrefix: to.Ptr("myVirtualMachineScaleSet"),
+	// 					AdminUsername: to.Ptr("admin"),
+	// 					LinuxConfiguration: &armcompute.LinuxConfiguration{
+	// 						DisablePasswordAuthentication: to.Ptr(false),
+	// 					},
+	// 				},
+	// 				NetworkProfile: &armcompute.VirtualMachineScaleSetNetworkProfile{
+	// 					NetworkInterfaceConfigurations: []*armcompute.VirtualMachineScaleSetNetworkConfiguration{
+	// 						{
+	// 							Name: to.Ptr("myNic"),
+	// 							Properties: &armcompute.VirtualMachineScaleSetNetworkConfigurationProperties{
+	// 								Primary: to.Ptr(true),
+	// 								IPConfigurations: []*armcompute.VirtualMachineScaleSetIPConfiguration{
+	// 									{
+	// 										Name: to.Ptr("myIPConfig"),
+	// 										Properties: &armcompute.VirtualMachineScaleSetIPConfigurationProperties{
+	// 											Primary: to.Ptr(true),
+	// 											Subnet: &armcompute.APIEntityReference{
+	// 												ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/myVNet/subnets/mySubnet"),
+	// 											},
+	// 										},
+	// 									},
+	// 								},
+	// 								NetworkSecurityGroup: &armcompute.SubResource{
+	// 									ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkSecurityGroups/myNetworkSecurityGroup"),
+	// 								},
+	// 							},
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 			ProvisioningState: to.Ptr("succeeded"),
+	// 			Overprovision: to.Ptr(false),
+	// 			DoNotRunExtensionsOnOverprovisionedVMs: to.Ptr(false),
+	// 			PlatformFaultDomainCount: to.Ptr[int32](1),
+	// 			HostGroup: &armcompute.SubResource{
+	// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/hostGroups/myHostGroup"),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Get_WithDiskControllerType.json
+func ExampleVirtualMachineScaleSetsClient_Get_getVMScaleSetVMWithDiskControllerType() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewVirtualMachineScaleSetsClient().Get(ctx, "myResourceGroup", "myVirtualMachineScaleSet", &armcompute.VirtualMachineScaleSetsClientGetOptions{
+		Expand: to.Ptr(armcompute.ExpandTypesForGetVMScaleSetsUserData)})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcompute.VirtualMachineScaleSetsClientGetResponse{
+	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
+	// 		Name: to.Ptr("myVirtualMachineScaleSet"),
+	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachineScaleSets/myVirtualMachineScaleSet"),
+	// 		Type: to.Ptr("Microsoft.Compute/virtualMachineScaleSets"),
+	// 		Location: to.Ptr("westus"),
+	// 		Tags: map[string]*string{
+	// 			"myTag1": to.Ptr("tagValue1"),
+	// 		},
+	// 		SKU: &armcompute.SKU{
+	// 			Name: to.Ptr("Standard_D2s_v3"),
+	// 			Tier: to.Ptr("Standard"),
+	// 			Capacity: to.Ptr[int64](4),
+	// 		},
+	// 		Properties: &armcompute.VirtualMachineScaleSetProperties{
+	// 			SinglePlacementGroup: to.Ptr(false),
+	// 			UpgradePolicy: &armcompute.UpgradePolicy{
+	// 				Mode: to.Ptr(armcompute.UpgradeModeAutomatic),
+	// 				AutomaticOSUpgradePolicy: &armcompute.AutomaticOSUpgradePolicy{
+	// 					EnableAutomaticOSUpgrade: to.Ptr(false),
+	// 				},
+	// 			},
+	// 			VirtualMachineProfile: &armcompute.VirtualMachineScaleSetVMProfile{
+	// 				StorageProfile: &armcompute.VirtualMachineScaleSetStorageProfile{
+	// 					OSDisk: &armcompute.VirtualMachineScaleSetOSDisk{
+	// 						CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
+	// 						Caching: to.Ptr(armcompute.CachingTypesReadWrite),
+	// 						ManagedDisk: &armcompute.VirtualMachineScaleSetManagedDiskParameters{
+	// 							StorageAccountType: to.Ptr(armcompute.StorageAccountTypesPremiumLRS),
+	// 						},
+	// 						DiskSizeGB: to.Ptr[int32](30),
+	// 					},
+	// 					ImageReference: &armcompute.ImageReference{
+	// 						Publisher: to.Ptr("azuredatabricks"),
+	// 						Offer: to.Ptr("databricks"),
+	// 						SKU: to.Ptr("databricksworker"),
+	// 						Version: to.Ptr("3.15.2"),
+	// 					},
+	// 					DataDisks: []*armcompute.VirtualMachineScaleSetDataDisk{
+	// 					},
+	// 					DiskControllerType: to.Ptr("NVMe"),
+	// 				},
+	// 				ApplicationProfile: &armcompute.ApplicationProfile{
+	// 					GalleryApplications: []*armcompute.VMGalleryApplication{
+	// 						{
+	// 							Tags: to.Ptr("myTag1"),
+	// 							Order: to.Ptr[int32](1),
+	// 							PackageReferenceID: to.Ptr("/subscriptions/32c17a9e-aa7b-4ba5-a45b-e324116b6fdb/resourceGroups/myresourceGroupName2/providers/Microsoft.Compute/galleries/myGallery1/applications/MyApplication1/versions/1.0"),
+	// 							ConfigurationReference: to.Ptr("https://mystorageaccount.blob.core.windows.net/configurations/settings.config"),
+	// 						},
+	// 						{
+	// 							PackageReferenceID: to.Ptr("/subscriptions/32c17a9e-aa7b-4ba5-a45b-e324116b6fdg/resourceGroups/myresourceGroupName3/providers/Microsoft.Compute/galleries/myGallery2/applications/MyApplication2/versions/1.1"),
+	// 						},
+	// 					},
+	// 				},
+	// 				UserData: to.Ptr("RXhhbXBsZSBVc2VyRGF0YQ=="),
+	// 				OSProfile: &armcompute.VirtualMachineScaleSetOSProfile{
+	// 					ComputerNamePrefix: to.Ptr("myVirtualMachineScaleSet"),
+	// 					AdminUsername: to.Ptr("admin"),
+	// 					LinuxConfiguration: &armcompute.LinuxConfiguration{
+	// 						DisablePasswordAuthentication: to.Ptr(false),
+	// 					},
+	// 				},
+	// 				NetworkProfile: &armcompute.VirtualMachineScaleSetNetworkProfile{
+	// 					NetworkInterfaceConfigurations: []*armcompute.VirtualMachineScaleSetNetworkConfiguration{
+	// 						{
+	// 							Name: to.Ptr("myNic"),
+	// 							Properties: &armcompute.VirtualMachineScaleSetNetworkConfigurationProperties{
+	// 								Primary: to.Ptr(true),
+	// 								IPConfigurations: []*armcompute.VirtualMachineScaleSetIPConfiguration{
+	// 									{
+	// 										Name: to.Ptr("myIPConfig"),
+	// 										Properties: &armcompute.VirtualMachineScaleSetIPConfigurationProperties{
+	// 											Primary: to.Ptr(true),
+	// 											Subnet: &armcompute.APIEntityReference{
+	// 												ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/myVNet/subnets/mySubnet"),
+	// 											},
+	// 										},
+	// 									},
+	// 								},
+	// 								NetworkSecurityGroup: &armcompute.SubResource{
+	// 									ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkSecurityGroups/myNetworkSecurityGroup"),
+	// 								},
+	// 							},
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 			ProvisioningState: to.Ptr("succeeded"),
+	// 			Overprovision: to.Ptr(false),
+	// 			DoNotRunExtensionsOnOverprovisionedVMs: to.Ptr(false),
+	// 			PlatformFaultDomainCount: to.Ptr[int32](1),
+	// 			HostGroup: &armcompute.SubResource{
+	// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/hostGroups/myHostGroup"),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Get_WithUserData.json
+func ExampleVirtualMachineScaleSetsClient_Get_getAVirtualMachineScaleSetWithUserData() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewVirtualMachineScaleSetsClient().Get(ctx, "myResourceGroup", "myVirtualMachineScaleSet", &armcompute.VirtualMachineScaleSetsClientGetOptions{
+		Expand: to.Ptr(armcompute.ExpandTypesForGetVMScaleSetsUserData)})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcompute.VirtualMachineScaleSetsClientGetResponse{
+	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
+	// 		Name: to.Ptr("myVirtualMachineScaleSet"),
+	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachineScaleSets/myVirtualMachineScaleSet"),
+	// 		Type: to.Ptr("Microsoft.Compute/virtualMachineScaleSets"),
+	// 		Location: to.Ptr("westus"),
+	// 		Tags: map[string]*string{
+	// 			"myTag1": to.Ptr("tagValue1"),
+	// 		},
+	// 		SKU: &armcompute.SKU{
+	// 			Name: to.Ptr("Standard_D2s_v3"),
+	// 			Tier: to.Ptr("Standard"),
+	// 			Capacity: to.Ptr[int64](4),
+	// 		},
+	// 		Properties: &armcompute.VirtualMachineScaleSetProperties{
+	// 			SinglePlacementGroup: to.Ptr(false),
+	// 			UpgradePolicy: &armcompute.UpgradePolicy{
+	// 				Mode: to.Ptr(armcompute.UpgradeModeAutomatic),
+	// 				AutomaticOSUpgradePolicy: &armcompute.AutomaticOSUpgradePolicy{
+	// 					EnableAutomaticOSUpgrade: to.Ptr(false),
+	// 				},
+	// 			},
+	// 			VirtualMachineProfile: &armcompute.VirtualMachineScaleSetVMProfile{
+	// 				StorageProfile: &armcompute.VirtualMachineScaleSetStorageProfile{
+	// 					OSDisk: &armcompute.VirtualMachineScaleSetOSDisk{
+	// 						CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
+	// 						Caching: to.Ptr(armcompute.CachingTypesReadWrite),
+	// 						ManagedDisk: &armcompute.VirtualMachineScaleSetManagedDiskParameters{
+	// 							StorageAccountType: to.Ptr(armcompute.StorageAccountTypesPremiumLRS),
+	// 						},
+	// 						DiskSizeGB: to.Ptr[int32](30),
+	// 					},
+	// 					ImageReference: &armcompute.ImageReference{
+	// 						Publisher: to.Ptr("azuredatabricks"),
+	// 						Offer: to.Ptr("databricks"),
+	// 						SKU: to.Ptr("databricksworker"),
+	// 						Version: to.Ptr("3.15.2"),
+	// 					},
+	// 					DataDisks: []*armcompute.VirtualMachineScaleSetDataDisk{
+	// 					},
+	// 				},
+	// 				ApplicationProfile: &armcompute.ApplicationProfile{
+	// 					GalleryApplications: []*armcompute.VMGalleryApplication{
+	// 						{
+	// 							Tags: to.Ptr("myTag1"),
+	// 							Order: to.Ptr[int32](1),
+	// 							PackageReferenceID: to.Ptr("/subscriptions/32c17a9e-aa7b-4ba5-a45b-e324116b6fdb/resourceGroups/myresourceGroupName2/providers/Microsoft.Compute/galleries/myGallery1/applications/MyApplication1/versions/1.0"),
+	// 							ConfigurationReference: to.Ptr("https://mystorageaccount.blob.core.windows.net/configurations/settings.config"),
+	// 						},
+	// 						{
+	// 							PackageReferenceID: to.Ptr("/subscriptions/32c17a9e-aa7b-4ba5-a45b-e324116b6fdg/resourceGroups/myresourceGroupName3/providers/Microsoft.Compute/galleries/myGallery2/applications/MyApplication2/versions/1.1"),
+	// 						},
+	// 					},
+	// 				},
+	// 				UserData: to.Ptr("RXhhbXBsZSBVc2VyRGF0YQ=="),
+	// 				OSProfile: &armcompute.VirtualMachineScaleSetOSProfile{
+	// 					ComputerNamePrefix: to.Ptr("myVirtualMachineScaleSet"),
+	// 					AdminUsername: to.Ptr("admin"),
+	// 					LinuxConfiguration: &armcompute.LinuxConfiguration{
+	// 						DisablePasswordAuthentication: to.Ptr(false),
+	// 					},
+	// 				},
+	// 				NetworkProfile: &armcompute.VirtualMachineScaleSetNetworkProfile{
+	// 					NetworkInterfaceConfigurations: []*armcompute.VirtualMachineScaleSetNetworkConfiguration{
+	// 						{
+	// 							Name: to.Ptr("myNic"),
+	// 							Properties: &armcompute.VirtualMachineScaleSetNetworkConfigurationProperties{
+	// 								Primary: to.Ptr(true),
+	// 								IPConfigurations: []*armcompute.VirtualMachineScaleSetIPConfiguration{
+	// 									{
+	// 										Name: to.Ptr("myIPConfig"),
+	// 										Properties: &armcompute.VirtualMachineScaleSetIPConfigurationProperties{
+	// 											Primary: to.Ptr(true),
+	// 											Subnet: &armcompute.APIEntityReference{
+	// 												ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/myVNet/subnets/mySubnet"),
+	// 											},
+	// 										},
+	// 									},
+	// 								},
+	// 								NetworkSecurityGroup: &armcompute.SubResource{
+	// 									ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkSecurityGroups/myNetworkSecurityGroup"),
+	// 								},
+	// 							},
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 			ProvisioningState: to.Ptr("succeeded"),
+	// 			Overprovision: to.Ptr(false),
+	// 			DoNotRunExtensionsOnOverprovisionedVMs: to.Ptr(false),
+	// 			PlatformFaultDomainCount: to.Ptr[int32](1),
+	// 			HostGroup: &armcompute.SubResource{
+	// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/hostGroups/myHostGroup"),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_GetInstanceView_MaximumSet_Gen.json
+func ExampleVirtualMachineScaleSetsClient_GetInstanceView_virtualMachineScaleSetGetInstanceViewMaximumSetGen() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewVirtualMachineScaleSetsClient().GetInstanceView(ctx, "rgcompute", "aaaaaaaaaaaaaaa", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcompute.VirtualMachineScaleSetsClientGetInstanceViewResponse{
+	// 	VirtualMachineScaleSetInstanceView: armcompute.VirtualMachineScaleSetInstanceView{
+	// 		VirtualMachine: &armcompute.VirtualMachineScaleSetInstanceViewStatusesSummary{
+	// 			StatusesSummary: []*armcompute.VirtualMachineStatusCodeCount{
+	// 				{
+	// 					Code: to.Ptr("aa"),
+	// 					Count: to.Ptr[int32](21),
+	// 				},
+	// 			},
+	// 		},
+	// 		Extensions: []*armcompute.VirtualMachineScaleSetVMExtensionsSummary{
+	// 			{
+	// 				Name: to.Ptr("aaaaaaaaaaa"),
+	// 				StatusesSummary: []*armcompute.VirtualMachineStatusCodeCount{
+	// 					{
+	// 						Code: to.Ptr("aa"),
+	// 						Count: to.Ptr[int32](21),
+	// 					},
+	// 				},
+	// 			},
+	// 		},
+	// 		Statuses: []*armcompute.InstanceViewStatus{
+	// 			{
+	// 				Code: to.Ptr("ProvisioningState/succeeded"),
+	// 				Level: to.Ptr(armcompute.StatusLevelTypesInfo),
+	// 				DisplayStatus: to.Ptr("Provisioning succeeded"),
+	// 				Message: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaa"),
+	// 				Time: to.Ptr(time.Date(2021, time.November, 30, 12, 58, 26, 526000000, time.UTC)),
+	// 			},
+	// 		},
+	// 		OrchestrationServices: []*armcompute.OrchestrationServiceSummary{
+	// 			{
+	// 				ServiceName: to.Ptr(armcompute.OrchestrationServiceNamesAutomaticRepairs),
+	// 				ServiceState: to.Ptr(armcompute.OrchestrationServiceStateNotRunning),
+	// 			},
+	// 			{
+	// 				ServiceName: to.Ptr(armcompute.OrchestrationServiceNamesAutomaticZoneRebalancing),
+	// 				ServiceState: to.Ptr(armcompute.OrchestrationServiceStateRunning),
+	// 				LatestOperationStatus: to.Ptr(armcompute.OrchestrationServiceOperationStatusInProgress),
+	// 				LastStatusChangeTime: to.Ptr(time.Date(2025, time.July, 9, 13, 26, 28, 360000000, time.UTC)),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_GetInstanceView_MinimumSet_Gen.json
+func ExampleVirtualMachineScaleSetsClient_GetInstanceView_virtualMachineScaleSetGetInstanceViewMinimumSetGen() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewVirtualMachineScaleSetsClient().GetInstanceView(ctx, "rgcompute", "aaaaaaaaaaaaaaa", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcompute.VirtualMachineScaleSetsClientGetInstanceViewResponse{
+	// 	VirtualMachineScaleSetInstanceView: armcompute.VirtualMachineScaleSetInstanceView{
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_GetOSUpgradeHistory_MaximumSet_Gen.json
+func ExampleVirtualMachineScaleSetsClient_NewGetOSUpgradeHistoryPager_virtualMachineScaleSetGetOSUpgradeHistoryMaximumSetGen() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewVirtualMachineScaleSetsClient().NewGetOSUpgradeHistoryPager("rgcompute", "aaaaaa", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armcompute.VirtualMachineScaleSetsClientGetOSUpgradeHistoryResponse{
+		// 	VirtualMachineScaleSetListOSUpgradeHistory: armcompute.VirtualMachineScaleSetListOSUpgradeHistory{
+		// 		Value: []*armcompute.UpgradeOperationHistoricalStatusInfo{
+		// 			{
+		// 				Properties: &armcompute.UpgradeOperationHistoricalStatusInfoProperties{
+		// 					RunningStatus: &armcompute.UpgradeOperationHistoryStatus{
+		// 						Code: to.Ptr(armcompute.UpgradeStateRollingForward),
+		// 						StartTime: to.Ptr(time.Date(2021, time.November, 30, 13, 5, 40, 442000000, time.UTC)),
+		// 						EndTime: to.Ptr(time.Date(2021, time.November, 30, 13, 5, 40, 443000000, time.UTC)),
+		// 					},
+		// 					Progress: &armcompute.RollingUpgradeProgressInfo{
+		// 						SuccessfulInstanceCount: to.Ptr[int32](6),
+		// 						FailedInstanceCount: to.Ptr[int32](25),
+		// 						InProgressInstanceCount: to.Ptr[int32](20),
+		// 						PendingInstanceCount: to.Ptr[int32](27),
+		// 					},
+		// 					Error: &armcompute.APIError{
+		// 						Details: []*armcompute.APIErrorBase{
+		// 							{
+		// 								Code: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaa"),
+		// 								Target: to.Ptr("aaaa"),
+		// 								Message: to.Ptr("aa"),
+		// 							},
+		// 						},
+		// 						Innererror: &armcompute.InnerError{
+		// 							Exceptiontype: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
+		// 							Errordetail: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaa"),
+		// 						},
+		// 						Code: to.Ptr("aaaaaaa"),
+		// 						Target: to.Ptr("aaaaaaa"),
+		// 						Message: to.Ptr("aaaaaaaaa"),
+		// 					},
+		// 					StartedBy: to.Ptr(armcompute.UpgradeOperationInvokerUnknown),
+		// 					TargetImageReference: &armcompute.ImageReference{
+		// 						SKU: to.Ptr("2016-Datacenter"),
+		// 						Publisher: to.Ptr("MicrosoftWindowsServer"),
+		// 						Version: to.Ptr("latest"),
+		// 						Offer: to.Ptr("WindowsServer"),
+		// 						ExactVersion: to.Ptr("aaaaaaa"),
+		// 						SharedGalleryImageID: to.Ptr("aaaaaa"),
+		// 						ID: to.Ptr("aaaaaaaaaaaaaaaaaaa"),
+		// 					},
+		// 					RollbackInfo: &armcompute.RollbackStatusInfo{
+		// 						SuccessfullyRolledbackInstanceCount: to.Ptr[int32](12),
+		// 						FailedRolledbackInstanceCount: to.Ptr[int32](2),
+		// 						RollbackError: &armcompute.APIError{
+		// 							Details: []*armcompute.APIErrorBase{
+		// 								{
+		// 									Code: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaa"),
+		// 									Target: to.Ptr("aaaa"),
+		// 									Message: to.Ptr("aa"),
+		// 								},
+		// 							},
+		// 							Innererror: &armcompute.InnerError{
+		// 								Exceptiontype: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
+		// 								Errordetail: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaa"),
+		// 							},
+		// 							Code: to.Ptr("aaaaaaa"),
+		// 							Target: to.Ptr("aaaaaaa"),
+		// 							Message: to.Ptr("aaaaaaaaa"),
+		// 						},
+		// 					},
+		// 				},
+		// 				Type: to.Ptr("aaaaaaaaaaaaaaaaaaa"),
+		// 				Location: to.Ptr("aaaaaaaaaaaaa"),
+		// 			},
+		// 		},
+		// 		NextLink: to.Ptr("a://example.com/aaaaaaaaa"),
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_GetOSUpgradeHistory_MinimumSet_Gen.json
+func ExampleVirtualMachineScaleSetsClient_NewGetOSUpgradeHistoryPager_virtualMachineScaleSetGetOSUpgradeHistoryMinimumSetGen() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewVirtualMachineScaleSetsClient().NewGetOSUpgradeHistoryPager("rgcompute", "aaaaaaaaaaaaaaaaaaaaaaaaaa", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armcompute.VirtualMachineScaleSetsClientGetOSUpgradeHistoryResponse{
+		// 	VirtualMachineScaleSetListOSUpgradeHistory: armcompute.VirtualMachineScaleSetListOSUpgradeHistory{
+		// 		Value: []*armcompute.UpgradeOperationHistoricalStatusInfo{
+		// 			{
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_ListAll_MaximumSet_Gen.json
+func ExampleVirtualMachineScaleSetsClient_NewListAllPager_virtualMachineScaleSetListAllMaximumSetGen() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewVirtualMachineScaleSetsClient().NewListAllPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armcompute.VirtualMachineScaleSetsClientListAllResponse{
+		// 	VirtualMachineScaleSetListWithLinkResult: armcompute.VirtualMachineScaleSetListWithLinkResult{
+		// 		Value: []*armcompute.VirtualMachineScaleSet{
+		// 			{
+		// 				SKU: &armcompute.SKU{
+		// 					Tier: to.Ptr("Standard"),
+		// 					Capacity: to.Ptr[int64](3),
+		// 					Name: to.Ptr("Standard_D1_v2"),
+		// 				},
+		// 				Location: to.Ptr("westus"),
+		// 				Properties: &armcompute.VirtualMachineScaleSetProperties{
+		// 					Overprovision: to.Ptr(true),
+		// 					VirtualMachineProfile: &armcompute.VirtualMachineScaleSetVMProfile{
+		// 						StorageProfile: &armcompute.VirtualMachineScaleSetStorageProfile{
+		// 							ImageReference: &armcompute.ImageReference{
+		// 								SKU: to.Ptr("2016-Datacenter"),
+		// 								Publisher: to.Ptr("MicrosoftWindowsServer"),
+		// 								Version: to.Ptr("latest"),
+		// 								Offer: to.Ptr("WindowsServer"),
+		// 								ExactVersion: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
+		// 								SharedGalleryImageID: to.Ptr("aaaaaaaaaaaaaaaaaaaaaa"),
+		// 								ID: to.Ptr("a"),
+		// 							},
+		// 							OSDisk: &armcompute.VirtualMachineScaleSetOSDisk{
+		// 								Caching: to.Ptr(armcompute.CachingTypesReadWrite),
+		// 								ManagedDisk: &armcompute.VirtualMachineScaleSetManagedDiskParameters{
+		// 									StorageAccountType: to.Ptr(armcompute.StorageAccountTypesStandardLRS),
+		// 									DiskEncryptionSet: &armcompute.DiskEncryptionSetParameters{
+		// 										ID: to.Ptr("aaaaaaaaaaaa"),
+		// 									},
+		// 								},
+		// 								CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
+		// 								Name: to.Ptr("aaaaaaaaaaaaaaa"),
+		// 								WriteAcceleratorEnabled: to.Ptr(true),
+		// 								DiffDiskSettings: &armcompute.DiffDiskSettings{
+		// 									Option: to.Ptr(armcompute.DiffDiskOptionsLocal),
+		// 									Placement: to.Ptr(armcompute.DiffDiskPlacementCacheDisk),
+		// 								},
+		// 								DiskSizeGB: to.Ptr[int32](30),
+		// 								OSType: to.Ptr(armcompute.OperatingSystemTypesWindows),
+		// 								Image: &armcompute.VirtualHardDisk{
+		// 									URI: to.Ptr("https://{storageAccountName}.blob.core.windows.net/{containerName}/{vhdName}.vhd"),
+		// 								},
+		// 								VhdContainers: []*string{
+		// 									to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaa"),
+		// 								},
+		// 							},
+		// 							DataDisks: []*armcompute.VirtualMachineScaleSetDataDisk{
+		// 								{
+		// 									Name: to.Ptr("aaaaaaaaaaaaaa"),
+		// 									Lun: to.Ptr[int32](24),
+		// 									Caching: to.Ptr(armcompute.CachingTypesNone),
+		// 									WriteAcceleratorEnabled: to.Ptr(true),
+		// 									CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
+		// 									DiskSizeGB: to.Ptr[int32](11),
+		// 									ManagedDisk: &armcompute.VirtualMachineScaleSetManagedDiskParameters{
+		// 										StorageAccountType: to.Ptr(armcompute.StorageAccountTypesStandardLRS),
+		// 										DiskEncryptionSet: &armcompute.DiskEncryptionSetParameters{
+		// 											ID: to.Ptr("aaaaaaaaaaaa"),
+		// 										},
+		// 									},
+		// 									DiskIOPSReadWrite: to.Ptr[int64](11),
+		// 									DiskMBpsReadWrite: to.Ptr[int64](13),
+		// 								},
+		// 							},
+		// 						},
+		// 						OSProfile: &armcompute.VirtualMachineScaleSetOSProfile{
+		// 							ComputerNamePrefix: to.Ptr("{vmss-name}"),
+		// 							AdminUsername: to.Ptr("{your-username}"),
+		// 							CustomData: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaa"),
+		// 							WindowsConfiguration: &armcompute.WindowsConfiguration{
+		// 								ProvisionVMAgent: to.Ptr(true),
+		// 								EnableAutomaticUpdates: to.Ptr(true),
+		// 								TimeZone: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
+		// 								AdditionalUnattendContent: []*armcompute.AdditionalUnattendContent{
+		// 									{
+		// 										PassName: to.Ptr("OobeSystem"),
+		// 										ComponentName: to.Ptr("Microsoft-Windows-Shell-Setup"),
+		// 										SettingName: to.Ptr(armcompute.SettingNamesAutoLogon),
+		// 										Content: to.Ptr("aaaaaaaaaaaaaaaaaaaa"),
+		// 									},
+		// 								},
+		// 								PatchSettings: &armcompute.PatchSettings{
+		// 									PatchMode: to.Ptr(armcompute.WindowsVMGuestPatchModeManual),
+		// 									EnableHotpatching: to.Ptr(true),
+		// 									AssessmentMode: to.Ptr(armcompute.WindowsPatchAssessmentModeImageDefault),
+		// 								},
+		// 								WinRM: &armcompute.WinRMConfiguration{
+		// 									Listeners: []*armcompute.WinRMListener{
+		// 										{
+		// 											Protocol: to.Ptr(armcompute.ProtocolTypesHTTP),
+		// 											CertificateURL: to.Ptr("aaaaaaaaaaaaaaaaaaaaaa"),
+		// 										},
+		// 									},
+		// 								},
+		// 							},
+		// 							LinuxConfiguration: &armcompute.LinuxConfiguration{
+		// 								DisablePasswordAuthentication: to.Ptr(true),
+		// 								SSH: &armcompute.SSHConfiguration{
+		// 									PublicKeys: []*armcompute.SSHPublicKey{
+		// 										{
+		// 											Path: to.Ptr("aaa"),
+		// 											KeyData: to.Ptr("aaaaaa"),
+		// 										},
+		// 									},
+		// 								},
+		// 								ProvisionVMAgent: to.Ptr(true),
+		// 								PatchSettings: &armcompute.LinuxPatchSettings{
+		// 									PatchMode: to.Ptr(armcompute.LinuxVMGuestPatchModeImageDefault),
+		// 									AssessmentMode: to.Ptr(armcompute.LinuxPatchAssessmentModeImageDefault),
+		// 								},
+		// 							},
+		// 							Secrets: []*armcompute.VaultSecretGroup{
+		// 								{
+		// 									SourceVault: &armcompute.SubResource{
+		// 										ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
+		// 									},
+		// 									VaultCertificates: []*armcompute.VaultCertificate{
+		// 										{
+		// 											CertificateURL: to.Ptr("aaaaaaa"),
+		// 											CertificateStore: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaa"),
+		// 										},
+		// 									},
+		// 								},
+		// 							},
+		// 						},
+		// 						NetworkProfile: &armcompute.VirtualMachineScaleSetNetworkProfile{
+		// 							NetworkInterfaceConfigurations: []*armcompute.VirtualMachineScaleSetNetworkConfiguration{
+		// 								{
+		// 									Name: to.Ptr("{vmss-name}"),
+		// 									Properties: &armcompute.VirtualMachineScaleSetNetworkConfigurationProperties{
+		// 										Primary: to.Ptr(true),
+		// 										EnableIPForwarding: to.Ptr(true),
+		// 										IPConfigurations: []*armcompute.VirtualMachineScaleSetIPConfiguration{
+		// 											{
+		// 												Name: to.Ptr("{vmss-name}"),
+		// 												Properties: &armcompute.VirtualMachineScaleSetIPConfigurationProperties{
+		// 													Subnet: &armcompute.APIEntityReference{
+		// 														ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/{existing-virtual-network-name}/subnets/{existing-subnet-name}"),
+		// 													},
+		// 													Primary: to.Ptr(true),
+		// 													PublicIPAddressConfiguration: &armcompute.VirtualMachineScaleSetPublicIPAddressConfiguration{
+		// 														Name: to.Ptr("aaaaaaaaaaaaaaaaaa"),
+		// 														Properties: &armcompute.VirtualMachineScaleSetPublicIPAddressConfigurationProperties{
+		// 															IdleTimeoutInMinutes: to.Ptr[int32](18),
+		// 															DNSSettings: &armcompute.VirtualMachineScaleSetPublicIPAddressConfigurationDNSSettings{
+		// 																DomainNameLabel: to.Ptr("aaaaaaaaaaaaaaaaaa"),
+		// 																DomainNameLabelScope: to.Ptr(armcompute.DomainNameLabelScopeTypesTenantReuse),
+		// 															},
+		// 															IPTags: []*armcompute.VirtualMachineScaleSetIPTag{
+		// 																{
+		// 																	IPTagType: to.Ptr("aaaaaaa"),
+		// 																	Tag: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaa"),
+		// 																},
+		// 															},
+		// 															PublicIPPrefix: &armcompute.SubResource{
+		// 																ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
+		// 															},
+		// 															PublicIPAddressVersion: to.Ptr(armcompute.IPVersionIPv4),
+		// 															DeleteOption: to.Ptr(armcompute.DeleteOptionsDelete),
+		// 														},
+		// 														SKU: &armcompute.PublicIPAddressSKU{
+		// 															Name: to.Ptr(armcompute.PublicIPAddressSKUNameBasic),
+		// 															Tier: to.Ptr(armcompute.PublicIPAddressSKUTierRegional),
+		// 														},
+		// 													},
+		// 													PrivateIPAddressVersion: to.Ptr(armcompute.IPVersionIPv4),
+		// 													ApplicationGatewayBackendAddressPools: []*armcompute.SubResource{
+		// 														{
+		// 															ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
+		// 														},
+		// 													},
+		// 													ApplicationSecurityGroups: []*armcompute.SubResource{
+		// 														{
+		// 															ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
+		// 														},
+		// 													},
+		// 													LoadBalancerBackendAddressPools: []*armcompute.SubResource{
+		// 														{
+		// 															ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
+		// 														},
+		// 													},
+		// 													LoadBalancerInboundNatPools: []*armcompute.SubResource{
+		// 														{
+		// 															ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
+		// 														},
+		// 													},
+		// 												},
+		// 											},
+		// 										},
+		// 										EnableAcceleratedNetworking: to.Ptr(true),
+		// 										EnableFpga: to.Ptr(true),
+		// 										NetworkSecurityGroup: &armcompute.SubResource{
+		// 											ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
+		// 										},
+		// 										DNSSettings: &armcompute.VirtualMachineScaleSetNetworkConfigurationDNSSettings{
+		// 											DNSServers: []*string{
+		// 												to.Ptr("aaaaaaaaaaaa"),
+		// 											},
+		// 										},
+		// 										DeleteOption: to.Ptr(armcompute.DeleteOptionsDelete),
+		// 									},
+		// 								},
+		// 							},
+		// 							HealthProbe: &armcompute.APIEntityReference{
+		// 								ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/restorePointCollections/rpcName/restorePoints/restorePointName/diskRestorePoints/testingexcludedisk_OsDisk_1_74cdaedcea50483d9833c96adefa100f_22b4bdfe-6c54-4f72-84d8-85d8860f0c57"),
+		// 							},
+		// 							NetworkAPIVersion: to.Ptr(armcompute.NetworkAPIVersionTwoThousandTwenty1101),
+		// 						},
+		// 						SecurityProfile: &armcompute.SecurityProfile{
+		// 							UefiSettings: &armcompute.UefiSettings{
+		// 								SecureBootEnabled: to.Ptr(true),
+		// 								VTpmEnabled: to.Ptr(true),
+		// 							},
+		// 							EncryptionAtHost: to.Ptr(true),
+		// 							SecurityType: to.Ptr(armcompute.SecurityTypesTrustedLaunch),
+		// 						},
+		// 						DiagnosticsProfile: &armcompute.DiagnosticsProfile{
+		// 							BootDiagnostics: &armcompute.BootDiagnostics{
+		// 								Enabled: to.Ptr(true),
+		// 								StorageURI: to.Ptr("aaaaaaaaaaaaaaaaaaa"),
+		// 							},
+		// 						},
+		// 						ExtensionProfile: &armcompute.VirtualMachineScaleSetExtensionProfile{
+		// 							Extensions: []*armcompute.VirtualMachineScaleSetExtension{
+		// 								{
+		// 									Name: to.Ptr("aa"),
+		// 									Type: to.Ptr("aaaaa"),
+		// 									Properties: &armcompute.VirtualMachineScaleSetExtensionProperties{
+		// 										ForceUpdateTag: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaa"),
+		// 										Publisher: to.Ptr("aaaaaaaaaaaaa"),
+		// 										Type: to.Ptr("aaaaaaaa"),
+		// 										TypeHandlerVersion: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaa"),
+		// 										AutoUpgradeMinorVersion: to.Ptr(true),
+		// 										EnableAutomaticUpgrade: to.Ptr(true),
+		// 										Settings: map[string]any{
+		// 										},
+		// 										ProtectedSettings: map[string]any{
+		// 										},
+		// 										ProvisioningState: to.Ptr("aaaaaaaaaaaaaa"),
+		// 										ProvisionAfterExtensions: []*string{
+		// 											to.Ptr("aaaaaaaaaaaaaa"),
+		// 										},
+		// 										SuppressFailures: to.Ptr(true),
+		// 									},
+		// 									ID: to.Ptr("aaaaaaaaaaaaaaaaaaaaaa"),
+		// 								},
+		// 							},
+		// 							ExtensionsTimeBudget: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaa"),
+		// 						},
+		// 						LicenseType: to.Ptr("aaaaaaaaaa"),
+		// 						Priority: to.Ptr(armcompute.VirtualMachinePriorityTypesRegular),
+		// 						EvictionPolicy: to.Ptr(armcompute.VirtualMachineEvictionPolicyTypesDeallocate),
+		// 						BillingProfile: &armcompute.BillingProfile{
+		// 							MaxPrice: to.Ptr[float64](4),
+		// 						},
+		// 						ScheduledEventsProfile: &armcompute.ScheduledEventsProfile{
+		// 							TerminateNotificationProfile: &armcompute.TerminateNotificationProfile{
+		// 								NotBeforeTimeout: to.Ptr("aa"),
+		// 								Enable: to.Ptr(true),
+		// 							},
+		// 						},
+		// 						UserData: to.Ptr("aaa"),
+		// 						CapacityReservation: &armcompute.CapacityReservationProfile{
+		// 							CapacityReservationGroup: &armcompute.SubResource{
+		// 								ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
+		// 							},
+		// 						},
+		// 						ApplicationProfile: &armcompute.ApplicationProfile{
+		// 							GalleryApplications: []*armcompute.VMGalleryApplication{
+		// 								{
+		// 									Tags: to.Ptr("aaaaaaaaaaa"),
+		// 									Order: to.Ptr[int32](29),
+		// 									PackageReferenceID: to.Ptr("aaaaaaaaaa"),
+		// 									ConfigurationReference: to.Ptr("aaaaa"),
+		// 								},
+		// 							},
+		// 						},
+		// 					},
+		// 					UpgradePolicy: &armcompute.UpgradePolicy{
+		// 						Mode: to.Ptr(armcompute.UpgradeModeManual),
+		// 						RollingUpgradePolicy: &armcompute.RollingUpgradePolicy{
+		// 							MaxBatchInstancePercent: to.Ptr[int32](49),
+		// 							MaxUnhealthyInstancePercent: to.Ptr[int32](81),
+		// 							MaxUnhealthyUpgradedInstancePercent: to.Ptr[int32](98),
+		// 							PauseTimeBetweenBatches: to.Ptr("aaaaaaaaaaaaaaa"),
+		// 							EnableCrossZoneUpgrade: to.Ptr(true),
+		// 							PrioritizeUnhealthyInstances: to.Ptr(true),
+		// 							RollbackFailedInstancesOnPolicyBreach: to.Ptr(true),
+		// 							MaxSurge: to.Ptr(true),
+		// 						},
+		// 						AutomaticOSUpgradePolicy: &armcompute.AutomaticOSUpgradePolicy{
+		// 							EnableAutomaticOSUpgrade: to.Ptr(true),
+		// 							DisableAutomaticRollback: to.Ptr(true),
+		// 							OSRollingUpgradeDeferral: to.Ptr(true),
+		// 						},
+		// 					},
+		// 					AutomaticRepairsPolicy: &armcompute.AutomaticRepairsPolicy{
+		// 						Enabled: to.Ptr(true),
+		// 						GracePeriod: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaa"),
+		// 					},
+		// 					ProvisioningState: to.Ptr("succeeded"),
+		// 					DoNotRunExtensionsOnOverprovisionedVMs: to.Ptr(true),
+		// 					UniqueID: to.Ptr("aaaaaaaa"),
+		// 					SinglePlacementGroup: to.Ptr(true),
+		// 					ZoneBalance: to.Ptr(true),
+		// 					PlatformFaultDomainCount: to.Ptr[int32](1),
+		// 					ProximityPlacementGroup: &armcompute.SubResource{
+		// 						ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
+		// 					},
+		// 					HostGroup: &armcompute.SubResource{
+		// 						ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
+		// 					},
+		// 					AdditionalCapabilities: &armcompute.AdditionalCapabilities{
+		// 						UltraSSDEnabled: to.Ptr(true),
+		// 						HibernationEnabled: to.Ptr(true),
+		// 					},
+		// 					ScaleInPolicy: &armcompute.ScaleInPolicy{
+		// 						Rules: []*armcompute.VirtualMachineScaleSetScaleInRules{
+		// 							to.Ptr(armcompute.VirtualMachineScaleSetScaleInRulesDefault),
+		// 						},
+		// 						ForceDeletion: to.Ptr(true),
+		// 					},
+		// 					OrchestrationMode: to.Ptr(armcompute.OrchestrationModeUniform),
+		// 					SpotRestorePolicy: &armcompute.SpotRestorePolicy{
+		// 						Enabled: to.Ptr(true),
+		// 						RestoreTimeout: to.Ptr("aaaaaaaaaa"),
+		// 					},
+		// 				},
+		// 				Plan: &armcompute.Plan{
+		// 					Name: to.Ptr("aaaaaaaaaa"),
+		// 					Publisher: to.Ptr("aaaaaaaaaaaaaaaaaaaaaa"),
+		// 					Product: to.Ptr("aaaaaaaaaaaaaaaaaaaa"),
+		// 					PromotionCode: to.Ptr("aaaaaaaaaaaaaaaaaaaa"),
+		// 				},
+		// 				Identity: &armcompute.VirtualMachineScaleSetIdentity{
+		// 					PrincipalID: to.Ptr("aaaaaaaaaaaaaaa"),
+		// 					TenantID: to.Ptr("aaaaaaaaaaaaaaaa"),
+		// 					Type: to.Ptr(armcompute.ResourceIdentityTypeSystemAssigned),
+		// 					UserAssignedIdentities: map[string]*armcompute.UserAssignedIdentitiesValue{
+		// 						"key3951": &armcompute.UserAssignedIdentitiesValue{
+		// 							PrincipalID: to.Ptr("aaaa"),
+		// 							ClientID: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaa"),
+		// 						},
+		// 					},
+		// 				},
+		// 				Zones: []*string{
+		// 					to.Ptr("aaaaaaaaaaaaaaaaaaaa"),
+		// 				},
+		// 				ExtendedLocation: &armcompute.ExtendedLocation{
+		// 					Name: to.Ptr("aaaaaaaaaaaaaaaaaaaaa"),
+		// 					Type: to.Ptr(armcompute.ExtendedLocationTypesEdgeZone),
+		// 				},
+		// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{virtualMachineScaleSetName}"),
+		// 				Name: to.Ptr("{virtualMachineScaleSetName}"),
+		// 				Type: to.Ptr("Microsoft.Compute/virtualMachineScaleSets"),
+		// 				Tags: map[string]*string{
+		// 					"key8425": to.Ptr("aaa"),
+		// 				},
+		// 			},
+		// 		},
+		// 		NextLink: to.Ptr("a://example.com/aaaa"),
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_ListAll_MinimumSet_Gen.json
+func ExampleVirtualMachineScaleSetsClient_NewListAllPager_virtualMachineScaleSetListAllMinimumSetGen() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewVirtualMachineScaleSetsClient().NewListAllPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armcompute.VirtualMachineScaleSetsClientListAllResponse{
+		// 	VirtualMachineScaleSetListWithLinkResult: armcompute.VirtualMachineScaleSetListWithLinkResult{
+		// 		Value: []*armcompute.VirtualMachineScaleSet{
+		// 			{
+		// 				Location: to.Ptr("westus"),
+		// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{virtualMachineScaleSetName}"),
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_ListBySubscription_ByLocation.json
+func ExampleVirtualMachineScaleSetsClient_NewListByLocationPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewVirtualMachineScaleSetsClient().NewListByLocationPager("eastus", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armcompute.VirtualMachineScaleSetsClientListByLocationResponse{
+		// 	VirtualMachineScaleSetListResult: armcompute.VirtualMachineScaleSetListResult{
+		// 		Value: []*armcompute.VirtualMachineScaleSet{
+		// 			{
+		// 				Name: to.Ptr("{virtualMachineScaleSetName}"),
+		// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{virtualMachineScaleSetName}"),
+		// 				Type: to.Ptr("Microsoft.Compute/virtualMachineScaleSets"),
+		// 				Location: to.Ptr("eastus"),
+		// 				Tags: map[string]*string{
+		// 					"myTag1": to.Ptr("tagValue1"),
+		// 				},
+		// 				SKU: &armcompute.SKU{
+		// 					Name: to.Ptr("Standard_D2s_v3"),
+		// 					Tier: to.Ptr("Standard"),
+		// 					Capacity: to.Ptr[int64](4),
+		// 				},
+		// 				Properties: &armcompute.VirtualMachineScaleSetProperties{
+		// 					SinglePlacementGroup: to.Ptr(false),
+		// 					UpgradePolicy: &armcompute.UpgradePolicy{
+		// 						Mode: to.Ptr(armcompute.UpgradeModeAutomatic),
+		// 						AutomaticOSUpgradePolicy: &armcompute.AutomaticOSUpgradePolicy{
+		// 							EnableAutomaticOSUpgrade: to.Ptr(false),
+		// 						},
+		// 					},
+		// 					VirtualMachineProfile: &armcompute.VirtualMachineScaleSetVMProfile{
+		// 						StorageProfile: &armcompute.VirtualMachineScaleSetStorageProfile{
+		// 							OSDisk: &armcompute.VirtualMachineScaleSetOSDisk{
+		// 								CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
+		// 								Caching: to.Ptr(armcompute.CachingTypesReadWrite),
+		// 								ManagedDisk: &armcompute.VirtualMachineScaleSetManagedDiskParameters{
+		// 									StorageAccountType: to.Ptr(armcompute.StorageAccountTypesPremiumLRS),
+		// 								},
+		// 								DiskSizeGB: to.Ptr[int32](30),
+		// 							},
+		// 							ImageReference: &armcompute.ImageReference{
+		// 								Publisher: to.Ptr("azuredatabricks"),
+		// 								Offer: to.Ptr("databricks"),
+		// 								SKU: to.Ptr("databricksworker"),
+		// 								Version: to.Ptr("3.15.2"),
+		// 							},
+		// 							DataDisks: []*armcompute.VirtualMachineScaleSetDataDisk{
+		// 							},
+		// 						},
+		// 						OSProfile: &armcompute.VirtualMachineScaleSetOSProfile{
+		// 							ComputerNamePrefix: to.Ptr("{virtualMachineScaleSetName}"),
+		// 							AdminUsername: to.Ptr("admin"),
+		// 							LinuxConfiguration: &armcompute.LinuxConfiguration{
+		// 								DisablePasswordAuthentication: to.Ptr(false),
+		// 							},
+		// 						},
+		// 						NetworkProfile: &armcompute.VirtualMachineScaleSetNetworkProfile{
+		// 							NetworkInterfaceConfigurations: []*armcompute.VirtualMachineScaleSetNetworkConfiguration{
+		// 								{
+		// 									Name: to.Ptr("myNic"),
+		// 									Properties: &armcompute.VirtualMachineScaleSetNetworkConfigurationProperties{
+		// 										Primary: to.Ptr(true),
+		// 										IPConfigurations: []*armcompute.VirtualMachineScaleSetIPConfiguration{
+		// 											{
+		// 												Name: to.Ptr("myIPConfig"),
+		// 												Properties: &armcompute.VirtualMachineScaleSetIPConfigurationProperties{
+		// 													Primary: to.Ptr(true),
+		// 													Subnet: &armcompute.APIEntityReference{
+		// 														ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/myVNet/subnets/mySubnet"),
+		// 													},
+		// 												},
+		// 											},
+		// 										},
+		// 										NetworkSecurityGroup: &armcompute.SubResource{
+		// 											ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkSecurityGroups/myNetworkSecurityGroup"),
+		// 										},
+		// 									},
+		// 								},
+		// 							},
+		// 						},
+		// 					},
+		// 					ProvisioningState: to.Ptr("succeeded"),
+		// 					Overprovision: to.Ptr(false),
+		// 					DoNotRunExtensionsOnOverprovisionedVMs: to.Ptr(false),
+		// 					PlatformFaultDomainCount: to.Ptr[int32](1),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("{virtualMachineScaleSetName}"),
+		// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{virtualMachineScaleSetName}1"),
+		// 				Type: to.Ptr("Microsoft.Compute/virtualMachineScaleSets"),
+		// 				Location: to.Ptr("eastus"),
+		// 				Tags: map[string]*string{
+		// 					"myTag1": to.Ptr("tagValue2"),
+		// 				},
+		// 				SKU: &armcompute.SKU{
+		// 					Name: to.Ptr("Standard_D2s_v3"),
+		// 					Tier: to.Ptr("Standard"),
+		// 					Capacity: to.Ptr[int64](4),
+		// 				},
+		// 				Properties: &armcompute.VirtualMachineScaleSetProperties{
+		// 					SinglePlacementGroup: to.Ptr(false),
+		// 					UpgradePolicy: &armcompute.UpgradePolicy{
+		// 						Mode: to.Ptr(armcompute.UpgradeModeAutomatic),
+		// 						AutomaticOSUpgradePolicy: &armcompute.AutomaticOSUpgradePolicy{
+		// 							EnableAutomaticOSUpgrade: to.Ptr(false),
+		// 						},
+		// 					},
+		// 					VirtualMachineProfile: &armcompute.VirtualMachineScaleSetVMProfile{
+		// 						StorageProfile: &armcompute.VirtualMachineScaleSetStorageProfile{
+		// 							OSDisk: &armcompute.VirtualMachineScaleSetOSDisk{
+		// 								CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
+		// 								Caching: to.Ptr(armcompute.CachingTypesReadWrite),
+		// 								ManagedDisk: &armcompute.VirtualMachineScaleSetManagedDiskParameters{
+		// 									StorageAccountType: to.Ptr(armcompute.StorageAccountTypesPremiumLRS),
+		// 								},
+		// 								DiskSizeGB: to.Ptr[int32](30),
+		// 							},
+		// 							ImageReference: &armcompute.ImageReference{
+		// 								Publisher: to.Ptr("azuredatabricks"),
+		// 								Offer: to.Ptr("databricks"),
+		// 								SKU: to.Ptr("databricksworker"),
+		// 								Version: to.Ptr("3.15.2"),
+		// 							},
+		// 							DataDisks: []*armcompute.VirtualMachineScaleSetDataDisk{
+		// 							},
+		// 						},
+		// 						OSProfile: &armcompute.VirtualMachineScaleSetOSProfile{
+		// 							ComputerNamePrefix: to.Ptr("{virtualMachineScaleSetName}"),
+		// 							AdminUsername: to.Ptr("admin"),
+		// 							LinuxConfiguration: &armcompute.LinuxConfiguration{
+		// 								DisablePasswordAuthentication: to.Ptr(false),
+		// 							},
+		// 						},
+		// 						NetworkProfile: &armcompute.VirtualMachineScaleSetNetworkProfile{
+		// 							NetworkInterfaceConfigurations: []*armcompute.VirtualMachineScaleSetNetworkConfiguration{
+		// 								{
+		// 									Name: to.Ptr("myNic1"),
+		// 									Properties: &armcompute.VirtualMachineScaleSetNetworkConfigurationProperties{
+		// 										Primary: to.Ptr(true),
+		// 										IPConfigurations: []*armcompute.VirtualMachineScaleSetIPConfiguration{
+		// 											{
+		// 												Name: to.Ptr("myIPConfig"),
+		// 												Properties: &armcompute.VirtualMachineScaleSetIPConfigurationProperties{
+		// 													Primary: to.Ptr(true),
+		// 													Subnet: &armcompute.APIEntityReference{
+		// 														ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/myVNet/subnets/mySubnet"),
+		// 													},
+		// 												},
+		// 											},
+		// 										},
+		// 										NetworkSecurityGroup: &armcompute.SubResource{
+		// 											ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkSecurityGroups/myNetworkSecurityGroup"),
+		// 										},
+		// 									},
+		// 								},
+		// 							},
+		// 						},
+		// 					},
+		// 					ProvisioningState: to.Ptr("succeeded"),
+		// 					Overprovision: to.Ptr(false),
+		// 					DoNotRunExtensionsOnOverprovisionedVMs: to.Ptr(false),
+		// 					PlatformFaultDomainCount: to.Ptr[int32](1),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_List_MaximumSet_Gen.json
+func ExampleVirtualMachineScaleSetsClient_NewListPager_virtualMachineScaleSetListMaximumSetGen() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewVirtualMachineScaleSetsClient().NewListPager("rgcompute", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armcompute.VirtualMachineScaleSetsClientListResponse{
+		// 	VirtualMachineScaleSetListResult: armcompute.VirtualMachineScaleSetListResult{
+		// 		Value: []*armcompute.VirtualMachineScaleSet{
+		// 			{
+		// 				Name: to.Ptr("{virtualMachineScaleSetName}"),
+		// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{virtualMachineScaleSetName}"),
+		// 				Type: to.Ptr("Microsoft.Compute/virtualMachineScaleSets"),
+		// 				Location: to.Ptr("eastus"),
+		// 				Tags: map[string]*string{
+		// 				},
+		// 				SKU: &armcompute.SKU{
+		// 					Name: to.Ptr("Standard_D2s_v3"),
+		// 					Tier: to.Ptr("Standard"),
+		// 					Capacity: to.Ptr[int64](4),
+		// 				},
+		// 				Properties: &armcompute.VirtualMachineScaleSetProperties{
+		// 					SinglePlacementGroup: to.Ptr(true),
+		// 					UpgradePolicy: &armcompute.UpgradePolicy{
+		// 						Mode: to.Ptr(armcompute.UpgradeModeAutomatic),
+		// 						AutomaticOSUpgradePolicy: &armcompute.AutomaticOSUpgradePolicy{
+		// 							EnableAutomaticOSUpgrade: to.Ptr(true),
+		// 							DisableAutomaticRollback: to.Ptr(true),
+		// 							UseRollingUpgradePolicy: to.Ptr(true),
+		// 							OSRollingUpgradeDeferral: to.Ptr(true),
+		// 						},
+		// 						RollingUpgradePolicy: &armcompute.RollingUpgradePolicy{
+		// 							MaxBatchInstancePercent: to.Ptr[int32](49),
+		// 							MaxUnhealthyInstancePercent: to.Ptr[int32](81),
+		// 							MaxUnhealthyUpgradedInstancePercent: to.Ptr[int32](98),
+		// 							PauseTimeBetweenBatches: to.Ptr("aaaaaaaaaaaaaaa"),
+		// 							EnableCrossZoneUpgrade: to.Ptr(true),
+		// 							PrioritizeUnhealthyInstances: to.Ptr(true),
+		// 							RollbackFailedInstancesOnPolicyBreach: to.Ptr(true),
+		// 							MaxSurge: to.Ptr(true),
+		// 						},
+		// 					},
+		// 					VirtualMachineProfile: &armcompute.VirtualMachineScaleSetVMProfile{
+		// 						StorageProfile: &armcompute.VirtualMachineScaleSetStorageProfile{
+		// 							OSDisk: &armcompute.VirtualMachineScaleSetOSDisk{
+		// 								CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
+		// 								Caching: to.Ptr(armcompute.CachingTypesReadWrite),
+		// 								ManagedDisk: &armcompute.VirtualMachineScaleSetManagedDiskParameters{
+		// 									StorageAccountType: to.Ptr(armcompute.StorageAccountTypesPremiumLRS),
+		// 									DiskEncryptionSet: &armcompute.DiskEncryptionSetParameters{
+		// 										ID: to.Ptr("aaaaaaaaaaaa"),
+		// 									},
+		// 								},
+		// 								DiskSizeGB: to.Ptr[int32](30),
+		// 								Name: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaa"),
+		// 								WriteAcceleratorEnabled: to.Ptr(true),
+		// 								DiffDiskSettings: &armcompute.DiffDiskSettings{
+		// 									Option: to.Ptr(armcompute.DiffDiskOptionsLocal),
+		// 									Placement: to.Ptr(armcompute.DiffDiskPlacementCacheDisk),
+		// 								},
+		// 								OSType: to.Ptr(armcompute.OperatingSystemTypesWindows),
+		// 								Image: &armcompute.VirtualHardDisk{
+		// 									URI: to.Ptr("https://{storageAccountName}.blob.core.windows.net/{containerName}/{vhdName}.vhd"),
+		// 								},
+		// 								VhdContainers: []*string{
+		// 									to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
+		// 								},
+		// 							},
+		// 							ImageReference: &armcompute.ImageReference{
+		// 								Publisher: to.Ptr("azuredatabricks"),
+		// 								Offer: to.Ptr("databricks"),
+		// 								SKU: to.Ptr("databricksworker"),
+		// 								Version: to.Ptr("3.15.2"),
+		// 								ExactVersion: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaa"),
+		// 								SharedGalleryImageID: to.Ptr("aaaaaaaaaaaaaaaaaaaaaa"),
+		// 								ID: to.Ptr("aaaaaaaaaa"),
+		// 							},
+		// 							DataDisks: []*armcompute.VirtualMachineScaleSetDataDisk{
+		// 							},
+		// 						},
+		// 						OSProfile: &armcompute.VirtualMachineScaleSetOSProfile{
+		// 							ComputerNamePrefix: to.Ptr("{virtualMachineScaleSetName}"),
+		// 							AdminUsername: to.Ptr("admin"),
+		// 							LinuxConfiguration: &armcompute.LinuxConfiguration{
+		// 								DisablePasswordAuthentication: to.Ptr(true),
+		// 								SSH: &armcompute.SSHConfiguration{
+		// 									PublicKeys: []*armcompute.SSHPublicKey{
+		// 										{
+		// 											Path: to.Ptr("aaa"),
+		// 											KeyData: to.Ptr("aaaaaa"),
+		// 										},
+		// 									},
+		// 								},
+		// 								ProvisionVMAgent: to.Ptr(true),
+		// 								PatchSettings: &armcompute.LinuxPatchSettings{
+		// 									PatchMode: to.Ptr(armcompute.LinuxVMGuestPatchModeImageDefault),
+		// 									AssessmentMode: to.Ptr(armcompute.LinuxPatchAssessmentModeImageDefault),
+		// 								},
+		// 							},
+		// 							CustomData: to.Ptr("aaaaaaaaaaaaaaaaaa"),
+		// 							WindowsConfiguration: &armcompute.WindowsConfiguration{
+		// 								ProvisionVMAgent: to.Ptr(true),
+		// 								EnableAutomaticUpdates: to.Ptr(true),
+		// 								TimeZone: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
+		// 								AdditionalUnattendContent: []*armcompute.AdditionalUnattendContent{
+		// 									{
+		// 										PassName: to.Ptr("OobeSystem"),
+		// 										ComponentName: to.Ptr("Microsoft-Windows-Shell-Setup"),
+		// 										SettingName: to.Ptr(armcompute.SettingNamesAutoLogon),
+		// 										Content: to.Ptr("aaaaaaaaaaaaaaaaaaaa"),
+		// 									},
+		// 								},
+		// 								PatchSettings: &armcompute.PatchSettings{
+		// 									PatchMode: to.Ptr(armcompute.WindowsVMGuestPatchModeManual),
+		// 									EnableHotpatching: to.Ptr(true),
+		// 									AssessmentMode: to.Ptr(armcompute.WindowsPatchAssessmentModeImageDefault),
+		// 								},
+		// 								WinRM: &armcompute.WinRMConfiguration{
+		// 									Listeners: []*armcompute.WinRMListener{
+		// 										{
+		// 											Protocol: to.Ptr(armcompute.ProtocolTypesHTTP),
+		// 											CertificateURL: to.Ptr("aaaaaaaaaaaaaaaaaaaaaa"),
+		// 										},
+		// 									},
+		// 								},
+		// 							},
+		// 							Secrets: []*armcompute.VaultSecretGroup{
+		// 								{
+		// 									SourceVault: &armcompute.SubResource{
+		// 										ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
+		// 									},
+		// 									VaultCertificates: []*armcompute.VaultCertificate{
+		// 										{
+		// 											CertificateURL: to.Ptr("aaaaaaa"),
+		// 											CertificateStore: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaa"),
+		// 										},
+		// 									},
+		// 								},
+		// 							},
+		// 						},
+		// 						NetworkProfile: &armcompute.VirtualMachineScaleSetNetworkProfile{
+		// 							NetworkInterfaceConfigurations: []*armcompute.VirtualMachineScaleSetNetworkConfiguration{
+		// 								{
+		// 									Name: to.Ptr("myNic"),
+		// 									Properties: &armcompute.VirtualMachineScaleSetNetworkConfigurationProperties{
+		// 										Primary: to.Ptr(true),
+		// 										IPConfigurations: []*armcompute.VirtualMachineScaleSetIPConfiguration{
+		// 											{
+		// 												Name: to.Ptr("myIPConfig"),
+		// 												Properties: &armcompute.VirtualMachineScaleSetIPConfigurationProperties{
+		// 													Primary: to.Ptr(true),
+		// 													Subnet: &armcompute.APIEntityReference{
+		// 														ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/myVNet/subnets/mySubnet"),
+		// 													},
+		// 													PublicIPAddressConfiguration: &armcompute.VirtualMachineScaleSetPublicIPAddressConfiguration{
+		// 														Name: to.Ptr("aaaaaaaaaaaaaaaaaa"),
+		// 														Properties: &armcompute.VirtualMachineScaleSetPublicIPAddressConfigurationProperties{
+		// 															IdleTimeoutInMinutes: to.Ptr[int32](18),
+		// 															DNSSettings: &armcompute.VirtualMachineScaleSetPublicIPAddressConfigurationDNSSettings{
+		// 																DomainNameLabel: to.Ptr("aaaaaaaaaaaaaaaaaa"),
+		// 															},
+		// 															IPTags: []*armcompute.VirtualMachineScaleSetIPTag{
+		// 																{
+		// 																	IPTagType: to.Ptr("aaaaaaa"),
+		// 																	Tag: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaa"),
+		// 																},
+		// 															},
+		// 															PublicIPPrefix: &armcompute.SubResource{
+		// 																ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
+		// 															},
+		// 															PublicIPAddressVersion: to.Ptr(armcompute.IPVersionIPv4),
+		// 															DeleteOption: to.Ptr(armcompute.DeleteOptionsDelete),
+		// 														},
+		// 														SKU: &armcompute.PublicIPAddressSKU{
+		// 															Name: to.Ptr(armcompute.PublicIPAddressSKUNameBasic),
+		// 															Tier: to.Ptr(armcompute.PublicIPAddressSKUTierRegional),
+		// 														},
+		// 													},
+		// 													PrivateIPAddressVersion: to.Ptr(armcompute.IPVersionIPv4),
+		// 													ApplicationGatewayBackendAddressPools: []*armcompute.SubResource{
+		// 														{
+		// 															ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
+		// 														},
+		// 													},
+		// 													ApplicationSecurityGroups: []*armcompute.SubResource{
+		// 														{
+		// 															ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
+		// 														},
+		// 													},
+		// 													LoadBalancerBackendAddressPools: []*armcompute.SubResource{
+		// 														{
+		// 															ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
+		// 														},
+		// 													},
+		// 													LoadBalancerInboundNatPools: []*armcompute.SubResource{
+		// 														{
+		// 															ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
+		// 														},
+		// 													},
+		// 												},
+		// 											},
+		// 										},
+		// 										NetworkSecurityGroup: &armcompute.SubResource{
+		// 											ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkSecurityGroups/myNetworkSecurityGroup"),
+		// 										},
+		// 										EnableAcceleratedNetworking: to.Ptr(true),
+		// 										EnableFpga: to.Ptr(true),
+		// 										DNSSettings: &armcompute.VirtualMachineScaleSetNetworkConfigurationDNSSettings{
+		// 											DNSServers: []*string{
+		// 												to.Ptr("aaaaaaaaaaaa"),
+		// 											},
+		// 										},
+		// 										EnableIPForwarding: to.Ptr(true),
+		// 										DeleteOption: to.Ptr(armcompute.DeleteOptionsDelete),
+		// 									},
+		// 								},
+		// 							},
+		// 							HealthProbe: &armcompute.APIEntityReference{
+		// 								ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/restorePointCollections/rpcName/restorePoints/restorePointName/diskRestorePoints/testingexcludedisk_OsDisk_1_74cdaedcea50483d9833c96adefa100f_22b4bdfe-6c54-4f72-84d8-85d8860f0c57"),
+		// 							},
+		// 							NetworkAPIVersion: to.Ptr(armcompute.NetworkAPIVersionTwoThousandTwenty1101),
+		// 						},
+		// 						SecurityProfile: &armcompute.SecurityProfile{
+		// 							UefiSettings: &armcompute.UefiSettings{
+		// 								SecureBootEnabled: to.Ptr(true),
+		// 								VTpmEnabled: to.Ptr(true),
+		// 							},
+		// 							EncryptionAtHost: to.Ptr(true),
+		// 							SecurityType: to.Ptr(armcompute.SecurityTypesTrustedLaunch),
+		// 						},
+		// 						DiagnosticsProfile: &armcompute.DiagnosticsProfile{
+		// 							BootDiagnostics: &armcompute.BootDiagnostics{
+		// 								Enabled: to.Ptr(true),
+		// 								StorageURI: to.Ptr("aaaaaaaaaaaaaaaaaaa"),
+		// 							},
+		// 						},
+		// 						ExtensionProfile: &armcompute.VirtualMachineScaleSetExtensionProfile{
+		// 							Extensions: []*armcompute.VirtualMachineScaleSetExtension{
+		// 								{
+		// 									Name: to.Ptr("aa"),
+		// 									Type: to.Ptr("aaaaa"),
+		// 									Properties: &armcompute.VirtualMachineScaleSetExtensionProperties{
+		// 										ForceUpdateTag: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaa"),
+		// 										Publisher: to.Ptr("aaaaaaaaaaaaa"),
+		// 										Type: to.Ptr("aaaaaaaa"),
+		// 										TypeHandlerVersion: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaa"),
+		// 										AutoUpgradeMinorVersion: to.Ptr(true),
+		// 										EnableAutomaticUpgrade: to.Ptr(true),
+		// 										Settings: map[string]any{
+		// 										},
+		// 										ProtectedSettings: map[string]any{
+		// 										},
+		// 										ProvisioningState: to.Ptr("aaaaaaaaaaaaaa"),
+		// 										ProvisionAfterExtensions: []*string{
+		// 											to.Ptr("aaaaaaaaaaaaaa"),
+		// 										},
+		// 										SuppressFailures: to.Ptr(true),
+		// 									},
+		// 									ID: to.Ptr("aaaaaaaaaaaaaaaaaaaaaa"),
+		// 								},
+		// 							},
+		// 							ExtensionsTimeBudget: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaa"),
+		// 						},
+		// 						LicenseType: to.Ptr("aaaa"),
+		// 						Priority: to.Ptr(armcompute.VirtualMachinePriorityTypesRegular),
+		// 						EvictionPolicy: to.Ptr(armcompute.VirtualMachineEvictionPolicyTypesDeallocate),
+		// 						BillingProfile: &armcompute.BillingProfile{
+		// 							MaxPrice: to.Ptr[float64](4),
+		// 						},
+		// 						ScheduledEventsProfile: &armcompute.ScheduledEventsProfile{
+		// 							TerminateNotificationProfile: &armcompute.TerminateNotificationProfile{
+		// 								NotBeforeTimeout: to.Ptr("aa"),
+		// 								Enable: to.Ptr(true),
+		// 							},
+		// 						},
+		// 						UserData: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaa"),
+		// 						CapacityReservation: &armcompute.CapacityReservationProfile{
+		// 							CapacityReservationGroup: &armcompute.SubResource{
+		// 								ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
+		// 							},
+		// 						},
+		// 						ApplicationProfile: &armcompute.ApplicationProfile{
+		// 							GalleryApplications: []*armcompute.VMGalleryApplication{
+		// 								{
+		// 									Tags: to.Ptr("aaaaaaaaaaa"),
+		// 									Order: to.Ptr[int32](29),
+		// 									PackageReferenceID: to.Ptr("aaaaaaaaaa"),
+		// 									ConfigurationReference: to.Ptr("aaaaa"),
+		// 								},
+		// 							},
+		// 						},
+		// 					},
+		// 					ProvisioningState: to.Ptr("succeeded"),
+		// 					Overprovision: to.Ptr(true),
+		// 					DoNotRunExtensionsOnOverprovisionedVMs: to.Ptr(true),
+		// 					PlatformFaultDomainCount: to.Ptr[int32](1),
+		// 					AutomaticRepairsPolicy: &armcompute.AutomaticRepairsPolicy{
+		// 						Enabled: to.Ptr(true),
+		// 						GracePeriod: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaa"),
+		// 					},
+		// 					UniqueID: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaa"),
+		// 					ZoneBalance: to.Ptr(true),
+		// 					ProximityPlacementGroup: &armcompute.SubResource{
+		// 						ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
+		// 					},
+		// 					HostGroup: &armcompute.SubResource{
+		// 						ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
+		// 					},
+		// 					AdditionalCapabilities: &armcompute.AdditionalCapabilities{
+		// 						UltraSSDEnabled: to.Ptr(true),
+		// 						HibernationEnabled: to.Ptr(true),
+		// 					},
+		// 					ScaleInPolicy: &armcompute.ScaleInPolicy{
+		// 						Rules: []*armcompute.VirtualMachineScaleSetScaleInRules{
+		// 							to.Ptr(armcompute.VirtualMachineScaleSetScaleInRulesDefault),
+		// 						},
+		// 						ForceDeletion: to.Ptr(true),
+		// 					},
+		// 					OrchestrationMode: to.Ptr(armcompute.OrchestrationModeUniform),
+		// 					SpotRestorePolicy: &armcompute.SpotRestorePolicy{
+		// 						Enabled: to.Ptr(true),
+		// 						RestoreTimeout: to.Ptr("aaaaaaaaaa"),
+		// 					},
+		// 				},
+		// 				Plan: &armcompute.Plan{
+		// 					Name: to.Ptr("aaaaaaaaaa"),
+		// 					Publisher: to.Ptr("aaaaaaaaaaaaaaaaaaaaaa"),
+		// 					Product: to.Ptr("aaaaaaaaaaaaaaaaaaaa"),
+		// 					PromotionCode: to.Ptr("aaaaaaaaaaaaaaaaaaaa"),
+		// 				},
+		// 				Identity: &armcompute.VirtualMachineScaleSetIdentity{
+		// 					PrincipalID: to.Ptr("aaaaaaaaaaaaaaa"),
+		// 					TenantID: to.Ptr("aaaaaaaaaaaaaaaa"),
+		// 					Type: to.Ptr(armcompute.ResourceIdentityTypeSystemAssigned),
+		// 					UserAssignedIdentities: map[string]*armcompute.UserAssignedIdentitiesValue{
+		// 						"key3951": &armcompute.UserAssignedIdentitiesValue{
+		// 							PrincipalID: to.Ptr("aaaa"),
+		// 							ClientID: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaa"),
+		// 						},
+		// 					},
+		// 				},
+		// 				Zones: []*string{
+		// 					to.Ptr("aaaaaaa"),
+		// 				},
+		// 				ExtendedLocation: &armcompute.ExtendedLocation{
+		// 					Name: to.Ptr("aaaaaaaaaaaaaaaaaaaaa"),
+		// 					Type: to.Ptr(armcompute.ExtendedLocationTypesEdgeZone),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("{virtualMachineScaleSetName}"),
+		// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{virtualMachineScaleSetName}1"),
+		// 				Type: to.Ptr("Microsoft.Compute/virtualMachineScaleSets"),
+		// 				Location: to.Ptr("eastus"),
+		// 				Tags: map[string]*string{
+		// 				},
+		// 				SKU: &armcompute.SKU{
+		// 					Name: to.Ptr("Standard_D2s_v3"),
+		// 					Tier: to.Ptr("Standard"),
+		// 					Capacity: to.Ptr[int64](4),
+		// 				},
+		// 				Properties: &armcompute.VirtualMachineScaleSetProperties{
+		// 					SinglePlacementGroup: to.Ptr(true),
+		// 					UpgradePolicy: &armcompute.UpgradePolicy{
+		// 						Mode: to.Ptr(armcompute.UpgradeModeAutomatic),
+		// 						AutomaticOSUpgradePolicy: &armcompute.AutomaticOSUpgradePolicy{
+		// 							EnableAutomaticOSUpgrade: to.Ptr(true),
+		// 							DisableAutomaticRollback: to.Ptr(true),
+		// 							UseRollingUpgradePolicy: to.Ptr(true),
+		// 							OSRollingUpgradeDeferral: to.Ptr(true),
+		// 						},
+		// 						RollingUpgradePolicy: &armcompute.RollingUpgradePolicy{
+		// 							MaxBatchInstancePercent: to.Ptr[int32](49),
+		// 							MaxUnhealthyInstancePercent: to.Ptr[int32](81),
+		// 							MaxUnhealthyUpgradedInstancePercent: to.Ptr[int32](98),
+		// 							PauseTimeBetweenBatches: to.Ptr("aaaaaaaaaaaaaaa"),
+		// 							EnableCrossZoneUpgrade: to.Ptr(true),
+		// 							PrioritizeUnhealthyInstances: to.Ptr(true),
+		// 							MaxSurge: to.Ptr(true),
+		// 						},
+		// 					},
+		// 					VirtualMachineProfile: &armcompute.VirtualMachineScaleSetVMProfile{
+		// 						StorageProfile: &armcompute.VirtualMachineScaleSetStorageProfile{
+		// 							OSDisk: &armcompute.VirtualMachineScaleSetOSDisk{
+		// 								CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
+		// 								Caching: to.Ptr(armcompute.CachingTypesReadWrite),
+		// 								ManagedDisk: &armcompute.VirtualMachineScaleSetManagedDiskParameters{
+		// 									StorageAccountType: to.Ptr(armcompute.StorageAccountTypesPremiumLRS),
+		// 									DiskEncryptionSet: &armcompute.DiskEncryptionSetParameters{
+		// 										ID: to.Ptr("aaaaaaaaaaaa"),
+		// 									},
+		// 								},
+		// 								DiskSizeGB: to.Ptr[int32](30),
+		// 								Name: to.Ptr("a"),
+		// 								WriteAcceleratorEnabled: to.Ptr(true),
+		// 								DiffDiskSettings: &armcompute.DiffDiskSettings{
+		// 									Option: to.Ptr(armcompute.DiffDiskOptionsLocal),
+		// 									Placement: to.Ptr(armcompute.DiffDiskPlacementCacheDisk),
+		// 								},
+		// 								OSType: to.Ptr(armcompute.OperatingSystemTypesWindows),
+		// 								Image: &armcompute.VirtualHardDisk{
+		// 									URI: to.Ptr("https://{storageAccountName}.blob.core.windows.net/{containerName}/{vhdName}.vhd"),
+		// 								},
+		// 								VhdContainers: []*string{
+		// 									to.Ptr("aaaaaaaaaaaaaaaa"),
+		// 								},
+		// 							},
+		// 							ImageReference: &armcompute.ImageReference{
+		// 								Publisher: to.Ptr("azuredatabricks"),
+		// 								Offer: to.Ptr("databricks"),
+		// 								SKU: to.Ptr("databricksworker"),
+		// 								Version: to.Ptr("3.15.2"),
+		// 								ExactVersion: to.Ptr("aa"),
+		// 								SharedGalleryImageID: to.Ptr("aaaaaaa"),
+		// 								ID: to.Ptr("aaa"),
+		// 							},
+		// 							DataDisks: []*armcompute.VirtualMachineScaleSetDataDisk{
+		// 							},
+		// 						},
+		// 						OSProfile: &armcompute.VirtualMachineScaleSetOSProfile{
+		// 							ComputerNamePrefix: to.Ptr("{virtualMachineScaleSetName}"),
+		// 							AdminUsername: to.Ptr("admin"),
+		// 							LinuxConfiguration: &armcompute.LinuxConfiguration{
+		// 								DisablePasswordAuthentication: to.Ptr(true),
+		// 								SSH: &armcompute.SSHConfiguration{
+		// 									PublicKeys: []*armcompute.SSHPublicKey{
+		// 										{
+		// 											Path: to.Ptr("aaa"),
+		// 											KeyData: to.Ptr("aaaaaa"),
+		// 										},
+		// 									},
+		// 								},
+		// 								ProvisionVMAgent: to.Ptr(true),
+		// 								PatchSettings: &armcompute.LinuxPatchSettings{
+		// 									PatchMode: to.Ptr(armcompute.LinuxVMGuestPatchModeImageDefault),
+		// 									AssessmentMode: to.Ptr(armcompute.LinuxPatchAssessmentModeImageDefault),
+		// 								},
+		// 							},
+		// 							CustomData: to.Ptr("a"),
+		// 							WindowsConfiguration: &armcompute.WindowsConfiguration{
+		// 								ProvisionVMAgent: to.Ptr(true),
+		// 								EnableAutomaticUpdates: to.Ptr(true),
+		// 								TimeZone: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
+		// 								AdditionalUnattendContent: []*armcompute.AdditionalUnattendContent{
+		// 									{
+		// 										PassName: to.Ptr("OobeSystem"),
+		// 										ComponentName: to.Ptr("Microsoft-Windows-Shell-Setup"),
+		// 										SettingName: to.Ptr(armcompute.SettingNamesAutoLogon),
+		// 										Content: to.Ptr("aaaaaaaaaaaaaaaaaaaa"),
+		// 									},
+		// 								},
+		// 								PatchSettings: &armcompute.PatchSettings{
+		// 									PatchMode: to.Ptr(armcompute.WindowsVMGuestPatchModeManual),
+		// 									EnableHotpatching: to.Ptr(true),
+		// 									AssessmentMode: to.Ptr(armcompute.WindowsPatchAssessmentModeImageDefault),
+		// 								},
+		// 								WinRM: &armcompute.WinRMConfiguration{
+		// 									Listeners: []*armcompute.WinRMListener{
+		// 										{
+		// 											Protocol: to.Ptr(armcompute.ProtocolTypesHTTP),
+		// 											CertificateURL: to.Ptr("aaaaaaaaaaaaaaaaaaaaaa"),
+		// 										},
+		// 									},
+		// 								},
+		// 							},
+		// 							Secrets: []*armcompute.VaultSecretGroup{
+		// 								{
+		// 									SourceVault: &armcompute.SubResource{
+		// 										ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
+		// 									},
+		// 									VaultCertificates: []*armcompute.VaultCertificate{
+		// 										{
+		// 											CertificateURL: to.Ptr("aaaaaaa"),
+		// 											CertificateStore: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaa"),
+		// 										},
+		// 									},
+		// 								},
+		// 							},
+		// 						},
+		// 						NetworkProfile: &armcompute.VirtualMachineScaleSetNetworkProfile{
+		// 							NetworkInterfaceConfigurations: []*armcompute.VirtualMachineScaleSetNetworkConfiguration{
+		// 								{
+		// 									Name: to.Ptr("myNic1"),
+		// 									Properties: &armcompute.VirtualMachineScaleSetNetworkConfigurationProperties{
+		// 										Primary: to.Ptr(true),
+		// 										IPConfigurations: []*armcompute.VirtualMachineScaleSetIPConfiguration{
+		// 											{
+		// 												Name: to.Ptr("myIPConfig"),
+		// 												Properties: &armcompute.VirtualMachineScaleSetIPConfigurationProperties{
+		// 													Primary: to.Ptr(true),
+		// 													Subnet: &armcompute.APIEntityReference{
+		// 														ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/myVNet/subnets/mySubnet"),
+		// 													},
+		// 													PublicIPAddressConfiguration: &armcompute.VirtualMachineScaleSetPublicIPAddressConfiguration{
+		// 														Name: to.Ptr("aaaaaaaaaaaaaaaaaa"),
+		// 														Properties: &armcompute.VirtualMachineScaleSetPublicIPAddressConfigurationProperties{
+		// 															IdleTimeoutInMinutes: to.Ptr[int32](18),
+		// 															DNSSettings: &armcompute.VirtualMachineScaleSetPublicIPAddressConfigurationDNSSettings{
+		// 																DomainNameLabel: to.Ptr("aaaaaaaaaaaaaaaaaa"),
+		// 															},
+		// 															IPTags: []*armcompute.VirtualMachineScaleSetIPTag{
+		// 																{
+		// 																	IPTagType: to.Ptr("aaaaaaa"),
+		// 																	Tag: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaa"),
+		// 																},
+		// 															},
+		// 															PublicIPPrefix: &armcompute.SubResource{
+		// 																ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
+		// 															},
+		// 															PublicIPAddressVersion: to.Ptr(armcompute.IPVersionIPv4),
+		// 															DeleteOption: to.Ptr(armcompute.DeleteOptionsDelete),
+		// 														},
+		// 														SKU: &armcompute.PublicIPAddressSKU{
+		// 															Name: to.Ptr(armcompute.PublicIPAddressSKUNameBasic),
+		// 															Tier: to.Ptr(armcompute.PublicIPAddressSKUTierRegional),
+		// 														},
+		// 													},
+		// 													PrivateIPAddressVersion: to.Ptr(armcompute.IPVersionIPv4),
+		// 													ApplicationGatewayBackendAddressPools: []*armcompute.SubResource{
+		// 														{
+		// 															ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
+		// 														},
+		// 													},
+		// 													ApplicationSecurityGroups: []*armcompute.SubResource{
+		// 														{
+		// 															ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
+		// 														},
+		// 													},
+		// 													LoadBalancerBackendAddressPools: []*armcompute.SubResource{
+		// 														{
+		// 															ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
+		// 														},
+		// 													},
+		// 													LoadBalancerInboundNatPools: []*armcompute.SubResource{
+		// 														{
+		// 															ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
+		// 														},
+		// 													},
+		// 												},
+		// 											},
+		// 										},
+		// 										NetworkSecurityGroup: &armcompute.SubResource{
+		// 											ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkSecurityGroups/myNetworkSecurityGroup"),
+		// 										},
+		// 										EnableAcceleratedNetworking: to.Ptr(true),
+		// 										EnableFpga: to.Ptr(true),
+		// 										DNSSettings: &armcompute.VirtualMachineScaleSetNetworkConfigurationDNSSettings{
+		// 											DNSServers: []*string{
+		// 												to.Ptr("aaaaaaaaaaaa"),
+		// 											},
+		// 										},
+		// 										EnableIPForwarding: to.Ptr(true),
+		// 										DeleteOption: to.Ptr(armcompute.DeleteOptionsDelete),
+		// 									},
+		// 								},
+		// 							},
+		// 							HealthProbe: &armcompute.APIEntityReference{
+		// 								ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/restorePointCollections/rpcName/restorePoints/restorePointName/diskRestorePoints/testingexcludedisk_OsDisk_1_74cdaedcea50483d9833c96adefa100f_22b4bdfe-6c54-4f72-84d8-85d8860f0c57"),
+		// 							},
+		// 							NetworkAPIVersion: to.Ptr(armcompute.NetworkAPIVersionTwoThousandTwenty1101),
+		// 						},
+		// 						SecurityProfile: &armcompute.SecurityProfile{
+		// 							UefiSettings: &armcompute.UefiSettings{
+		// 								SecureBootEnabled: to.Ptr(true),
+		// 								VTpmEnabled: to.Ptr(true),
+		// 							},
+		// 							EncryptionAtHost: to.Ptr(true),
+		// 							SecurityType: to.Ptr(armcompute.SecurityTypesTrustedLaunch),
+		// 						},
+		// 						DiagnosticsProfile: &armcompute.DiagnosticsProfile{
+		// 							BootDiagnostics: &armcompute.BootDiagnostics{
+		// 								Enabled: to.Ptr(true),
+		// 								StorageURI: to.Ptr("aaaaaaaaaaaaaaaaaaa"),
+		// 							},
+		// 						},
+		// 						ExtensionProfile: &armcompute.VirtualMachineScaleSetExtensionProfile{
+		// 							Extensions: []*armcompute.VirtualMachineScaleSetExtension{
+		// 								{
+		// 									Name: to.Ptr("aa"),
+		// 									Type: to.Ptr("aaaaa"),
+		// 									Properties: &armcompute.VirtualMachineScaleSetExtensionProperties{
+		// 										ForceUpdateTag: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaa"),
+		// 										Publisher: to.Ptr("aaaaaaaaaaaaa"),
+		// 										Type: to.Ptr("aaaaaaaa"),
+		// 										TypeHandlerVersion: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaa"),
+		// 										AutoUpgradeMinorVersion: to.Ptr(true),
+		// 										EnableAutomaticUpgrade: to.Ptr(true),
+		// 										Settings: map[string]any{
+		// 										},
+		// 										ProtectedSettings: map[string]any{
+		// 										},
+		// 										ProvisioningState: to.Ptr("aaaaaaaaaaaaaa"),
+		// 										ProvisionAfterExtensions: []*string{
+		// 											to.Ptr("aaaaaaaaaaaaaa"),
+		// 										},
+		// 										SuppressFailures: to.Ptr(true),
+		// 									},
+		// 									ID: to.Ptr("aaaaaaaaaaaaaaaaaaaaaa"),
+		// 								},
+		// 							},
+		// 							ExtensionsTimeBudget: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaa"),
+		// 						},
+		// 						LicenseType: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaa"),
+		// 						Priority: to.Ptr(armcompute.VirtualMachinePriorityTypesRegular),
+		// 						EvictionPolicy: to.Ptr(armcompute.VirtualMachineEvictionPolicyTypesDeallocate),
+		// 						BillingProfile: &armcompute.BillingProfile{
+		// 							MaxPrice: to.Ptr[float64](4),
+		// 						},
+		// 						ScheduledEventsProfile: &armcompute.ScheduledEventsProfile{
+		// 							TerminateNotificationProfile: &armcompute.TerminateNotificationProfile{
+		// 								NotBeforeTimeout: to.Ptr("aa"),
+		// 								Enable: to.Ptr(true),
+		// 							},
+		// 						},
+		// 						UserData: to.Ptr("aaaaaaaaaaaaaaaaaaaaaa"),
+		// 						CapacityReservation: &armcompute.CapacityReservationProfile{
+		// 							CapacityReservationGroup: &armcompute.SubResource{
+		// 								ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
+		// 							},
+		// 						},
+		// 						ApplicationProfile: &armcompute.ApplicationProfile{
+		// 							GalleryApplications: []*armcompute.VMGalleryApplication{
+		// 								{
+		// 									Tags: to.Ptr("aaaaaaaaaaa"),
+		// 									Order: to.Ptr[int32](29),
+		// 									PackageReferenceID: to.Ptr("aaaaaaaaaa"),
+		// 									ConfigurationReference: to.Ptr("aaaaa"),
+		// 								},
+		// 							},
+		// 						},
+		// 					},
+		// 					ProvisioningState: to.Ptr("succeeded"),
+		// 					Overprovision: to.Ptr(true),
+		// 					DoNotRunExtensionsOnOverprovisionedVMs: to.Ptr(true),
+		// 					PlatformFaultDomainCount: to.Ptr[int32](1),
+		// 					AutomaticRepairsPolicy: &armcompute.AutomaticRepairsPolicy{
+		// 						Enabled: to.Ptr(true),
+		// 						GracePeriod: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaa"),
+		// 					},
+		// 					UniqueID: to.Ptr("aaaaa"),
+		// 					ZoneBalance: to.Ptr(true),
+		// 					ProximityPlacementGroup: &armcompute.SubResource{
+		// 						ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
+		// 					},
+		// 					HostGroup: &armcompute.SubResource{
+		// 						ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
+		// 					},
+		// 					AdditionalCapabilities: &armcompute.AdditionalCapabilities{
+		// 						UltraSSDEnabled: to.Ptr(true),
+		// 						HibernationEnabled: to.Ptr(true),
+		// 					},
+		// 					ScaleInPolicy: &armcompute.ScaleInPolicy{
+		// 						Rules: []*armcompute.VirtualMachineScaleSetScaleInRules{
+		// 							to.Ptr(armcompute.VirtualMachineScaleSetScaleInRulesDefault),
+		// 						},
+		// 						ForceDeletion: to.Ptr(true),
+		// 					},
+		// 					OrchestrationMode: to.Ptr(armcompute.OrchestrationModeUniform),
+		// 					SpotRestorePolicy: &armcompute.SpotRestorePolicy{
+		// 						Enabled: to.Ptr(true),
+		// 						RestoreTimeout: to.Ptr("aaaaaaaaaa"),
+		// 					},
+		// 				},
+		// 				Plan: &armcompute.Plan{
+		// 					Name: to.Ptr("aaaaaaaaaa"),
+		// 					Publisher: to.Ptr("aaaaaaaaaaaaaaaaaaaaaa"),
+		// 					Product: to.Ptr("aaaaaaaaaaaaaaaaaaaa"),
+		// 					PromotionCode: to.Ptr("aaaaaaaaaaaaaaaaaaaa"),
+		// 				},
+		// 				Identity: &armcompute.VirtualMachineScaleSetIdentity{
+		// 					PrincipalID: to.Ptr("aaaaaaaaaaaaaaa"),
+		// 					TenantID: to.Ptr("aaaaaaaaaaaaaaaa"),
+		// 					Type: to.Ptr(armcompute.ResourceIdentityTypeSystemAssigned),
+		// 					UserAssignedIdentities: map[string]*armcompute.UserAssignedIdentitiesValue{
+		// 						"key3951": &armcompute.UserAssignedIdentitiesValue{
+		// 							PrincipalID: to.Ptr("aaaa"),
+		// 							ClientID: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaa"),
+		// 						},
+		// 					},
+		// 				},
+		// 				Zones: []*string{
+		// 					to.Ptr("aaaaaaaa"),
+		// 				},
+		// 				ExtendedLocation: &armcompute.ExtendedLocation{
+		// 					Name: to.Ptr("aaaaaaaaaaaaaaaaaaaaa"),
+		// 					Type: to.Ptr(armcompute.ExtendedLocationTypesEdgeZone),
+		// 				},
+		// 			},
+		// 		},
+		// 		NextLink: to.Ptr("a://example.com/aaaaaaaaaaaaaaaaaaa"),
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_List_MinimumSet_Gen.json
+func ExampleVirtualMachineScaleSetsClient_NewListPager_virtualMachineScaleSetListMinimumSetGen() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewVirtualMachineScaleSetsClient().NewListPager("rgcompute", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armcompute.VirtualMachineScaleSetsClientListResponse{
+		// 	VirtualMachineScaleSetListResult: armcompute.VirtualMachineScaleSetListResult{
+		// 		Value: []*armcompute.VirtualMachineScaleSet{
+		// 			{
+		// 				Location: to.Ptr("eastus"),
+		// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/rgcompute/providers/Microsoft.Compute/virtualMachineScaleSets/{virtualMachineScaleSetName}"),
+		// 			},
+		// 			{
+		// 				Location: to.Ptr("eastus"),
+		// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/rgcompute/providers/Microsoft.Compute/virtualMachineScaleSets/{virtualMachineScaleSetName}"),
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_ListSkus_MaximumSet_Gen.json
+func ExampleVirtualMachineScaleSetsClient_NewListSKUsPager_virtualMachineScaleSetListSkusMaximumSetGen() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewVirtualMachineScaleSetsClient().NewListSKUsPager("rgcompute", "aaaaaa", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armcompute.VirtualMachineScaleSetsClientListSKUsResponse{
+		// 	VirtualMachineScaleSetListSKUsResult: armcompute.VirtualMachineScaleSetListSKUsResult{
+		// 		Value: []*armcompute.VirtualMachineScaleSetSKU{
+		// 			{
+		// 				ResourceType: to.Ptr("aaaaaaaaaaaaaaaaa"),
+		// 				SKU: &armcompute.SKU{
+		// 					Name: to.Ptr("DSv3-Type1"),
+		// 					Tier: to.Ptr("aaa"),
+		// 					Capacity: to.Ptr[int64](7),
+		// 				},
+		// 				Capacity: &armcompute.VirtualMachineScaleSetSKUCapacity{
+		// 					Minimum: to.Ptr[int64](22),
+		// 					Maximum: to.Ptr[int64](27),
+		// 					DefaultCapacity: to.Ptr[int64](20),
+		// 					ScaleType: to.Ptr(armcompute.VirtualMachineScaleSetSKUScaleTypeAutomatic),
+		// 				},
+		// 			},
+		// 		},
+		// 		NextLink: to.Ptr("a://example.com/aaaaaaaaaaaaaa"),
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_ListSkus_MinimumSet_Gen.json
+func ExampleVirtualMachineScaleSetsClient_NewListSKUsPager_virtualMachineScaleSetListSkusMinimumSetGen() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewVirtualMachineScaleSetsClient().NewListSKUsPager("rgcompute", "aaaaaaaaaaaaaaaa", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armcompute.VirtualMachineScaleSetsClientListSKUsResponse{
+		// 	VirtualMachineScaleSetListSKUsResult: armcompute.VirtualMachineScaleSetListSKUsResult{
+		// 		Value: []*armcompute.VirtualMachineScaleSetSKU{
+		// 			{
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
 }

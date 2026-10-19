@@ -33,13 +33,13 @@ type ManagedDashboardsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, dashboardName string, options *armdashboard.ManagedDashboardsClientGetOptions) (resp azfake.Responder[armdashboard.ManagedDashboardsClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method ManagedDashboardsClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, options *armdashboard.ManagedDashboardsClientListOptions) (resp azfake.PagerResponder[armdashboard.ManagedDashboardsClientListResponse])
-
 	// NewListBySubscriptionPager is the fake for method ManagedDashboardsClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armdashboard.ManagedDashboardsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armdashboard.ManagedDashboardsClientListBySubscriptionResponse])
+
+	// NewListPager is the fake for method ManagedDashboardsClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(resourceGroupName string, options *armdashboard.ManagedDashboardsClientListOptions) (resp azfake.PagerResponder[armdashboard.ManagedDashboardsClientListResponse])
 
 	// Update is the fake for method ManagedDashboardsClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
@@ -53,8 +53,8 @@ func NewManagedDashboardsServerTransport(srv *ManagedDashboardsServer) *ManagedD
 	return &ManagedDashboardsServerTransport{
 		srv:                        srv,
 		beginCreate:                newTracker[azfake.PollerResponder[armdashboard.ManagedDashboardsClientCreateResponse]](),
-		newListPager:               newTracker[azfake.PagerResponder[armdashboard.ManagedDashboardsClientListResponse]](),
 		newListBySubscriptionPager: newTracker[azfake.PagerResponder[armdashboard.ManagedDashboardsClientListBySubscriptionResponse]](),
+		newListPager:               newTracker[azfake.PagerResponder[armdashboard.ManagedDashboardsClientListResponse]](),
 	}
 }
 
@@ -63,8 +63,8 @@ func NewManagedDashboardsServerTransport(srv *ManagedDashboardsServer) *ManagedD
 type ManagedDashboardsServerTransport struct {
 	srv                        *ManagedDashboardsServer
 	beginCreate                *tracker[azfake.PollerResponder[armdashboard.ManagedDashboardsClientCreateResponse]]
-	newListPager               *tracker[azfake.PagerResponder[armdashboard.ManagedDashboardsClientListResponse]]
 	newListBySubscriptionPager *tracker[azfake.PagerResponder[armdashboard.ManagedDashboardsClientListBySubscriptionResponse]]
+	newListPager               *tracker[azfake.PagerResponder[armdashboard.ManagedDashboardsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for ManagedDashboardsServerTransport.
@@ -94,10 +94,10 @@ func (m *ManagedDashboardsServerTransport) dispatchToMethodFake(req *http.Reques
 				res.resp, res.err = m.dispatchDelete(req)
 			case "ManagedDashboardsClient.Get":
 				res.resp, res.err = m.dispatchGet(req)
-			case "ManagedDashboardsClient.NewListPager":
-				res.resp, res.err = m.dispatchNewListPager(req)
 			case "ManagedDashboardsClient.NewListBySubscriptionPager":
 				res.resp, res.err = m.dispatchNewListBySubscriptionPager(req)
+			case "ManagedDashboardsClient.NewListPager":
+				res.resp, res.err = m.dispatchNewListPager(req)
 			case "ManagedDashboardsClient.Update":
 				res.resp, res.err = m.dispatchUpdate(req)
 			default:
@@ -230,6 +230,39 @@ func (m *ManagedDashboardsServerTransport) dispatchGet(req *http.Request) (*http
 	return resp, nil
 }
 
+func (m *ManagedDashboardsServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
+	if m.srv.NewListBySubscriptionPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
+	}
+	newListBySubscriptionPager := m.newListBySubscriptionPager.get(req)
+	if newListBySubscriptionPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Dashboard/dashboards`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := m.srv.NewListBySubscriptionPager(nil)
+		newListBySubscriptionPager = &resp
+		m.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
+		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armdashboard.ManagedDashboardsClientListBySubscriptionResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		m.newListBySubscriptionPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListBySubscriptionPager) {
+		m.newListBySubscriptionPager.remove(req)
+	}
+	return resp, nil
+}
+
 func (m *ManagedDashboardsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
 	if m.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
@@ -263,39 +296,6 @@ func (m *ManagedDashboardsServerTransport) dispatchNewListPager(req *http.Reques
 	}
 	if !server.PagerResponderMore(newListPager) {
 		m.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (m *ManagedDashboardsServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
-	if m.srv.NewListBySubscriptionPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
-	}
-	newListBySubscriptionPager := m.newListBySubscriptionPager.get(req)
-	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Dashboard/dashboards`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := m.srv.NewListBySubscriptionPager(nil)
-		newListBySubscriptionPager = &resp
-		m.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
-		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armdashboard.ManagedDashboardsClientListBySubscriptionResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		m.newListBySubscriptionPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListBySubscriptionPager) {
-		m.newListBySubscriptionPager.remove(req)
 	}
 	return resp, nil
 }

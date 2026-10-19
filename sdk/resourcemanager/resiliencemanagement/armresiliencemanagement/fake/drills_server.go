@@ -38,14 +38,6 @@ type DrillsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginEnd func(ctx context.Context, serviceGroupName string, operationID string, drillName string, body armresiliencemanagement.DrillEndRequest, options *armresiliencemanagement.DrillsClientBeginEndOptions) (resp azfake.PollerResponder[armresiliencemanagement.DrillsClientEndResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method DrillsClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, serviceGroupName string, drillName string, options *armresiliencemanagement.DrillsClientGetOptions) (resp azfake.Responder[armresiliencemanagement.DrillsClientGetResponse], errResp azfake.ErrorResponder)
-
-	// NewListPager is the fake for method DrillsClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(serviceGroupName string, options *armresiliencemanagement.DrillsClientListOptions) (resp azfake.PagerResponder[armresiliencemanagement.DrillsClientListResponse])
-
 	// BeginResyncReadinessCheck is the fake for method DrillsClient.BeginResyncReadinessCheck
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginResyncReadinessCheck func(ctx context.Context, serviceGroupName string, operationID string, drillName string, options *armresiliencemanagement.DrillsClientBeginResyncReadinessCheckOptions) (resp azfake.PollerResponder[armresiliencemanagement.DrillsClientResyncReadinessCheckResponse], errResp azfake.ErrorResponder)
@@ -61,6 +53,14 @@ type DrillsServer struct {
 	// BeginValidateForExecution is the fake for method DrillsClient.BeginValidateForExecution
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginValidateForExecution func(ctx context.Context, serviceGroupName string, operationID string, drillName string, body armresiliencemanagement.ValidateForExecutionRequest, options *armresiliencemanagement.DrillsClientBeginValidateForExecutionOptions) (resp azfake.PollerResponder[armresiliencemanagement.DrillsClientValidateForExecutionResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method DrillsClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, serviceGroupName string, drillName string, options *armresiliencemanagement.DrillsClientGetOptions) (resp azfake.Responder[armresiliencemanagement.DrillsClientGetResponse], errResp azfake.ErrorResponder)
+
+	// NewListPager is the fake for method DrillsClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(serviceGroupName string, options *armresiliencemanagement.DrillsClientListOptions) (resp azfake.PagerResponder[armresiliencemanagement.DrillsClientListResponse])
 }
 
 // NewDrillsServerTransport creates a new instance of DrillsServerTransport with the provided implementation.
@@ -73,11 +73,11 @@ func NewDrillsServerTransport(srv *DrillsServer) *DrillsServerTransport {
 		beginCreate:               newTracker[azfake.PollerResponder[armresiliencemanagement.DrillsClientCreateResponse]](),
 		beginDelete:               newTracker[azfake.PollerResponder[armresiliencemanagement.DrillsClientDeleteResponse]](),
 		beginEnd:                  newTracker[azfake.PollerResponder[armresiliencemanagement.DrillsClientEndResponse]](),
-		newListPager:              newTracker[azfake.PagerResponder[armresiliencemanagement.DrillsClientListResponse]](),
 		beginResyncReadinessCheck: newTracker[azfake.PollerResponder[armresiliencemanagement.DrillsClientResyncReadinessCheckResponse]](),
 		beginStart:                newTracker[azfake.PollerResponder[armresiliencemanagement.DrillsClientStartResponse]](),
 		beginUpdate:               newTracker[azfake.PollerResponder[armresiliencemanagement.DrillsClientUpdateResponse]](),
 		beginValidateForExecution: newTracker[azfake.PollerResponder[armresiliencemanagement.DrillsClientValidateForExecutionResponse]](),
+		newListPager:              newTracker[azfake.PagerResponder[armresiliencemanagement.DrillsClientListResponse]](),
 	}
 }
 
@@ -89,11 +89,11 @@ type DrillsServerTransport struct {
 	beginCreate               *tracker[azfake.PollerResponder[armresiliencemanagement.DrillsClientCreateResponse]]
 	beginDelete               *tracker[azfake.PollerResponder[armresiliencemanagement.DrillsClientDeleteResponse]]
 	beginEnd                  *tracker[azfake.PollerResponder[armresiliencemanagement.DrillsClientEndResponse]]
-	newListPager              *tracker[azfake.PagerResponder[armresiliencemanagement.DrillsClientListResponse]]
 	beginResyncReadinessCheck *tracker[azfake.PollerResponder[armresiliencemanagement.DrillsClientResyncReadinessCheckResponse]]
 	beginStart                *tracker[azfake.PollerResponder[armresiliencemanagement.DrillsClientStartResponse]]
 	beginUpdate               *tracker[azfake.PollerResponder[armresiliencemanagement.DrillsClientUpdateResponse]]
 	beginValidateForExecution *tracker[azfake.PollerResponder[armresiliencemanagement.DrillsClientValidateForExecutionResponse]]
+	newListPager              *tracker[azfake.PagerResponder[armresiliencemanagement.DrillsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for DrillsServerTransport.
@@ -125,10 +125,6 @@ func (d *DrillsServerTransport) dispatchToMethodFake(req *http.Request, method s
 				res.resp, res.err = d.dispatchBeginDelete(req)
 			case "DrillsClient.BeginEnd":
 				res.resp, res.err = d.dispatchBeginEnd(req)
-			case "DrillsClient.Get":
-				res.resp, res.err = d.dispatchGet(req)
-			case "DrillsClient.NewListPager":
-				res.resp, res.err = d.dispatchNewListPager(req)
 			case "DrillsClient.BeginResyncReadinessCheck":
 				res.resp, res.err = d.dispatchBeginResyncReadinessCheck(req)
 			case "DrillsClient.BeginStart":
@@ -137,6 +133,10 @@ func (d *DrillsServerTransport) dispatchToMethodFake(req *http.Request, method s
 				res.resp, res.err = d.dispatchBeginUpdate(req)
 			case "DrillsClient.BeginValidateForExecution":
 				res.resp, res.err = d.dispatchBeginValidateForExecution(req)
+			case "DrillsClient.Get":
+				res.resp, res.err = d.dispatchGet(req)
+			case "DrillsClient.NewListPager":
+				res.resp, res.err = d.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -341,95 +341,6 @@ func (d *DrillsServerTransport) dispatchBeginEnd(req *http.Request) (*http.Respo
 	return resp, nil
 }
 
-func (d *DrillsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if d.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureResilienceManagement/drills/(?P<drillName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	drillNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("drillName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := d.srv.Get(req.Context(), serviceGroupNameParam, drillNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Drill, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (d *DrillsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if d.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := d.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureResilienceManagement/drills`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		skipTokenParam := getOptional(qp.Get("$skipToken"))
-		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
-		})
-		if err != nil {
-			return nil, err
-		}
-		var options *armresiliencemanagement.DrillsClientListOptions
-		if skipTokenParam != nil || topParam != nil {
-			options = &armresiliencemanagement.DrillsClientListOptions{
-				SkipToken: skipTokenParam,
-				Top:       topParam,
-			}
-		}
-		resp := d.srv.NewListPager(serviceGroupNameParam, options)
-		newListPager = &resp
-		d.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armresiliencemanagement.DrillsClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		d.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		d.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (d *DrillsServerTransport) dispatchBeginResyncReadinessCheck(req *http.Request) (*http.Response, error) {
 	if d.srv.BeginResyncReadinessCheck == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginResyncReadinessCheck not implemented")}
@@ -615,6 +526,95 @@ func (d *DrillsServerTransport) dispatchBeginValidateForExecution(req *http.Requ
 		d.beginValidateForExecution.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (d *DrillsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if d.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureResilienceManagement/drills/(?P<drillName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	drillNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("drillName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := d.srv.Get(req.Context(), serviceGroupNameParam, drillNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Drill, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (d *DrillsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if d.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := d.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureResilienceManagement/drills`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		skipTokenParam := getOptional(qp.Get("$skipToken"))
+		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		var options *armresiliencemanagement.DrillsClientListOptions
+		if skipTokenParam != nil || topParam != nil {
+			options = &armresiliencemanagement.DrillsClientListOptions{
+				SkipToken: skipTokenParam,
+				Top:       topParam,
+			}
+		}
+		resp := d.srv.NewListPager(serviceGroupNameParam, options)
+		newListPager = &resp
+		d.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armresiliencemanagement.DrillsClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		d.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		d.newListPager.remove(req)
+	}
 	return resp, nil
 }
 

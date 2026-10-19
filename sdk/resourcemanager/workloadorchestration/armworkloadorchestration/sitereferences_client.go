@@ -69,7 +69,7 @@ func (client *SiteReferencesClient) BeginCreateOrUpdate(ctx context.Context, res
 	}
 }
 
-// CreateOrUpdate - Get Site Reference Resource
+// createOrUpdate - Get Site Reference Resource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *SiteReferencesClient) createOrUpdate(ctx context.Context, resourceGroupName string, contextName string, siteReferenceName string, resource SiteReference, options *SiteReferencesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *SiteReferencesClient) createOrUpdate(ctx context.Context, resource
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *SiteReferencesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, contextName string, siteReferenceName string, resource SiteReference, _ *SiteReferencesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/contexts/{contextName}/siteReferences/{siteReferenceName}"
 	if client.subscriptionID == "" {
@@ -149,7 +149,7 @@ func (client *SiteReferencesClient) BeginDelete(ctx context.Context, resourceGro
 	}
 }
 
-// Delete - Get Site Reference Resource
+// deleteOperation - Get Site Reference Resource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *SiteReferencesClient) deleteOperation(ctx context.Context, resourceGroupName string, contextName string, siteReferenceName string, options *SiteReferencesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -171,7 +171,7 @@ func (client *SiteReferencesClient) deleteOperation(ctx context.Context, resourc
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *SiteReferencesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, contextName string, siteReferenceName string, _ *SiteReferencesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/contexts/{contextName}/siteReferences/{siteReferenceName}"
 	if client.subscriptionID == "" {
@@ -197,6 +197,87 @@ func (client *SiteReferencesClient) deleteCreateRequest(ctx context.Context, res
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20250601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - Get Site Reference Resource
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - contextName - The name of the Context.
+//   - siteReferenceName - The name of the SiteReference
+//   - properties - The resource properties to be updated.
+//   - options - SiteReferencesClientBeginUpdateOptions contains the optional parameters for the SiteReferencesClient.BeginUpdate
+//     method.
+func (client *SiteReferencesClient) BeginUpdate(ctx context.Context, resourceGroupName string, contextName string, siteReferenceName string, properties SiteReference, options *SiteReferencesClientBeginUpdateOptions) (*runtime.Poller[SiteReferencesClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, contextName, siteReferenceName, properties, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SiteReferencesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SiteReferencesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Get Site Reference Resource
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *SiteReferencesClient) update(ctx context.Context, resourceGroupName string, contextName string, siteReferenceName string, properties SiteReference, options *SiteReferencesClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "SiteReferencesClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, contextName, siteReferenceName, properties, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *SiteReferencesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, contextName string, siteReferenceName string, properties SiteReference, _ *SiteReferencesClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/contexts/{contextName}/siteReferences/{siteReferenceName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if contextName == "" {
+		return nil, errors.New("parameter contextName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{contextName}", url.PathEscape(contextName))
+	if siteReferenceName == "" {
+		return nil, errors.New("parameter siteReferenceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{siteReferenceName}", url.PathEscape(siteReferenceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, properties); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -340,85 +421,4 @@ func (client *SiteReferencesClient) listByContextHandleResponse(resp *http.Respo
 		return SiteReferencesClientListByContextResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Get Site Reference Resource
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - contextName - The name of the Context.
-//   - siteReferenceName - The name of the SiteReference
-//   - properties - The resource properties to be updated.
-//   - options - SiteReferencesClientBeginUpdateOptions contains the optional parameters for the SiteReferencesClient.BeginUpdate
-//     method.
-func (client *SiteReferencesClient) BeginUpdate(ctx context.Context, resourceGroupName string, contextName string, siteReferenceName string, properties SiteReference, options *SiteReferencesClientBeginUpdateOptions) (*runtime.Poller[SiteReferencesClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, contextName, siteReferenceName, properties, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SiteReferencesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SiteReferencesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Get Site Reference Resource
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *SiteReferencesClient) update(ctx context.Context, resourceGroupName string, contextName string, siteReferenceName string, properties SiteReference, options *SiteReferencesClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "SiteReferencesClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, contextName, siteReferenceName, properties, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *SiteReferencesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, contextName string, siteReferenceName string, properties SiteReference, _ *SiteReferencesClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/contexts/{contextName}/siteReferences/{siteReferenceName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if contextName == "" {
-		return nil, errors.New("parameter contextName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{contextName}", url.PathEscape(contextName))
-	if siteReferenceName == "" {
-		return nil, errors.New("parameter siteReferenceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{siteReferenceName}", url.PathEscape(siteReferenceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

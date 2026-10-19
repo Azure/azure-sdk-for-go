@@ -71,7 +71,7 @@ func (client *ScenarioRunsClient) BeginCancel(ctx context.Context, resourceGroup
 	}
 }
 
-// Cancel - Cancel the currently running scenario execution.
+// cancel - Cancel the currently running scenario execution.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ScenarioRunsClient) cancel(ctx context.Context, resourceGroupName string, workspaceName string, scenarioName string, runID string, options *ScenarioRunsClientBeginCancelOptions) (*http.Response, error) {
 	var err error
@@ -93,7 +93,7 @@ func (client *ScenarioRunsClient) cancel(ctx context.Context, resourceGroupName 
 	return httpResp, nil
 }
 
-// cancelCreateRequest creates the Cancel request.
+// cancelCreateRequest creates the cancel request.
 func (client *ScenarioRunsClient) cancelCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, scenarioName string, runID string, _ *ScenarioRunsClientBeginCancelOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/workspaces/{workspaceName}/scenarios/{scenarioName}/runs/{runId}/cancel"
 	if client.subscriptionID == "" {

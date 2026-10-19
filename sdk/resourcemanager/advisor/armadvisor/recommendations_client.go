@@ -227,83 +227,6 @@ func (client *RecommendationsClient) getGenerateStatusHandleResponse(resp *http.
 	return result, nil
 }
 
-// NewListPager - Obtains cached recommendations for a subscription. The recommendations are generated or computed by invoking
-// generateRecommendations.
-//   - options - RecommendationsClientListOptions contains the optional parameters for the RecommendationsClient.NewListPager
-//     method.
-func (client *RecommendationsClient) NewListPager(options *RecommendationsClientListOptions) *runtime.Pager[RecommendationsClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[RecommendationsClientListResponse]{
-		More: func(page RecommendationsClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *RecommendationsClientListResponse) (RecommendationsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "RecommendationsClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listCreateRequest(ctx, nextLink, options)
-			if err != nil {
-				return RecommendationsClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return RecommendationsClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *RecommendationsClient) listCreateRequest(ctx context.Context, nextLink string, options *RecommendationsClientListOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Advisor/recommendations"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		if options != nil && options.Filter != nil {
-			reqQP.Set("$filter", *options.Filter)
-		}
-		if options != nil && options.SkipToken != nil {
-			reqQP.Set("$skipToken", *options.SkipToken)
-		}
-		if options != nil && options.Top != nil {
-			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-		}
-		reqQP.Set("api-version", version20250501Preview)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *RecommendationsClient) listHandleResponse(resp *http.Response, successCodes ...int) (RecommendationsClientListResponse, error) {
-	result := RecommendationsClientListResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceRecommendationBaseListResult); err != nil {
-		return RecommendationsClientListResponse{}, err
-	}
-	return result, nil
-}
-
 // NewListByTenantPager - Obtains cached recommendations for a subscription. The recommendations are generated or computed
 // by invoking generateRecommendations.
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
@@ -378,6 +301,83 @@ func (client *RecommendationsClient) listByTenantHandleResponse(resp *http.Respo
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceRecommendationBaseListResult); err != nil {
 		return RecommendationsClientListByTenantResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListPager - Obtains cached recommendations for a subscription. The recommendations are generated or computed by invoking
+// generateRecommendations.
+//   - options - RecommendationsClientListOptions contains the optional parameters for the RecommendationsClient.NewListPager
+//     method.
+func (client *RecommendationsClient) NewListPager(options *RecommendationsClientListOptions) *runtime.Pager[RecommendationsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[RecommendationsClientListResponse]{
+		More: func(page RecommendationsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *RecommendationsClientListResponse) (RecommendationsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "RecommendationsClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return RecommendationsClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return RecommendationsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listCreateRequest creates the List request.
+func (client *RecommendationsClient) listCreateRequest(ctx context.Context, nextLink string, options *RecommendationsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Advisor/recommendations"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		if options != nil && options.SkipToken != nil {
+			reqQP.Set("$skipToken", *options.SkipToken)
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20250501Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listHandleResponse handles the List response.
+func (client *RecommendationsClient) listHandleResponse(resp *http.Response, successCodes ...int) (RecommendationsClientListResponse, error) {
+	result := RecommendationsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceRecommendationBaseListResult); err != nil {
+		return RecommendationsClientListResponse{}, err
 	}
 	return result, nil
 }

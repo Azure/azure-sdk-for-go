@@ -348,6 +348,58 @@ func ExampleDevCentersClient_BeginDelete() {
 	}
 }
 
+// Generated from example definition: 2026-01-01-preview/DevCenters_Patch.json
+func ExampleDevCentersClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdevcenter.NewClientFactory("0ac520ee-14c0-480f-b6c9-0a90c58fffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewDevCentersClient().BeginUpdate(ctx, "rg1", "Contoso", armdevcenter.Update{
+		Tags: map[string]*string{
+			"CostCode": to.Ptr("12345"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdevcenter.DevCentersClientUpdateResponse{
+	// 	DevCenter: armdevcenter.DevCenter{
+	// 		Name: to.Ptr("Contoso"),
+	// 		Type: to.Ptr("Microsoft.DevCenter/devcenters"),
+	// 		ID: to.Ptr("/subscriptions/0ac520ee-14c0-480f-b6c9-0a90c58ffff/resourceGroups/rg1/providers/Microsoft.DevCenter/devcenters/Contoso"),
+	// 		Location: to.Ptr("centralus"),
+	// 		Properties: &armdevcenter.Properties{
+	// 			DevCenterURI: to.Ptr("https://4c7c8922-78e9-4928-aa6f-75ba59355371-contoso.centralus.devcenter.azure.com"),
+	// 			DisplayName: to.Ptr("ContosoDevCenter"),
+	// 			ProvisioningState: to.Ptr(armdevcenter.ProvisioningStateSucceeded),
+	// 		},
+	// 		SystemData: &armdevcenter.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.November, 11, 22, 0, 8, 896000000, time.UTC)),
+	// 			CreatedBy: to.Ptr("user1"),
+	// 			CreatedByType: to.Ptr(armdevcenter.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.November, 11, 22, 0, 10, 896000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("user2"),
+	// 			LastModifiedByType: to.Ptr(armdevcenter.CreatedByTypeUser),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"CostCode": to.Ptr("12345"),
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2026-01-01-preview/DevCenters_Get.json
 func ExampleDevCentersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -503,56 +555,4 @@ func ExampleDevCentersClient_NewListBySubscriptionPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-01-01-preview/DevCenters_Patch.json
-func ExampleDevCentersClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdevcenter.NewClientFactory("0ac520ee-14c0-480f-b6c9-0a90c58fffff", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewDevCentersClient().BeginUpdate(ctx, "rg1", "Contoso", armdevcenter.Update{
-		Tags: map[string]*string{
-			"CostCode": to.Ptr("12345"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdevcenter.DevCentersClientUpdateResponse{
-	// 	DevCenter: armdevcenter.DevCenter{
-	// 		Name: to.Ptr("Contoso"),
-	// 		Type: to.Ptr("Microsoft.DevCenter/devcenters"),
-	// 		ID: to.Ptr("/subscriptions/0ac520ee-14c0-480f-b6c9-0a90c58ffff/resourceGroups/rg1/providers/Microsoft.DevCenter/devcenters/Contoso"),
-	// 		Location: to.Ptr("centralus"),
-	// 		Properties: &armdevcenter.Properties{
-	// 			DevCenterURI: to.Ptr("https://4c7c8922-78e9-4928-aa6f-75ba59355371-contoso.centralus.devcenter.azure.com"),
-	// 			DisplayName: to.Ptr("ContosoDevCenter"),
-	// 			ProvisioningState: to.Ptr(armdevcenter.ProvisioningStateSucceeded),
-	// 		},
-	// 		SystemData: &armdevcenter.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2020, time.November, 11, 22, 0, 8, 896000000, time.UTC)),
-	// 			CreatedBy: to.Ptr("user1"),
-	// 			CreatedByType: to.Ptr(armdevcenter.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.November, 11, 22, 0, 10, 896000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("user2"),
-	// 			LastModifiedByType: to.Ptr(armdevcenter.CreatedByTypeUser),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"CostCode": to.Ptr("12345"),
-	// 		},
-	// 	},
-	// }
 }

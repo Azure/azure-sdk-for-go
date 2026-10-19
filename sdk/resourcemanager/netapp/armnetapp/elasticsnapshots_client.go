@@ -71,7 +71,7 @@ func (client *ElasticSnapshotsClient) BeginCreateOrUpdate(ctx context.Context, r
 	}
 }
 
-// CreateOrUpdate - Create a ElasticSnapshot
+// createOrUpdate - Create a ElasticSnapshot
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ElasticSnapshotsClient) createOrUpdate(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, snapshotName string, body ElasticSnapshot, options *ElasticSnapshotsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -93,7 +93,7 @@ func (client *ElasticSnapshotsClient) createOrUpdate(ctx context.Context, resour
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ElasticSnapshotsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, snapshotName string, body ElasticSnapshot, _ *ElasticSnapshotsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/elasticAccounts/{accountName}/elasticCapacityPools/{poolName}/elasticVolumes/{volumeName}/elasticSnapshots/{snapshotName}"
 	if client.subscriptionID == "" {
@@ -161,7 +161,7 @@ func (client *ElasticSnapshotsClient) BeginDelete(ctx context.Context, resourceG
 	}
 }
 
-// Delete - Delete a ElasticSnapshot
+// deleteOperation - Delete a ElasticSnapshot
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ElasticSnapshotsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, snapshotName string, options *ElasticSnapshotsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -183,7 +183,7 @@ func (client *ElasticSnapshotsClient) deleteOperation(ctx context.Context, resou
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ElasticSnapshotsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, snapshotName string, _ *ElasticSnapshotsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/elasticAccounts/{accountName}/elasticCapacityPools/{poolName}/elasticVolumes/{volumeName}/elasticSnapshots/{snapshotName}"
 	if client.subscriptionID == "" {

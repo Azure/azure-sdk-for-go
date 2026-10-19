@@ -20,6 +20,10 @@ import (
 
 // RunbookDraftServer is a fake server for instances of the armautomation.RunbookDraftClient type.
 type RunbookDraftServer struct {
+	// BeginReplaceContent is the fake for method RunbookDraftClient.BeginReplaceContent
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginReplaceContent func(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, runbookContent string, options *armautomation.RunbookDraftClientBeginReplaceContentOptions) (resp azfake.PollerResponder[armautomation.RunbookDraftClientReplaceContentResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method RunbookDraftClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, options *armautomation.RunbookDraftClientGetOptions) (resp azfake.Responder[armautomation.RunbookDraftClientGetResponse], errResp azfake.ErrorResponder)
@@ -27,10 +31,6 @@ type RunbookDraftServer struct {
 	// GetContent is the fake for method RunbookDraftClient.GetContent
 	// HTTP status codes to indicate success: http.StatusOK
 	GetContent func(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, options *armautomation.RunbookDraftClientGetContentOptions) (resp azfake.Responder[armautomation.RunbookDraftClientGetContentResponse], errResp azfake.ErrorResponder)
-
-	// BeginReplaceContent is the fake for method RunbookDraftClient.BeginReplaceContent
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginReplaceContent func(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, runbookContent string, options *armautomation.RunbookDraftClientBeginReplaceContentOptions) (resp azfake.PollerResponder[armautomation.RunbookDraftClientReplaceContentResponse], errResp azfake.ErrorResponder)
 
 	// UndoEdit is the fake for method RunbookDraftClient.UndoEdit
 	// HTTP status codes to indicate success: http.StatusOK
@@ -75,12 +75,12 @@ func (r *RunbookDraftServerTransport) dispatchToMethodFake(req *http.Request, me
 		}
 		if !intercepted {
 			switch method {
+			case "RunbookDraftClient.BeginReplaceContent":
+				res.resp, res.err = r.dispatchBeginReplaceContent(req)
 			case "RunbookDraftClient.Get":
 				res.resp, res.err = r.dispatchGet(req)
 			case "RunbookDraftClient.GetContent":
 				res.resp, res.err = r.dispatchGetContent(req)
-			case "RunbookDraftClient.BeginReplaceContent":
-				res.resp, res.err = r.dispatchBeginReplaceContent(req)
 			case "RunbookDraftClient.UndoEdit":
 				res.resp, res.err = r.dispatchUndoEdit(req)
 			default:
@@ -97,6 +97,59 @@ func (r *RunbookDraftServerTransport) dispatchToMethodFake(req *http.Request, me
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
+}
+
+func (r *RunbookDraftServerTransport) dispatchBeginReplaceContent(req *http.Request) (*http.Response, error) {
+	if r.srv.BeginReplaceContent == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginReplaceContent not implemented")}
+	}
+	beginReplaceContent := r.beginReplaceContent.get(req)
+	if beginReplaceContent == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/runbooks/(?P<runbookName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/draft/content`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		bodyRaw, err := server.UnmarshalRequestAsText(req)
+		if err != nil {
+			return nil, err
+		}
+		body := bodyRaw
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		automationAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("automationAccountName")])
+		if err != nil {
+			return nil, err
+		}
+		runbookNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("runbookName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := r.srv.BeginReplaceContent(req.Context(), resourceGroupNameParam, automationAccountNameParam, runbookNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginReplaceContent = &respr
+		r.beginReplaceContent.add(req, beginReplaceContent)
+	}
+
+	resp, err := server.PollerResponderNext(beginReplaceContent, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		r.beginReplaceContent.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginReplaceContent) {
+		r.beginReplaceContent.remove(req)
+	}
+
+	return resp, nil
 }
 
 func (r *RunbookDraftServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
@@ -170,59 +223,6 @@ func (r *RunbookDraftServerTransport) dispatchGetContent(req *http.Request) (*ht
 	if err != nil {
 		return nil, err
 	}
-	return resp, nil
-}
-
-func (r *RunbookDraftServerTransport) dispatchBeginReplaceContent(req *http.Request) (*http.Response, error) {
-	if r.srv.BeginReplaceContent == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginReplaceContent not implemented")}
-	}
-	beginReplaceContent := r.beginReplaceContent.get(req)
-	if beginReplaceContent == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/runbooks/(?P<runbookName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/draft/content`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		bodyRaw, err := server.UnmarshalRequestAsText(req)
-		if err != nil {
-			return nil, err
-		}
-		body := bodyRaw
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		automationAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("automationAccountName")])
-		if err != nil {
-			return nil, err
-		}
-		runbookNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("runbookName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := r.srv.BeginReplaceContent(req.Context(), resourceGroupNameParam, automationAccountNameParam, runbookNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginReplaceContent = &respr
-		r.beginReplaceContent.add(req, beginReplaceContent)
-	}
-
-	resp, err := server.PollerResponderNext(beginReplaceContent, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		r.beginReplaceContent.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginReplaceContent) {
-		r.beginReplaceContent.remove(req)
-	}
-
 	return resp, nil
 }
 

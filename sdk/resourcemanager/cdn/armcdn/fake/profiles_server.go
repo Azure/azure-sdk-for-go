@@ -41,30 +41,6 @@ type ProfilesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, profileName string, options *armcdn.ProfilesClientBeginDeleteOptions) (resp azfake.PollerResponder[armcdn.ProfilesClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// GenerateSsoURI is the fake for method ProfilesClient.GenerateSsoURI
-	// HTTP status codes to indicate success: http.StatusOK
-	GenerateSsoURI func(ctx context.Context, resourceGroupName string, profileName string, options *armcdn.ProfilesClientGenerateSsoURIOptions) (resp azfake.Responder[armcdn.ProfilesClientGenerateSsoURIResponse], errResp azfake.ErrorResponder)
-
-	// Get is the fake for method ProfilesClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, profileName string, options *armcdn.ProfilesClientGetOptions) (resp azfake.Responder[armcdn.ProfilesClientGetResponse], errResp azfake.ErrorResponder)
-
-	// NewListPager is the fake for method ProfilesClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armcdn.ProfilesClientListOptions) (resp azfake.PagerResponder[armcdn.ProfilesClientListResponse])
-
-	// NewListByResourceGroupPager is the fake for method ProfilesClient.NewListByResourceGroupPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupPager func(resourceGroupName string, options *armcdn.ProfilesClientListByResourceGroupOptions) (resp azfake.PagerResponder[armcdn.ProfilesClientListByResourceGroupResponse])
-
-	// NewListResourceUsagePager is the fake for method ProfilesClient.NewListResourceUsagePager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListResourceUsagePager func(resourceGroupName string, profileName string, options *armcdn.ProfilesClientListResourceUsageOptions) (resp azfake.PagerResponder[armcdn.ProfilesClientListResourceUsageResponse])
-
-	// ListSupportedOptimizationTypes is the fake for method ProfilesClient.ListSupportedOptimizationTypes
-	// HTTP status codes to indicate success: http.StatusOK
-	ListSupportedOptimizationTypes func(ctx context.Context, resourceGroupName string, profileName string, options *armcdn.ProfilesClientListSupportedOptimizationTypesOptions) (resp azfake.Responder[armcdn.ProfilesClientListSupportedOptimizationTypesResponse], errResp azfake.ErrorResponder)
-
 	// BeginMigrate is the fake for method ProfilesClient.BeginMigrate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginMigrate func(ctx context.Context, resourceGroupName string, migrationParameters armcdn.MigrationParameters, options *armcdn.ProfilesClientBeginMigrateOptions) (resp azfake.PollerResponder[armcdn.ProfilesClientMigrateResponse], errResp azfake.ErrorResponder)
@@ -80,6 +56,30 @@ type ProfilesServer struct {
 	// BeginUpdate is the fake for method ProfilesClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, resourceGroupName string, profileName string, profileUpdateParameters armcdn.ProfileUpdateParameters, options *armcdn.ProfilesClientBeginUpdateOptions) (resp azfake.PollerResponder[armcdn.ProfilesClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// GenerateSsoURI is the fake for method ProfilesClient.GenerateSsoURI
+	// HTTP status codes to indicate success: http.StatusOK
+	GenerateSsoURI func(ctx context.Context, resourceGroupName string, profileName string, options *armcdn.ProfilesClientGenerateSsoURIOptions) (resp azfake.Responder[armcdn.ProfilesClientGenerateSsoURIResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method ProfilesClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, profileName string, options *armcdn.ProfilesClientGetOptions) (resp azfake.Responder[armcdn.ProfilesClientGetResponse], errResp azfake.ErrorResponder)
+
+	// ListSupportedOptimizationTypes is the fake for method ProfilesClient.ListSupportedOptimizationTypes
+	// HTTP status codes to indicate success: http.StatusOK
+	ListSupportedOptimizationTypes func(ctx context.Context, resourceGroupName string, profileName string, options *armcdn.ProfilesClientListSupportedOptimizationTypesOptions) (resp azfake.Responder[armcdn.ProfilesClientListSupportedOptimizationTypesResponse], errResp azfake.ErrorResponder)
+
+	// NewListByResourceGroupPager is the fake for method ProfilesClient.NewListByResourceGroupPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByResourceGroupPager func(resourceGroupName string, options *armcdn.ProfilesClientListByResourceGroupOptions) (resp azfake.PagerResponder[armcdn.ProfilesClientListByResourceGroupResponse])
+
+	// NewListPager is the fake for method ProfilesClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armcdn.ProfilesClientListOptions) (resp azfake.PagerResponder[armcdn.ProfilesClientListResponse])
+
+	// NewListResourceUsagePager is the fake for method ProfilesClient.NewListResourceUsagePager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListResourceUsagePager func(resourceGroupName string, profileName string, options *armcdn.ProfilesClientListResourceUsageOptions) (resp azfake.PagerResponder[armcdn.ProfilesClientListResourceUsageResponse])
 }
 
 // NewProfilesServerTransport creates a new instance of ProfilesServerTransport with the provided implementation.
@@ -93,13 +93,13 @@ func NewProfilesServerTransport(srv *ProfilesServer) *ProfilesServerTransport {
 		beginCdnMigrateToAfd:        newTracker[azfake.PollerResponder[armcdn.ProfilesClientCdnMigrateToAfdResponse]](),
 		beginCreate:                 newTracker[azfake.PollerResponder[armcdn.ProfilesClientCreateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armcdn.ProfilesClientDeleteResponse]](),
-		newListPager:                newTracker[azfake.PagerResponder[armcdn.ProfilesClientListResponse]](),
-		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armcdn.ProfilesClientListByResourceGroupResponse]](),
-		newListResourceUsagePager:   newTracker[azfake.PagerResponder[armcdn.ProfilesClientListResourceUsageResponse]](),
 		beginMigrate:                newTracker[azfake.PollerResponder[armcdn.ProfilesClientMigrateResponse]](),
 		beginMigrationAbort:         newTracker[azfake.PollerResponder[armcdn.ProfilesClientMigrationAbortResponse]](),
 		beginMigrationCommit:        newTracker[azfake.PollerResponder[armcdn.ProfilesClientMigrationCommitResponse]](),
 		beginUpdate:                 newTracker[azfake.PollerResponder[armcdn.ProfilesClientUpdateResponse]](),
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armcdn.ProfilesClientListByResourceGroupResponse]](),
+		newListPager:                newTracker[azfake.PagerResponder[armcdn.ProfilesClientListResponse]](),
+		newListResourceUsagePager:   newTracker[azfake.PagerResponder[armcdn.ProfilesClientListResourceUsageResponse]](),
 	}
 }
 
@@ -112,13 +112,13 @@ type ProfilesServerTransport struct {
 	beginCdnMigrateToAfd        *tracker[azfake.PollerResponder[armcdn.ProfilesClientCdnMigrateToAfdResponse]]
 	beginCreate                 *tracker[azfake.PollerResponder[armcdn.ProfilesClientCreateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armcdn.ProfilesClientDeleteResponse]]
-	newListPager                *tracker[azfake.PagerResponder[armcdn.ProfilesClientListResponse]]
-	newListByResourceGroupPager *tracker[azfake.PagerResponder[armcdn.ProfilesClientListByResourceGroupResponse]]
-	newListResourceUsagePager   *tracker[azfake.PagerResponder[armcdn.ProfilesClientListResourceUsageResponse]]
 	beginMigrate                *tracker[azfake.PollerResponder[armcdn.ProfilesClientMigrateResponse]]
 	beginMigrationAbort         *tracker[azfake.PollerResponder[armcdn.ProfilesClientMigrationAbortResponse]]
 	beginMigrationCommit        *tracker[azfake.PollerResponder[armcdn.ProfilesClientMigrationCommitResponse]]
 	beginUpdate                 *tracker[azfake.PollerResponder[armcdn.ProfilesClientUpdateResponse]]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armcdn.ProfilesClientListByResourceGroupResponse]]
+	newListPager                *tracker[azfake.PagerResponder[armcdn.ProfilesClientListResponse]]
+	newListResourceUsagePager   *tracker[azfake.PagerResponder[armcdn.ProfilesClientListResourceUsageResponse]]
 }
 
 // Do implements the policy.Transporter interface for ProfilesServerTransport.
@@ -152,18 +152,6 @@ func (p *ProfilesServerTransport) dispatchToMethodFake(req *http.Request, method
 				res.resp, res.err = p.dispatchBeginCreate(req)
 			case "ProfilesClient.BeginDelete":
 				res.resp, res.err = p.dispatchBeginDelete(req)
-			case "ProfilesClient.GenerateSsoURI":
-				res.resp, res.err = p.dispatchGenerateSsoURI(req)
-			case "ProfilesClient.Get":
-				res.resp, res.err = p.dispatchGet(req)
-			case "ProfilesClient.NewListPager":
-				res.resp, res.err = p.dispatchNewListPager(req)
-			case "ProfilesClient.NewListByResourceGroupPager":
-				res.resp, res.err = p.dispatchNewListByResourceGroupPager(req)
-			case "ProfilesClient.NewListResourceUsagePager":
-				res.resp, res.err = p.dispatchNewListResourceUsagePager(req)
-			case "ProfilesClient.ListSupportedOptimizationTypes":
-				res.resp, res.err = p.dispatchListSupportedOptimizationTypes(req)
 			case "ProfilesClient.BeginMigrate":
 				res.resp, res.err = p.dispatchBeginMigrate(req)
 			case "ProfilesClient.BeginMigrationAbort":
@@ -172,6 +160,18 @@ func (p *ProfilesServerTransport) dispatchToMethodFake(req *http.Request, method
 				res.resp, res.err = p.dispatchBeginMigrationCommit(req)
 			case "ProfilesClient.BeginUpdate":
 				res.resp, res.err = p.dispatchBeginUpdate(req)
+			case "ProfilesClient.GenerateSsoURI":
+				res.resp, res.err = p.dispatchGenerateSsoURI(req)
+			case "ProfilesClient.Get":
+				res.resp, res.err = p.dispatchGet(req)
+			case "ProfilesClient.ListSupportedOptimizationTypes":
+				res.resp, res.err = p.dispatchListSupportedOptimizationTypes(req)
+			case "ProfilesClient.NewListByResourceGroupPager":
+				res.resp, res.err = p.dispatchNewListByResourceGroupPager(req)
+			case "ProfilesClient.NewListPager":
+				res.resp, res.err = p.dispatchNewListPager(req)
+			case "ProfilesClient.NewListResourceUsagePager":
+				res.resp, res.err = p.dispatchNewListResourceUsagePager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -416,216 +416,6 @@ func (p *ProfilesServerTransport) dispatchBeginDelete(req *http.Request) (*http.
 	return resp, nil
 }
 
-func (p *ProfilesServerTransport) dispatchGenerateSsoURI(req *http.Request) (*http.Response, error) {
-	if p.srv.GenerateSsoURI == nil {
-		return nil, &nonRetriableError{errors.New("fake for method GenerateSsoURI not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Cdn/profiles/(?P<profileName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/generateSsoUri`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	profileNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("profileName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := p.srv.GenerateSsoURI(req.Context(), resourceGroupNameParam, profileNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SsoURI, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (p *ProfilesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if p.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Cdn/profiles/(?P<profileName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	profileNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("profileName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := p.srv.Get(req.Context(), resourceGroupNameParam, profileNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Profile, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (p *ProfilesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if p.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := p.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Cdn/profiles`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := p.srv.NewListPager(nil)
-		newListPager = &resp
-		p.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcdn.ProfilesClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		p.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		p.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (p *ProfilesServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
-	if p.srv.NewListByResourceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
-	}
-	newListByResourceGroupPager := p.newListByResourceGroupPager.get(req)
-	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Cdn/profiles`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := p.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
-		newListByResourceGroupPager = &resp
-		p.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armcdn.ProfilesClientListByResourceGroupResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		p.newListByResourceGroupPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByResourceGroupPager) {
-		p.newListByResourceGroupPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (p *ProfilesServerTransport) dispatchNewListResourceUsagePager(req *http.Request) (*http.Response, error) {
-	if p.srv.NewListResourceUsagePager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListResourceUsagePager not implemented")}
-	}
-	newListResourceUsagePager := p.newListResourceUsagePager.get(req)
-	if newListResourceUsagePager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Cdn/profiles/(?P<profileName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/checkResourceUsage`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		profileNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("profileName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := p.srv.NewListResourceUsagePager(resourceGroupNameParam, profileNameParam, nil)
-		newListResourceUsagePager = &resp
-		p.newListResourceUsagePager.add(req, newListResourceUsagePager)
-		server.PagerResponderInjectNextLinks(newListResourceUsagePager, req, func(page *armcdn.ProfilesClientListResourceUsageResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListResourceUsagePager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		p.newListResourceUsagePager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListResourceUsagePager) {
-		p.newListResourceUsagePager.remove(req)
-	}
-	return resp, nil
-}
-
-func (p *ProfilesServerTransport) dispatchListSupportedOptimizationTypes(req *http.Request) (*http.Response, error) {
-	if p.srv.ListSupportedOptimizationTypes == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListSupportedOptimizationTypes not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Cdn/profiles/(?P<profileName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getSupportedOptimizationTypes`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	profileNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("profileName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := p.srv.ListSupportedOptimizationTypes(req.Context(), resourceGroupNameParam, profileNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SupportedOptimizationTypesListResult, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (p *ProfilesServerTransport) dispatchBeginMigrate(req *http.Request) (*http.Response, error) {
 	if p.srv.BeginMigrate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginMigrate not implemented")}
@@ -803,6 +593,216 @@ func (p *ProfilesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.
 		p.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (p *ProfilesServerTransport) dispatchGenerateSsoURI(req *http.Request) (*http.Response, error) {
+	if p.srv.GenerateSsoURI == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GenerateSsoURI not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Cdn/profiles/(?P<profileName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/generateSsoUri`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	profileNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("profileName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := p.srv.GenerateSsoURI(req.Context(), resourceGroupNameParam, profileNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SsoURI, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (p *ProfilesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if p.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Cdn/profiles/(?P<profileName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	profileNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("profileName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := p.srv.Get(req.Context(), resourceGroupNameParam, profileNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Profile, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (p *ProfilesServerTransport) dispatchListSupportedOptimizationTypes(req *http.Request) (*http.Response, error) {
+	if p.srv.ListSupportedOptimizationTypes == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListSupportedOptimizationTypes not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Cdn/profiles/(?P<profileName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getSupportedOptimizationTypes`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	profileNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("profileName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := p.srv.ListSupportedOptimizationTypes(req.Context(), resourceGroupNameParam, profileNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SupportedOptimizationTypesListResult, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (p *ProfilesServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
+	if p.srv.NewListByResourceGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
+	}
+	newListByResourceGroupPager := p.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Cdn/profiles`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := p.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
+		newListByResourceGroupPager = &resp
+		p.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armcdn.ProfilesClientListByResourceGroupResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		p.newListByResourceGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		p.newListByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (p *ProfilesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if p.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := p.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Cdn/profiles`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := p.srv.NewListPager(nil)
+		newListPager = &resp
+		p.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcdn.ProfilesClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		p.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		p.newListPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (p *ProfilesServerTransport) dispatchNewListResourceUsagePager(req *http.Request) (*http.Response, error) {
+	if p.srv.NewListResourceUsagePager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListResourceUsagePager not implemented")}
+	}
+	newListResourceUsagePager := p.newListResourceUsagePager.get(req)
+	if newListResourceUsagePager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Cdn/profiles/(?P<profileName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/checkResourceUsage`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		profileNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("profileName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := p.srv.NewListResourceUsagePager(resourceGroupNameParam, profileNameParam, nil)
+		newListResourceUsagePager = &resp
+		p.newListResourceUsagePager.add(req, newListResourceUsagePager)
+		server.PagerResponderInjectNextLinks(newListResourceUsagePager, req, func(page *armcdn.ProfilesClientListResourceUsageResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListResourceUsagePager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		p.newListResourceUsagePager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListResourceUsagePager) {
+		p.newListResourceUsagePager.remove(req)
+	}
 	return resp, nil
 }
 

@@ -21,10 +21,6 @@ import (
 
 // CommunityServer is a fake server for instances of the armenclave.CommunityClient type.
 type CommunityServer struct {
-	// CheckAddressSpaceAvailability is the fake for method CommunityClient.CheckAddressSpaceAvailability
-	// HTTP status codes to indicate success: http.StatusOK
-	CheckAddressSpaceAvailability func(ctx context.Context, resourceGroupName string, communityName string, checkAddressSpaceAvailabilityRequest armenclave.CheckAddressSpaceAvailabilityRequest, options *armenclave.CommunityClientCheckAddressSpaceAvailabilityOptions) (resp azfake.Responder[armenclave.CommunityClientCheckAddressSpaceAvailabilityResponse], errResp azfake.ErrorResponder)
-
 	// BeginCreateOrUpdate is the fake for method CommunityClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, communityName string, resource armenclave.CommunityResource, options *armenclave.CommunityClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armenclave.CommunityClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -32,6 +28,14 @@ type CommunityServer struct {
 	// BeginDelete is the fake for method CommunityClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, communityName string, options *armenclave.CommunityClientBeginDeleteOptions) (resp azfake.PollerResponder[armenclave.CommunityClientDeleteResponse], errResp azfake.ErrorResponder)
+
+	// BeginUpdate is the fake for method CommunityClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, communityName string, properties armenclave.CommunityPatchModel, options *armenclave.CommunityClientBeginUpdateOptions) (resp azfake.PollerResponder[armenclave.CommunityClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// CheckAddressSpaceAvailability is the fake for method CommunityClient.CheckAddressSpaceAvailability
+	// HTTP status codes to indicate success: http.StatusOK
+	CheckAddressSpaceAvailability func(ctx context.Context, resourceGroupName string, communityName string, checkAddressSpaceAvailabilityRequest armenclave.CheckAddressSpaceAvailabilityRequest, options *armenclave.CommunityClientCheckAddressSpaceAvailabilityOptions) (resp azfake.Responder[armenclave.CommunityClientCheckAddressSpaceAvailabilityResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method CommunityClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -44,10 +48,6 @@ type CommunityServer struct {
 	// NewListBySubscriptionPager is the fake for method CommunityClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armenclave.CommunityClientListBySubscriptionOptions) (resp azfake.PagerResponder[armenclave.CommunityClientListBySubscriptionResponse])
-
-	// BeginUpdate is the fake for method CommunityClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, communityName string, properties armenclave.CommunityPatchModel, options *armenclave.CommunityClientBeginUpdateOptions) (resp azfake.PollerResponder[armenclave.CommunityClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewCommunityServerTransport creates a new instance of CommunityServerTransport with the provided implementation.
@@ -58,9 +58,9 @@ func NewCommunityServerTransport(srv *CommunityServer) *CommunityServerTransport
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armenclave.CommunityClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armenclave.CommunityClientDeleteResponse]](),
+		beginUpdate:                 newTracker[azfake.PollerResponder[armenclave.CommunityClientUpdateResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armenclave.CommunityClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armenclave.CommunityClientListBySubscriptionResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armenclave.CommunityClientUpdateResponse]](),
 	}
 }
 
@@ -70,9 +70,9 @@ type CommunityServerTransport struct {
 	srv                         *CommunityServer
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armenclave.CommunityClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armenclave.CommunityClientDeleteResponse]]
+	beginUpdate                 *tracker[azfake.PollerResponder[armenclave.CommunityClientUpdateResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armenclave.CommunityClientListByResourceGroupResponse]]
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armenclave.CommunityClientListBySubscriptionResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armenclave.CommunityClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for CommunityServerTransport.
@@ -96,20 +96,20 @@ func (c *CommunityServerTransport) dispatchToMethodFake(req *http.Request, metho
 		}
 		if !intercepted {
 			switch method {
-			case "CommunityClient.CheckAddressSpaceAvailability":
-				res.resp, res.err = c.dispatchCheckAddressSpaceAvailability(req)
 			case "CommunityClient.BeginCreateOrUpdate":
 				res.resp, res.err = c.dispatchBeginCreateOrUpdate(req)
 			case "CommunityClient.BeginDelete":
 				res.resp, res.err = c.dispatchBeginDelete(req)
+			case "CommunityClient.BeginUpdate":
+				res.resp, res.err = c.dispatchBeginUpdate(req)
+			case "CommunityClient.CheckAddressSpaceAvailability":
+				res.resp, res.err = c.dispatchCheckAddressSpaceAvailability(req)
 			case "CommunityClient.Get":
 				res.resp, res.err = c.dispatchGet(req)
 			case "CommunityClient.NewListByResourceGroupPager":
 				res.resp, res.err = c.dispatchNewListByResourceGroupPager(req)
 			case "CommunityClient.NewListBySubscriptionPager":
 				res.resp, res.err = c.dispatchNewListBySubscriptionPager(req)
-			case "CommunityClient.BeginUpdate":
-				res.resp, res.err = c.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -124,43 +124,6 @@ func (c *CommunityServerTransport) dispatchToMethodFake(req *http.Request, metho
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (c *CommunityServerTransport) dispatchCheckAddressSpaceAvailability(req *http.Request) (*http.Response, error) {
-	if c.srv.CheckAddressSpaceAvailability == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CheckAddressSpaceAvailability not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Mission/communities/(?P<communityName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/checkAddressSpaceAvailability`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armenclave.CheckAddressSpaceAvailabilityRequest](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	communityNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("communityName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := c.srv.CheckAddressSpaceAvailability(req.Context(), resourceGroupNameParam, communityNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CheckAddressSpaceAvailabilityResponse, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (c *CommunityServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -252,6 +215,91 @@ func (c *CommunityServerTransport) dispatchBeginDelete(req *http.Request) (*http
 		c.beginDelete.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (c *CommunityServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if c.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := c.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Mission/communities/(?P<communityName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armenclave.CommunityPatchModel](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		communityNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("communityName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := c.srv.BeginUpdate(req.Context(), resourceGroupNameParam, communityNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		c.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		c.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		c.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (c *CommunityServerTransport) dispatchCheckAddressSpaceAvailability(req *http.Request) (*http.Response, error) {
+	if c.srv.CheckAddressSpaceAvailability == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CheckAddressSpaceAvailability not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Mission/communities/(?P<communityName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/checkAddressSpaceAvailability`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armenclave.CheckAddressSpaceAvailabilityRequest](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	communityNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("communityName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := c.srv.CheckAddressSpaceAvailability(req.Context(), resourceGroupNameParam, communityNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CheckAddressSpaceAvailabilityResponse, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 
@@ -355,54 +403,6 @@ func (c *CommunityServerTransport) dispatchNewListBySubscriptionPager(req *http.
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		c.newListBySubscriptionPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (c *CommunityServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if c.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := c.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Mission/communities/(?P<communityName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armenclave.CommunityPatchModel](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		communityNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("communityName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := c.srv.BeginUpdate(req.Context(), resourceGroupNameParam, communityNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		c.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		c.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		c.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

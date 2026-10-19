@@ -526,266 +526,6 @@ func ExampleClustersClient_BeginDeploy_deployClusterSkippingValidation() {
 	}
 }
 
-// Generated from example definition: 2026-07-01/Clusters_Get.json
-func ExampleClustersClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetworkcloud.NewClientFactory("123e4567-e89b-12d3-a456-426655440000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewClustersClient().Get(ctx, "resourceGroupName", "clusterName", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetworkcloud.ClustersClientGetResponse{
-	// 	Cluster: armnetworkcloud.Cluster{
-	// 		ExtendedLocation: &armnetworkcloud.ExtendedLocation{
-	// 			Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterManagerExtendedLocationName"),
-	// 			Type: to.Ptr("CustomLocation"),
-	// 		},
-	// 		ID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
-	// 		Identity: &armnetworkcloud.ManagedServiceIdentity{
-	// 			Type: to.Ptr(armnetworkcloud.ManagedServiceIdentityTypeUserAssigned),
-	// 			UserAssignedIdentities: map[string]*armnetworkcloud.UserAssignedIdentity{
-	// 				"/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userIdentity1": &armnetworkcloud.UserAssignedIdentity{
-	// 				},
-	// 			},
-	// 		},
-	// 		Kind: to.Ptr(armnetworkcloud.DeploymentTypeAzureLocal),
-	// 		Location: to.Ptr("location"),
-	// 		Name: to.Ptr("clusterName"),
-	// 		Properties: &armnetworkcloud.ClusterProperties{
-	// 			ActionStates: []*armnetworkcloud.ActionState{
-	// 				{
-	// 					ActionType: to.Ptr("Microsoft.NetworkCloud/clusters/ScanRuntime/action"),
-	// 					CorrelationID: to.Ptr("a45a00bb-3b02-42d5-baaf-033497574e97"),
-	// 					EndTime: to.Ptr("2023-04-29T12:00:00Z"),
-	// 					Message: to.Ptr("Action completed successfully"),
-	// 					StartTime: to.Ptr("2023-04-29T11:00:00Z"),
-	// 					Status: to.Ptr(armnetworkcloud.ActionStateStatusCompleted),
-	// 					StepStates: []*armnetworkcloud.StepState{
-	// 						{
-	// 							EndTime: to.Ptr("2023-04-29T11:30:00Z"),
-	// 							Message: to.Ptr("Request to scan runtime was successfully distributed to the cluster"),
-	// 							StartTime: to.Ptr("2023-04-29T11:00:00Z"),
-	// 							Status: to.Ptr(armnetworkcloud.StepStateStatusCompleted),
-	// 							StepName: to.Ptr("DistributeRequest"),
-	// 						},
-	// 					},
-	// 				},
-	// 			},
-	// 			AggregatorOrSingleRackDefinition: &armnetworkcloud.RackDefinition{
-	// 				BareMetalMachineConfigurationData: []*armnetworkcloud.BareMetalMachineConfigurationData{
-	// 					{
-	// 						BmcConnectionString: to.Ptr("bmcConnectionString"),
-	// 						BmcCredentials: &armnetworkcloud.AdministrativeCredentials{
-	// 							Username: to.Ptr("username"),
-	// 						},
-	// 						BmcMacAddress: to.Ptr("AA:BB:CC:DD:EE:FF"),
-	// 						BootMacAddress: to.Ptr("00:BB:CC:DD:EE:FF"),
-	// 						MachineDetails: to.Ptr("extraDetails"),
-	// 						MachineName: to.Ptr("bmmName1"),
-	// 						RackSlot: to.Ptr[int64](1),
-	// 						SerialNumber: to.Ptr("BM1219XXX"),
-	// 					},
-	// 					{
-	// 						BmcConnectionString: to.Ptr("bmcConnectionString"),
-	// 						BmcCredentials: &armnetworkcloud.AdministrativeCredentials{
-	// 							Username: to.Ptr("username"),
-	// 						},
-	// 						BmcMacAddress: to.Ptr("AA:BB:CC:DD:EE:00"),
-	// 						BootMacAddress: to.Ptr("00:BB:CC:DD:EE:00"),
-	// 						MachineDetails: to.Ptr("extraDetails"),
-	// 						MachineName: to.Ptr("bmmName2"),
-	// 						RackSlot: to.Ptr[int64](2),
-	// 						SerialNumber: to.Ptr("BM1219YYY"),
-	// 					},
-	// 				},
-	// 				NetworkRackID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkRacks/networkRackName"),
-	// 				RackLocation: to.Ptr("Foo Datacenter, Floor 3, Aisle 9, Rack 2"),
-	// 				RackSerialNumber: to.Ptr("AA1234"),
-	// 				RackSKUID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/providers/Microsoft.NetworkCloud/rackSkus/rackSkuName"),
-	// 				StorageApplianceConfigurationData: []*armnetworkcloud.StorageApplianceConfigurationData{
-	// 					{
-	// 						AdminCredentials: &armnetworkcloud.AdministrativeCredentials{
-	// 							Username: to.Ptr("username"),
-	// 						},
-	// 						RackSlot: to.Ptr[int64](1),
-	// 						SerialNumber: to.Ptr("BM1219XXX"),
-	// 						StorageApplianceName: to.Ptr("vmName"),
-	// 					},
-	// 				},
-	// 			},
-	// 			AnalyticsOutputSettings: &armnetworkcloud.AnalyticsOutputSettings{
-	// 				AnalyticsWorkspaceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.OperationalInsights/workspaces/logAnalyticsWorkspaceName"),
-	// 				AssociatedIdentity: &armnetworkcloud.IdentitySelector{
-	// 					IdentityType: to.Ptr(armnetworkcloud.ManagedServiceIdentitySelectorTypeUserAssignedIdentity),
-	// 					UserAssignedIdentityResourceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userIdentity1"),
-	// 				},
-	// 			},
-	// 			AvailableUpgradeVersions: []*armnetworkcloud.ClusterAvailableUpgradeVersion{
-	// 				{
-	// 					ControlImpact: to.Ptr(armnetworkcloud.ControlImpactFalse),
-	// 					ExpectedDuration: to.Ptr("0:0:30"),
-	// 					ImpactDescription: to.Ptr("can be done in place"),
-	// 					SupportExpiryDate: to.Ptr("2025-01-01"),
-	// 					TargetClusterVersion: to.Ptr("1.0.2"),
-	// 					WorkloadImpact: to.Ptr(armnetworkcloud.WorkloadImpactFalse),
-	// 				},
-	// 			},
-	// 			ClusterCapacity: &armnetworkcloud.ClusterCapacity{
-	// 				AvailableApplianceStorageGB: to.Ptr[int64](3),
-	// 				AvailableCoreCount: to.Ptr[int64](10),
-	// 				AvailableHostStorageGB: to.Ptr[int64](20),
-	// 				AvailableMemoryGB: to.Ptr[int64](20),
-	// 				TotalApplianceStorageGB: to.Ptr[int64](10),
-	// 				TotalCoreCount: to.Ptr[int64](10),
-	// 				TotalHostStorageGB: to.Ptr[int64](10),
-	// 				TotalMemoryGB: to.Ptr[int64](10),
-	// 			},
-	// 			ClusterConnectionStatus: to.Ptr(armnetworkcloud.ClusterConnectionStatusConnected),
-	// 			ClusterExtendedLocation: &armnetworkcloud.ExtendedLocation{
-	// 				Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
-	// 				Type: to.Ptr("CustomLocation"),
-	// 			},
-	// 			ClusterLocation: to.Ptr("Foo Street, 3rd Floor, row 9"),
-	// 			ClusterManagerConnectionStatus: to.Ptr(armnetworkcloud.ClusterManagerConnectionStatusConnected),
-	// 			ClusterManagerID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusterManagers/clusterManagerName"),
-	// 			ClusterType: to.Ptr(armnetworkcloud.ClusterTypeSingleRack),
-	// 			ClusterVersion: to.Ptr("1.0.0"),
-	// 			CommandOutputSettings: &armnetworkcloud.CommandOutputSettings{
-	// 				AssociatedIdentity: &armnetworkcloud.IdentitySelector{
-	// 					IdentityType: to.Ptr(armnetworkcloud.ManagedServiceIdentitySelectorTypeUserAssignedIdentity),
-	// 					UserAssignedIdentityResourceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userIdentity1"),
-	// 				},
-	// 				ContainerURL: to.Ptr("https://myaccount.blob.core.windows.net/mycontainer?restype=container"),
-	// 				Overrides: []*armnetworkcloud.CommandOutputOverride{
-	// 					{
-	// 						AssociatedIdentity: &armnetworkcloud.IdentitySelector{
-	// 							IdentityType: to.Ptr(armnetworkcloud.ManagedServiceIdentitySelectorTypeUserAssignedIdentity),
-	// 							UserAssignedIdentityResourceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userIdentity2"),
-	// 						},
-	// 						CommandOutputType: to.Ptr(armnetworkcloud.CommandOutputTypeStorageRunReadCommands),
-	// 						ContainerURL: to.Ptr("https://myaccount.blob.core.windows.net/myContainer2?restype=container"),
-	// 					},
-	// 				},
-	// 			},
-	// 			ComputeDeploymentThreshold: &armnetworkcloud.ValidationThreshold{
-	// 				Grouping: to.Ptr(armnetworkcloud.ValidationThresholdGroupingPerCluster),
-	// 				Type: to.Ptr(armnetworkcloud.ValidationThresholdTypePercentSuccess),
-	// 				Value: to.Ptr[int64](90),
-	// 			},
-	// 			ComputeRackDefinitions: []*armnetworkcloud.RackDefinition{
-	// 				{
-	// 					BareMetalMachineConfigurationData: []*armnetworkcloud.BareMetalMachineConfigurationData{
-	// 						{
-	// 							BmcConnectionString: to.Ptr("bmcConnectionString"),
-	// 							BmcCredentials: &armnetworkcloud.AdministrativeCredentials{
-	// 								Username: to.Ptr("username"),
-	// 							},
-	// 							BmcMacAddress: to.Ptr("AA:BB:CC:DD:EE:FF"),
-	// 							BootMacAddress: to.Ptr("00:BB:CC:DD:EE:FF"),
-	// 							MachineDetails: to.Ptr("extraDetails"),
-	// 							MachineName: to.Ptr("bmmName1"),
-	// 							RackSlot: to.Ptr[int64](1),
-	// 							SerialNumber: to.Ptr("BM1219XXX"),
-	// 						},
-	// 						{
-	// 							BmcConnectionString: to.Ptr("bmcConnectionString"),
-	// 							BmcCredentials: &armnetworkcloud.AdministrativeCredentials{
-	// 								Username: to.Ptr("username"),
-	// 							},
-	// 							BmcMacAddress: to.Ptr("AA:BB:CC:DD:EE:00"),
-	// 							BootMacAddress: to.Ptr("00:BB:CC:DD:EE:00"),
-	// 							MachineDetails: to.Ptr("extraDetails"),
-	// 							MachineName: to.Ptr("bmmName2"),
-	// 							RackSlot: to.Ptr[int64](2),
-	// 							SerialNumber: to.Ptr("BM1219YYY"),
-	// 						},
-	// 					},
-	// 					NetworkRackID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkRacks/networkRackName"),
-	// 					RackLocation: to.Ptr("Foo Datacenter, Floor 3, Aisle 9, Rack 2"),
-	// 					RackSerialNumber: to.Ptr("AA1234"),
-	// 					RackSKUID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/providers/Microsoft.NetworkCloud/rackSkus/rackSkuName"),
-	// 					StorageApplianceConfigurationData: []*armnetworkcloud.StorageApplianceConfigurationData{
-	// 						{
-	// 							AdminCredentials: &armnetworkcloud.AdministrativeCredentials{
-	// 								Username: to.Ptr("username"),
-	// 							},
-	// 							RackSlot: to.Ptr[int64](1),
-	// 							SerialNumber: to.Ptr("BM1219XXX"),
-	// 							StorageApplianceName: to.Ptr("vmName"),
-	// 						},
-	// 					},
-	// 				},
-	// 			},
-	// 			DetailedStatus: to.Ptr(armnetworkcloud.ClusterDetailedStatusRunning),
-	// 			DetailedStatusMessage: to.Ptr("Cluster is running and healthy"),
-	// 			ManagedCredentials: []*string{
-	// 				to.Ptr("Bare Metal Machine Identity - console"),
-	// 				to.Ptr("Bare Metal Machine Identity - root"),
-	// 				to.Ptr("BMC Credential"),
-	// 				to.Ptr("local-path-provisioner volume passphrase"),
-	// 				to.Ptr("Storage Appliance User"),
-	// 			},
-	// 			LastSuccessfulVersionUpdateTime: to.Ptr(time.Date(2026, time.February, 22, 12, 0, 0, 0, time.UTC)),
-	// 			ManagedResourceGroupConfiguration: &armnetworkcloud.ManagedResourceGroupConfiguration{
-	// 				Location: to.Ptr("East US"),
-	// 				Name: to.Ptr("my-managed-rg"),
-	// 			},
-	// 			ManualActionCount: to.Ptr[int64](0),
-	// 			NetworkFabricID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkFabrics/fabricName"),
-	// 			ProvisioningState: to.Ptr(armnetworkcloud.ClusterProvisioningStateSucceeded),
-	// 			RuntimeProtectionConfiguration: &armnetworkcloud.RuntimeProtectionConfiguration{
-	// 				DefinitionUpdateMode: to.Ptr(armnetworkcloud.RuntimeProtectionDefinitionUpdateModeNone),
-	// 				EnforcementLevel: to.Ptr(armnetworkcloud.RuntimeProtectionEnforcementLevelOnDemand),
-	// 			},
-	// 			SecretArchiveSettings: &armnetworkcloud.SecretArchiveSettings{
-	// 				AssociatedIdentity: &armnetworkcloud.IdentitySelector{
-	// 					IdentityType: to.Ptr(armnetworkcloud.ManagedServiceIdentitySelectorTypeUserAssignedIdentity),
-	// 					UserAssignedIdentityResourceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userIdentity1"),
-	// 				},
-	// 				VaultURI: to.Ptr("https://keyvaultname.vault.azure.net/"),
-	// 			},
-	// 			SupportExpiryDate: to.Ptr("2023-04-29"),
-	// 			UpdateStrategy: &armnetworkcloud.ClusterUpdateStrategy{
-	// 				MaxUnavailable: to.Ptr[int64](4),
-	// 				StrategyType: to.Ptr(armnetworkcloud.ClusterUpdateStrategyTypeRack),
-	// 				ThresholdType: to.Ptr(armnetworkcloud.ValidationThresholdTypeCountSuccess),
-	// 				ThresholdValue: to.Ptr[int64](4),
-	// 				WaitTimeMinutes: to.Ptr[int64](10),
-	// 			},
-	// 			VulnerabilityScanningSettings: &armnetworkcloud.VulnerabilityScanningSettings{
-	// 				ContainerScan: to.Ptr(armnetworkcloud.VulnerabilityScanningSettingsContainerScanEnabled),
-	// 			},
-	// 			WorkloadResourceIDs: []*string{
-	// 				to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/l2Networks/l2NetworkName"),
-	// 			},
-	// 		},
-	// 		SystemData: &armnetworkcloud.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 27, 3, 8000000, time.UTC)),
-	// 			CreatedBy: to.Ptr("identityA"),
-	// 			CreatedByType: to.Ptr(armnetworkcloud.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 29, 3, 1000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("identityB"),
-	// 			LastModifiedByType: to.Ptr(armnetworkcloud.CreatedByTypeUser),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"key1": to.Ptr("myvalue1"),
-	// 			"key2": to.Ptr("myvalue2"),
-	// 		},
-	// 		Type: to.Ptr("Microsoft.NetworkCloud/clusters"),
-	// 	},
-	// }
-}
-
 // Generated from example definition: 2026-07-01/Clusters_Inspect.json
 func ExampleClustersClient_BeginInspect() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -818,546 +558,6 @@ func ExampleClustersClient_BeginInspect() {
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2026-07-01/Clusters_ListByResourceGroup.json
-func ExampleClustersClient_NewListByResourceGroupPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetworkcloud.NewClientFactory("123e4567-e89b-12d3-a456-426655440000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewClustersClient().NewListByResourceGroupPager("resourceGroupName", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnetworkcloud.ClustersClientListByResourceGroupResponse{
-		// 	ClusterList: armnetworkcloud.ClusterList{
-		// 		NextLink: to.Ptr("https://fully.qualified.hyperlink"),
-		// 		Value: []*armnetworkcloud.Cluster{
-		// 			{
-		// 				ExtendedLocation: &armnetworkcloud.ExtendedLocation{
-		// 					Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterManagerExtendedLocationName"),
-		// 					Type: to.Ptr("CustomLocation"),
-		// 				},
-		// 				ID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
-		// 				Identity: &armnetworkcloud.ManagedServiceIdentity{
-		// 					Type: to.Ptr(armnetworkcloud.ManagedServiceIdentityTypeUserAssigned),
-		// 					UserAssignedIdentities: map[string]*armnetworkcloud.UserAssignedIdentity{
-		// 						"/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userIdentity1": &armnetworkcloud.UserAssignedIdentity{
-		// 						},
-		// 					},
-		// 				},
-		// 				Kind: to.Ptr(armnetworkcloud.DeploymentTypeAzureLocal),
-		// 				Location: to.Ptr("location"),
-		// 				Name: to.Ptr("clusterName"),
-		// 				Properties: &armnetworkcloud.ClusterProperties{
-		// 					ActionStates: []*armnetworkcloud.ActionState{
-		// 						{
-		// 							ActionType: to.Ptr("Microsoft.NetworkCloud/clusters/ScanRuntime/action"),
-		// 							CorrelationID: to.Ptr("a45a00bb-3b02-42d5-baaf-033497574e97"),
-		// 							EndTime: to.Ptr("2023-04-29T12:00:00Z"),
-		// 							Message: to.Ptr("Action completed successfully"),
-		// 							StartTime: to.Ptr("2023-04-29T11:00:00Z"),
-		// 							Status: to.Ptr(armnetworkcloud.ActionStateStatusCompleted),
-		// 							StepStates: []*armnetworkcloud.StepState{
-		// 								{
-		// 									EndTime: to.Ptr("2023-04-29T11:30:00Z"),
-		// 									Message: to.Ptr("Request to scan runtime was successfully distributed to the cluster"),
-		// 									StartTime: to.Ptr("2023-04-29T11:00:00Z"),
-		// 									Status: to.Ptr(armnetworkcloud.StepStateStatusCompleted),
-		// 									StepName: to.Ptr("DistributeRequest"),
-		// 								},
-		// 							},
-		// 						},
-		// 					},
-		// 					AggregatorOrSingleRackDefinition: &armnetworkcloud.RackDefinition{
-		// 						BareMetalMachineConfigurationData: []*armnetworkcloud.BareMetalMachineConfigurationData{
-		// 							{
-		// 								BmcConnectionString: to.Ptr("bmcConnectionString"),
-		// 								BmcCredentials: &armnetworkcloud.AdministrativeCredentials{
-		// 									Username: to.Ptr("username"),
-		// 								},
-		// 								BmcMacAddress: to.Ptr("AA:BB:CC:DD:EE:FF"),
-		// 								BootMacAddress: to.Ptr("00:BB:CC:DD:EE:FF"),
-		// 								MachineDetails: to.Ptr("extraDetails"),
-		// 								MachineName: to.Ptr("bmmName1"),
-		// 								RackSlot: to.Ptr[int64](1),
-		// 								SerialNumber: to.Ptr("BM1219XXX"),
-		// 							},
-		// 							{
-		// 								BmcConnectionString: to.Ptr("bmcConnectionString"),
-		// 								BmcCredentials: &armnetworkcloud.AdministrativeCredentials{
-		// 									Username: to.Ptr("username"),
-		// 								},
-		// 								BmcMacAddress: to.Ptr("AA:BB:CC:DD:EE:00"),
-		// 								BootMacAddress: to.Ptr("00:BB:CC:DD:EE:00"),
-		// 								MachineDetails: to.Ptr("extraDetails"),
-		// 								MachineName: to.Ptr("bmmName2"),
-		// 								RackSlot: to.Ptr[int64](2),
-		// 								SerialNumber: to.Ptr("BM1219YYY"),
-		// 							},
-		// 						},
-		// 						NetworkRackID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkRacks/networkRackName"),
-		// 						RackLocation: to.Ptr("Foo Datacenter, Floor 3, Aisle 9, Rack 2"),
-		// 						RackSerialNumber: to.Ptr("AA1234"),
-		// 						RackSKUID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/providers/Microsoft.NetworkCloud/rackSkus/rackSkuName"),
-		// 						StorageApplianceConfigurationData: []*armnetworkcloud.StorageApplianceConfigurationData{
-		// 							{
-		// 								AdminCredentials: &armnetworkcloud.AdministrativeCredentials{
-		// 									Username: to.Ptr("username"),
-		// 								},
-		// 								RackSlot: to.Ptr[int64](1),
-		// 								SerialNumber: to.Ptr("BM1219XXX"),
-		// 								StorageApplianceName: to.Ptr("vmName"),
-		// 							},
-		// 						},
-		// 					},
-		// 					AnalyticsOutputSettings: &armnetworkcloud.AnalyticsOutputSettings{
-		// 						AnalyticsWorkspaceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.OperationalInsights/workspaces/logAnalyticsWorkspaceName"),
-		// 						AssociatedIdentity: &armnetworkcloud.IdentitySelector{
-		// 							IdentityType: to.Ptr(armnetworkcloud.ManagedServiceIdentitySelectorTypeUserAssignedIdentity),
-		// 							UserAssignedIdentityResourceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userIdentity1"),
-		// 						},
-		// 					},
-		// 					AvailableUpgradeVersions: []*armnetworkcloud.ClusterAvailableUpgradeVersion{
-		// 						{
-		// 							ControlImpact: to.Ptr(armnetworkcloud.ControlImpactFalse),
-		// 							ExpectedDuration: to.Ptr("0:0:30"),
-		// 							ImpactDescription: to.Ptr("can be done in place"),
-		// 							SupportExpiryDate: to.Ptr("2025-01-01"),
-		// 							TargetClusterVersion: to.Ptr("1.0.2"),
-		// 							WorkloadImpact: to.Ptr(armnetworkcloud.WorkloadImpactFalse),
-		// 						},
-		// 					},
-		// 					ClusterCapacity: &armnetworkcloud.ClusterCapacity{
-		// 						AvailableApplianceStorageGB: to.Ptr[int64](3),
-		// 						AvailableCoreCount: to.Ptr[int64](10),
-		// 						AvailableHostStorageGB: to.Ptr[int64](20),
-		// 						AvailableMemoryGB: to.Ptr[int64](20),
-		// 						TotalApplianceStorageGB: to.Ptr[int64](10),
-		// 						TotalCoreCount: to.Ptr[int64](10),
-		// 						TotalHostStorageGB: to.Ptr[int64](10),
-		// 						TotalMemoryGB: to.Ptr[int64](10),
-		// 					},
-		// 					ClusterConnectionStatus: to.Ptr(armnetworkcloud.ClusterConnectionStatusConnected),
-		// 					ClusterExtendedLocation: &armnetworkcloud.ExtendedLocation{
-		// 						Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
-		// 						Type: to.Ptr("CustomLocation"),
-		// 					},
-		// 					ClusterLocation: to.Ptr("Foo Street, 3rd Floor, row 9"),
-		// 					ClusterManagerConnectionStatus: to.Ptr(armnetworkcloud.ClusterManagerConnectionStatusConnected),
-		// 					ClusterManagerID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusterManagers/clusterManagerName"),
-		// 					ClusterType: to.Ptr(armnetworkcloud.ClusterTypeSingleRack),
-		// 					ClusterVersion: to.Ptr("1.0.0"),
-		// 					CommandOutputSettings: &armnetworkcloud.CommandOutputSettings{
-		// 						AssociatedIdentity: &armnetworkcloud.IdentitySelector{
-		// 							IdentityType: to.Ptr(armnetworkcloud.ManagedServiceIdentitySelectorTypeUserAssignedIdentity),
-		// 							UserAssignedIdentityResourceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userIdentity1"),
-		// 						},
-		// 						ContainerURL: to.Ptr("https://myaccount.blob.core.windows.net/mycontainer?restype=container"),
-		// 						Overrides: []*armnetworkcloud.CommandOutputOverride{
-		// 							{
-		// 								AssociatedIdentity: &armnetworkcloud.IdentitySelector{
-		// 									IdentityType: to.Ptr(armnetworkcloud.ManagedServiceIdentitySelectorTypeUserAssignedIdentity),
-		// 									UserAssignedIdentityResourceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userIdentity2"),
-		// 								},
-		// 								CommandOutputType: to.Ptr(armnetworkcloud.CommandOutputTypeStorageRunReadCommands),
-		// 								ContainerURL: to.Ptr("https://myaccount.blob.core.windows.net/myContainer2?restype=container"),
-		// 							},
-		// 						},
-		// 					},
-		// 					ComputeDeploymentThreshold: &armnetworkcloud.ValidationThreshold{
-		// 						Grouping: to.Ptr(armnetworkcloud.ValidationThresholdGroupingPerCluster),
-		// 						Type: to.Ptr(armnetworkcloud.ValidationThresholdTypePercentSuccess),
-		// 						Value: to.Ptr[int64](90),
-		// 					},
-		// 					ComputeRackDefinitions: []*armnetworkcloud.RackDefinition{
-		// 						{
-		// 							BareMetalMachineConfigurationData: []*armnetworkcloud.BareMetalMachineConfigurationData{
-		// 								{
-		// 									BmcConnectionString: to.Ptr("bmcConnectionString"),
-		// 									BmcCredentials: &armnetworkcloud.AdministrativeCredentials{
-		// 										Username: to.Ptr("username"),
-		// 									},
-		// 									BmcMacAddress: to.Ptr("AA:BB:CC:DD:EE:FF"),
-		// 									BootMacAddress: to.Ptr("00:BB:CC:DD:EE:FF"),
-		// 									MachineDetails: to.Ptr("extraDetails"),
-		// 									MachineName: to.Ptr("bmmName1"),
-		// 									RackSlot: to.Ptr[int64](1),
-		// 									SerialNumber: to.Ptr("BM1219XXX"),
-		// 								},
-		// 								{
-		// 									BmcConnectionString: to.Ptr("bmcConnectionString"),
-		// 									BmcCredentials: &armnetworkcloud.AdministrativeCredentials{
-		// 										Username: to.Ptr("username"),
-		// 									},
-		// 									BmcMacAddress: to.Ptr("AA:BB:CC:DD:EE:00"),
-		// 									BootMacAddress: to.Ptr("00:BB:CC:DD:EE:00"),
-		// 									MachineDetails: to.Ptr("extraDetails"),
-		// 									MachineName: to.Ptr("bmmName2"),
-		// 									RackSlot: to.Ptr[int64](2),
-		// 									SerialNumber: to.Ptr("BM1219YYY"),
-		// 								},
-		// 							},
-		// 							NetworkRackID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkRacks/networkRackName"),
-		// 							RackLocation: to.Ptr("Foo Datacenter, Floor 3, Aisle 9, Rack 2"),
-		// 							RackSerialNumber: to.Ptr("AA1234"),
-		// 							RackSKUID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/providers/Microsoft.NetworkCloud/rackSkus/rackSkuName"),
-		// 							StorageApplianceConfigurationData: []*armnetworkcloud.StorageApplianceConfigurationData{
-		// 								{
-		// 									AdminCredentials: &armnetworkcloud.AdministrativeCredentials{
-		// 										Username: to.Ptr("username"),
-		// 									},
-		// 									RackSlot: to.Ptr[int64](1),
-		// 									SerialNumber: to.Ptr("BM1219XXX"),
-		// 									StorageApplianceName: to.Ptr("vmName"),
-		// 								},
-		// 							},
-		// 						},
-		// 					},
-		// 					DetailedStatus: to.Ptr(armnetworkcloud.ClusterDetailedStatusRunning),
-		// 					DetailedStatusMessage: to.Ptr("Cluster is running and healthy"),
-		// 					LastSuccessfulVersionUpdateTime: to.Ptr(time.Date(2026, time.February, 22, 12, 0, 0, 0, time.UTC)),
-		// 					ManagedCredentials: []*string{
-		// 						to.Ptr("Bare Metal Machine Identity - console"),
-		// 						to.Ptr("Bare Metal Machine Identity - root"),
-		// 						to.Ptr("BMC Credential"),
-		// 						to.Ptr("local-path-provisioner volume passphrase"),
-		// 						to.Ptr("Storage Appliance User"),
-		// 					},
-		// 					ManagedResourceGroupConfiguration: &armnetworkcloud.ManagedResourceGroupConfiguration{
-		// 						Location: to.Ptr("East US"),
-		// 						Name: to.Ptr("my-managed-rg"),
-		// 					},
-		// 					ManualActionCount: to.Ptr[int64](0),
-		// 					NetworkFabricID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkFabrics/fabricName"),
-		// 					ProvisioningState: to.Ptr(armnetworkcloud.ClusterProvisioningStateSucceeded),
-		// 					RuntimeProtectionConfiguration: &armnetworkcloud.RuntimeProtectionConfiguration{
-		// 						DefinitionUpdateMode: to.Ptr(armnetworkcloud.RuntimeProtectionDefinitionUpdateModeNone),
-		// 						EnforcementLevel: to.Ptr(armnetworkcloud.RuntimeProtectionEnforcementLevelOnDemand),
-		// 					},
-		// 					SecretArchiveSettings: &armnetworkcloud.SecretArchiveSettings{
-		// 						AssociatedIdentity: &armnetworkcloud.IdentitySelector{
-		// 							IdentityType: to.Ptr(armnetworkcloud.ManagedServiceIdentitySelectorTypeUserAssignedIdentity),
-		// 							UserAssignedIdentityResourceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userIdentity1"),
-		// 						},
-		// 						VaultURI: to.Ptr("https://keyvaultname.vault.azure.net/"),
-		// 					},
-		// 					SupportExpiryDate: to.Ptr("2023-04-29"),
-		// 					UpdateStrategy: &armnetworkcloud.ClusterUpdateStrategy{
-		// 						MaxUnavailable: to.Ptr[int64](4),
-		// 						StrategyType: to.Ptr(armnetworkcloud.ClusterUpdateStrategyTypeRack),
-		// 						ThresholdType: to.Ptr(armnetworkcloud.ValidationThresholdTypeCountSuccess),
-		// 						ThresholdValue: to.Ptr[int64](4),
-		// 						WaitTimeMinutes: to.Ptr[int64](10),
-		// 					},
-		// 					VulnerabilityScanningSettings: &armnetworkcloud.VulnerabilityScanningSettings{
-		// 						ContainerScan: to.Ptr(armnetworkcloud.VulnerabilityScanningSettingsContainerScanEnabled),
-		// 					},
-		// 					WorkloadResourceIDs: []*string{
-		// 						to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/l2Networks/l2NetworkName"),
-		// 					},
-		// 				},
-		// 				SystemData: &armnetworkcloud.SystemData{
-		// 					CreatedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 27, 3, 8000000, time.UTC)),
-		// 					CreatedBy: to.Ptr("identityA"),
-		// 					CreatedByType: to.Ptr(armnetworkcloud.CreatedByTypeApplication),
-		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 29, 3, 1000000, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("identityB"),
-		// 					LastModifiedByType: to.Ptr(armnetworkcloud.CreatedByTypeUser),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 					"key1": to.Ptr("myvalue1"),
-		// 					"key2": to.Ptr("myvalue2"),
-		// 				},
-		// 				Type: to.Ptr("Microsoft.NetworkCloud/clusters"),
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-07-01/Clusters_ListBySubscription.json
-func ExampleClustersClient_NewListBySubscriptionPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetworkcloud.NewClientFactory("123e4567-e89b-12d3-a456-426655440000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewClustersClient().NewListBySubscriptionPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnetworkcloud.ClustersClientListBySubscriptionResponse{
-		// 	ClusterList: armnetworkcloud.ClusterList{
-		// 		NextLink: to.Ptr("https://fully.qualified.hyperlink"),
-		// 		Value: []*armnetworkcloud.Cluster{
-		// 			{
-		// 				ExtendedLocation: &armnetworkcloud.ExtendedLocation{
-		// 					Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterManagerExtendedLocationName"),
-		// 					Type: to.Ptr("CustomLocation"),
-		// 				},
-		// 				ID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
-		// 				Identity: &armnetworkcloud.ManagedServiceIdentity{
-		// 					Type: to.Ptr(armnetworkcloud.ManagedServiceIdentityTypeUserAssigned),
-		// 					UserAssignedIdentities: map[string]*armnetworkcloud.UserAssignedIdentity{
-		// 						"/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userIdentity1": &armnetworkcloud.UserAssignedIdentity{
-		// 						},
-		// 					},
-		// 				},
-		// 				Kind: to.Ptr(armnetworkcloud.DeploymentTypeAzureLocal),
-		// 				Location: to.Ptr("location"),
-		// 				Name: to.Ptr("clusterName"),
-		// 				Properties: &armnetworkcloud.ClusterProperties{
-		// 					ActionStates: []*armnetworkcloud.ActionState{
-		// 						{
-		// 							ActionType: to.Ptr("Microsoft.NetworkCloud/clusters/ScanRuntime/action"),
-		// 							CorrelationID: to.Ptr("a45a00bb-3b02-42d5-baaf-033497574e97"),
-		// 							EndTime: to.Ptr("2023-04-29T12:00:00Z"),
-		// 							Message: to.Ptr("Action completed successfully"),
-		// 							StartTime: to.Ptr("2023-04-29T11:00:00Z"),
-		// 							Status: to.Ptr(armnetworkcloud.ActionStateStatusCompleted),
-		// 							StepStates: []*armnetworkcloud.StepState{
-		// 								{
-		// 									EndTime: to.Ptr("2023-04-29T11:30:00Z"),
-		// 									Message: to.Ptr("Request to scan runtime was successfully distributed to the cluster"),
-		// 									StartTime: to.Ptr("2023-04-29T11:00:00Z"),
-		// 									Status: to.Ptr(armnetworkcloud.StepStateStatusCompleted),
-		// 									StepName: to.Ptr("DistributeRequest"),
-		// 								},
-		// 							},
-		// 						},
-		// 					},
-		// 					AggregatorOrSingleRackDefinition: &armnetworkcloud.RackDefinition{
-		// 						BareMetalMachineConfigurationData: []*armnetworkcloud.BareMetalMachineConfigurationData{
-		// 							{
-		// 								BmcConnectionString: to.Ptr("bmcConnectionString"),
-		// 								BmcCredentials: &armnetworkcloud.AdministrativeCredentials{
-		// 									Username: to.Ptr("username"),
-		// 								},
-		// 								BmcMacAddress: to.Ptr("AA:BB:CC:DD:EE:FF"),
-		// 								BootMacAddress: to.Ptr("00:BB:CC:DD:EE:FF"),
-		// 								MachineDetails: to.Ptr("extraDetails"),
-		// 								MachineName: to.Ptr("bmmName1"),
-		// 								RackSlot: to.Ptr[int64](1),
-		// 								SerialNumber: to.Ptr("BM1219XXX"),
-		// 							},
-		// 							{
-		// 								BmcConnectionString: to.Ptr("bmcConnectionString"),
-		// 								BmcCredentials: &armnetworkcloud.AdministrativeCredentials{
-		// 									Username: to.Ptr("username"),
-		// 								},
-		// 								BmcMacAddress: to.Ptr("AA:BB:CC:DD:EE:00"),
-		// 								BootMacAddress: to.Ptr("00:BB:CC:DD:EE:00"),
-		// 								MachineDetails: to.Ptr("extraDetails"),
-		// 								MachineName: to.Ptr("bmmName2"),
-		// 								RackSlot: to.Ptr[int64](2),
-		// 								SerialNumber: to.Ptr("BM1219YYY"),
-		// 							},
-		// 						},
-		// 						NetworkRackID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkRacks/networkRackName"),
-		// 						RackLocation: to.Ptr("Foo Datacenter, Floor 3, Aisle 9, Rack 2"),
-		// 						RackSerialNumber: to.Ptr("AA1234"),
-		// 						RackSKUID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/providers/Microsoft.NetworkCloud/rackSkus/rackSkuName"),
-		// 						StorageApplianceConfigurationData: []*armnetworkcloud.StorageApplianceConfigurationData{
-		// 							{
-		// 								AdminCredentials: &armnetworkcloud.AdministrativeCredentials{
-		// 									Username: to.Ptr("username"),
-		// 								},
-		// 								RackSlot: to.Ptr[int64](1),
-		// 								SerialNumber: to.Ptr("BM1219XXX"),
-		// 								StorageApplianceName: to.Ptr("vmName"),
-		// 							},
-		// 						},
-		// 					},
-		// 					AnalyticsOutputSettings: &armnetworkcloud.AnalyticsOutputSettings{
-		// 						AnalyticsWorkspaceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.OperationalInsights/workspaces/logAnalyticsWorkspaceName"),
-		// 						AssociatedIdentity: &armnetworkcloud.IdentitySelector{
-		// 							IdentityType: to.Ptr(armnetworkcloud.ManagedServiceIdentitySelectorTypeUserAssignedIdentity),
-		// 							UserAssignedIdentityResourceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userIdentity1"),
-		// 						},
-		// 					},
-		// 					AvailableUpgradeVersions: []*armnetworkcloud.ClusterAvailableUpgradeVersion{
-		// 						{
-		// 							ControlImpact: to.Ptr(armnetworkcloud.ControlImpactFalse),
-		// 							ExpectedDuration: to.Ptr("0:0:30"),
-		// 							ImpactDescription: to.Ptr("can be done in place"),
-		// 							SupportExpiryDate: to.Ptr("2025-01-01"),
-		// 							TargetClusterVersion: to.Ptr("1.0.2"),
-		// 							WorkloadImpact: to.Ptr(armnetworkcloud.WorkloadImpactFalse),
-		// 						},
-		// 					},
-		// 					ClusterCapacity: &armnetworkcloud.ClusterCapacity{
-		// 						AvailableApplianceStorageGB: to.Ptr[int64](3),
-		// 						AvailableCoreCount: to.Ptr[int64](10),
-		// 						AvailableHostStorageGB: to.Ptr[int64](20),
-		// 						AvailableMemoryGB: to.Ptr[int64](20),
-		// 						TotalApplianceStorageGB: to.Ptr[int64](10),
-		// 						TotalCoreCount: to.Ptr[int64](10),
-		// 						TotalHostStorageGB: to.Ptr[int64](10),
-		// 						TotalMemoryGB: to.Ptr[int64](10),
-		// 					},
-		// 					ClusterConnectionStatus: to.Ptr(armnetworkcloud.ClusterConnectionStatusConnected),
-		// 					ClusterExtendedLocation: &armnetworkcloud.ExtendedLocation{
-		// 						Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
-		// 						Type: to.Ptr("CustomLocation"),
-		// 					},
-		// 					ClusterLocation: to.Ptr("Foo Street, 3rd Floor, row 9"),
-		// 					ClusterManagerConnectionStatus: to.Ptr(armnetworkcloud.ClusterManagerConnectionStatusConnected),
-		// 					ClusterManagerID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusterManagers/clusterManagerName"),
-		// 					ClusterType: to.Ptr(armnetworkcloud.ClusterTypeSingleRack),
-		// 					ClusterVersion: to.Ptr("1.0.0"),
-		// 					CommandOutputSettings: &armnetworkcloud.CommandOutputSettings{
-		// 						AssociatedIdentity: &armnetworkcloud.IdentitySelector{
-		// 							IdentityType: to.Ptr(armnetworkcloud.ManagedServiceIdentitySelectorTypeUserAssignedIdentity),
-		// 							UserAssignedIdentityResourceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userIdentity1"),
-		// 						},
-		// 						ContainerURL: to.Ptr("https://myaccount.blob.core.windows.net/mycontainer?restype=container"),
-		// 						Overrides: []*armnetworkcloud.CommandOutputOverride{
-		// 							{
-		// 								AssociatedIdentity: &armnetworkcloud.IdentitySelector{
-		// 									IdentityType: to.Ptr(armnetworkcloud.ManagedServiceIdentitySelectorTypeUserAssignedIdentity),
-		// 									UserAssignedIdentityResourceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userIdentity2"),
-		// 								},
-		// 								CommandOutputType: to.Ptr(armnetworkcloud.CommandOutputTypeStorageRunReadCommands),
-		// 								ContainerURL: to.Ptr("https://myaccount.blob.core.windows.net/myContainer2?restype=container"),
-		// 							},
-		// 						},
-		// 					},
-		// 					ComputeDeploymentThreshold: &armnetworkcloud.ValidationThreshold{
-		// 						Grouping: to.Ptr(armnetworkcloud.ValidationThresholdGroupingPerCluster),
-		// 						Type: to.Ptr(armnetworkcloud.ValidationThresholdTypePercentSuccess),
-		// 						Value: to.Ptr[int64](90),
-		// 					},
-		// 					ComputeRackDefinitions: []*armnetworkcloud.RackDefinition{
-		// 						{
-		// 							BareMetalMachineConfigurationData: []*armnetworkcloud.BareMetalMachineConfigurationData{
-		// 								{
-		// 									BmcConnectionString: to.Ptr("bmcConnectionString"),
-		// 									BmcCredentials: &armnetworkcloud.AdministrativeCredentials{
-		// 										Username: to.Ptr("username"),
-		// 									},
-		// 									BmcMacAddress: to.Ptr("AA:BB:CC:DD:EE:FF"),
-		// 									BootMacAddress: to.Ptr("00:BB:CC:DD:EE:FF"),
-		// 									MachineDetails: to.Ptr("extraDetails"),
-		// 									MachineName: to.Ptr("bmmName1"),
-		// 									RackSlot: to.Ptr[int64](1),
-		// 									SerialNumber: to.Ptr("BM1219XXX"),
-		// 								},
-		// 								{
-		// 									BmcConnectionString: to.Ptr("bmcConnectionString"),
-		// 									BmcCredentials: &armnetworkcloud.AdministrativeCredentials{
-		// 										Username: to.Ptr("username"),
-		// 									},
-		// 									BmcMacAddress: to.Ptr("AA:BB:CC:DD:EE:00"),
-		// 									BootMacAddress: to.Ptr("00:BB:CC:DD:EE:00"),
-		// 									MachineDetails: to.Ptr("extraDetails"),
-		// 									MachineName: to.Ptr("bmmName2"),
-		// 									RackSlot: to.Ptr[int64](2),
-		// 									SerialNumber: to.Ptr("BM1219YYY"),
-		// 								},
-		// 							},
-		// 							NetworkRackID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkRacks/networkRackName"),
-		// 							RackLocation: to.Ptr("Foo Datacenter, Floor 3, Aisle 9, Rack 2"),
-		// 							RackSerialNumber: to.Ptr("AA1234"),
-		// 							RackSKUID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/providers/Microsoft.NetworkCloud/rackSkus/rackSkuName"),
-		// 							StorageApplianceConfigurationData: []*armnetworkcloud.StorageApplianceConfigurationData{
-		// 								{
-		// 									AdminCredentials: &armnetworkcloud.AdministrativeCredentials{
-		// 										Username: to.Ptr("username"),
-		// 									},
-		// 									RackSlot: to.Ptr[int64](1),
-		// 									SerialNumber: to.Ptr("BM1219XXX"),
-		// 									StorageApplianceName: to.Ptr("vmName"),
-		// 								},
-		// 							},
-		// 						},
-		// 					},
-		// 					DetailedStatus: to.Ptr(armnetworkcloud.ClusterDetailedStatusRunning),
-		// 					DetailedStatusMessage: to.Ptr("Cluster is running and healthy"),
-		// 					LastSuccessfulVersionUpdateTime: to.Ptr(time.Date(2026, time.February, 22, 12, 0, 0, 0, time.UTC)),
-		// 					ManagedCredentials: []*string{
-		// 						to.Ptr("Bare Metal Machine Identity - console"),
-		// 						to.Ptr("Bare Metal Machine Identity - root"),
-		// 						to.Ptr("BMC Credential"),
-		// 						to.Ptr("local-path-provisioner volume passphrase"),
-		// 						to.Ptr("Storage Appliance User"),
-		// 					},
-		// 					ManagedResourceGroupConfiguration: &armnetworkcloud.ManagedResourceGroupConfiguration{
-		// 						Location: to.Ptr("East US"),
-		// 						Name: to.Ptr("my-managed-rg"),
-		// 					},
-		// 					ManualActionCount: to.Ptr[int64](0),
-		// 					NetworkFabricID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkFabrics/fabricName"),
-		// 					ProvisioningState: to.Ptr(armnetworkcloud.ClusterProvisioningStateSucceeded),
-		// 					RuntimeProtectionConfiguration: &armnetworkcloud.RuntimeProtectionConfiguration{
-		// 						DefinitionUpdateMode: to.Ptr(armnetworkcloud.RuntimeProtectionDefinitionUpdateModeNone),
-		// 						EnforcementLevel: to.Ptr(armnetworkcloud.RuntimeProtectionEnforcementLevelOnDemand),
-		// 					},
-		// 					SecretArchiveSettings: &armnetworkcloud.SecretArchiveSettings{
-		// 						AssociatedIdentity: &armnetworkcloud.IdentitySelector{
-		// 							IdentityType: to.Ptr(armnetworkcloud.ManagedServiceIdentitySelectorTypeUserAssignedIdentity),
-		// 							UserAssignedIdentityResourceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userIdentity1"),
-		// 						},
-		// 						VaultURI: to.Ptr("https://keyvaultname.vault.azure.net/"),
-		// 					},
-		// 					SupportExpiryDate: to.Ptr("2023-04-29"),
-		// 					UpdateStrategy: &armnetworkcloud.ClusterUpdateStrategy{
-		// 						MaxUnavailable: to.Ptr[int64](4),
-		// 						StrategyType: to.Ptr(armnetworkcloud.ClusterUpdateStrategyTypeRack),
-		// 						ThresholdType: to.Ptr(armnetworkcloud.ValidationThresholdTypeCountSuccess),
-		// 						ThresholdValue: to.Ptr[int64](4),
-		// 						WaitTimeMinutes: to.Ptr[int64](10),
-		// 					},
-		// 					VulnerabilityScanningSettings: &armnetworkcloud.VulnerabilityScanningSettings{
-		// 						ContainerScan: to.Ptr(armnetworkcloud.VulnerabilityScanningSettingsContainerScanEnabled),
-		// 					},
-		// 					WorkloadResourceIDs: []*string{
-		// 						to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/l2Networks/l2NetworkName"),
-		// 					},
-		// 				},
-		// 				SystemData: &armnetworkcloud.SystemData{
-		// 					CreatedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 27, 3, 8000000, time.UTC)),
-		// 					CreatedBy: to.Ptr("identityA"),
-		// 					CreatedByType: to.Ptr(armnetworkcloud.CreatedByTypeApplication),
-		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 29, 3, 1000000, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("identityB"),
-		// 					LastModifiedByType: to.Ptr(armnetworkcloud.CreatedByTypeUser),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 					"key1": to.Ptr("myvalue1"),
-		// 					"key2": to.Ptr("myvalue2"),
-		// 				},
-		// 				Type: to.Ptr("Microsoft.NetworkCloud/clusters"),
-		// 			},
-		// 		},
-		// 	},
-		// }
 	}
 }
 
@@ -3710,5 +2910,805 @@ func ExampleClustersClient_BeginUpdateVersion() {
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-07-01/Clusters_Get.json
+func ExampleClustersClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetworkcloud.NewClientFactory("123e4567-e89b-12d3-a456-426655440000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewClustersClient().Get(ctx, "resourceGroupName", "clusterName", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetworkcloud.ClustersClientGetResponse{
+	// 	Cluster: armnetworkcloud.Cluster{
+	// 		ExtendedLocation: &armnetworkcloud.ExtendedLocation{
+	// 			Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterManagerExtendedLocationName"),
+	// 			Type: to.Ptr("CustomLocation"),
+	// 		},
+	// 		ID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
+	// 		Identity: &armnetworkcloud.ManagedServiceIdentity{
+	// 			Type: to.Ptr(armnetworkcloud.ManagedServiceIdentityTypeUserAssigned),
+	// 			UserAssignedIdentities: map[string]*armnetworkcloud.UserAssignedIdentity{
+	// 				"/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userIdentity1": &armnetworkcloud.UserAssignedIdentity{
+	// 				},
+	// 			},
+	// 		},
+	// 		Kind: to.Ptr(armnetworkcloud.DeploymentTypeAzureLocal),
+	// 		Location: to.Ptr("location"),
+	// 		Name: to.Ptr("clusterName"),
+	// 		Properties: &armnetworkcloud.ClusterProperties{
+	// 			ActionStates: []*armnetworkcloud.ActionState{
+	// 				{
+	// 					ActionType: to.Ptr("Microsoft.NetworkCloud/clusters/ScanRuntime/action"),
+	// 					CorrelationID: to.Ptr("a45a00bb-3b02-42d5-baaf-033497574e97"),
+	// 					EndTime: to.Ptr("2023-04-29T12:00:00Z"),
+	// 					Message: to.Ptr("Action completed successfully"),
+	// 					StartTime: to.Ptr("2023-04-29T11:00:00Z"),
+	// 					Status: to.Ptr(armnetworkcloud.ActionStateStatusCompleted),
+	// 					StepStates: []*armnetworkcloud.StepState{
+	// 						{
+	// 							EndTime: to.Ptr("2023-04-29T11:30:00Z"),
+	// 							Message: to.Ptr("Request to scan runtime was successfully distributed to the cluster"),
+	// 							StartTime: to.Ptr("2023-04-29T11:00:00Z"),
+	// 							Status: to.Ptr(armnetworkcloud.StepStateStatusCompleted),
+	// 							StepName: to.Ptr("DistributeRequest"),
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 			AggregatorOrSingleRackDefinition: &armnetworkcloud.RackDefinition{
+	// 				BareMetalMachineConfigurationData: []*armnetworkcloud.BareMetalMachineConfigurationData{
+	// 					{
+	// 						BmcConnectionString: to.Ptr("bmcConnectionString"),
+	// 						BmcCredentials: &armnetworkcloud.AdministrativeCredentials{
+	// 							Username: to.Ptr("username"),
+	// 						},
+	// 						BmcMacAddress: to.Ptr("AA:BB:CC:DD:EE:FF"),
+	// 						BootMacAddress: to.Ptr("00:BB:CC:DD:EE:FF"),
+	// 						MachineDetails: to.Ptr("extraDetails"),
+	// 						MachineName: to.Ptr("bmmName1"),
+	// 						RackSlot: to.Ptr[int64](1),
+	// 						SerialNumber: to.Ptr("BM1219XXX"),
+	// 					},
+	// 					{
+	// 						BmcConnectionString: to.Ptr("bmcConnectionString"),
+	// 						BmcCredentials: &armnetworkcloud.AdministrativeCredentials{
+	// 							Username: to.Ptr("username"),
+	// 						},
+	// 						BmcMacAddress: to.Ptr("AA:BB:CC:DD:EE:00"),
+	// 						BootMacAddress: to.Ptr("00:BB:CC:DD:EE:00"),
+	// 						MachineDetails: to.Ptr("extraDetails"),
+	// 						MachineName: to.Ptr("bmmName2"),
+	// 						RackSlot: to.Ptr[int64](2),
+	// 						SerialNumber: to.Ptr("BM1219YYY"),
+	// 					},
+	// 				},
+	// 				NetworkRackID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkRacks/networkRackName"),
+	// 				RackLocation: to.Ptr("Foo Datacenter, Floor 3, Aisle 9, Rack 2"),
+	// 				RackSerialNumber: to.Ptr("AA1234"),
+	// 				RackSKUID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/providers/Microsoft.NetworkCloud/rackSkus/rackSkuName"),
+	// 				StorageApplianceConfigurationData: []*armnetworkcloud.StorageApplianceConfigurationData{
+	// 					{
+	// 						AdminCredentials: &armnetworkcloud.AdministrativeCredentials{
+	// 							Username: to.Ptr("username"),
+	// 						},
+	// 						RackSlot: to.Ptr[int64](1),
+	// 						SerialNumber: to.Ptr("BM1219XXX"),
+	// 						StorageApplianceName: to.Ptr("vmName"),
+	// 					},
+	// 				},
+	// 			},
+	// 			AnalyticsOutputSettings: &armnetworkcloud.AnalyticsOutputSettings{
+	// 				AnalyticsWorkspaceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.OperationalInsights/workspaces/logAnalyticsWorkspaceName"),
+	// 				AssociatedIdentity: &armnetworkcloud.IdentitySelector{
+	// 					IdentityType: to.Ptr(armnetworkcloud.ManagedServiceIdentitySelectorTypeUserAssignedIdentity),
+	// 					UserAssignedIdentityResourceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userIdentity1"),
+	// 				},
+	// 			},
+	// 			AvailableUpgradeVersions: []*armnetworkcloud.ClusterAvailableUpgradeVersion{
+	// 				{
+	// 					ControlImpact: to.Ptr(armnetworkcloud.ControlImpactFalse),
+	// 					ExpectedDuration: to.Ptr("0:0:30"),
+	// 					ImpactDescription: to.Ptr("can be done in place"),
+	// 					SupportExpiryDate: to.Ptr("2025-01-01"),
+	// 					TargetClusterVersion: to.Ptr("1.0.2"),
+	// 					WorkloadImpact: to.Ptr(armnetworkcloud.WorkloadImpactFalse),
+	// 				},
+	// 			},
+	// 			ClusterCapacity: &armnetworkcloud.ClusterCapacity{
+	// 				AvailableApplianceStorageGB: to.Ptr[int64](3),
+	// 				AvailableCoreCount: to.Ptr[int64](10),
+	// 				AvailableHostStorageGB: to.Ptr[int64](20),
+	// 				AvailableMemoryGB: to.Ptr[int64](20),
+	// 				TotalApplianceStorageGB: to.Ptr[int64](10),
+	// 				TotalCoreCount: to.Ptr[int64](10),
+	// 				TotalHostStorageGB: to.Ptr[int64](10),
+	// 				TotalMemoryGB: to.Ptr[int64](10),
+	// 			},
+	// 			ClusterConnectionStatus: to.Ptr(armnetworkcloud.ClusterConnectionStatusConnected),
+	// 			ClusterExtendedLocation: &armnetworkcloud.ExtendedLocation{
+	// 				Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
+	// 				Type: to.Ptr("CustomLocation"),
+	// 			},
+	// 			ClusterLocation: to.Ptr("Foo Street, 3rd Floor, row 9"),
+	// 			ClusterManagerConnectionStatus: to.Ptr(armnetworkcloud.ClusterManagerConnectionStatusConnected),
+	// 			ClusterManagerID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusterManagers/clusterManagerName"),
+	// 			ClusterType: to.Ptr(armnetworkcloud.ClusterTypeSingleRack),
+	// 			ClusterVersion: to.Ptr("1.0.0"),
+	// 			CommandOutputSettings: &armnetworkcloud.CommandOutputSettings{
+	// 				AssociatedIdentity: &armnetworkcloud.IdentitySelector{
+	// 					IdentityType: to.Ptr(armnetworkcloud.ManagedServiceIdentitySelectorTypeUserAssignedIdentity),
+	// 					UserAssignedIdentityResourceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userIdentity1"),
+	// 				},
+	// 				ContainerURL: to.Ptr("https://myaccount.blob.core.windows.net/mycontainer?restype=container"),
+	// 				Overrides: []*armnetworkcloud.CommandOutputOverride{
+	// 					{
+	// 						AssociatedIdentity: &armnetworkcloud.IdentitySelector{
+	// 							IdentityType: to.Ptr(armnetworkcloud.ManagedServiceIdentitySelectorTypeUserAssignedIdentity),
+	// 							UserAssignedIdentityResourceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userIdentity2"),
+	// 						},
+	// 						CommandOutputType: to.Ptr(armnetworkcloud.CommandOutputTypeStorageRunReadCommands),
+	// 						ContainerURL: to.Ptr("https://myaccount.blob.core.windows.net/myContainer2?restype=container"),
+	// 					},
+	// 				},
+	// 			},
+	// 			ComputeDeploymentThreshold: &armnetworkcloud.ValidationThreshold{
+	// 				Grouping: to.Ptr(armnetworkcloud.ValidationThresholdGroupingPerCluster),
+	// 				Type: to.Ptr(armnetworkcloud.ValidationThresholdTypePercentSuccess),
+	// 				Value: to.Ptr[int64](90),
+	// 			},
+	// 			ComputeRackDefinitions: []*armnetworkcloud.RackDefinition{
+	// 				{
+	// 					BareMetalMachineConfigurationData: []*armnetworkcloud.BareMetalMachineConfigurationData{
+	// 						{
+	// 							BmcConnectionString: to.Ptr("bmcConnectionString"),
+	// 							BmcCredentials: &armnetworkcloud.AdministrativeCredentials{
+	// 								Username: to.Ptr("username"),
+	// 							},
+	// 							BmcMacAddress: to.Ptr("AA:BB:CC:DD:EE:FF"),
+	// 							BootMacAddress: to.Ptr("00:BB:CC:DD:EE:FF"),
+	// 							MachineDetails: to.Ptr("extraDetails"),
+	// 							MachineName: to.Ptr("bmmName1"),
+	// 							RackSlot: to.Ptr[int64](1),
+	// 							SerialNumber: to.Ptr("BM1219XXX"),
+	// 						},
+	// 						{
+	// 							BmcConnectionString: to.Ptr("bmcConnectionString"),
+	// 							BmcCredentials: &armnetworkcloud.AdministrativeCredentials{
+	// 								Username: to.Ptr("username"),
+	// 							},
+	// 							BmcMacAddress: to.Ptr("AA:BB:CC:DD:EE:00"),
+	// 							BootMacAddress: to.Ptr("00:BB:CC:DD:EE:00"),
+	// 							MachineDetails: to.Ptr("extraDetails"),
+	// 							MachineName: to.Ptr("bmmName2"),
+	// 							RackSlot: to.Ptr[int64](2),
+	// 							SerialNumber: to.Ptr("BM1219YYY"),
+	// 						},
+	// 					},
+	// 					NetworkRackID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkRacks/networkRackName"),
+	// 					RackLocation: to.Ptr("Foo Datacenter, Floor 3, Aisle 9, Rack 2"),
+	// 					RackSerialNumber: to.Ptr("AA1234"),
+	// 					RackSKUID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/providers/Microsoft.NetworkCloud/rackSkus/rackSkuName"),
+	// 					StorageApplianceConfigurationData: []*armnetworkcloud.StorageApplianceConfigurationData{
+	// 						{
+	// 							AdminCredentials: &armnetworkcloud.AdministrativeCredentials{
+	// 								Username: to.Ptr("username"),
+	// 							},
+	// 							RackSlot: to.Ptr[int64](1),
+	// 							SerialNumber: to.Ptr("BM1219XXX"),
+	// 							StorageApplianceName: to.Ptr("vmName"),
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 			DetailedStatus: to.Ptr(armnetworkcloud.ClusterDetailedStatusRunning),
+	// 			DetailedStatusMessage: to.Ptr("Cluster is running and healthy"),
+	// 			ManagedCredentials: []*string{
+	// 				to.Ptr("Bare Metal Machine Identity - console"),
+	// 				to.Ptr("Bare Metal Machine Identity - root"),
+	// 				to.Ptr("BMC Credential"),
+	// 				to.Ptr("local-path-provisioner volume passphrase"),
+	// 				to.Ptr("Storage Appliance User"),
+	// 			},
+	// 			LastSuccessfulVersionUpdateTime: to.Ptr(time.Date(2026, time.February, 22, 12, 0, 0, 0, time.UTC)),
+	// 			ManagedResourceGroupConfiguration: &armnetworkcloud.ManagedResourceGroupConfiguration{
+	// 				Location: to.Ptr("East US"),
+	// 				Name: to.Ptr("my-managed-rg"),
+	// 			},
+	// 			ManualActionCount: to.Ptr[int64](0),
+	// 			NetworkFabricID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkFabrics/fabricName"),
+	// 			ProvisioningState: to.Ptr(armnetworkcloud.ClusterProvisioningStateSucceeded),
+	// 			RuntimeProtectionConfiguration: &armnetworkcloud.RuntimeProtectionConfiguration{
+	// 				DefinitionUpdateMode: to.Ptr(armnetworkcloud.RuntimeProtectionDefinitionUpdateModeNone),
+	// 				EnforcementLevel: to.Ptr(armnetworkcloud.RuntimeProtectionEnforcementLevelOnDemand),
+	// 			},
+	// 			SecretArchiveSettings: &armnetworkcloud.SecretArchiveSettings{
+	// 				AssociatedIdentity: &armnetworkcloud.IdentitySelector{
+	// 					IdentityType: to.Ptr(armnetworkcloud.ManagedServiceIdentitySelectorTypeUserAssignedIdentity),
+	// 					UserAssignedIdentityResourceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userIdentity1"),
+	// 				},
+	// 				VaultURI: to.Ptr("https://keyvaultname.vault.azure.net/"),
+	// 			},
+	// 			SupportExpiryDate: to.Ptr("2023-04-29"),
+	// 			UpdateStrategy: &armnetworkcloud.ClusterUpdateStrategy{
+	// 				MaxUnavailable: to.Ptr[int64](4),
+	// 				StrategyType: to.Ptr(armnetworkcloud.ClusterUpdateStrategyTypeRack),
+	// 				ThresholdType: to.Ptr(armnetworkcloud.ValidationThresholdTypeCountSuccess),
+	// 				ThresholdValue: to.Ptr[int64](4),
+	// 				WaitTimeMinutes: to.Ptr[int64](10),
+	// 			},
+	// 			VulnerabilityScanningSettings: &armnetworkcloud.VulnerabilityScanningSettings{
+	// 				ContainerScan: to.Ptr(armnetworkcloud.VulnerabilityScanningSettingsContainerScanEnabled),
+	// 			},
+	// 			WorkloadResourceIDs: []*string{
+	// 				to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/l2Networks/l2NetworkName"),
+	// 			},
+	// 		},
+	// 		SystemData: &armnetworkcloud.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 27, 3, 8000000, time.UTC)),
+	// 			CreatedBy: to.Ptr("identityA"),
+	// 			CreatedByType: to.Ptr(armnetworkcloud.CreatedByTypeApplication),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 29, 3, 1000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("identityB"),
+	// 			LastModifiedByType: to.Ptr(armnetworkcloud.CreatedByTypeUser),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"key1": to.Ptr("myvalue1"),
+	// 			"key2": to.Ptr("myvalue2"),
+	// 		},
+	// 		Type: to.Ptr("Microsoft.NetworkCloud/clusters"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-07-01/Clusters_ListByResourceGroup.json
+func ExampleClustersClient_NewListByResourceGroupPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetworkcloud.NewClientFactory("123e4567-e89b-12d3-a456-426655440000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewClustersClient().NewListByResourceGroupPager("resourceGroupName", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armnetworkcloud.ClustersClientListByResourceGroupResponse{
+		// 	ClusterList: armnetworkcloud.ClusterList{
+		// 		NextLink: to.Ptr("https://fully.qualified.hyperlink"),
+		// 		Value: []*armnetworkcloud.Cluster{
+		// 			{
+		// 				ExtendedLocation: &armnetworkcloud.ExtendedLocation{
+		// 					Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterManagerExtendedLocationName"),
+		// 					Type: to.Ptr("CustomLocation"),
+		// 				},
+		// 				ID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
+		// 				Identity: &armnetworkcloud.ManagedServiceIdentity{
+		// 					Type: to.Ptr(armnetworkcloud.ManagedServiceIdentityTypeUserAssigned),
+		// 					UserAssignedIdentities: map[string]*armnetworkcloud.UserAssignedIdentity{
+		// 						"/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userIdentity1": &armnetworkcloud.UserAssignedIdentity{
+		// 						},
+		// 					},
+		// 				},
+		// 				Kind: to.Ptr(armnetworkcloud.DeploymentTypeAzureLocal),
+		// 				Location: to.Ptr("location"),
+		// 				Name: to.Ptr("clusterName"),
+		// 				Properties: &armnetworkcloud.ClusterProperties{
+		// 					ActionStates: []*armnetworkcloud.ActionState{
+		// 						{
+		// 							ActionType: to.Ptr("Microsoft.NetworkCloud/clusters/ScanRuntime/action"),
+		// 							CorrelationID: to.Ptr("a45a00bb-3b02-42d5-baaf-033497574e97"),
+		// 							EndTime: to.Ptr("2023-04-29T12:00:00Z"),
+		// 							Message: to.Ptr("Action completed successfully"),
+		// 							StartTime: to.Ptr("2023-04-29T11:00:00Z"),
+		// 							Status: to.Ptr(armnetworkcloud.ActionStateStatusCompleted),
+		// 							StepStates: []*armnetworkcloud.StepState{
+		// 								{
+		// 									EndTime: to.Ptr("2023-04-29T11:30:00Z"),
+		// 									Message: to.Ptr("Request to scan runtime was successfully distributed to the cluster"),
+		// 									StartTime: to.Ptr("2023-04-29T11:00:00Z"),
+		// 									Status: to.Ptr(armnetworkcloud.StepStateStatusCompleted),
+		// 									StepName: to.Ptr("DistributeRequest"),
+		// 								},
+		// 							},
+		// 						},
+		// 					},
+		// 					AggregatorOrSingleRackDefinition: &armnetworkcloud.RackDefinition{
+		// 						BareMetalMachineConfigurationData: []*armnetworkcloud.BareMetalMachineConfigurationData{
+		// 							{
+		// 								BmcConnectionString: to.Ptr("bmcConnectionString"),
+		// 								BmcCredentials: &armnetworkcloud.AdministrativeCredentials{
+		// 									Username: to.Ptr("username"),
+		// 								},
+		// 								BmcMacAddress: to.Ptr("AA:BB:CC:DD:EE:FF"),
+		// 								BootMacAddress: to.Ptr("00:BB:CC:DD:EE:FF"),
+		// 								MachineDetails: to.Ptr("extraDetails"),
+		// 								MachineName: to.Ptr("bmmName1"),
+		// 								RackSlot: to.Ptr[int64](1),
+		// 								SerialNumber: to.Ptr("BM1219XXX"),
+		// 							},
+		// 							{
+		// 								BmcConnectionString: to.Ptr("bmcConnectionString"),
+		// 								BmcCredentials: &armnetworkcloud.AdministrativeCredentials{
+		// 									Username: to.Ptr("username"),
+		// 								},
+		// 								BmcMacAddress: to.Ptr("AA:BB:CC:DD:EE:00"),
+		// 								BootMacAddress: to.Ptr("00:BB:CC:DD:EE:00"),
+		// 								MachineDetails: to.Ptr("extraDetails"),
+		// 								MachineName: to.Ptr("bmmName2"),
+		// 								RackSlot: to.Ptr[int64](2),
+		// 								SerialNumber: to.Ptr("BM1219YYY"),
+		// 							},
+		// 						},
+		// 						NetworkRackID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkRacks/networkRackName"),
+		// 						RackLocation: to.Ptr("Foo Datacenter, Floor 3, Aisle 9, Rack 2"),
+		// 						RackSerialNumber: to.Ptr("AA1234"),
+		// 						RackSKUID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/providers/Microsoft.NetworkCloud/rackSkus/rackSkuName"),
+		// 						StorageApplianceConfigurationData: []*armnetworkcloud.StorageApplianceConfigurationData{
+		// 							{
+		// 								AdminCredentials: &armnetworkcloud.AdministrativeCredentials{
+		// 									Username: to.Ptr("username"),
+		// 								},
+		// 								RackSlot: to.Ptr[int64](1),
+		// 								SerialNumber: to.Ptr("BM1219XXX"),
+		// 								StorageApplianceName: to.Ptr("vmName"),
+		// 							},
+		// 						},
+		// 					},
+		// 					AnalyticsOutputSettings: &armnetworkcloud.AnalyticsOutputSettings{
+		// 						AnalyticsWorkspaceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.OperationalInsights/workspaces/logAnalyticsWorkspaceName"),
+		// 						AssociatedIdentity: &armnetworkcloud.IdentitySelector{
+		// 							IdentityType: to.Ptr(armnetworkcloud.ManagedServiceIdentitySelectorTypeUserAssignedIdentity),
+		// 							UserAssignedIdentityResourceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userIdentity1"),
+		// 						},
+		// 					},
+		// 					AvailableUpgradeVersions: []*armnetworkcloud.ClusterAvailableUpgradeVersion{
+		// 						{
+		// 							ControlImpact: to.Ptr(armnetworkcloud.ControlImpactFalse),
+		// 							ExpectedDuration: to.Ptr("0:0:30"),
+		// 							ImpactDescription: to.Ptr("can be done in place"),
+		// 							SupportExpiryDate: to.Ptr("2025-01-01"),
+		// 							TargetClusterVersion: to.Ptr("1.0.2"),
+		// 							WorkloadImpact: to.Ptr(armnetworkcloud.WorkloadImpactFalse),
+		// 						},
+		// 					},
+		// 					ClusterCapacity: &armnetworkcloud.ClusterCapacity{
+		// 						AvailableApplianceStorageGB: to.Ptr[int64](3),
+		// 						AvailableCoreCount: to.Ptr[int64](10),
+		// 						AvailableHostStorageGB: to.Ptr[int64](20),
+		// 						AvailableMemoryGB: to.Ptr[int64](20),
+		// 						TotalApplianceStorageGB: to.Ptr[int64](10),
+		// 						TotalCoreCount: to.Ptr[int64](10),
+		// 						TotalHostStorageGB: to.Ptr[int64](10),
+		// 						TotalMemoryGB: to.Ptr[int64](10),
+		// 					},
+		// 					ClusterConnectionStatus: to.Ptr(armnetworkcloud.ClusterConnectionStatusConnected),
+		// 					ClusterExtendedLocation: &armnetworkcloud.ExtendedLocation{
+		// 						Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
+		// 						Type: to.Ptr("CustomLocation"),
+		// 					},
+		// 					ClusterLocation: to.Ptr("Foo Street, 3rd Floor, row 9"),
+		// 					ClusterManagerConnectionStatus: to.Ptr(armnetworkcloud.ClusterManagerConnectionStatusConnected),
+		// 					ClusterManagerID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusterManagers/clusterManagerName"),
+		// 					ClusterType: to.Ptr(armnetworkcloud.ClusterTypeSingleRack),
+		// 					ClusterVersion: to.Ptr("1.0.0"),
+		// 					CommandOutputSettings: &armnetworkcloud.CommandOutputSettings{
+		// 						AssociatedIdentity: &armnetworkcloud.IdentitySelector{
+		// 							IdentityType: to.Ptr(armnetworkcloud.ManagedServiceIdentitySelectorTypeUserAssignedIdentity),
+		// 							UserAssignedIdentityResourceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userIdentity1"),
+		// 						},
+		// 						ContainerURL: to.Ptr("https://myaccount.blob.core.windows.net/mycontainer?restype=container"),
+		// 						Overrides: []*armnetworkcloud.CommandOutputOverride{
+		// 							{
+		// 								AssociatedIdentity: &armnetworkcloud.IdentitySelector{
+		// 									IdentityType: to.Ptr(armnetworkcloud.ManagedServiceIdentitySelectorTypeUserAssignedIdentity),
+		// 									UserAssignedIdentityResourceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userIdentity2"),
+		// 								},
+		// 								CommandOutputType: to.Ptr(armnetworkcloud.CommandOutputTypeStorageRunReadCommands),
+		// 								ContainerURL: to.Ptr("https://myaccount.blob.core.windows.net/myContainer2?restype=container"),
+		// 							},
+		// 						},
+		// 					},
+		// 					ComputeDeploymentThreshold: &armnetworkcloud.ValidationThreshold{
+		// 						Grouping: to.Ptr(armnetworkcloud.ValidationThresholdGroupingPerCluster),
+		// 						Type: to.Ptr(armnetworkcloud.ValidationThresholdTypePercentSuccess),
+		// 						Value: to.Ptr[int64](90),
+		// 					},
+		// 					ComputeRackDefinitions: []*armnetworkcloud.RackDefinition{
+		// 						{
+		// 							BareMetalMachineConfigurationData: []*armnetworkcloud.BareMetalMachineConfigurationData{
+		// 								{
+		// 									BmcConnectionString: to.Ptr("bmcConnectionString"),
+		// 									BmcCredentials: &armnetworkcloud.AdministrativeCredentials{
+		// 										Username: to.Ptr("username"),
+		// 									},
+		// 									BmcMacAddress: to.Ptr("AA:BB:CC:DD:EE:FF"),
+		// 									BootMacAddress: to.Ptr("00:BB:CC:DD:EE:FF"),
+		// 									MachineDetails: to.Ptr("extraDetails"),
+		// 									MachineName: to.Ptr("bmmName1"),
+		// 									RackSlot: to.Ptr[int64](1),
+		// 									SerialNumber: to.Ptr("BM1219XXX"),
+		// 								},
+		// 								{
+		// 									BmcConnectionString: to.Ptr("bmcConnectionString"),
+		// 									BmcCredentials: &armnetworkcloud.AdministrativeCredentials{
+		// 										Username: to.Ptr("username"),
+		// 									},
+		// 									BmcMacAddress: to.Ptr("AA:BB:CC:DD:EE:00"),
+		// 									BootMacAddress: to.Ptr("00:BB:CC:DD:EE:00"),
+		// 									MachineDetails: to.Ptr("extraDetails"),
+		// 									MachineName: to.Ptr("bmmName2"),
+		// 									RackSlot: to.Ptr[int64](2),
+		// 									SerialNumber: to.Ptr("BM1219YYY"),
+		// 								},
+		// 							},
+		// 							NetworkRackID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkRacks/networkRackName"),
+		// 							RackLocation: to.Ptr("Foo Datacenter, Floor 3, Aisle 9, Rack 2"),
+		// 							RackSerialNumber: to.Ptr("AA1234"),
+		// 							RackSKUID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/providers/Microsoft.NetworkCloud/rackSkus/rackSkuName"),
+		// 							StorageApplianceConfigurationData: []*armnetworkcloud.StorageApplianceConfigurationData{
+		// 								{
+		// 									AdminCredentials: &armnetworkcloud.AdministrativeCredentials{
+		// 										Username: to.Ptr("username"),
+		// 									},
+		// 									RackSlot: to.Ptr[int64](1),
+		// 									SerialNumber: to.Ptr("BM1219XXX"),
+		// 									StorageApplianceName: to.Ptr("vmName"),
+		// 								},
+		// 							},
+		// 						},
+		// 					},
+		// 					DetailedStatus: to.Ptr(armnetworkcloud.ClusterDetailedStatusRunning),
+		// 					DetailedStatusMessage: to.Ptr("Cluster is running and healthy"),
+		// 					LastSuccessfulVersionUpdateTime: to.Ptr(time.Date(2026, time.February, 22, 12, 0, 0, 0, time.UTC)),
+		// 					ManagedCredentials: []*string{
+		// 						to.Ptr("Bare Metal Machine Identity - console"),
+		// 						to.Ptr("Bare Metal Machine Identity - root"),
+		// 						to.Ptr("BMC Credential"),
+		// 						to.Ptr("local-path-provisioner volume passphrase"),
+		// 						to.Ptr("Storage Appliance User"),
+		// 					},
+		// 					ManagedResourceGroupConfiguration: &armnetworkcloud.ManagedResourceGroupConfiguration{
+		// 						Location: to.Ptr("East US"),
+		// 						Name: to.Ptr("my-managed-rg"),
+		// 					},
+		// 					ManualActionCount: to.Ptr[int64](0),
+		// 					NetworkFabricID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkFabrics/fabricName"),
+		// 					ProvisioningState: to.Ptr(armnetworkcloud.ClusterProvisioningStateSucceeded),
+		// 					RuntimeProtectionConfiguration: &armnetworkcloud.RuntimeProtectionConfiguration{
+		// 						DefinitionUpdateMode: to.Ptr(armnetworkcloud.RuntimeProtectionDefinitionUpdateModeNone),
+		// 						EnforcementLevel: to.Ptr(armnetworkcloud.RuntimeProtectionEnforcementLevelOnDemand),
+		// 					},
+		// 					SecretArchiveSettings: &armnetworkcloud.SecretArchiveSettings{
+		// 						AssociatedIdentity: &armnetworkcloud.IdentitySelector{
+		// 							IdentityType: to.Ptr(armnetworkcloud.ManagedServiceIdentitySelectorTypeUserAssignedIdentity),
+		// 							UserAssignedIdentityResourceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userIdentity1"),
+		// 						},
+		// 						VaultURI: to.Ptr("https://keyvaultname.vault.azure.net/"),
+		// 					},
+		// 					SupportExpiryDate: to.Ptr("2023-04-29"),
+		// 					UpdateStrategy: &armnetworkcloud.ClusterUpdateStrategy{
+		// 						MaxUnavailable: to.Ptr[int64](4),
+		// 						StrategyType: to.Ptr(armnetworkcloud.ClusterUpdateStrategyTypeRack),
+		// 						ThresholdType: to.Ptr(armnetworkcloud.ValidationThresholdTypeCountSuccess),
+		// 						ThresholdValue: to.Ptr[int64](4),
+		// 						WaitTimeMinutes: to.Ptr[int64](10),
+		// 					},
+		// 					VulnerabilityScanningSettings: &armnetworkcloud.VulnerabilityScanningSettings{
+		// 						ContainerScan: to.Ptr(armnetworkcloud.VulnerabilityScanningSettingsContainerScanEnabled),
+		// 					},
+		// 					WorkloadResourceIDs: []*string{
+		// 						to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/l2Networks/l2NetworkName"),
+		// 					},
+		// 				},
+		// 				SystemData: &armnetworkcloud.SystemData{
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 27, 3, 8000000, time.UTC)),
+		// 					CreatedBy: to.Ptr("identityA"),
+		// 					CreatedByType: to.Ptr(armnetworkcloud.CreatedByTypeApplication),
+		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 29, 3, 1000000, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("identityB"),
+		// 					LastModifiedByType: to.Ptr(armnetworkcloud.CreatedByTypeUser),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"key1": to.Ptr("myvalue1"),
+		// 					"key2": to.Ptr("myvalue2"),
+		// 				},
+		// 				Type: to.Ptr("Microsoft.NetworkCloud/clusters"),
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-07-01/Clusters_ListBySubscription.json
+func ExampleClustersClient_NewListBySubscriptionPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetworkcloud.NewClientFactory("123e4567-e89b-12d3-a456-426655440000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewClustersClient().NewListBySubscriptionPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armnetworkcloud.ClustersClientListBySubscriptionResponse{
+		// 	ClusterList: armnetworkcloud.ClusterList{
+		// 		NextLink: to.Ptr("https://fully.qualified.hyperlink"),
+		// 		Value: []*armnetworkcloud.Cluster{
+		// 			{
+		// 				ExtendedLocation: &armnetworkcloud.ExtendedLocation{
+		// 					Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterManagerExtendedLocationName"),
+		// 					Type: to.Ptr("CustomLocation"),
+		// 				},
+		// 				ID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
+		// 				Identity: &armnetworkcloud.ManagedServiceIdentity{
+		// 					Type: to.Ptr(armnetworkcloud.ManagedServiceIdentityTypeUserAssigned),
+		// 					UserAssignedIdentities: map[string]*armnetworkcloud.UserAssignedIdentity{
+		// 						"/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userIdentity1": &armnetworkcloud.UserAssignedIdentity{
+		// 						},
+		// 					},
+		// 				},
+		// 				Kind: to.Ptr(armnetworkcloud.DeploymentTypeAzureLocal),
+		// 				Location: to.Ptr("location"),
+		// 				Name: to.Ptr("clusterName"),
+		// 				Properties: &armnetworkcloud.ClusterProperties{
+		// 					ActionStates: []*armnetworkcloud.ActionState{
+		// 						{
+		// 							ActionType: to.Ptr("Microsoft.NetworkCloud/clusters/ScanRuntime/action"),
+		// 							CorrelationID: to.Ptr("a45a00bb-3b02-42d5-baaf-033497574e97"),
+		// 							EndTime: to.Ptr("2023-04-29T12:00:00Z"),
+		// 							Message: to.Ptr("Action completed successfully"),
+		// 							StartTime: to.Ptr("2023-04-29T11:00:00Z"),
+		// 							Status: to.Ptr(armnetworkcloud.ActionStateStatusCompleted),
+		// 							StepStates: []*armnetworkcloud.StepState{
+		// 								{
+		// 									EndTime: to.Ptr("2023-04-29T11:30:00Z"),
+		// 									Message: to.Ptr("Request to scan runtime was successfully distributed to the cluster"),
+		// 									StartTime: to.Ptr("2023-04-29T11:00:00Z"),
+		// 									Status: to.Ptr(armnetworkcloud.StepStateStatusCompleted),
+		// 									StepName: to.Ptr("DistributeRequest"),
+		// 								},
+		// 							},
+		// 						},
+		// 					},
+		// 					AggregatorOrSingleRackDefinition: &armnetworkcloud.RackDefinition{
+		// 						BareMetalMachineConfigurationData: []*armnetworkcloud.BareMetalMachineConfigurationData{
+		// 							{
+		// 								BmcConnectionString: to.Ptr("bmcConnectionString"),
+		// 								BmcCredentials: &armnetworkcloud.AdministrativeCredentials{
+		// 									Username: to.Ptr("username"),
+		// 								},
+		// 								BmcMacAddress: to.Ptr("AA:BB:CC:DD:EE:FF"),
+		// 								BootMacAddress: to.Ptr("00:BB:CC:DD:EE:FF"),
+		// 								MachineDetails: to.Ptr("extraDetails"),
+		// 								MachineName: to.Ptr("bmmName1"),
+		// 								RackSlot: to.Ptr[int64](1),
+		// 								SerialNumber: to.Ptr("BM1219XXX"),
+		// 							},
+		// 							{
+		// 								BmcConnectionString: to.Ptr("bmcConnectionString"),
+		// 								BmcCredentials: &armnetworkcloud.AdministrativeCredentials{
+		// 									Username: to.Ptr("username"),
+		// 								},
+		// 								BmcMacAddress: to.Ptr("AA:BB:CC:DD:EE:00"),
+		// 								BootMacAddress: to.Ptr("00:BB:CC:DD:EE:00"),
+		// 								MachineDetails: to.Ptr("extraDetails"),
+		// 								MachineName: to.Ptr("bmmName2"),
+		// 								RackSlot: to.Ptr[int64](2),
+		// 								SerialNumber: to.Ptr("BM1219YYY"),
+		// 							},
+		// 						},
+		// 						NetworkRackID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkRacks/networkRackName"),
+		// 						RackLocation: to.Ptr("Foo Datacenter, Floor 3, Aisle 9, Rack 2"),
+		// 						RackSerialNumber: to.Ptr("AA1234"),
+		// 						RackSKUID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/providers/Microsoft.NetworkCloud/rackSkus/rackSkuName"),
+		// 						StorageApplianceConfigurationData: []*armnetworkcloud.StorageApplianceConfigurationData{
+		// 							{
+		// 								AdminCredentials: &armnetworkcloud.AdministrativeCredentials{
+		// 									Username: to.Ptr("username"),
+		// 								},
+		// 								RackSlot: to.Ptr[int64](1),
+		// 								SerialNumber: to.Ptr("BM1219XXX"),
+		// 								StorageApplianceName: to.Ptr("vmName"),
+		// 							},
+		// 						},
+		// 					},
+		// 					AnalyticsOutputSettings: &armnetworkcloud.AnalyticsOutputSettings{
+		// 						AnalyticsWorkspaceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.OperationalInsights/workspaces/logAnalyticsWorkspaceName"),
+		// 						AssociatedIdentity: &armnetworkcloud.IdentitySelector{
+		// 							IdentityType: to.Ptr(armnetworkcloud.ManagedServiceIdentitySelectorTypeUserAssignedIdentity),
+		// 							UserAssignedIdentityResourceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userIdentity1"),
+		// 						},
+		// 					},
+		// 					AvailableUpgradeVersions: []*armnetworkcloud.ClusterAvailableUpgradeVersion{
+		// 						{
+		// 							ControlImpact: to.Ptr(armnetworkcloud.ControlImpactFalse),
+		// 							ExpectedDuration: to.Ptr("0:0:30"),
+		// 							ImpactDescription: to.Ptr("can be done in place"),
+		// 							SupportExpiryDate: to.Ptr("2025-01-01"),
+		// 							TargetClusterVersion: to.Ptr("1.0.2"),
+		// 							WorkloadImpact: to.Ptr(armnetworkcloud.WorkloadImpactFalse),
+		// 						},
+		// 					},
+		// 					ClusterCapacity: &armnetworkcloud.ClusterCapacity{
+		// 						AvailableApplianceStorageGB: to.Ptr[int64](3),
+		// 						AvailableCoreCount: to.Ptr[int64](10),
+		// 						AvailableHostStorageGB: to.Ptr[int64](20),
+		// 						AvailableMemoryGB: to.Ptr[int64](20),
+		// 						TotalApplianceStorageGB: to.Ptr[int64](10),
+		// 						TotalCoreCount: to.Ptr[int64](10),
+		// 						TotalHostStorageGB: to.Ptr[int64](10),
+		// 						TotalMemoryGB: to.Ptr[int64](10),
+		// 					},
+		// 					ClusterConnectionStatus: to.Ptr(armnetworkcloud.ClusterConnectionStatusConnected),
+		// 					ClusterExtendedLocation: &armnetworkcloud.ExtendedLocation{
+		// 						Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
+		// 						Type: to.Ptr("CustomLocation"),
+		// 					},
+		// 					ClusterLocation: to.Ptr("Foo Street, 3rd Floor, row 9"),
+		// 					ClusterManagerConnectionStatus: to.Ptr(armnetworkcloud.ClusterManagerConnectionStatusConnected),
+		// 					ClusterManagerID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusterManagers/clusterManagerName"),
+		// 					ClusterType: to.Ptr(armnetworkcloud.ClusterTypeSingleRack),
+		// 					ClusterVersion: to.Ptr("1.0.0"),
+		// 					CommandOutputSettings: &armnetworkcloud.CommandOutputSettings{
+		// 						AssociatedIdentity: &armnetworkcloud.IdentitySelector{
+		// 							IdentityType: to.Ptr(armnetworkcloud.ManagedServiceIdentitySelectorTypeUserAssignedIdentity),
+		// 							UserAssignedIdentityResourceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userIdentity1"),
+		// 						},
+		// 						ContainerURL: to.Ptr("https://myaccount.blob.core.windows.net/mycontainer?restype=container"),
+		// 						Overrides: []*armnetworkcloud.CommandOutputOverride{
+		// 							{
+		// 								AssociatedIdentity: &armnetworkcloud.IdentitySelector{
+		// 									IdentityType: to.Ptr(armnetworkcloud.ManagedServiceIdentitySelectorTypeUserAssignedIdentity),
+		// 									UserAssignedIdentityResourceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userIdentity2"),
+		// 								},
+		// 								CommandOutputType: to.Ptr(armnetworkcloud.CommandOutputTypeStorageRunReadCommands),
+		// 								ContainerURL: to.Ptr("https://myaccount.blob.core.windows.net/myContainer2?restype=container"),
+		// 							},
+		// 						},
+		// 					},
+		// 					ComputeDeploymentThreshold: &armnetworkcloud.ValidationThreshold{
+		// 						Grouping: to.Ptr(armnetworkcloud.ValidationThresholdGroupingPerCluster),
+		// 						Type: to.Ptr(armnetworkcloud.ValidationThresholdTypePercentSuccess),
+		// 						Value: to.Ptr[int64](90),
+		// 					},
+		// 					ComputeRackDefinitions: []*armnetworkcloud.RackDefinition{
+		// 						{
+		// 							BareMetalMachineConfigurationData: []*armnetworkcloud.BareMetalMachineConfigurationData{
+		// 								{
+		// 									BmcConnectionString: to.Ptr("bmcConnectionString"),
+		// 									BmcCredentials: &armnetworkcloud.AdministrativeCredentials{
+		// 										Username: to.Ptr("username"),
+		// 									},
+		// 									BmcMacAddress: to.Ptr("AA:BB:CC:DD:EE:FF"),
+		// 									BootMacAddress: to.Ptr("00:BB:CC:DD:EE:FF"),
+		// 									MachineDetails: to.Ptr("extraDetails"),
+		// 									MachineName: to.Ptr("bmmName1"),
+		// 									RackSlot: to.Ptr[int64](1),
+		// 									SerialNumber: to.Ptr("BM1219XXX"),
+		// 								},
+		// 								{
+		// 									BmcConnectionString: to.Ptr("bmcConnectionString"),
+		// 									BmcCredentials: &armnetworkcloud.AdministrativeCredentials{
+		// 										Username: to.Ptr("username"),
+		// 									},
+		// 									BmcMacAddress: to.Ptr("AA:BB:CC:DD:EE:00"),
+		// 									BootMacAddress: to.Ptr("00:BB:CC:DD:EE:00"),
+		// 									MachineDetails: to.Ptr("extraDetails"),
+		// 									MachineName: to.Ptr("bmmName2"),
+		// 									RackSlot: to.Ptr[int64](2),
+		// 									SerialNumber: to.Ptr("BM1219YYY"),
+		// 								},
+		// 							},
+		// 							NetworkRackID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkRacks/networkRackName"),
+		// 							RackLocation: to.Ptr("Foo Datacenter, Floor 3, Aisle 9, Rack 2"),
+		// 							RackSerialNumber: to.Ptr("AA1234"),
+		// 							RackSKUID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/providers/Microsoft.NetworkCloud/rackSkus/rackSkuName"),
+		// 							StorageApplianceConfigurationData: []*armnetworkcloud.StorageApplianceConfigurationData{
+		// 								{
+		// 									AdminCredentials: &armnetworkcloud.AdministrativeCredentials{
+		// 										Username: to.Ptr("username"),
+		// 									},
+		// 									RackSlot: to.Ptr[int64](1),
+		// 									SerialNumber: to.Ptr("BM1219XXX"),
+		// 									StorageApplianceName: to.Ptr("vmName"),
+		// 								},
+		// 							},
+		// 						},
+		// 					},
+		// 					DetailedStatus: to.Ptr(armnetworkcloud.ClusterDetailedStatusRunning),
+		// 					DetailedStatusMessage: to.Ptr("Cluster is running and healthy"),
+		// 					LastSuccessfulVersionUpdateTime: to.Ptr(time.Date(2026, time.February, 22, 12, 0, 0, 0, time.UTC)),
+		// 					ManagedCredentials: []*string{
+		// 						to.Ptr("Bare Metal Machine Identity - console"),
+		// 						to.Ptr("Bare Metal Machine Identity - root"),
+		// 						to.Ptr("BMC Credential"),
+		// 						to.Ptr("local-path-provisioner volume passphrase"),
+		// 						to.Ptr("Storage Appliance User"),
+		// 					},
+		// 					ManagedResourceGroupConfiguration: &armnetworkcloud.ManagedResourceGroupConfiguration{
+		// 						Location: to.Ptr("East US"),
+		// 						Name: to.Ptr("my-managed-rg"),
+		// 					},
+		// 					ManualActionCount: to.Ptr[int64](0),
+		// 					NetworkFabricID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkFabrics/fabricName"),
+		// 					ProvisioningState: to.Ptr(armnetworkcloud.ClusterProvisioningStateSucceeded),
+		// 					RuntimeProtectionConfiguration: &armnetworkcloud.RuntimeProtectionConfiguration{
+		// 						DefinitionUpdateMode: to.Ptr(armnetworkcloud.RuntimeProtectionDefinitionUpdateModeNone),
+		// 						EnforcementLevel: to.Ptr(armnetworkcloud.RuntimeProtectionEnforcementLevelOnDemand),
+		// 					},
+		// 					SecretArchiveSettings: &armnetworkcloud.SecretArchiveSettings{
+		// 						AssociatedIdentity: &armnetworkcloud.IdentitySelector{
+		// 							IdentityType: to.Ptr(armnetworkcloud.ManagedServiceIdentitySelectorTypeUserAssignedIdentity),
+		// 							UserAssignedIdentityResourceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userIdentity1"),
+		// 						},
+		// 						VaultURI: to.Ptr("https://keyvaultname.vault.azure.net/"),
+		// 					},
+		// 					SupportExpiryDate: to.Ptr("2023-04-29"),
+		// 					UpdateStrategy: &armnetworkcloud.ClusterUpdateStrategy{
+		// 						MaxUnavailable: to.Ptr[int64](4),
+		// 						StrategyType: to.Ptr(armnetworkcloud.ClusterUpdateStrategyTypeRack),
+		// 						ThresholdType: to.Ptr(armnetworkcloud.ValidationThresholdTypeCountSuccess),
+		// 						ThresholdValue: to.Ptr[int64](4),
+		// 						WaitTimeMinutes: to.Ptr[int64](10),
+		// 					},
+		// 					VulnerabilityScanningSettings: &armnetworkcloud.VulnerabilityScanningSettings{
+		// 						ContainerScan: to.Ptr(armnetworkcloud.VulnerabilityScanningSettingsContainerScanEnabled),
+		// 					},
+		// 					WorkloadResourceIDs: []*string{
+		// 						to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/l2Networks/l2NetworkName"),
+		// 					},
+		// 				},
+		// 				SystemData: &armnetworkcloud.SystemData{
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 27, 3, 8000000, time.UTC)),
+		// 					CreatedBy: to.Ptr("identityA"),
+		// 					CreatedByType: to.Ptr(armnetworkcloud.CreatedByTypeApplication),
+		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 29, 3, 1000000, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("identityB"),
+		// 					LastModifiedByType: to.Ptr(armnetworkcloud.CreatedByTypeUser),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"key1": to.Ptr("myvalue1"),
+		// 					"key2": to.Ptr("myvalue2"),
+		// 				},
+		// 				Type: to.Ptr("Microsoft.NetworkCloud/clusters"),
+		// 			},
+		// 		},
+		// 	},
+		// }
 	}
 }

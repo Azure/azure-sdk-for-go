@@ -119,6 +119,76 @@ func (client *ProductsAndConfigurationsClient) listConfigurationsHandleResponse(
 	return result, nil
 }
 
+// NewListProductFamiliesMetadataPager - List product families metadata for the given subscription.
+//   - options - ProductsAndConfigurationsClientListProductFamiliesMetadataOptions contains the optional parameters for the ProductsAndConfigurationsClient.NewListProductFamiliesMetadataPager
+//     method.
+func (client *ProductsAndConfigurationsClient) NewListProductFamiliesMetadataPager(options *ProductsAndConfigurationsClientListProductFamiliesMetadataOptions) *runtime.Pager[ProductsAndConfigurationsClientListProductFamiliesMetadataResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ProductsAndConfigurationsClientListProductFamiliesMetadataResponse]{
+		More: func(page ProductsAndConfigurationsClientListProductFamiliesMetadataResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *ProductsAndConfigurationsClientListProductFamiliesMetadataResponse) (ProductsAndConfigurationsClientListProductFamiliesMetadataResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ProductsAndConfigurationsClient.NewListProductFamiliesMetadataPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listProductFamiliesMetadataCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return ProductsAndConfigurationsClientListProductFamiliesMetadataResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ProductsAndConfigurationsClientListProductFamiliesMetadataResponse{}, err
+			}
+			return client.listProductFamiliesMetadataHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listProductFamiliesMetadataCreateRequest creates the ListProductFamiliesMetadata request.
+func (client *ProductsAndConfigurationsClient) listProductFamiliesMetadataCreateRequest(ctx context.Context, nextLink string, options *ProductsAndConfigurationsClientListProductFamiliesMetadataOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.EdgeOrder/productFamiliesMetadata"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.SkipToken != nil {
+			reqQP.Set("$skipToken", *options.SkipToken)
+		}
+		reqQP.Set("api-version", version20240201)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listProductFamiliesMetadataHandleResponse handles the ListProductFamiliesMetadata response.
+func (client *ProductsAndConfigurationsClient) listProductFamiliesMetadataHandleResponse(resp *http.Response, successCodes ...int) (ProductsAndConfigurationsClientListProductFamiliesMetadataResponse, error) {
+	result := ProductsAndConfigurationsClientListProductFamiliesMetadataResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ProductFamiliesMetadata); err != nil {
+		return ProductsAndConfigurationsClientListProductFamiliesMetadataResponse{}, err
+	}
+	return result, nil
+}
+
 // NewListProductFamiliesPager - List product families for the given subscription.
 //   - productFamiliesRequest - Filters for showing the product families.
 //   - options - ProductsAndConfigurationsClientListProductFamiliesOptions contains the optional parameters for the ProductsAndConfigurationsClient.NewListProductFamiliesPager
@@ -193,76 +263,6 @@ func (client *ProductsAndConfigurationsClient) listProductFamiliesHandleResponse
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProductFamilies); err != nil {
 		return ProductsAndConfigurationsClientListProductFamiliesResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListProductFamiliesMetadataPager - List product families metadata for the given subscription.
-//   - options - ProductsAndConfigurationsClientListProductFamiliesMetadataOptions contains the optional parameters for the ProductsAndConfigurationsClient.NewListProductFamiliesMetadataPager
-//     method.
-func (client *ProductsAndConfigurationsClient) NewListProductFamiliesMetadataPager(options *ProductsAndConfigurationsClientListProductFamiliesMetadataOptions) *runtime.Pager[ProductsAndConfigurationsClientListProductFamiliesMetadataResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ProductsAndConfigurationsClientListProductFamiliesMetadataResponse]{
-		More: func(page ProductsAndConfigurationsClientListProductFamiliesMetadataResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *ProductsAndConfigurationsClientListProductFamiliesMetadataResponse) (ProductsAndConfigurationsClientListProductFamiliesMetadataResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ProductsAndConfigurationsClient.NewListProductFamiliesMetadataPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listProductFamiliesMetadataCreateRequest(ctx, nextLink, options)
-			if err != nil {
-				return ProductsAndConfigurationsClientListProductFamiliesMetadataResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ProductsAndConfigurationsClientListProductFamiliesMetadataResponse{}, err
-			}
-			return client.listProductFamiliesMetadataHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listProductFamiliesMetadataCreateRequest creates the ListProductFamiliesMetadata request.
-func (client *ProductsAndConfigurationsClient) listProductFamiliesMetadataCreateRequest(ctx context.Context, nextLink string, options *ProductsAndConfigurationsClientListProductFamiliesMetadataOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.EdgeOrder/productFamiliesMetadata"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		req, err = runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		if options != nil && options.SkipToken != nil {
-			reqQP.Set("$skipToken", *options.SkipToken)
-		}
-		reqQP.Set("api-version", version20240201)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listProductFamiliesMetadataHandleResponse handles the ListProductFamiliesMetadata response.
-func (client *ProductsAndConfigurationsClient) listProductFamiliesMetadataHandleResponse(resp *http.Response, successCodes ...int) (ProductsAndConfigurationsClientListProductFamiliesMetadataResponse, error) {
-	result := ProductsAndConfigurationsClientListProductFamiliesMetadataResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ProductFamiliesMetadata); err != nil {
-		return ProductsAndConfigurationsClientListProductFamiliesMetadataResponse{}, err
 	}
 	return result, nil
 }

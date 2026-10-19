@@ -21,6 +21,10 @@ import (
 
 // AFDProfilesServer is a fake server for instances of the armcdn.AFDProfilesClient type.
 type AFDProfilesServer struct {
+	// BeginUpgrade is the fake for method AFDProfilesClient.BeginUpgrade
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpgrade func(ctx context.Context, resourceGroupName string, profileName string, profileUpgradeParameters armcdn.ProfileUpgradeParameters, options *armcdn.AFDProfilesClientBeginUpgradeOptions) (resp azfake.PollerResponder[armcdn.AFDProfilesClientUpgradeResponse], errResp azfake.ErrorResponder)
+
 	// CheckEndpointNameAvailability is the fake for method AFDProfilesClient.CheckEndpointNameAvailability
 	// HTTP status codes to indicate success: http.StatusOK
 	CheckEndpointNameAvailability func(ctx context.Context, resourceGroupName string, profileName string, checkEndpointNameAvailabilityInput armcdn.CheckEndpointNameAvailabilityInput, options *armcdn.AFDProfilesClientCheckEndpointNameAvailabilityOptions) (resp azfake.Responder[armcdn.AFDProfilesClientCheckEndpointNameAvailabilityResponse], errResp azfake.ErrorResponder)
@@ -33,10 +37,6 @@ type AFDProfilesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListResourceUsagePager func(resourceGroupName string, profileName string, options *armcdn.AFDProfilesClientListResourceUsageOptions) (resp azfake.PagerResponder[armcdn.AFDProfilesClientListResourceUsageResponse])
 
-	// BeginUpgrade is the fake for method AFDProfilesClient.BeginUpgrade
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpgrade func(ctx context.Context, resourceGroupName string, profileName string, profileUpgradeParameters armcdn.ProfileUpgradeParameters, options *armcdn.AFDProfilesClientBeginUpgradeOptions) (resp azfake.PollerResponder[armcdn.AFDProfilesClientUpgradeResponse], errResp azfake.ErrorResponder)
-
 	// ValidateSecret is the fake for method AFDProfilesClient.ValidateSecret
 	// HTTP status codes to indicate success: http.StatusOK
 	ValidateSecret func(ctx context.Context, resourceGroupName string, profileName string, validateSecretInput armcdn.ValidateSecretInput, options *armcdn.AFDProfilesClientValidateSecretOptions) (resp azfake.Responder[armcdn.AFDProfilesClientValidateSecretResponse], errResp azfake.ErrorResponder)
@@ -48,8 +48,8 @@ type AFDProfilesServer struct {
 func NewAFDProfilesServerTransport(srv *AFDProfilesServer) *AFDProfilesServerTransport {
 	return &AFDProfilesServerTransport{
 		srv:                       srv,
-		newListResourceUsagePager: newTracker[azfake.PagerResponder[armcdn.AFDProfilesClientListResourceUsageResponse]](),
 		beginUpgrade:              newTracker[azfake.PollerResponder[armcdn.AFDProfilesClientUpgradeResponse]](),
+		newListResourceUsagePager: newTracker[azfake.PagerResponder[armcdn.AFDProfilesClientListResourceUsageResponse]](),
 	}
 }
 
@@ -57,8 +57,8 @@ func NewAFDProfilesServerTransport(srv *AFDProfilesServer) *AFDProfilesServerTra
 // Don't use this type directly, use NewAFDProfilesServerTransport instead.
 type AFDProfilesServerTransport struct {
 	srv                       *AFDProfilesServer
-	newListResourceUsagePager *tracker[azfake.PagerResponder[armcdn.AFDProfilesClientListResourceUsageResponse]]
 	beginUpgrade              *tracker[azfake.PollerResponder[armcdn.AFDProfilesClientUpgradeResponse]]
+	newListResourceUsagePager *tracker[azfake.PagerResponder[armcdn.AFDProfilesClientListResourceUsageResponse]]
 }
 
 // Do implements the policy.Transporter interface for AFDProfilesServerTransport.
@@ -82,14 +82,14 @@ func (a *AFDProfilesServerTransport) dispatchToMethodFake(req *http.Request, met
 		}
 		if !intercepted {
 			switch method {
+			case "AFDProfilesClient.BeginUpgrade":
+				res.resp, res.err = a.dispatchBeginUpgrade(req)
 			case "AFDProfilesClient.CheckEndpointNameAvailability":
 				res.resp, res.err = a.dispatchCheckEndpointNameAvailability(req)
 			case "AFDProfilesClient.CheckHostNameAvailability":
 				res.resp, res.err = a.dispatchCheckHostNameAvailability(req)
 			case "AFDProfilesClient.NewListResourceUsagePager":
 				res.resp, res.err = a.dispatchNewListResourceUsagePager(req)
-			case "AFDProfilesClient.BeginUpgrade":
-				res.resp, res.err = a.dispatchBeginUpgrade(req)
 			case "AFDProfilesClient.ValidateSecret":
 				res.resp, res.err = a.dispatchValidateSecret(req)
 			default:
@@ -106,6 +106,54 @@ func (a *AFDProfilesServerTransport) dispatchToMethodFake(req *http.Request, met
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
+}
+
+func (a *AFDProfilesServerTransport) dispatchBeginUpgrade(req *http.Request) (*http.Response, error) {
+	if a.srv.BeginUpgrade == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpgrade not implemented")}
+	}
+	beginUpgrade := a.beginUpgrade.get(req)
+	if beginUpgrade == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Cdn/profiles/(?P<profileName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/upgrade`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armcdn.ProfileUpgradeParameters](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		profileNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("profileName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := a.srv.BeginUpgrade(req.Context(), resourceGroupNameParam, profileNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpgrade = &respr
+		a.beginUpgrade.add(req, beginUpgrade)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpgrade, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		a.beginUpgrade.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpgrade) {
+		a.beginUpgrade.remove(req)
+	}
+
+	return resp, nil
 }
 
 func (a *AFDProfilesServerTransport) dispatchCheckEndpointNameAvailability(req *http.Request) (*http.Response, error) {
@@ -220,54 +268,6 @@ func (a *AFDProfilesServerTransport) dispatchNewListResourceUsagePager(req *http
 	if !server.PagerResponderMore(newListResourceUsagePager) {
 		a.newListResourceUsagePager.remove(req)
 	}
-	return resp, nil
-}
-
-func (a *AFDProfilesServerTransport) dispatchBeginUpgrade(req *http.Request) (*http.Response, error) {
-	if a.srv.BeginUpgrade == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpgrade not implemented")}
-	}
-	beginUpgrade := a.beginUpgrade.get(req)
-	if beginUpgrade == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Cdn/profiles/(?P<profileName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/upgrade`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcdn.ProfileUpgradeParameters](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		profileNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("profileName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := a.srv.BeginUpgrade(req.Context(), resourceGroupNameParam, profileNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpgrade = &respr
-		a.beginUpgrade.add(req, beginUpgrade)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpgrade, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		a.beginUpgrade.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpgrade) {
-		a.beginUpgrade.remove(req)
-	}
-
 	return resp, nil
 }
 

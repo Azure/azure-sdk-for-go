@@ -46,6 +46,173 @@ func NewJobExecutionsClient(subscriptionID string, credential azcore.TokenCreden
 	return client, nil
 }
 
+// BeginCreate - Starts an elastic job execution.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - serverName - The name of the server.
+//   - jobAgentName - The name of the job agent to be retrieved.
+//   - jobName - The name of the job to get.
+//   - options - JobExecutionsClientBeginCreateOptions contains the optional parameters for the JobExecutionsClient.BeginCreate
+//     method.
+func (client *JobExecutionsClient) BeginCreate(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, options *JobExecutionsClientBeginCreateOptions) (*runtime.Poller[JobExecutionsClientCreateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.create(ctx, resourceGroupName, serverName, jobAgentName, jobName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[JobExecutionsClientCreateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[JobExecutionsClientCreateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// create - Starts an elastic job execution.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *JobExecutionsClient) create(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, options *JobExecutionsClientBeginCreateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "JobExecutionsClient.BeginCreate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.createCreateRequest(ctx, resourceGroupName, serverName, jobAgentName, jobName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// createCreateRequest creates the create request.
+func (client *JobExecutionsClient) createCreateRequest(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, _ *JobExecutionsClientBeginCreateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/start"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if serverName == "" {
+		return nil, errors.New("parameter serverName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
+	if jobAgentName == "" {
+		return nil, errors.New("parameter jobAgentName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{jobAgentName}", url.PathEscape(jobAgentName))
+	if jobName == "" {
+		return nil, errors.New("parameter jobName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{jobName}", url.PathEscape(jobName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260801Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// BeginCreateOrUpdate - Creates or updates a job execution.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - serverName - The name of the server.
+//   - jobAgentName - The name of the job agent.
+//   - jobName - The name of the job.
+//   - jobExecutionID - The id of the job execution
+//   - options - JobExecutionsClientBeginCreateOrUpdateOptions contains the optional parameters for the JobExecutionsClient.BeginCreateOrUpdate
+//     method.
+func (client *JobExecutionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, jobExecutionID string, options *JobExecutionsClientBeginCreateOrUpdateOptions) (*runtime.Poller[JobExecutionsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, serverName, jobAgentName, jobName, jobExecutionID, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[JobExecutionsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[JobExecutionsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// createOrUpdate - Creates or updates a job execution.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *JobExecutionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, jobExecutionID string, options *JobExecutionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "JobExecutionsClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serverName, jobAgentName, jobName, jobExecutionID, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// createOrUpdateCreateRequest creates the createOrUpdate request.
+func (client *JobExecutionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, jobExecutionID string, _ *JobExecutionsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/executions/{jobExecutionId}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if serverName == "" {
+		return nil, errors.New("parameter serverName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
+	if jobAgentName == "" {
+		return nil, errors.New("parameter jobAgentName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{jobAgentName}", url.PathEscape(jobAgentName))
+	if jobName == "" {
+		return nil, errors.New("parameter jobName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{jobName}", url.PathEscape(jobName))
+	if jobExecutionID == "" {
+		return nil, errors.New("parameter jobExecutionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{jobExecutionId}", url.PathEscape(jobExecutionID))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260801Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
 // Cancel - Requests cancellation of a job execution.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -108,173 +275,6 @@ func (client *JobExecutionsClient) cancelCreateRequest(ctx context.Context, reso
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20260801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
-}
-
-// BeginCreate - Starts an elastic job execution.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - serverName - The name of the server.
-//   - jobAgentName - The name of the job agent to be retrieved.
-//   - jobName - The name of the job to get.
-//   - options - JobExecutionsClientBeginCreateOptions contains the optional parameters for the JobExecutionsClient.BeginCreate
-//     method.
-func (client *JobExecutionsClient) BeginCreate(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, options *JobExecutionsClientBeginCreateOptions) (*runtime.Poller[JobExecutionsClientCreateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.create(ctx, resourceGroupName, serverName, jobAgentName, jobName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[JobExecutionsClientCreateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[JobExecutionsClientCreateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Create - Starts an elastic job execution.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *JobExecutionsClient) create(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, options *JobExecutionsClientBeginCreateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "JobExecutionsClient.BeginCreate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.createCreateRequest(ctx, resourceGroupName, serverName, jobAgentName, jobName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// createCreateRequest creates the Create request.
-func (client *JobExecutionsClient) createCreateRequest(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, _ *JobExecutionsClientBeginCreateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/start"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if serverName == "" {
-		return nil, errors.New("parameter serverName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
-	if jobAgentName == "" {
-		return nil, errors.New("parameter jobAgentName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{jobAgentName}", url.PathEscape(jobAgentName))
-	if jobName == "" {
-		return nil, errors.New("parameter jobName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{jobName}", url.PathEscape(jobName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// BeginCreateOrUpdate - Creates or updates a job execution.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - serverName - The name of the server.
-//   - jobAgentName - The name of the job agent.
-//   - jobName - The name of the job.
-//   - jobExecutionID - The id of the job execution
-//   - options - JobExecutionsClientBeginCreateOrUpdateOptions contains the optional parameters for the JobExecutionsClient.BeginCreateOrUpdate
-//     method.
-func (client *JobExecutionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, jobExecutionID string, options *JobExecutionsClientBeginCreateOrUpdateOptions) (*runtime.Poller[JobExecutionsClientCreateOrUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.createOrUpdate(ctx, resourceGroupName, serverName, jobAgentName, jobName, jobExecutionID, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[JobExecutionsClientCreateOrUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[JobExecutionsClientCreateOrUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// CreateOrUpdate - Creates or updates a job execution.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *JobExecutionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, jobExecutionID string, options *JobExecutionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "JobExecutionsClient.BeginCreateOrUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serverName, jobAgentName, jobName, jobExecutionID, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *JobExecutionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, jobExecutionID string, _ *JobExecutionsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/executions/{jobExecutionId}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if serverName == "" {
-		return nil, errors.New("parameter serverName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
-	if jobAgentName == "" {
-		return nil, errors.New("parameter jobAgentName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{jobAgentName}", url.PathEscape(jobAgentName))
-	if jobName == "" {
-		return nil, errors.New("parameter jobName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{jobName}", url.PathEscape(jobName))
-	if jobExecutionID == "" {
-		return nil, errors.New("parameter jobExecutionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{jobExecutionId}", url.PathEscape(jobExecutionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

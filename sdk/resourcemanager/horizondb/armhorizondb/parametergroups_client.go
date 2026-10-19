@@ -70,7 +70,7 @@ func (client *ParameterGroupsClient) BeginCreateOrUpdate(ctx context.Context, re
 	}
 }
 
-// CreateOrUpdate - Creates a new HorizonDB parameter group or updates an existing parameter group.
+// createOrUpdate - Creates a new HorizonDB parameter group or updates an existing parameter group.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ParameterGroupsClient) createOrUpdate(ctx context.Context, resourceGroupName string, parameterGroupName string, resource ParameterGroup, options *ParameterGroupsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -92,7 +92,7 @@ func (client *ParameterGroupsClient) createOrUpdate(ctx context.Context, resourc
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ParameterGroupsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, parameterGroupName string, resource ParameterGroup, _ *ParameterGroupsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HorizonDb/parameterGroups/{parameterGroupName}"
 	if client.subscriptionID == "" {
@@ -145,7 +145,7 @@ func (client *ParameterGroupsClient) BeginDelete(ctx context.Context, resourceGr
 	}
 }
 
-// Delete - Deletes a HorizonDB parameter group.
+// deleteOperation - Deletes a HorizonDB parameter group.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ParameterGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, parameterGroupName string, options *ParameterGroupsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -167,7 +167,7 @@ func (client *ParameterGroupsClient) deleteOperation(ctx context.Context, resour
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ParameterGroupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, parameterGroupName string, _ *ParameterGroupsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HorizonDb/parameterGroups/{parameterGroupName}"
 	if client.subscriptionID == "" {
@@ -189,6 +189,82 @@ func (client *ParameterGroupsClient) deleteCreateRequest(ctx context.Context, re
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - Updates an existing HorizonDB parameter group.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - parameterGroupName - The name of the HorizonDB parameter group.
+//   - properties - The resource properties to be updated.
+//   - options - ParameterGroupsClientBeginUpdateOptions contains the optional parameters for the ParameterGroupsClient.BeginUpdate
+//     method.
+func (client *ParameterGroupsClient) BeginUpdate(ctx context.Context, resourceGroupName string, parameterGroupName string, properties ParameterGroupForPatchUpdate, options *ParameterGroupsClientBeginUpdateOptions) (*runtime.Poller[ParameterGroupsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, parameterGroupName, properties, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ParameterGroupsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ParameterGroupsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Updates an existing HorizonDB parameter group.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ParameterGroupsClient) update(ctx context.Context, resourceGroupName string, parameterGroupName string, properties ParameterGroupForPatchUpdate, options *ParameterGroupsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ParameterGroupsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, parameterGroupName, properties, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *ParameterGroupsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, parameterGroupName string, properties ParameterGroupForPatchUpdate, _ *ParameterGroupsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HorizonDb/parameterGroups/{parameterGroupName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if parameterGroupName == "" {
+		return nil, errors.New("parameter parameterGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{parameterGroupName}", url.PathEscape(parameterGroupName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, properties); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -546,80 +622,4 @@ func (client *ParameterGroupsClient) listVersionsHandleResponse(resp *http.Respo
 		return ParameterGroupsClientListVersionsResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Updates an existing HorizonDB parameter group.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - parameterGroupName - The name of the HorizonDB parameter group.
-//   - properties - The resource properties to be updated.
-//   - options - ParameterGroupsClientBeginUpdateOptions contains the optional parameters for the ParameterGroupsClient.BeginUpdate
-//     method.
-func (client *ParameterGroupsClient) BeginUpdate(ctx context.Context, resourceGroupName string, parameterGroupName string, properties ParameterGroupForPatchUpdate, options *ParameterGroupsClientBeginUpdateOptions) (*runtime.Poller[ParameterGroupsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, parameterGroupName, properties, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ParameterGroupsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ParameterGroupsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Updates an existing HorizonDB parameter group.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ParameterGroupsClient) update(ctx context.Context, resourceGroupName string, parameterGroupName string, properties ParameterGroupForPatchUpdate, options *ParameterGroupsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ParameterGroupsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, parameterGroupName, properties, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *ParameterGroupsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, parameterGroupName string, properties ParameterGroupForPatchUpdate, _ *ParameterGroupsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HorizonDb/parameterGroups/{parameterGroupName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if parameterGroupName == "" {
-		return nil, errors.New("parameter parameterGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{parameterGroupName}", url.PathEscape(parameterGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

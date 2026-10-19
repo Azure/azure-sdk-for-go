@@ -129,7 +129,7 @@ func (client *ExpressRouteCircuitsClient) createOrUpdateCreateRequest(ctx contex
 //     method.
 func (client *ExpressRouteCircuitsClient) BeginDelete(ctx context.Context, resourceGroupName string, circuitName string, options *ExpressRouteCircuitsClientBeginDeleteOptions) (*runtime.Poller[ExpressRouteCircuitsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, circuitName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, circuitName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -144,9 +144,9 @@ func (client *ExpressRouteCircuitsClient) BeginDelete(ctx context.Context, resou
 	}
 }
 
-// delete - Deletes the specified express route circuit.
+// deleteOperation - Deletes the specified express route circuit.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *ExpressRouteCircuitsClient) delete(ctx context.Context, resourceGroupName string, circuitName string, options *ExpressRouteCircuitsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *ExpressRouteCircuitsClient) deleteOperation(ctx context.Context, resourceGroupName string, circuitName string, options *ExpressRouteCircuitsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ExpressRouteCircuitsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)

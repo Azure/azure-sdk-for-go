@@ -25,10 +25,6 @@ type ScheduledActionsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	AttachResources func(ctx context.Context, resourceGroupName string, scheduledActionName string, body armcomputeschedule.ResourceAttachRequest, options *armcomputeschedule.ScheduledActionsClientAttachResourcesOptions) (resp azfake.Responder[armcomputeschedule.ScheduledActionsClientAttachResourcesResponse], errResp azfake.ErrorResponder)
 
-	// CancelNextOccurrence is the fake for method ScheduledActionsClient.CancelNextOccurrence
-	// HTTP status codes to indicate success: http.StatusOK
-	CancelNextOccurrence func(ctx context.Context, resourceGroupName string, scheduledActionName string, body armcomputeschedule.CancelOccurrenceRequest, options *armcomputeschedule.ScheduledActionsClientCancelNextOccurrenceOptions) (resp azfake.Responder[armcomputeschedule.ScheduledActionsClientCancelNextOccurrenceResponse], errResp azfake.ErrorResponder)
-
 	// BeginCreateOrUpdate is the fake for method ScheduledActionsClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, scheduledActionName string, resource armcomputeschedule.ScheduledAction, options *armcomputeschedule.ScheduledActionsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armcomputeschedule.ScheduledActionsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -36,6 +32,10 @@ type ScheduledActionsServer struct {
 	// BeginDelete is the fake for method ScheduledActionsClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, scheduledActionName string, options *armcomputeschedule.ScheduledActionsClientBeginDeleteOptions) (resp azfake.PollerResponder[armcomputeschedule.ScheduledActionsClientDeleteResponse], errResp azfake.ErrorResponder)
+
+	// CancelNextOccurrence is the fake for method ScheduledActionsClient.CancelNextOccurrence
+	// HTTP status codes to indicate success: http.StatusOK
+	CancelNextOccurrence func(ctx context.Context, resourceGroupName string, scheduledActionName string, body armcomputeschedule.CancelOccurrenceRequest, options *armcomputeschedule.ScheduledActionsClientCancelNextOccurrenceOptions) (resp azfake.Responder[armcomputeschedule.ScheduledActionsClientCancelNextOccurrenceResponse], errResp azfake.ErrorResponder)
 
 	// DetachResources is the fake for method ScheduledActionsClient.DetachResources
 	// HTTP status codes to indicate success: http.StatusOK
@@ -174,12 +174,12 @@ func (s *ScheduledActionsServerTransport) dispatchToMethodFake(req *http.Request
 			switch method {
 			case "ScheduledActionsClient.AttachResources":
 				res.resp, res.err = s.dispatchAttachResources(req)
-			case "ScheduledActionsClient.CancelNextOccurrence":
-				res.resp, res.err = s.dispatchCancelNextOccurrence(req)
 			case "ScheduledActionsClient.BeginCreateOrUpdate":
 				res.resp, res.err = s.dispatchBeginCreateOrUpdate(req)
 			case "ScheduledActionsClient.BeginDelete":
 				res.resp, res.err = s.dispatchBeginDelete(req)
+			case "ScheduledActionsClient.CancelNextOccurrence":
+				res.resp, res.err = s.dispatchCancelNextOccurrence(req)
 			case "ScheduledActionsClient.DetachResources":
 				res.resp, res.err = s.dispatchDetachResources(req)
 			case "ScheduledActionsClient.Disable":
@@ -263,43 +263,6 @@ func (s *ScheduledActionsServerTransport) dispatchAttachResources(req *http.Requ
 		return nil, err
 	}
 	respr, errRespr := s.srv.AttachResources(req.Context(), resourceGroupNameParam, scheduledActionNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RecurringActionsResourceOperationResult, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (s *ScheduledActionsServerTransport) dispatchCancelNextOccurrence(req *http.Request) (*http.Response, error) {
-	if s.srv.CancelNextOccurrence == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CancelNextOccurrence not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ComputeSchedule/scheduledActions/(?P<scheduledActionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/cancelNextOccurrence`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armcomputeschedule.CancelOccurrenceRequest](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	scheduledActionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("scheduledActionName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := s.srv.CancelNextOccurrence(req.Context(), resourceGroupNameParam, scheduledActionNameParam, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -403,6 +366,43 @@ func (s *ScheduledActionsServerTransport) dispatchBeginDelete(req *http.Request)
 		s.beginDelete.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (s *ScheduledActionsServerTransport) dispatchCancelNextOccurrence(req *http.Request) (*http.Response, error) {
+	if s.srv.CancelNextOccurrence == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CancelNextOccurrence not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ComputeSchedule/scheduledActions/(?P<scheduledActionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/cancelNextOccurrence`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armcomputeschedule.CancelOccurrenceRequest](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	scheduledActionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("scheduledActionName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.CancelNextOccurrence(req.Context(), resourceGroupNameParam, scheduledActionNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RecurringActionsResourceOperationResult, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 

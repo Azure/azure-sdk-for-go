@@ -69,7 +69,7 @@ func (client *SolutionTemplateVersionsClient) BeginBulkDeploySolution(ctx contex
 	}
 }
 
-// BulkDeploySolution - Post request for bulk deploy
+// bulkDeploySolution - Post request for bulk deploy
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *SolutionTemplateVersionsClient) bulkDeploySolution(ctx context.Context, resourceGroupName string, solutionTemplateName string, solutionTemplateVersionName string, body BulkDeploySolutionParameter, options *SolutionTemplateVersionsClientBeginBulkDeploySolutionOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *SolutionTemplateVersionsClient) bulkDeploySolution(ctx context.Con
 	return httpResp, nil
 }
 
-// bulkDeploySolutionCreateRequest creates the BulkDeploySolution request.
+// bulkDeploySolutionCreateRequest creates the bulkDeploySolution request.
 func (client *SolutionTemplateVersionsClient) bulkDeploySolutionCreateRequest(ctx context.Context, resourceGroupName string, solutionTemplateName string, solutionTemplateVersionName string, body BulkDeploySolutionParameter, _ *SolutionTemplateVersionsClientBeginBulkDeploySolutionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/solutionTemplates/{solutionTemplateName}/versions/{solutionTemplateVersionName}/bulkDeploySolution"
 	if client.subscriptionID == "" {
@@ -149,7 +149,7 @@ func (client *SolutionTemplateVersionsClient) BeginBulkPublishSolution(ctx conte
 	}
 }
 
-// BulkPublishSolution - Post request for bulk publish
+// bulkPublishSolution - Post request for bulk publish
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *SolutionTemplateVersionsClient) bulkPublishSolution(ctx context.Context, resourceGroupName string, solutionTemplateName string, solutionTemplateVersionName string, body BulkPublishSolutionParameter, options *SolutionTemplateVersionsClientBeginBulkPublishSolutionOptions) (*http.Response, error) {
 	var err error
@@ -171,7 +171,7 @@ func (client *SolutionTemplateVersionsClient) bulkPublishSolution(ctx context.Co
 	return httpResp, nil
 }
 
-// bulkPublishSolutionCreateRequest creates the BulkPublishSolution request.
+// bulkPublishSolutionCreateRequest creates the bulkPublishSolution request.
 func (client *SolutionTemplateVersionsClient) bulkPublishSolutionCreateRequest(ctx context.Context, resourceGroupName string, solutionTemplateName string, solutionTemplateVersionName string, body BulkPublishSolutionParameter, _ *SolutionTemplateVersionsClientBeginBulkPublishSolutionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/solutionTemplates/{solutionTemplateName}/versions/{solutionTemplateVersionName}/bulkPublishSolution"
 	if client.subscriptionID == "" {

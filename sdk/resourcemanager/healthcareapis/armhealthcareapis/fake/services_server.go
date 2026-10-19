@@ -21,10 +21,6 @@ import (
 
 // ServicesServer is a fake server for instances of the armhealthcareapis.ServicesClient type.
 type ServicesServer struct {
-	// CheckNameAvailability is the fake for method ServicesClient.CheckNameAvailability
-	// HTTP status codes to indicate success: http.StatusOK
-	CheckNameAvailability func(ctx context.Context, checkNameAvailabilityInputs armhealthcareapis.CheckNameAvailabilityParameters, options *armhealthcareapis.ServicesClientCheckNameAvailabilityOptions) (resp azfake.Responder[armhealthcareapis.ServicesClientCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
-
 	// BeginCreateOrUpdate is the fake for method ServicesClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, resourceName string, serviceDescription armhealthcareapis.ServicesDescription, options *armhealthcareapis.ServicesClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armhealthcareapis.ServicesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -33,21 +29,25 @@ type ServicesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, resourceName string, options *armhealthcareapis.ServicesClientBeginDeleteOptions) (resp azfake.PollerResponder[armhealthcareapis.ServicesClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method ServicesClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK
+	BeginUpdate func(ctx context.Context, resourceGroupName string, resourceName string, servicePatchDescription armhealthcareapis.ServicesPatchDescription, options *armhealthcareapis.ServicesClientBeginUpdateOptions) (resp azfake.PollerResponder[armhealthcareapis.ServicesClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// CheckNameAvailability is the fake for method ServicesClient.CheckNameAvailability
+	// HTTP status codes to indicate success: http.StatusOK
+	CheckNameAvailability func(ctx context.Context, checkNameAvailabilityInputs armhealthcareapis.CheckNameAvailabilityParameters, options *armhealthcareapis.ServicesClientCheckNameAvailabilityOptions) (resp azfake.Responder[armhealthcareapis.ServicesClientCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method ServicesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, resourceName string, options *armhealthcareapis.ServicesClientGetOptions) (resp azfake.Responder[armhealthcareapis.ServicesClientGetResponse], errResp azfake.ErrorResponder)
-
-	// NewListPager is the fake for method ServicesClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armhealthcareapis.ServicesClientListOptions) (resp azfake.PagerResponder[armhealthcareapis.ServicesClientListResponse])
 
 	// NewListByResourceGroupPager is the fake for method ServicesClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, options *armhealthcareapis.ServicesClientListByResourceGroupOptions) (resp azfake.PagerResponder[armhealthcareapis.ServicesClientListByResourceGroupResponse])
 
-	// BeginUpdate is the fake for method ServicesClient.BeginUpdate
+	// NewListPager is the fake for method ServicesClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	BeginUpdate func(ctx context.Context, resourceGroupName string, resourceName string, servicePatchDescription armhealthcareapis.ServicesPatchDescription, options *armhealthcareapis.ServicesClientBeginUpdateOptions) (resp azfake.PollerResponder[armhealthcareapis.ServicesClientUpdateResponse], errResp azfake.ErrorResponder)
+	NewListPager func(options *armhealthcareapis.ServicesClientListOptions) (resp azfake.PagerResponder[armhealthcareapis.ServicesClientListResponse])
 }
 
 // NewServicesServerTransport creates a new instance of ServicesServerTransport with the provided implementation.
@@ -58,9 +58,9 @@ func NewServicesServerTransport(srv *ServicesServer) *ServicesServerTransport {
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armhealthcareapis.ServicesClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armhealthcareapis.ServicesClientDeleteResponse]](),
-		newListPager:                newTracker[azfake.PagerResponder[armhealthcareapis.ServicesClientListResponse]](),
-		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armhealthcareapis.ServicesClientListByResourceGroupResponse]](),
 		beginUpdate:                 newTracker[azfake.PollerResponder[armhealthcareapis.ServicesClientUpdateResponse]](),
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armhealthcareapis.ServicesClientListByResourceGroupResponse]](),
+		newListPager:                newTracker[azfake.PagerResponder[armhealthcareapis.ServicesClientListResponse]](),
 	}
 }
 
@@ -70,9 +70,9 @@ type ServicesServerTransport struct {
 	srv                         *ServicesServer
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armhealthcareapis.ServicesClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armhealthcareapis.ServicesClientDeleteResponse]]
-	newListPager                *tracker[azfake.PagerResponder[armhealthcareapis.ServicesClientListResponse]]
-	newListByResourceGroupPager *tracker[azfake.PagerResponder[armhealthcareapis.ServicesClientListByResourceGroupResponse]]
 	beginUpdate                 *tracker[azfake.PollerResponder[armhealthcareapis.ServicesClientUpdateResponse]]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armhealthcareapis.ServicesClientListByResourceGroupResponse]]
+	newListPager                *tracker[azfake.PagerResponder[armhealthcareapis.ServicesClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for ServicesServerTransport.
@@ -96,20 +96,20 @@ func (s *ServicesServerTransport) dispatchToMethodFake(req *http.Request, method
 		}
 		if !intercepted {
 			switch method {
-			case "ServicesClient.CheckNameAvailability":
-				res.resp, res.err = s.dispatchCheckNameAvailability(req)
 			case "ServicesClient.BeginCreateOrUpdate":
 				res.resp, res.err = s.dispatchBeginCreateOrUpdate(req)
 			case "ServicesClient.BeginDelete":
 				res.resp, res.err = s.dispatchBeginDelete(req)
-			case "ServicesClient.Get":
-				res.resp, res.err = s.dispatchGet(req)
-			case "ServicesClient.NewListPager":
-				res.resp, res.err = s.dispatchNewListPager(req)
-			case "ServicesClient.NewListByResourceGroupPager":
-				res.resp, res.err = s.dispatchNewListByResourceGroupPager(req)
 			case "ServicesClient.BeginUpdate":
 				res.resp, res.err = s.dispatchBeginUpdate(req)
+			case "ServicesClient.CheckNameAvailability":
+				res.resp, res.err = s.dispatchCheckNameAvailability(req)
+			case "ServicesClient.Get":
+				res.resp, res.err = s.dispatchGet(req)
+			case "ServicesClient.NewListByResourceGroupPager":
+				res.resp, res.err = s.dispatchNewListByResourceGroupPager(req)
+			case "ServicesClient.NewListPager":
+				res.resp, res.err = s.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -124,35 +124,6 @@ func (s *ServicesServerTransport) dispatchToMethodFake(req *http.Request, method
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (s *ServicesServerTransport) dispatchCheckNameAvailability(req *http.Request) (*http.Response, error) {
-	if s.srv.CheckNameAvailability == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CheckNameAvailability not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.HealthcareApis/checkNameAvailability`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 2 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armhealthcareapis.CheckNameAvailabilityParameters](req)
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := s.srv.CheckNameAvailability(req.Context(), body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ServicesNameAvailabilityInfo, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (s *ServicesServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -247,109 +218,6 @@ func (s *ServicesServerTransport) dispatchBeginDelete(req *http.Request) (*http.
 	return resp, nil
 }
 
-func (s *ServicesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if s.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.HealthcareApis/services/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := s.srv.Get(req.Context(), resourceGroupNameParam, resourceNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ServicesDescription, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (s *ServicesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if s.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := s.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.HealthcareApis/services`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := s.srv.NewListPager(nil)
-		newListPager = &resp
-		s.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armhealthcareapis.ServicesClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		s.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		s.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (s *ServicesServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
-	if s.srv.NewListByResourceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
-	}
-	newListByResourceGroupPager := s.newListByResourceGroupPager.get(req)
-	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.HealthcareApis/services`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := s.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
-		newListByResourceGroupPager = &resp
-		s.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armhealthcareapis.ServicesClientListByResourceGroupResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		s.newListByResourceGroupPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByResourceGroupPager) {
-		s.newListByResourceGroupPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (s *ServicesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
 	if s.srv.BeginUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
@@ -395,6 +263,138 @@ func (s *ServicesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.
 		s.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (s *ServicesServerTransport) dispatchCheckNameAvailability(req *http.Request) (*http.Response, error) {
+	if s.srv.CheckNameAvailability == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CheckNameAvailability not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.HealthcareApis/checkNameAvailability`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armhealthcareapis.CheckNameAvailabilityParameters](req)
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.CheckNameAvailability(req.Context(), body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ServicesNameAvailabilityInfo, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (s *ServicesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if s.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.HealthcareApis/services/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.Get(req.Context(), resourceGroupNameParam, resourceNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ServicesDescription, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (s *ServicesServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
+	if s.srv.NewListByResourceGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
+	}
+	newListByResourceGroupPager := s.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.HealthcareApis/services`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := s.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
+		newListByResourceGroupPager = &resp
+		s.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armhealthcareapis.ServicesClientListByResourceGroupResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		s.newListByResourceGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		s.newListByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (s *ServicesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if s.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := s.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.HealthcareApis/services`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := s.srv.NewListPager(nil)
+		newListPager = &resp
+		s.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armhealthcareapis.ServicesClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		s.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		s.newListPager.remove(req)
+	}
 	return resp, nil
 }
 

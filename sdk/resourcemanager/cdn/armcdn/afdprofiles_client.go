@@ -44,6 +44,83 @@ func NewAFDProfilesClient(subscriptionID string, credential azcore.TokenCredenti
 	return client, nil
 }
 
+// BeginUpgrade - Upgrade a profile from Standard_AzureFrontDoor to Premium_AzureFrontDoor.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
+//     resource group.
+//   - profileUpgradeParameters - Profile upgrade input parameter.
+//   - options - AFDProfilesClientBeginUpgradeOptions contains the optional parameters for the AFDProfilesClient.BeginUpgrade
+//     method.
+func (client *AFDProfilesClient) BeginUpgrade(ctx context.Context, resourceGroupName string, profileName string, profileUpgradeParameters ProfileUpgradeParameters, options *AFDProfilesClientBeginUpgradeOptions) (*runtime.Poller[AFDProfilesClientUpgradeResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.upgrade(ctx, resourceGroupName, profileName, profileUpgradeParameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AFDProfilesClientUpgradeResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AFDProfilesClientUpgradeResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// upgrade - Upgrade a profile from Standard_AzureFrontDoor to Premium_AzureFrontDoor.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *AFDProfilesClient) upgrade(ctx context.Context, resourceGroupName string, profileName string, profileUpgradeParameters ProfileUpgradeParameters, options *AFDProfilesClientBeginUpgradeOptions) (*http.Response, error) {
+	var err error
+	const operationName = "AFDProfilesClient.BeginUpgrade"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.upgradeCreateRequest(ctx, resourceGroupName, profileName, profileUpgradeParameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// upgradeCreateRequest creates the upgrade request.
+func (client *AFDProfilesClient) upgradeCreateRequest(ctx context.Context, resourceGroupName string, profileName string, profileUpgradeParameters ProfileUpgradeParameters, _ *AFDProfilesClientBeginUpgradeOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/upgrade"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if profileName == "" {
+		return nil, errors.New("parameter profileName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{profileName}", url.PathEscape(profileName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, profileUpgradeParameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
 // CheckEndpointNameAvailability - Check the availability of an afdx endpoint name, and return the globally unique endpoint
 // host name.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -256,83 +333,6 @@ func (client *AFDProfilesClient) listResourceUsageHandleResponse(resp *http.Resp
 		return AFDProfilesClientListResourceUsageResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpgrade - Upgrade a profile from Standard_AzureFrontDoor to Premium_AzureFrontDoor.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
-//     resource group.
-//   - profileUpgradeParameters - Profile upgrade input parameter.
-//   - options - AFDProfilesClientBeginUpgradeOptions contains the optional parameters for the AFDProfilesClient.BeginUpgrade
-//     method.
-func (client *AFDProfilesClient) BeginUpgrade(ctx context.Context, resourceGroupName string, profileName string, profileUpgradeParameters ProfileUpgradeParameters, options *AFDProfilesClientBeginUpgradeOptions) (*runtime.Poller[AFDProfilesClientUpgradeResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.upgrade(ctx, resourceGroupName, profileName, profileUpgradeParameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AFDProfilesClientUpgradeResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AFDProfilesClientUpgradeResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Upgrade - Upgrade a profile from Standard_AzureFrontDoor to Premium_AzureFrontDoor.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *AFDProfilesClient) upgrade(ctx context.Context, resourceGroupName string, profileName string, profileUpgradeParameters ProfileUpgradeParameters, options *AFDProfilesClientBeginUpgradeOptions) (*http.Response, error) {
-	var err error
-	const operationName = "AFDProfilesClient.BeginUpgrade"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.upgradeCreateRequest(ctx, resourceGroupName, profileName, profileUpgradeParameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// upgradeCreateRequest creates the Upgrade request.
-func (client *AFDProfilesClient) upgradeCreateRequest(ctx context.Context, resourceGroupName string, profileName string, profileUpgradeParameters ProfileUpgradeParameters, _ *AFDProfilesClientBeginUpgradeOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/upgrade"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if profileName == "" {
-		return nil, errors.New("parameter profileName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{profileName}", url.PathEscape(profileName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, profileUpgradeParameters); err != nil {
-		return nil, err
-	}
-	return req, nil
 }
 
 // ValidateSecret - Validate a Secret in the profile.

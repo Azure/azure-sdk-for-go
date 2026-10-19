@@ -29,6 +29,10 @@ type ElasticSansServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, elasticSanName string, options *armelasticsan.ElasticSansClientBeginDeleteOptions) (resp azfake.PollerResponder[armelasticsan.ElasticSansClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method ElasticSansClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, elasticSanName string, parameters armelasticsan.Update, options *armelasticsan.ElasticSansClientBeginUpdateOptions) (resp azfake.PollerResponder[armelasticsan.ElasticSansClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method ElasticSansClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, elasticSanName string, options *armelasticsan.ElasticSansClientGetOptions) (resp azfake.Responder[armelasticsan.ElasticSansClientGetResponse], errResp azfake.ErrorResponder)
@@ -40,10 +44,6 @@ type ElasticSansServer struct {
 	// NewListBySubscriptionPager is the fake for method ElasticSansClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armelasticsan.ElasticSansClientListBySubscriptionOptions) (resp azfake.PagerResponder[armelasticsan.ElasticSansClientListBySubscriptionResponse])
-
-	// BeginUpdate is the fake for method ElasticSansClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, elasticSanName string, parameters armelasticsan.Update, options *armelasticsan.ElasticSansClientBeginUpdateOptions) (resp azfake.PollerResponder[armelasticsan.ElasticSansClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewElasticSansServerTransport creates a new instance of ElasticSansServerTransport with the provided implementation.
@@ -54,9 +54,9 @@ func NewElasticSansServerTransport(srv *ElasticSansServer) *ElasticSansServerTra
 		srv:                         srv,
 		beginCreate:                 newTracker[azfake.PollerResponder[armelasticsan.ElasticSansClientCreateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armelasticsan.ElasticSansClientDeleteResponse]](),
+		beginUpdate:                 newTracker[azfake.PollerResponder[armelasticsan.ElasticSansClientUpdateResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armelasticsan.ElasticSansClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armelasticsan.ElasticSansClientListBySubscriptionResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armelasticsan.ElasticSansClientUpdateResponse]](),
 	}
 }
 
@@ -66,9 +66,9 @@ type ElasticSansServerTransport struct {
 	srv                         *ElasticSansServer
 	beginCreate                 *tracker[azfake.PollerResponder[armelasticsan.ElasticSansClientCreateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armelasticsan.ElasticSansClientDeleteResponse]]
+	beginUpdate                 *tracker[azfake.PollerResponder[armelasticsan.ElasticSansClientUpdateResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armelasticsan.ElasticSansClientListByResourceGroupResponse]]
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armelasticsan.ElasticSansClientListBySubscriptionResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armelasticsan.ElasticSansClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for ElasticSansServerTransport.
@@ -96,14 +96,14 @@ func (e *ElasticSansServerTransport) dispatchToMethodFake(req *http.Request, met
 				res.resp, res.err = e.dispatchBeginCreate(req)
 			case "ElasticSansClient.BeginDelete":
 				res.resp, res.err = e.dispatchBeginDelete(req)
+			case "ElasticSansClient.BeginUpdate":
+				res.resp, res.err = e.dispatchBeginUpdate(req)
 			case "ElasticSansClient.Get":
 				res.resp, res.err = e.dispatchGet(req)
 			case "ElasticSansClient.NewListByResourceGroupPager":
 				res.resp, res.err = e.dispatchNewListByResourceGroupPager(req)
 			case "ElasticSansClient.NewListBySubscriptionPager":
 				res.resp, res.err = e.dispatchNewListBySubscriptionPager(req)
-			case "ElasticSansClient.BeginUpdate":
-				res.resp, res.err = e.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -212,6 +212,54 @@ func (e *ElasticSansServerTransport) dispatchBeginDelete(req *http.Request) (*ht
 	return resp, nil
 }
 
+func (e *ElasticSansServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if e.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := e.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ElasticSan/elasticSans/(?P<elasticSanName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armelasticsan.Update](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		elasticSanNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("elasticSanName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := e.srv.BeginUpdate(req.Context(), resourceGroupNameParam, elasticSanNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		e.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		e.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		e.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (e *ElasticSansServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if e.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -312,54 +360,6 @@ func (e *ElasticSansServerTransport) dispatchNewListBySubscriptionPager(req *htt
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		e.newListBySubscriptionPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (e *ElasticSansServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if e.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := e.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ElasticSan/elasticSans/(?P<elasticSanName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armelasticsan.Update](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		elasticSanNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("elasticSanName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := e.srv.BeginUpdate(req.Context(), resourceGroupNameParam, elasticSanNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		e.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		e.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		e.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

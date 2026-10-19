@@ -70,7 +70,7 @@ func (client *CommunityEndpointsClient) BeginCreateOrUpdate(ctx context.Context,
 	}
 }
 
-// CreateOrUpdate - Create a CommunityEndpointResource
+// createOrUpdate - Create a CommunityEndpointResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *CommunityEndpointsClient) createOrUpdate(ctx context.Context, resourceGroupName string, communityName string, communityEndpointName string, resource CommunityEndpointResource, options *CommunityEndpointsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -92,7 +92,7 @@ func (client *CommunityEndpointsClient) createOrUpdate(ctx context.Context, reso
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *CommunityEndpointsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, communityName string, communityEndpointName string, resource CommunityEndpointResource, _ *CommunityEndpointsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/communities/{communityName}/communityEndpoints/{communityEndpointName}"
 	if client.subscriptionID == "" {
@@ -150,7 +150,7 @@ func (client *CommunityEndpointsClient) BeginDelete(ctx context.Context, resourc
 	}
 }
 
-// Delete - Delete a CommunityEndpointResource
+// deleteOperation - Delete a CommunityEndpointResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *CommunityEndpointsClient) deleteOperation(ctx context.Context, resourceGroupName string, communityName string, communityEndpointName string, options *CommunityEndpointsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -172,7 +172,7 @@ func (client *CommunityEndpointsClient) deleteOperation(ctx context.Context, res
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *CommunityEndpointsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, communityName string, communityEndpointName string, _ *CommunityEndpointsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/communities/{communityName}/communityEndpoints/{communityEndpointName}"
 	if client.subscriptionID == "" {
@@ -198,6 +198,249 @@ func (client *CommunityEndpointsClient) deleteCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20260401)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginHandleApprovalCreation - Callback that triggers on approval state change.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - communityName - The name of the communityResource Resource
+//   - communityEndpointName - The name of the Community Endpoint Resource
+//   - body - The content of the action request
+//   - options - CommunityEndpointsClientBeginHandleApprovalCreationOptions contains the optional parameters for the CommunityEndpointsClient.BeginHandleApprovalCreation
+//     method.
+func (client *CommunityEndpointsClient) BeginHandleApprovalCreation(ctx context.Context, resourceGroupName string, communityName string, communityEndpointName string, body ApprovalCallbackRequest, options *CommunityEndpointsClientBeginHandleApprovalCreationOptions) (*runtime.Poller[CommunityEndpointsClientHandleApprovalCreationResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.handleApprovalCreation(ctx, resourceGroupName, communityName, communityEndpointName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CommunityEndpointsClientHandleApprovalCreationResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[CommunityEndpointsClientHandleApprovalCreationResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// handleApprovalCreation - Callback that triggers on approval state change.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *CommunityEndpointsClient) handleApprovalCreation(ctx context.Context, resourceGroupName string, communityName string, communityEndpointName string, body ApprovalCallbackRequest, options *CommunityEndpointsClientBeginHandleApprovalCreationOptions) (*http.Response, error) {
+	var err error
+	const operationName = "CommunityEndpointsClient.BeginHandleApprovalCreation"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.handleApprovalCreationCreateRequest(ctx, resourceGroupName, communityName, communityEndpointName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// handleApprovalCreationCreateRequest creates the handleApprovalCreation request.
+func (client *CommunityEndpointsClient) handleApprovalCreationCreateRequest(ctx context.Context, resourceGroupName string, communityName string, communityEndpointName string, body ApprovalCallbackRequest, _ *CommunityEndpointsClientBeginHandleApprovalCreationOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/communities/{communityName}/communityEndpoints/{communityEndpointName}/handleApprovalCreation"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if communityName == "" {
+		return nil, errors.New("parameter communityName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{communityName}", url.PathEscape(communityName))
+	if communityEndpointName == "" {
+		return nil, errors.New("parameter communityEndpointName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{communityEndpointName}", url.PathEscape(communityEndpointName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260401)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginHandleApprovalDeletion - Callback that triggers on approval deletion state change.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - communityName - The name of the communityResource Resource
+//   - communityEndpointName - The name of the Community Endpoint Resource
+//   - body - The content of the action request
+//   - options - CommunityEndpointsClientBeginHandleApprovalDeletionOptions contains the optional parameters for the CommunityEndpointsClient.BeginHandleApprovalDeletion
+//     method.
+func (client *CommunityEndpointsClient) BeginHandleApprovalDeletion(ctx context.Context, resourceGroupName string, communityName string, communityEndpointName string, body ApprovalDeletionCallbackRequest, options *CommunityEndpointsClientBeginHandleApprovalDeletionOptions) (*runtime.Poller[CommunityEndpointsClientHandleApprovalDeletionResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.handleApprovalDeletion(ctx, resourceGroupName, communityName, communityEndpointName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CommunityEndpointsClientHandleApprovalDeletionResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[CommunityEndpointsClientHandleApprovalDeletionResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// handleApprovalDeletion - Callback that triggers on approval deletion state change.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *CommunityEndpointsClient) handleApprovalDeletion(ctx context.Context, resourceGroupName string, communityName string, communityEndpointName string, body ApprovalDeletionCallbackRequest, options *CommunityEndpointsClientBeginHandleApprovalDeletionOptions) (*http.Response, error) {
+	var err error
+	const operationName = "CommunityEndpointsClient.BeginHandleApprovalDeletion"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.handleApprovalDeletionCreateRequest(ctx, resourceGroupName, communityName, communityEndpointName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// handleApprovalDeletionCreateRequest creates the handleApprovalDeletion request.
+func (client *CommunityEndpointsClient) handleApprovalDeletionCreateRequest(ctx context.Context, resourceGroupName string, communityName string, communityEndpointName string, body ApprovalDeletionCallbackRequest, _ *CommunityEndpointsClientBeginHandleApprovalDeletionOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/communities/{communityName}/communityEndpoints/{communityEndpointName}/handleApprovalDeletion"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if communityName == "" {
+		return nil, errors.New("parameter communityName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{communityName}", url.PathEscape(communityName))
+	if communityEndpointName == "" {
+		return nil, errors.New("parameter communityEndpointName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{communityEndpointName}", url.PathEscape(communityEndpointName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260401)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginUpdate - Update a CommunityEndpointResource
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - communityName - The name of the communityResource Resource
+//   - communityEndpointName - The name of the Community Endpoint Resource
+//   - properties - The resource properties to be updated.
+//   - options - CommunityEndpointsClientBeginUpdateOptions contains the optional parameters for the CommunityEndpointsClient.BeginUpdate
+//     method.
+func (client *CommunityEndpointsClient) BeginUpdate(ctx context.Context, resourceGroupName string, communityName string, communityEndpointName string, properties CommunityEndpointPatchModel, options *CommunityEndpointsClientBeginUpdateOptions) (*runtime.Poller[CommunityEndpointsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, communityName, communityEndpointName, properties, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CommunityEndpointsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[CommunityEndpointsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update a CommunityEndpointResource
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *CommunityEndpointsClient) update(ctx context.Context, resourceGroupName string, communityName string, communityEndpointName string, properties CommunityEndpointPatchModel, options *CommunityEndpointsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "CommunityEndpointsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, communityName, communityEndpointName, properties, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *CommunityEndpointsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, communityName string, communityEndpointName string, properties CommunityEndpointPatchModel, _ *CommunityEndpointsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/communities/{communityName}/communityEndpoints/{communityEndpointName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if communityName == "" {
+		return nil, errors.New("parameter communityName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{communityName}", url.PathEscape(communityName))
+	if communityEndpointName == "" {
+		return nil, errors.New("parameter communityEndpointName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{communityEndpointName}", url.PathEscape(communityEndpointName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260401)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, properties); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -264,168 +507,6 @@ func (client *CommunityEndpointsClient) getHandleResponse(resp *http.Response, s
 		return CommunityEndpointsClientGetResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginHandleApprovalCreation - Callback that triggers on approval state change.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - communityName - The name of the communityResource Resource
-//   - communityEndpointName - The name of the Community Endpoint Resource
-//   - body - The content of the action request
-//   - options - CommunityEndpointsClientBeginHandleApprovalCreationOptions contains the optional parameters for the CommunityEndpointsClient.BeginHandleApprovalCreation
-//     method.
-func (client *CommunityEndpointsClient) BeginHandleApprovalCreation(ctx context.Context, resourceGroupName string, communityName string, communityEndpointName string, body ApprovalCallbackRequest, options *CommunityEndpointsClientBeginHandleApprovalCreationOptions) (*runtime.Poller[CommunityEndpointsClientHandleApprovalCreationResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.handleApprovalCreation(ctx, resourceGroupName, communityName, communityEndpointName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CommunityEndpointsClientHandleApprovalCreationResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[CommunityEndpointsClientHandleApprovalCreationResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// HandleApprovalCreation - Callback that triggers on approval state change.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *CommunityEndpointsClient) handleApprovalCreation(ctx context.Context, resourceGroupName string, communityName string, communityEndpointName string, body ApprovalCallbackRequest, options *CommunityEndpointsClientBeginHandleApprovalCreationOptions) (*http.Response, error) {
-	var err error
-	const operationName = "CommunityEndpointsClient.BeginHandleApprovalCreation"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.handleApprovalCreationCreateRequest(ctx, resourceGroupName, communityName, communityEndpointName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// handleApprovalCreationCreateRequest creates the HandleApprovalCreation request.
-func (client *CommunityEndpointsClient) handleApprovalCreationCreateRequest(ctx context.Context, resourceGroupName string, communityName string, communityEndpointName string, body ApprovalCallbackRequest, _ *CommunityEndpointsClientBeginHandleApprovalCreationOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/communities/{communityName}/communityEndpoints/{communityEndpointName}/handleApprovalCreation"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if communityName == "" {
-		return nil, errors.New("parameter communityName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{communityName}", url.PathEscape(communityName))
-	if communityEndpointName == "" {
-		return nil, errors.New("parameter communityEndpointName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{communityEndpointName}", url.PathEscape(communityEndpointName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginHandleApprovalDeletion - Callback that triggers on approval deletion state change.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - communityName - The name of the communityResource Resource
-//   - communityEndpointName - The name of the Community Endpoint Resource
-//   - body - The content of the action request
-//   - options - CommunityEndpointsClientBeginHandleApprovalDeletionOptions contains the optional parameters for the CommunityEndpointsClient.BeginHandleApprovalDeletion
-//     method.
-func (client *CommunityEndpointsClient) BeginHandleApprovalDeletion(ctx context.Context, resourceGroupName string, communityName string, communityEndpointName string, body ApprovalDeletionCallbackRequest, options *CommunityEndpointsClientBeginHandleApprovalDeletionOptions) (*runtime.Poller[CommunityEndpointsClientHandleApprovalDeletionResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.handleApprovalDeletion(ctx, resourceGroupName, communityName, communityEndpointName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CommunityEndpointsClientHandleApprovalDeletionResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[CommunityEndpointsClientHandleApprovalDeletionResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// HandleApprovalDeletion - Callback that triggers on approval deletion state change.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *CommunityEndpointsClient) handleApprovalDeletion(ctx context.Context, resourceGroupName string, communityName string, communityEndpointName string, body ApprovalDeletionCallbackRequest, options *CommunityEndpointsClientBeginHandleApprovalDeletionOptions) (*http.Response, error) {
-	var err error
-	const operationName = "CommunityEndpointsClient.BeginHandleApprovalDeletion"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.handleApprovalDeletionCreateRequest(ctx, resourceGroupName, communityName, communityEndpointName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// handleApprovalDeletionCreateRequest creates the HandleApprovalDeletion request.
-func (client *CommunityEndpointsClient) handleApprovalDeletionCreateRequest(ctx context.Context, resourceGroupName string, communityName string, communityEndpointName string, body ApprovalDeletionCallbackRequest, _ *CommunityEndpointsClientBeginHandleApprovalDeletionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/communities/{communityName}/communityEndpoints/{communityEndpointName}/handleApprovalDeletion"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if communityName == "" {
-		return nil, errors.New("parameter communityName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{communityName}", url.PathEscape(communityName))
-	if communityEndpointName == "" {
-		return nil, errors.New("parameter communityEndpointName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{communityEndpointName}", url.PathEscape(communityEndpointName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
 }
 
 // NewListByCommunityResourcePager - List CommunityEndpointResource resources by CommunityResource
@@ -575,85 +656,4 @@ func (client *CommunityEndpointsClient) listBySubscriptionHandleResponse(resp *h
 		return CommunityEndpointsClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Update a CommunityEndpointResource
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - communityName - The name of the communityResource Resource
-//   - communityEndpointName - The name of the Community Endpoint Resource
-//   - properties - The resource properties to be updated.
-//   - options - CommunityEndpointsClientBeginUpdateOptions contains the optional parameters for the CommunityEndpointsClient.BeginUpdate
-//     method.
-func (client *CommunityEndpointsClient) BeginUpdate(ctx context.Context, resourceGroupName string, communityName string, communityEndpointName string, properties CommunityEndpointPatchModel, options *CommunityEndpointsClientBeginUpdateOptions) (*runtime.Poller[CommunityEndpointsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, communityName, communityEndpointName, properties, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CommunityEndpointsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[CommunityEndpointsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update a CommunityEndpointResource
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *CommunityEndpointsClient) update(ctx context.Context, resourceGroupName string, communityName string, communityEndpointName string, properties CommunityEndpointPatchModel, options *CommunityEndpointsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "CommunityEndpointsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, communityName, communityEndpointName, properties, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *CommunityEndpointsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, communityName string, communityEndpointName string, properties CommunityEndpointPatchModel, _ *CommunityEndpointsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/communities/{communityName}/communityEndpoints/{communityEndpointName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if communityName == "" {
-		return nil, errors.New("parameter communityName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{communityName}", url.PathEscape(communityName))
-	if communityEndpointName == "" {
-		return nil, errors.New("parameter communityEndpointName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{communityEndpointName}", url.PathEscape(communityEndpointName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

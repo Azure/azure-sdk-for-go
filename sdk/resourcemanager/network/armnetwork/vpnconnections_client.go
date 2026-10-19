@@ -136,7 +136,7 @@ func (client *VPNConnectionsClient) createOrUpdateCreateRequest(ctx context.Cont
 //     method.
 func (client *VPNConnectionsClient) BeginDelete(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string, options *VPNConnectionsClientBeginDeleteOptions) (*runtime.Poller[VPNConnectionsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, gatewayName, connectionName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, gatewayName, connectionName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -151,9 +151,9 @@ func (client *VPNConnectionsClient) BeginDelete(ctx context.Context, resourceGro
 	}
 }
 
-// delete - Deletes a vpn connection.
+// deleteOperation - Deletes a vpn connection.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *VPNConnectionsClient) delete(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string, options *VPNConnectionsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *VPNConnectionsClient) deleteOperation(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string, options *VPNConnectionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VPNConnectionsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)

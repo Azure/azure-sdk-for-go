@@ -45,6 +45,82 @@ func NewPoolClient(subscriptionID string, credential azcore.TokenCredential, opt
 	return client, nil
 }
 
+// BeginDelete - Deletes the specified pool.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - A name for the Batch account which must be unique within the region. Batch account names must be between
+//     3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as part of the DNS name
+//     that is used to access the Batch service in the region in which the account is created. For example: http://accountname.region.batch.azure.com/.
+//   - poolName - The pool name. This must be unique within the account.
+//   - options - PoolClientBeginDeleteOptions contains the optional parameters for the PoolClient.BeginDelete method.
+func (client *PoolClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, poolName string, options *PoolClientBeginDeleteOptions) (*runtime.Poller[PoolClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, poolName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PoolClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[PoolClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// deleteOperation - Deletes the specified pool.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *PoolClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, poolName string, options *PoolClientBeginDeleteOptions) (*http.Response, error) {
+	var err error
+	const operationName = "PoolClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, poolName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// deleteCreateRequest creates the delete request.
+func (client *PoolClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, _ *PoolClientBeginDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/pools/{poolName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if poolName == "" {
+		return nil, errors.New("parameter poolName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
 // Create - Creates a new pool inside the specified account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -124,82 +200,6 @@ func (client *PoolClient) createHandleResponse(resp *http.Response, successCodes
 		return PoolClientCreateResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginDelete - Deletes the specified pool.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - accountName - A name for the Batch account which must be unique within the region. Batch account names must be between
-//     3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as part of the DNS name
-//     that is used to access the Batch service in the region in which the account is created. For example: http://accountname.region.batch.azure.com/.
-//   - poolName - The pool name. This must be unique within the account.
-//   - options - PoolClientBeginDeleteOptions contains the optional parameters for the PoolClient.BeginDelete method.
-func (client *PoolClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, poolName string, options *PoolClientBeginDeleteOptions) (*runtime.Poller[PoolClientDeleteResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, poolName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PoolClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[PoolClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Delete - Deletes the specified pool.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *PoolClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, poolName string, options *PoolClientBeginDeleteOptions) (*http.Response, error) {
-	var err error
-	const operationName = "PoolClient.BeginDelete"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, poolName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// deleteCreateRequest creates the Delete request.
-func (client *PoolClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, _ *PoolClientBeginDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/pools/{poolName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if poolName == "" {
-		return nil, errors.New("parameter poolName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
 }
 
 // DisableAutoScale - Disables automatic scaling for a pool.

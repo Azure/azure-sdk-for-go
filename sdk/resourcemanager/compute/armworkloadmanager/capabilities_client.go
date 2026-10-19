@@ -69,7 +69,7 @@ func (client *CapabilitiesClient) BeginCreateOrUpdate(ctx context.Context, resou
 	}
 }
 
-// CreateOrUpdate - Creates or replaces a capability.
+// createOrUpdate - Creates or replaces a capability.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *CapabilitiesClient) createOrUpdate(ctx context.Context, resourceGroupName string, spaceName string, capabilityName string, resource Capability, options *CapabilitiesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *CapabilitiesClient) createOrUpdate(ctx context.Context, resourceGr
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *CapabilitiesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, spaceName string, capabilityName string, resource Capability, _ *CapabilitiesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/workloadSpaces/{spaceName}/capabilities/{capabilityName}"
 	if client.subscriptionID == "" {
@@ -149,7 +149,7 @@ func (client *CapabilitiesClient) BeginDelete(ctx context.Context, resourceGroup
 	}
 }
 
-// Delete - Disables and deletes a capability.
+// deleteOperation - Disables and deletes a capability.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *CapabilitiesClient) deleteOperation(ctx context.Context, resourceGroupName string, spaceName string, capabilityName string, options *CapabilitiesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -171,7 +171,7 @@ func (client *CapabilitiesClient) deleteOperation(ctx context.Context, resourceG
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *CapabilitiesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, spaceName string, capabilityName string, _ *CapabilitiesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/workloadSpaces/{spaceName}/capabilities/{capabilityName}"
 	if client.subscriptionID == "" {
@@ -197,6 +197,87 @@ func (client *CapabilitiesClient) deleteCreateRequest(ctx context.Context, resou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20261101Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - Updates mutable capability properties.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - spaceName - The name of the WorkloadSpace
+//   - capabilityName - The name of the Capability
+//   - properties - The resource properties to be updated.
+//   - options - CapabilitiesClientBeginUpdateOptions contains the optional parameters for the CapabilitiesClient.BeginUpdate
+//     method.
+func (client *CapabilitiesClient) BeginUpdate(ctx context.Context, resourceGroupName string, spaceName string, capabilityName string, properties CapabilityUpdate, options *CapabilitiesClientBeginUpdateOptions) (*runtime.Poller[CapabilitiesClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, spaceName, capabilityName, properties, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CapabilitiesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[CapabilitiesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Updates mutable capability properties.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *CapabilitiesClient) update(ctx context.Context, resourceGroupName string, spaceName string, capabilityName string, properties CapabilityUpdate, options *CapabilitiesClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "CapabilitiesClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, spaceName, capabilityName, properties, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *CapabilitiesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, spaceName string, capabilityName string, properties CapabilityUpdate, _ *CapabilitiesClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/workloadSpaces/{spaceName}/capabilities/{capabilityName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if spaceName == "" {
+		return nil, errors.New("parameter spaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{spaceName}", url.PathEscape(spaceName))
+	if capabilityName == "" {
+		return nil, errors.New("parameter capabilityName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{capabilityName}", url.PathEscape(capabilityName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, properties); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -340,85 +421,4 @@ func (client *CapabilitiesClient) listByWorkloadSpaceHandleResponse(resp *http.R
 		return CapabilitiesClientListByWorkloadSpaceResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Updates mutable capability properties.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - spaceName - The name of the WorkloadSpace
-//   - capabilityName - The name of the Capability
-//   - properties - The resource properties to be updated.
-//   - options - CapabilitiesClientBeginUpdateOptions contains the optional parameters for the CapabilitiesClient.BeginUpdate
-//     method.
-func (client *CapabilitiesClient) BeginUpdate(ctx context.Context, resourceGroupName string, spaceName string, capabilityName string, properties CapabilityUpdate, options *CapabilitiesClientBeginUpdateOptions) (*runtime.Poller[CapabilitiesClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, spaceName, capabilityName, properties, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CapabilitiesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[CapabilitiesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Updates mutable capability properties.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *CapabilitiesClient) update(ctx context.Context, resourceGroupName string, spaceName string, capabilityName string, properties CapabilityUpdate, options *CapabilitiesClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "CapabilitiesClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, spaceName, capabilityName, properties, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *CapabilitiesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, spaceName string, capabilityName string, properties CapabilityUpdate, _ *CapabilitiesClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/workloadSpaces/{spaceName}/capabilities/{capabilityName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if spaceName == "" {
-		return nil, errors.New("parameter spaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{spaceName}", url.PathEscape(spaceName))
-	if capabilityName == "" {
-		return nil, errors.New("parameter capabilityName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{capabilityName}", url.PathEscape(capabilityName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20261101Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

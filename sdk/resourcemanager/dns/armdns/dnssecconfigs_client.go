@@ -67,7 +67,7 @@ func (client *DnssecConfigsClient) BeginCreateOrUpdate(ctx context.Context, reso
 	}
 }
 
-// CreateOrUpdate - Creates or updates the DNSSEC configuration on a DNS zone.
+// createOrUpdate - Creates or updates the DNSSEC configuration on a DNS zone.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *DnssecConfigsClient) createOrUpdate(ctx context.Context, resourceGroupName string, zoneName string, options *DnssecConfigsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -89,7 +89,7 @@ func (client *DnssecConfigsClient) createOrUpdate(ctx context.Context, resourceG
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *DnssecConfigsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, zoneName string, options *DnssecConfigsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsZones/{zoneName}/dnssecConfigs/default"
 	if client.subscriptionID == "" {
@@ -144,7 +144,7 @@ func (client *DnssecConfigsClient) BeginDelete(ctx context.Context, resourceGrou
 	}
 }
 
-// Delete - Deletes the DNSSEC configuration on a DNS zone. This operation cannot be undone.
+// deleteOperation - Deletes the DNSSEC configuration on a DNS zone. This operation cannot be undone.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *DnssecConfigsClient) deleteOperation(ctx context.Context, resourceGroupName string, zoneName string, options *DnssecConfigsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -166,7 +166,7 @@ func (client *DnssecConfigsClient) deleteOperation(ctx context.Context, resource
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *DnssecConfigsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, zoneName string, options *DnssecConfigsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsZones/{zoneName}/dnssecConfigs/default"
 	if client.subscriptionID == "" {

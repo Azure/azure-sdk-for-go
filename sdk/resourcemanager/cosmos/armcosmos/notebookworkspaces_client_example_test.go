@@ -67,103 +67,6 @@ func ExampleNotebookWorkspacesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBNotebookWorkspaceGet.json
-func ExampleNotebookWorkspacesClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewNotebookWorkspacesClient().Get(ctx, "rg1", "ddb1", armcosmos.NotebookWorkspaceNameDefault, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcosmos.NotebookWorkspacesClientGetResponse{
-	// 	NotebookWorkspace: armcosmos.NotebookWorkspace{
-	// 		Name: to.Ptr("default"),
-	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/notebookWorkspaces"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/notebookWorkspaces/default"),
-	// 		Properties: &armcosmos.NotebookWorkspaceProperties{
-	// 			NotebookServerEndpoint: to.Ptr("endpoint"),
-	// 			Status: to.Ptr("Online"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-04-01-preview/CosmosDBNotebookWorkspaceList.json
-func ExampleNotebookWorkspacesClient_NewListByDatabaseAccountPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewNotebookWorkspacesClient().NewListByDatabaseAccountPager("rg1", "ddb1", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcosmos.NotebookWorkspacesClientListByDatabaseAccountResponse{
-		// 	NotebookWorkspaceListResult: armcosmos.NotebookWorkspaceListResult{
-		// 		Value: []*armcosmos.NotebookWorkspace{
-		// 			{
-		// 				Name: to.Ptr("default"),
-		// 				Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/notebookWorkspaces"),
-		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/notebookWorkspaces/default"),
-		// 				Properties: &armcosmos.NotebookWorkspaceProperties{
-		// 					NotebookServerEndpoint: to.Ptr("endpoint"),
-		// 					Status: to.Ptr("Online"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-04-01-preview/CosmosDBNotebookWorkspaceListConnectionInfo.json
-func ExampleNotebookWorkspacesClient_ListConnectionInfo() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewNotebookWorkspacesClient().ListConnectionInfo(ctx, "rg1", "ddb1", armcosmos.NotebookWorkspaceNameDefault, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcosmos.NotebookWorkspacesClientListConnectionInfoResponse{
-	// 	NotebookWorkspaceConnectionInfoResult: armcosmos.NotebookWorkspaceConnectionInfoResult{
-	// 		AuthToken: to.Ptr("auth-token"),
-	// 		NotebookServerEndpoint: to.Ptr("notebook endpoint"),
-	// 	},
-	// }
-}
-
 // Generated from example definition: 2026-04-01-preview/CosmosDBNotebookWorkspaceRegenerateAuthToken.json
 func ExampleNotebookWorkspacesClient_BeginRegenerateAuthToken() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -214,4 +117,101 @@ func ExampleNotebookWorkspacesClient_BeginStart() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.NotebookWorkspacesClientStartResponse{
 	// }
+}
+
+// Generated from example definition: 2026-04-01-preview/CosmosDBNotebookWorkspaceGet.json
+func ExampleNotebookWorkspacesClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewNotebookWorkspacesClient().Get(ctx, "rg1", "ddb1", armcosmos.NotebookWorkspaceNameDefault, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcosmos.NotebookWorkspacesClientGetResponse{
+	// 	NotebookWorkspace: armcosmos.NotebookWorkspace{
+	// 		Name: to.Ptr("default"),
+	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/notebookWorkspaces"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/notebookWorkspaces/default"),
+	// 		Properties: &armcosmos.NotebookWorkspaceProperties{
+	// 			NotebookServerEndpoint: to.Ptr("endpoint"),
+	// 			Status: to.Ptr("Online"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-04-01-preview/CosmosDBNotebookWorkspaceListConnectionInfo.json
+func ExampleNotebookWorkspacesClient_ListConnectionInfo() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewNotebookWorkspacesClient().ListConnectionInfo(ctx, "rg1", "ddb1", armcosmos.NotebookWorkspaceNameDefault, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcosmos.NotebookWorkspacesClientListConnectionInfoResponse{
+	// 	NotebookWorkspaceConnectionInfoResult: armcosmos.NotebookWorkspaceConnectionInfoResult{
+	// 		AuthToken: to.Ptr("auth-token"),
+	// 		NotebookServerEndpoint: to.Ptr("notebook endpoint"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-04-01-preview/CosmosDBNotebookWorkspaceList.json
+func ExampleNotebookWorkspacesClient_NewListByDatabaseAccountPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewNotebookWorkspacesClient().NewListByDatabaseAccountPager("rg1", "ddb1", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armcosmos.NotebookWorkspacesClientListByDatabaseAccountResponse{
+		// 	NotebookWorkspaceListResult: armcosmos.NotebookWorkspaceListResult{
+		// 		Value: []*armcosmos.NotebookWorkspace{
+		// 			{
+		// 				Name: to.Ptr("default"),
+		// 				Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/notebookWorkspaces"),
+		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/notebookWorkspaces/default"),
+		// 				Properties: &armcosmos.NotebookWorkspaceProperties{
+		// 					NotebookServerEndpoint: to.Ptr("endpoint"),
+		// 					Status: to.Ptr("Online"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
 }

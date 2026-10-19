@@ -127,7 +127,7 @@ func (client *VirtualWansClient) createOrUpdateCreateRequest(ctx context.Context
 //   - options - VirtualWansClientBeginDeleteOptions contains the optional parameters for the VirtualWansClient.BeginDelete method.
 func (client *VirtualWansClient) BeginDelete(ctx context.Context, resourceGroupName string, virtualWANName string, options *VirtualWansClientBeginDeleteOptions) (*runtime.Poller[VirtualWansClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, virtualWANName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, virtualWANName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -142,9 +142,9 @@ func (client *VirtualWansClient) BeginDelete(ctx context.Context, resourceGroupN
 	}
 }
 
-// delete - Deletes a VirtualWAN.
+// deleteOperation - Deletes a VirtualWAN.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *VirtualWansClient) delete(ctx context.Context, resourceGroupName string, virtualWANName string, options *VirtualWansClientBeginDeleteOptions) (*http.Response, error) {
+func (client *VirtualWansClient) deleteOperation(ctx context.Context, resourceGroupName string, virtualWANName string, options *VirtualWansClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualWansClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)

@@ -66,7 +66,7 @@ func (client *Client) BeginExportTerraform(ctx context.Context, body BaseExportM
 	}
 }
 
-// ExportTerraform - Exports the Terraform configuration of the specified resource(s).
+// exportTerraform - Exports the Terraform configuration of the specified resource(s).
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *Client) exportTerraform(ctx context.Context, body BaseExportModelClassification, options *ClientBeginExportTerraformOptions) (*http.Response, error) {
 	var err error
@@ -88,7 +88,7 @@ func (client *Client) exportTerraform(ctx context.Context, body BaseExportModelC
 	return httpResp, nil
 }
 
-// exportTerraformCreateRequest creates the ExportTerraform request.
+// exportTerraformCreateRequest creates the exportTerraform request.
 func (client *Client) exportTerraformCreateRequest(ctx context.Context, body BaseExportModelClassification, _ *ClientBeginExportTerraformOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.AzureTerraform/exportTerraform"
 	if client.subscriptionID == "" {

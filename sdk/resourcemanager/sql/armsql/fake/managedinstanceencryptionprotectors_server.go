@@ -25,6 +25,10 @@ type ManagedInstanceEncryptionProtectorsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, managedInstanceName string, encryptionProtectorName armsql.EncryptionProtectorName, parameters armsql.ManagedInstanceEncryptionProtector, options *armsql.ManagedInstanceEncryptionProtectorsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armsql.ManagedInstanceEncryptionProtectorsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
+	// BeginRevalidate is the fake for method ManagedInstanceEncryptionProtectorsClient.BeginRevalidate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginRevalidate func(ctx context.Context, resourceGroupName string, managedInstanceName string, encryptionProtectorName armsql.EncryptionProtectorName, options *armsql.ManagedInstanceEncryptionProtectorsClientBeginRevalidateOptions) (resp azfake.PollerResponder[armsql.ManagedInstanceEncryptionProtectorsClientRevalidateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method ManagedInstanceEncryptionProtectorsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, managedInstanceName string, encryptionProtectorName armsql.EncryptionProtectorName, options *armsql.ManagedInstanceEncryptionProtectorsClientGetOptions) (resp azfake.Responder[armsql.ManagedInstanceEncryptionProtectorsClientGetResponse], errResp azfake.ErrorResponder)
@@ -32,10 +36,6 @@ type ManagedInstanceEncryptionProtectorsServer struct {
 	// NewListByInstancePager is the fake for method ManagedInstanceEncryptionProtectorsClient.NewListByInstancePager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByInstancePager func(resourceGroupName string, managedInstanceName string, options *armsql.ManagedInstanceEncryptionProtectorsClientListByInstanceOptions) (resp azfake.PagerResponder[armsql.ManagedInstanceEncryptionProtectorsClientListByInstanceResponse])
-
-	// BeginRevalidate is the fake for method ManagedInstanceEncryptionProtectorsClient.BeginRevalidate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginRevalidate func(ctx context.Context, resourceGroupName string, managedInstanceName string, encryptionProtectorName armsql.EncryptionProtectorName, options *armsql.ManagedInstanceEncryptionProtectorsClientBeginRevalidateOptions) (resp azfake.PollerResponder[armsql.ManagedInstanceEncryptionProtectorsClientRevalidateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewManagedInstanceEncryptionProtectorsServerTransport creates a new instance of ManagedInstanceEncryptionProtectorsServerTransport with the provided implementation.
@@ -45,8 +45,8 @@ func NewManagedInstanceEncryptionProtectorsServerTransport(srv *ManagedInstanceE
 	return &ManagedInstanceEncryptionProtectorsServerTransport{
 		srv:                    srv,
 		beginCreateOrUpdate:    newTracker[azfake.PollerResponder[armsql.ManagedInstanceEncryptionProtectorsClientCreateOrUpdateResponse]](),
-		newListByInstancePager: newTracker[azfake.PagerResponder[armsql.ManagedInstanceEncryptionProtectorsClientListByInstanceResponse]](),
 		beginRevalidate:        newTracker[azfake.PollerResponder[armsql.ManagedInstanceEncryptionProtectorsClientRevalidateResponse]](),
+		newListByInstancePager: newTracker[azfake.PagerResponder[armsql.ManagedInstanceEncryptionProtectorsClientListByInstanceResponse]](),
 	}
 }
 
@@ -55,8 +55,8 @@ func NewManagedInstanceEncryptionProtectorsServerTransport(srv *ManagedInstanceE
 type ManagedInstanceEncryptionProtectorsServerTransport struct {
 	srv                    *ManagedInstanceEncryptionProtectorsServer
 	beginCreateOrUpdate    *tracker[azfake.PollerResponder[armsql.ManagedInstanceEncryptionProtectorsClientCreateOrUpdateResponse]]
-	newListByInstancePager *tracker[azfake.PagerResponder[armsql.ManagedInstanceEncryptionProtectorsClientListByInstanceResponse]]
 	beginRevalidate        *tracker[azfake.PollerResponder[armsql.ManagedInstanceEncryptionProtectorsClientRevalidateResponse]]
+	newListByInstancePager *tracker[azfake.PagerResponder[armsql.ManagedInstanceEncryptionProtectorsClientListByInstanceResponse]]
 }
 
 // Do implements the policy.Transporter interface for ManagedInstanceEncryptionProtectorsServerTransport.
@@ -82,12 +82,12 @@ func (m *ManagedInstanceEncryptionProtectorsServerTransport) dispatchToMethodFak
 			switch method {
 			case "ManagedInstanceEncryptionProtectorsClient.BeginCreateOrUpdate":
 				res.resp, res.err = m.dispatchBeginCreateOrUpdate(req)
+			case "ManagedInstanceEncryptionProtectorsClient.BeginRevalidate":
+				res.resp, res.err = m.dispatchBeginRevalidate(req)
 			case "ManagedInstanceEncryptionProtectorsClient.Get":
 				res.resp, res.err = m.dispatchGet(req)
 			case "ManagedInstanceEncryptionProtectorsClient.NewListByInstancePager":
 				res.resp, res.err = m.dispatchNewListByInstancePager(req)
-			case "ManagedInstanceEncryptionProtectorsClient.BeginRevalidate":
-				res.resp, res.err = m.dispatchBeginRevalidate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -157,6 +157,60 @@ func (m *ManagedInstanceEncryptionProtectorsServerTransport) dispatchBeginCreate
 	}
 	if !server.PollerResponderMore(beginCreateOrUpdate) {
 		m.beginCreateOrUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (m *ManagedInstanceEncryptionProtectorsServerTransport) dispatchBeginRevalidate(req *http.Request) (*http.Response, error) {
+	if m.srv.BeginRevalidate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginRevalidate not implemented")}
+	}
+	beginRevalidate := m.beginRevalidate.get(req)
+	if beginRevalidate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/managedInstances/(?P<managedInstanceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/encryptionProtector/(?P<encryptionProtectorName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/revalidate`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		managedInstanceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("managedInstanceName")])
+		if err != nil {
+			return nil, err
+		}
+		encryptionProtectorNameParam, err := parseWithCast(matches[regex.SubexpIndex("encryptionProtectorName")], func(v string) (armsql.EncryptionProtectorName, error) {
+			p, unescapeErr := url.PathUnescape(v)
+			if unescapeErr != nil {
+				return "", unescapeErr
+			}
+			return armsql.EncryptionProtectorName(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := m.srv.BeginRevalidate(req.Context(), resourceGroupNameParam, managedInstanceNameParam, encryptionProtectorNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginRevalidate = &respr
+		m.beginRevalidate.add(req, beginRevalidate)
+	}
+
+	resp, err := server.PollerResponderNext(beginRevalidate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		m.beginRevalidate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginRevalidate) {
+		m.beginRevalidate.remove(req)
 	}
 
 	return resp, nil
@@ -243,60 +297,6 @@ func (m *ManagedInstanceEncryptionProtectorsServerTransport) dispatchNewListByIn
 	if !server.PagerResponderMore(newListByInstancePager) {
 		m.newListByInstancePager.remove(req)
 	}
-	return resp, nil
-}
-
-func (m *ManagedInstanceEncryptionProtectorsServerTransport) dispatchBeginRevalidate(req *http.Request) (*http.Response, error) {
-	if m.srv.BeginRevalidate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginRevalidate not implemented")}
-	}
-	beginRevalidate := m.beginRevalidate.get(req)
-	if beginRevalidate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/managedInstances/(?P<managedInstanceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/encryptionProtector/(?P<encryptionProtectorName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/revalidate`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		managedInstanceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("managedInstanceName")])
-		if err != nil {
-			return nil, err
-		}
-		encryptionProtectorNameParam, err := parseWithCast(matches[regex.SubexpIndex("encryptionProtectorName")], func(v string) (armsql.EncryptionProtectorName, error) {
-			p, unescapeErr := url.PathUnescape(v)
-			if unescapeErr != nil {
-				return "", unescapeErr
-			}
-			return armsql.EncryptionProtectorName(p), nil
-		})
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := m.srv.BeginRevalidate(req.Context(), resourceGroupNameParam, managedInstanceNameParam, encryptionProtectorNameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginRevalidate = &respr
-		m.beginRevalidate.add(req, beginRevalidate)
-	}
-
-	resp, err := server.PollerResponderNext(beginRevalidate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		m.beginRevalidate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginRevalidate) {
-		m.beginRevalidate.remove(req)
-	}
-
 	return resp, nil
 }
 

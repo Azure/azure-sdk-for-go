@@ -29,14 +29,6 @@ type NamespaceDevicesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, namespaceName string, deviceName string, options *armdeviceregistry.NamespaceDevicesClientBeginDeleteOptions) (resp azfake.PollerResponder[armdeviceregistry.NamespaceDevicesClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method NamespaceDevicesClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, namespaceName string, deviceName string, options *armdeviceregistry.NamespaceDevicesClientGetOptions) (resp azfake.Responder[armdeviceregistry.NamespaceDevicesClientGetResponse], errResp azfake.ErrorResponder)
-
-	// NewListByResourceGroupPager is the fake for method NamespaceDevicesClient.NewListByResourceGroupPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupPager func(resourceGroupName string, namespaceName string, options *armdeviceregistry.NamespaceDevicesClientListByResourceGroupOptions) (resp azfake.PagerResponder[armdeviceregistry.NamespaceDevicesClientListByResourceGroupResponse])
-
 	// BeginRevoke is the fake for method NamespaceDevicesClient.BeginRevoke
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginRevoke func(ctx context.Context, resourceGroupName string, namespaceName string, deviceName string, body armdeviceregistry.DeviceCredentialsRevokeRequest, options *armdeviceregistry.NamespaceDevicesClientBeginRevokeOptions) (resp azfake.PollerResponder[armdeviceregistry.NamespaceDevicesClientRevokeResponse], errResp azfake.ErrorResponder)
@@ -44,6 +36,14 @@ type NamespaceDevicesServer struct {
 	// BeginUpdate is the fake for method NamespaceDevicesClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, resourceGroupName string, namespaceName string, deviceName string, properties armdeviceregistry.NamespaceDeviceUpdate, options *armdeviceregistry.NamespaceDevicesClientBeginUpdateOptions) (resp azfake.PollerResponder[armdeviceregistry.NamespaceDevicesClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method NamespaceDevicesClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, namespaceName string, deviceName string, options *armdeviceregistry.NamespaceDevicesClientGetOptions) (resp azfake.Responder[armdeviceregistry.NamespaceDevicesClientGetResponse], errResp azfake.ErrorResponder)
+
+	// NewListByResourceGroupPager is the fake for method NamespaceDevicesClient.NewListByResourceGroupPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByResourceGroupPager func(resourceGroupName string, namespaceName string, options *armdeviceregistry.NamespaceDevicesClientListByResourceGroupOptions) (resp azfake.PagerResponder[armdeviceregistry.NamespaceDevicesClientListByResourceGroupResponse])
 }
 
 // NewNamespaceDevicesServerTransport creates a new instance of NamespaceDevicesServerTransport with the provided implementation.
@@ -54,9 +54,9 @@ func NewNamespaceDevicesServerTransport(srv *NamespaceDevicesServer) *NamespaceD
 		srv:                         srv,
 		beginCreateOrReplace:        newTracker[azfake.PollerResponder[armdeviceregistry.NamespaceDevicesClientCreateOrReplaceResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armdeviceregistry.NamespaceDevicesClientDeleteResponse]](),
-		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armdeviceregistry.NamespaceDevicesClientListByResourceGroupResponse]](),
 		beginRevoke:                 newTracker[azfake.PollerResponder[armdeviceregistry.NamespaceDevicesClientRevokeResponse]](),
 		beginUpdate:                 newTracker[azfake.PollerResponder[armdeviceregistry.NamespaceDevicesClientUpdateResponse]](),
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armdeviceregistry.NamespaceDevicesClientListByResourceGroupResponse]](),
 	}
 }
 
@@ -66,9 +66,9 @@ type NamespaceDevicesServerTransport struct {
 	srv                         *NamespaceDevicesServer
 	beginCreateOrReplace        *tracker[azfake.PollerResponder[armdeviceregistry.NamespaceDevicesClientCreateOrReplaceResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armdeviceregistry.NamespaceDevicesClientDeleteResponse]]
-	newListByResourceGroupPager *tracker[azfake.PagerResponder[armdeviceregistry.NamespaceDevicesClientListByResourceGroupResponse]]
 	beginRevoke                 *tracker[azfake.PollerResponder[armdeviceregistry.NamespaceDevicesClientRevokeResponse]]
 	beginUpdate                 *tracker[azfake.PollerResponder[armdeviceregistry.NamespaceDevicesClientUpdateResponse]]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armdeviceregistry.NamespaceDevicesClientListByResourceGroupResponse]]
 }
 
 // Do implements the policy.Transporter interface for NamespaceDevicesServerTransport.
@@ -96,14 +96,14 @@ func (n *NamespaceDevicesServerTransport) dispatchToMethodFake(req *http.Request
 				res.resp, res.err = n.dispatchBeginCreateOrReplace(req)
 			case "NamespaceDevicesClient.BeginDelete":
 				res.resp, res.err = n.dispatchBeginDelete(req)
-			case "NamespaceDevicesClient.Get":
-				res.resp, res.err = n.dispatchGet(req)
-			case "NamespaceDevicesClient.NewListByResourceGroupPager":
-				res.resp, res.err = n.dispatchNewListByResourceGroupPager(req)
 			case "NamespaceDevicesClient.BeginRevoke":
 				res.resp, res.err = n.dispatchBeginRevoke(req)
 			case "NamespaceDevicesClient.BeginUpdate":
 				res.resp, res.err = n.dispatchBeginUpdate(req)
+			case "NamespaceDevicesClient.Get":
+				res.resp, res.err = n.dispatchGet(req)
+			case "NamespaceDevicesClient.NewListByResourceGroupPager":
+				res.resp, res.err = n.dispatchNewListByResourceGroupPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -220,84 +220,6 @@ func (n *NamespaceDevicesServerTransport) dispatchBeginDelete(req *http.Request)
 	return resp, nil
 }
 
-func (n *NamespaceDevicesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if n.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DeviceRegistry/namespaces/(?P<namespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/devices/(?P<deviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	namespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("namespaceName")])
-	if err != nil {
-		return nil, err
-	}
-	deviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deviceName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := n.srv.Get(req.Context(), resourceGroupNameParam, namespaceNameParam, deviceNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).NamespaceDevice, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (n *NamespaceDevicesServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
-	if n.srv.NewListByResourceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
-	}
-	newListByResourceGroupPager := n.newListByResourceGroupPager.get(req)
-	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DeviceRegistry/namespaces/(?P<namespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/devices`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		namespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("namespaceName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := n.srv.NewListByResourceGroupPager(resourceGroupNameParam, namespaceNameParam, nil)
-		newListByResourceGroupPager = &resp
-		n.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armdeviceregistry.NamespaceDevicesClientListByResourceGroupResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		n.newListByResourceGroupPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByResourceGroupPager) {
-		n.newListByResourceGroupPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (n *NamespaceDevicesServerTransport) dispatchBeginRevoke(req *http.Request) (*http.Response, error) {
 	if n.srv.BeginRevoke == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginRevoke not implemented")}
@@ -399,6 +321,84 @@ func (n *NamespaceDevicesServerTransport) dispatchBeginUpdate(req *http.Request)
 		n.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (n *NamespaceDevicesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if n.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DeviceRegistry/namespaces/(?P<namespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/devices/(?P<deviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	namespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("namespaceName")])
+	if err != nil {
+		return nil, err
+	}
+	deviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deviceName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := n.srv.Get(req.Context(), resourceGroupNameParam, namespaceNameParam, deviceNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).NamespaceDevice, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (n *NamespaceDevicesServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
+	if n.srv.NewListByResourceGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
+	}
+	newListByResourceGroupPager := n.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DeviceRegistry/namespaces/(?P<namespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/devices`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		namespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("namespaceName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := n.srv.NewListByResourceGroupPager(resourceGroupNameParam, namespaceNameParam, nil)
+		newListByResourceGroupPager = &resp
+		n.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armdeviceregistry.NamespaceDevicesClientListByResourceGroupResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		n.newListByResourceGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		n.newListByResourceGroupPager.remove(req)
+	}
 	return resp, nil
 }
 

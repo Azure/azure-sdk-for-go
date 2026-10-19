@@ -71,7 +71,7 @@ func (client *ApplicationsClient) BeginCreateOrUpdate(ctx context.Context, resou
 	}
 }
 
-// CreateOrUpdate - Creates or updates a Service Fabric application resource.
+// createOrUpdate - Creates or updates a Service Fabric application resource.
 //
 // Create or update a Service Fabric application resource with the specified name.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -95,7 +95,7 @@ func (client *ApplicationsClient) createOrUpdate(ctx context.Context, resourceGr
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ApplicationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, parameters ApplicationResource, _ *ApplicationsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/clusters/{clusterName}/applications/{applicationName}"
 	if client.subscriptionID == "" {
@@ -155,7 +155,7 @@ func (client *ApplicationsClient) BeginDelete(ctx context.Context, resourceGroup
 	}
 }
 
-// Delete - Deletes a Service Fabric application resource.
+// deleteOperation - Deletes a Service Fabric application resource.
 //
 // Delete a Service Fabric application resource with the specified name.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -179,7 +179,7 @@ func (client *ApplicationsClient) deleteOperation(ctx context.Context, resourceG
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ApplicationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, _ *ApplicationsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/clusters/{clusterName}/applications/{applicationName}"
 	if client.subscriptionID == "" {
@@ -205,6 +205,91 @@ func (client *ApplicationsClient) deleteCreateRequest(ctx context.Context, resou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20260301Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - Updates a Service Fabric application resource.
+//
+// Update a Service Fabric application resource with the specified name.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - clusterName - The name of the cluster resource.
+//   - applicationName - The name of the application resource.
+//   - parameters - The application resource for patch operations.
+//   - options - ApplicationsClientBeginUpdateOptions contains the optional parameters for the ApplicationsClient.BeginUpdate
+//     method.
+func (client *ApplicationsClient) BeginUpdate(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, parameters ApplicationResourceUpdate, options *ApplicationsClientBeginUpdateOptions) (*runtime.Poller[ApplicationsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, clusterName, applicationName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ApplicationsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ApplicationsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Updates a Service Fabric application resource.
+//
+// Update a Service Fabric application resource with the specified name.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ApplicationsClient) update(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, parameters ApplicationResourceUpdate, options *ApplicationsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ApplicationsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, clusterName, applicationName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *ApplicationsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, parameters ApplicationResourceUpdate, _ *ApplicationsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/clusters/{clusterName}/applications/{applicationName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if clusterName == "" {
+		return nil, errors.New("parameter clusterName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
+	if applicationName == "" {
+		return nil, errors.New("parameter applicationName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{applicationName}", url.PathEscape(applicationName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260301Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -351,89 +436,4 @@ func (client *ApplicationsClient) listHandleResponse(resp *http.Response, succes
 		return ApplicationsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Updates a Service Fabric application resource.
-//
-// Update a Service Fabric application resource with the specified name.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - clusterName - The name of the cluster resource.
-//   - applicationName - The name of the application resource.
-//   - parameters - The application resource for patch operations.
-//   - options - ApplicationsClientBeginUpdateOptions contains the optional parameters for the ApplicationsClient.BeginUpdate
-//     method.
-func (client *ApplicationsClient) BeginUpdate(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, parameters ApplicationResourceUpdate, options *ApplicationsClientBeginUpdateOptions) (*runtime.Poller[ApplicationsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, clusterName, applicationName, parameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ApplicationsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ApplicationsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Updates a Service Fabric application resource.
-//
-// Update a Service Fabric application resource with the specified name.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ApplicationsClient) update(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, parameters ApplicationResourceUpdate, options *ApplicationsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ApplicationsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, clusterName, applicationName, parameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *ApplicationsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, parameters ApplicationResourceUpdate, _ *ApplicationsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/clusters/{clusterName}/applications/{applicationName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if clusterName == "" {
-		return nil, errors.New("parameter clusterName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	if applicationName == "" {
-		return nil, errors.New("parameter applicationName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{applicationName}", url.PathEscape(applicationName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

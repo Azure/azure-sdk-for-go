@@ -44,6 +44,237 @@ func NewBackupVaultsClient(subscriptionID string, credential azcore.TokenCredent
 	return client, nil
 }
 
+// BeginCreateOrUpdate - Creates or updates a BackupVault resource belonging to a resource group.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - vaultName - The name of the BackupVaultResource
+//   - parameters - Request body for operation
+//   - options - BackupVaultsClientBeginCreateOrUpdateOptions contains the optional parameters for the BackupVaultsClient.BeginCreateOrUpdate
+//     method.
+func (client *BackupVaultsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, vaultName string, parameters BackupVaultResource, options *BackupVaultsClientBeginCreateOrUpdateOptions) (*runtime.Poller[BackupVaultsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, vaultName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[BackupVaultsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[BackupVaultsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// createOrUpdate - Creates or updates a BackupVault resource belonging to a resource group.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *BackupVaultsClient) createOrUpdate(ctx context.Context, resourceGroupName string, vaultName string, parameters BackupVaultResource, options *BackupVaultsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "BackupVaultsClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, vaultName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// createOrUpdateCreateRequest creates the createOrUpdate request.
+func (client *BackupVaultsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, parameters BackupVaultResource, options *BackupVaultsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if vaultName == "" {
+		return nil, errors.New("parameter vaultName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if options != nil && options.XMSAuthorizationAuxiliary != nil {
+		req.Raw().Header["x-ms-authorization-auxiliary"] = []string{*options.XMSAuthorizationAuxiliary}
+	}
+	if options != nil && options.XMSDeletedVaultID != nil {
+		req.Raw().Header["x-ms-deleted-vault-id"] = []string{*options.XMSDeletedVaultID}
+	}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginDelete - Deletes a BackupVault resource from the resource group.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - vaultName - The name of the BackupVaultResource
+//   - options - BackupVaultsClientBeginDeleteOptions contains the optional parameters for the BackupVaultsClient.BeginDelete
+//     method.
+func (client *BackupVaultsClient) BeginDelete(ctx context.Context, resourceGroupName string, vaultName string, options *BackupVaultsClientBeginDeleteOptions) (*runtime.Poller[BackupVaultsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, vaultName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[BackupVaultsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[BackupVaultsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// deleteOperation - Deletes a BackupVault resource from the resource group.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *BackupVaultsClient) deleteOperation(ctx context.Context, resourceGroupName string, vaultName string, options *BackupVaultsClientBeginDeleteOptions) (*http.Response, error) {
+	var err error
+	const operationName = "BackupVaultsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, vaultName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// deleteCreateRequest creates the delete request.
+func (client *BackupVaultsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, _ *BackupVaultsClientBeginDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if vaultName == "" {
+		return nil, errors.New("parameter vaultName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - Updates a BackupVault resource belonging to a resource group. For example, updating tags for a resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - vaultName - The name of the BackupVaultResource
+//   - parameters - Request body for operation
+//   - options - BackupVaultsClientBeginUpdateOptions contains the optional parameters for the BackupVaultsClient.BeginUpdate
+//     method.
+func (client *BackupVaultsClient) BeginUpdate(ctx context.Context, resourceGroupName string, vaultName string, parameters PatchResourceRequestInput, options *BackupVaultsClientBeginUpdateOptions) (*runtime.Poller[BackupVaultsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, vaultName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[BackupVaultsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[BackupVaultsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Updates a BackupVault resource belonging to a resource group. For example, updating tags for a resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *BackupVaultsClient) update(ctx context.Context, resourceGroupName string, vaultName string, parameters PatchResourceRequestInput, options *BackupVaultsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "BackupVaultsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, vaultName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *BackupVaultsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, parameters PatchResourceRequestInput, options *BackupVaultsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if vaultName == "" {
+		return nil, errors.New("parameter vaultName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if options != nil && options.XMSAuthorizationAuxiliary != nil {
+		req.Raw().Header["x-ms-authorization-auxiliary"] = []string{*options.XMSAuthorizationAuxiliary}
+	}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
 // CheckNameAvailability - API to check for resource name availability
 //
 // API to check for resource name availability
@@ -110,158 +341,6 @@ func (client *BackupVaultsClient) checkNameAvailabilityHandleResponse(resp *http
 		return BackupVaultsClientCheckNameAvailabilityResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginCreateOrUpdate - Creates or updates a BackupVault resource belonging to a resource group.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - vaultName - The name of the BackupVaultResource
-//   - parameters - Request body for operation
-//   - options - BackupVaultsClientBeginCreateOrUpdateOptions contains the optional parameters for the BackupVaultsClient.BeginCreateOrUpdate
-//     method.
-func (client *BackupVaultsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, vaultName string, parameters BackupVaultResource, options *BackupVaultsClientBeginCreateOrUpdateOptions) (*runtime.Poller[BackupVaultsClientCreateOrUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.createOrUpdate(ctx, resourceGroupName, vaultName, parameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[BackupVaultsClientCreateOrUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[BackupVaultsClientCreateOrUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// CreateOrUpdate - Creates or updates a BackupVault resource belonging to a resource group.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *BackupVaultsClient) createOrUpdate(ctx context.Context, resourceGroupName string, vaultName string, parameters BackupVaultResource, options *BackupVaultsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "BackupVaultsClient.BeginCreateOrUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, vaultName, parameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *BackupVaultsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, parameters BackupVaultResource, options *BackupVaultsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if vaultName == "" {
-		return nil, errors.New("parameter vaultName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	if options != nil && options.XMSAuthorizationAuxiliary != nil {
-		req.Raw().Header["x-ms-authorization-auxiliary"] = []string{*options.XMSAuthorizationAuxiliary}
-	}
-	if options != nil && options.XMSDeletedVaultID != nil {
-		req.Raw().Header["x-ms-deleted-vault-id"] = []string{*options.XMSDeletedVaultID}
-	}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginDelete - Deletes a BackupVault resource from the resource group.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - vaultName - The name of the BackupVaultResource
-//   - options - BackupVaultsClientBeginDeleteOptions contains the optional parameters for the BackupVaultsClient.BeginDelete
-//     method.
-func (client *BackupVaultsClient) BeginDelete(ctx context.Context, resourceGroupName string, vaultName string, options *BackupVaultsClientBeginDeleteOptions) (*runtime.Poller[BackupVaultsClientDeleteResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, vaultName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[BackupVaultsClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[BackupVaultsClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Delete - Deletes a BackupVault resource from the resource group.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *BackupVaultsClient) deleteOperation(ctx context.Context, resourceGroupName string, vaultName string, options *BackupVaultsClientBeginDeleteOptions) (*http.Response, error) {
-	var err error
-	const operationName = "BackupVaultsClient.BeginDelete"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, vaultName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// deleteCreateRequest creates the Delete request.
-func (client *BackupVaultsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, _ *BackupVaultsClientBeginDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if vaultName == "" {
-		return nil, errors.New("parameter vaultName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
 }
 
 // Get - Returns a resource belonging to a resource group.
@@ -461,83 +540,4 @@ func (client *BackupVaultsClient) getInSubscriptionHandleResponse(resp *http.Res
 		return BackupVaultsClientGetInSubscriptionResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Updates a BackupVault resource belonging to a resource group. For example, updating tags for a resource.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - vaultName - The name of the BackupVaultResource
-//   - parameters - Request body for operation
-//   - options - BackupVaultsClientBeginUpdateOptions contains the optional parameters for the BackupVaultsClient.BeginUpdate
-//     method.
-func (client *BackupVaultsClient) BeginUpdate(ctx context.Context, resourceGroupName string, vaultName string, parameters PatchResourceRequestInput, options *BackupVaultsClientBeginUpdateOptions) (*runtime.Poller[BackupVaultsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, vaultName, parameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[BackupVaultsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[BackupVaultsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Updates a BackupVault resource belonging to a resource group. For example, updating tags for a resource.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *BackupVaultsClient) update(ctx context.Context, resourceGroupName string, vaultName string, parameters PatchResourceRequestInput, options *BackupVaultsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "BackupVaultsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, vaultName, parameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *BackupVaultsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, parameters PatchResourceRequestInput, options *BackupVaultsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if vaultName == "" {
-		return nil, errors.New("parameter vaultName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	if options != nil && options.XMSAuthorizationAuxiliary != nil {
-		req.Raw().Header["x-ms-authorization-auxiliary"] = []string{*options.XMSAuthorizationAuxiliary}
-	}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

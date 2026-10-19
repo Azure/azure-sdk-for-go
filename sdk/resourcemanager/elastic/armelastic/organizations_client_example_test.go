@@ -11,70 +11,6 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-06-01/Organizations_GetApiKey.json
-func ExampleOrganizationsClient_GetAPIKey() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armelastic.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewOrganizationsClient().GetAPIKey(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armelastic.OrganizationsClientGetAPIKeyResponse{
-	// 	UserAPIKeyResponse: armelastic.UserAPIKeyResponse{
-	// 		Properties: &armelastic.UserAPIKeyResponseProperties{
-	// 			APIKey: to.Ptr("AbCdEfGhIjKlMnOpQrStUvWxYz"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-06-01/Organizations_GetElasticToAzureSubscriptionMapping.json
-func ExampleOrganizationsClient_GetElasticToAzureSubscriptionMapping() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armelastic.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewOrganizationsClient().GetElasticToAzureSubscriptionMapping(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armelastic.OrganizationsClientGetElasticToAzureSubscriptionMappingResponse{
-	// 	OrganizationToAzureSubscriptionMappingResponse: armelastic.OrganizationToAzureSubscriptionMappingResponse{
-	// 		Properties: &armelastic.OrganizationToAzureSubscriptionMappingResponseProperties{
-	// 			BilledAzureSubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-	// 			ElasticOrganizationID: to.Ptr("1234567890"),
-	// 			ElasticOrganizationName: to.Ptr("elasticOrganizationName"),
-	// 			MarketplaceSaasInfo: &armelastic.MarketplaceSaaSInfo{
-	// 				MarketplaceName: to.Ptr("MP_RESOURCE"),
-	// 				MarketplaceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.SaaS/resources/AzElastic_b1190c8f"),
-	// 				MarketplaceStatus: to.Ptr("Status"),
-	// 				MarketplaceSubscription: &armelastic.MarketplaceSaaSInfoMarketplaceSubscription{
-	// 					ID: to.Ptr("12345678-1234-1234-1234-123456789012"),
-	// 				},
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
 // Generated from example definition: 2025-06-01/Organizations_Resubscribe.json
 func ExampleOrganizationsClient_BeginResubscribe() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -136,6 +72,70 @@ func ExampleOrganizationsClient_BeginResubscribe() {
 	// 		},
 	// 		Tags: map[string]*string{
 	// 			"Environment": to.Ptr("Dev"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-06-01/Organizations_GetApiKey.json
+func ExampleOrganizationsClient_GetAPIKey() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armelastic.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewOrganizationsClient().GetAPIKey(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armelastic.OrganizationsClientGetAPIKeyResponse{
+	// 	UserAPIKeyResponse: armelastic.UserAPIKeyResponse{
+	// 		Properties: &armelastic.UserAPIKeyResponseProperties{
+	// 			APIKey: to.Ptr("AbCdEfGhIjKlMnOpQrStUvWxYz"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-06-01/Organizations_GetElasticToAzureSubscriptionMapping.json
+func ExampleOrganizationsClient_GetElasticToAzureSubscriptionMapping() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armelastic.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewOrganizationsClient().GetElasticToAzureSubscriptionMapping(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armelastic.OrganizationsClientGetElasticToAzureSubscriptionMappingResponse{
+	// 	OrganizationToAzureSubscriptionMappingResponse: armelastic.OrganizationToAzureSubscriptionMappingResponse{
+	// 		Properties: &armelastic.OrganizationToAzureSubscriptionMappingResponseProperties{
+	// 			BilledAzureSubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 			ElasticOrganizationID: to.Ptr("1234567890"),
+	// 			ElasticOrganizationName: to.Ptr("elasticOrganizationName"),
+	// 			MarketplaceSaasInfo: &armelastic.MarketplaceSaaSInfo{
+	// 				MarketplaceName: to.Ptr("MP_RESOURCE"),
+	// 				MarketplaceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.SaaS/resources/AzElastic_b1190c8f"),
+	// 				MarketplaceStatus: to.Ptr("Status"),
+	// 				MarketplaceSubscription: &armelastic.MarketplaceSaaSInfoMarketplaceSubscription{
+	// 					ID: to.Ptr("12345678-1234-1234-1234-123456789012"),
+	// 				},
+	// 			},
 	// 		},
 	// 	},
 	// }

@@ -12,34 +12,6 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-01/ConnectedEnvironmentsCertificates_CheckNameAvailability.json
-func ExampleConnectedEnvironmentsClient_CheckNameAvailability() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappcontainers.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewConnectedEnvironmentsClient().CheckNameAvailability(ctx, "examplerg", "testcontainerenv", armappcontainers.CheckNameAvailabilityRequest{
-		Name: to.Ptr("testcertificatename"),
-		Type: to.Ptr("Microsoft.App/connectedEnvironments/certificates"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armappcontainers.ConnectedEnvironmentsClientCheckNameAvailabilityResponse{
-	// 	CheckNameAvailabilityResponse: armappcontainers.CheckNameAvailabilityResponse{
-	// 		NameAvailable: to.Ptr(true),
-	// 	},
-	// }
-}
-
 // Generated from example definition: 2026-07-01/ConnectedEnvironments_CreateOrUpdate.json
 func ExampleConnectedEnvironmentsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -124,6 +96,34 @@ func ExampleConnectedEnvironmentsClient_BeginDelete() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappcontainers.ConnectedEnvironmentsClientDeleteResponse{
+	// }
+}
+
+// Generated from example definition: 2026-07-01/ConnectedEnvironmentsCertificates_CheckNameAvailability.json
+func ExampleConnectedEnvironmentsClient_CheckNameAvailability() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappcontainers.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewConnectedEnvironmentsClient().CheckNameAvailability(ctx, "examplerg", "testcontainerenv", armappcontainers.CheckNameAvailabilityRequest{
+		Name: to.Ptr("testcertificatename"),
+		Type: to.Ptr("Microsoft.App/connectedEnvironments/certificates"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armappcontainers.ConnectedEnvironmentsClientCheckNameAvailabilityResponse{
+	// 	CheckNameAvailabilityResponse: armappcontainers.CheckNameAvailabilityResponse{
+	// 		NameAvailable: to.Ptr(true),
+	// 	},
 	// }
 }
 

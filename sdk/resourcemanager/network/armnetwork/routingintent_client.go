@@ -136,7 +136,7 @@ func (client *RoutingIntentClient) createOrUpdateCreateRequest(ctx context.Conte
 //     method.
 func (client *RoutingIntentClient) BeginDelete(ctx context.Context, resourceGroupName string, virtualHubName string, routingIntentName string, options *RoutingIntentClientBeginDeleteOptions) (*runtime.Poller[RoutingIntentClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, virtualHubName, routingIntentName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, virtualHubName, routingIntentName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -151,9 +151,9 @@ func (client *RoutingIntentClient) BeginDelete(ctx context.Context, resourceGrou
 	}
 }
 
-// delete - Deletes a RoutingIntent.
+// deleteOperation - Deletes a RoutingIntent.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *RoutingIntentClient) delete(ctx context.Context, resourceGroupName string, virtualHubName string, routingIntentName string, options *RoutingIntentClientBeginDeleteOptions) (*http.Response, error) {
+func (client *RoutingIntentClient) deleteOperation(ctx context.Context, resourceGroupName string, virtualHubName string, routingIntentName string, options *RoutingIntentClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RoutingIntentClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)

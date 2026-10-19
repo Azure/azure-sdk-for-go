@@ -69,7 +69,7 @@ func (client *GremlinResourcesClient) BeginCreateUpdateGremlinDatabase(ctx conte
 	}
 }
 
-// CreateUpdateGremlinDatabase - Create or update an Azure Cosmos DB Gremlin database
+// createUpdateGremlinDatabase - Create or update an Azure Cosmos DB Gremlin database
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *GremlinResourcesClient) createUpdateGremlinDatabase(ctx context.Context, resourceGroupName string, accountName string, databaseName string, createUpdateGremlinDatabaseParameters GremlinDatabaseCreateUpdateParameters, options *GremlinResourcesClientBeginCreateUpdateGremlinDatabaseOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *GremlinResourcesClient) createUpdateGremlinDatabase(ctx context.Co
 	return httpResp, nil
 }
 
-// createUpdateGremlinDatabaseCreateRequest creates the CreateUpdateGremlinDatabase request.
+// createUpdateGremlinDatabaseCreateRequest creates the createUpdateGremlinDatabase request.
 func (client *GremlinResourcesClient) createUpdateGremlinDatabaseCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, createUpdateGremlinDatabaseParameters GremlinDatabaseCreateUpdateParameters, _ *GremlinResourcesClientBeginCreateUpdateGremlinDatabaseOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/gremlinDatabases/{databaseName}"
 	if client.subscriptionID == "" {
@@ -151,7 +151,7 @@ func (client *GremlinResourcesClient) BeginCreateUpdateGremlinGraph(ctx context.
 	}
 }
 
-// CreateUpdateGremlinGraph - Create or update an Azure Cosmos DB Gremlin graph
+// createUpdateGremlinGraph - Create or update an Azure Cosmos DB Gremlin graph
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *GremlinResourcesClient) createUpdateGremlinGraph(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, createUpdateGremlinGraphParameters GremlinGraphCreateUpdateParameters, options *GremlinResourcesClientBeginCreateUpdateGremlinGraphOptions) (*http.Response, error) {
 	var err error
@@ -173,7 +173,7 @@ func (client *GremlinResourcesClient) createUpdateGremlinGraph(ctx context.Conte
 	return httpResp, nil
 }
 
-// createUpdateGremlinGraphCreateRequest creates the CreateUpdateGremlinGraph request.
+// createUpdateGremlinGraphCreateRequest creates the createUpdateGremlinGraph request.
 func (client *GremlinResourcesClient) createUpdateGremlinGraphCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, createUpdateGremlinGraphParameters GremlinGraphCreateUpdateParameters, _ *GremlinResourcesClientBeginCreateUpdateGremlinGraphOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/gremlinDatabases/{databaseName}/graphs/{graphName}"
 	if client.subscriptionID == "" {
@@ -236,7 +236,7 @@ func (client *GremlinResourcesClient) BeginCreateUpdateGremlinRoleAssignment(ctx
 	}
 }
 
-// CreateUpdateGremlinRoleAssignment - Creates or updates an Azure Cosmos DB Gremlin Role Assignment.
+// createUpdateGremlinRoleAssignment - Creates or updates an Azure Cosmos DB Gremlin Role Assignment.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *GremlinResourcesClient) createUpdateGremlinRoleAssignment(ctx context.Context, resourceGroupName string, accountName string, roleAssignmentID string, createUpdateGremlinRoleAssignmentParameters GremlinRoleAssignmentResource, options *GremlinResourcesClientBeginCreateUpdateGremlinRoleAssignmentOptions) (*http.Response, error) {
 	var err error
@@ -258,7 +258,7 @@ func (client *GremlinResourcesClient) createUpdateGremlinRoleAssignment(ctx cont
 	return httpResp, nil
 }
 
-// createUpdateGremlinRoleAssignmentCreateRequest creates the CreateUpdateGremlinRoleAssignment request.
+// createUpdateGremlinRoleAssignmentCreateRequest creates the createUpdateGremlinRoleAssignment request.
 func (client *GremlinResourcesClient) createUpdateGremlinRoleAssignmentCreateRequest(ctx context.Context, resourceGroupName string, accountName string, roleAssignmentID string, createUpdateGremlinRoleAssignmentParameters GremlinRoleAssignmentResource, _ *GremlinResourcesClientBeginCreateUpdateGremlinRoleAssignmentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/gremlinRoleAssignments/{roleAssignmentId}"
 	if client.subscriptionID == "" {
@@ -317,7 +317,7 @@ func (client *GremlinResourcesClient) BeginCreateUpdateGremlinRoleDefinition(ctx
 	}
 }
 
-// CreateUpdateGremlinRoleDefinition - Creates or updates an Azure Cosmos DB Gremlin Role Definition.
+// createUpdateGremlinRoleDefinition - Creates or updates an Azure Cosmos DB Gremlin Role Definition.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *GremlinResourcesClient) createUpdateGremlinRoleDefinition(ctx context.Context, resourceGroupName string, accountName string, roleDefinitionID string, createUpdateGremlinRoleDefinitionParameters GremlinRoleDefinitionResource, options *GremlinResourcesClientBeginCreateUpdateGremlinRoleDefinitionOptions) (*http.Response, error) {
 	var err error
@@ -339,7 +339,7 @@ func (client *GremlinResourcesClient) createUpdateGremlinRoleDefinition(ctx cont
 	return httpResp, nil
 }
 
-// createUpdateGremlinRoleDefinitionCreateRequest creates the CreateUpdateGremlinRoleDefinition request.
+// createUpdateGremlinRoleDefinitionCreateRequest creates the createUpdateGremlinRoleDefinition request.
 func (client *GremlinResourcesClient) createUpdateGremlinRoleDefinitionCreateRequest(ctx context.Context, resourceGroupName string, accountName string, roleDefinitionID string, createUpdateGremlinRoleDefinitionParameters GremlinRoleDefinitionResource, _ *GremlinResourcesClientBeginCreateUpdateGremlinRoleDefinitionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/gremlinRoleDefinitions/{roleDefinitionId}"
 	if client.subscriptionID == "" {
@@ -397,7 +397,7 @@ func (client *GremlinResourcesClient) BeginDeleteGremlinDatabase(ctx context.Con
 	}
 }
 
-// DeleteGremlinDatabase - Deletes an existing Azure Cosmos DB Gremlin database.
+// deleteGremlinDatabase - Deletes an existing Azure Cosmos DB Gremlin database.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *GremlinResourcesClient) deleteGremlinDatabase(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *GremlinResourcesClientBeginDeleteGremlinDatabaseOptions) (*http.Response, error) {
 	var err error
@@ -419,7 +419,7 @@ func (client *GremlinResourcesClient) deleteGremlinDatabase(ctx context.Context,
 	return httpResp, nil
 }
 
-// deleteGremlinDatabaseCreateRequest creates the DeleteGremlinDatabase request.
+// deleteGremlinDatabaseCreateRequest creates the deleteGremlinDatabase request.
 func (client *GremlinResourcesClient) deleteGremlinDatabaseCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, _ *GremlinResourcesClientBeginDeleteGremlinDatabaseOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/gremlinDatabases/{databaseName}"
 	if client.subscriptionID == "" {
@@ -473,7 +473,7 @@ func (client *GremlinResourcesClient) BeginDeleteGremlinGraph(ctx context.Contex
 	}
 }
 
-// DeleteGremlinGraph - Deletes an existing Azure Cosmos DB Gremlin graph.
+// deleteGremlinGraph - Deletes an existing Azure Cosmos DB Gremlin graph.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *GremlinResourcesClient) deleteGremlinGraph(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, options *GremlinResourcesClientBeginDeleteGremlinGraphOptions) (*http.Response, error) {
 	var err error
@@ -495,7 +495,7 @@ func (client *GremlinResourcesClient) deleteGremlinGraph(ctx context.Context, re
 	return httpResp, nil
 }
 
-// deleteGremlinGraphCreateRequest creates the DeleteGremlinGraph request.
+// deleteGremlinGraphCreateRequest creates the deleteGremlinGraph request.
 func (client *GremlinResourcesClient) deleteGremlinGraphCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, _ *GremlinResourcesClientBeginDeleteGremlinGraphOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/gremlinDatabases/{databaseName}/graphs/{graphName}"
 	if client.subscriptionID == "" {
@@ -552,7 +552,7 @@ func (client *GremlinResourcesClient) BeginDeleteGremlinRoleAssignment(ctx conte
 	}
 }
 
-// DeleteGremlinRoleAssignment - Deletes an existing Azure Cosmos DB Gremlin Role Assignment.
+// deleteGremlinRoleAssignment - Deletes an existing Azure Cosmos DB Gremlin Role Assignment.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *GremlinResourcesClient) deleteGremlinRoleAssignment(ctx context.Context, resourceGroupName string, accountName string, roleAssignmentID string, options *GremlinResourcesClientBeginDeleteGremlinRoleAssignmentOptions) (*http.Response, error) {
 	var err error
@@ -574,7 +574,7 @@ func (client *GremlinResourcesClient) deleteGremlinRoleAssignment(ctx context.Co
 	return httpResp, nil
 }
 
-// deleteGremlinRoleAssignmentCreateRequest creates the DeleteGremlinRoleAssignment request.
+// deleteGremlinRoleAssignmentCreateRequest creates the deleteGremlinRoleAssignment request.
 func (client *GremlinResourcesClient) deleteGremlinRoleAssignmentCreateRequest(ctx context.Context, resourceGroupName string, accountName string, roleAssignmentID string, _ *GremlinResourcesClientBeginDeleteGremlinRoleAssignmentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/gremlinRoleAssignments/{roleAssignmentId}"
 	if client.subscriptionID == "" {
@@ -627,7 +627,7 @@ func (client *GremlinResourcesClient) BeginDeleteGremlinRoleDefinition(ctx conte
 	}
 }
 
-// DeleteGremlinRoleDefinition - Deletes an existing Azure Cosmos DB Gremlin Role Definition.
+// deleteGremlinRoleDefinition - Deletes an existing Azure Cosmos DB Gremlin Role Definition.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *GremlinResourcesClient) deleteGremlinRoleDefinition(ctx context.Context, resourceGroupName string, accountName string, roleDefinitionID string, options *GremlinResourcesClientBeginDeleteGremlinRoleDefinitionOptions) (*http.Response, error) {
 	var err error
@@ -649,7 +649,7 @@ func (client *GremlinResourcesClient) deleteGremlinRoleDefinition(ctx context.Co
 	return httpResp, nil
 }
 
-// deleteGremlinRoleDefinitionCreateRequest creates the DeleteGremlinRoleDefinition request.
+// deleteGremlinRoleDefinitionCreateRequest creates the deleteGremlinRoleDefinition request.
 func (client *GremlinResourcesClient) deleteGremlinRoleDefinitionCreateRequest(ctx context.Context, resourceGroupName string, accountName string, roleDefinitionID string, _ *GremlinResourcesClientBeginDeleteGremlinRoleDefinitionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/gremlinRoleDefinitions/{roleDefinitionId}"
 	if client.subscriptionID == "" {
@@ -675,6 +675,573 @@ func (client *GremlinResourcesClient) deleteGremlinRoleDefinitionCreateRequest(c
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20260401Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginMigrateGremlinDatabaseToAutoscale - Migrate an Azure Cosmos DB Gremlin database from manual throughput to autoscale
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - Cosmos DB database account name.
+//   - databaseName - Cosmos DB database name.
+//   - options - GremlinResourcesClientBeginMigrateGremlinDatabaseToAutoscaleOptions contains the optional parameters for the
+//     GremlinResourcesClient.BeginMigrateGremlinDatabaseToAutoscale method.
+func (client *GremlinResourcesClient) BeginMigrateGremlinDatabaseToAutoscale(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *GremlinResourcesClientBeginMigrateGremlinDatabaseToAutoscaleOptions) (*runtime.Poller[GremlinResourcesClientMigrateGremlinDatabaseToAutoscaleResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.migrateGremlinDatabaseToAutoscale(ctx, resourceGroupName, accountName, databaseName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[GremlinResourcesClientMigrateGremlinDatabaseToAutoscaleResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[GremlinResourcesClientMigrateGremlinDatabaseToAutoscaleResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// migrateGremlinDatabaseToAutoscale - Migrate an Azure Cosmos DB Gremlin database from manual throughput to autoscale
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *GremlinResourcesClient) migrateGremlinDatabaseToAutoscale(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *GremlinResourcesClientBeginMigrateGremlinDatabaseToAutoscaleOptions) (*http.Response, error) {
+	var err error
+	const operationName = "GremlinResourcesClient.BeginMigrateGremlinDatabaseToAutoscale"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.migrateGremlinDatabaseToAutoscaleCreateRequest(ctx, resourceGroupName, accountName, databaseName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// migrateGremlinDatabaseToAutoscaleCreateRequest creates the migrateGremlinDatabaseToAutoscale request.
+func (client *GremlinResourcesClient) migrateGremlinDatabaseToAutoscaleCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, _ *GremlinResourcesClientBeginMigrateGremlinDatabaseToAutoscaleOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/gremlinDatabases/{databaseName}/throughputSettings/default/migrateToAutoscale"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if databaseName == "" {
+		return nil, errors.New("parameter databaseName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// BeginMigrateGremlinDatabaseToManualThroughput - Migrate an Azure Cosmos DB Gremlin database from autoscale to manual throughput
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - Cosmos DB database account name.
+//   - databaseName - Cosmos DB database name.
+//   - options - GremlinResourcesClientBeginMigrateGremlinDatabaseToManualThroughputOptions contains the optional parameters for
+//     the GremlinResourcesClient.BeginMigrateGremlinDatabaseToManualThroughput method.
+func (client *GremlinResourcesClient) BeginMigrateGremlinDatabaseToManualThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *GremlinResourcesClientBeginMigrateGremlinDatabaseToManualThroughputOptions) (*runtime.Poller[GremlinResourcesClientMigrateGremlinDatabaseToManualThroughputResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.migrateGremlinDatabaseToManualThroughput(ctx, resourceGroupName, accountName, databaseName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[GremlinResourcesClientMigrateGremlinDatabaseToManualThroughputResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[GremlinResourcesClientMigrateGremlinDatabaseToManualThroughputResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// migrateGremlinDatabaseToManualThroughput - Migrate an Azure Cosmos DB Gremlin database from autoscale to manual throughput
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *GremlinResourcesClient) migrateGremlinDatabaseToManualThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *GremlinResourcesClientBeginMigrateGremlinDatabaseToManualThroughputOptions) (*http.Response, error) {
+	var err error
+	const operationName = "GremlinResourcesClient.BeginMigrateGremlinDatabaseToManualThroughput"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.migrateGremlinDatabaseToManualThroughputCreateRequest(ctx, resourceGroupName, accountName, databaseName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// migrateGremlinDatabaseToManualThroughputCreateRequest creates the migrateGremlinDatabaseToManualThroughput request.
+func (client *GremlinResourcesClient) migrateGremlinDatabaseToManualThroughputCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, _ *GremlinResourcesClientBeginMigrateGremlinDatabaseToManualThroughputOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/gremlinDatabases/{databaseName}/throughputSettings/default/migrateToManualThroughput"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if databaseName == "" {
+		return nil, errors.New("parameter databaseName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// BeginMigrateGremlinGraphToAutoscale - Migrate an Azure Cosmos DB Gremlin graph from manual throughput to autoscale
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - Cosmos DB database account name.
+//   - databaseName - Cosmos DB database name.
+//   - graphName - Cosmos DB graph name.
+//   - options - GremlinResourcesClientBeginMigrateGremlinGraphToAutoscaleOptions contains the optional parameters for the GremlinResourcesClient.BeginMigrateGremlinGraphToAutoscale
+//     method.
+func (client *GremlinResourcesClient) BeginMigrateGremlinGraphToAutoscale(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, options *GremlinResourcesClientBeginMigrateGremlinGraphToAutoscaleOptions) (*runtime.Poller[GremlinResourcesClientMigrateGremlinGraphToAutoscaleResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.migrateGremlinGraphToAutoscale(ctx, resourceGroupName, accountName, databaseName, graphName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[GremlinResourcesClientMigrateGremlinGraphToAutoscaleResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[GremlinResourcesClientMigrateGremlinGraphToAutoscaleResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// migrateGremlinGraphToAutoscale - Migrate an Azure Cosmos DB Gremlin graph from manual throughput to autoscale
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *GremlinResourcesClient) migrateGremlinGraphToAutoscale(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, options *GremlinResourcesClientBeginMigrateGremlinGraphToAutoscaleOptions) (*http.Response, error) {
+	var err error
+	const operationName = "GremlinResourcesClient.BeginMigrateGremlinGraphToAutoscale"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.migrateGremlinGraphToAutoscaleCreateRequest(ctx, resourceGroupName, accountName, databaseName, graphName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// migrateGremlinGraphToAutoscaleCreateRequest creates the migrateGremlinGraphToAutoscale request.
+func (client *GremlinResourcesClient) migrateGremlinGraphToAutoscaleCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, _ *GremlinResourcesClientBeginMigrateGremlinGraphToAutoscaleOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/gremlinDatabases/{databaseName}/graphs/{graphName}/throughputSettings/default/migrateToAutoscale"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if databaseName == "" {
+		return nil, errors.New("parameter databaseName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
+	if graphName == "" {
+		return nil, errors.New("parameter graphName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{graphName}", url.PathEscape(graphName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// BeginMigrateGremlinGraphToManualThroughput - Migrate an Azure Cosmos DB Gremlin graph from autoscale to manual throughput
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - Cosmos DB database account name.
+//   - databaseName - Cosmos DB database name.
+//   - graphName - Cosmos DB graph name.
+//   - options - GremlinResourcesClientBeginMigrateGremlinGraphToManualThroughputOptions contains the optional parameters for
+//     the GremlinResourcesClient.BeginMigrateGremlinGraphToManualThroughput method.
+func (client *GremlinResourcesClient) BeginMigrateGremlinGraphToManualThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, options *GremlinResourcesClientBeginMigrateGremlinGraphToManualThroughputOptions) (*runtime.Poller[GremlinResourcesClientMigrateGremlinGraphToManualThroughputResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.migrateGremlinGraphToManualThroughput(ctx, resourceGroupName, accountName, databaseName, graphName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[GremlinResourcesClientMigrateGremlinGraphToManualThroughputResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[GremlinResourcesClientMigrateGremlinGraphToManualThroughputResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// migrateGremlinGraphToManualThroughput - Migrate an Azure Cosmos DB Gremlin graph from autoscale to manual throughput
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *GremlinResourcesClient) migrateGremlinGraphToManualThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, options *GremlinResourcesClientBeginMigrateGremlinGraphToManualThroughputOptions) (*http.Response, error) {
+	var err error
+	const operationName = "GremlinResourcesClient.BeginMigrateGremlinGraphToManualThroughput"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.migrateGremlinGraphToManualThroughputCreateRequest(ctx, resourceGroupName, accountName, databaseName, graphName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// migrateGremlinGraphToManualThroughputCreateRequest creates the migrateGremlinGraphToManualThroughput request.
+func (client *GremlinResourcesClient) migrateGremlinGraphToManualThroughputCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, _ *GremlinResourcesClientBeginMigrateGremlinGraphToManualThroughputOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/gremlinDatabases/{databaseName}/graphs/{graphName}/throughputSettings/default/migrateToManualThroughput"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if databaseName == "" {
+		return nil, errors.New("parameter databaseName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
+	if graphName == "" {
+		return nil, errors.New("parameter graphName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{graphName}", url.PathEscape(graphName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// BeginRetrieveContinuousBackupInformation - Retrieves continuous backup information for a gremlin graph.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - Cosmos DB database account name.
+//   - databaseName - Cosmos DB database name.
+//   - graphName - Cosmos DB graph name.
+//   - location - The name of the continuous backup restore location.
+//   - options - GremlinResourcesClientBeginRetrieveContinuousBackupInformationOptions contains the optional parameters for the
+//     GremlinResourcesClient.BeginRetrieveContinuousBackupInformation method.
+func (client *GremlinResourcesClient) BeginRetrieveContinuousBackupInformation(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, location ContinuousBackupRestoreLocation, options *GremlinResourcesClientBeginRetrieveContinuousBackupInformationOptions) (*runtime.Poller[GremlinResourcesClientRetrieveContinuousBackupInformationResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.retrieveContinuousBackupInformation(ctx, resourceGroupName, accountName, databaseName, graphName, location, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[GremlinResourcesClientRetrieveContinuousBackupInformationResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[GremlinResourcesClientRetrieveContinuousBackupInformationResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// retrieveContinuousBackupInformation - Retrieves continuous backup information for a gremlin graph.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *GremlinResourcesClient) retrieveContinuousBackupInformation(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, location ContinuousBackupRestoreLocation, options *GremlinResourcesClientBeginRetrieveContinuousBackupInformationOptions) (*http.Response, error) {
+	var err error
+	const operationName = "GremlinResourcesClient.BeginRetrieveContinuousBackupInformation"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.retrieveContinuousBackupInformationCreateRequest(ctx, resourceGroupName, accountName, databaseName, graphName, location, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// retrieveContinuousBackupInformationCreateRequest creates the retrieveContinuousBackupInformation request.
+func (client *GremlinResourcesClient) retrieveContinuousBackupInformationCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, location ContinuousBackupRestoreLocation, _ *GremlinResourcesClientBeginRetrieveContinuousBackupInformationOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/gremlinDatabases/{databaseName}/graphs/{graphName}/retrieveContinuousBackupInformation"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if databaseName == "" {
+		return nil, errors.New("parameter databaseName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
+	if graphName == "" {
+		return nil, errors.New("parameter graphName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{graphName}", url.PathEscape(graphName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, location); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginUpdateGremlinDatabaseThroughput - Update RUs per second of an Azure Cosmos DB Gremlin database
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - Cosmos DB database account name.
+//   - databaseName - Cosmos DB database name.
+//   - updateThroughputParameters - The RUs per second of the parameters to provide for the current Gremlin database.
+//   - options - GremlinResourcesClientBeginUpdateGremlinDatabaseThroughputOptions contains the optional parameters for the GremlinResourcesClient.BeginUpdateGremlinDatabaseThroughput
+//     method.
+func (client *GremlinResourcesClient) BeginUpdateGremlinDatabaseThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, updateThroughputParameters ThroughputSettingsUpdateParameters, options *GremlinResourcesClientBeginUpdateGremlinDatabaseThroughputOptions) (*runtime.Poller[GremlinResourcesClientUpdateGremlinDatabaseThroughputResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.updateGremlinDatabaseThroughput(ctx, resourceGroupName, accountName, databaseName, updateThroughputParameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[GremlinResourcesClientUpdateGremlinDatabaseThroughputResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[GremlinResourcesClientUpdateGremlinDatabaseThroughputResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// updateGremlinDatabaseThroughput - Update RUs per second of an Azure Cosmos DB Gremlin database
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *GremlinResourcesClient) updateGremlinDatabaseThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, updateThroughputParameters ThroughputSettingsUpdateParameters, options *GremlinResourcesClientBeginUpdateGremlinDatabaseThroughputOptions) (*http.Response, error) {
+	var err error
+	const operationName = "GremlinResourcesClient.BeginUpdateGremlinDatabaseThroughput"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateGremlinDatabaseThroughputCreateRequest(ctx, resourceGroupName, accountName, databaseName, updateThroughputParameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateGremlinDatabaseThroughputCreateRequest creates the updateGremlinDatabaseThroughput request.
+func (client *GremlinResourcesClient) updateGremlinDatabaseThroughputCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, updateThroughputParameters ThroughputSettingsUpdateParameters, _ *GremlinResourcesClientBeginUpdateGremlinDatabaseThroughputOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/gremlinDatabases/{databaseName}/throughputSettings/default"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if databaseName == "" {
+		return nil, errors.New("parameter databaseName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, updateThroughputParameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginUpdateGremlinGraphThroughput - Update RUs per second of an Azure Cosmos DB Gremlin graph
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - Cosmos DB database account name.
+//   - databaseName - Cosmos DB database name.
+//   - graphName - Cosmos DB graph name.
+//   - updateThroughputParameters - The RUs per second of the parameters to provide for the current Gremlin graph.
+//   - options - GremlinResourcesClientBeginUpdateGremlinGraphThroughputOptions contains the optional parameters for the GremlinResourcesClient.BeginUpdateGremlinGraphThroughput
+//     method.
+func (client *GremlinResourcesClient) BeginUpdateGremlinGraphThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, updateThroughputParameters ThroughputSettingsUpdateParameters, options *GremlinResourcesClientBeginUpdateGremlinGraphThroughputOptions) (*runtime.Poller[GremlinResourcesClientUpdateGremlinGraphThroughputResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.updateGremlinGraphThroughput(ctx, resourceGroupName, accountName, databaseName, graphName, updateThroughputParameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[GremlinResourcesClientUpdateGremlinGraphThroughputResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[GremlinResourcesClientUpdateGremlinGraphThroughputResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// updateGremlinGraphThroughput - Update RUs per second of an Azure Cosmos DB Gremlin graph
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *GremlinResourcesClient) updateGremlinGraphThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, updateThroughputParameters ThroughputSettingsUpdateParameters, options *GremlinResourcesClientBeginUpdateGremlinGraphThroughputOptions) (*http.Response, error) {
+	var err error
+	const operationName = "GremlinResourcesClient.BeginUpdateGremlinGraphThroughput"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateGremlinGraphThroughputCreateRequest(ctx, resourceGroupName, accountName, databaseName, graphName, updateThroughputParameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateGremlinGraphThroughputCreateRequest creates the updateGremlinGraphThroughput request.
+func (client *GremlinResourcesClient) updateGremlinGraphThroughputCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, updateThroughputParameters ThroughputSettingsUpdateParameters, _ *GremlinResourcesClientBeginUpdateGremlinGraphThroughputOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/gremlinDatabases/{databaseName}/graphs/{graphName}/throughputSettings/default"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if databaseName == "" {
+		return nil, errors.New("parameter databaseName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
+	if graphName == "" {
+		return nil, errors.New("parameter graphName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{graphName}", url.PathEscape(graphName))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, updateThroughputParameters); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -1399,571 +1966,4 @@ func (client *GremlinResourcesClient) listGremlinRoleDefinitionsHandleResponse(r
 		return GremlinResourcesClientListGremlinRoleDefinitionsResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginMigrateGremlinDatabaseToAutoscale - Migrate an Azure Cosmos DB Gremlin database from manual throughput to autoscale
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - accountName - Cosmos DB database account name.
-//   - databaseName - Cosmos DB database name.
-//   - options - GremlinResourcesClientBeginMigrateGremlinDatabaseToAutoscaleOptions contains the optional parameters for the
-//     GremlinResourcesClient.BeginMigrateGremlinDatabaseToAutoscale method.
-func (client *GremlinResourcesClient) BeginMigrateGremlinDatabaseToAutoscale(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *GremlinResourcesClientBeginMigrateGremlinDatabaseToAutoscaleOptions) (*runtime.Poller[GremlinResourcesClientMigrateGremlinDatabaseToAutoscaleResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.migrateGremlinDatabaseToAutoscale(ctx, resourceGroupName, accountName, databaseName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[GremlinResourcesClientMigrateGremlinDatabaseToAutoscaleResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[GremlinResourcesClientMigrateGremlinDatabaseToAutoscaleResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// MigrateGremlinDatabaseToAutoscale - Migrate an Azure Cosmos DB Gremlin database from manual throughput to autoscale
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *GremlinResourcesClient) migrateGremlinDatabaseToAutoscale(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *GremlinResourcesClientBeginMigrateGremlinDatabaseToAutoscaleOptions) (*http.Response, error) {
-	var err error
-	const operationName = "GremlinResourcesClient.BeginMigrateGremlinDatabaseToAutoscale"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.migrateGremlinDatabaseToAutoscaleCreateRequest(ctx, resourceGroupName, accountName, databaseName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// migrateGremlinDatabaseToAutoscaleCreateRequest creates the MigrateGremlinDatabaseToAutoscale request.
-func (client *GremlinResourcesClient) migrateGremlinDatabaseToAutoscaleCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, _ *GremlinResourcesClientBeginMigrateGremlinDatabaseToAutoscaleOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/gremlinDatabases/{databaseName}/throughputSettings/default/migrateToAutoscale"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if databaseName == "" {
-		return nil, errors.New("parameter databaseName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// BeginMigrateGremlinDatabaseToManualThroughput - Migrate an Azure Cosmos DB Gremlin database from autoscale to manual throughput
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - accountName - Cosmos DB database account name.
-//   - databaseName - Cosmos DB database name.
-//   - options - GremlinResourcesClientBeginMigrateGremlinDatabaseToManualThroughputOptions contains the optional parameters for
-//     the GremlinResourcesClient.BeginMigrateGremlinDatabaseToManualThroughput method.
-func (client *GremlinResourcesClient) BeginMigrateGremlinDatabaseToManualThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *GremlinResourcesClientBeginMigrateGremlinDatabaseToManualThroughputOptions) (*runtime.Poller[GremlinResourcesClientMigrateGremlinDatabaseToManualThroughputResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.migrateGremlinDatabaseToManualThroughput(ctx, resourceGroupName, accountName, databaseName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[GremlinResourcesClientMigrateGremlinDatabaseToManualThroughputResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[GremlinResourcesClientMigrateGremlinDatabaseToManualThroughputResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// MigrateGremlinDatabaseToManualThroughput - Migrate an Azure Cosmos DB Gremlin database from autoscale to manual throughput
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *GremlinResourcesClient) migrateGremlinDatabaseToManualThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *GremlinResourcesClientBeginMigrateGremlinDatabaseToManualThroughputOptions) (*http.Response, error) {
-	var err error
-	const operationName = "GremlinResourcesClient.BeginMigrateGremlinDatabaseToManualThroughput"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.migrateGremlinDatabaseToManualThroughputCreateRequest(ctx, resourceGroupName, accountName, databaseName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// migrateGremlinDatabaseToManualThroughputCreateRequest creates the MigrateGremlinDatabaseToManualThroughput request.
-func (client *GremlinResourcesClient) migrateGremlinDatabaseToManualThroughputCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, _ *GremlinResourcesClientBeginMigrateGremlinDatabaseToManualThroughputOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/gremlinDatabases/{databaseName}/throughputSettings/default/migrateToManualThroughput"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if databaseName == "" {
-		return nil, errors.New("parameter databaseName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// BeginMigrateGremlinGraphToAutoscale - Migrate an Azure Cosmos DB Gremlin graph from manual throughput to autoscale
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - accountName - Cosmos DB database account name.
-//   - databaseName - Cosmos DB database name.
-//   - graphName - Cosmos DB graph name.
-//   - options - GremlinResourcesClientBeginMigrateGremlinGraphToAutoscaleOptions contains the optional parameters for the GremlinResourcesClient.BeginMigrateGremlinGraphToAutoscale
-//     method.
-func (client *GremlinResourcesClient) BeginMigrateGremlinGraphToAutoscale(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, options *GremlinResourcesClientBeginMigrateGremlinGraphToAutoscaleOptions) (*runtime.Poller[GremlinResourcesClientMigrateGremlinGraphToAutoscaleResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.migrateGremlinGraphToAutoscale(ctx, resourceGroupName, accountName, databaseName, graphName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[GremlinResourcesClientMigrateGremlinGraphToAutoscaleResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[GremlinResourcesClientMigrateGremlinGraphToAutoscaleResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// MigrateGremlinGraphToAutoscale - Migrate an Azure Cosmos DB Gremlin graph from manual throughput to autoscale
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *GremlinResourcesClient) migrateGremlinGraphToAutoscale(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, options *GremlinResourcesClientBeginMigrateGremlinGraphToAutoscaleOptions) (*http.Response, error) {
-	var err error
-	const operationName = "GremlinResourcesClient.BeginMigrateGremlinGraphToAutoscale"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.migrateGremlinGraphToAutoscaleCreateRequest(ctx, resourceGroupName, accountName, databaseName, graphName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// migrateGremlinGraphToAutoscaleCreateRequest creates the MigrateGremlinGraphToAutoscale request.
-func (client *GremlinResourcesClient) migrateGremlinGraphToAutoscaleCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, _ *GremlinResourcesClientBeginMigrateGremlinGraphToAutoscaleOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/gremlinDatabases/{databaseName}/graphs/{graphName}/throughputSettings/default/migrateToAutoscale"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if databaseName == "" {
-		return nil, errors.New("parameter databaseName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	if graphName == "" {
-		return nil, errors.New("parameter graphName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{graphName}", url.PathEscape(graphName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// BeginMigrateGremlinGraphToManualThroughput - Migrate an Azure Cosmos DB Gremlin graph from autoscale to manual throughput
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - accountName - Cosmos DB database account name.
-//   - databaseName - Cosmos DB database name.
-//   - graphName - Cosmos DB graph name.
-//   - options - GremlinResourcesClientBeginMigrateGremlinGraphToManualThroughputOptions contains the optional parameters for
-//     the GremlinResourcesClient.BeginMigrateGremlinGraphToManualThroughput method.
-func (client *GremlinResourcesClient) BeginMigrateGremlinGraphToManualThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, options *GremlinResourcesClientBeginMigrateGremlinGraphToManualThroughputOptions) (*runtime.Poller[GremlinResourcesClientMigrateGremlinGraphToManualThroughputResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.migrateGremlinGraphToManualThroughput(ctx, resourceGroupName, accountName, databaseName, graphName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[GremlinResourcesClientMigrateGremlinGraphToManualThroughputResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[GremlinResourcesClientMigrateGremlinGraphToManualThroughputResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// MigrateGremlinGraphToManualThroughput - Migrate an Azure Cosmos DB Gremlin graph from autoscale to manual throughput
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *GremlinResourcesClient) migrateGremlinGraphToManualThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, options *GremlinResourcesClientBeginMigrateGremlinGraphToManualThroughputOptions) (*http.Response, error) {
-	var err error
-	const operationName = "GremlinResourcesClient.BeginMigrateGremlinGraphToManualThroughput"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.migrateGremlinGraphToManualThroughputCreateRequest(ctx, resourceGroupName, accountName, databaseName, graphName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// migrateGremlinGraphToManualThroughputCreateRequest creates the MigrateGremlinGraphToManualThroughput request.
-func (client *GremlinResourcesClient) migrateGremlinGraphToManualThroughputCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, _ *GremlinResourcesClientBeginMigrateGremlinGraphToManualThroughputOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/gremlinDatabases/{databaseName}/graphs/{graphName}/throughputSettings/default/migrateToManualThroughput"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if databaseName == "" {
-		return nil, errors.New("parameter databaseName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	if graphName == "" {
-		return nil, errors.New("parameter graphName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{graphName}", url.PathEscape(graphName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// BeginRetrieveContinuousBackupInformation - Retrieves continuous backup information for a gremlin graph.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - accountName - Cosmos DB database account name.
-//   - databaseName - Cosmos DB database name.
-//   - graphName - Cosmos DB graph name.
-//   - location - The name of the continuous backup restore location.
-//   - options - GremlinResourcesClientBeginRetrieveContinuousBackupInformationOptions contains the optional parameters for the
-//     GremlinResourcesClient.BeginRetrieveContinuousBackupInformation method.
-func (client *GremlinResourcesClient) BeginRetrieveContinuousBackupInformation(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, location ContinuousBackupRestoreLocation, options *GremlinResourcesClientBeginRetrieveContinuousBackupInformationOptions) (*runtime.Poller[GremlinResourcesClientRetrieveContinuousBackupInformationResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.retrieveContinuousBackupInformation(ctx, resourceGroupName, accountName, databaseName, graphName, location, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[GremlinResourcesClientRetrieveContinuousBackupInformationResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[GremlinResourcesClientRetrieveContinuousBackupInformationResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// RetrieveContinuousBackupInformation - Retrieves continuous backup information for a gremlin graph.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *GremlinResourcesClient) retrieveContinuousBackupInformation(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, location ContinuousBackupRestoreLocation, options *GremlinResourcesClientBeginRetrieveContinuousBackupInformationOptions) (*http.Response, error) {
-	var err error
-	const operationName = "GremlinResourcesClient.BeginRetrieveContinuousBackupInformation"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.retrieveContinuousBackupInformationCreateRequest(ctx, resourceGroupName, accountName, databaseName, graphName, location, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// retrieveContinuousBackupInformationCreateRequest creates the RetrieveContinuousBackupInformation request.
-func (client *GremlinResourcesClient) retrieveContinuousBackupInformationCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, location ContinuousBackupRestoreLocation, _ *GremlinResourcesClientBeginRetrieveContinuousBackupInformationOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/gremlinDatabases/{databaseName}/graphs/{graphName}/retrieveContinuousBackupInformation"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if databaseName == "" {
-		return nil, errors.New("parameter databaseName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	if graphName == "" {
-		return nil, errors.New("parameter graphName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{graphName}", url.PathEscape(graphName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, location); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginUpdateGremlinDatabaseThroughput - Update RUs per second of an Azure Cosmos DB Gremlin database
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - accountName - Cosmos DB database account name.
-//   - databaseName - Cosmos DB database name.
-//   - updateThroughputParameters - The RUs per second of the parameters to provide for the current Gremlin database.
-//   - options - GremlinResourcesClientBeginUpdateGremlinDatabaseThroughputOptions contains the optional parameters for the GremlinResourcesClient.BeginUpdateGremlinDatabaseThroughput
-//     method.
-func (client *GremlinResourcesClient) BeginUpdateGremlinDatabaseThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, updateThroughputParameters ThroughputSettingsUpdateParameters, options *GremlinResourcesClientBeginUpdateGremlinDatabaseThroughputOptions) (*runtime.Poller[GremlinResourcesClientUpdateGremlinDatabaseThroughputResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.updateGremlinDatabaseThroughput(ctx, resourceGroupName, accountName, databaseName, updateThroughputParameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[GremlinResourcesClientUpdateGremlinDatabaseThroughputResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[GremlinResourcesClientUpdateGremlinDatabaseThroughputResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// UpdateGremlinDatabaseThroughput - Update RUs per second of an Azure Cosmos DB Gremlin database
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *GremlinResourcesClient) updateGremlinDatabaseThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, updateThroughputParameters ThroughputSettingsUpdateParameters, options *GremlinResourcesClientBeginUpdateGremlinDatabaseThroughputOptions) (*http.Response, error) {
-	var err error
-	const operationName = "GremlinResourcesClient.BeginUpdateGremlinDatabaseThroughput"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateGremlinDatabaseThroughputCreateRequest(ctx, resourceGroupName, accountName, databaseName, updateThroughputParameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateGremlinDatabaseThroughputCreateRequest creates the UpdateGremlinDatabaseThroughput request.
-func (client *GremlinResourcesClient) updateGremlinDatabaseThroughputCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, updateThroughputParameters ThroughputSettingsUpdateParameters, _ *GremlinResourcesClientBeginUpdateGremlinDatabaseThroughputOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/gremlinDatabases/{databaseName}/throughputSettings/default"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if databaseName == "" {
-		return nil, errors.New("parameter databaseName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, updateThroughputParameters); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginUpdateGremlinGraphThroughput - Update RUs per second of an Azure Cosmos DB Gremlin graph
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - accountName - Cosmos DB database account name.
-//   - databaseName - Cosmos DB database name.
-//   - graphName - Cosmos DB graph name.
-//   - updateThroughputParameters - The RUs per second of the parameters to provide for the current Gremlin graph.
-//   - options - GremlinResourcesClientBeginUpdateGremlinGraphThroughputOptions contains the optional parameters for the GremlinResourcesClient.BeginUpdateGremlinGraphThroughput
-//     method.
-func (client *GremlinResourcesClient) BeginUpdateGremlinGraphThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, updateThroughputParameters ThroughputSettingsUpdateParameters, options *GremlinResourcesClientBeginUpdateGremlinGraphThroughputOptions) (*runtime.Poller[GremlinResourcesClientUpdateGremlinGraphThroughputResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.updateGremlinGraphThroughput(ctx, resourceGroupName, accountName, databaseName, graphName, updateThroughputParameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[GremlinResourcesClientUpdateGremlinGraphThroughputResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[GremlinResourcesClientUpdateGremlinGraphThroughputResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// UpdateGremlinGraphThroughput - Update RUs per second of an Azure Cosmos DB Gremlin graph
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *GremlinResourcesClient) updateGremlinGraphThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, updateThroughputParameters ThroughputSettingsUpdateParameters, options *GremlinResourcesClientBeginUpdateGremlinGraphThroughputOptions) (*http.Response, error) {
-	var err error
-	const operationName = "GremlinResourcesClient.BeginUpdateGremlinGraphThroughput"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateGremlinGraphThroughputCreateRequest(ctx, resourceGroupName, accountName, databaseName, graphName, updateThroughputParameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateGremlinGraphThroughputCreateRequest creates the UpdateGremlinGraphThroughput request.
-func (client *GremlinResourcesClient) updateGremlinGraphThroughputCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, updateThroughputParameters ThroughputSettingsUpdateParameters, _ *GremlinResourcesClientBeginUpdateGremlinGraphThroughputOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/gremlinDatabases/{databaseName}/graphs/{graphName}/throughputSettings/default"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if databaseName == "" {
-		return nil, errors.New("parameter databaseName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	if graphName == "" {
-		return nil, errors.New("parameter graphName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{graphName}", url.PathEscape(graphName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, updateThroughputParameters); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

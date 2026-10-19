@@ -71,7 +71,7 @@ func (client *DotNetComponentsClient) BeginCreateOrUpdate(ctx context.Context, r
 	}
 }
 
-// CreateOrUpdate - Creates or updates a .NET Component.
+// createOrUpdate - Creates or updates a .NET Component.
 //
 // Creates or updates a .NET Component in a Managed Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -95,7 +95,7 @@ func (client *DotNetComponentsClient) createOrUpdate(ctx context.Context, resour
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *DotNetComponentsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, environmentName string, name string, dotNetComponentEnvelope DotNetComponent, _ *DotNetComponentsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/dotNetComponents/{name}"
 	if client.subscriptionID == "" {
@@ -155,7 +155,7 @@ func (client *DotNetComponentsClient) BeginDelete(ctx context.Context, resourceG
 	}
 }
 
-// Delete - Delete a .NET Component.
+// deleteOperation - Delete a .NET Component.
 //
 // Deletes a .NET component from a managed environment.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -179,7 +179,7 @@ func (client *DotNetComponentsClient) deleteOperation(ctx context.Context, resou
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *DotNetComponentsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, environmentName string, name string, _ *DotNetComponentsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/dotNetComponents/{name}"
 	if client.subscriptionID == "" {
@@ -205,6 +205,91 @@ func (client *DotNetComponentsClient) deleteCreateRequest(ctx context.Context, r
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - Update properties of a .NET Component
+//
+// Patches a .NET Component using JSON Merge Patch
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - environmentName - Name of the managed environment.
+//   - name - Name of the .NET Component.
+//   - dotNetComponentEnvelope - Configuration details of the .NET Component.
+//   - options - DotNetComponentsClientBeginUpdateOptions contains the optional parameters for the DotNetComponentsClient.BeginUpdate
+//     method.
+func (client *DotNetComponentsClient) BeginUpdate(ctx context.Context, resourceGroupName string, environmentName string, name string, dotNetComponentEnvelope DotNetComponent, options *DotNetComponentsClientBeginUpdateOptions) (*runtime.Poller[DotNetComponentsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, environmentName, name, dotNetComponentEnvelope, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DotNetComponentsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DotNetComponentsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update properties of a .NET Component
+//
+// Patches a .NET Component using JSON Merge Patch
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *DotNetComponentsClient) update(ctx context.Context, resourceGroupName string, environmentName string, name string, dotNetComponentEnvelope DotNetComponent, options *DotNetComponentsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "DotNetComponentsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, environmentName, name, dotNetComponentEnvelope, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *DotNetComponentsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, environmentName string, name string, dotNetComponentEnvelope DotNetComponent, _ *DotNetComponentsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/dotNetComponents/{name}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if environmentName == "" {
+		return nil, errors.New("parameter environmentName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{environmentName}", url.PathEscape(environmentName))
+	if name == "" {
+		return nil, errors.New("parameter name cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, dotNetComponentEnvelope); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -352,89 +437,4 @@ func (client *DotNetComponentsClient) listHandleResponse(resp *http.Response, su
 		return DotNetComponentsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Update properties of a .NET Component
-//
-// Patches a .NET Component using JSON Merge Patch
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - environmentName - Name of the managed environment.
-//   - name - Name of the .NET Component.
-//   - dotNetComponentEnvelope - Configuration details of the .NET Component.
-//   - options - DotNetComponentsClientBeginUpdateOptions contains the optional parameters for the DotNetComponentsClient.BeginUpdate
-//     method.
-func (client *DotNetComponentsClient) BeginUpdate(ctx context.Context, resourceGroupName string, environmentName string, name string, dotNetComponentEnvelope DotNetComponent, options *DotNetComponentsClientBeginUpdateOptions) (*runtime.Poller[DotNetComponentsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, environmentName, name, dotNetComponentEnvelope, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DotNetComponentsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DotNetComponentsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update properties of a .NET Component
-//
-// Patches a .NET Component using JSON Merge Patch
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *DotNetComponentsClient) update(ctx context.Context, resourceGroupName string, environmentName string, name string, dotNetComponentEnvelope DotNetComponent, options *DotNetComponentsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "DotNetComponentsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, environmentName, name, dotNetComponentEnvelope, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *DotNetComponentsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, environmentName string, name string, dotNetComponentEnvelope DotNetComponent, _ *DotNetComponentsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/dotNetComponents/{name}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if environmentName == "" {
-		return nil, errors.New("parameter environmentName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{environmentName}", url.PathEscape(environmentName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, dotNetComponentEnvelope); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

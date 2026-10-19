@@ -26,10 +26,6 @@ type DatabasesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	AddPrincipals func(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, databasePrincipalsToAdd armkusto.DatabasePrincipalListRequest, options *armkusto.DatabasesClientAddPrincipalsOptions) (resp azfake.Responder[armkusto.DatabasesClientAddPrincipalsResponse], errResp azfake.ErrorResponder)
 
-	// CheckNameAvailability is the fake for method DatabasesClient.CheckNameAvailability
-	// HTTP status codes to indicate success: http.StatusOK
-	CheckNameAvailability func(ctx context.Context, resourceGroupName string, clusterName string, resourceName armkusto.CheckNameRequest, options *armkusto.DatabasesClientCheckNameAvailabilityOptions) (resp azfake.Responder[armkusto.DatabasesClientCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
-
 	// BeginCreateOrUpdate is the fake for method DatabasesClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated, http.StatusAccepted
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, parameters armkusto.DatabaseClassification, options *armkusto.DatabasesClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armkusto.DatabasesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -37,6 +33,14 @@ type DatabasesServer struct {
 	// BeginDelete is the fake for method DatabasesClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, options *armkusto.DatabasesClientBeginDeleteOptions) (resp azfake.PollerResponder[armkusto.DatabasesClientDeleteResponse], errResp azfake.ErrorResponder)
+
+	// BeginUpdate is the fake for method DatabasesClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, parameters armkusto.DatabaseClassification, options *armkusto.DatabasesClientBeginUpdateOptions) (resp azfake.PollerResponder[armkusto.DatabasesClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// CheckNameAvailability is the fake for method DatabasesClient.CheckNameAvailability
+	// HTTP status codes to indicate success: http.StatusOK
+	CheckNameAvailability func(ctx context.Context, resourceGroupName string, clusterName string, resourceName armkusto.CheckNameRequest, options *armkusto.DatabasesClientCheckNameAvailabilityOptions) (resp azfake.Responder[armkusto.DatabasesClientCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method DatabasesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -53,10 +57,6 @@ type DatabasesServer struct {
 	// RemovePrincipals is the fake for method DatabasesClient.RemovePrincipals
 	// HTTP status codes to indicate success: http.StatusOK
 	RemovePrincipals func(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, databasePrincipalsToRemove armkusto.DatabasePrincipalListRequest, options *armkusto.DatabasesClientRemovePrincipalsOptions) (resp azfake.Responder[armkusto.DatabasesClientRemovePrincipalsResponse], errResp azfake.ErrorResponder)
-
-	// BeginUpdate is the fake for method DatabasesClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, parameters armkusto.DatabaseClassification, options *armkusto.DatabasesClientBeginUpdateOptions) (resp azfake.PollerResponder[armkusto.DatabasesClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewDatabasesServerTransport creates a new instance of DatabasesServerTransport with the provided implementation.
@@ -67,9 +67,9 @@ func NewDatabasesServerTransport(srv *DatabasesServer) *DatabasesServerTransport
 		srv:                    srv,
 		beginCreateOrUpdate:    newTracker[azfake.PollerResponder[armkusto.DatabasesClientCreateOrUpdateResponse]](),
 		beginDelete:            newTracker[azfake.PollerResponder[armkusto.DatabasesClientDeleteResponse]](),
+		beginUpdate:            newTracker[azfake.PollerResponder[armkusto.DatabasesClientUpdateResponse]](),
 		newListByClusterPager:  newTracker[azfake.PagerResponder[armkusto.DatabasesClientListByClusterResponse]](),
 		newListPrincipalsPager: newTracker[azfake.PagerResponder[armkusto.DatabasesClientListPrincipalsResponse]](),
-		beginUpdate:            newTracker[azfake.PollerResponder[armkusto.DatabasesClientUpdateResponse]](),
 	}
 }
 
@@ -79,9 +79,9 @@ type DatabasesServerTransport struct {
 	srv                    *DatabasesServer
 	beginCreateOrUpdate    *tracker[azfake.PollerResponder[armkusto.DatabasesClientCreateOrUpdateResponse]]
 	beginDelete            *tracker[azfake.PollerResponder[armkusto.DatabasesClientDeleteResponse]]
+	beginUpdate            *tracker[azfake.PollerResponder[armkusto.DatabasesClientUpdateResponse]]
 	newListByClusterPager  *tracker[azfake.PagerResponder[armkusto.DatabasesClientListByClusterResponse]]
 	newListPrincipalsPager *tracker[azfake.PagerResponder[armkusto.DatabasesClientListPrincipalsResponse]]
-	beginUpdate            *tracker[azfake.PollerResponder[armkusto.DatabasesClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for DatabasesServerTransport.
@@ -107,12 +107,14 @@ func (d *DatabasesServerTransport) dispatchToMethodFake(req *http.Request, metho
 			switch method {
 			case "DatabasesClient.AddPrincipals":
 				res.resp, res.err = d.dispatchAddPrincipals(req)
-			case "DatabasesClient.CheckNameAvailability":
-				res.resp, res.err = d.dispatchCheckNameAvailability(req)
 			case "DatabasesClient.BeginCreateOrUpdate":
 				res.resp, res.err = d.dispatchBeginCreateOrUpdate(req)
 			case "DatabasesClient.BeginDelete":
 				res.resp, res.err = d.dispatchBeginDelete(req)
+			case "DatabasesClient.BeginUpdate":
+				res.resp, res.err = d.dispatchBeginUpdate(req)
+			case "DatabasesClient.CheckNameAvailability":
+				res.resp, res.err = d.dispatchCheckNameAvailability(req)
 			case "DatabasesClient.Get":
 				res.resp, res.err = d.dispatchGet(req)
 			case "DatabasesClient.NewListByClusterPager":
@@ -121,8 +123,6 @@ func (d *DatabasesServerTransport) dispatchToMethodFake(req *http.Request, metho
 				res.resp, res.err = d.dispatchNewListPrincipalsPager(req)
 			case "DatabasesClient.RemovePrincipals":
 				res.resp, res.err = d.dispatchRemovePrincipals(req)
-			case "DatabasesClient.BeginUpdate":
-				res.resp, res.err = d.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -174,43 +174,6 @@ func (d *DatabasesServerTransport) dispatchAddPrincipals(req *http.Request) (*ht
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DatabasePrincipalListResult, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (d *DatabasesServerTransport) dispatchCheckNameAvailability(req *http.Request) (*http.Response, error) {
-	if d.srv.CheckNameAvailability == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CheckNameAvailability not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Kusto/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/checkNameAvailability`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armkusto.CheckNameRequest](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := d.srv.CheckNameAvailability(req.Context(), resourceGroupNameParam, clusterNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CheckNameResult, req)
 	if err != nil {
 		return nil, err
 	}
@@ -326,6 +289,107 @@ func (d *DatabasesServerTransport) dispatchBeginDelete(req *http.Request) (*http
 		d.beginDelete.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (d *DatabasesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if d.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := d.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Kusto/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		raw, err := readRequestBody(req)
+		if err != nil {
+			return nil, err
+		}
+		body, err := unmarshalDatabaseClassification(raw)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
+		if err != nil {
+			return nil, err
+		}
+		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
+		if err != nil {
+			return nil, err
+		}
+		callerRoleParam := getOptional(armkusto.CallerRole(qp.Get("callerRole")))
+		var options *armkusto.DatabasesClientBeginUpdateOptions
+		if callerRoleParam != nil {
+			options = &armkusto.DatabasesClientBeginUpdateOptions{
+				CallerRole: callerRoleParam,
+			}
+		}
+		respr, errRespr := d.srv.BeginUpdate(req.Context(), resourceGroupNameParam, clusterNameParam, databaseNameParam, body, options)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		d.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated, http.StatusAccepted}, resp.StatusCode) {
+		d.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		d.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (d *DatabasesServerTransport) dispatchCheckNameAvailability(req *http.Request) (*http.Response, error) {
+	if d.srv.CheckNameAvailability == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CheckNameAvailability not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Kusto/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/checkNameAvailability`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armkusto.CheckNameRequest](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := d.srv.CheckNameAvailability(req.Context(), resourceGroupNameParam, clusterNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CheckNameResult, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 
@@ -509,70 +573,6 @@ func (d *DatabasesServerTransport) dispatchRemovePrincipals(req *http.Request) (
 	if err != nil {
 		return nil, err
 	}
-	return resp, nil
-}
-
-func (d *DatabasesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if d.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := d.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Kusto/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		raw, err := readRequestBody(req)
-		if err != nil {
-			return nil, err
-		}
-		body, err := unmarshalDatabaseClassification(raw)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
-		if err != nil {
-			return nil, err
-		}
-		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
-		if err != nil {
-			return nil, err
-		}
-		callerRoleParam := getOptional(armkusto.CallerRole(qp.Get("callerRole")))
-		var options *armkusto.DatabasesClientBeginUpdateOptions
-		if callerRoleParam != nil {
-			options = &armkusto.DatabasesClientBeginUpdateOptions{
-				CallerRole: callerRoleParam,
-			}
-		}
-		respr, errRespr := d.srv.BeginUpdate(req.Context(), resourceGroupNameParam, clusterNameParam, databaseNameParam, body, options)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		d.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated, http.StatusAccepted}, resp.StatusCode) {
-		d.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		d.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

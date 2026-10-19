@@ -68,7 +68,7 @@ func (client *ExadbVMClustersClient) BeginCreateOrUpdate(ctx context.Context, re
 	}
 }
 
-// CreateOrUpdate - Create a ExadbVmCluster
+// createOrUpdate - Create a ExadbVmCluster
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ExadbVMClustersClient) createOrUpdate(ctx context.Context, resourceGroupName string, exadbVMClusterName string, resource ExadbVMCluster, options *ExadbVMClustersClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -90,7 +90,7 @@ func (client *ExadbVMClustersClient) createOrUpdate(ctx context.Context, resourc
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ExadbVMClustersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, exadbVMClusterName string, resource ExadbVMCluster, _ *ExadbVMClustersClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/exadbVmClusters/{exadbVmClusterName}"
 	if client.subscriptionID == "" {
@@ -143,7 +143,7 @@ func (client *ExadbVMClustersClient) BeginDelete(ctx context.Context, resourceGr
 	}
 }
 
-// Delete - Delete a ExadbVmCluster
+// deleteOperation - Delete a ExadbVmCluster
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ExadbVMClustersClient) deleteOperation(ctx context.Context, resourceGroupName string, exadbVMClusterName string, options *ExadbVMClustersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -165,7 +165,7 @@ func (client *ExadbVMClustersClient) deleteOperation(ctx context.Context, resour
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ExadbVMClustersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, exadbVMClusterName string, _ *ExadbVMClustersClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/exadbVmClusters/{exadbVmClusterName}"
 	if client.subscriptionID == "" {
@@ -187,6 +187,158 @@ func (client *ExadbVMClustersClient) deleteCreateRequest(ctx context.Context, re
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginRemoveVMs - Remove VMs from the VM Cluster
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - exadbVMClusterName - The name of the ExadbVmCluster
+//   - body - The content of the action request
+//   - options - ExadbVMClustersClientBeginRemoveVMsOptions contains the optional parameters for the ExadbVMClustersClient.BeginRemoveVMs
+//     method.
+func (client *ExadbVMClustersClient) BeginRemoveVMs(ctx context.Context, resourceGroupName string, exadbVMClusterName string, body RemoveVirtualMachineFromExadbVMClusterDetails, options *ExadbVMClustersClientBeginRemoveVMsOptions) (*runtime.Poller[ExadbVMClustersClientRemoveVMsResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.removeVMs(ctx, resourceGroupName, exadbVMClusterName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ExadbVMClustersClientRemoveVMsResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ExadbVMClustersClientRemoveVMsResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// removeVMs - Remove VMs from the VM Cluster
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ExadbVMClustersClient) removeVMs(ctx context.Context, resourceGroupName string, exadbVMClusterName string, body RemoveVirtualMachineFromExadbVMClusterDetails, options *ExadbVMClustersClientBeginRemoveVMsOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ExadbVMClustersClient.BeginRemoveVMs"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.removeVMsCreateRequest(ctx, resourceGroupName, exadbVMClusterName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// removeVMsCreateRequest creates the removeVMs request.
+func (client *ExadbVMClustersClient) removeVMsCreateRequest(ctx context.Context, resourceGroupName string, exadbVMClusterName string, body RemoveVirtualMachineFromExadbVMClusterDetails, _ *ExadbVMClustersClientBeginRemoveVMsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/exadbVmClusters/{exadbVmClusterName}/removeVms"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if exadbVMClusterName == "" {
+		return nil, errors.New("parameter exadbVMClusterName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{exadbVmClusterName}", url.PathEscape(exadbVMClusterName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginUpdate - Update a ExadbVmCluster
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - exadbVMClusterName - The name of the ExadbVmCluster
+//   - properties - The resource properties to be updated.
+//   - options - ExadbVMClustersClientBeginUpdateOptions contains the optional parameters for the ExadbVMClustersClient.BeginUpdate
+//     method.
+func (client *ExadbVMClustersClient) BeginUpdate(ctx context.Context, resourceGroupName string, exadbVMClusterName string, properties ExadbVMClusterUpdate, options *ExadbVMClustersClientBeginUpdateOptions) (*runtime.Poller[ExadbVMClustersClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, exadbVMClusterName, properties, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ExadbVMClustersClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ExadbVMClustersClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update a ExadbVmCluster
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ExadbVMClustersClient) update(ctx context.Context, resourceGroupName string, exadbVMClusterName string, properties ExadbVMClusterUpdate, options *ExadbVMClustersClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ExadbVMClustersClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, exadbVMClusterName, properties, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *ExadbVMClustersClient) updateCreateRequest(ctx context.Context, resourceGroupName string, exadbVMClusterName string, properties ExadbVMClusterUpdate, _ *ExadbVMClustersClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/exadbVmClusters/{exadbVmClusterName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if exadbVMClusterName == "" {
+		return nil, errors.New("parameter exadbVMClusterName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{exadbVmClusterName}", url.PathEscape(exadbVMClusterName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, properties); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -387,156 +539,4 @@ func (client *ExadbVMClustersClient) listBySubscriptionHandleResponse(resp *http
 		return ExadbVMClustersClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginRemoveVMs - Remove VMs from the VM Cluster
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - exadbVMClusterName - The name of the ExadbVmCluster
-//   - body - The content of the action request
-//   - options - ExadbVMClustersClientBeginRemoveVMsOptions contains the optional parameters for the ExadbVMClustersClient.BeginRemoveVMs
-//     method.
-func (client *ExadbVMClustersClient) BeginRemoveVMs(ctx context.Context, resourceGroupName string, exadbVMClusterName string, body RemoveVirtualMachineFromExadbVMClusterDetails, options *ExadbVMClustersClientBeginRemoveVMsOptions) (*runtime.Poller[ExadbVMClustersClientRemoveVMsResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.removeVMs(ctx, resourceGroupName, exadbVMClusterName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ExadbVMClustersClientRemoveVMsResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ExadbVMClustersClientRemoveVMsResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// RemoveVMs - Remove VMs from the VM Cluster
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ExadbVMClustersClient) removeVMs(ctx context.Context, resourceGroupName string, exadbVMClusterName string, body RemoveVirtualMachineFromExadbVMClusterDetails, options *ExadbVMClustersClientBeginRemoveVMsOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ExadbVMClustersClient.BeginRemoveVMs"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.removeVMsCreateRequest(ctx, resourceGroupName, exadbVMClusterName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// removeVMsCreateRequest creates the RemoveVMs request.
-func (client *ExadbVMClustersClient) removeVMsCreateRequest(ctx context.Context, resourceGroupName string, exadbVMClusterName string, body RemoveVirtualMachineFromExadbVMClusterDetails, _ *ExadbVMClustersClientBeginRemoveVMsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/exadbVmClusters/{exadbVmClusterName}/removeVms"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if exadbVMClusterName == "" {
-		return nil, errors.New("parameter exadbVMClusterName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{exadbVmClusterName}", url.PathEscape(exadbVMClusterName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginUpdate - Update a ExadbVmCluster
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - exadbVMClusterName - The name of the ExadbVmCluster
-//   - properties - The resource properties to be updated.
-//   - options - ExadbVMClustersClientBeginUpdateOptions contains the optional parameters for the ExadbVMClustersClient.BeginUpdate
-//     method.
-func (client *ExadbVMClustersClient) BeginUpdate(ctx context.Context, resourceGroupName string, exadbVMClusterName string, properties ExadbVMClusterUpdate, options *ExadbVMClustersClientBeginUpdateOptions) (*runtime.Poller[ExadbVMClustersClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, exadbVMClusterName, properties, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ExadbVMClustersClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ExadbVMClustersClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update a ExadbVmCluster
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ExadbVMClustersClient) update(ctx context.Context, resourceGroupName string, exadbVMClusterName string, properties ExadbVMClusterUpdate, options *ExadbVMClustersClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ExadbVMClustersClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, exadbVMClusterName, properties, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *ExadbVMClustersClient) updateCreateRequest(ctx context.Context, resourceGroupName string, exadbVMClusterName string, properties ExadbVMClusterUpdate, _ *ExadbVMClustersClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/exadbVmClusters/{exadbVmClusterName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if exadbVMClusterName == "" {
-		return nil, errors.New("parameter exadbVMClusterName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{exadbVmClusterName}", url.PathEscape(exadbVMClusterName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

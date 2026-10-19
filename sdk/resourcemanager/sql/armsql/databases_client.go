@@ -71,7 +71,7 @@ func (client *DatabasesClient) BeginCreateOrUpdate(ctx context.Context, resource
 	}
 }
 
-// CreateOrUpdate - Creates a new database or updates an existing database.
+// createOrUpdate - Creates a new database or updates an existing database.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *DatabasesClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters Database, options *DatabasesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -93,7 +93,7 @@ func (client *DatabasesClient) createOrUpdate(ctx context.Context, resourceGroup
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *DatabasesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters Database, _ *DatabasesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}"
 	if client.subscriptionID == "" {
@@ -150,7 +150,7 @@ func (client *DatabasesClient) BeginDelete(ctx context.Context, resourceGroupNam
 	}
 }
 
-// Delete - Deletes the database.
+// deleteOperation - Deletes the database.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *DatabasesClient) deleteOperation(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabasesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -172,7 +172,7 @@ func (client *DatabasesClient) deleteOperation(ctx context.Context, resourceGrou
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *DatabasesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, _ *DatabasesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}"
 	if client.subscriptionID == "" {
@@ -225,7 +225,7 @@ func (client *DatabasesClient) BeginExport(ctx context.Context, resourceGroupNam
 	}
 }
 
-// Export - Exports a database.
+// export - Exports a database.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *DatabasesClient) export(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters ExportDatabaseDefinition, options *DatabasesClientBeginExportOptions) (*http.Response, error) {
 	var err error
@@ -247,7 +247,7 @@ func (client *DatabasesClient) export(ctx context.Context, resourceGroupName str
 	return httpResp, nil
 }
 
-// exportCreateRequest creates the Export request.
+// exportCreateRequest creates the export request.
 func (client *DatabasesClient) exportCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters ExportDatabaseDefinition, _ *DatabasesClientBeginExportOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/export"
 	if client.subscriptionID == "" {
@@ -304,7 +304,7 @@ func (client *DatabasesClient) BeginFailover(ctx context.Context, resourceGroupN
 	}
 }
 
-// Failover - Failovers a database.
+// failover - Failovers a database.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *DatabasesClient) failover(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabasesClientBeginFailoverOptions) (*http.Response, error) {
 	var err error
@@ -326,7 +326,7 @@ func (client *DatabasesClient) failover(ctx context.Context, resourceGroupName s
 	return httpResp, nil
 }
 
-// failoverCreateRequest creates the Failover request.
+// failoverCreateRequest creates the failover request.
 func (client *DatabasesClient) failoverCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabasesClientBeginFailoverOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/failover"
 	if client.subscriptionID == "" {
@@ -354,6 +354,391 @@ func (client *DatabasesClient) failoverCreateRequest(ctx context.Context, resour
 	if options != nil && options.ReplicaType != nil {
 		reqQP.Set("replicaType", string(*options.ReplicaType))
 	}
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginImport - Imports a bacpac into a new database.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - serverName - The name of the server.
+//   - databaseName - The name of the database.
+//   - parameters - The database import request parameters.
+//   - options - DatabasesClientBeginImportOptions contains the optional parameters for the DatabasesClient.BeginImport method.
+func (client *DatabasesClient) BeginImport(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters ImportExistingDatabaseDefinition, options *DatabasesClientBeginImportOptions) (*runtime.Poller[DatabasesClientImportResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.importOperation(ctx, resourceGroupName, serverName, databaseName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DatabasesClientImportResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DatabasesClientImportResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// importOperation - Imports a bacpac into a new database.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *DatabasesClient) importOperation(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters ImportExistingDatabaseDefinition, options *DatabasesClientBeginImportOptions) (*http.Response, error) {
+	var err error
+	const operationName = "DatabasesClient.BeginImport"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.importCreateRequest(ctx, resourceGroupName, serverName, databaseName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// importCreateRequest creates the import request.
+func (client *DatabasesClient) importCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters ImportExistingDatabaseDefinition, _ *DatabasesClientBeginImportOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/import"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if serverName == "" {
+		return nil, errors.New("parameter serverName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
+	if databaseName == "" {
+		return nil, errors.New("parameter databaseName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260801Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginPause - Pauses a database.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - serverName - The name of the server.
+//   - databaseName - The name of the database.
+//   - options - DatabasesClientBeginPauseOptions contains the optional parameters for the DatabasesClient.BeginPause method.
+func (client *DatabasesClient) BeginPause(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabasesClientBeginPauseOptions) (*runtime.Poller[DatabasesClientPauseResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.pause(ctx, resourceGroupName, serverName, databaseName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DatabasesClientPauseResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DatabasesClientPauseResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// pause - Pauses a database.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *DatabasesClient) pause(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabasesClientBeginPauseOptions) (*http.Response, error) {
+	var err error
+	const operationName = "DatabasesClient.BeginPause"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.pauseCreateRequest(ctx, resourceGroupName, serverName, databaseName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// pauseCreateRequest creates the pause request.
+func (client *DatabasesClient) pauseCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, _ *DatabasesClientBeginPauseOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/pause"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if serverName == "" {
+		return nil, errors.New("parameter serverName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
+	if databaseName == "" {
+		return nil, errors.New("parameter databaseName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260801Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// BeginResume - Resumes a database.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - serverName - The name of the server.
+//   - databaseName - The name of the database.
+//   - options - DatabasesClientBeginResumeOptions contains the optional parameters for the DatabasesClient.BeginResume method.
+func (client *DatabasesClient) BeginResume(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabasesClientBeginResumeOptions) (*runtime.Poller[DatabasesClientResumeResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.resume(ctx, resourceGroupName, serverName, databaseName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DatabasesClientResumeResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DatabasesClientResumeResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// resume - Resumes a database.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *DatabasesClient) resume(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabasesClientBeginResumeOptions) (*http.Response, error) {
+	var err error
+	const operationName = "DatabasesClient.BeginResume"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.resumeCreateRequest(ctx, resourceGroupName, serverName, databaseName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// resumeCreateRequest creates the resume request.
+func (client *DatabasesClient) resumeCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, _ *DatabasesClientBeginResumeOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/resume"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if serverName == "" {
+		return nil, errors.New("parameter serverName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
+	if databaseName == "" {
+		return nil, errors.New("parameter databaseName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260801Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// BeginUpdate - Updates an existing database.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - serverName - The name of the server.
+//   - databaseName - The name of the database.
+//   - parameters - The requested database resource state.
+//   - options - DatabasesClientBeginUpdateOptions contains the optional parameters for the DatabasesClient.BeginUpdate method.
+func (client *DatabasesClient) BeginUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters DatabaseUpdate, options *DatabasesClientBeginUpdateOptions) (*runtime.Poller[DatabasesClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, serverName, databaseName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DatabasesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DatabasesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Updates an existing database.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *DatabasesClient) update(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters DatabaseUpdate, options *DatabasesClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "DatabasesClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, serverName, databaseName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *DatabasesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters DatabaseUpdate, _ *DatabasesClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if serverName == "" {
+		return nil, errors.New("parameter serverName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
+	if databaseName == "" {
+		return nil, errors.New("parameter databaseName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260801Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginUpgradeDataWarehouse - Upgrades a data warehouse.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - serverName - The name of the server.
+//   - databaseName - The name of the database.
+//   - options - DatabasesClientBeginUpgradeDataWarehouseOptions contains the optional parameters for the DatabasesClient.BeginUpgradeDataWarehouse
+//     method.
+func (client *DatabasesClient) BeginUpgradeDataWarehouse(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabasesClientBeginUpgradeDataWarehouseOptions) (*runtime.Poller[DatabasesClientUpgradeDataWarehouseResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.upgradeDataWarehouse(ctx, resourceGroupName, serverName, databaseName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DatabasesClientUpgradeDataWarehouseResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DatabasesClientUpgradeDataWarehouseResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// upgradeDataWarehouse - Upgrades a data warehouse.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *DatabasesClient) upgradeDataWarehouse(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabasesClientBeginUpgradeDataWarehouseOptions) (*http.Response, error) {
+	var err error
+	const operationName = "DatabasesClient.BeginUpgradeDataWarehouse"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.upgradeDataWarehouseCreateRequest(ctx, resourceGroupName, serverName, databaseName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// upgradeDataWarehouseCreateRequest creates the upgradeDataWarehouse request.
+func (client *DatabasesClient) upgradeDataWarehouseCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, _ *DatabasesClientBeginUpgradeDataWarehouseOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/upgradeDataWarehouse"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if serverName == "" {
+		return nil, errors.New("parameter serverName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
+	if databaseName == "" {
+		return nil, errors.New("parameter databaseName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -427,86 +812,6 @@ func (client *DatabasesClient) getHandleResponse(resp *http.Response, successCod
 		return DatabasesClientGetResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginImport - Imports a bacpac into a new database.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - serverName - The name of the server.
-//   - databaseName - The name of the database.
-//   - parameters - The database import request parameters.
-//   - options - DatabasesClientBeginImportOptions contains the optional parameters for the DatabasesClient.BeginImport method.
-func (client *DatabasesClient) BeginImport(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters ImportExistingDatabaseDefinition, options *DatabasesClientBeginImportOptions) (*runtime.Poller[DatabasesClientImportResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.importOperation(ctx, resourceGroupName, serverName, databaseName, parameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DatabasesClientImportResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DatabasesClientImportResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Import - Imports a bacpac into a new database.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *DatabasesClient) importOperation(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters ImportExistingDatabaseDefinition, options *DatabasesClientBeginImportOptions) (*http.Response, error) {
-	var err error
-	const operationName = "DatabasesClient.BeginImport"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.importCreateRequest(ctx, resourceGroupName, serverName, databaseName, parameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// importCreateRequest creates the Import request.
-func (client *DatabasesClient) importCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters ImportExistingDatabaseDefinition, _ *DatabasesClientBeginImportOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/import"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if serverName == "" {
-		return nil, errors.New("parameter serverName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
-	if databaseName == "" {
-		return nil, errors.New("parameter databaseName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
-	return req, nil
 }
 
 // NewListByElasticPoolPager - Gets a list of databases in an elastic pool.
@@ -757,81 +1062,6 @@ func (client *DatabasesClient) listInaccessibleByServerHandleResponse(resp *http
 	return result, nil
 }
 
-// BeginPause - Pauses a database.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - serverName - The name of the server.
-//   - databaseName - The name of the database.
-//   - options - DatabasesClientBeginPauseOptions contains the optional parameters for the DatabasesClient.BeginPause method.
-func (client *DatabasesClient) BeginPause(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabasesClientBeginPauseOptions) (*runtime.Poller[DatabasesClientPauseResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.pause(ctx, resourceGroupName, serverName, databaseName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DatabasesClientPauseResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DatabasesClientPauseResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Pause - Pauses a database.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *DatabasesClient) pause(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabasesClientBeginPauseOptions) (*http.Response, error) {
-	var err error
-	const operationName = "DatabasesClient.BeginPause"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.pauseCreateRequest(ctx, resourceGroupName, serverName, databaseName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// pauseCreateRequest creates the Pause request.
-func (client *DatabasesClient) pauseCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, _ *DatabasesClientBeginPauseOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/pause"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if serverName == "" {
-		return nil, errors.New("parameter serverName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
-	if databaseName == "" {
-		return nil, errors.New("parameter databaseName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
 // Rename - Renames a database.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -889,235 +1119,5 @@ func (client *DatabasesClient) renameCreateRequest(ctx context.Context, resource
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
 		return nil, err
 	}
-	return req, nil
-}
-
-// BeginResume - Resumes a database.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - serverName - The name of the server.
-//   - databaseName - The name of the database.
-//   - options - DatabasesClientBeginResumeOptions contains the optional parameters for the DatabasesClient.BeginResume method.
-func (client *DatabasesClient) BeginResume(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabasesClientBeginResumeOptions) (*runtime.Poller[DatabasesClientResumeResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.resume(ctx, resourceGroupName, serverName, databaseName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DatabasesClientResumeResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DatabasesClientResumeResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Resume - Resumes a database.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *DatabasesClient) resume(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabasesClientBeginResumeOptions) (*http.Response, error) {
-	var err error
-	const operationName = "DatabasesClient.BeginResume"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.resumeCreateRequest(ctx, resourceGroupName, serverName, databaseName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// resumeCreateRequest creates the Resume request.
-func (client *DatabasesClient) resumeCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, _ *DatabasesClientBeginResumeOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/resume"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if serverName == "" {
-		return nil, errors.New("parameter serverName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
-	if databaseName == "" {
-		return nil, errors.New("parameter databaseName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// BeginUpdate - Updates an existing database.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - serverName - The name of the server.
-//   - databaseName - The name of the database.
-//   - parameters - The requested database resource state.
-//   - options - DatabasesClientBeginUpdateOptions contains the optional parameters for the DatabasesClient.BeginUpdate method.
-func (client *DatabasesClient) BeginUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters DatabaseUpdate, options *DatabasesClientBeginUpdateOptions) (*runtime.Poller[DatabasesClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, serverName, databaseName, parameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DatabasesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DatabasesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Updates an existing database.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *DatabasesClient) update(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters DatabaseUpdate, options *DatabasesClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "DatabasesClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, serverName, databaseName, parameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *DatabasesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters DatabaseUpdate, _ *DatabasesClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if serverName == "" {
-		return nil, errors.New("parameter serverName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
-	if databaseName == "" {
-		return nil, errors.New("parameter databaseName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginUpgradeDataWarehouse - Upgrades a data warehouse.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - serverName - The name of the server.
-//   - databaseName - The name of the database.
-//   - options - DatabasesClientBeginUpgradeDataWarehouseOptions contains the optional parameters for the DatabasesClient.BeginUpgradeDataWarehouse
-//     method.
-func (client *DatabasesClient) BeginUpgradeDataWarehouse(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabasesClientBeginUpgradeDataWarehouseOptions) (*runtime.Poller[DatabasesClientUpgradeDataWarehouseResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.upgradeDataWarehouse(ctx, resourceGroupName, serverName, databaseName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DatabasesClientUpgradeDataWarehouseResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DatabasesClientUpgradeDataWarehouseResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// UpgradeDataWarehouse - Upgrades a data warehouse.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *DatabasesClient) upgradeDataWarehouse(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabasesClientBeginUpgradeDataWarehouseOptions) (*http.Response, error) {
-	var err error
-	const operationName = "DatabasesClient.BeginUpgradeDataWarehouse"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.upgradeDataWarehouseCreateRequest(ctx, resourceGroupName, serverName, databaseName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// upgradeDataWarehouseCreateRequest creates the UpgradeDataWarehouse request.
-func (client *DatabasesClient) upgradeDataWarehouseCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, _ *DatabasesClientBeginUpgradeDataWarehouseOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/upgradeDataWarehouse"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if serverName == "" {
-		return nil, errors.New("parameter serverName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
-	if databaseName == "" {
-		return nil, errors.New("parameter databaseName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }

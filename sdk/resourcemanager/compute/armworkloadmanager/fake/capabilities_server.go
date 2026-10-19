@@ -29,6 +29,10 @@ type CapabilitiesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, spaceName string, capabilityName string, options *armworkloadmanager.CapabilitiesClientBeginDeleteOptions) (resp azfake.PollerResponder[armworkloadmanager.CapabilitiesClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method CapabilitiesClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, spaceName string, capabilityName string, properties armworkloadmanager.CapabilityUpdate, options *armworkloadmanager.CapabilitiesClientBeginUpdateOptions) (resp azfake.PollerResponder[armworkloadmanager.CapabilitiesClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method CapabilitiesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, spaceName string, capabilityName string, options *armworkloadmanager.CapabilitiesClientGetOptions) (resp azfake.Responder[armworkloadmanager.CapabilitiesClientGetResponse], errResp azfake.ErrorResponder)
@@ -36,10 +40,6 @@ type CapabilitiesServer struct {
 	// NewListByWorkloadSpacePager is the fake for method CapabilitiesClient.NewListByWorkloadSpacePager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByWorkloadSpacePager func(resourceGroupName string, spaceName string, options *armworkloadmanager.CapabilitiesClientListByWorkloadSpaceOptions) (resp azfake.PagerResponder[armworkloadmanager.CapabilitiesClientListByWorkloadSpaceResponse])
-
-	// BeginUpdate is the fake for method CapabilitiesClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, spaceName string, capabilityName string, properties armworkloadmanager.CapabilityUpdate, options *armworkloadmanager.CapabilitiesClientBeginUpdateOptions) (resp azfake.PollerResponder[armworkloadmanager.CapabilitiesClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewCapabilitiesServerTransport creates a new instance of CapabilitiesServerTransport with the provided implementation.
@@ -50,8 +50,8 @@ func NewCapabilitiesServerTransport(srv *CapabilitiesServer) *CapabilitiesServer
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armworkloadmanager.CapabilitiesClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armworkloadmanager.CapabilitiesClientDeleteResponse]](),
-		newListByWorkloadSpacePager: newTracker[azfake.PagerResponder[armworkloadmanager.CapabilitiesClientListByWorkloadSpaceResponse]](),
 		beginUpdate:                 newTracker[azfake.PollerResponder[armworkloadmanager.CapabilitiesClientUpdateResponse]](),
+		newListByWorkloadSpacePager: newTracker[azfake.PagerResponder[armworkloadmanager.CapabilitiesClientListByWorkloadSpaceResponse]](),
 	}
 }
 
@@ -61,8 +61,8 @@ type CapabilitiesServerTransport struct {
 	srv                         *CapabilitiesServer
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armworkloadmanager.CapabilitiesClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armworkloadmanager.CapabilitiesClientDeleteResponse]]
-	newListByWorkloadSpacePager *tracker[azfake.PagerResponder[armworkloadmanager.CapabilitiesClientListByWorkloadSpaceResponse]]
 	beginUpdate                 *tracker[azfake.PollerResponder[armworkloadmanager.CapabilitiesClientUpdateResponse]]
+	newListByWorkloadSpacePager *tracker[azfake.PagerResponder[armworkloadmanager.CapabilitiesClientListByWorkloadSpaceResponse]]
 }
 
 // Do implements the policy.Transporter interface for CapabilitiesServerTransport.
@@ -90,12 +90,12 @@ func (c *CapabilitiesServerTransport) dispatchToMethodFake(req *http.Request, me
 				res.resp, res.err = c.dispatchBeginCreateOrUpdate(req)
 			case "CapabilitiesClient.BeginDelete":
 				res.resp, res.err = c.dispatchBeginDelete(req)
+			case "CapabilitiesClient.BeginUpdate":
+				res.resp, res.err = c.dispatchBeginUpdate(req)
 			case "CapabilitiesClient.Get":
 				res.resp, res.err = c.dispatchGet(req)
 			case "CapabilitiesClient.NewListByWorkloadSpacePager":
 				res.resp, res.err = c.dispatchNewListByWorkloadSpacePager(req)
-			case "CapabilitiesClient.BeginUpdate":
-				res.resp, res.err = c.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -212,6 +212,58 @@ func (c *CapabilitiesServerTransport) dispatchBeginDelete(req *http.Request) (*h
 	return resp, nil
 }
 
+func (c *CapabilitiesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if c.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := c.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/workloadSpaces/(?P<spaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/capabilities/(?P<capabilityName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armworkloadmanager.CapabilityUpdate](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		spaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("spaceName")])
+		if err != nil {
+			return nil, err
+		}
+		capabilityNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("capabilityName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := c.srv.BeginUpdate(req.Context(), resourceGroupNameParam, spaceNameParam, capabilityNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		c.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		c.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		c.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (c *CapabilitiesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if c.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -287,58 +339,6 @@ func (c *CapabilitiesServerTransport) dispatchNewListByWorkloadSpacePager(req *h
 	if !server.PagerResponderMore(newListByWorkloadSpacePager) {
 		c.newListByWorkloadSpacePager.remove(req)
 	}
-	return resp, nil
-}
-
-func (c *CapabilitiesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if c.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := c.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/workloadSpaces/(?P<spaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/capabilities/(?P<capabilityName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armworkloadmanager.CapabilityUpdate](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		spaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("spaceName")])
-		if err != nil {
-			return nil, err
-		}
-		capabilityNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("capabilityName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := c.srv.BeginUpdate(req.Context(), resourceGroupNameParam, spaceNameParam, capabilityNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		c.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		c.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		c.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

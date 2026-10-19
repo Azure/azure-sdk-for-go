@@ -134,7 +134,7 @@ func (client *SecurityRulesClient) createOrUpdateCreateRequest(ctx context.Conte
 //     method.
 func (client *SecurityRulesClient) BeginDelete(ctx context.Context, resourceGroupName string, networkSecurityGroupName string, securityRuleName string, options *SecurityRulesClientBeginDeleteOptions) (*runtime.Poller[SecurityRulesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, networkSecurityGroupName, securityRuleName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, networkSecurityGroupName, securityRuleName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -149,9 +149,9 @@ func (client *SecurityRulesClient) BeginDelete(ctx context.Context, resourceGrou
 	}
 }
 
-// delete - Deletes the specified network security rule.
+// deleteOperation - Deletes the specified network security rule.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *SecurityRulesClient) delete(ctx context.Context, resourceGroupName string, networkSecurityGroupName string, securityRuleName string, options *SecurityRulesClientBeginDeleteOptions) (*http.Response, error) {
+func (client *SecurityRulesClient) deleteOperation(ctx context.Context, resourceGroupName string, networkSecurityGroupName string, securityRuleName string, options *SecurityRulesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SecurityRulesClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)

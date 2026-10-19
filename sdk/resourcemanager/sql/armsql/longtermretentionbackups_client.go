@@ -70,7 +70,7 @@ func (client *LongTermRetentionBackupsClient) BeginChangeAccessTier(ctx context.
 	}
 }
 
-// ChangeAccessTier - Change a long term retention backup access tier.
+// changeAccessTier - Change a long term retention backup access tier.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *LongTermRetentionBackupsClient) changeAccessTier(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, parameters ChangeLongTermRetentionBackupAccessTierParameters, options *LongTermRetentionBackupsClientBeginChangeAccessTierOptions) (*http.Response, error) {
 	var err error
@@ -92,7 +92,7 @@ func (client *LongTermRetentionBackupsClient) changeAccessTier(ctx context.Conte
 	return httpResp, nil
 }
 
-// changeAccessTierCreateRequest creates the ChangeAccessTier request.
+// changeAccessTierCreateRequest creates the changeAccessTier request.
 func (client *LongTermRetentionBackupsClient) changeAccessTierCreateRequest(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, parameters ChangeLongTermRetentionBackupAccessTierParameters, _ *LongTermRetentionBackupsClientBeginChangeAccessTierOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups/{backupName}/changeAccessTier"
 	if client.subscriptionID == "" {
@@ -156,7 +156,7 @@ func (client *LongTermRetentionBackupsClient) BeginChangeAccessTierByResourceGro
 	}
 }
 
-// ChangeAccessTierByResourceGroup - Change a long term retention backup access tier.
+// changeAccessTierByResourceGroup - Change a long term retention backup access tier.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *LongTermRetentionBackupsClient) changeAccessTierByResourceGroup(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, parameters ChangeLongTermRetentionBackupAccessTierParameters, options *LongTermRetentionBackupsClientBeginChangeAccessTierByResourceGroupOptions) (*http.Response, error) {
 	var err error
@@ -178,7 +178,7 @@ func (client *LongTermRetentionBackupsClient) changeAccessTierByResourceGroup(ct
 	return httpResp, nil
 }
 
-// changeAccessTierByResourceGroupCreateRequest creates the ChangeAccessTierByResourceGroup request.
+// changeAccessTierByResourceGroupCreateRequest creates the changeAccessTierByResourceGroup request.
 func (client *LongTermRetentionBackupsClient) changeAccessTierByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, parameters ChangeLongTermRetentionBackupAccessTierParameters, _ *LongTermRetentionBackupsClientBeginChangeAccessTierByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups/{backupName}/changeAccessTier"
 	if client.subscriptionID == "" {
@@ -246,7 +246,7 @@ func (client *LongTermRetentionBackupsClient) BeginCopy(ctx context.Context, loc
 	}
 }
 
-// Copy - Copy an existing long term retention backup.
+// copyOperation - Copy an existing long term retention backup.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *LongTermRetentionBackupsClient) copyOperation(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, parameters CopyLongTermRetentionBackupParameters, options *LongTermRetentionBackupsClientBeginCopyOptions) (*http.Response, error) {
 	var err error
@@ -268,7 +268,7 @@ func (client *LongTermRetentionBackupsClient) copyOperation(ctx context.Context,
 	return httpResp, nil
 }
 
-// copyCreateRequest creates the Copy request.
+// copyCreateRequest creates the copy request.
 func (client *LongTermRetentionBackupsClient) copyCreateRequest(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, parameters CopyLongTermRetentionBackupParameters, _ *LongTermRetentionBackupsClientBeginCopyOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups/{backupName}/copy"
 	if client.subscriptionID == "" {
@@ -333,7 +333,7 @@ func (client *LongTermRetentionBackupsClient) BeginCopyByResourceGroup(ctx conte
 	}
 }
 
-// CopyByResourceGroup - Copy an existing long term retention backup to a different server.
+// copyByResourceGroup - Copy an existing long term retention backup to a different server.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *LongTermRetentionBackupsClient) copyByResourceGroup(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, parameters CopyLongTermRetentionBackupParameters, options *LongTermRetentionBackupsClientBeginCopyByResourceGroupOptions) (*http.Response, error) {
 	var err error
@@ -355,7 +355,7 @@ func (client *LongTermRetentionBackupsClient) copyByResourceGroup(ctx context.Co
 	return httpResp, nil
 }
 
-// copyByResourceGroupCreateRequest creates the CopyByResourceGroup request.
+// copyByResourceGroupCreateRequest creates the copyByResourceGroup request.
 func (client *LongTermRetentionBackupsClient) copyByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, parameters CopyLongTermRetentionBackupParameters, _ *LongTermRetentionBackupsClientBeginCopyByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups/{backupName}/copy"
 	if client.subscriptionID == "" {
@@ -422,7 +422,7 @@ func (client *LongTermRetentionBackupsClient) BeginDelete(ctx context.Context, l
 	}
 }
 
-// Delete - Deletes a long term retention backup.
+// deleteOperation - Deletes a long term retention backup.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *LongTermRetentionBackupsClient) deleteOperation(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, options *LongTermRetentionBackupsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -444,7 +444,7 @@ func (client *LongTermRetentionBackupsClient) deleteOperation(ctx context.Contex
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *LongTermRetentionBackupsClient) deleteCreateRequest(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, _ *LongTermRetentionBackupsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups/{backupName}"
 	if client.subscriptionID == "" {
@@ -503,7 +503,7 @@ func (client *LongTermRetentionBackupsClient) BeginDeleteByResourceGroup(ctx con
 	}
 }
 
-// DeleteByResourceGroup - Deletes a long term retention backup.
+// deleteByResourceGroup - Deletes a long term retention backup.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *LongTermRetentionBackupsClient) deleteByResourceGroup(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, options *LongTermRetentionBackupsClientBeginDeleteByResourceGroupOptions) (*http.Response, error) {
 	var err error
@@ -525,7 +525,7 @@ func (client *LongTermRetentionBackupsClient) deleteByResourceGroup(ctx context.
 	return httpResp, nil
 }
 
-// deleteByResourceGroupCreateRequest creates the DeleteByResourceGroup request.
+// deleteByResourceGroupCreateRequest creates the deleteByResourceGroup request.
 func (client *LongTermRetentionBackupsClient) deleteByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, _ *LongTermRetentionBackupsClientBeginDeleteByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups/{backupName}"
 	if client.subscriptionID == "" {
@@ -559,6 +559,851 @@ func (client *LongTermRetentionBackupsClient) deleteByResourceGroupCreateRequest
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20260801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginLockTimeBasedImmutability - Lock time based immutability of an existing long term retention backup.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - locationName - The location of the database.
+//   - longTermRetentionServerName - The name of the server
+//   - longTermRetentionDatabaseName - The name of the database
+//   - backupName - The backup name.
+//   - options - LongTermRetentionBackupsClientBeginLockTimeBasedImmutabilityOptions contains the optional parameters for the
+//     LongTermRetentionBackupsClient.BeginLockTimeBasedImmutability method.
+func (client *LongTermRetentionBackupsClient) BeginLockTimeBasedImmutability(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, options *LongTermRetentionBackupsClientBeginLockTimeBasedImmutabilityOptions) (*runtime.Poller[LongTermRetentionBackupsClientLockTimeBasedImmutabilityResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.lockTimeBasedImmutability(ctx, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[LongTermRetentionBackupsClientLockTimeBasedImmutabilityResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[LongTermRetentionBackupsClientLockTimeBasedImmutabilityResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// lockTimeBasedImmutability - Lock time based immutability of an existing long term retention backup.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *LongTermRetentionBackupsClient) lockTimeBasedImmutability(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, options *LongTermRetentionBackupsClientBeginLockTimeBasedImmutabilityOptions) (*http.Response, error) {
+	var err error
+	const operationName = "LongTermRetentionBackupsClient.BeginLockTimeBasedImmutability"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.lockTimeBasedImmutabilityCreateRequest(ctx, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// lockTimeBasedImmutabilityCreateRequest creates the lockTimeBasedImmutability request.
+func (client *LongTermRetentionBackupsClient) lockTimeBasedImmutabilityCreateRequest(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, _ *LongTermRetentionBackupsClientBeginLockTimeBasedImmutabilityOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups/{backupName}/lockTimeBasedImmutability"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if locationName == "" {
+		return nil, errors.New("parameter locationName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{locationName}", url.PathEscape(locationName))
+	if longTermRetentionServerName == "" {
+		return nil, errors.New("parameter longTermRetentionServerName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{longTermRetentionServerName}", url.PathEscape(longTermRetentionServerName))
+	if longTermRetentionDatabaseName == "" {
+		return nil, errors.New("parameter longTermRetentionDatabaseName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{longTermRetentionDatabaseName}", url.PathEscape(longTermRetentionDatabaseName))
+	if backupName == "" {
+		return nil, errors.New("parameter backupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{backupName}", url.PathEscape(backupName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260801Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// BeginLockTimeBasedImmutabilityByResourceGroup - Lock time based immutability of an existing long term retention backup.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - locationName - The location of the database.
+//   - longTermRetentionServerName - The name of the server
+//   - longTermRetentionDatabaseName - The name of the database
+//   - backupName - The backup name.
+//   - options - LongTermRetentionBackupsClientBeginLockTimeBasedImmutabilityByResourceGroupOptions contains the optional parameters
+//     for the LongTermRetentionBackupsClient.BeginLockTimeBasedImmutabilityByResourceGroup method.
+func (client *LongTermRetentionBackupsClient) BeginLockTimeBasedImmutabilityByResourceGroup(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, options *LongTermRetentionBackupsClientBeginLockTimeBasedImmutabilityByResourceGroupOptions) (*runtime.Poller[LongTermRetentionBackupsClientLockTimeBasedImmutabilityByResourceGroupResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.lockTimeBasedImmutabilityByResourceGroup(ctx, resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[LongTermRetentionBackupsClientLockTimeBasedImmutabilityByResourceGroupResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[LongTermRetentionBackupsClientLockTimeBasedImmutabilityByResourceGroupResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// lockTimeBasedImmutabilityByResourceGroup - Lock time based immutability of an existing long term retention backup.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *LongTermRetentionBackupsClient) lockTimeBasedImmutabilityByResourceGroup(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, options *LongTermRetentionBackupsClientBeginLockTimeBasedImmutabilityByResourceGroupOptions) (*http.Response, error) {
+	var err error
+	const operationName = "LongTermRetentionBackupsClient.BeginLockTimeBasedImmutabilityByResourceGroup"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.lockTimeBasedImmutabilityByResourceGroupCreateRequest(ctx, resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// lockTimeBasedImmutabilityByResourceGroupCreateRequest creates the lockTimeBasedImmutabilityByResourceGroup request.
+func (client *LongTermRetentionBackupsClient) lockTimeBasedImmutabilityByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, _ *LongTermRetentionBackupsClientBeginLockTimeBasedImmutabilityByResourceGroupOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups/{backupName}/lockTimeBasedImmutability"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if locationName == "" {
+		return nil, errors.New("parameter locationName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{locationName}", url.PathEscape(locationName))
+	if longTermRetentionServerName == "" {
+		return nil, errors.New("parameter longTermRetentionServerName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{longTermRetentionServerName}", url.PathEscape(longTermRetentionServerName))
+	if longTermRetentionDatabaseName == "" {
+		return nil, errors.New("parameter longTermRetentionDatabaseName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{longTermRetentionDatabaseName}", url.PathEscape(longTermRetentionDatabaseName))
+	if backupName == "" {
+		return nil, errors.New("parameter backupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{backupName}", url.PathEscape(backupName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260801Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// BeginRemoveLegalHoldImmutability - Remove legal hold immutability of an existing long term retention backup.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - locationName - The location of the database.
+//   - longTermRetentionServerName - The name of the server
+//   - longTermRetentionDatabaseName - The name of the database
+//   - backupName - The backup name.
+//   - options - LongTermRetentionBackupsClientBeginRemoveLegalHoldImmutabilityOptions contains the optional parameters for the
+//     LongTermRetentionBackupsClient.BeginRemoveLegalHoldImmutability method.
+func (client *LongTermRetentionBackupsClient) BeginRemoveLegalHoldImmutability(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, options *LongTermRetentionBackupsClientBeginRemoveLegalHoldImmutabilityOptions) (*runtime.Poller[LongTermRetentionBackupsClientRemoveLegalHoldImmutabilityResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.removeLegalHoldImmutability(ctx, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[LongTermRetentionBackupsClientRemoveLegalHoldImmutabilityResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[LongTermRetentionBackupsClientRemoveLegalHoldImmutabilityResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// removeLegalHoldImmutability - Remove legal hold immutability of an existing long term retention backup.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *LongTermRetentionBackupsClient) removeLegalHoldImmutability(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, options *LongTermRetentionBackupsClientBeginRemoveLegalHoldImmutabilityOptions) (*http.Response, error) {
+	var err error
+	const operationName = "LongTermRetentionBackupsClient.BeginRemoveLegalHoldImmutability"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.removeLegalHoldImmutabilityCreateRequest(ctx, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// removeLegalHoldImmutabilityCreateRequest creates the removeLegalHoldImmutability request.
+func (client *LongTermRetentionBackupsClient) removeLegalHoldImmutabilityCreateRequest(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, _ *LongTermRetentionBackupsClientBeginRemoveLegalHoldImmutabilityOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups/{backupName}/removeLegalHoldImmutability"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if locationName == "" {
+		return nil, errors.New("parameter locationName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{locationName}", url.PathEscape(locationName))
+	if longTermRetentionServerName == "" {
+		return nil, errors.New("parameter longTermRetentionServerName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{longTermRetentionServerName}", url.PathEscape(longTermRetentionServerName))
+	if longTermRetentionDatabaseName == "" {
+		return nil, errors.New("parameter longTermRetentionDatabaseName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{longTermRetentionDatabaseName}", url.PathEscape(longTermRetentionDatabaseName))
+	if backupName == "" {
+		return nil, errors.New("parameter backupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{backupName}", url.PathEscape(backupName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260801Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// BeginRemoveLegalHoldImmutabilityByResourceGroup - Remove legal hold immutability of an existing long term retention backup.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - locationName - The location of the database.
+//   - longTermRetentionServerName - The name of the server
+//   - longTermRetentionDatabaseName - The name of the database
+//   - backupName - The backup name.
+//   - options - LongTermRetentionBackupsClientBeginRemoveLegalHoldImmutabilityByResourceGroupOptions contains the optional parameters
+//     for the LongTermRetentionBackupsClient.BeginRemoveLegalHoldImmutabilityByResourceGroup method.
+func (client *LongTermRetentionBackupsClient) BeginRemoveLegalHoldImmutabilityByResourceGroup(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, options *LongTermRetentionBackupsClientBeginRemoveLegalHoldImmutabilityByResourceGroupOptions) (*runtime.Poller[LongTermRetentionBackupsClientRemoveLegalHoldImmutabilityByResourceGroupResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.removeLegalHoldImmutabilityByResourceGroup(ctx, resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[LongTermRetentionBackupsClientRemoveLegalHoldImmutabilityByResourceGroupResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[LongTermRetentionBackupsClientRemoveLegalHoldImmutabilityByResourceGroupResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// removeLegalHoldImmutabilityByResourceGroup - Remove legal hold immutability of an existing long term retention backup.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *LongTermRetentionBackupsClient) removeLegalHoldImmutabilityByResourceGroup(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, options *LongTermRetentionBackupsClientBeginRemoveLegalHoldImmutabilityByResourceGroupOptions) (*http.Response, error) {
+	var err error
+	const operationName = "LongTermRetentionBackupsClient.BeginRemoveLegalHoldImmutabilityByResourceGroup"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.removeLegalHoldImmutabilityByResourceGroupCreateRequest(ctx, resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// removeLegalHoldImmutabilityByResourceGroupCreateRequest creates the removeLegalHoldImmutabilityByResourceGroup request.
+func (client *LongTermRetentionBackupsClient) removeLegalHoldImmutabilityByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, _ *LongTermRetentionBackupsClientBeginRemoveLegalHoldImmutabilityByResourceGroupOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups/{backupName}/removeLegalHoldImmutability"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if locationName == "" {
+		return nil, errors.New("parameter locationName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{locationName}", url.PathEscape(locationName))
+	if longTermRetentionServerName == "" {
+		return nil, errors.New("parameter longTermRetentionServerName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{longTermRetentionServerName}", url.PathEscape(longTermRetentionServerName))
+	if longTermRetentionDatabaseName == "" {
+		return nil, errors.New("parameter longTermRetentionDatabaseName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{longTermRetentionDatabaseName}", url.PathEscape(longTermRetentionDatabaseName))
+	if backupName == "" {
+		return nil, errors.New("parameter backupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{backupName}", url.PathEscape(backupName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260801Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// BeginRemoveTimeBasedImmutability - Remove time based immutability of an existing long term retention backup.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - locationName - The location of the database.
+//   - longTermRetentionServerName - The name of the server
+//   - longTermRetentionDatabaseName - The name of the database
+//   - backupName - The backup name.
+//   - options - LongTermRetentionBackupsClientBeginRemoveTimeBasedImmutabilityOptions contains the optional parameters for the
+//     LongTermRetentionBackupsClient.BeginRemoveTimeBasedImmutability method.
+func (client *LongTermRetentionBackupsClient) BeginRemoveTimeBasedImmutability(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, options *LongTermRetentionBackupsClientBeginRemoveTimeBasedImmutabilityOptions) (*runtime.Poller[LongTermRetentionBackupsClientRemoveTimeBasedImmutabilityResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.removeTimeBasedImmutability(ctx, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[LongTermRetentionBackupsClientRemoveTimeBasedImmutabilityResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[LongTermRetentionBackupsClientRemoveTimeBasedImmutabilityResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// removeTimeBasedImmutability - Remove time based immutability of an existing long term retention backup.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *LongTermRetentionBackupsClient) removeTimeBasedImmutability(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, options *LongTermRetentionBackupsClientBeginRemoveTimeBasedImmutabilityOptions) (*http.Response, error) {
+	var err error
+	const operationName = "LongTermRetentionBackupsClient.BeginRemoveTimeBasedImmutability"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.removeTimeBasedImmutabilityCreateRequest(ctx, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// removeTimeBasedImmutabilityCreateRequest creates the removeTimeBasedImmutability request.
+func (client *LongTermRetentionBackupsClient) removeTimeBasedImmutabilityCreateRequest(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, _ *LongTermRetentionBackupsClientBeginRemoveTimeBasedImmutabilityOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups/{backupName}/removeTimeBasedImmutability"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if locationName == "" {
+		return nil, errors.New("parameter locationName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{locationName}", url.PathEscape(locationName))
+	if longTermRetentionServerName == "" {
+		return nil, errors.New("parameter longTermRetentionServerName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{longTermRetentionServerName}", url.PathEscape(longTermRetentionServerName))
+	if longTermRetentionDatabaseName == "" {
+		return nil, errors.New("parameter longTermRetentionDatabaseName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{longTermRetentionDatabaseName}", url.PathEscape(longTermRetentionDatabaseName))
+	if backupName == "" {
+		return nil, errors.New("parameter backupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{backupName}", url.PathEscape(backupName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260801Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// BeginRemoveTimeBasedImmutabilityByResourceGroup - Remove time based immutability of an existing long term retention backup.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - locationName - The location of the database.
+//   - longTermRetentionServerName - The name of the server
+//   - longTermRetentionDatabaseName - The name of the database
+//   - backupName - The backup name.
+//   - options - LongTermRetentionBackupsClientBeginRemoveTimeBasedImmutabilityByResourceGroupOptions contains the optional parameters
+//     for the LongTermRetentionBackupsClient.BeginRemoveTimeBasedImmutabilityByResourceGroup method.
+func (client *LongTermRetentionBackupsClient) BeginRemoveTimeBasedImmutabilityByResourceGroup(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, options *LongTermRetentionBackupsClientBeginRemoveTimeBasedImmutabilityByResourceGroupOptions) (*runtime.Poller[LongTermRetentionBackupsClientRemoveTimeBasedImmutabilityByResourceGroupResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.removeTimeBasedImmutabilityByResourceGroup(ctx, resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[LongTermRetentionBackupsClientRemoveTimeBasedImmutabilityByResourceGroupResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[LongTermRetentionBackupsClientRemoveTimeBasedImmutabilityByResourceGroupResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// removeTimeBasedImmutabilityByResourceGroup - Remove time based immutability of an existing long term retention backup.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *LongTermRetentionBackupsClient) removeTimeBasedImmutabilityByResourceGroup(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, options *LongTermRetentionBackupsClientBeginRemoveTimeBasedImmutabilityByResourceGroupOptions) (*http.Response, error) {
+	var err error
+	const operationName = "LongTermRetentionBackupsClient.BeginRemoveTimeBasedImmutabilityByResourceGroup"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.removeTimeBasedImmutabilityByResourceGroupCreateRequest(ctx, resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// removeTimeBasedImmutabilityByResourceGroupCreateRequest creates the removeTimeBasedImmutabilityByResourceGroup request.
+func (client *LongTermRetentionBackupsClient) removeTimeBasedImmutabilityByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, _ *LongTermRetentionBackupsClientBeginRemoveTimeBasedImmutabilityByResourceGroupOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups/{backupName}/removeTimeBasedImmutability"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if locationName == "" {
+		return nil, errors.New("parameter locationName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{locationName}", url.PathEscape(locationName))
+	if longTermRetentionServerName == "" {
+		return nil, errors.New("parameter longTermRetentionServerName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{longTermRetentionServerName}", url.PathEscape(longTermRetentionServerName))
+	if longTermRetentionDatabaseName == "" {
+		return nil, errors.New("parameter longTermRetentionDatabaseName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{longTermRetentionDatabaseName}", url.PathEscape(longTermRetentionDatabaseName))
+	if backupName == "" {
+		return nil, errors.New("parameter backupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{backupName}", url.PathEscape(backupName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260801Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// BeginSetLegalHoldImmutability - Set legal hold immutability of an existing long term retention backup.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - locationName - The location of the database.
+//   - longTermRetentionServerName - The name of the server
+//   - longTermRetentionDatabaseName - The name of the database
+//   - backupName - The backup name.
+//   - options - LongTermRetentionBackupsClientBeginSetLegalHoldImmutabilityOptions contains the optional parameters for the LongTermRetentionBackupsClient.BeginSetLegalHoldImmutability
+//     method.
+func (client *LongTermRetentionBackupsClient) BeginSetLegalHoldImmutability(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, options *LongTermRetentionBackupsClientBeginSetLegalHoldImmutabilityOptions) (*runtime.Poller[LongTermRetentionBackupsClientSetLegalHoldImmutabilityResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.setLegalHoldImmutability(ctx, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[LongTermRetentionBackupsClientSetLegalHoldImmutabilityResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[LongTermRetentionBackupsClientSetLegalHoldImmutabilityResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// setLegalHoldImmutability - Set legal hold immutability of an existing long term retention backup.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *LongTermRetentionBackupsClient) setLegalHoldImmutability(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, options *LongTermRetentionBackupsClientBeginSetLegalHoldImmutabilityOptions) (*http.Response, error) {
+	var err error
+	const operationName = "LongTermRetentionBackupsClient.BeginSetLegalHoldImmutability"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.setLegalHoldImmutabilityCreateRequest(ctx, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// setLegalHoldImmutabilityCreateRequest creates the setLegalHoldImmutability request.
+func (client *LongTermRetentionBackupsClient) setLegalHoldImmutabilityCreateRequest(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, _ *LongTermRetentionBackupsClientBeginSetLegalHoldImmutabilityOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups/{backupName}/setLegalHoldImmutability"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if locationName == "" {
+		return nil, errors.New("parameter locationName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{locationName}", url.PathEscape(locationName))
+	if longTermRetentionServerName == "" {
+		return nil, errors.New("parameter longTermRetentionServerName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{longTermRetentionServerName}", url.PathEscape(longTermRetentionServerName))
+	if longTermRetentionDatabaseName == "" {
+		return nil, errors.New("parameter longTermRetentionDatabaseName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{longTermRetentionDatabaseName}", url.PathEscape(longTermRetentionDatabaseName))
+	if backupName == "" {
+		return nil, errors.New("parameter backupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{backupName}", url.PathEscape(backupName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260801Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// BeginSetLegalHoldImmutabilityByResourceGroup - Set legal hold immutability of an existing long term retention backup.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - locationName - The location of the database.
+//   - longTermRetentionServerName - The name of the server
+//   - longTermRetentionDatabaseName - The name of the database
+//   - backupName - The backup name.
+//   - options - LongTermRetentionBackupsClientBeginSetLegalHoldImmutabilityByResourceGroupOptions contains the optional parameters
+//     for the LongTermRetentionBackupsClient.BeginSetLegalHoldImmutabilityByResourceGroup method.
+func (client *LongTermRetentionBackupsClient) BeginSetLegalHoldImmutabilityByResourceGroup(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, options *LongTermRetentionBackupsClientBeginSetLegalHoldImmutabilityByResourceGroupOptions) (*runtime.Poller[LongTermRetentionBackupsClientSetLegalHoldImmutabilityByResourceGroupResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.setLegalHoldImmutabilityByResourceGroup(ctx, resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[LongTermRetentionBackupsClientSetLegalHoldImmutabilityByResourceGroupResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[LongTermRetentionBackupsClientSetLegalHoldImmutabilityByResourceGroupResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// setLegalHoldImmutabilityByResourceGroup - Set legal hold immutability of an existing long term retention backup.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *LongTermRetentionBackupsClient) setLegalHoldImmutabilityByResourceGroup(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, options *LongTermRetentionBackupsClientBeginSetLegalHoldImmutabilityByResourceGroupOptions) (*http.Response, error) {
+	var err error
+	const operationName = "LongTermRetentionBackupsClient.BeginSetLegalHoldImmutabilityByResourceGroup"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.setLegalHoldImmutabilityByResourceGroupCreateRequest(ctx, resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// setLegalHoldImmutabilityByResourceGroupCreateRequest creates the setLegalHoldImmutabilityByResourceGroup request.
+func (client *LongTermRetentionBackupsClient) setLegalHoldImmutabilityByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, _ *LongTermRetentionBackupsClientBeginSetLegalHoldImmutabilityByResourceGroupOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups/{backupName}/setLegalHoldImmutability"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if locationName == "" {
+		return nil, errors.New("parameter locationName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{locationName}", url.PathEscape(locationName))
+	if longTermRetentionServerName == "" {
+		return nil, errors.New("parameter longTermRetentionServerName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{longTermRetentionServerName}", url.PathEscape(longTermRetentionServerName))
+	if longTermRetentionDatabaseName == "" {
+		return nil, errors.New("parameter longTermRetentionDatabaseName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{longTermRetentionDatabaseName}", url.PathEscape(longTermRetentionDatabaseName))
+	if backupName == "" {
+		return nil, errors.New("parameter backupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{backupName}", url.PathEscape(backupName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260801Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// BeginUpdate - Updates an existing long term retention backup.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - locationName - The location of the database.
+//   - longTermRetentionServerName - The name of the server
+//   - longTermRetentionDatabaseName - The name of the database
+//   - backupName - The backup name.
+//   - parameters - The requested backup resource state
+//   - options - LongTermRetentionBackupsClientBeginUpdateOptions contains the optional parameters for the LongTermRetentionBackupsClient.BeginUpdate
+//     method.
+func (client *LongTermRetentionBackupsClient) BeginUpdate(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, parameters UpdateLongTermRetentionBackupParameters, options *LongTermRetentionBackupsClientBeginUpdateOptions) (*runtime.Poller[LongTermRetentionBackupsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[LongTermRetentionBackupsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[LongTermRetentionBackupsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Updates an existing long term retention backup.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *LongTermRetentionBackupsClient) update(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, parameters UpdateLongTermRetentionBackupParameters, options *LongTermRetentionBackupsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "LongTermRetentionBackupsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *LongTermRetentionBackupsClient) updateCreateRequest(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, parameters UpdateLongTermRetentionBackupParameters, _ *LongTermRetentionBackupsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups/{backupName}/update"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if locationName == "" {
+		return nil, errors.New("parameter locationName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{locationName}", url.PathEscape(locationName))
+	if longTermRetentionServerName == "" {
+		return nil, errors.New("parameter longTermRetentionServerName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{longTermRetentionServerName}", url.PathEscape(longTermRetentionServerName))
+	if longTermRetentionDatabaseName == "" {
+		return nil, errors.New("parameter longTermRetentionDatabaseName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{longTermRetentionDatabaseName}", url.PathEscape(longTermRetentionDatabaseName))
+	if backupName == "" {
+		return nil, errors.New("parameter backupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{backupName}", url.PathEscape(backupName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260801Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginUpdateByResourceGroup - Updates an existing long term retention backup.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - locationName - The location of the database.
+//   - longTermRetentionServerName - The name of the server
+//   - longTermRetentionDatabaseName - The name of the database
+//   - backupName - The backup name.
+//   - parameters - The requested backup resource state
+//   - options - LongTermRetentionBackupsClientBeginUpdateByResourceGroupOptions contains the optional parameters for the LongTermRetentionBackupsClient.BeginUpdateByResourceGroup
+//     method.
+func (client *LongTermRetentionBackupsClient) BeginUpdateByResourceGroup(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, parameters UpdateLongTermRetentionBackupParameters, options *LongTermRetentionBackupsClientBeginUpdateByResourceGroupOptions) (*runtime.Poller[LongTermRetentionBackupsClientUpdateByResourceGroupResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.updateByResourceGroup(ctx, resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[LongTermRetentionBackupsClientUpdateByResourceGroupResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[LongTermRetentionBackupsClientUpdateByResourceGroupResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// updateByResourceGroup - Updates an existing long term retention backup.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *LongTermRetentionBackupsClient) updateByResourceGroup(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, parameters UpdateLongTermRetentionBackupParameters, options *LongTermRetentionBackupsClientBeginUpdateByResourceGroupOptions) (*http.Response, error) {
+	var err error
+	const operationName = "LongTermRetentionBackupsClient.BeginUpdateByResourceGroup"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateByResourceGroupCreateRequest(ctx, resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateByResourceGroupCreateRequest creates the updateByResourceGroup request.
+func (client *LongTermRetentionBackupsClient) updateByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, parameters UpdateLongTermRetentionBackupParameters, _ *LongTermRetentionBackupsClientBeginUpdateByResourceGroupOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups/{backupName}/update"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if locationName == "" {
+		return nil, errors.New("parameter locationName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{locationName}", url.PathEscape(locationName))
+	if longTermRetentionServerName == "" {
+		return nil, errors.New("parameter longTermRetentionServerName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{longTermRetentionServerName}", url.PathEscape(longTermRetentionServerName))
+	if longTermRetentionDatabaseName == "" {
+		return nil, errors.New("parameter longTermRetentionDatabaseName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{longTermRetentionDatabaseName}", url.PathEscape(longTermRetentionDatabaseName))
+	if backupName == "" {
+		return nil, errors.New("parameter backupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{backupName}", url.PathEscape(backupName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260801Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -1245,849 +2090,4 @@ func (client *LongTermRetentionBackupsClient) listByServerHandleResponse(resp *h
 		return LongTermRetentionBackupsClientListByServerResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginLockTimeBasedImmutability - Lock time based immutability of an existing long term retention backup.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - locationName - The location of the database.
-//   - longTermRetentionServerName - The name of the server
-//   - longTermRetentionDatabaseName - The name of the database
-//   - backupName - The backup name.
-//   - options - LongTermRetentionBackupsClientBeginLockTimeBasedImmutabilityOptions contains the optional parameters for the
-//     LongTermRetentionBackupsClient.BeginLockTimeBasedImmutability method.
-func (client *LongTermRetentionBackupsClient) BeginLockTimeBasedImmutability(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, options *LongTermRetentionBackupsClientBeginLockTimeBasedImmutabilityOptions) (*runtime.Poller[LongTermRetentionBackupsClientLockTimeBasedImmutabilityResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.lockTimeBasedImmutability(ctx, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[LongTermRetentionBackupsClientLockTimeBasedImmutabilityResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[LongTermRetentionBackupsClientLockTimeBasedImmutabilityResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// LockTimeBasedImmutability - Lock time based immutability of an existing long term retention backup.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *LongTermRetentionBackupsClient) lockTimeBasedImmutability(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, options *LongTermRetentionBackupsClientBeginLockTimeBasedImmutabilityOptions) (*http.Response, error) {
-	var err error
-	const operationName = "LongTermRetentionBackupsClient.BeginLockTimeBasedImmutability"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.lockTimeBasedImmutabilityCreateRequest(ctx, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// lockTimeBasedImmutabilityCreateRequest creates the LockTimeBasedImmutability request.
-func (client *LongTermRetentionBackupsClient) lockTimeBasedImmutabilityCreateRequest(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, _ *LongTermRetentionBackupsClientBeginLockTimeBasedImmutabilityOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups/{backupName}/lockTimeBasedImmutability"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if locationName == "" {
-		return nil, errors.New("parameter locationName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{locationName}", url.PathEscape(locationName))
-	if longTermRetentionServerName == "" {
-		return nil, errors.New("parameter longTermRetentionServerName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{longTermRetentionServerName}", url.PathEscape(longTermRetentionServerName))
-	if longTermRetentionDatabaseName == "" {
-		return nil, errors.New("parameter longTermRetentionDatabaseName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{longTermRetentionDatabaseName}", url.PathEscape(longTermRetentionDatabaseName))
-	if backupName == "" {
-		return nil, errors.New("parameter backupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{backupName}", url.PathEscape(backupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// BeginLockTimeBasedImmutabilityByResourceGroup - Lock time based immutability of an existing long term retention backup.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - locationName - The location of the database.
-//   - longTermRetentionServerName - The name of the server
-//   - longTermRetentionDatabaseName - The name of the database
-//   - backupName - The backup name.
-//   - options - LongTermRetentionBackupsClientBeginLockTimeBasedImmutabilityByResourceGroupOptions contains the optional parameters
-//     for the LongTermRetentionBackupsClient.BeginLockTimeBasedImmutabilityByResourceGroup method.
-func (client *LongTermRetentionBackupsClient) BeginLockTimeBasedImmutabilityByResourceGroup(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, options *LongTermRetentionBackupsClientBeginLockTimeBasedImmutabilityByResourceGroupOptions) (*runtime.Poller[LongTermRetentionBackupsClientLockTimeBasedImmutabilityByResourceGroupResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.lockTimeBasedImmutabilityByResourceGroup(ctx, resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[LongTermRetentionBackupsClientLockTimeBasedImmutabilityByResourceGroupResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[LongTermRetentionBackupsClientLockTimeBasedImmutabilityByResourceGroupResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// LockTimeBasedImmutabilityByResourceGroup - Lock time based immutability of an existing long term retention backup.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *LongTermRetentionBackupsClient) lockTimeBasedImmutabilityByResourceGroup(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, options *LongTermRetentionBackupsClientBeginLockTimeBasedImmutabilityByResourceGroupOptions) (*http.Response, error) {
-	var err error
-	const operationName = "LongTermRetentionBackupsClient.BeginLockTimeBasedImmutabilityByResourceGroup"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.lockTimeBasedImmutabilityByResourceGroupCreateRequest(ctx, resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// lockTimeBasedImmutabilityByResourceGroupCreateRequest creates the LockTimeBasedImmutabilityByResourceGroup request.
-func (client *LongTermRetentionBackupsClient) lockTimeBasedImmutabilityByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, _ *LongTermRetentionBackupsClientBeginLockTimeBasedImmutabilityByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups/{backupName}/lockTimeBasedImmutability"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if locationName == "" {
-		return nil, errors.New("parameter locationName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{locationName}", url.PathEscape(locationName))
-	if longTermRetentionServerName == "" {
-		return nil, errors.New("parameter longTermRetentionServerName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{longTermRetentionServerName}", url.PathEscape(longTermRetentionServerName))
-	if longTermRetentionDatabaseName == "" {
-		return nil, errors.New("parameter longTermRetentionDatabaseName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{longTermRetentionDatabaseName}", url.PathEscape(longTermRetentionDatabaseName))
-	if backupName == "" {
-		return nil, errors.New("parameter backupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{backupName}", url.PathEscape(backupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// BeginRemoveLegalHoldImmutability - Remove legal hold immutability of an existing long term retention backup.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - locationName - The location of the database.
-//   - longTermRetentionServerName - The name of the server
-//   - longTermRetentionDatabaseName - The name of the database
-//   - backupName - The backup name.
-//   - options - LongTermRetentionBackupsClientBeginRemoveLegalHoldImmutabilityOptions contains the optional parameters for the
-//     LongTermRetentionBackupsClient.BeginRemoveLegalHoldImmutability method.
-func (client *LongTermRetentionBackupsClient) BeginRemoveLegalHoldImmutability(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, options *LongTermRetentionBackupsClientBeginRemoveLegalHoldImmutabilityOptions) (*runtime.Poller[LongTermRetentionBackupsClientRemoveLegalHoldImmutabilityResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.removeLegalHoldImmutability(ctx, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[LongTermRetentionBackupsClientRemoveLegalHoldImmutabilityResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[LongTermRetentionBackupsClientRemoveLegalHoldImmutabilityResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// RemoveLegalHoldImmutability - Remove legal hold immutability of an existing long term retention backup.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *LongTermRetentionBackupsClient) removeLegalHoldImmutability(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, options *LongTermRetentionBackupsClientBeginRemoveLegalHoldImmutabilityOptions) (*http.Response, error) {
-	var err error
-	const operationName = "LongTermRetentionBackupsClient.BeginRemoveLegalHoldImmutability"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.removeLegalHoldImmutabilityCreateRequest(ctx, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// removeLegalHoldImmutabilityCreateRequest creates the RemoveLegalHoldImmutability request.
-func (client *LongTermRetentionBackupsClient) removeLegalHoldImmutabilityCreateRequest(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, _ *LongTermRetentionBackupsClientBeginRemoveLegalHoldImmutabilityOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups/{backupName}/removeLegalHoldImmutability"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if locationName == "" {
-		return nil, errors.New("parameter locationName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{locationName}", url.PathEscape(locationName))
-	if longTermRetentionServerName == "" {
-		return nil, errors.New("parameter longTermRetentionServerName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{longTermRetentionServerName}", url.PathEscape(longTermRetentionServerName))
-	if longTermRetentionDatabaseName == "" {
-		return nil, errors.New("parameter longTermRetentionDatabaseName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{longTermRetentionDatabaseName}", url.PathEscape(longTermRetentionDatabaseName))
-	if backupName == "" {
-		return nil, errors.New("parameter backupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{backupName}", url.PathEscape(backupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// BeginRemoveLegalHoldImmutabilityByResourceGroup - Remove legal hold immutability of an existing long term retention backup.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - locationName - The location of the database.
-//   - longTermRetentionServerName - The name of the server
-//   - longTermRetentionDatabaseName - The name of the database
-//   - backupName - The backup name.
-//   - options - LongTermRetentionBackupsClientBeginRemoveLegalHoldImmutabilityByResourceGroupOptions contains the optional parameters
-//     for the LongTermRetentionBackupsClient.BeginRemoveLegalHoldImmutabilityByResourceGroup method.
-func (client *LongTermRetentionBackupsClient) BeginRemoveLegalHoldImmutabilityByResourceGroup(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, options *LongTermRetentionBackupsClientBeginRemoveLegalHoldImmutabilityByResourceGroupOptions) (*runtime.Poller[LongTermRetentionBackupsClientRemoveLegalHoldImmutabilityByResourceGroupResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.removeLegalHoldImmutabilityByResourceGroup(ctx, resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[LongTermRetentionBackupsClientRemoveLegalHoldImmutabilityByResourceGroupResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[LongTermRetentionBackupsClientRemoveLegalHoldImmutabilityByResourceGroupResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// RemoveLegalHoldImmutabilityByResourceGroup - Remove legal hold immutability of an existing long term retention backup.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *LongTermRetentionBackupsClient) removeLegalHoldImmutabilityByResourceGroup(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, options *LongTermRetentionBackupsClientBeginRemoveLegalHoldImmutabilityByResourceGroupOptions) (*http.Response, error) {
-	var err error
-	const operationName = "LongTermRetentionBackupsClient.BeginRemoveLegalHoldImmutabilityByResourceGroup"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.removeLegalHoldImmutabilityByResourceGroupCreateRequest(ctx, resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// removeLegalHoldImmutabilityByResourceGroupCreateRequest creates the RemoveLegalHoldImmutabilityByResourceGroup request.
-func (client *LongTermRetentionBackupsClient) removeLegalHoldImmutabilityByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, _ *LongTermRetentionBackupsClientBeginRemoveLegalHoldImmutabilityByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups/{backupName}/removeLegalHoldImmutability"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if locationName == "" {
-		return nil, errors.New("parameter locationName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{locationName}", url.PathEscape(locationName))
-	if longTermRetentionServerName == "" {
-		return nil, errors.New("parameter longTermRetentionServerName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{longTermRetentionServerName}", url.PathEscape(longTermRetentionServerName))
-	if longTermRetentionDatabaseName == "" {
-		return nil, errors.New("parameter longTermRetentionDatabaseName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{longTermRetentionDatabaseName}", url.PathEscape(longTermRetentionDatabaseName))
-	if backupName == "" {
-		return nil, errors.New("parameter backupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{backupName}", url.PathEscape(backupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// BeginRemoveTimeBasedImmutability - Remove time based immutability of an existing long term retention backup.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - locationName - The location of the database.
-//   - longTermRetentionServerName - The name of the server
-//   - longTermRetentionDatabaseName - The name of the database
-//   - backupName - The backup name.
-//   - options - LongTermRetentionBackupsClientBeginRemoveTimeBasedImmutabilityOptions contains the optional parameters for the
-//     LongTermRetentionBackupsClient.BeginRemoveTimeBasedImmutability method.
-func (client *LongTermRetentionBackupsClient) BeginRemoveTimeBasedImmutability(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, options *LongTermRetentionBackupsClientBeginRemoveTimeBasedImmutabilityOptions) (*runtime.Poller[LongTermRetentionBackupsClientRemoveTimeBasedImmutabilityResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.removeTimeBasedImmutability(ctx, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[LongTermRetentionBackupsClientRemoveTimeBasedImmutabilityResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[LongTermRetentionBackupsClientRemoveTimeBasedImmutabilityResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// RemoveTimeBasedImmutability - Remove time based immutability of an existing long term retention backup.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *LongTermRetentionBackupsClient) removeTimeBasedImmutability(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, options *LongTermRetentionBackupsClientBeginRemoveTimeBasedImmutabilityOptions) (*http.Response, error) {
-	var err error
-	const operationName = "LongTermRetentionBackupsClient.BeginRemoveTimeBasedImmutability"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.removeTimeBasedImmutabilityCreateRequest(ctx, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// removeTimeBasedImmutabilityCreateRequest creates the RemoveTimeBasedImmutability request.
-func (client *LongTermRetentionBackupsClient) removeTimeBasedImmutabilityCreateRequest(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, _ *LongTermRetentionBackupsClientBeginRemoveTimeBasedImmutabilityOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups/{backupName}/removeTimeBasedImmutability"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if locationName == "" {
-		return nil, errors.New("parameter locationName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{locationName}", url.PathEscape(locationName))
-	if longTermRetentionServerName == "" {
-		return nil, errors.New("parameter longTermRetentionServerName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{longTermRetentionServerName}", url.PathEscape(longTermRetentionServerName))
-	if longTermRetentionDatabaseName == "" {
-		return nil, errors.New("parameter longTermRetentionDatabaseName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{longTermRetentionDatabaseName}", url.PathEscape(longTermRetentionDatabaseName))
-	if backupName == "" {
-		return nil, errors.New("parameter backupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{backupName}", url.PathEscape(backupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// BeginRemoveTimeBasedImmutabilityByResourceGroup - Remove time based immutability of an existing long term retention backup.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - locationName - The location of the database.
-//   - longTermRetentionServerName - The name of the server
-//   - longTermRetentionDatabaseName - The name of the database
-//   - backupName - The backup name.
-//   - options - LongTermRetentionBackupsClientBeginRemoveTimeBasedImmutabilityByResourceGroupOptions contains the optional parameters
-//     for the LongTermRetentionBackupsClient.BeginRemoveTimeBasedImmutabilityByResourceGroup method.
-func (client *LongTermRetentionBackupsClient) BeginRemoveTimeBasedImmutabilityByResourceGroup(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, options *LongTermRetentionBackupsClientBeginRemoveTimeBasedImmutabilityByResourceGroupOptions) (*runtime.Poller[LongTermRetentionBackupsClientRemoveTimeBasedImmutabilityByResourceGroupResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.removeTimeBasedImmutabilityByResourceGroup(ctx, resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[LongTermRetentionBackupsClientRemoveTimeBasedImmutabilityByResourceGroupResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[LongTermRetentionBackupsClientRemoveTimeBasedImmutabilityByResourceGroupResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// RemoveTimeBasedImmutabilityByResourceGroup - Remove time based immutability of an existing long term retention backup.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *LongTermRetentionBackupsClient) removeTimeBasedImmutabilityByResourceGroup(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, options *LongTermRetentionBackupsClientBeginRemoveTimeBasedImmutabilityByResourceGroupOptions) (*http.Response, error) {
-	var err error
-	const operationName = "LongTermRetentionBackupsClient.BeginRemoveTimeBasedImmutabilityByResourceGroup"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.removeTimeBasedImmutabilityByResourceGroupCreateRequest(ctx, resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// removeTimeBasedImmutabilityByResourceGroupCreateRequest creates the RemoveTimeBasedImmutabilityByResourceGroup request.
-func (client *LongTermRetentionBackupsClient) removeTimeBasedImmutabilityByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, _ *LongTermRetentionBackupsClientBeginRemoveTimeBasedImmutabilityByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups/{backupName}/removeTimeBasedImmutability"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if locationName == "" {
-		return nil, errors.New("parameter locationName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{locationName}", url.PathEscape(locationName))
-	if longTermRetentionServerName == "" {
-		return nil, errors.New("parameter longTermRetentionServerName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{longTermRetentionServerName}", url.PathEscape(longTermRetentionServerName))
-	if longTermRetentionDatabaseName == "" {
-		return nil, errors.New("parameter longTermRetentionDatabaseName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{longTermRetentionDatabaseName}", url.PathEscape(longTermRetentionDatabaseName))
-	if backupName == "" {
-		return nil, errors.New("parameter backupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{backupName}", url.PathEscape(backupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// BeginSetLegalHoldImmutability - Set legal hold immutability of an existing long term retention backup.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - locationName - The location of the database.
-//   - longTermRetentionServerName - The name of the server
-//   - longTermRetentionDatabaseName - The name of the database
-//   - backupName - The backup name.
-//   - options - LongTermRetentionBackupsClientBeginSetLegalHoldImmutabilityOptions contains the optional parameters for the LongTermRetentionBackupsClient.BeginSetLegalHoldImmutability
-//     method.
-func (client *LongTermRetentionBackupsClient) BeginSetLegalHoldImmutability(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, options *LongTermRetentionBackupsClientBeginSetLegalHoldImmutabilityOptions) (*runtime.Poller[LongTermRetentionBackupsClientSetLegalHoldImmutabilityResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.setLegalHoldImmutability(ctx, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[LongTermRetentionBackupsClientSetLegalHoldImmutabilityResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[LongTermRetentionBackupsClientSetLegalHoldImmutabilityResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// SetLegalHoldImmutability - Set legal hold immutability of an existing long term retention backup.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *LongTermRetentionBackupsClient) setLegalHoldImmutability(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, options *LongTermRetentionBackupsClientBeginSetLegalHoldImmutabilityOptions) (*http.Response, error) {
-	var err error
-	const operationName = "LongTermRetentionBackupsClient.BeginSetLegalHoldImmutability"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.setLegalHoldImmutabilityCreateRequest(ctx, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// setLegalHoldImmutabilityCreateRequest creates the SetLegalHoldImmutability request.
-func (client *LongTermRetentionBackupsClient) setLegalHoldImmutabilityCreateRequest(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, _ *LongTermRetentionBackupsClientBeginSetLegalHoldImmutabilityOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups/{backupName}/setLegalHoldImmutability"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if locationName == "" {
-		return nil, errors.New("parameter locationName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{locationName}", url.PathEscape(locationName))
-	if longTermRetentionServerName == "" {
-		return nil, errors.New("parameter longTermRetentionServerName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{longTermRetentionServerName}", url.PathEscape(longTermRetentionServerName))
-	if longTermRetentionDatabaseName == "" {
-		return nil, errors.New("parameter longTermRetentionDatabaseName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{longTermRetentionDatabaseName}", url.PathEscape(longTermRetentionDatabaseName))
-	if backupName == "" {
-		return nil, errors.New("parameter backupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{backupName}", url.PathEscape(backupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// BeginSetLegalHoldImmutabilityByResourceGroup - Set legal hold immutability of an existing long term retention backup.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - locationName - The location of the database.
-//   - longTermRetentionServerName - The name of the server
-//   - longTermRetentionDatabaseName - The name of the database
-//   - backupName - The backup name.
-//   - options - LongTermRetentionBackupsClientBeginSetLegalHoldImmutabilityByResourceGroupOptions contains the optional parameters
-//     for the LongTermRetentionBackupsClient.BeginSetLegalHoldImmutabilityByResourceGroup method.
-func (client *LongTermRetentionBackupsClient) BeginSetLegalHoldImmutabilityByResourceGroup(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, options *LongTermRetentionBackupsClientBeginSetLegalHoldImmutabilityByResourceGroupOptions) (*runtime.Poller[LongTermRetentionBackupsClientSetLegalHoldImmutabilityByResourceGroupResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.setLegalHoldImmutabilityByResourceGroup(ctx, resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[LongTermRetentionBackupsClientSetLegalHoldImmutabilityByResourceGroupResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[LongTermRetentionBackupsClientSetLegalHoldImmutabilityByResourceGroupResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// SetLegalHoldImmutabilityByResourceGroup - Set legal hold immutability of an existing long term retention backup.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *LongTermRetentionBackupsClient) setLegalHoldImmutabilityByResourceGroup(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, options *LongTermRetentionBackupsClientBeginSetLegalHoldImmutabilityByResourceGroupOptions) (*http.Response, error) {
-	var err error
-	const operationName = "LongTermRetentionBackupsClient.BeginSetLegalHoldImmutabilityByResourceGroup"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.setLegalHoldImmutabilityByResourceGroupCreateRequest(ctx, resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// setLegalHoldImmutabilityByResourceGroupCreateRequest creates the SetLegalHoldImmutabilityByResourceGroup request.
-func (client *LongTermRetentionBackupsClient) setLegalHoldImmutabilityByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, _ *LongTermRetentionBackupsClientBeginSetLegalHoldImmutabilityByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups/{backupName}/setLegalHoldImmutability"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if locationName == "" {
-		return nil, errors.New("parameter locationName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{locationName}", url.PathEscape(locationName))
-	if longTermRetentionServerName == "" {
-		return nil, errors.New("parameter longTermRetentionServerName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{longTermRetentionServerName}", url.PathEscape(longTermRetentionServerName))
-	if longTermRetentionDatabaseName == "" {
-		return nil, errors.New("parameter longTermRetentionDatabaseName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{longTermRetentionDatabaseName}", url.PathEscape(longTermRetentionDatabaseName))
-	if backupName == "" {
-		return nil, errors.New("parameter backupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{backupName}", url.PathEscape(backupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// BeginUpdate - Updates an existing long term retention backup.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - locationName - The location of the database.
-//   - longTermRetentionServerName - The name of the server
-//   - longTermRetentionDatabaseName - The name of the database
-//   - backupName - The backup name.
-//   - parameters - The requested backup resource state
-//   - options - LongTermRetentionBackupsClientBeginUpdateOptions contains the optional parameters for the LongTermRetentionBackupsClient.BeginUpdate
-//     method.
-func (client *LongTermRetentionBackupsClient) BeginUpdate(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, parameters UpdateLongTermRetentionBackupParameters, options *LongTermRetentionBackupsClientBeginUpdateOptions) (*runtime.Poller[LongTermRetentionBackupsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, parameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[LongTermRetentionBackupsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[LongTermRetentionBackupsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Updates an existing long term retention backup.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *LongTermRetentionBackupsClient) update(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, parameters UpdateLongTermRetentionBackupParameters, options *LongTermRetentionBackupsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "LongTermRetentionBackupsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, parameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *LongTermRetentionBackupsClient) updateCreateRequest(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, parameters UpdateLongTermRetentionBackupParameters, _ *LongTermRetentionBackupsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups/{backupName}/update"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if locationName == "" {
-		return nil, errors.New("parameter locationName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{locationName}", url.PathEscape(locationName))
-	if longTermRetentionServerName == "" {
-		return nil, errors.New("parameter longTermRetentionServerName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{longTermRetentionServerName}", url.PathEscape(longTermRetentionServerName))
-	if longTermRetentionDatabaseName == "" {
-		return nil, errors.New("parameter longTermRetentionDatabaseName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{longTermRetentionDatabaseName}", url.PathEscape(longTermRetentionDatabaseName))
-	if backupName == "" {
-		return nil, errors.New("parameter backupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{backupName}", url.PathEscape(backupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginUpdateByResourceGroup - Updates an existing long term retention backup.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - locationName - The location of the database.
-//   - longTermRetentionServerName - The name of the server
-//   - longTermRetentionDatabaseName - The name of the database
-//   - backupName - The backup name.
-//   - parameters - The requested backup resource state
-//   - options - LongTermRetentionBackupsClientBeginUpdateByResourceGroupOptions contains the optional parameters for the LongTermRetentionBackupsClient.BeginUpdateByResourceGroup
-//     method.
-func (client *LongTermRetentionBackupsClient) BeginUpdateByResourceGroup(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, parameters UpdateLongTermRetentionBackupParameters, options *LongTermRetentionBackupsClientBeginUpdateByResourceGroupOptions) (*runtime.Poller[LongTermRetentionBackupsClientUpdateByResourceGroupResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.updateByResourceGroup(ctx, resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, parameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[LongTermRetentionBackupsClientUpdateByResourceGroupResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[LongTermRetentionBackupsClientUpdateByResourceGroupResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// UpdateByResourceGroup - Updates an existing long term retention backup.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *LongTermRetentionBackupsClient) updateByResourceGroup(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, parameters UpdateLongTermRetentionBackupParameters, options *LongTermRetentionBackupsClientBeginUpdateByResourceGroupOptions) (*http.Response, error) {
-	var err error
-	const operationName = "LongTermRetentionBackupsClient.BeginUpdateByResourceGroup"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateByResourceGroupCreateRequest(ctx, resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, parameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateByResourceGroupCreateRequest creates the UpdateByResourceGroup request.
-func (client *LongTermRetentionBackupsClient) updateByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, parameters UpdateLongTermRetentionBackupParameters, _ *LongTermRetentionBackupsClientBeginUpdateByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups/{backupName}/update"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if locationName == "" {
-		return nil, errors.New("parameter locationName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{locationName}", url.PathEscape(locationName))
-	if longTermRetentionServerName == "" {
-		return nil, errors.New("parameter longTermRetentionServerName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{longTermRetentionServerName}", url.PathEscape(longTermRetentionServerName))
-	if longTermRetentionDatabaseName == "" {
-		return nil, errors.New("parameter longTermRetentionDatabaseName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{longTermRetentionDatabaseName}", url.PathEscape(longTermRetentionDatabaseName))
-	if backupName == "" {
-		return nil, errors.New("parameter backupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{backupName}", url.PathEscape(backupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

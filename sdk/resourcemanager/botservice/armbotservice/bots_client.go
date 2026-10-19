@@ -271,72 +271,6 @@ func (client *BotsClient) getCheckNameAvailabilityHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// NewListPager - Returns all the resources of a particular type belonging to a subscription.
-//   - options - BotsClientListOptions contains the optional parameters for the BotsClient.NewListPager method.
-func (client *BotsClient) NewListPager(options *BotsClientListOptions) *runtime.Pager[BotsClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[BotsClientListResponse]{
-		More: func(page BotsClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *BotsClientListResponse) (BotsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "BotsClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listCreateRequest(ctx, nextLink, options)
-			if err != nil {
-				return BotsClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return BotsClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *BotsClient) listCreateRequest(ctx context.Context, nextLink string, _ *BotsClientListOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.BotService/botServices"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20230915Preview)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *BotsClient) listHandleResponse(resp *http.Response, successCodes ...int) (BotsClientListResponse, error) {
-	result := BotsClientListResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.BotResponseList); err != nil {
-		return BotsClientListResponse{}, err
-	}
-	return result, nil
-}
-
 // NewListByResourceGroupPager - Returns all the resources of a particular type belonging to a resource group
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - BotsClientListByResourceGroupOptions contains the optional parameters for the BotsClient.NewListByResourceGroupPager
@@ -405,6 +339,72 @@ func (client *BotsClient) listByResourceGroupHandleResponse(resp *http.Response,
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BotResponseList); err != nil {
 		return BotsClientListByResourceGroupResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListPager - Returns all the resources of a particular type belonging to a subscription.
+//   - options - BotsClientListOptions contains the optional parameters for the BotsClient.NewListPager method.
+func (client *BotsClient) NewListPager(options *BotsClientListOptions) *runtime.Pager[BotsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[BotsClientListResponse]{
+		More: func(page BotsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *BotsClientListResponse) (BotsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "BotsClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return BotsClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return BotsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listCreateRequest creates the List request.
+func (client *BotsClient) listCreateRequest(ctx context.Context, nextLink string, _ *BotsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.BotService/botServices"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20230915Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listHandleResponse handles the List response.
+func (client *BotsClient) listHandleResponse(resp *http.Response, successCodes ...int) (BotsClientListResponse, error) {
+	result := BotsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.BotResponseList); err != nil {
+		return BotsClientListResponse{}, err
 	}
 	return result, nil
 }

@@ -156,6 +156,200 @@ func ExampleCloudHsmClustersClient_BeginDelete() {
 	}
 }
 
+// Generated from example definition: 2025-12-01-preview/CloudHsmCluster_RequestOrValidate_Restore_MaximumSet_Gen.json
+func ExampleCloudHsmClustersClient_BeginRestore() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armhardwaresecuritymodules.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewCloudHsmClustersClient().BeginRestore(ctx, "rgcloudhsm", "chsm1", armhardwaresecuritymodules.RestoreRequestProperties{
+		AzureStorageBlobContainerURI: to.Ptr("https://myaccount.blob.core.windows.net/sascontainer/sasContainer"),
+		BackupID:                     to.Ptr("backupId"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armhardwaresecuritymodules.CloudHsmClustersClientRestoreResponse{
+	// 	RestoreResult: armhardwaresecuritymodules.RestoreResult{
+	// 		Properties: &armhardwaresecuritymodules.BackupRestoreBaseResultProperties{
+	// 			EndTime: to.Ptr(time.Date(2022, time.September, 12, 12, 0, 0, 0, time.UTC)),
+	// 			JobID: to.Ptr("572a45927fc240e1ac075de27371680b"),
+	// 			StartTime: to.Ptr(time.Date(2022, time.September, 12, 12, 0, 0, 0, time.UTC)),
+	// 			Status: to.Ptr(armhardwaresecuritymodules.BackupRestoreOperationStatusInProgress),
+	// 			StatusDetails: to.Ptr("Restore operation is in progress"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-12-01-preview/CloudHsmCluster_Update_MaximumSet_Gen.json
+func ExampleCloudHsmClustersClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armhardwaresecuritymodules.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewCloudHsmClustersClient().BeginUpdate(ctx, "rgcloudhsm", "chsm1", armhardwaresecuritymodules.CloudHsmClusterPatchParameters{
+		Identity: &armhardwaresecuritymodules.ManagedServiceIdentity{
+			Type: to.Ptr(armhardwaresecuritymodules.ManagedServiceIdentityTypeUserAssigned),
+			UserAssignedIdentities: map[string]*armhardwaresecuritymodules.UserAssignedIdentity{
+				"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/contoso-resources/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity-1": {},
+			},
+		},
+		Tags: map[string]*string{
+			"Dept":        to.Ptr("hsm"),
+			"Environment": to.Ptr("dogfood"),
+			"Slice":       to.Ptr("A"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armhardwaresecuritymodules.CloudHsmClustersClientUpdateResponse{
+	// 	CloudHsmCluster: armhardwaresecuritymodules.CloudHsmCluster{
+	// 		Name: to.Ptr("chsm1"),
+	// 		Type: to.Ptr("Microsoft.HardwareSecurityModules/cloudHsmClusters"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcloudhsm/providers/Microsoft.HardwareSecurityModules/cloudHsmClusters/chsm1"),
+	// 		Identity: &armhardwaresecuritymodules.ManagedServiceIdentity{
+	// 			Type: to.Ptr(armhardwaresecuritymodules.ManagedServiceIdentityTypeUserAssigned),
+	// 			UserAssignedIdentities: map[string]*armhardwaresecuritymodules.UserAssignedIdentity{
+	// 				"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/contoso-resources/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity-1": &armhardwaresecuritymodules.UserAssignedIdentity{
+	// 					ClientID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 					PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				},
+	// 			},
+	// 		},
+	// 		Location: to.Ptr("eastus2"),
+	// 		Properties: &armhardwaresecuritymodules.CloudHsmClusterProperties{
+	// 			ActivationState: to.Ptr(armhardwaresecuritymodules.ActivationState("null")),
+	// 			AutoGeneratedDomainNameLabelScope: to.Ptr(armhardwaresecuritymodules.AutoGeneratedDomainNameLabelScopeTenantReuse),
+	// 			ProvisioningState: to.Ptr(armhardwaresecuritymodules.ProvisioningStateUpdating),
+	// 			PublicNetworkAccess: to.Ptr(armhardwaresecuritymodules.PublicNetworkAccessDisabled),
+	// 			StatusMessage: to.Ptr("This is a status message"),
+	// 		},
+	// 		SKU: &armhardwaresecuritymodules.CloudHsmClusterSKU{
+	// 			Name: to.Ptr(armhardwaresecuritymodules.CloudHsmClusterSKUNameStandardB1),
+	// 			Family: to.Ptr(armhardwaresecuritymodules.CloudHsmClusterSKUFamilyB),
+	// 		},
+	// 		SystemData: &armhardwaresecuritymodules.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2022, time.September, 12, 12, 0, 0, 0, time.UTC)),
+	// 			CreatedBy: to.Ptr("CHsmUser1"),
+	// 			CreatedByType: to.Ptr(armhardwaresecuritymodules.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2022, time.September, 12, 12, 0, 0, 0, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("CHsmUser2"),
+	// 			LastModifiedByType: to.Ptr(armhardwaresecuritymodules.CreatedByTypeUser),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"Dept": to.Ptr("hsm"),
+	// 			"Environment": to.Ptr("dogfood"),
+	// 			"Slice": to.Ptr("A"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-12-01-preview/CloudHsmCluster_Create_Backup_MaximumSet_Gen_ValidateBackupProperties.json
+func ExampleCloudHsmClustersClient_BeginValidateBackupProperties() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armhardwaresecuritymodules.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewCloudHsmClustersClient().BeginValidateBackupProperties(ctx, "rgcloudhsm", "chsm1", &armhardwaresecuritymodules.CloudHsmClustersClientBeginValidateBackupPropertiesOptions{
+		BackupRequestProperties: &armhardwaresecuritymodules.BackupRequestProperties{
+			AzureStorageBlobContainerURI: to.Ptr("https://myaccount.blob.core.windows.net/sascontainer/sasContainer"),
+			Token:                        to.Ptr("se=2018-02-01T00%3A00Z&spr=https&sv=2017-04-17&sr=b&sig=REDACTED"),
+		}})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armhardwaresecuritymodules.CloudHsmClustersClientValidateBackupPropertiesResponse{
+	// 	BackupResult: armhardwaresecuritymodules.BackupResult{
+	// 		Properties: &armhardwaresecuritymodules.BackupResultProperties{
+	// 			AzureStorageBlobContainerURI: to.Ptr("https://myaccount.blob.core.windows.net/sascontainer/sasContainer"),
+	// 			EndTime: to.Ptr(time.Date(2022, time.September, 12, 12, 0, 0, 0, time.UTC)),
+	// 			JobID: to.Ptr("572a45927fc240e1ac075de27371680b"),
+	// 			StartTime: to.Ptr(time.Date(2022, time.September, 12, 12, 0, 0, 0, time.UTC)),
+	// 			Status: to.Ptr(armhardwaresecuritymodules.BackupRestoreOperationStatusInProgress),
+	// 			StatusDetails: to.Ptr("Backup operation is in progress"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-12-01-preview/CloudHsmCluster_RequestOrValidate_Restore_MaximumSet_Gen_ValidateRestoreProperties.json
+func ExampleCloudHsmClustersClient_BeginValidateRestoreProperties() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armhardwaresecuritymodules.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewCloudHsmClustersClient().BeginValidateRestoreProperties(ctx, "rgcloudhsm", "chsm1", &armhardwaresecuritymodules.CloudHsmClustersClientBeginValidateRestorePropertiesOptions{
+		RestoreRequestProperties: &armhardwaresecuritymodules.RestoreRequestProperties{
+			AzureStorageBlobContainerURI: to.Ptr("https://myaccount.blob.core.windows.net/sascontainer/sasContainer"),
+			BackupID:                     to.Ptr("backupId"),
+		}})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armhardwaresecuritymodules.CloudHsmClustersClientValidateRestorePropertiesResponse{
+	// 	RestoreResult: armhardwaresecuritymodules.RestoreResult{
+	// 		Properties: &armhardwaresecuritymodules.BackupRestoreBaseResultProperties{
+	// 			EndTime: to.Ptr(time.Date(2022, time.September, 12, 12, 0, 0, 0, time.UTC)),
+	// 			JobID: to.Ptr("572a45927fc240e1ac075de27371680b"),
+	// 			StartTime: to.Ptr(time.Date(2022, time.September, 12, 12, 0, 0, 0, time.UTC)),
+	// 			Status: to.Ptr(armhardwaresecuritymodules.BackupRestoreOperationStatusInProgress),
+	// 			StatusDetails: to.Ptr("Restore operation is in progress"),
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2025-12-01-preview/CloudHsmCluster_Get_MaximumSet_Gen.json
 func ExampleCloudHsmClustersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -427,198 +621,4 @@ func ExampleCloudHsmClustersClient_NewListBySubscriptionPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2025-12-01-preview/CloudHsmCluster_RequestOrValidate_Restore_MaximumSet_Gen.json
-func ExampleCloudHsmClustersClient_BeginRestore() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armhardwaresecuritymodules.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewCloudHsmClustersClient().BeginRestore(ctx, "rgcloudhsm", "chsm1", armhardwaresecuritymodules.RestoreRequestProperties{
-		AzureStorageBlobContainerURI: to.Ptr("https://myaccount.blob.core.windows.net/sascontainer/sasContainer"),
-		BackupID:                     to.Ptr("backupId"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armhardwaresecuritymodules.CloudHsmClustersClientRestoreResponse{
-	// 	RestoreResult: armhardwaresecuritymodules.RestoreResult{
-	// 		Properties: &armhardwaresecuritymodules.BackupRestoreBaseResultProperties{
-	// 			EndTime: to.Ptr(time.Date(2022, time.September, 12, 12, 0, 0, 0, time.UTC)),
-	// 			JobID: to.Ptr("572a45927fc240e1ac075de27371680b"),
-	// 			StartTime: to.Ptr(time.Date(2022, time.September, 12, 12, 0, 0, 0, time.UTC)),
-	// 			Status: to.Ptr(armhardwaresecuritymodules.BackupRestoreOperationStatusInProgress),
-	// 			StatusDetails: to.Ptr("Restore operation is in progress"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-12-01-preview/CloudHsmCluster_Update_MaximumSet_Gen.json
-func ExampleCloudHsmClustersClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armhardwaresecuritymodules.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewCloudHsmClustersClient().BeginUpdate(ctx, "rgcloudhsm", "chsm1", armhardwaresecuritymodules.CloudHsmClusterPatchParameters{
-		Identity: &armhardwaresecuritymodules.ManagedServiceIdentity{
-			Type: to.Ptr(armhardwaresecuritymodules.ManagedServiceIdentityTypeUserAssigned),
-			UserAssignedIdentities: map[string]*armhardwaresecuritymodules.UserAssignedIdentity{
-				"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/contoso-resources/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity-1": {},
-			},
-		},
-		Tags: map[string]*string{
-			"Dept":        to.Ptr("hsm"),
-			"Environment": to.Ptr("dogfood"),
-			"Slice":       to.Ptr("A"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armhardwaresecuritymodules.CloudHsmClustersClientUpdateResponse{
-	// 	CloudHsmCluster: armhardwaresecuritymodules.CloudHsmCluster{
-	// 		Name: to.Ptr("chsm1"),
-	// 		Type: to.Ptr("Microsoft.HardwareSecurityModules/cloudHsmClusters"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcloudhsm/providers/Microsoft.HardwareSecurityModules/cloudHsmClusters/chsm1"),
-	// 		Identity: &armhardwaresecuritymodules.ManagedServiceIdentity{
-	// 			Type: to.Ptr(armhardwaresecuritymodules.ManagedServiceIdentityTypeUserAssigned),
-	// 			UserAssignedIdentities: map[string]*armhardwaresecuritymodules.UserAssignedIdentity{
-	// 				"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/contoso-resources/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity-1": &armhardwaresecuritymodules.UserAssignedIdentity{
-	// 					ClientID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-	// 					PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-	// 				},
-	// 			},
-	// 		},
-	// 		Location: to.Ptr("eastus2"),
-	// 		Properties: &armhardwaresecuritymodules.CloudHsmClusterProperties{
-	// 			ActivationState: to.Ptr(armhardwaresecuritymodules.ActivationState("null")),
-	// 			AutoGeneratedDomainNameLabelScope: to.Ptr(armhardwaresecuritymodules.AutoGeneratedDomainNameLabelScopeTenantReuse),
-	// 			ProvisioningState: to.Ptr(armhardwaresecuritymodules.ProvisioningStateUpdating),
-	// 			PublicNetworkAccess: to.Ptr(armhardwaresecuritymodules.PublicNetworkAccessDisabled),
-	// 			StatusMessage: to.Ptr("This is a status message"),
-	// 		},
-	// 		SKU: &armhardwaresecuritymodules.CloudHsmClusterSKU{
-	// 			Name: to.Ptr(armhardwaresecuritymodules.CloudHsmClusterSKUNameStandardB1),
-	// 			Family: to.Ptr(armhardwaresecuritymodules.CloudHsmClusterSKUFamilyB),
-	// 		},
-	// 		SystemData: &armhardwaresecuritymodules.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2022, time.September, 12, 12, 0, 0, 0, time.UTC)),
-	// 			CreatedBy: to.Ptr("CHsmUser1"),
-	// 			CreatedByType: to.Ptr(armhardwaresecuritymodules.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2022, time.September, 12, 12, 0, 0, 0, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("CHsmUser2"),
-	// 			LastModifiedByType: to.Ptr(armhardwaresecuritymodules.CreatedByTypeUser),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"Dept": to.Ptr("hsm"),
-	// 			"Environment": to.Ptr("dogfood"),
-	// 			"Slice": to.Ptr("A"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-12-01-preview/CloudHsmCluster_Create_Backup_MaximumSet_Gen_ValidateBackupProperties.json
-func ExampleCloudHsmClustersClient_BeginValidateBackupProperties() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armhardwaresecuritymodules.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewCloudHsmClustersClient().BeginValidateBackupProperties(ctx, "rgcloudhsm", "chsm1", &armhardwaresecuritymodules.CloudHsmClustersClientBeginValidateBackupPropertiesOptions{
-		BackupRequestProperties: &armhardwaresecuritymodules.BackupRequestProperties{
-			AzureStorageBlobContainerURI: to.Ptr("https://myaccount.blob.core.windows.net/sascontainer/sasContainer"),
-			Token:                        to.Ptr("se=2018-02-01T00%3A00Z&spr=https&sv=2017-04-17&sr=b&sig=REDACTED"),
-		}})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armhardwaresecuritymodules.CloudHsmClustersClientValidateBackupPropertiesResponse{
-	// 	BackupResult: armhardwaresecuritymodules.BackupResult{
-	// 		Properties: &armhardwaresecuritymodules.BackupResultProperties{
-	// 			AzureStorageBlobContainerURI: to.Ptr("https://myaccount.blob.core.windows.net/sascontainer/sasContainer"),
-	// 			EndTime: to.Ptr(time.Date(2022, time.September, 12, 12, 0, 0, 0, time.UTC)),
-	// 			JobID: to.Ptr("572a45927fc240e1ac075de27371680b"),
-	// 			StartTime: to.Ptr(time.Date(2022, time.September, 12, 12, 0, 0, 0, time.UTC)),
-	// 			Status: to.Ptr(armhardwaresecuritymodules.BackupRestoreOperationStatusInProgress),
-	// 			StatusDetails: to.Ptr("Backup operation is in progress"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-12-01-preview/CloudHsmCluster_RequestOrValidate_Restore_MaximumSet_Gen_ValidateRestoreProperties.json
-func ExampleCloudHsmClustersClient_BeginValidateRestoreProperties() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armhardwaresecuritymodules.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewCloudHsmClustersClient().BeginValidateRestoreProperties(ctx, "rgcloudhsm", "chsm1", &armhardwaresecuritymodules.CloudHsmClustersClientBeginValidateRestorePropertiesOptions{
-		RestoreRequestProperties: &armhardwaresecuritymodules.RestoreRequestProperties{
-			AzureStorageBlobContainerURI: to.Ptr("https://myaccount.blob.core.windows.net/sascontainer/sasContainer"),
-			BackupID:                     to.Ptr("backupId"),
-		}})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armhardwaresecuritymodules.CloudHsmClustersClientValidateRestorePropertiesResponse{
-	// 	RestoreResult: armhardwaresecuritymodules.RestoreResult{
-	// 		Properties: &armhardwaresecuritymodules.BackupRestoreBaseResultProperties{
-	// 			EndTime: to.Ptr(time.Date(2022, time.September, 12, 12, 0, 0, 0, time.UTC)),
-	// 			JobID: to.Ptr("572a45927fc240e1ac075de27371680b"),
-	// 			StartTime: to.Ptr(time.Date(2022, time.September, 12, 12, 0, 0, 0, time.UTC)),
-	// 			Status: to.Ptr(armhardwaresecuritymodules.BackupRestoreOperationStatusInProgress),
-	// 			StatusDetails: to.Ptr("Restore operation is in progress"),
-	// 		},
-	// 	},
-	// }
 }

@@ -21,10 +21,6 @@ import (
 
 // RegistriesServer is a fake server for instances of the armcontainerregistry.RegistriesClient type.
 type RegistriesServer struct {
-	// CheckNameAvailability is the fake for method RegistriesClient.CheckNameAvailability
-	// HTTP status codes to indicate success: http.StatusOK
-	CheckNameAvailability func(ctx context.Context, registryNameCheckRequest armcontainerregistry.RegistryNameCheckRequest, options *armcontainerregistry.RegistriesClientCheckNameAvailabilityOptions) (resp azfake.Responder[armcontainerregistry.RegistriesClientCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
-
 	// BeginCreate is the fake for method RegistriesClient.BeginCreate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreate func(ctx context.Context, resourceGroupName string, registryName string, registry armcontainerregistry.Registry, options *armcontainerregistry.RegistriesClientBeginCreateOptions) (resp azfake.PollerResponder[armcontainerregistry.RegistriesClientCreateResponse], errResp azfake.ErrorResponder)
@@ -37,6 +33,18 @@ type RegistriesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginGenerateCredentials func(ctx context.Context, resourceGroupName string, registryName string, generateCredentialsParameters armcontainerregistry.GenerateCredentialsParameters, options *armcontainerregistry.RegistriesClientBeginGenerateCredentialsOptions) (resp azfake.PollerResponder[armcontainerregistry.RegistriesClientGenerateCredentialsResponse], errResp azfake.ErrorResponder)
 
+	// BeginImportImage is the fake for method RegistriesClient.BeginImportImage
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginImportImage func(ctx context.Context, resourceGroupName string, registryName string, parameters armcontainerregistry.ImportImageParameters, options *armcontainerregistry.RegistriesClientBeginImportImageOptions) (resp azfake.PollerResponder[armcontainerregistry.RegistriesClientImportImageResponse], errResp azfake.ErrorResponder)
+
+	// BeginUpdate is the fake for method RegistriesClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	BeginUpdate func(ctx context.Context, resourceGroupName string, registryName string, registryUpdateParameters armcontainerregistry.RegistryUpdateParameters, options *armcontainerregistry.RegistriesClientBeginUpdateOptions) (resp azfake.PollerResponder[armcontainerregistry.RegistriesClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// CheckNameAvailability is the fake for method RegistriesClient.CheckNameAvailability
+	// HTTP status codes to indicate success: http.StatusOK
+	CheckNameAvailability func(ctx context.Context, registryNameCheckRequest armcontainerregistry.RegistryNameCheckRequest, options *armcontainerregistry.RegistriesClientCheckNameAvailabilityOptions) (resp azfake.Responder[armcontainerregistry.RegistriesClientCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method RegistriesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, registryName string, options *armcontainerregistry.RegistriesClientGetOptions) (resp azfake.Responder[armcontainerregistry.RegistriesClientGetResponse], errResp azfake.ErrorResponder)
@@ -45,37 +53,29 @@ type RegistriesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetPrivateLinkResource func(ctx context.Context, resourceGroupName string, registryName string, groupName string, options *armcontainerregistry.RegistriesClientGetPrivateLinkResourceOptions) (resp azfake.Responder[armcontainerregistry.RegistriesClientGetPrivateLinkResourceResponse], errResp azfake.ErrorResponder)
 
-	// BeginImportImage is the fake for method RegistriesClient.BeginImportImage
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginImportImage func(ctx context.Context, resourceGroupName string, registryName string, parameters armcontainerregistry.ImportImageParameters, options *armcontainerregistry.RegistriesClientBeginImportImageOptions) (resp azfake.PollerResponder[armcontainerregistry.RegistriesClientImportImageResponse], errResp azfake.ErrorResponder)
-
-	// NewListPager is the fake for method RegistriesClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armcontainerregistry.RegistriesClientListOptions) (resp azfake.PagerResponder[armcontainerregistry.RegistriesClientListResponse])
-
-	// NewListByResourceGroupPager is the fake for method RegistriesClient.NewListByResourceGroupPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupPager func(resourceGroupName string, options *armcontainerregistry.RegistriesClientListByResourceGroupOptions) (resp azfake.PagerResponder[armcontainerregistry.RegistriesClientListByResourceGroupResponse])
-
 	// ListCredentials is the fake for method RegistriesClient.ListCredentials
 	// HTTP status codes to indicate success: http.StatusOK
 	ListCredentials func(ctx context.Context, resourceGroupName string, registryName string, options *armcontainerregistry.RegistriesClientListCredentialsOptions) (resp azfake.Responder[armcontainerregistry.RegistriesClientListCredentialsResponse], errResp azfake.ErrorResponder)
-
-	// NewListPrivateLinkResourcesPager is the fake for method RegistriesClient.NewListPrivateLinkResourcesPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPrivateLinkResourcesPager func(resourceGroupName string, registryName string, options *armcontainerregistry.RegistriesClientListPrivateLinkResourcesOptions) (resp azfake.PagerResponder[armcontainerregistry.RegistriesClientListPrivateLinkResourcesResponse])
 
 	// ListUsages is the fake for method RegistriesClient.ListUsages
 	// HTTP status codes to indicate success: http.StatusOK
 	ListUsages func(ctx context.Context, resourceGroupName string, registryName string, options *armcontainerregistry.RegistriesClientListUsagesOptions) (resp azfake.Responder[armcontainerregistry.RegistriesClientListUsagesResponse], errResp azfake.ErrorResponder)
 
+	// NewListByResourceGroupPager is the fake for method RegistriesClient.NewListByResourceGroupPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByResourceGroupPager func(resourceGroupName string, options *armcontainerregistry.RegistriesClientListByResourceGroupOptions) (resp azfake.PagerResponder[armcontainerregistry.RegistriesClientListByResourceGroupResponse])
+
+	// NewListPager is the fake for method RegistriesClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armcontainerregistry.RegistriesClientListOptions) (resp azfake.PagerResponder[armcontainerregistry.RegistriesClientListResponse])
+
+	// NewListPrivateLinkResourcesPager is the fake for method RegistriesClient.NewListPrivateLinkResourcesPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPrivateLinkResourcesPager func(resourceGroupName string, registryName string, options *armcontainerregistry.RegistriesClientListPrivateLinkResourcesOptions) (resp azfake.PagerResponder[armcontainerregistry.RegistriesClientListPrivateLinkResourcesResponse])
+
 	// RegenerateCredential is the fake for method RegistriesClient.RegenerateCredential
 	// HTTP status codes to indicate success: http.StatusOK
 	RegenerateCredential func(ctx context.Context, resourceGroupName string, registryName string, regenerateCredentialParameters armcontainerregistry.RegenerateCredentialParameters, options *armcontainerregistry.RegistriesClientRegenerateCredentialOptions) (resp azfake.Responder[armcontainerregistry.RegistriesClientRegenerateCredentialResponse], errResp azfake.ErrorResponder)
-
-	// BeginUpdate is the fake for method RegistriesClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginUpdate func(ctx context.Context, resourceGroupName string, registryName string, registryUpdateParameters armcontainerregistry.RegistryUpdateParameters, options *armcontainerregistry.RegistriesClientBeginUpdateOptions) (resp azfake.PollerResponder[armcontainerregistry.RegistriesClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewRegistriesServerTransport creates a new instance of RegistriesServerTransport with the provided implementation.
@@ -88,10 +88,10 @@ func NewRegistriesServerTransport(srv *RegistriesServer) *RegistriesServerTransp
 		beginDelete:                      newTracker[azfake.PollerResponder[armcontainerregistry.RegistriesClientDeleteResponse]](),
 		beginGenerateCredentials:         newTracker[azfake.PollerResponder[armcontainerregistry.RegistriesClientGenerateCredentialsResponse]](),
 		beginImportImage:                 newTracker[azfake.PollerResponder[armcontainerregistry.RegistriesClientImportImageResponse]](),
-		newListPager:                     newTracker[azfake.PagerResponder[armcontainerregistry.RegistriesClientListResponse]](),
-		newListByResourceGroupPager:      newTracker[azfake.PagerResponder[armcontainerregistry.RegistriesClientListByResourceGroupResponse]](),
-		newListPrivateLinkResourcesPager: newTracker[azfake.PagerResponder[armcontainerregistry.RegistriesClientListPrivateLinkResourcesResponse]](),
 		beginUpdate:                      newTracker[azfake.PollerResponder[armcontainerregistry.RegistriesClientUpdateResponse]](),
+		newListByResourceGroupPager:      newTracker[azfake.PagerResponder[armcontainerregistry.RegistriesClientListByResourceGroupResponse]](),
+		newListPager:                     newTracker[azfake.PagerResponder[armcontainerregistry.RegistriesClientListResponse]](),
+		newListPrivateLinkResourcesPager: newTracker[azfake.PagerResponder[armcontainerregistry.RegistriesClientListPrivateLinkResourcesResponse]](),
 	}
 }
 
@@ -103,10 +103,10 @@ type RegistriesServerTransport struct {
 	beginDelete                      *tracker[azfake.PollerResponder[armcontainerregistry.RegistriesClientDeleteResponse]]
 	beginGenerateCredentials         *tracker[azfake.PollerResponder[armcontainerregistry.RegistriesClientGenerateCredentialsResponse]]
 	beginImportImage                 *tracker[azfake.PollerResponder[armcontainerregistry.RegistriesClientImportImageResponse]]
-	newListPager                     *tracker[azfake.PagerResponder[armcontainerregistry.RegistriesClientListResponse]]
-	newListByResourceGroupPager      *tracker[azfake.PagerResponder[armcontainerregistry.RegistriesClientListByResourceGroupResponse]]
-	newListPrivateLinkResourcesPager *tracker[azfake.PagerResponder[armcontainerregistry.RegistriesClientListPrivateLinkResourcesResponse]]
 	beginUpdate                      *tracker[azfake.PollerResponder[armcontainerregistry.RegistriesClientUpdateResponse]]
+	newListByResourceGroupPager      *tracker[azfake.PagerResponder[armcontainerregistry.RegistriesClientListByResourceGroupResponse]]
+	newListPager                     *tracker[azfake.PagerResponder[armcontainerregistry.RegistriesClientListResponse]]
+	newListPrivateLinkResourcesPager *tracker[azfake.PagerResponder[armcontainerregistry.RegistriesClientListPrivateLinkResourcesResponse]]
 }
 
 // Do implements the policy.Transporter interface for RegistriesServerTransport.
@@ -130,34 +130,34 @@ func (r *RegistriesServerTransport) dispatchToMethodFake(req *http.Request, meth
 		}
 		if !intercepted {
 			switch method {
-			case "RegistriesClient.CheckNameAvailability":
-				res.resp, res.err = r.dispatchCheckNameAvailability(req)
 			case "RegistriesClient.BeginCreate":
 				res.resp, res.err = r.dispatchBeginCreate(req)
 			case "RegistriesClient.BeginDelete":
 				res.resp, res.err = r.dispatchBeginDelete(req)
 			case "RegistriesClient.BeginGenerateCredentials":
 				res.resp, res.err = r.dispatchBeginGenerateCredentials(req)
+			case "RegistriesClient.BeginImportImage":
+				res.resp, res.err = r.dispatchBeginImportImage(req)
+			case "RegistriesClient.BeginUpdate":
+				res.resp, res.err = r.dispatchBeginUpdate(req)
+			case "RegistriesClient.CheckNameAvailability":
+				res.resp, res.err = r.dispatchCheckNameAvailability(req)
 			case "RegistriesClient.Get":
 				res.resp, res.err = r.dispatchGet(req)
 			case "RegistriesClient.GetPrivateLinkResource":
 				res.resp, res.err = r.dispatchGetPrivateLinkResource(req)
-			case "RegistriesClient.BeginImportImage":
-				res.resp, res.err = r.dispatchBeginImportImage(req)
-			case "RegistriesClient.NewListPager":
-				res.resp, res.err = r.dispatchNewListPager(req)
-			case "RegistriesClient.NewListByResourceGroupPager":
-				res.resp, res.err = r.dispatchNewListByResourceGroupPager(req)
 			case "RegistriesClient.ListCredentials":
 				res.resp, res.err = r.dispatchListCredentials(req)
-			case "RegistriesClient.NewListPrivateLinkResourcesPager":
-				res.resp, res.err = r.dispatchNewListPrivateLinkResourcesPager(req)
 			case "RegistriesClient.ListUsages":
 				res.resp, res.err = r.dispatchListUsages(req)
+			case "RegistriesClient.NewListByResourceGroupPager":
+				res.resp, res.err = r.dispatchNewListByResourceGroupPager(req)
+			case "RegistriesClient.NewListPager":
+				res.resp, res.err = r.dispatchNewListPager(req)
+			case "RegistriesClient.NewListPrivateLinkResourcesPager":
+				res.resp, res.err = r.dispatchNewListPrivateLinkResourcesPager(req)
 			case "RegistriesClient.RegenerateCredential":
 				res.resp, res.err = r.dispatchRegenerateCredential(req)
-			case "RegistriesClient.BeginUpdate":
-				res.resp, res.err = r.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -172,35 +172,6 @@ func (r *RegistriesServerTransport) dispatchToMethodFake(req *http.Request, meth
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (r *RegistriesServerTransport) dispatchCheckNameAvailability(req *http.Request) (*http.Response, error) {
-	if r.srv.CheckNameAvailability == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CheckNameAvailability not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerRegistry/checkNameAvailability`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 2 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armcontainerregistry.RegistryNameCheckRequest](req)
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := r.srv.CheckNameAvailability(req.Context(), body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RegistryNameStatus, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (r *RegistriesServerTransport) dispatchBeginCreate(req *http.Request) (*http.Response, error) {
@@ -343,6 +314,131 @@ func (r *RegistriesServerTransport) dispatchBeginGenerateCredentials(req *http.R
 	return resp, nil
 }
 
+func (r *RegistriesServerTransport) dispatchBeginImportImage(req *http.Request) (*http.Response, error) {
+	if r.srv.BeginImportImage == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginImportImage not implemented")}
+	}
+	beginImportImage := r.beginImportImage.get(req)
+	if beginImportImage == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerRegistry/registries/(?P<registryName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/importImage`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armcontainerregistry.ImportImageParameters](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		registryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := r.srv.BeginImportImage(req.Context(), resourceGroupNameParam, registryNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginImportImage = &respr
+		r.beginImportImage.add(req, beginImportImage)
+	}
+
+	resp, err := server.PollerResponderNext(beginImportImage, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		r.beginImportImage.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginImportImage) {
+		r.beginImportImage.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (r *RegistriesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if r.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := r.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerRegistry/registries/(?P<registryName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armcontainerregistry.RegistryUpdateParameters](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		registryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := r.srv.BeginUpdate(req.Context(), resourceGroupNameParam, registryNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		r.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		r.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		r.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (r *RegistriesServerTransport) dispatchCheckNameAvailability(req *http.Request) (*http.Response, error) {
+	if r.srv.CheckNameAvailability == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CheckNameAvailability not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerRegistry/checkNameAvailability`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armcontainerregistry.RegistryNameCheckRequest](req)
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := r.srv.CheckNameAvailability(req.Context(), body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RegistryNameStatus, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (r *RegistriesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if r.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -413,83 +509,68 @@ func (r *RegistriesServerTransport) dispatchGetPrivateLinkResource(req *http.Req
 	return resp, nil
 }
 
-func (r *RegistriesServerTransport) dispatchBeginImportImage(req *http.Request) (*http.Response, error) {
-	if r.srv.BeginImportImage == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginImportImage not implemented")}
+func (r *RegistriesServerTransport) dispatchListCredentials(req *http.Request) (*http.Response, error) {
+	if r.srv.ListCredentials == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListCredentials not implemented")}
 	}
-	beginImportImage := r.beginImportImage.get(req)
-	if beginImportImage == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerRegistry/registries/(?P<registryName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/importImage`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcontainerregistry.ImportImageParameters](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		registryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := r.srv.BeginImportImage(req.Context(), resourceGroupNameParam, registryNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginImportImage = &respr
-		r.beginImportImage.add(req, beginImportImage)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerRegistry/registries/(?P<registryName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listCredentials`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-
-	resp, err := server.PollerResponderNext(beginImportImage, req)
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
 	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		r.beginImportImage.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	registryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
+	if err != nil {
+		return nil, err
 	}
-	if !server.PollerResponderMore(beginImportImage) {
-		r.beginImportImage.remove(req)
+	respr, errRespr := r.srv.ListCredentials(req.Context(), resourceGroupNameParam, registryNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
 	}
-
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RegistryListCredentialsResult, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 
-func (r *RegistriesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if r.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+func (r *RegistriesServerTransport) dispatchListUsages(req *http.Request) (*http.Response, error) {
+	if r.srv.ListUsages == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListUsages not implemented")}
 	}
-	newListPager := r.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerRegistry/registries`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := r.srv.NewListPager(nil)
-		newListPager = &resp
-		r.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcontainerregistry.RegistriesClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerRegistry/registries/(?P<registryName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listUsages`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resp, err := server.PagerResponderNext(newListPager, req)
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
 	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		r.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	registryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
+	if err != nil {
+		return nil, err
 	}
-	if !server.PagerResponderMore(newListPager) {
-		r.newListPager.remove(req)
+	respr, errRespr := r.srv.ListUsages(req.Context(), resourceGroupNameParam, registryNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RegistryUsageListResult, req)
+	if err != nil {
+		return nil, err
 	}
 	return resp, nil
 }
@@ -531,35 +612,35 @@ func (r *RegistriesServerTransport) dispatchNewListByResourceGroupPager(req *htt
 	return resp, nil
 }
 
-func (r *RegistriesServerTransport) dispatchListCredentials(req *http.Request) (*http.Response, error) {
-	if r.srv.ListCredentials == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListCredentials not implemented")}
+func (r *RegistriesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if r.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerRegistry/registries/(?P<registryName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listCredentials`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	newListPager := r.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerRegistry/registries`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := r.srv.NewListPager(nil)
+		newListPager = &resp
+		r.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcontainerregistry.RegistriesClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
 	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
-	registryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
-	if err != nil {
-		return nil, err
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		r.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	respr, errRespr := r.srv.ListCredentials(req.Context(), resourceGroupNameParam, registryNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RegistryListCredentialsResult, req)
-	if err != nil {
-		return nil, err
+	if !server.PagerResponderMore(newListPager) {
+		r.newListPager.remove(req)
 	}
 	return resp, nil
 }
@@ -605,39 +686,6 @@ func (r *RegistriesServerTransport) dispatchNewListPrivateLinkResourcesPager(req
 	return resp, nil
 }
 
-func (r *RegistriesServerTransport) dispatchListUsages(req *http.Request) (*http.Response, error) {
-	if r.srv.ListUsages == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListUsages not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerRegistry/registries/(?P<registryName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listUsages`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	registryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := r.srv.ListUsages(req.Context(), resourceGroupNameParam, registryNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RegistryUsageListResult, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (r *RegistriesServerTransport) dispatchRegenerateCredential(req *http.Request) (*http.Response, error) {
 	if r.srv.RegenerateCredential == nil {
 		return nil, &nonRetriableError{errors.New("fake for method RegenerateCredential not implemented")}
@@ -672,54 +720,6 @@ func (r *RegistriesServerTransport) dispatchRegenerateCredential(req *http.Reque
 	if err != nil {
 		return nil, err
 	}
-	return resp, nil
-}
-
-func (r *RegistriesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if r.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := r.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerRegistry/registries/(?P<registryName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcontainerregistry.RegistryUpdateParameters](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		registryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := r.srv.BeginUpdate(req.Context(), resourceGroupNameParam, registryNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		r.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
-		r.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		r.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

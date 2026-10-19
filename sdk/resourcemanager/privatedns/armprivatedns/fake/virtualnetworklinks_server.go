@@ -30,6 +30,10 @@ type VirtualNetworkLinksServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, privateZoneName string, virtualNetworkLinkName string, options *armprivatedns.VirtualNetworkLinksClientBeginDeleteOptions) (resp azfake.PollerResponder[armprivatedns.VirtualNetworkLinksClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method VirtualNetworkLinksClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, privateZoneName string, virtualNetworkLinkName string, parameters armprivatedns.VirtualNetworkLink, options *armprivatedns.VirtualNetworkLinksClientBeginUpdateOptions) (resp azfake.PollerResponder[armprivatedns.VirtualNetworkLinksClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method VirtualNetworkLinksClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, privateZoneName string, virtualNetworkLinkName string, options *armprivatedns.VirtualNetworkLinksClientGetOptions) (resp azfake.Responder[armprivatedns.VirtualNetworkLinksClientGetResponse], errResp azfake.ErrorResponder)
@@ -37,10 +41,6 @@ type VirtualNetworkLinksServer struct {
 	// NewListPager is the fake for method VirtualNetworkLinksClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(resourceGroupName string, privateZoneName string, options *armprivatedns.VirtualNetworkLinksClientListOptions) (resp azfake.PagerResponder[armprivatedns.VirtualNetworkLinksClientListResponse])
-
-	// BeginUpdate is the fake for method VirtualNetworkLinksClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, privateZoneName string, virtualNetworkLinkName string, parameters armprivatedns.VirtualNetworkLink, options *armprivatedns.VirtualNetworkLinksClientBeginUpdateOptions) (resp azfake.PollerResponder[armprivatedns.VirtualNetworkLinksClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewVirtualNetworkLinksServerTransport creates a new instance of VirtualNetworkLinksServerTransport with the provided implementation.
@@ -51,8 +51,8 @@ func NewVirtualNetworkLinksServerTransport(srv *VirtualNetworkLinksServer) *Virt
 		srv:                 srv,
 		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armprivatedns.VirtualNetworkLinksClientCreateOrUpdateResponse]](),
 		beginDelete:         newTracker[azfake.PollerResponder[armprivatedns.VirtualNetworkLinksClientDeleteResponse]](),
-		newListPager:        newTracker[azfake.PagerResponder[armprivatedns.VirtualNetworkLinksClientListResponse]](),
 		beginUpdate:         newTracker[azfake.PollerResponder[armprivatedns.VirtualNetworkLinksClientUpdateResponse]](),
+		newListPager:        newTracker[azfake.PagerResponder[armprivatedns.VirtualNetworkLinksClientListResponse]](),
 	}
 }
 
@@ -62,8 +62,8 @@ type VirtualNetworkLinksServerTransport struct {
 	srv                 *VirtualNetworkLinksServer
 	beginCreateOrUpdate *tracker[azfake.PollerResponder[armprivatedns.VirtualNetworkLinksClientCreateOrUpdateResponse]]
 	beginDelete         *tracker[azfake.PollerResponder[armprivatedns.VirtualNetworkLinksClientDeleteResponse]]
-	newListPager        *tracker[azfake.PagerResponder[armprivatedns.VirtualNetworkLinksClientListResponse]]
 	beginUpdate         *tracker[azfake.PollerResponder[armprivatedns.VirtualNetworkLinksClientUpdateResponse]]
+	newListPager        *tracker[azfake.PagerResponder[armprivatedns.VirtualNetworkLinksClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for VirtualNetworkLinksServerTransport.
@@ -91,12 +91,12 @@ func (v *VirtualNetworkLinksServerTransport) dispatchToMethodFake(req *http.Requ
 				res.resp, res.err = v.dispatchBeginCreateOrUpdate(req)
 			case "VirtualNetworkLinksClient.BeginDelete":
 				res.resp, res.err = v.dispatchBeginDelete(req)
+			case "VirtualNetworkLinksClient.BeginUpdate":
+				res.resp, res.err = v.dispatchBeginUpdate(req)
 			case "VirtualNetworkLinksClient.Get":
 				res.resp, res.err = v.dispatchGet(req)
 			case "VirtualNetworkLinksClient.NewListPager":
 				res.resp, res.err = v.dispatchNewListPager(req)
-			case "VirtualNetworkLinksClient.BeginUpdate":
-				res.resp, res.err = v.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -229,6 +229,65 @@ func (v *VirtualNetworkLinksServerTransport) dispatchBeginDelete(req *http.Reque
 	return resp, nil
 }
 
+func (v *VirtualNetworkLinksServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if v.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := v.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/privateDnsZones/(?P<privateZoneName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/virtualNetworkLinks/(?P<virtualNetworkLinkName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armprivatedns.VirtualNetworkLink](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		privateZoneNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("privateZoneName")])
+		if err != nil {
+			return nil, err
+		}
+		virtualNetworkLinkNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("virtualNetworkLinkName")])
+		if err != nil {
+			return nil, err
+		}
+		ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
+		var options *armprivatedns.VirtualNetworkLinksClientBeginUpdateOptions
+		if ifMatchParam != nil {
+			options = &armprivatedns.VirtualNetworkLinksClientBeginUpdateOptions{
+				IfMatch: ifMatchParam,
+			}
+		}
+		respr, errRespr := v.srv.BeginUpdate(req.Context(), resourceGroupNameParam, privateZoneNameParam, virtualNetworkLinkNameParam, body, options)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		v.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		v.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		v.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (v *VirtualNetworkLinksServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if v.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -321,65 +380,6 @@ func (v *VirtualNetworkLinksServerTransport) dispatchNewListPager(req *http.Requ
 	if !server.PagerResponderMore(newListPager) {
 		v.newListPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (v *VirtualNetworkLinksServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if v.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := v.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/privateDnsZones/(?P<privateZoneName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/virtualNetworkLinks/(?P<virtualNetworkLinkName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armprivatedns.VirtualNetworkLink](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		privateZoneNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("privateZoneName")])
-		if err != nil {
-			return nil, err
-		}
-		virtualNetworkLinkNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("virtualNetworkLinkName")])
-		if err != nil {
-			return nil, err
-		}
-		ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
-		var options *armprivatedns.VirtualNetworkLinksClientBeginUpdateOptions
-		if ifMatchParam != nil {
-			options = &armprivatedns.VirtualNetworkLinksClientBeginUpdateOptions{
-				IfMatch: ifMatchParam,
-			}
-		}
-		respr, errRespr := v.srv.BeginUpdate(req.Context(), resourceGroupNameParam, privateZoneNameParam, virtualNetworkLinkNameParam, body, options)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		v.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		v.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		v.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

@@ -110,6 +110,152 @@ func (client *ScheduledActionsClient) attachResourcesHandleResponse(resp *http.R
 	return result, nil
 }
 
+// BeginCreateOrUpdate - Create a ScheduledAction
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - scheduledActionName - The name of the ScheduledAction
+//   - resource - Resource create parameters.
+//   - options - ScheduledActionsClientBeginCreateOrUpdateOptions contains the optional parameters for the ScheduledActionsClient.BeginCreateOrUpdate
+//     method.
+func (client *ScheduledActionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, scheduledActionName string, resource ScheduledAction, options *ScheduledActionsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ScheduledActionsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, scheduledActionName, resource, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ScheduledActionsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ScheduledActionsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// createOrUpdate - Create a ScheduledAction
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ScheduledActionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, scheduledActionName string, resource ScheduledAction, options *ScheduledActionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ScheduledActionsClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, scheduledActionName, resource, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// createOrUpdateCreateRequest creates the createOrUpdate request.
+func (client *ScheduledActionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, scheduledActionName string, resource ScheduledAction, _ *ScheduledActionsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ComputeSchedule/scheduledActions/{scheduledActionName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if scheduledActionName == "" {
+		return nil, errors.New("parameter scheduledActionName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{scheduledActionName}", url.PathEscape(scheduledActionName))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260415Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, resource); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginDelete - Delete a ScheduledAction
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - scheduledActionName - The name of the ScheduledAction
+//   - options - ScheduledActionsClientBeginDeleteOptions contains the optional parameters for the ScheduledActionsClient.BeginDelete
+//     method.
+func (client *ScheduledActionsClient) BeginDelete(ctx context.Context, resourceGroupName string, scheduledActionName string, options *ScheduledActionsClientBeginDeleteOptions) (*runtime.Poller[ScheduledActionsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, scheduledActionName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ScheduledActionsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ScheduledActionsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// deleteOperation - Delete a ScheduledAction
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ScheduledActionsClient) deleteOperation(ctx context.Context, resourceGroupName string, scheduledActionName string, options *ScheduledActionsClientBeginDeleteOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ScheduledActionsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, scheduledActionName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// deleteCreateRequest creates the delete request.
+func (client *ScheduledActionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, scheduledActionName string, _ *ScheduledActionsClientBeginDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ComputeSchedule/scheduledActions/{scheduledActionName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if scheduledActionName == "" {
+		return nil, errors.New("parameter scheduledActionName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{scheduledActionName}", url.PathEscape(scheduledActionName))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260415Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
 // CancelNextOccurrence - A synchronous resource action.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -174,152 +320,6 @@ func (client *ScheduledActionsClient) cancelNextOccurrenceHandleResponse(resp *h
 		return ScheduledActionsClientCancelNextOccurrenceResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginCreateOrUpdate - Create a ScheduledAction
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - scheduledActionName - The name of the ScheduledAction
-//   - resource - Resource create parameters.
-//   - options - ScheduledActionsClientBeginCreateOrUpdateOptions contains the optional parameters for the ScheduledActionsClient.BeginCreateOrUpdate
-//     method.
-func (client *ScheduledActionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, scheduledActionName string, resource ScheduledAction, options *ScheduledActionsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ScheduledActionsClientCreateOrUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.createOrUpdate(ctx, resourceGroupName, scheduledActionName, resource, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ScheduledActionsClientCreateOrUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ScheduledActionsClientCreateOrUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// CreateOrUpdate - Create a ScheduledAction
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ScheduledActionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, scheduledActionName string, resource ScheduledAction, options *ScheduledActionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ScheduledActionsClient.BeginCreateOrUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, scheduledActionName, resource, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ScheduledActionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, scheduledActionName string, resource ScheduledAction, _ *ScheduledActionsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ComputeSchedule/scheduledActions/{scheduledActionName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if scheduledActionName == "" {
-		return nil, errors.New("parameter scheduledActionName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{scheduledActionName}", url.PathEscape(scheduledActionName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260415Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, resource); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginDelete - Delete a ScheduledAction
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - scheduledActionName - The name of the ScheduledAction
-//   - options - ScheduledActionsClientBeginDeleteOptions contains the optional parameters for the ScheduledActionsClient.BeginDelete
-//     method.
-func (client *ScheduledActionsClient) BeginDelete(ctx context.Context, resourceGroupName string, scheduledActionName string, options *ScheduledActionsClientBeginDeleteOptions) (*runtime.Poller[ScheduledActionsClientDeleteResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, scheduledActionName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ScheduledActionsClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ScheduledActionsClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Delete - Delete a ScheduledAction
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ScheduledActionsClient) deleteOperation(ctx context.Context, resourceGroupName string, scheduledActionName string, options *ScheduledActionsClientBeginDeleteOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ScheduledActionsClient.BeginDelete"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, scheduledActionName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// deleteCreateRequest creates the Delete request.
-func (client *ScheduledActionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, scheduledActionName string, _ *ScheduledActionsClientBeginDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ComputeSchedule/scheduledActions/{scheduledActionName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if scheduledActionName == "" {
-		return nil, errors.New("parameter scheduledActionName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{scheduledActionName}", url.PathEscape(scheduledActionName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260415Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
 }
 
 // DetachResources - A synchronous resource action.

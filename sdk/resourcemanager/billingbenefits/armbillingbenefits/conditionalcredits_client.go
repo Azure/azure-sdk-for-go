@@ -68,7 +68,7 @@ func (client *ConditionalCreditsClient) BeginCancel(ctx context.Context, resourc
 	}
 }
 
-// Cancel - Cancel conditional credit. Stops applying the benefit.
+// cancel - Cancel conditional credit. Stops applying the benefit.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ConditionalCreditsClient) cancel(ctx context.Context, resourceGroupName string, conditionalCreditName string, options *ConditionalCreditsClientBeginCancelOptions) (*http.Response, error) {
 	var err error
@@ -90,7 +90,7 @@ func (client *ConditionalCreditsClient) cancel(ctx context.Context, resourceGrou
 	return httpResp, nil
 }
 
-// cancelCreateRequest creates the Cancel request.
+// cancelCreateRequest creates the cancel request.
 func (client *ConditionalCreditsClient) cancelCreateRequest(ctx context.Context, resourceGroupName string, conditionalCreditName string, _ *ConditionalCreditsClientBeginCancelOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BillingBenefits/conditionalCredits/{conditionalCreditName}/cancel"
 	if client.subscriptionID == "" {
@@ -140,7 +140,7 @@ func (client *ConditionalCreditsClient) BeginCreateOrUpdate(ctx context.Context,
 	}
 }
 
-// CreateOrUpdate - Create or update a conditional credit.
+// createOrUpdate - Create or update a conditional credit.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ConditionalCreditsClient) createOrUpdate(ctx context.Context, resourceGroupName string, conditionalCreditName string, body ConditionalCredit, options *ConditionalCreditsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -162,7 +162,7 @@ func (client *ConditionalCreditsClient) createOrUpdate(ctx context.Context, reso
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ConditionalCreditsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, conditionalCreditName string, body ConditionalCredit, _ *ConditionalCreditsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BillingBenefits/conditionalCredits/{conditionalCreditName}"
 	if client.subscriptionID == "" {
@@ -216,7 +216,7 @@ func (client *ConditionalCreditsClient) BeginDelete(ctx context.Context, resourc
 	}
 }
 
-// Delete - Delete a conditional credit.
+// deleteOperation - Delete a conditional credit.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ConditionalCreditsClient) deleteOperation(ctx context.Context, resourceGroupName string, conditionalCreditName string, options *ConditionalCreditsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -238,7 +238,7 @@ func (client *ConditionalCreditsClient) deleteOperation(ctx context.Context, res
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ConditionalCreditsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, conditionalCreditName string, _ *ConditionalCreditsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BillingBenefits/conditionalCredits/{conditionalCreditName}"
 	if client.subscriptionID == "" {
@@ -260,6 +260,82 @@ func (client *ConditionalCreditsClient) deleteCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20251201Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - Update a conditional credit.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - conditionalCreditName - Name of the conditional credit
+//   - body - Request body for updating a conditional credit
+//   - options - ConditionalCreditsClientBeginUpdateOptions contains the optional parameters for the ConditionalCreditsClient.BeginUpdate
+//     method.
+func (client *ConditionalCreditsClient) BeginUpdate(ctx context.Context, resourceGroupName string, conditionalCreditName string, body ConditionalCreditPatchRequest, options *ConditionalCreditsClientBeginUpdateOptions) (*runtime.Poller[ConditionalCreditsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, conditionalCreditName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ConditionalCreditsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ConditionalCreditsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update a conditional credit.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ConditionalCreditsClient) update(ctx context.Context, resourceGroupName string, conditionalCreditName string, body ConditionalCreditPatchRequest, options *ConditionalCreditsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ConditionalCreditsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, conditionalCreditName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *ConditionalCreditsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, conditionalCreditName string, body ConditionalCreditPatchRequest, _ *ConditionalCreditsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BillingBenefits/conditionalCredits/{conditionalCreditName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if conditionalCreditName == "" {
+		return nil, errors.New("parameter conditionalCreditName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{conditionalCreditName}", url.PathEscape(conditionalCreditName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20251201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -529,80 +605,4 @@ func (client *ConditionalCreditsClient) scopeListHandleResponse(resp *http.Respo
 		return ConditionalCreditsClientScopeListResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Update a conditional credit.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - conditionalCreditName - Name of the conditional credit
-//   - body - Request body for updating a conditional credit
-//   - options - ConditionalCreditsClientBeginUpdateOptions contains the optional parameters for the ConditionalCreditsClient.BeginUpdate
-//     method.
-func (client *ConditionalCreditsClient) BeginUpdate(ctx context.Context, resourceGroupName string, conditionalCreditName string, body ConditionalCreditPatchRequest, options *ConditionalCreditsClientBeginUpdateOptions) (*runtime.Poller[ConditionalCreditsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, conditionalCreditName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ConditionalCreditsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ConditionalCreditsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update a conditional credit.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ConditionalCreditsClient) update(ctx context.Context, resourceGroupName string, conditionalCreditName string, body ConditionalCreditPatchRequest, options *ConditionalCreditsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ConditionalCreditsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, conditionalCreditName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *ConditionalCreditsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, conditionalCreditName string, body ConditionalCreditPatchRequest, _ *ConditionalCreditsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BillingBenefits/conditionalCredits/{conditionalCreditName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if conditionalCreditName == "" {
-		return nil, errors.New("parameter conditionalCreditName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{conditionalCreditName}", url.PathEscape(conditionalCreditName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251201Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

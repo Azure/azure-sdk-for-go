@@ -30,6 +30,10 @@ type AddressesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, addressName string, options *armedgeorder.AddressesClientBeginDeleteOptions) (resp azfake.PollerResponder[armedgeorder.AddressesClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method AddressesClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, addressName string, addressUpdateParameter armedgeorder.AddressUpdateParameter, options *armedgeorder.AddressesClientBeginUpdateOptions) (resp azfake.PollerResponder[armedgeorder.AddressesClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method AddressesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, addressName string, options *armedgeorder.AddressesClientGetOptions) (resp azfake.Responder[armedgeorder.AddressesClientGetResponse], errResp azfake.ErrorResponder)
@@ -41,10 +45,6 @@ type AddressesServer struct {
 	// NewListBySubscriptionPager is the fake for method AddressesClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armedgeorder.AddressesClientListBySubscriptionOptions) (resp azfake.PagerResponder[armedgeorder.AddressesClientListBySubscriptionResponse])
-
-	// BeginUpdate is the fake for method AddressesClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, addressName string, addressUpdateParameter armedgeorder.AddressUpdateParameter, options *armedgeorder.AddressesClientBeginUpdateOptions) (resp azfake.PollerResponder[armedgeorder.AddressesClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewAddressesServerTransport creates a new instance of AddressesServerTransport with the provided implementation.
@@ -55,9 +55,9 @@ func NewAddressesServerTransport(srv *AddressesServer) *AddressesServerTransport
 		srv:                         srv,
 		beginCreate:                 newTracker[azfake.PollerResponder[armedgeorder.AddressesClientCreateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armedgeorder.AddressesClientDeleteResponse]](),
+		beginUpdate:                 newTracker[azfake.PollerResponder[armedgeorder.AddressesClientUpdateResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armedgeorder.AddressesClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armedgeorder.AddressesClientListBySubscriptionResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armedgeorder.AddressesClientUpdateResponse]](),
 	}
 }
 
@@ -67,9 +67,9 @@ type AddressesServerTransport struct {
 	srv                         *AddressesServer
 	beginCreate                 *tracker[azfake.PollerResponder[armedgeorder.AddressesClientCreateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armedgeorder.AddressesClientDeleteResponse]]
+	beginUpdate                 *tracker[azfake.PollerResponder[armedgeorder.AddressesClientUpdateResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armedgeorder.AddressesClientListByResourceGroupResponse]]
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armedgeorder.AddressesClientListBySubscriptionResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armedgeorder.AddressesClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for AddressesServerTransport.
@@ -97,14 +97,14 @@ func (a *AddressesServerTransport) dispatchToMethodFake(req *http.Request, metho
 				res.resp, res.err = a.dispatchBeginCreate(req)
 			case "AddressesClient.BeginDelete":
 				res.resp, res.err = a.dispatchBeginDelete(req)
+			case "AddressesClient.BeginUpdate":
+				res.resp, res.err = a.dispatchBeginUpdate(req)
 			case "AddressesClient.Get":
 				res.resp, res.err = a.dispatchGet(req)
 			case "AddressesClient.NewListByResourceGroupPager":
 				res.resp, res.err = a.dispatchNewListByResourceGroupPager(req)
 			case "AddressesClient.NewListBySubscriptionPager":
 				res.resp, res.err = a.dispatchNewListBySubscriptionPager(req)
-			case "AddressesClient.BeginUpdate":
-				res.resp, res.err = a.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -208,6 +208,61 @@ func (a *AddressesServerTransport) dispatchBeginDelete(req *http.Request) (*http
 	}
 	if !server.PollerResponderMore(beginDelete) {
 		a.beginDelete.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (a *AddressesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if a.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := a.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EdgeOrder/addresses/(?P<addressName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armedgeorder.AddressUpdateParameter](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		addressNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("addressName")])
+		if err != nil {
+			return nil, err
+		}
+		ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
+		var options *armedgeorder.AddressesClientBeginUpdateOptions
+		if ifMatchParam != nil {
+			options = &armedgeorder.AddressesClientBeginUpdateOptions{
+				IfMatch: ifMatchParam,
+			}
+		}
+		respr, errRespr := a.srv.BeginUpdate(req.Context(), resourceGroupNameParam, addressNameParam, body, options)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		a.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		a.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		a.beginUpdate.remove(req)
 	}
 
 	return resp, nil
@@ -355,61 +410,6 @@ func (a *AddressesServerTransport) dispatchNewListBySubscriptionPager(req *http.
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		a.newListBySubscriptionPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (a *AddressesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if a.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := a.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EdgeOrder/addresses/(?P<addressName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armedgeorder.AddressUpdateParameter](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		addressNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("addressName")])
-		if err != nil {
-			return nil, err
-		}
-		ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
-		var options *armedgeorder.AddressesClientBeginUpdateOptions
-		if ifMatchParam != nil {
-			options = &armedgeorder.AddressesClientBeginUpdateOptions{
-				IfMatch: ifMatchParam,
-			}
-		}
-		respr, errRespr := a.srv.BeginUpdate(req.Context(), resourceGroupNameParam, addressNameParam, body, options)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		a.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		a.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		a.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

@@ -226,77 +226,6 @@ func (client *CertificatesClient) getHandleResponse(resp *http.Response, success
 	return result, nil
 }
 
-// NewListPager - Get all certificates for a subscription.
-//
-// Description for Get all certificates for a subscription.
-//   - options - CertificatesClientListOptions contains the optional parameters for the CertificatesClient.NewListPager method.
-func (client *CertificatesClient) NewListPager(options *CertificatesClientListOptions) *runtime.Pager[CertificatesClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[CertificatesClientListResponse]{
-		More: func(page CertificatesClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *CertificatesClientListResponse) (CertificatesClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CertificatesClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listCreateRequest(ctx, nextLink, options)
-			if err != nil {
-				return CertificatesClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return CertificatesClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *CertificatesClient) listCreateRequest(ctx context.Context, nextLink string, options *CertificatesClientListOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Web/certificates"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		if options != nil && options.Filter != nil {
-			reqQP.Set("$filter", *options.Filter)
-		}
-		reqQP.Set("api-version", version20250501)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *CertificatesClient) listHandleResponse(resp *http.Response, successCodes ...int) (CertificatesClientListResponse, error) {
-	result := CertificatesClientListResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.AppCertificateCollection); err != nil {
-		return CertificatesClientListResponse{}, err
-	}
-	return result, nil
-}
-
 // NewListByResourceGroupPager - Get all certificates in a resource group.
 //
 // Description for Get all certificates in a resource group.
@@ -367,6 +296,77 @@ func (client *CertificatesClient) listByResourceGroupHandleResponse(resp *http.R
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AppCertificateCollection); err != nil {
 		return CertificatesClientListByResourceGroupResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListPager - Get all certificates for a subscription.
+//
+// Description for Get all certificates for a subscription.
+//   - options - CertificatesClientListOptions contains the optional parameters for the CertificatesClient.NewListPager method.
+func (client *CertificatesClient) NewListPager(options *CertificatesClientListOptions) *runtime.Pager[CertificatesClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[CertificatesClientListResponse]{
+		More: func(page CertificatesClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *CertificatesClientListResponse) (CertificatesClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CertificatesClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return CertificatesClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return CertificatesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listCreateRequest creates the List request.
+func (client *CertificatesClient) listCreateRequest(ctx context.Context, nextLink string, options *CertificatesClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Web/certificates"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listHandleResponse handles the List response.
+func (client *CertificatesClient) listHandleResponse(resp *http.Response, successCodes ...int) (CertificatesClientListResponse, error) {
+	result := CertificatesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AppCertificateCollection); err != nil {
+		return CertificatesClientListResponse{}, err
 	}
 	return result, nil
 }

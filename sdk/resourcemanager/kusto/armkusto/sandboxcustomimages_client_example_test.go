@@ -12,36 +12,6 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-02-14/KustoSandboxCustomImagesCheckNameAvailability.json
-func ExampleSandboxCustomImagesClient_CheckNameAvailability() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armkusto.NewClientFactory("12345678-1234-1234-1234-123456789098", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewSandboxCustomImagesClient().CheckNameAvailability(ctx, "kustorptest", "kustoCluster", armkusto.SandboxCustomImagesCheckNameRequest{
-		Name: to.Ptr("sandboxCustomImage1"),
-		Type: to.Ptr("Microsoft.Kusto/clusters/sandboxCustomImages"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armkusto.SandboxCustomImagesClientCheckNameAvailabilityResponse{
-	// 	CheckNameResult: armkusto.CheckNameResult{
-	// 		Name: to.Ptr("sandboxCustomImage1"),
-	// 		Message: to.Ptr("Name 'sandboxCustomImage1' is already taken. Please specify a different name"),
-	// 		NameAvailable: to.Ptr(false),
-	// 	},
-	// }
-}
-
 // Generated from example definition: 2025-02-14/KustoSandboxCustomImagesCreateOrUpdate.json
 func ExampleSandboxCustomImagesClient_BeginCreateOrUpdate_kustoSandboxCustomImagesCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -197,6 +167,79 @@ func ExampleSandboxCustomImagesClient_BeginDelete() {
 	// }
 }
 
+// Generated from example definition: 2025-02-14/KustoSandboxCustomImageUpdate.json
+func ExampleSandboxCustomImagesClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armkusto.NewClientFactory("12345678-1234-1234-1234-123456789098", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewSandboxCustomImagesClient().BeginUpdate(ctx, "kustorptest", "kustoCluster", "customImage8", armkusto.SandboxCustomImage{
+		Properties: &armkusto.SandboxCustomImageProperties{
+			LanguageVersion:         to.Ptr("3.10.8"),
+			RequirementsFileContent: to.Ptr("Requests"),
+			Language:                to.Ptr(armkusto.LanguagePython),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armkusto.SandboxCustomImagesClientUpdateResponse{
+	// 	SandboxCustomImage: armkusto.SandboxCustomImage{
+	// 		Name: to.Ptr("kustoCluster/customImage8"),
+	// 		Type: to.Ptr("Microsoft.Kusto/Clusters/SandboxCustomImages"),
+	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Kusto/Clusters/kustoCluster/SandboxCustomImages/customImage8"),
+	// 		Properties: &armkusto.SandboxCustomImageProperties{
+	// 			LanguageVersion: to.Ptr("3.10.8"),
+	// 			ProvisioningState: to.Ptr(armkusto.ProvisioningState("Accepted")),
+	// 			RequirementsFileContent: to.Ptr("Requests"),
+	// 			Language: to.Ptr(armkusto.LanguagePython),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-02-14/KustoSandboxCustomImagesCheckNameAvailability.json
+func ExampleSandboxCustomImagesClient_CheckNameAvailability() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armkusto.NewClientFactory("12345678-1234-1234-1234-123456789098", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewSandboxCustomImagesClient().CheckNameAvailability(ctx, "kustorptest", "kustoCluster", armkusto.SandboxCustomImagesCheckNameRequest{
+		Name: to.Ptr("sandboxCustomImage1"),
+		Type: to.Ptr("Microsoft.Kusto/clusters/sandboxCustomImages"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armkusto.SandboxCustomImagesClientCheckNameAvailabilityResponse{
+	// 	CheckNameResult: armkusto.CheckNameResult{
+	// 		Name: to.Ptr("sandboxCustomImage1"),
+	// 		Message: to.Ptr("Name 'sandboxCustomImage1' is already taken. Please specify a different name"),
+	// 		NameAvailable: to.Ptr(false),
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2025-02-14/KustoSandboxCustomImagesGet.json
 func ExampleSandboxCustomImagesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -281,47 +324,4 @@ func ExampleSandboxCustomImagesClient_NewListByClusterPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2025-02-14/KustoSandboxCustomImageUpdate.json
-func ExampleSandboxCustomImagesClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armkusto.NewClientFactory("12345678-1234-1234-1234-123456789098", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewSandboxCustomImagesClient().BeginUpdate(ctx, "kustorptest", "kustoCluster", "customImage8", armkusto.SandboxCustomImage{
-		Properties: &armkusto.SandboxCustomImageProperties{
-			LanguageVersion:         to.Ptr("3.10.8"),
-			RequirementsFileContent: to.Ptr("Requests"),
-			Language:                to.Ptr(armkusto.LanguagePython),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armkusto.SandboxCustomImagesClientUpdateResponse{
-	// 	SandboxCustomImage: armkusto.SandboxCustomImage{
-	// 		Name: to.Ptr("kustoCluster/customImage8"),
-	// 		Type: to.Ptr("Microsoft.Kusto/Clusters/SandboxCustomImages"),
-	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Kusto/Clusters/kustoCluster/SandboxCustomImages/customImage8"),
-	// 		Properties: &armkusto.SandboxCustomImageProperties{
-	// 			LanguageVersion: to.Ptr("3.10.8"),
-	// 			ProvisioningState: to.Ptr(armkusto.ProvisioningState("Accepted")),
-	// 			RequirementsFileContent: to.Ptr("Requests"),
-	// 			Language: to.Ptr(armkusto.LanguagePython),
-	// 		},
-	// 	},
-	// }
 }

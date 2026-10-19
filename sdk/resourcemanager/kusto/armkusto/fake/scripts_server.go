@@ -21,10 +21,6 @@ import (
 
 // ScriptsServer is a fake server for instances of the armkusto.ScriptsClient type.
 type ScriptsServer struct {
-	// CheckNameAvailability is the fake for method ScriptsClient.CheckNameAvailability
-	// HTTP status codes to indicate success: http.StatusOK
-	CheckNameAvailability func(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, scriptName armkusto.ScriptCheckNameRequest, options *armkusto.ScriptsClientCheckNameAvailabilityOptions) (resp azfake.Responder[armkusto.ScriptsClientCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
-
 	// BeginCreateOrUpdate is the fake for method ScriptsClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated, http.StatusAccepted
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, scriptName string, parameters armkusto.Script, options *armkusto.ScriptsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armkusto.ScriptsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -33,6 +29,14 @@ type ScriptsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, scriptName string, options *armkusto.ScriptsClientBeginDeleteOptions) (resp azfake.PollerResponder[armkusto.ScriptsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method ScriptsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, scriptName string, parameters armkusto.Script, options *armkusto.ScriptsClientBeginUpdateOptions) (resp azfake.PollerResponder[armkusto.ScriptsClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// CheckNameAvailability is the fake for method ScriptsClient.CheckNameAvailability
+	// HTTP status codes to indicate success: http.StatusOK
+	CheckNameAvailability func(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, scriptName armkusto.ScriptCheckNameRequest, options *armkusto.ScriptsClientCheckNameAvailabilityOptions) (resp azfake.Responder[armkusto.ScriptsClientCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method ScriptsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, scriptName string, options *armkusto.ScriptsClientGetOptions) (resp azfake.Responder[armkusto.ScriptsClientGetResponse], errResp azfake.ErrorResponder)
@@ -40,10 +44,6 @@ type ScriptsServer struct {
 	// NewListByDatabasePager is the fake for method ScriptsClient.NewListByDatabasePager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByDatabasePager func(resourceGroupName string, clusterName string, databaseName string, options *armkusto.ScriptsClientListByDatabaseOptions) (resp azfake.PagerResponder[armkusto.ScriptsClientListByDatabaseResponse])
-
-	// BeginUpdate is the fake for method ScriptsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, scriptName string, parameters armkusto.Script, options *armkusto.ScriptsClientBeginUpdateOptions) (resp azfake.PollerResponder[armkusto.ScriptsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewScriptsServerTransport creates a new instance of ScriptsServerTransport with the provided implementation.
@@ -54,8 +54,8 @@ func NewScriptsServerTransport(srv *ScriptsServer) *ScriptsServerTransport {
 		srv:                    srv,
 		beginCreateOrUpdate:    newTracker[azfake.PollerResponder[armkusto.ScriptsClientCreateOrUpdateResponse]](),
 		beginDelete:            newTracker[azfake.PollerResponder[armkusto.ScriptsClientDeleteResponse]](),
-		newListByDatabasePager: newTracker[azfake.PagerResponder[armkusto.ScriptsClientListByDatabaseResponse]](),
 		beginUpdate:            newTracker[azfake.PollerResponder[armkusto.ScriptsClientUpdateResponse]](),
+		newListByDatabasePager: newTracker[azfake.PagerResponder[armkusto.ScriptsClientListByDatabaseResponse]](),
 	}
 }
 
@@ -65,8 +65,8 @@ type ScriptsServerTransport struct {
 	srv                    *ScriptsServer
 	beginCreateOrUpdate    *tracker[azfake.PollerResponder[armkusto.ScriptsClientCreateOrUpdateResponse]]
 	beginDelete            *tracker[azfake.PollerResponder[armkusto.ScriptsClientDeleteResponse]]
-	newListByDatabasePager *tracker[azfake.PagerResponder[armkusto.ScriptsClientListByDatabaseResponse]]
 	beginUpdate            *tracker[azfake.PollerResponder[armkusto.ScriptsClientUpdateResponse]]
+	newListByDatabasePager *tracker[azfake.PagerResponder[armkusto.ScriptsClientListByDatabaseResponse]]
 }
 
 // Do implements the policy.Transporter interface for ScriptsServerTransport.
@@ -90,18 +90,18 @@ func (s *ScriptsServerTransport) dispatchToMethodFake(req *http.Request, method 
 		}
 		if !intercepted {
 			switch method {
-			case "ScriptsClient.CheckNameAvailability":
-				res.resp, res.err = s.dispatchCheckNameAvailability(req)
 			case "ScriptsClient.BeginCreateOrUpdate":
 				res.resp, res.err = s.dispatchBeginCreateOrUpdate(req)
 			case "ScriptsClient.BeginDelete":
 				res.resp, res.err = s.dispatchBeginDelete(req)
+			case "ScriptsClient.BeginUpdate":
+				res.resp, res.err = s.dispatchBeginUpdate(req)
+			case "ScriptsClient.CheckNameAvailability":
+				res.resp, res.err = s.dispatchCheckNameAvailability(req)
 			case "ScriptsClient.Get":
 				res.resp, res.err = s.dispatchGet(req)
 			case "ScriptsClient.NewListByDatabasePager":
 				res.resp, res.err = s.dispatchNewListByDatabasePager(req)
-			case "ScriptsClient.BeginUpdate":
-				res.resp, res.err = s.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -116,47 +116,6 @@ func (s *ScriptsServerTransport) dispatchToMethodFake(req *http.Request, method 
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (s *ScriptsServerTransport) dispatchCheckNameAvailability(req *http.Request) (*http.Response, error) {
-	if s.srv.CheckNameAvailability == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CheckNameAvailability not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Kusto/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/scriptsCheckNameAvailability`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armkusto.ScriptCheckNameRequest](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
-	if err != nil {
-		return nil, err
-	}
-	databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := s.srv.CheckNameAvailability(req.Context(), resourceGroupNameParam, clusterNameParam, databaseNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CheckNameResult, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (s *ScriptsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -267,6 +226,103 @@ func (s *ScriptsServerTransport) dispatchBeginDelete(req *http.Request) (*http.R
 	return resp, nil
 }
 
+func (s *ScriptsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if s.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := s.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Kusto/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/scripts/(?P<scriptName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 6 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armkusto.Script](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
+		if err != nil {
+			return nil, err
+		}
+		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
+		if err != nil {
+			return nil, err
+		}
+		scriptNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("scriptName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := s.srv.BeginUpdate(req.Context(), resourceGroupNameParam, clusterNameParam, databaseNameParam, scriptNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		s.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		s.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		s.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (s *ScriptsServerTransport) dispatchCheckNameAvailability(req *http.Request) (*http.Response, error) {
+	if s.srv.CheckNameAvailability == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CheckNameAvailability not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Kusto/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/scriptsCheckNameAvailability`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armkusto.ScriptCheckNameRequest](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
+	if err != nil {
+		return nil, err
+	}
+	databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.CheckNameAvailability(req.Context(), resourceGroupNameParam, clusterNameParam, databaseNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CheckNameResult, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (s *ScriptsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if s.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -350,62 +406,6 @@ func (s *ScriptsServerTransport) dispatchNewListByDatabasePager(req *http.Reques
 	if !server.PagerResponderMore(newListByDatabasePager) {
 		s.newListByDatabasePager.remove(req)
 	}
-	return resp, nil
-}
-
-func (s *ScriptsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if s.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := s.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Kusto/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/scripts/(?P<scriptName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 6 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armkusto.Script](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
-		if err != nil {
-			return nil, err
-		}
-		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
-		if err != nil {
-			return nil, err
-		}
-		scriptNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("scriptName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := s.srv.BeginUpdate(req.Context(), resourceGroupNameParam, clusterNameParam, databaseNameParam, scriptNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		s.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		s.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		s.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

@@ -69,7 +69,7 @@ func (client *FqdnListLocalRulestackClient) BeginCreateOrUpdate(ctx context.Cont
 	}
 }
 
-// CreateOrUpdate - Create a FqdnListLocalRulestackResource
+// createOrUpdate - Create a FqdnListLocalRulestackResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *FqdnListLocalRulestackClient) createOrUpdate(ctx context.Context, resourceGroupName string, localRulestackName string, name string, resource FqdnListLocalRulestackResource, options *FqdnListLocalRulestackClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *FqdnListLocalRulestackClient) createOrUpdate(ctx context.Context, 
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *FqdnListLocalRulestackClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, localRulestackName string, name string, resource FqdnListLocalRulestackResource, _ *FqdnListLocalRulestackClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/fqdnlists/{name}"
 	if client.subscriptionID == "" {
@@ -149,7 +149,7 @@ func (client *FqdnListLocalRulestackClient) BeginDelete(ctx context.Context, res
 	}
 }
 
-// Delete - Delete a FqdnListLocalRulestackResource
+// deleteOperation - Delete a FqdnListLocalRulestackResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *FqdnListLocalRulestackClient) deleteOperation(ctx context.Context, resourceGroupName string, localRulestackName string, name string, options *FqdnListLocalRulestackClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -171,7 +171,7 @@ func (client *FqdnListLocalRulestackClient) deleteOperation(ctx context.Context,
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *FqdnListLocalRulestackClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, localRulestackName string, name string, _ *FqdnListLocalRulestackClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/fqdnlists/{name}"
 	if client.subscriptionID == "" {

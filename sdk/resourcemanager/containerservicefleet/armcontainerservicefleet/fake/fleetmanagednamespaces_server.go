@@ -29,6 +29,10 @@ type FleetManagedNamespacesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, fleetName string, managedNamespaceName string, options *armcontainerservicefleet.FleetManagedNamespacesClientBeginDeleteOptions) (resp azfake.PollerResponder[armcontainerservicefleet.FleetManagedNamespacesClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method FleetManagedNamespacesClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, fleetName string, managedNamespaceName string, properties armcontainerservicefleet.FleetManagedNamespacePatch, options *armcontainerservicefleet.FleetManagedNamespacesClientBeginUpdateOptions) (resp azfake.PollerResponder[armcontainerservicefleet.FleetManagedNamespacesClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method FleetManagedNamespacesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, fleetName string, managedNamespaceName string, options *armcontainerservicefleet.FleetManagedNamespacesClientGetOptions) (resp azfake.Responder[armcontainerservicefleet.FleetManagedNamespacesClientGetResponse], errResp azfake.ErrorResponder)
@@ -36,10 +40,6 @@ type FleetManagedNamespacesServer struct {
 	// NewListByFleetPager is the fake for method FleetManagedNamespacesClient.NewListByFleetPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByFleetPager func(resourceGroupName string, fleetName string, options *armcontainerservicefleet.FleetManagedNamespacesClientListByFleetOptions) (resp azfake.PagerResponder[armcontainerservicefleet.FleetManagedNamespacesClientListByFleetResponse])
-
-	// BeginUpdate is the fake for method FleetManagedNamespacesClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, fleetName string, managedNamespaceName string, properties armcontainerservicefleet.FleetManagedNamespacePatch, options *armcontainerservicefleet.FleetManagedNamespacesClientBeginUpdateOptions) (resp azfake.PollerResponder[armcontainerservicefleet.FleetManagedNamespacesClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewFleetManagedNamespacesServerTransport creates a new instance of FleetManagedNamespacesServerTransport with the provided implementation.
@@ -50,8 +50,8 @@ func NewFleetManagedNamespacesServerTransport(srv *FleetManagedNamespacesServer)
 		srv:                 srv,
 		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armcontainerservicefleet.FleetManagedNamespacesClientCreateOrUpdateResponse]](),
 		beginDelete:         newTracker[azfake.PollerResponder[armcontainerservicefleet.FleetManagedNamespacesClientDeleteResponse]](),
-		newListByFleetPager: newTracker[azfake.PagerResponder[armcontainerservicefleet.FleetManagedNamespacesClientListByFleetResponse]](),
 		beginUpdate:         newTracker[azfake.PollerResponder[armcontainerservicefleet.FleetManagedNamespacesClientUpdateResponse]](),
+		newListByFleetPager: newTracker[azfake.PagerResponder[armcontainerservicefleet.FleetManagedNamespacesClientListByFleetResponse]](),
 	}
 }
 
@@ -61,8 +61,8 @@ type FleetManagedNamespacesServerTransport struct {
 	srv                 *FleetManagedNamespacesServer
 	beginCreateOrUpdate *tracker[azfake.PollerResponder[armcontainerservicefleet.FleetManagedNamespacesClientCreateOrUpdateResponse]]
 	beginDelete         *tracker[azfake.PollerResponder[armcontainerservicefleet.FleetManagedNamespacesClientDeleteResponse]]
-	newListByFleetPager *tracker[azfake.PagerResponder[armcontainerservicefleet.FleetManagedNamespacesClientListByFleetResponse]]
 	beginUpdate         *tracker[azfake.PollerResponder[armcontainerservicefleet.FleetManagedNamespacesClientUpdateResponse]]
+	newListByFleetPager *tracker[azfake.PagerResponder[armcontainerservicefleet.FleetManagedNamespacesClientListByFleetResponse]]
 }
 
 // Do implements the policy.Transporter interface for FleetManagedNamespacesServerTransport.
@@ -90,12 +90,12 @@ func (f *FleetManagedNamespacesServerTransport) dispatchToMethodFake(req *http.R
 				res.resp, res.err = f.dispatchBeginCreateOrUpdate(req)
 			case "FleetManagedNamespacesClient.BeginDelete":
 				res.resp, res.err = f.dispatchBeginDelete(req)
+			case "FleetManagedNamespacesClient.BeginUpdate":
+				res.resp, res.err = f.dispatchBeginUpdate(req)
 			case "FleetManagedNamespacesClient.Get":
 				res.resp, res.err = f.dispatchGet(req)
 			case "FleetManagedNamespacesClient.NewListByFleetPager":
 				res.resp, res.err = f.dispatchNewListByFleetPager(req)
-			case "FleetManagedNamespacesClient.BeginUpdate":
-				res.resp, res.err = f.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -228,6 +228,65 @@ func (f *FleetManagedNamespacesServerTransport) dispatchBeginDelete(req *http.Re
 	return resp, nil
 }
 
+func (f *FleetManagedNamespacesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if f.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := f.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/fleets/(?P<fleetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/managedNamespaces/(?P<managedNamespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armcontainerservicefleet.FleetManagedNamespacePatch](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
+		fleetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("fleetName")])
+		if err != nil {
+			return nil, err
+		}
+		managedNamespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("managedNamespaceName")])
+		if err != nil {
+			return nil, err
+		}
+		var options *armcontainerservicefleet.FleetManagedNamespacesClientBeginUpdateOptions
+		if ifMatchParam != nil {
+			options = &armcontainerservicefleet.FleetManagedNamespacesClientBeginUpdateOptions{
+				IfMatch: ifMatchParam,
+			}
+		}
+		respr, errRespr := f.srv.BeginUpdate(req.Context(), resourceGroupNameParam, fleetNameParam, managedNamespaceNameParam, body, options)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		f.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		f.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		f.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (f *FleetManagedNamespacesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if f.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -303,65 +362,6 @@ func (f *FleetManagedNamespacesServerTransport) dispatchNewListByFleetPager(req 
 	if !server.PagerResponderMore(newListByFleetPager) {
 		f.newListByFleetPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (f *FleetManagedNamespacesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if f.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := f.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/fleets/(?P<fleetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/managedNamespaces/(?P<managedNamespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcontainerservicefleet.FleetManagedNamespacePatch](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
-		fleetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("fleetName")])
-		if err != nil {
-			return nil, err
-		}
-		managedNamespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("managedNamespaceName")])
-		if err != nil {
-			return nil, err
-		}
-		var options *armcontainerservicefleet.FleetManagedNamespacesClientBeginUpdateOptions
-		if ifMatchParam != nil {
-			options = &armcontainerservicefleet.FleetManagedNamespacesClientBeginUpdateOptions{
-				IfMatch: ifMatchParam,
-			}
-		}
-		respr, errRespr := f.srv.BeginUpdate(req.Context(), resourceGroupNameParam, fleetNameParam, managedNamespaceNameParam, body, options)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		f.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		f.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		f.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

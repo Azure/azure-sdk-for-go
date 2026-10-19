@@ -25,13 +25,13 @@ type WorkflowRunActionRepetitionsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, name string, workflowName string, runName string, actionName string, repetitionName string, options *armappservice.WorkflowRunActionRepetitionsClientGetOptions) (resp azfake.Responder[armappservice.WorkflowRunActionRepetitionsClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method WorkflowRunActionRepetitionsClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, name string, workflowName string, runName string, actionName string, options *armappservice.WorkflowRunActionRepetitionsClientListOptions) (resp azfake.PagerResponder[armappservice.WorkflowRunActionRepetitionsClientListResponse])
-
 	// NewListExpressionTracesPager is the fake for method WorkflowRunActionRepetitionsClient.NewListExpressionTracesPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListExpressionTracesPager func(resourceGroupName string, name string, workflowName string, runName string, actionName string, repetitionName string, options *armappservice.WorkflowRunActionRepetitionsClientListExpressionTracesOptions) (resp azfake.PagerResponder[armappservice.WorkflowRunActionRepetitionsClientListExpressionTracesResponse])
+
+	// NewListPager is the fake for method WorkflowRunActionRepetitionsClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(resourceGroupName string, name string, workflowName string, runName string, actionName string, options *armappservice.WorkflowRunActionRepetitionsClientListOptions) (resp azfake.PagerResponder[armappservice.WorkflowRunActionRepetitionsClientListResponse])
 }
 
 // NewWorkflowRunActionRepetitionsServerTransport creates a new instance of WorkflowRunActionRepetitionsServerTransport with the provided implementation.
@@ -40,8 +40,8 @@ type WorkflowRunActionRepetitionsServer struct {
 func NewWorkflowRunActionRepetitionsServerTransport(srv *WorkflowRunActionRepetitionsServer) *WorkflowRunActionRepetitionsServerTransport {
 	return &WorkflowRunActionRepetitionsServerTransport{
 		srv:                          srv,
-		newListPager:                 newTracker[azfake.PagerResponder[armappservice.WorkflowRunActionRepetitionsClientListResponse]](),
 		newListExpressionTracesPager: newTracker[azfake.PagerResponder[armappservice.WorkflowRunActionRepetitionsClientListExpressionTracesResponse]](),
+		newListPager:                 newTracker[azfake.PagerResponder[armappservice.WorkflowRunActionRepetitionsClientListResponse]](),
 	}
 }
 
@@ -49,8 +49,8 @@ func NewWorkflowRunActionRepetitionsServerTransport(srv *WorkflowRunActionRepeti
 // Don't use this type directly, use NewWorkflowRunActionRepetitionsServerTransport instead.
 type WorkflowRunActionRepetitionsServerTransport struct {
 	srv                          *WorkflowRunActionRepetitionsServer
-	newListPager                 *tracker[azfake.PagerResponder[armappservice.WorkflowRunActionRepetitionsClientListResponse]]
 	newListExpressionTracesPager *tracker[azfake.PagerResponder[armappservice.WorkflowRunActionRepetitionsClientListExpressionTracesResponse]]
+	newListPager                 *tracker[azfake.PagerResponder[armappservice.WorkflowRunActionRepetitionsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for WorkflowRunActionRepetitionsServerTransport.
@@ -76,10 +76,10 @@ func (w *WorkflowRunActionRepetitionsServerTransport) dispatchToMethodFake(req *
 			switch method {
 			case "WorkflowRunActionRepetitionsClient.Get":
 				res.resp, res.err = w.dispatchGet(req)
-			case "WorkflowRunActionRepetitionsClient.NewListPager":
-				res.resp, res.err = w.dispatchNewListPager(req)
 			case "WorkflowRunActionRepetitionsClient.NewListExpressionTracesPager":
 				res.resp, res.err = w.dispatchNewListExpressionTracesPager(req)
+			case "WorkflowRunActionRepetitionsClient.NewListPager":
+				res.resp, res.err = w.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -145,59 +145,6 @@ func (w *WorkflowRunActionRepetitionsServerTransport) dispatchGet(req *http.Requ
 	return resp, nil
 }
 
-func (w *WorkflowRunActionRepetitionsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if w.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := w.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/hostruntime/runtime/webhooks/workflow/api/management/workflows/(?P<workflowName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/runs/(?P<runName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/actions/(?P<actionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/repetitions`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 7 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
-		workflowNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workflowName")])
-		if err != nil {
-			return nil, err
-		}
-		runNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("runName")])
-		if err != nil {
-			return nil, err
-		}
-		actionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("actionName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := w.srv.NewListPager(resourceGroupNameParam, nameParam, workflowNameParam, runNameParam, actionNameParam, nil)
-		newListPager = &resp
-		w.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armappservice.WorkflowRunActionRepetitionsClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		w.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		w.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (w *WorkflowRunActionRepetitionsServerTransport) dispatchNewListExpressionTracesPager(req *http.Request) (*http.Response, error) {
 	if w.srv.NewListExpressionTracesPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListExpressionTracesPager not implemented")}
@@ -251,6 +198,59 @@ func (w *WorkflowRunActionRepetitionsServerTransport) dispatchNewListExpressionT
 	}
 	if !server.PagerResponderMore(newListExpressionTracesPager) {
 		w.newListExpressionTracesPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (w *WorkflowRunActionRepetitionsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if w.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := w.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/hostruntime/runtime/webhooks/workflow/api/management/workflows/(?P<workflowName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/runs/(?P<runName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/actions/(?P<actionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/repetitions`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 7 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		workflowNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workflowName")])
+		if err != nil {
+			return nil, err
+		}
+		runNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("runName")])
+		if err != nil {
+			return nil, err
+		}
+		actionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("actionName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := w.srv.NewListPager(resourceGroupNameParam, nameParam, workflowNameParam, runNameParam, actionNameParam, nil)
+		newListPager = &resp
+		w.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armappservice.WorkflowRunActionRepetitionsClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		w.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		w.newListPager.remove(req)
 	}
 	return resp, nil
 }

@@ -128,7 +128,7 @@ func (client *DdosProtectionPlansClient) createOrUpdateCreateRequest(ctx context
 //     method.
 func (client *DdosProtectionPlansClient) BeginDelete(ctx context.Context, resourceGroupName string, ddosProtectionPlanName string, options *DdosProtectionPlansClientBeginDeleteOptions) (*runtime.Poller[DdosProtectionPlansClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, ddosProtectionPlanName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, ddosProtectionPlanName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -143,9 +143,9 @@ func (client *DdosProtectionPlansClient) BeginDelete(ctx context.Context, resour
 	}
 }
 
-// delete - Deletes the specified DDoS protection plan.
+// deleteOperation - Deletes the specified DDoS protection plan.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *DdosProtectionPlansClient) delete(ctx context.Context, resourceGroupName string, ddosProtectionPlanName string, options *DdosProtectionPlansClientBeginDeleteOptions) (*http.Response, error) {
+func (client *DdosProtectionPlansClient) deleteOperation(ctx context.Context, resourceGroupName string, ddosProtectionPlanName string, options *DdosProtectionPlansClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DdosProtectionPlansClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)

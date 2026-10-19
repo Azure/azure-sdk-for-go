@@ -66,7 +66,7 @@ func (client *PrivateEndpointConnectionClient) BeginDelete(ctx context.Context, 
 	}
 }
 
-// Delete - Delete Private Endpoint requests. This call is made by Backup Admin.
+// deleteOperation - Delete Private Endpoint requests. This call is made by Backup Admin.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *PrivateEndpointConnectionClient) deleteOperation(ctx context.Context, vaultName string, resourceGroupName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -88,7 +88,7 @@ func (client *PrivateEndpointConnectionClient) deleteOperation(ctx context.Conte
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *PrivateEndpointConnectionClient) deleteCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, privateEndpointConnectionName string, _ *PrivateEndpointConnectionClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if client.subscriptionID == "" {
@@ -114,6 +114,84 @@ func (client *PrivateEndpointConnectionClient) deleteCreateRequest(ctx context.C
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20260801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginPut - Approve or Reject Private Endpoint requests. This call is made by Backup Admin.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - options - PrivateEndpointConnectionClientBeginPutOptions contains the optional parameters for the PrivateEndpointConnectionClient.BeginPut
+//     method.
+func (client *PrivateEndpointConnectionClient) BeginPut(ctx context.Context, vaultName string, resourceGroupName string, privateEndpointConnectionName string, parameters PrivateEndpointConnectionResource, options *PrivateEndpointConnectionClientBeginPutOptions) (*runtime.Poller[PrivateEndpointConnectionClientPutResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.put(ctx, vaultName, resourceGroupName, privateEndpointConnectionName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PrivateEndpointConnectionClientPutResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[PrivateEndpointConnectionClientPutResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// put - Approve or Reject Private Endpoint requests. This call is made by Backup Admin.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *PrivateEndpointConnectionClient) put(ctx context.Context, vaultName string, resourceGroupName string, privateEndpointConnectionName string, parameters PrivateEndpointConnectionResource, options *PrivateEndpointConnectionClientBeginPutOptions) (*http.Response, error) {
+	var err error
+	const operationName = "PrivateEndpointConnectionClient.BeginPut"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.putCreateRequest(ctx, vaultName, resourceGroupName, privateEndpointConnectionName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// putCreateRequest creates the put request.
+func (client *PrivateEndpointConnectionClient) putCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, privateEndpointConnectionName string, parameters PrivateEndpointConnectionResource, _ *PrivateEndpointConnectionClientBeginPutOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/privateEndpointConnections/{privateEndpointConnectionName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if vaultName == "" {
+		return nil, errors.New("parameter vaultName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if privateEndpointConnectionName == "" {
+		return nil, errors.New("parameter privateEndpointConnectionName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{privateEndpointConnectionName}", url.PathEscape(privateEndpointConnectionName))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -179,82 +257,4 @@ func (client *PrivateEndpointConnectionClient) getHandleResponse(resp *http.Resp
 		return PrivateEndpointConnectionClientGetResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginPut - Approve or Reject Private Endpoint requests. This call is made by Backup Admin.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - options - PrivateEndpointConnectionClientBeginPutOptions contains the optional parameters for the PrivateEndpointConnectionClient.BeginPut
-//     method.
-func (client *PrivateEndpointConnectionClient) BeginPut(ctx context.Context, vaultName string, resourceGroupName string, privateEndpointConnectionName string, parameters PrivateEndpointConnectionResource, options *PrivateEndpointConnectionClientBeginPutOptions) (*runtime.Poller[PrivateEndpointConnectionClientPutResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.put(ctx, vaultName, resourceGroupName, privateEndpointConnectionName, parameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PrivateEndpointConnectionClientPutResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[PrivateEndpointConnectionClientPutResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Put - Approve or Reject Private Endpoint requests. This call is made by Backup Admin.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *PrivateEndpointConnectionClient) put(ctx context.Context, vaultName string, resourceGroupName string, privateEndpointConnectionName string, parameters PrivateEndpointConnectionResource, options *PrivateEndpointConnectionClientBeginPutOptions) (*http.Response, error) {
-	var err error
-	const operationName = "PrivateEndpointConnectionClient.BeginPut"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.putCreateRequest(ctx, vaultName, resourceGroupName, privateEndpointConnectionName, parameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// putCreateRequest creates the Put request.
-func (client *PrivateEndpointConnectionClient) putCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, privateEndpointConnectionName string, parameters PrivateEndpointConnectionResource, _ *PrivateEndpointConnectionClientBeginPutOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/privateEndpointConnections/{privateEndpointConnectionName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if vaultName == "" {
-		return nil, errors.New("parameter vaultName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if privateEndpointConnectionName == "" {
-		return nil, errors.New("parameter privateEndpointConnectionName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{privateEndpointConnectionName}", url.PathEscape(privateEndpointConnectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

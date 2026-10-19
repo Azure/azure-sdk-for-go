@@ -70,7 +70,7 @@ func (client *BackupsUnderVolumeClient) BeginMigrateBackups(ctx context.Context,
 	}
 }
 
-// MigrateBackups - Migrate the backups under volume to backup vault
+// migrateBackups - Migrate the backups under volume to backup vault
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *BackupsUnderVolumeClient) migrateBackups(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body BackupsMigrationRequest, options *BackupsUnderVolumeClientBeginMigrateBackupsOptions) (*http.Response, error) {
 	var err error
@@ -92,7 +92,7 @@ func (client *BackupsUnderVolumeClient) migrateBackups(ctx context.Context, reso
 	return httpResp, nil
 }
 
-// migrateBackupsCreateRequest creates the MigrateBackups request.
+// migrateBackupsCreateRequest creates the migrateBackups request.
 func (client *BackupsUnderVolumeClient) migrateBackupsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body BackupsMigrationRequest, _ *BackupsUnderVolumeClientBeginMigrateBackupsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/migrateBackups"
 	if client.subscriptionID == "" {

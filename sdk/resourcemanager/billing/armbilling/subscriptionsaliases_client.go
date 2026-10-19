@@ -64,7 +64,7 @@ func (client *SubscriptionsAliasesClient) BeginCreateOrUpdate(ctx context.Contex
 	}
 }
 
-// CreateOrUpdate - Creates or updates a billing subscription by its alias ID. The operation is supported for seat based billing
+// createOrUpdate - Creates or updates a billing subscription by its alias ID. The operation is supported for seat based billing
 // subscriptions.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *SubscriptionsAliasesClient) createOrUpdate(ctx context.Context, billingAccountName string, aliasName string, parameters SubscriptionAlias, options *SubscriptionsAliasesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
@@ -87,7 +87,7 @@ func (client *SubscriptionsAliasesClient) createOrUpdate(ctx context.Context, bi
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *SubscriptionsAliasesClient) createOrUpdateCreateRequest(ctx context.Context, billingAccountName string, aliasName string, parameters SubscriptionAlias, _ *SubscriptionsAliasesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingSubscriptionAliases/{aliasName}"
 	if billingAccountName == "" {

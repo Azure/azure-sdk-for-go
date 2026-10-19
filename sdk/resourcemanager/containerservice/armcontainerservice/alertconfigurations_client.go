@@ -69,7 +69,7 @@ func (client *AlertConfigurationsClient) BeginCreateOrUpdate(ctx context.Context
 	}
 }
 
-// CreateOrUpdate - Creates or updates an alert configuration in the specified managed cluster.
+// createOrUpdate - Creates or updates an alert configuration in the specified managed cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AlertConfigurationsClient) createOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, configurationName string, resource AlertConfiguration, options *AlertConfigurationsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *AlertConfigurationsClient) createOrUpdate(ctx context.Context, res
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *AlertConfigurationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, configurationName string, resource AlertConfiguration, _ *AlertConfigurationsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/alertConfigurations/{configurationName}"
 	if client.subscriptionID == "" {
@@ -149,7 +149,7 @@ func (client *AlertConfigurationsClient) BeginDelete(ctx context.Context, resour
 	}
 }
 
-// Delete - Deletes an alert configuration.
+// deleteOperation - Deletes an alert configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AlertConfigurationsClient) deleteOperation(ctx context.Context, resourceGroupName string, resourceName string, configurationName string, options *AlertConfigurationsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -171,7 +171,7 @@ func (client *AlertConfigurationsClient) deleteOperation(ctx context.Context, re
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *AlertConfigurationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, configurationName string, _ *AlertConfigurationsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/alertConfigurations/{configurationName}"
 	if client.subscriptionID == "" {

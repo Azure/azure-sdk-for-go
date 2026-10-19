@@ -32,17 +32,9 @@ type OracleSubscriptionsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, options *armoracledatabase.OracleSubscriptionsClientBeginDeleteOptions) (resp azfake.PollerResponder[armoracledatabase.OracleSubscriptionsClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method OracleSubscriptionsClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, options *armoracledatabase.OracleSubscriptionsClientGetOptions) (resp azfake.Responder[armoracledatabase.OracleSubscriptionsClientGetResponse], errResp azfake.ErrorResponder)
-
 	// BeginListActivationLinks is the fake for method OracleSubscriptionsClient.BeginListActivationLinks
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginListActivationLinks func(ctx context.Context, options *armoracledatabase.OracleSubscriptionsClientBeginListActivationLinksOptions) (resp azfake.PollerResponder[armoracledatabase.OracleSubscriptionsClientListActivationLinksResponse], errResp azfake.ErrorResponder)
-
-	// NewListBySubscriptionPager is the fake for method OracleSubscriptionsClient.NewListBySubscriptionPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListBySubscriptionPager func(options *armoracledatabase.OracleSubscriptionsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armoracledatabase.OracleSubscriptionsClientListBySubscriptionResponse])
 
 	// BeginListCloudAccountDetails is the fake for method OracleSubscriptionsClient.BeginListCloudAccountDetails
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
@@ -55,6 +47,14 @@ type OracleSubscriptionsServer struct {
 	// BeginUpdate is the fake for method OracleSubscriptionsClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, properties armoracledatabase.OracleSubscriptionUpdate, options *armoracledatabase.OracleSubscriptionsClientBeginUpdateOptions) (resp azfake.PollerResponder[armoracledatabase.OracleSubscriptionsClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method OracleSubscriptionsClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, options *armoracledatabase.OracleSubscriptionsClientGetOptions) (resp azfake.Responder[armoracledatabase.OracleSubscriptionsClientGetResponse], errResp azfake.ErrorResponder)
+
+	// NewListBySubscriptionPager is the fake for method OracleSubscriptionsClient.NewListBySubscriptionPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListBySubscriptionPager func(options *armoracledatabase.OracleSubscriptionsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armoracledatabase.OracleSubscriptionsClientListBySubscriptionResponse])
 }
 
 // NewOracleSubscriptionsServerTransport creates a new instance of OracleSubscriptionsServerTransport with the provided implementation.
@@ -67,10 +67,10 @@ func NewOracleSubscriptionsServerTransport(srv *OracleSubscriptionsServer) *Orac
 		beginCreateOrUpdate:              newTracker[azfake.PollerResponder[armoracledatabase.OracleSubscriptionsClientCreateOrUpdateResponse]](),
 		beginDelete:                      newTracker[azfake.PollerResponder[armoracledatabase.OracleSubscriptionsClientDeleteResponse]](),
 		beginListActivationLinks:         newTracker[azfake.PollerResponder[armoracledatabase.OracleSubscriptionsClientListActivationLinksResponse]](),
-		newListBySubscriptionPager:       newTracker[azfake.PagerResponder[armoracledatabase.OracleSubscriptionsClientListBySubscriptionResponse]](),
 		beginListCloudAccountDetails:     newTracker[azfake.PollerResponder[armoracledatabase.OracleSubscriptionsClientListCloudAccountDetailsResponse]](),
 		beginListSaasSubscriptionDetails: newTracker[azfake.PollerResponder[armoracledatabase.OracleSubscriptionsClientListSaasSubscriptionDetailsResponse]](),
 		beginUpdate:                      newTracker[azfake.PollerResponder[armoracledatabase.OracleSubscriptionsClientUpdateResponse]](),
+		newListBySubscriptionPager:       newTracker[azfake.PagerResponder[armoracledatabase.OracleSubscriptionsClientListBySubscriptionResponse]](),
 	}
 }
 
@@ -82,10 +82,10 @@ type OracleSubscriptionsServerTransport struct {
 	beginCreateOrUpdate              *tracker[azfake.PollerResponder[armoracledatabase.OracleSubscriptionsClientCreateOrUpdateResponse]]
 	beginDelete                      *tracker[azfake.PollerResponder[armoracledatabase.OracleSubscriptionsClientDeleteResponse]]
 	beginListActivationLinks         *tracker[azfake.PollerResponder[armoracledatabase.OracleSubscriptionsClientListActivationLinksResponse]]
-	newListBySubscriptionPager       *tracker[azfake.PagerResponder[armoracledatabase.OracleSubscriptionsClientListBySubscriptionResponse]]
 	beginListCloudAccountDetails     *tracker[azfake.PollerResponder[armoracledatabase.OracleSubscriptionsClientListCloudAccountDetailsResponse]]
 	beginListSaasSubscriptionDetails *tracker[azfake.PollerResponder[armoracledatabase.OracleSubscriptionsClientListSaasSubscriptionDetailsResponse]]
 	beginUpdate                      *tracker[azfake.PollerResponder[armoracledatabase.OracleSubscriptionsClientUpdateResponse]]
+	newListBySubscriptionPager       *tracker[azfake.PagerResponder[armoracledatabase.OracleSubscriptionsClientListBySubscriptionResponse]]
 }
 
 // Do implements the policy.Transporter interface for OracleSubscriptionsServerTransport.
@@ -115,18 +115,18 @@ func (o *OracleSubscriptionsServerTransport) dispatchToMethodFake(req *http.Requ
 				res.resp, res.err = o.dispatchBeginCreateOrUpdate(req)
 			case "OracleSubscriptionsClient.BeginDelete":
 				res.resp, res.err = o.dispatchBeginDelete(req)
-			case "OracleSubscriptionsClient.Get":
-				res.resp, res.err = o.dispatchGet(req)
 			case "OracleSubscriptionsClient.BeginListActivationLinks":
 				res.resp, res.err = o.dispatchBeginListActivationLinks(req)
-			case "OracleSubscriptionsClient.NewListBySubscriptionPager":
-				res.resp, res.err = o.dispatchNewListBySubscriptionPager(req)
 			case "OracleSubscriptionsClient.BeginListCloudAccountDetails":
 				res.resp, res.err = o.dispatchBeginListCloudAccountDetails(req)
 			case "OracleSubscriptionsClient.BeginListSaasSubscriptionDetails":
 				res.resp, res.err = o.dispatchBeginListSaasSubscriptionDetails(req)
 			case "OracleSubscriptionsClient.BeginUpdate":
 				res.resp, res.err = o.dispatchBeginUpdate(req)
+			case "OracleSubscriptionsClient.Get":
+				res.resp, res.err = o.dispatchGet(req)
+			case "OracleSubscriptionsClient.NewListBySubscriptionPager":
+				res.resp, res.err = o.dispatchNewListBySubscriptionPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -259,31 +259,6 @@ func (o *OracleSubscriptionsServerTransport) dispatchBeginDelete(req *http.Reque
 	return resp, nil
 }
 
-func (o *OracleSubscriptionsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if o.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Oracle\.Database/oracleSubscriptions/default`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 2 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	respr, errRespr := o.srv.Get(req.Context(), nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).OracleSubscription, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (o *OracleSubscriptionsServerTransport) dispatchBeginListActivationLinks(req *http.Request) (*http.Response, error) {
 	if o.srv.BeginListActivationLinks == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginListActivationLinks not implemented")}
@@ -317,39 +292,6 @@ func (o *OracleSubscriptionsServerTransport) dispatchBeginListActivationLinks(re
 		o.beginListActivationLinks.remove(req)
 	}
 
-	return resp, nil
-}
-
-func (o *OracleSubscriptionsServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
-	if o.srv.NewListBySubscriptionPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
-	}
-	newListBySubscriptionPager := o.newListBySubscriptionPager.get(req)
-	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Oracle\.Database/oracleSubscriptions`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := o.srv.NewListBySubscriptionPager(nil)
-		newListBySubscriptionPager = &resp
-		o.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
-		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armoracledatabase.OracleSubscriptionsClientListBySubscriptionResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		o.newListBySubscriptionPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListBySubscriptionPager) {
-		o.newListBySubscriptionPager.remove(req)
-	}
 	return resp, nil
 }
 
@@ -462,6 +404,64 @@ func (o *OracleSubscriptionsServerTransport) dispatchBeginUpdate(req *http.Reque
 		o.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (o *OracleSubscriptionsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if o.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Oracle\.Database/oracleSubscriptions/default`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	respr, errRespr := o.srv.Get(req.Context(), nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).OracleSubscription, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (o *OracleSubscriptionsServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
+	if o.srv.NewListBySubscriptionPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
+	}
+	newListBySubscriptionPager := o.newListBySubscriptionPager.get(req)
+	if newListBySubscriptionPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Oracle\.Database/oracleSubscriptions`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := o.srv.NewListBySubscriptionPager(nil)
+		newListBySubscriptionPager = &resp
+		o.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
+		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armoracledatabase.OracleSubscriptionsClientListBySubscriptionResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		o.newListBySubscriptionPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListBySubscriptionPager) {
+		o.newListBySubscriptionPager.remove(req)
+	}
 	return resp, nil
 }
 

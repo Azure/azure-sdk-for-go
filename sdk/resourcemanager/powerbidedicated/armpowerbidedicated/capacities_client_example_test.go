@@ -12,34 +12,6 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2021-01-01/checkNameAvailability.json
-func ExampleCapacitiesClient_CheckNameAvailability() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armpowerbidedicated.NewClientFactory("613192d7-503f-477a-9cfe-4efc3ee2bd60", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewCapacitiesClient().CheckNameAvailability(ctx, "West US", armpowerbidedicated.CheckCapacityNameAvailabilityParameters{
-		Name: to.Ptr("azsdktest"),
-		Type: to.Ptr("Microsoft.PowerBIDedicated/capacities"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armpowerbidedicated.CapacitiesClientCheckNameAvailabilityResponse{
-	// 	CheckCapacityNameAvailabilityResult: armpowerbidedicated.CheckCapacityNameAvailabilityResult{
-	// 		NameAvailable: to.Ptr(true),
-	// 	},
-	// }
-}
-
 // Generated from example definition: 2021-01-01/createCapacity.json
 func ExampleCapacitiesClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -136,302 +108,6 @@ func ExampleCapacitiesClient_BeginDelete() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpowerbidedicated.CapacitiesClientDeleteResponse{
-	// }
-}
-
-// Generated from example definition: 2021-01-01/getCapacity.json
-func ExampleCapacitiesClient_GetDetails() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armpowerbidedicated.NewClientFactory("613192d7-503f-477a-9cfe-4efc3ee2bd60", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewCapacitiesClient().GetDetails(ctx, "TestRG", "azsdktest", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armpowerbidedicated.CapacitiesClientGetDetailsResponse{
-	// 	DedicatedCapacity: armpowerbidedicated.DedicatedCapacity{
-	// 		Name: to.Ptr("azsdktest"),
-	// 		ID: to.Ptr("/subscriptions/613192d7-503f-477a-9cfe-4efc3ee2bd60/resourceGroups/TestRG/providers/Microsoft.PowerBIDedicated/capacities/azsdktest"),
-	// 		Location: to.Ptr("West US"),
-	// 		Properties: &armpowerbidedicated.DedicatedCapacityProperties{
-	// 			Administration: &armpowerbidedicated.DedicatedCapacityAdministrators{
-	// 				Members: []*string{
-	// 					to.Ptr("azsdktest@microsoft.com"),
-	// 				},
-	// 			},
-	// 			ProvisioningState: to.Ptr(armpowerbidedicated.CapacityProvisioningStateProvisioning),
-	// 			State: to.Ptr(armpowerbidedicated.StateProvisioning),
-	// 		},
-	// 		SKU: &armpowerbidedicated.CapacitySKU{
-	// 			Name: to.Ptr("A1"),
-	// 			Tier: to.Ptr(armpowerbidedicated.CapacitySKUTierPBIEAzure),
-	// 		},
-	// 		SystemData: &armpowerbidedicated.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 1, 0, 0, 19, 123456700, time.UTC)),
-	// 			CreatedBy: to.Ptr("user1"),
-	// 			CreatedByType: to.Ptr(armpowerbidedicated.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.January, 1, 0, 0, 19, 123456700, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("user2"),
-	// 			LastModifiedByType: to.Ptr(armpowerbidedicated.CreatedByTypeUser),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2021-01-01/listCapacitiesInSubscription.json
-func ExampleCapacitiesClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armpowerbidedicated.NewClientFactory("613192d7-503f-477a-9cfe-4efc3ee2bd60", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewCapacitiesClient().NewListPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armpowerbidedicated.CapacitiesClientListResponse{
-		// 	DedicatedCapacities: armpowerbidedicated.DedicatedCapacities{
-		// 		Value: []*armpowerbidedicated.DedicatedCapacity{
-		// 			{
-		// 				Name: to.Ptr("azsdktest"),
-		// 				ID: to.Ptr("/subscriptions/613192d7-503f-477a-9cfe-4efc3ee2bd60/providers/Microsoft.PowerBIDedicated/capacities/azsdktest"),
-		// 				Location: to.Ptr("West US"),
-		// 				Properties: &armpowerbidedicated.DedicatedCapacityProperties{
-		// 					Administration: &armpowerbidedicated.DedicatedCapacityAdministrators{
-		// 						Members: []*string{
-		// 							to.Ptr("azsdktest@microsoft.com"),
-		// 						},
-		// 					},
-		// 					ProvisioningState: to.Ptr(armpowerbidedicated.CapacityProvisioningStateProvisioning),
-		// 					State: to.Ptr(armpowerbidedicated.StateProvisioning),
-		// 				},
-		// 				SKU: &armpowerbidedicated.CapacitySKU{
-		// 					Name: to.Ptr("A1"),
-		// 					Tier: to.Ptr(armpowerbidedicated.CapacitySKUTierPBIEAzure),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 					"testKey": to.Ptr("testValue"),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("azsdktest2"),
-		// 				ID: to.Ptr("/subscriptions/613192d7-503f-477a-9cfe-4efc3ee2bd60/providers/Microsoft.PowerBIDedicated/capacities/azsdktest"),
-		// 				Location: to.Ptr("West US"),
-		// 				Properties: &armpowerbidedicated.DedicatedCapacityProperties{
-		// 					Administration: &armpowerbidedicated.DedicatedCapacityAdministrators{
-		// 						Members: []*string{
-		// 							to.Ptr("azsdktest@microsoft.com"),
-		// 						},
-		// 					},
-		// 					ProvisioningState: to.Ptr(armpowerbidedicated.CapacityProvisioningStateProvisioning),
-		// 					State: to.Ptr(armpowerbidedicated.StateProvisioning),
-		// 				},
-		// 				SKU: &armpowerbidedicated.CapacitySKU{
-		// 					Name: to.Ptr("A2"),
-		// 					Tier: to.Ptr(armpowerbidedicated.CapacitySKUTierPBIEAzure),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 					"testKey": to.Ptr("testValue"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2021-01-01/listCapacitiesInResourceGroup.json
-func ExampleCapacitiesClient_NewListByResourceGroupPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armpowerbidedicated.NewClientFactory("613192d7-503f-477a-9cfe-4efc3ee2bd60", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewCapacitiesClient().NewListByResourceGroupPager("TestRG", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armpowerbidedicated.CapacitiesClientListByResourceGroupResponse{
-		// 	DedicatedCapacities: armpowerbidedicated.DedicatedCapacities{
-		// 		Value: []*armpowerbidedicated.DedicatedCapacity{
-		// 			{
-		// 				Name: to.Ptr("azsdktest"),
-		// 				ID: to.Ptr("/subscriptions/613192d7-503f-477a-9cfe-4efc3ee2bd60/resourceGroups/TestRG/providers/Microsoft.PowerBIDedicated/capacities/azsdktest"),
-		// 				Location: to.Ptr("West US"),
-		// 				Properties: &armpowerbidedicated.DedicatedCapacityProperties{
-		// 					Administration: &armpowerbidedicated.DedicatedCapacityAdministrators{
-		// 						Members: []*string{
-		// 							to.Ptr("azsdktest@microsoft.com"),
-		// 						},
-		// 					},
-		// 					ProvisioningState: to.Ptr(armpowerbidedicated.CapacityProvisioningStateProvisioning),
-		// 					State: to.Ptr(armpowerbidedicated.StateProvisioning),
-		// 				},
-		// 				SKU: &armpowerbidedicated.CapacitySKU{
-		// 					Name: to.Ptr("A1"),
-		// 					Tier: to.Ptr(armpowerbidedicated.CapacitySKUTierPBIEAzure),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 					"testKey": to.Ptr("testValue"),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("azsdktest2"),
-		// 				ID: to.Ptr("/subscriptions/613192d7-503f-477a-9cfe-4efc3ee2bd60/resourceGroups/TestRG/providers/Microsoft.PowerBIDedicated/capacities/azsdktest"),
-		// 				Location: to.Ptr("West US"),
-		// 				Properties: &armpowerbidedicated.DedicatedCapacityProperties{
-		// 					Administration: &armpowerbidedicated.DedicatedCapacityAdministrators{
-		// 						Members: []*string{
-		// 							to.Ptr("azsdktest@microsoft.com"),
-		// 						},
-		// 					},
-		// 					ProvisioningState: to.Ptr(armpowerbidedicated.CapacityProvisioningStateProvisioning),
-		// 					State: to.Ptr(armpowerbidedicated.StateProvisioning),
-		// 				},
-		// 				SKU: &armpowerbidedicated.CapacitySKU{
-		// 					Name: to.Ptr("A2"),
-		// 					Tier: to.Ptr(armpowerbidedicated.CapacitySKUTierPBIEAzure),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 					"testKey": to.Ptr("testValue"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2021-01-01/listSKUsForNew.json
-func ExampleCapacitiesClient_ListSKUs() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armpowerbidedicated.NewClientFactory("613192d7-503f-477a-9cfe-4efc3ee2bd60", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewCapacitiesClient().ListSKUs(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armpowerbidedicated.CapacitiesClientListSKUsResponse{
-	// 	SKUEnumerationForNewResourceResult: armpowerbidedicated.SKUEnumerationForNewResourceResult{
-	// 		Value: []*armpowerbidedicated.CapacitySKU{
-	// 			{
-	// 				Name: to.Ptr("A1"),
-	// 			},
-	// 			{
-	// 				Name: to.Ptr("A2"),
-	// 			},
-	// 			{
-	// 				Name: to.Ptr("A3"),
-	// 			},
-	// 			{
-	// 				Name: to.Ptr("A4"),
-	// 			},
-	// 			{
-	// 				Name: to.Ptr("A5"),
-	// 			},
-	// 			{
-	// 				Name: to.Ptr("A6"),
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2021-01-01/listSKUsForExisting.json
-func ExampleCapacitiesClient_ListSKUsForCapacity() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armpowerbidedicated.NewClientFactory("613192d7-503f-477a-9cfe-4efc3ee2bd60", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewCapacitiesClient().ListSKUsForCapacity(ctx, "TestRG", "azsdktest", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armpowerbidedicated.CapacitiesClientListSKUsForCapacityResponse{
-	// 	SKUEnumerationForExistingResourceResult: armpowerbidedicated.SKUEnumerationForExistingResourceResult{
-	// 		Value: []*armpowerbidedicated.SKUDetailsForExistingResource{
-	// 			{
-	// 				SKU: &armpowerbidedicated.CapacitySKU{
-	// 					Name: to.Ptr("A2"),
-	// 					Tier: to.Ptr(armpowerbidedicated.CapacitySKUTierPBIEAzure),
-	// 				},
-	// 			},
-	// 			{
-	// 				SKU: &armpowerbidedicated.CapacitySKU{
-	// 					Name: to.Ptr("A3"),
-	// 					Tier: to.Ptr(armpowerbidedicated.CapacitySKUTierPBIEAzure),
-	// 				},
-	// 			},
-	// 			{
-	// 				SKU: &armpowerbidedicated.CapacitySKU{
-	// 					Name: to.Ptr("A4"),
-	// 					Tier: to.Ptr(armpowerbidedicated.CapacitySKUTierPBIEAzure),
-	// 				},
-	// 			},
-	// 			{
-	// 				SKU: &armpowerbidedicated.CapacitySKU{
-	// 					Name: to.Ptr("A5"),
-	// 					Tier: to.Ptr(armpowerbidedicated.CapacitySKUTierPBIEAzure),
-	// 				},
-	// 			},
-	// 			{
-	// 				SKU: &armpowerbidedicated.CapacitySKU{
-	// 					Name: to.Ptr("A6"),
-	// 					Tier: to.Ptr(armpowerbidedicated.CapacitySKUTierPBIEAzure),
-	// 				},
-	// 			},
-	// 		},
-	// 	},
 	// }
 }
 
@@ -625,4 +301,328 @@ func ExampleCapacitiesClient_BeginUpdate_updateCapacityToGeneration2() {
 	// 		},
 	// 	},
 	// }
+}
+
+// Generated from example definition: 2021-01-01/checkNameAvailability.json
+func ExampleCapacitiesClient_CheckNameAvailability() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpowerbidedicated.NewClientFactory("613192d7-503f-477a-9cfe-4efc3ee2bd60", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewCapacitiesClient().CheckNameAvailability(ctx, "West US", armpowerbidedicated.CheckCapacityNameAvailabilityParameters{
+		Name: to.Ptr("azsdktest"),
+		Type: to.Ptr("Microsoft.PowerBIDedicated/capacities"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armpowerbidedicated.CapacitiesClientCheckNameAvailabilityResponse{
+	// 	CheckCapacityNameAvailabilityResult: armpowerbidedicated.CheckCapacityNameAvailabilityResult{
+	// 		NameAvailable: to.Ptr(true),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2021-01-01/getCapacity.json
+func ExampleCapacitiesClient_GetDetails() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpowerbidedicated.NewClientFactory("613192d7-503f-477a-9cfe-4efc3ee2bd60", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewCapacitiesClient().GetDetails(ctx, "TestRG", "azsdktest", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armpowerbidedicated.CapacitiesClientGetDetailsResponse{
+	// 	DedicatedCapacity: armpowerbidedicated.DedicatedCapacity{
+	// 		Name: to.Ptr("azsdktest"),
+	// 		ID: to.Ptr("/subscriptions/613192d7-503f-477a-9cfe-4efc3ee2bd60/resourceGroups/TestRG/providers/Microsoft.PowerBIDedicated/capacities/azsdktest"),
+	// 		Location: to.Ptr("West US"),
+	// 		Properties: &armpowerbidedicated.DedicatedCapacityProperties{
+	// 			Administration: &armpowerbidedicated.DedicatedCapacityAdministrators{
+	// 				Members: []*string{
+	// 					to.Ptr("azsdktest@microsoft.com"),
+	// 				},
+	// 			},
+	// 			ProvisioningState: to.Ptr(armpowerbidedicated.CapacityProvisioningStateProvisioning),
+	// 			State: to.Ptr(armpowerbidedicated.StateProvisioning),
+	// 		},
+	// 		SKU: &armpowerbidedicated.CapacitySKU{
+	// 			Name: to.Ptr("A1"),
+	// 			Tier: to.Ptr(armpowerbidedicated.CapacitySKUTierPBIEAzure),
+	// 		},
+	// 		SystemData: &armpowerbidedicated.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 1, 0, 0, 19, 123456700, time.UTC)),
+	// 			CreatedBy: to.Ptr("user1"),
+	// 			CreatedByType: to.Ptr(armpowerbidedicated.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.January, 1, 0, 0, 19, 123456700, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("user2"),
+	// 			LastModifiedByType: to.Ptr(armpowerbidedicated.CreatedByTypeUser),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2021-01-01/listSKUsForNew.json
+func ExampleCapacitiesClient_ListSKUs() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpowerbidedicated.NewClientFactory("613192d7-503f-477a-9cfe-4efc3ee2bd60", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewCapacitiesClient().ListSKUs(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armpowerbidedicated.CapacitiesClientListSKUsResponse{
+	// 	SKUEnumerationForNewResourceResult: armpowerbidedicated.SKUEnumerationForNewResourceResult{
+	// 		Value: []*armpowerbidedicated.CapacitySKU{
+	// 			{
+	// 				Name: to.Ptr("A1"),
+	// 			},
+	// 			{
+	// 				Name: to.Ptr("A2"),
+	// 			},
+	// 			{
+	// 				Name: to.Ptr("A3"),
+	// 			},
+	// 			{
+	// 				Name: to.Ptr("A4"),
+	// 			},
+	// 			{
+	// 				Name: to.Ptr("A5"),
+	// 			},
+	// 			{
+	// 				Name: to.Ptr("A6"),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2021-01-01/listSKUsForExisting.json
+func ExampleCapacitiesClient_ListSKUsForCapacity() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpowerbidedicated.NewClientFactory("613192d7-503f-477a-9cfe-4efc3ee2bd60", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewCapacitiesClient().ListSKUsForCapacity(ctx, "TestRG", "azsdktest", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armpowerbidedicated.CapacitiesClientListSKUsForCapacityResponse{
+	// 	SKUEnumerationForExistingResourceResult: armpowerbidedicated.SKUEnumerationForExistingResourceResult{
+	// 		Value: []*armpowerbidedicated.SKUDetailsForExistingResource{
+	// 			{
+	// 				SKU: &armpowerbidedicated.CapacitySKU{
+	// 					Name: to.Ptr("A2"),
+	// 					Tier: to.Ptr(armpowerbidedicated.CapacitySKUTierPBIEAzure),
+	// 				},
+	// 			},
+	// 			{
+	// 				SKU: &armpowerbidedicated.CapacitySKU{
+	// 					Name: to.Ptr("A3"),
+	// 					Tier: to.Ptr(armpowerbidedicated.CapacitySKUTierPBIEAzure),
+	// 				},
+	// 			},
+	// 			{
+	// 				SKU: &armpowerbidedicated.CapacitySKU{
+	// 					Name: to.Ptr("A4"),
+	// 					Tier: to.Ptr(armpowerbidedicated.CapacitySKUTierPBIEAzure),
+	// 				},
+	// 			},
+	// 			{
+	// 				SKU: &armpowerbidedicated.CapacitySKU{
+	// 					Name: to.Ptr("A5"),
+	// 					Tier: to.Ptr(armpowerbidedicated.CapacitySKUTierPBIEAzure),
+	// 				},
+	// 			},
+	// 			{
+	// 				SKU: &armpowerbidedicated.CapacitySKU{
+	// 					Name: to.Ptr("A6"),
+	// 					Tier: to.Ptr(armpowerbidedicated.CapacitySKUTierPBIEAzure),
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2021-01-01/listCapacitiesInResourceGroup.json
+func ExampleCapacitiesClient_NewListByResourceGroupPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpowerbidedicated.NewClientFactory("613192d7-503f-477a-9cfe-4efc3ee2bd60", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewCapacitiesClient().NewListByResourceGroupPager("TestRG", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armpowerbidedicated.CapacitiesClientListByResourceGroupResponse{
+		// 	DedicatedCapacities: armpowerbidedicated.DedicatedCapacities{
+		// 		Value: []*armpowerbidedicated.DedicatedCapacity{
+		// 			{
+		// 				Name: to.Ptr("azsdktest"),
+		// 				ID: to.Ptr("/subscriptions/613192d7-503f-477a-9cfe-4efc3ee2bd60/resourceGroups/TestRG/providers/Microsoft.PowerBIDedicated/capacities/azsdktest"),
+		// 				Location: to.Ptr("West US"),
+		// 				Properties: &armpowerbidedicated.DedicatedCapacityProperties{
+		// 					Administration: &armpowerbidedicated.DedicatedCapacityAdministrators{
+		// 						Members: []*string{
+		// 							to.Ptr("azsdktest@microsoft.com"),
+		// 						},
+		// 					},
+		// 					ProvisioningState: to.Ptr(armpowerbidedicated.CapacityProvisioningStateProvisioning),
+		// 					State: to.Ptr(armpowerbidedicated.StateProvisioning),
+		// 				},
+		// 				SKU: &armpowerbidedicated.CapacitySKU{
+		// 					Name: to.Ptr("A1"),
+		// 					Tier: to.Ptr(armpowerbidedicated.CapacitySKUTierPBIEAzure),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"testKey": to.Ptr("testValue"),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("azsdktest2"),
+		// 				ID: to.Ptr("/subscriptions/613192d7-503f-477a-9cfe-4efc3ee2bd60/resourceGroups/TestRG/providers/Microsoft.PowerBIDedicated/capacities/azsdktest"),
+		// 				Location: to.Ptr("West US"),
+		// 				Properties: &armpowerbidedicated.DedicatedCapacityProperties{
+		// 					Administration: &armpowerbidedicated.DedicatedCapacityAdministrators{
+		// 						Members: []*string{
+		// 							to.Ptr("azsdktest@microsoft.com"),
+		// 						},
+		// 					},
+		// 					ProvisioningState: to.Ptr(armpowerbidedicated.CapacityProvisioningStateProvisioning),
+		// 					State: to.Ptr(armpowerbidedicated.StateProvisioning),
+		// 				},
+		// 				SKU: &armpowerbidedicated.CapacitySKU{
+		// 					Name: to.Ptr("A2"),
+		// 					Tier: to.Ptr(armpowerbidedicated.CapacitySKUTierPBIEAzure),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"testKey": to.Ptr("testValue"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2021-01-01/listCapacitiesInSubscription.json
+func ExampleCapacitiesClient_NewListPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpowerbidedicated.NewClientFactory("613192d7-503f-477a-9cfe-4efc3ee2bd60", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewCapacitiesClient().NewListPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armpowerbidedicated.CapacitiesClientListResponse{
+		// 	DedicatedCapacities: armpowerbidedicated.DedicatedCapacities{
+		// 		Value: []*armpowerbidedicated.DedicatedCapacity{
+		// 			{
+		// 				Name: to.Ptr("azsdktest"),
+		// 				ID: to.Ptr("/subscriptions/613192d7-503f-477a-9cfe-4efc3ee2bd60/providers/Microsoft.PowerBIDedicated/capacities/azsdktest"),
+		// 				Location: to.Ptr("West US"),
+		// 				Properties: &armpowerbidedicated.DedicatedCapacityProperties{
+		// 					Administration: &armpowerbidedicated.DedicatedCapacityAdministrators{
+		// 						Members: []*string{
+		// 							to.Ptr("azsdktest@microsoft.com"),
+		// 						},
+		// 					},
+		// 					ProvisioningState: to.Ptr(armpowerbidedicated.CapacityProvisioningStateProvisioning),
+		// 					State: to.Ptr(armpowerbidedicated.StateProvisioning),
+		// 				},
+		// 				SKU: &armpowerbidedicated.CapacitySKU{
+		// 					Name: to.Ptr("A1"),
+		// 					Tier: to.Ptr(armpowerbidedicated.CapacitySKUTierPBIEAzure),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"testKey": to.Ptr("testValue"),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("azsdktest2"),
+		// 				ID: to.Ptr("/subscriptions/613192d7-503f-477a-9cfe-4efc3ee2bd60/providers/Microsoft.PowerBIDedicated/capacities/azsdktest"),
+		// 				Location: to.Ptr("West US"),
+		// 				Properties: &armpowerbidedicated.DedicatedCapacityProperties{
+		// 					Administration: &armpowerbidedicated.DedicatedCapacityAdministrators{
+		// 						Members: []*string{
+		// 							to.Ptr("azsdktest@microsoft.com"),
+		// 						},
+		// 					},
+		// 					ProvisioningState: to.Ptr(armpowerbidedicated.CapacityProvisioningStateProvisioning),
+		// 					State: to.Ptr(armpowerbidedicated.StateProvisioning),
+		// 				},
+		// 				SKU: &armpowerbidedicated.CapacitySKU{
+		// 					Name: to.Ptr("A2"),
+		// 					Tier: to.Ptr(armpowerbidedicated.CapacitySKUTierPBIEAzure),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"testKey": to.Ptr("testValue"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
 }

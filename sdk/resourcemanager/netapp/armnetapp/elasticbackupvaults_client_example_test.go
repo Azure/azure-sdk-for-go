@@ -70,6 +70,48 @@ func ExampleElasticBackupVaultsClient_BeginDelete() {
 	}
 }
 
+// Generated from example definition: 2026-06-15-preview/ElasticBackupVaults_Update.json
+func ExampleElasticBackupVaultsClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetapp.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewElasticBackupVaultsClient().BeginUpdate(ctx, "myRG", "account1", "backupVault1", armnetapp.ElasticBackupVaultUpdate{
+		Tags: map[string]*string{
+			"Tag1": to.Ptr("Value1"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetapp.ElasticBackupVaultsClientUpdateResponse{
+	// 	ElasticBackupVault: armnetapp.ElasticBackupVault{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/elasticAccounts/account1/elasticBackupVaults/backupVault1"),
+	// 		Name: to.Ptr("account1/backupVault1"),
+	// 		Type: to.Ptr("Microsoft.NetApp/elasticAccounts/elasticBackupVaults"),
+	// 		Location: to.Ptr("eastus"),
+	// 		Tags: map[string]*string{
+	// 			"Tag1": to.Ptr("Value1"),
+	// 		},
+	// 		Properties: &armnetapp.ElasticBackupVaultProperties{
+	// 			ProvisioningState: to.Ptr(armnetapp.ProvisioningStateSucceeded),
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2026-06-15-preview/ElasticBackupVaults_Get.json
 func ExampleElasticBackupVaultsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -145,46 +187,4 @@ func ExampleElasticBackupVaultsClient_NewListByElasticAccountPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-06-15-preview/ElasticBackupVaults_Update.json
-func ExampleElasticBackupVaultsClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetapp.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewElasticBackupVaultsClient().BeginUpdate(ctx, "myRG", "account1", "backupVault1", armnetapp.ElasticBackupVaultUpdate{
-		Tags: map[string]*string{
-			"Tag1": to.Ptr("Value1"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetapp.ElasticBackupVaultsClientUpdateResponse{
-	// 	ElasticBackupVault: armnetapp.ElasticBackupVault{
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/elasticAccounts/account1/elasticBackupVaults/backupVault1"),
-	// 		Name: to.Ptr("account1/backupVault1"),
-	// 		Type: to.Ptr("Microsoft.NetApp/elasticAccounts/elasticBackupVaults"),
-	// 		Location: to.Ptr("eastus"),
-	// 		Tags: map[string]*string{
-	// 			"Tag1": to.Ptr("Value1"),
-	// 		},
-	// 		Properties: &armnetapp.ElasticBackupVaultProperties{
-	// 			ProvisioningState: to.Ptr(armnetapp.ProvisioningStateSucceeded),
-	// 		},
-	// 	},
-	// }
 }

@@ -69,7 +69,7 @@ func (client *FleetManagedNamespacesClient) BeginCreateOrUpdate(ctx context.Cont
 	}
 }
 
-// CreateOrUpdate - Create a FleetManagedNamespace
+// createOrUpdate - Create a FleetManagedNamespace
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *FleetManagedNamespacesClient) createOrUpdate(ctx context.Context, resourceGroupName string, fleetName string, managedNamespaceName string, resource FleetManagedNamespace, options *FleetManagedNamespacesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *FleetManagedNamespacesClient) createOrUpdate(ctx context.Context, 
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *FleetManagedNamespacesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, fleetName string, managedNamespaceName string, resource FleetManagedNamespace, options *FleetManagedNamespacesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/managedNamespaces/{managedNamespaceName}"
 	if client.subscriptionID == "" {
@@ -155,7 +155,7 @@ func (client *FleetManagedNamespacesClient) BeginDelete(ctx context.Context, res
 	}
 }
 
-// Delete - Delete a FleetManagedNamespace
+// deleteOperation - Delete a FleetManagedNamespace
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *FleetManagedNamespacesClient) deleteOperation(ctx context.Context, resourceGroupName string, fleetName string, managedNamespaceName string, options *FleetManagedNamespacesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -177,7 +177,7 @@ func (client *FleetManagedNamespacesClient) deleteOperation(ctx context.Context,
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *FleetManagedNamespacesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, fleetName string, managedNamespaceName string, options *FleetManagedNamespacesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/managedNamespaces/{managedNamespaceName}"
 	if client.subscriptionID == "" {
@@ -205,6 +205,91 @@ func (client *FleetManagedNamespacesClient) deleteCreateRequest(ctx context.Cont
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
+	}
+	return req, nil
+}
+
+// BeginUpdate - Update a FleetManagedNamespace
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - fleetName - The name of the Fleet resource.
+//   - managedNamespaceName - The name of the fleet managed namespace resource.
+//   - properties - The resource properties to be updated.
+//   - options - FleetManagedNamespacesClientBeginUpdateOptions contains the optional parameters for the FleetManagedNamespacesClient.BeginUpdate
+//     method.
+func (client *FleetManagedNamespacesClient) BeginUpdate(ctx context.Context, resourceGroupName string, fleetName string, managedNamespaceName string, properties FleetManagedNamespacePatch, options *FleetManagedNamespacesClientBeginUpdateOptions) (*runtime.Poller[FleetManagedNamespacesClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, fleetName, managedNamespaceName, properties, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[FleetManagedNamespacesClientUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaOriginalURI,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[FleetManagedNamespacesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update a FleetManagedNamespace
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *FleetManagedNamespacesClient) update(ctx context.Context, resourceGroupName string, fleetName string, managedNamespaceName string, properties FleetManagedNamespacePatch, options *FleetManagedNamespacesClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "FleetManagedNamespacesClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, fleetName, managedNamespaceName, properties, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *FleetManagedNamespacesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, fleetName string, managedNamespaceName string, properties FleetManagedNamespacePatch, options *FleetManagedNamespacesClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/managedNamespaces/{managedNamespaceName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if fleetName == "" {
+		return nil, errors.New("parameter fleetName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{fleetName}", url.PathEscape(fleetName))
+	if managedNamespaceName == "" {
+		return nil, errors.New("parameter managedNamespaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{managedNamespaceName}", url.PathEscape(managedNamespaceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260602Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if options != nil && options.IfMatch != nil {
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
+	}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, properties); err != nil {
+		return nil, err
 	}
 	return req, nil
 }
@@ -350,89 +435,4 @@ func (client *FleetManagedNamespacesClient) listByFleetHandleResponse(resp *http
 		return FleetManagedNamespacesClientListByFleetResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Update a FleetManagedNamespace
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - fleetName - The name of the Fleet resource.
-//   - managedNamespaceName - The name of the fleet managed namespace resource.
-//   - properties - The resource properties to be updated.
-//   - options - FleetManagedNamespacesClientBeginUpdateOptions contains the optional parameters for the FleetManagedNamespacesClient.BeginUpdate
-//     method.
-func (client *FleetManagedNamespacesClient) BeginUpdate(ctx context.Context, resourceGroupName string, fleetName string, managedNamespaceName string, properties FleetManagedNamespacePatch, options *FleetManagedNamespacesClientBeginUpdateOptions) (*runtime.Poller[FleetManagedNamespacesClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, fleetName, managedNamespaceName, properties, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[FleetManagedNamespacesClientUpdateResponse]{
-			FinalStateVia: runtime.FinalStateViaOriginalURI,
-			Tracer:        client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[FleetManagedNamespacesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update a FleetManagedNamespace
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *FleetManagedNamespacesClient) update(ctx context.Context, resourceGroupName string, fleetName string, managedNamespaceName string, properties FleetManagedNamespacePatch, options *FleetManagedNamespacesClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "FleetManagedNamespacesClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, fleetName, managedNamespaceName, properties, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *FleetManagedNamespacesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, fleetName string, managedNamespaceName string, properties FleetManagedNamespacePatch, options *FleetManagedNamespacesClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/managedNamespaces/{managedNamespaceName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if fleetName == "" {
-		return nil, errors.New("parameter fleetName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{fleetName}", url.PathEscape(fleetName))
-	if managedNamespaceName == "" {
-		return nil, errors.New("parameter managedNamespaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{managedNamespaceName}", url.PathEscape(managedNamespaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260602Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
-	}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

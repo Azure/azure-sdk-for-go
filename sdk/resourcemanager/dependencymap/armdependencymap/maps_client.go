@@ -68,7 +68,7 @@ func (client *MapsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroup
 	}
 }
 
-// CreateOrUpdate - Create a MapsResource
+// createOrUpdate - Create a MapsResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *MapsClient) createOrUpdate(ctx context.Context, resourceGroupName string, mapName string, resource MapsResource, options *MapsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -90,7 +90,7 @@ func (client *MapsClient) createOrUpdate(ctx context.Context, resourceGroupName 
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *MapsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, mapName string, resource MapsResource, _ *MapsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DependencyMap/maps/{mapName}"
 	if client.subscriptionID == "" {
@@ -142,7 +142,7 @@ func (client *MapsClient) BeginDelete(ctx context.Context, resourceGroupName str
 	}
 }
 
-// Delete - Delete a MapsResource
+// deleteOperation - Delete a MapsResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *MapsClient) deleteOperation(ctx context.Context, resourceGroupName string, mapName string, options *MapsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -164,7 +164,7 @@ func (client *MapsClient) deleteOperation(ctx context.Context, resourceGroupName
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *MapsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, mapName string, _ *MapsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DependencyMap/maps/{mapName}"
 	if client.subscriptionID == "" {
@@ -213,7 +213,7 @@ func (client *MapsClient) BeginExportDependencies(ctx context.Context, resourceG
 	}
 }
 
-// ExportDependencies - Export dependencies
+// exportDependencies - Export dependencies
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *MapsClient) exportDependencies(ctx context.Context, resourceGroupName string, mapName string, body ExportDependenciesRequest, options *MapsClientBeginExportDependenciesOptions) (*http.Response, error) {
 	var err error
@@ -235,7 +235,7 @@ func (client *MapsClient) exportDependencies(ctx context.Context, resourceGroupN
 	return httpResp, nil
 }
 
-// exportDependenciesCreateRequest creates the ExportDependencies request.
+// exportDependenciesCreateRequest creates the exportDependencies request.
 func (client *MapsClient) exportDependenciesCreateRequest(ctx context.Context, resourceGroupName string, mapName string, body ExportDependenciesRequest, _ *MapsClientBeginExportDependenciesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DependencyMap/maps/{mapName}/exportDependencies"
 	if client.subscriptionID == "" {
@@ -260,6 +260,306 @@ func (client *MapsClient) exportDependenciesCreateRequest(ctx context.Context, r
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginGetConnectionsForProcessOnFocusedMachine - Get network connections of a process
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - mapName - Maps resource name
+//   - body - The content of the action request
+//   - options - MapsClientBeginGetConnectionsForProcessOnFocusedMachineOptions contains the optional parameters for the MapsClient.BeginGetConnectionsForProcessOnFocusedMachine
+//     method.
+func (client *MapsClient) BeginGetConnectionsForProcessOnFocusedMachine(ctx context.Context, resourceGroupName string, mapName string, body GetConnectionsForProcessOnFocusedMachineRequest, options *MapsClientBeginGetConnectionsForProcessOnFocusedMachineOptions) (*runtime.Poller[MapsClientGetConnectionsForProcessOnFocusedMachineResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.getConnectionsForProcessOnFocusedMachine(ctx, resourceGroupName, mapName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[MapsClientGetConnectionsForProcessOnFocusedMachineResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[MapsClientGetConnectionsForProcessOnFocusedMachineResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// getConnectionsForProcessOnFocusedMachine - Get network connections of a process
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *MapsClient) getConnectionsForProcessOnFocusedMachine(ctx context.Context, resourceGroupName string, mapName string, body GetConnectionsForProcessOnFocusedMachineRequest, options *MapsClientBeginGetConnectionsForProcessOnFocusedMachineOptions) (*http.Response, error) {
+	var err error
+	const operationName = "MapsClient.BeginGetConnectionsForProcessOnFocusedMachine"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getConnectionsForProcessOnFocusedMachineCreateRequest(ctx, resourceGroupName, mapName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// getConnectionsForProcessOnFocusedMachineCreateRequest creates the getConnectionsForProcessOnFocusedMachine request.
+func (client *MapsClient) getConnectionsForProcessOnFocusedMachineCreateRequest(ctx context.Context, resourceGroupName string, mapName string, body GetConnectionsForProcessOnFocusedMachineRequest, _ *MapsClientBeginGetConnectionsForProcessOnFocusedMachineOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DependencyMap/maps/{mapName}/getConnectionsForProcessOnFocusedMachine"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if mapName == "" {
+		return nil, errors.New("parameter mapName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{mapName}", url.PathEscape(mapName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250131Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginGetConnectionsWithConnectedMachineForFocusedMachine - Get network connections between machines
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - mapName - Maps resource name
+//   - body - The content of the action request
+//   - options - MapsClientBeginGetConnectionsWithConnectedMachineForFocusedMachineOptions contains the optional parameters for
+//     the MapsClient.BeginGetConnectionsWithConnectedMachineForFocusedMachine method.
+func (client *MapsClient) BeginGetConnectionsWithConnectedMachineForFocusedMachine(ctx context.Context, resourceGroupName string, mapName string, body GetConnectionsWithConnectedMachineForFocusedMachineRequest, options *MapsClientBeginGetConnectionsWithConnectedMachineForFocusedMachineOptions) (*runtime.Poller[MapsClientGetConnectionsWithConnectedMachineForFocusedMachineResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.getConnectionsWithConnectedMachineForFocusedMachine(ctx, resourceGroupName, mapName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[MapsClientGetConnectionsWithConnectedMachineForFocusedMachineResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[MapsClientGetConnectionsWithConnectedMachineForFocusedMachineResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// getConnectionsWithConnectedMachineForFocusedMachine - Get network connections between machines
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *MapsClient) getConnectionsWithConnectedMachineForFocusedMachine(ctx context.Context, resourceGroupName string, mapName string, body GetConnectionsWithConnectedMachineForFocusedMachineRequest, options *MapsClientBeginGetConnectionsWithConnectedMachineForFocusedMachineOptions) (*http.Response, error) {
+	var err error
+	const operationName = "MapsClient.BeginGetConnectionsWithConnectedMachineForFocusedMachine"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getConnectionsWithConnectedMachineForFocusedMachineCreateRequest(ctx, resourceGroupName, mapName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// getConnectionsWithConnectedMachineForFocusedMachineCreateRequest creates the getConnectionsWithConnectedMachineForFocusedMachine request.
+func (client *MapsClient) getConnectionsWithConnectedMachineForFocusedMachineCreateRequest(ctx context.Context, resourceGroupName string, mapName string, body GetConnectionsWithConnectedMachineForFocusedMachineRequest, _ *MapsClientBeginGetConnectionsWithConnectedMachineForFocusedMachineOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DependencyMap/maps/{mapName}/getConnectionsWithConnectedMachineForFocusedMachine"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if mapName == "" {
+		return nil, errors.New("parameter mapName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{mapName}", url.PathEscape(mapName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250131Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginGetDependencyViewForFocusedMachine - Get dependency map of single machine
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - mapName - Maps resource name
+//   - body - The content of the action request
+//   - options - MapsClientBeginGetDependencyViewForFocusedMachineOptions contains the optional parameters for the MapsClient.BeginGetDependencyViewForFocusedMachine
+//     method.
+func (client *MapsClient) BeginGetDependencyViewForFocusedMachine(ctx context.Context, resourceGroupName string, mapName string, body GetDependencyViewForFocusedMachineRequest, options *MapsClientBeginGetDependencyViewForFocusedMachineOptions) (*runtime.Poller[MapsClientGetDependencyViewForFocusedMachineResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.getDependencyViewForFocusedMachine(ctx, resourceGroupName, mapName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[MapsClientGetDependencyViewForFocusedMachineResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[MapsClientGetDependencyViewForFocusedMachineResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// getDependencyViewForFocusedMachine - Get dependency map of single machine
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *MapsClient) getDependencyViewForFocusedMachine(ctx context.Context, resourceGroupName string, mapName string, body GetDependencyViewForFocusedMachineRequest, options *MapsClientBeginGetDependencyViewForFocusedMachineOptions) (*http.Response, error) {
+	var err error
+	const operationName = "MapsClient.BeginGetDependencyViewForFocusedMachine"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getDependencyViewForFocusedMachineCreateRequest(ctx, resourceGroupName, mapName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// getDependencyViewForFocusedMachineCreateRequest creates the getDependencyViewForFocusedMachine request.
+func (client *MapsClient) getDependencyViewForFocusedMachineCreateRequest(ctx context.Context, resourceGroupName string, mapName string, body GetDependencyViewForFocusedMachineRequest, _ *MapsClientBeginGetDependencyViewForFocusedMachineOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DependencyMap/maps/{mapName}/getDependencyViewForFocusedMachine"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if mapName == "" {
+		return nil, errors.New("parameter mapName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{mapName}", url.PathEscape(mapName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250131Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginUpdate - Update a MapsResource
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - mapName - Maps resource name
+//   - properties - The resource properties to be updated.
+//   - options - MapsClientBeginUpdateOptions contains the optional parameters for the MapsClient.BeginUpdate method.
+func (client *MapsClient) BeginUpdate(ctx context.Context, resourceGroupName string, mapName string, properties MapsResourceTagsUpdate, options *MapsClientBeginUpdateOptions) (*runtime.Poller[MapsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, mapName, properties, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[MapsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[MapsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update a MapsResource
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *MapsClient) update(ctx context.Context, resourceGroupName string, mapName string, properties MapsResourceTagsUpdate, options *MapsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "MapsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, mapName, properties, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *MapsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, mapName string, properties MapsResourceTagsUpdate, _ *MapsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DependencyMap/maps/{mapName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if mapName == "" {
+		return nil, errors.New("parameter mapName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{mapName}", url.PathEscape(mapName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250131Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, properties); err != nil {
 		return nil, err
 	}
 	return req, nil
@@ -323,231 +623,6 @@ func (client *MapsClient) getHandleResponse(resp *http.Response, successCodes ..
 		return MapsClientGetResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginGetConnectionsForProcessOnFocusedMachine - Get network connections of a process
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - mapName - Maps resource name
-//   - body - The content of the action request
-//   - options - MapsClientBeginGetConnectionsForProcessOnFocusedMachineOptions contains the optional parameters for the MapsClient.BeginGetConnectionsForProcessOnFocusedMachine
-//     method.
-func (client *MapsClient) BeginGetConnectionsForProcessOnFocusedMachine(ctx context.Context, resourceGroupName string, mapName string, body GetConnectionsForProcessOnFocusedMachineRequest, options *MapsClientBeginGetConnectionsForProcessOnFocusedMachineOptions) (*runtime.Poller[MapsClientGetConnectionsForProcessOnFocusedMachineResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.getConnectionsForProcessOnFocusedMachine(ctx, resourceGroupName, mapName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[MapsClientGetConnectionsForProcessOnFocusedMachineResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[MapsClientGetConnectionsForProcessOnFocusedMachineResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// GetConnectionsForProcessOnFocusedMachine - Get network connections of a process
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *MapsClient) getConnectionsForProcessOnFocusedMachine(ctx context.Context, resourceGroupName string, mapName string, body GetConnectionsForProcessOnFocusedMachineRequest, options *MapsClientBeginGetConnectionsForProcessOnFocusedMachineOptions) (*http.Response, error) {
-	var err error
-	const operationName = "MapsClient.BeginGetConnectionsForProcessOnFocusedMachine"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.getConnectionsForProcessOnFocusedMachineCreateRequest(ctx, resourceGroupName, mapName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// getConnectionsForProcessOnFocusedMachineCreateRequest creates the GetConnectionsForProcessOnFocusedMachine request.
-func (client *MapsClient) getConnectionsForProcessOnFocusedMachineCreateRequest(ctx context.Context, resourceGroupName string, mapName string, body GetConnectionsForProcessOnFocusedMachineRequest, _ *MapsClientBeginGetConnectionsForProcessOnFocusedMachineOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DependencyMap/maps/{mapName}/getConnectionsForProcessOnFocusedMachine"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if mapName == "" {
-		return nil, errors.New("parameter mapName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{mapName}", url.PathEscape(mapName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250131Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginGetConnectionsWithConnectedMachineForFocusedMachine - Get network connections between machines
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - mapName - Maps resource name
-//   - body - The content of the action request
-//   - options - MapsClientBeginGetConnectionsWithConnectedMachineForFocusedMachineOptions contains the optional parameters for
-//     the MapsClient.BeginGetConnectionsWithConnectedMachineForFocusedMachine method.
-func (client *MapsClient) BeginGetConnectionsWithConnectedMachineForFocusedMachine(ctx context.Context, resourceGroupName string, mapName string, body GetConnectionsWithConnectedMachineForFocusedMachineRequest, options *MapsClientBeginGetConnectionsWithConnectedMachineForFocusedMachineOptions) (*runtime.Poller[MapsClientGetConnectionsWithConnectedMachineForFocusedMachineResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.getConnectionsWithConnectedMachineForFocusedMachine(ctx, resourceGroupName, mapName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[MapsClientGetConnectionsWithConnectedMachineForFocusedMachineResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[MapsClientGetConnectionsWithConnectedMachineForFocusedMachineResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// GetConnectionsWithConnectedMachineForFocusedMachine - Get network connections between machines
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *MapsClient) getConnectionsWithConnectedMachineForFocusedMachine(ctx context.Context, resourceGroupName string, mapName string, body GetConnectionsWithConnectedMachineForFocusedMachineRequest, options *MapsClientBeginGetConnectionsWithConnectedMachineForFocusedMachineOptions) (*http.Response, error) {
-	var err error
-	const operationName = "MapsClient.BeginGetConnectionsWithConnectedMachineForFocusedMachine"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.getConnectionsWithConnectedMachineForFocusedMachineCreateRequest(ctx, resourceGroupName, mapName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// getConnectionsWithConnectedMachineForFocusedMachineCreateRequest creates the GetConnectionsWithConnectedMachineForFocusedMachine request.
-func (client *MapsClient) getConnectionsWithConnectedMachineForFocusedMachineCreateRequest(ctx context.Context, resourceGroupName string, mapName string, body GetConnectionsWithConnectedMachineForFocusedMachineRequest, _ *MapsClientBeginGetConnectionsWithConnectedMachineForFocusedMachineOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DependencyMap/maps/{mapName}/getConnectionsWithConnectedMachineForFocusedMachine"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if mapName == "" {
-		return nil, errors.New("parameter mapName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{mapName}", url.PathEscape(mapName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250131Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginGetDependencyViewForFocusedMachine - Get dependency map of single machine
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - mapName - Maps resource name
-//   - body - The content of the action request
-//   - options - MapsClientBeginGetDependencyViewForFocusedMachineOptions contains the optional parameters for the MapsClient.BeginGetDependencyViewForFocusedMachine
-//     method.
-func (client *MapsClient) BeginGetDependencyViewForFocusedMachine(ctx context.Context, resourceGroupName string, mapName string, body GetDependencyViewForFocusedMachineRequest, options *MapsClientBeginGetDependencyViewForFocusedMachineOptions) (*runtime.Poller[MapsClientGetDependencyViewForFocusedMachineResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.getDependencyViewForFocusedMachine(ctx, resourceGroupName, mapName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[MapsClientGetDependencyViewForFocusedMachineResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[MapsClientGetDependencyViewForFocusedMachineResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// GetDependencyViewForFocusedMachine - Get dependency map of single machine
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *MapsClient) getDependencyViewForFocusedMachine(ctx context.Context, resourceGroupName string, mapName string, body GetDependencyViewForFocusedMachineRequest, options *MapsClientBeginGetDependencyViewForFocusedMachineOptions) (*http.Response, error) {
-	var err error
-	const operationName = "MapsClient.BeginGetDependencyViewForFocusedMachine"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.getDependencyViewForFocusedMachineCreateRequest(ctx, resourceGroupName, mapName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// getDependencyViewForFocusedMachineCreateRequest creates the GetDependencyViewForFocusedMachine request.
-func (client *MapsClient) getDependencyViewForFocusedMachineCreateRequest(ctx context.Context, resourceGroupName string, mapName string, body GetDependencyViewForFocusedMachineRequest, _ *MapsClientBeginGetDependencyViewForFocusedMachineOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DependencyMap/maps/{mapName}/getDependencyViewForFocusedMachine"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if mapName == "" {
-		return nil, errors.New("parameter mapName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{mapName}", url.PathEscape(mapName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250131Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
 }
 
 // NewListByResourceGroupPager - List MapsResource resources by resource group
@@ -687,79 +762,4 @@ func (client *MapsClient) listBySubscriptionHandleResponse(resp *http.Response, 
 		return MapsClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Update a MapsResource
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - mapName - Maps resource name
-//   - properties - The resource properties to be updated.
-//   - options - MapsClientBeginUpdateOptions contains the optional parameters for the MapsClient.BeginUpdate method.
-func (client *MapsClient) BeginUpdate(ctx context.Context, resourceGroupName string, mapName string, properties MapsResourceTagsUpdate, options *MapsClientBeginUpdateOptions) (*runtime.Poller[MapsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, mapName, properties, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[MapsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[MapsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update a MapsResource
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *MapsClient) update(ctx context.Context, resourceGroupName string, mapName string, properties MapsResourceTagsUpdate, options *MapsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "MapsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, mapName, properties, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *MapsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, mapName string, properties MapsResourceTagsUpdate, _ *MapsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DependencyMap/maps/{mapName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if mapName == "" {
-		return nil, errors.New("parameter mapName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{mapName}", url.PathEscape(mapName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250131Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

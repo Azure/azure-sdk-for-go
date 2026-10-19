@@ -45,6 +45,10 @@ type WCFRelaysServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetAuthorizationRule func(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, authorizationRuleName string, options *armrelay.WCFRelaysClientGetAuthorizationRuleOptions) (resp azfake.Responder[armrelay.WCFRelaysClientGetAuthorizationRuleResponse], errResp azfake.ErrorResponder)
 
+	// ListKeys is the fake for method WCFRelaysClient.ListKeys
+	// HTTP status codes to indicate success: http.StatusOK
+	ListKeys func(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, authorizationRuleName string, options *armrelay.WCFRelaysClientListKeysOptions) (resp azfake.Responder[armrelay.WCFRelaysClientListKeysResponse], errResp azfake.ErrorResponder)
+
 	// NewListAuthorizationRulesPager is the fake for method WCFRelaysClient.NewListAuthorizationRulesPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListAuthorizationRulesPager func(resourceGroupName string, namespaceName string, relayName string, options *armrelay.WCFRelaysClientListAuthorizationRulesOptions) (resp azfake.PagerResponder[armrelay.WCFRelaysClientListAuthorizationRulesResponse])
@@ -52,10 +56,6 @@ type WCFRelaysServer struct {
 	// NewListByNamespacePager is the fake for method WCFRelaysClient.NewListByNamespacePager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByNamespacePager func(resourceGroupName string, namespaceName string, options *armrelay.WCFRelaysClientListByNamespaceOptions) (resp azfake.PagerResponder[armrelay.WCFRelaysClientListByNamespaceResponse])
-
-	// ListKeys is the fake for method WCFRelaysClient.ListKeys
-	// HTTP status codes to indicate success: http.StatusOK
-	ListKeys func(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, authorizationRuleName string, options *armrelay.WCFRelaysClientListKeysOptions) (resp azfake.Responder[armrelay.WCFRelaysClientListKeysResponse], errResp azfake.ErrorResponder)
 
 	// RegenerateKeys is the fake for method WCFRelaysClient.RegenerateKeys
 	// HTTP status codes to indicate success: http.StatusOK
@@ -114,12 +114,12 @@ func (w *WCFRelaysServerTransport) dispatchToMethodFake(req *http.Request, metho
 				res.resp, res.err = w.dispatchGet(req)
 			case "WCFRelaysClient.GetAuthorizationRule":
 				res.resp, res.err = w.dispatchGetAuthorizationRule(req)
+			case "WCFRelaysClient.ListKeys":
+				res.resp, res.err = w.dispatchListKeys(req)
 			case "WCFRelaysClient.NewListAuthorizationRulesPager":
 				res.resp, res.err = w.dispatchNewListAuthorizationRulesPager(req)
 			case "WCFRelaysClient.NewListByNamespacePager":
 				res.resp, res.err = w.dispatchNewListByNamespacePager(req)
-			case "WCFRelaysClient.ListKeys":
-				res.resp, res.err = w.dispatchListKeys(req)
 			case "WCFRelaysClient.RegenerateKeys":
 				res.resp, res.err = w.dispatchRegenerateKeys(req)
 			default:
@@ -380,6 +380,47 @@ func (w *WCFRelaysServerTransport) dispatchGetAuthorizationRule(req *http.Reques
 	return resp, nil
 }
 
+func (w *WCFRelaysServerTransport) dispatchListKeys(req *http.Request) (*http.Response, error) {
+	if w.srv.ListKeys == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListKeys not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Relay/namespaces/(?P<namespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/wcfRelays/(?P<relayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/authorizationRules/(?P<authorizationRuleName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listKeys`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 6 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	namespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("namespaceName")])
+	if err != nil {
+		return nil, err
+	}
+	relayNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("relayName")])
+	if err != nil {
+		return nil, err
+	}
+	authorizationRuleNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("authorizationRuleName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := w.srv.ListKeys(req.Context(), resourceGroupNameParam, namespaceNameParam, relayNameParam, authorizationRuleNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AccessKeys, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (w *WCFRelaysServerTransport) dispatchNewListAuthorizationRulesPager(req *http.Request) (*http.Response, error) {
 	if w.srv.NewListAuthorizationRulesPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListAuthorizationRulesPager not implemented")}
@@ -462,47 +503,6 @@ func (w *WCFRelaysServerTransport) dispatchNewListByNamespacePager(req *http.Req
 	}
 	if !server.PagerResponderMore(newListByNamespacePager) {
 		w.newListByNamespacePager.remove(req)
-	}
-	return resp, nil
-}
-
-func (w *WCFRelaysServerTransport) dispatchListKeys(req *http.Request) (*http.Response, error) {
-	if w.srv.ListKeys == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListKeys not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Relay/namespaces/(?P<namespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/wcfRelays/(?P<relayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/authorizationRules/(?P<authorizationRuleName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listKeys`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 6 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	namespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("namespaceName")])
-	if err != nil {
-		return nil, err
-	}
-	relayNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("relayName")])
-	if err != nil {
-		return nil, err
-	}
-	authorizationRuleNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("authorizationRuleName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := w.srv.ListKeys(req.Context(), resourceGroupNameParam, namespaceNameParam, relayNameParam, authorizationRuleNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AccessKeys, req)
-	if err != nil {
-		return nil, err
 	}
 	return resp, nil
 }

@@ -37,13 +37,13 @@ type QueryPacksServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, queryPackName string, options *armoperationalinsights.QueryPacksClientGetOptions) (resp azfake.Responder[armoperationalinsights.QueryPacksClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method QueryPacksClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armoperationalinsights.QueryPacksClientListOptions) (resp azfake.PagerResponder[armoperationalinsights.QueryPacksClientListResponse])
-
 	// NewListByResourceGroupPager is the fake for method QueryPacksClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, options *armoperationalinsights.QueryPacksClientListByResourceGroupOptions) (resp azfake.PagerResponder[armoperationalinsights.QueryPacksClientListByResourceGroupResponse])
+
+	// NewListPager is the fake for method QueryPacksClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armoperationalinsights.QueryPacksClientListOptions) (resp azfake.PagerResponder[armoperationalinsights.QueryPacksClientListResponse])
 
 	// UpdateTags is the fake for method QueryPacksClient.UpdateTags
 	// HTTP status codes to indicate success: http.StatusOK
@@ -56,8 +56,8 @@ type QueryPacksServer struct {
 func NewQueryPacksServerTransport(srv *QueryPacksServer) *QueryPacksServerTransport {
 	return &QueryPacksServerTransport{
 		srv:                         srv,
-		newListPager:                newTracker[azfake.PagerResponder[armoperationalinsights.QueryPacksClientListResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armoperationalinsights.QueryPacksClientListByResourceGroupResponse]](),
+		newListPager:                newTracker[azfake.PagerResponder[armoperationalinsights.QueryPacksClientListResponse]](),
 	}
 }
 
@@ -65,8 +65,8 @@ func NewQueryPacksServerTransport(srv *QueryPacksServer) *QueryPacksServerTransp
 // Don't use this type directly, use NewQueryPacksServerTransport instead.
 type QueryPacksServerTransport struct {
 	srv                         *QueryPacksServer
-	newListPager                *tracker[azfake.PagerResponder[armoperationalinsights.QueryPacksClientListResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armoperationalinsights.QueryPacksClientListByResourceGroupResponse]]
+	newListPager                *tracker[azfake.PagerResponder[armoperationalinsights.QueryPacksClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for QueryPacksServerTransport.
@@ -98,10 +98,10 @@ func (q *QueryPacksServerTransport) dispatchToMethodFake(req *http.Request, meth
 				res.resp, res.err = q.dispatchDelete(req)
 			case "QueryPacksClient.Get":
 				res.resp, res.err = q.dispatchGet(req)
-			case "QueryPacksClient.NewListPager":
-				res.resp, res.err = q.dispatchNewListPager(req)
 			case "QueryPacksClient.NewListByResourceGroupPager":
 				res.resp, res.err = q.dispatchNewListByResourceGroupPager(req)
+			case "QueryPacksClient.NewListPager":
+				res.resp, res.err = q.dispatchNewListPager(req)
 			case "QueryPacksClient.UpdateTags":
 				res.resp, res.err = q.dispatchUpdateTags(req)
 			default:
@@ -256,39 +256,6 @@ func (q *QueryPacksServerTransport) dispatchGet(req *http.Request) (*http.Respon
 	return resp, nil
 }
 
-func (q *QueryPacksServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if q.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := q.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.OperationalInsights/queryPacks`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := q.srv.NewListPager(nil)
-		newListPager = &resp
-		q.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armoperationalinsights.QueryPacksClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		q.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		q.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (q *QueryPacksServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
 	if q.srv.NewListByResourceGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
@@ -322,6 +289,39 @@ func (q *QueryPacksServerTransport) dispatchNewListByResourceGroupPager(req *htt
 	}
 	if !server.PagerResponderMore(newListByResourceGroupPager) {
 		q.newListByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (q *QueryPacksServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if q.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := q.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.OperationalInsights/queryPacks`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := q.srv.NewListPager(nil)
+		newListPager = &resp
+		q.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armoperationalinsights.QueryPacksClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		q.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		q.newListPager.remove(req)
 	}
 	return resp, nil
 }

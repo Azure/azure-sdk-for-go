@@ -30,6 +30,10 @@ type FleetMembersServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, fleetName string, fleetMemberName string, options *armcontainerservicefleet.FleetMembersClientBeginDeleteOptions) (resp azfake.PollerResponder[armcontainerservicefleet.FleetMembersClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdateAsync is the fake for method FleetMembersClient.BeginUpdateAsync
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdateAsync func(ctx context.Context, resourceGroupName string, fleetName string, fleetMemberName string, properties armcontainerservicefleet.FleetMemberUpdate, options *armcontainerservicefleet.FleetMembersClientBeginUpdateAsyncOptions) (resp azfake.PollerResponder[armcontainerservicefleet.FleetMembersClientUpdateAsyncResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method FleetMembersClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, fleetName string, fleetMemberName string, options *armcontainerservicefleet.FleetMembersClientGetOptions) (resp azfake.Responder[armcontainerservicefleet.FleetMembersClientGetResponse], errResp azfake.ErrorResponder)
@@ -37,10 +41,6 @@ type FleetMembersServer struct {
 	// NewListByFleetPager is the fake for method FleetMembersClient.NewListByFleetPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByFleetPager func(resourceGroupName string, fleetName string, options *armcontainerservicefleet.FleetMembersClientListByFleetOptions) (resp azfake.PagerResponder[armcontainerservicefleet.FleetMembersClientListByFleetResponse])
-
-	// BeginUpdateAsync is the fake for method FleetMembersClient.BeginUpdateAsync
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdateAsync func(ctx context.Context, resourceGroupName string, fleetName string, fleetMemberName string, properties armcontainerservicefleet.FleetMemberUpdate, options *armcontainerservicefleet.FleetMembersClientBeginUpdateAsyncOptions) (resp azfake.PollerResponder[armcontainerservicefleet.FleetMembersClientUpdateAsyncResponse], errResp azfake.ErrorResponder)
 }
 
 // NewFleetMembersServerTransport creates a new instance of FleetMembersServerTransport with the provided implementation.
@@ -51,8 +51,8 @@ func NewFleetMembersServerTransport(srv *FleetMembersServer) *FleetMembersServer
 		srv:                 srv,
 		beginCreate:         newTracker[azfake.PollerResponder[armcontainerservicefleet.FleetMembersClientCreateResponse]](),
 		beginDelete:         newTracker[azfake.PollerResponder[armcontainerservicefleet.FleetMembersClientDeleteResponse]](),
-		newListByFleetPager: newTracker[azfake.PagerResponder[armcontainerservicefleet.FleetMembersClientListByFleetResponse]](),
 		beginUpdateAsync:    newTracker[azfake.PollerResponder[armcontainerservicefleet.FleetMembersClientUpdateAsyncResponse]](),
+		newListByFleetPager: newTracker[azfake.PagerResponder[armcontainerservicefleet.FleetMembersClientListByFleetResponse]](),
 	}
 }
 
@@ -62,8 +62,8 @@ type FleetMembersServerTransport struct {
 	srv                 *FleetMembersServer
 	beginCreate         *tracker[azfake.PollerResponder[armcontainerservicefleet.FleetMembersClientCreateResponse]]
 	beginDelete         *tracker[azfake.PollerResponder[armcontainerservicefleet.FleetMembersClientDeleteResponse]]
-	newListByFleetPager *tracker[azfake.PagerResponder[armcontainerservicefleet.FleetMembersClientListByFleetResponse]]
 	beginUpdateAsync    *tracker[azfake.PollerResponder[armcontainerservicefleet.FleetMembersClientUpdateAsyncResponse]]
+	newListByFleetPager *tracker[azfake.PagerResponder[armcontainerservicefleet.FleetMembersClientListByFleetResponse]]
 }
 
 // Do implements the policy.Transporter interface for FleetMembersServerTransport.
@@ -91,12 +91,12 @@ func (f *FleetMembersServerTransport) dispatchToMethodFake(req *http.Request, me
 				res.resp, res.err = f.dispatchBeginCreate(req)
 			case "FleetMembersClient.BeginDelete":
 				res.resp, res.err = f.dispatchBeginDelete(req)
+			case "FleetMembersClient.BeginUpdateAsync":
+				res.resp, res.err = f.dispatchBeginUpdateAsync(req)
 			case "FleetMembersClient.Get":
 				res.resp, res.err = f.dispatchGet(req)
 			case "FleetMembersClient.NewListByFleetPager":
 				res.resp, res.err = f.dispatchNewListByFleetPager(req)
-			case "FleetMembersClient.BeginUpdateAsync":
-				res.resp, res.err = f.dispatchBeginUpdateAsync(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -229,6 +229,65 @@ func (f *FleetMembersServerTransport) dispatchBeginDelete(req *http.Request) (*h
 	return resp, nil
 }
 
+func (f *FleetMembersServerTransport) dispatchBeginUpdateAsync(req *http.Request) (*http.Response, error) {
+	if f.srv.BeginUpdateAsync == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdateAsync not implemented")}
+	}
+	beginUpdateAsync := f.beginUpdateAsync.get(req)
+	if beginUpdateAsync == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/fleets/(?P<fleetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/members/(?P<fleetMemberName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armcontainerservicefleet.FleetMemberUpdate](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
+		fleetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("fleetName")])
+		if err != nil {
+			return nil, err
+		}
+		fleetMemberNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("fleetMemberName")])
+		if err != nil {
+			return nil, err
+		}
+		var options *armcontainerservicefleet.FleetMembersClientBeginUpdateAsyncOptions
+		if ifMatchParam != nil {
+			options = &armcontainerservicefleet.FleetMembersClientBeginUpdateAsyncOptions{
+				IfMatch: ifMatchParam,
+			}
+		}
+		respr, errRespr := f.srv.BeginUpdateAsync(req.Context(), resourceGroupNameParam, fleetNameParam, fleetMemberNameParam, body, options)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdateAsync = &respr
+		f.beginUpdateAsync.add(req, beginUpdateAsync)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdateAsync, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		f.beginUpdateAsync.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdateAsync) {
+		f.beginUpdateAsync.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (f *FleetMembersServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if f.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -325,65 +384,6 @@ func (f *FleetMembersServerTransport) dispatchNewListByFleetPager(req *http.Requ
 	if !server.PagerResponderMore(newListByFleetPager) {
 		f.newListByFleetPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (f *FleetMembersServerTransport) dispatchBeginUpdateAsync(req *http.Request) (*http.Response, error) {
-	if f.srv.BeginUpdateAsync == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdateAsync not implemented")}
-	}
-	beginUpdateAsync := f.beginUpdateAsync.get(req)
-	if beginUpdateAsync == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/fleets/(?P<fleetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/members/(?P<fleetMemberName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcontainerservicefleet.FleetMemberUpdate](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
-		fleetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("fleetName")])
-		if err != nil {
-			return nil, err
-		}
-		fleetMemberNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("fleetMemberName")])
-		if err != nil {
-			return nil, err
-		}
-		var options *armcontainerservicefleet.FleetMembersClientBeginUpdateAsyncOptions
-		if ifMatchParam != nil {
-			options = &armcontainerservicefleet.FleetMembersClientBeginUpdateAsyncOptions{
-				IfMatch: ifMatchParam,
-			}
-		}
-		respr, errRespr := f.srv.BeginUpdateAsync(req.Context(), resourceGroupNameParam, fleetNameParam, fleetMemberNameParam, body, options)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdateAsync = &respr
-		f.beginUpdateAsync.add(req, beginUpdateAsync)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdateAsync, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		f.beginUpdateAsync.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdateAsync) {
-		f.beginUpdateAsync.remove(req)
-	}
-
 	return resp, nil
 }
 

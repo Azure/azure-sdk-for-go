@@ -1435,697 +1435,6 @@ func ExampleContainerAppsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-07-01/ContainerApps_Get.json
-func ExampleContainerAppsClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappcontainers.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewContainerAppsClient().Get(ctx, "rg", "testcontainerApp0", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armappcontainers.ContainerAppsClientGetResponse{
-	// 	ContainerApp: armappcontainers.ContainerApp{
-	// 		Name: to.Ptr("testcontainerApp0"),
-	// 		Type: to.Ptr("Microsoft.App/containerApps"),
-	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/containerApps/testcontainerApp0"),
-	// 		Identity: &armappcontainers.ManagedServiceIdentity{
-	// 			Type: to.Ptr(armappcontainers.ManagedServiceIdentityTypeSystemAssignedUserAssigned),
-	// 			PrincipalID: to.Ptr("24adfa4f-dedf-8dc0-ca29-b6d1a69ab319"),
-	// 			TenantID: to.Ptr("23adfa4f-eedf-1dc0-ba29-a6d1a69ab3d0"),
-	// 			UserAssignedIdentities: map[string]*armappcontainers.UserAssignedIdentity{
-	// 				"/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourcegroups/rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity": &armappcontainers.UserAssignedIdentity{
-	// 					ClientID: to.Ptr("14adfa4f-eedf-1dc0-ba29-a6d1a69ab3df"),
-	// 					PrincipalID: to.Ptr("74adfa4f-dedf-8dc0-ca29-b6d1a69ab312"),
-	// 				},
-	// 			},
-	// 		},
-	// 		Location: to.Ptr("East US"),
-	// 		Properties: &armappcontainers.ContainerAppProperties{
-	// 			Configuration: &armappcontainers.Configuration{
-	// 				Dapr: &armappcontainers.Dapr{
-	// 					AppHealth: &armappcontainers.DaprAppHealth{
-	// 						Path: to.Ptr("/health"),
-	// 						Enabled: to.Ptr(true),
-	// 						ProbeIntervalSeconds: to.Ptr[int32](3),
-	// 						ProbeTimeoutMilliseconds: to.Ptr[int32](1000),
-	// 						Threshold: to.Ptr[int32](3),
-	// 					},
-	// 					AppPort: to.Ptr[int32](3000),
-	// 					AppProtocol: to.Ptr(armappcontainers.AppProtocolHTTP),
-	// 					EnableAPILogging: to.Ptr(true),
-	// 					Enabled: to.Ptr(true),
-	// 					HTTPMaxRequestSize: to.Ptr[int32](10),
-	// 					HTTPReadBufferSize: to.Ptr[int32](30),
-	// 					LogLevel: to.Ptr(armappcontainers.LogLevelDebug),
-	// 					MaxConcurrency: to.Ptr[int32](10),
-	// 				},
-	// 				IdentitySettings: []*armappcontainers.IdentitySettings{
-	// 					{
-	// 						Identity: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourcegroups/rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity"),
-	// 						Lifecycle: to.Ptr(armappcontainers.IdentitySettingsLifeCycleAll),
-	// 					},
-	// 					{
-	// 						Identity: to.Ptr("system"),
-	// 						Lifecycle: to.Ptr(armappcontainers.IdentitySettingsLifeCycleInit),
-	// 					},
-	// 				},
-	// 				Ingress: &armappcontainers.Ingress{
-	// 					CustomDomains: []*armappcontainers.CustomDomain{
-	// 						{
-	// 							Name: to.Ptr("www.my-name.com"),
-	// 							BindingType: to.Ptr(armappcontainers.BindingTypeSniEnabled),
-	// 							CertificateID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/managedEnvironments/demokube/certificates/my-certificate-for-my-name-dot-com"),
-	// 						},
-	// 						{
-	// 							Name: to.Ptr("www.my--other-name.com"),
-	// 							BindingType: to.Ptr(armappcontainers.BindingTypeSniEnabled),
-	// 							CertificateID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/managedEnvironments/demokube/certificates/my-certificate-for-my-other-name-dot-com"),
-	// 						},
-	// 					},
-	// 					External: to.Ptr(true),
-	// 					Fqdn: to.Ptr("testcontainerApp0.demokube-t24clv0g.eastus.containerApps.k4apps.io"),
-	// 					IPSecurityRestrictions: []*armappcontainers.IPSecurityRestrictionRule{
-	// 						{
-	// 							Name: to.Ptr("Allow work IP A subnet"),
-	// 							Description: to.Ptr("Allowing all IP's within the subnet below to access containerapp"),
-	// 							Action: to.Ptr(armappcontainers.ActionAllow),
-	// 							IPAddressRange: to.Ptr("192.168.1.1/32"),
-	// 						},
-	// 						{
-	// 							Name: to.Ptr("Allow work IP B subnet"),
-	// 							Description: to.Ptr("Allowing all IP's within the subnet below to access containerapp"),
-	// 							Action: to.Ptr(armappcontainers.ActionAllow),
-	// 							IPAddressRange: to.Ptr("192.168.1.1/8"),
-	// 						},
-	// 					},
-	// 					StickySessions: &armappcontainers.IngressStickySessions{
-	// 						Affinity: to.Ptr(armappcontainers.AffinitySticky),
-	// 					},
-	// 					TargetPort: to.Ptr[int32](3000),
-	// 					Traffic: []*armappcontainers.TrafficWeight{
-	// 						{
-	// 							RevisionName: to.Ptr("testcontainerApp0-ab1234"),
-	// 						},
-	// 						{
-	// 							Label: to.Ptr("staging"),
-	// 							RevisionName: to.Ptr("testcontainerApp0-ab4321"),
-	// 						},
-	// 					},
-	// 					Transport: to.Ptr(armappcontainers.IngressTransportMethodAuto),
-	// 				},
-	// 				MaxInactiveRevisions: to.Ptr[int32](10),
-	// 				Runtime: &armappcontainers.Runtime{
-	// 					Java: &armappcontainers.RuntimeJava{
-	// 						EnableMetrics: to.Ptr(true),
-	// 					},
-	// 				},
-	// 				Service: &armappcontainers.Service{
-	// 					Type: to.Ptr("redis"),
-	// 				},
-	// 			},
-	// 			EventStreamEndpoint: to.Ptr("testEndpoint"),
-	// 			LatestReadyRevisionName: to.Ptr("testcontainerApp0-pjxhsye"),
-	// 			LatestRevisionFqdn: to.Ptr("testcontainerApp0-pjxhsye.demokube-t24clv0g.eastus.containerApps.k4apps.io"),
-	// 			ManagedEnvironmentID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/managedEnvironments/demokube"),
-	// 			ProvisioningState: to.Ptr(armappcontainers.ContainerAppProvisioningStateSucceeded),
-	// 			RunningStatus: to.Ptr(armappcontainers.ContainerAppRunningStatusRunning),
-	// 			Template: &armappcontainers.Template{
-	// 				Containers: []*armappcontainers.Container{
-	// 					{
-	// 						Name: to.Ptr("testcontainerApp0"),
-	// 						Image: to.Ptr("repo/testcontainerApp0:v4"),
-	// 						Resources: &armappcontainers.ContainerResources{
-	// 							CPU: to.Ptr[float64](0.2),
-	// 							Memory: to.Ptr("100Mi"),
-	// 						},
-	// 						VolumeMounts: []*armappcontainers.VolumeMount{
-	// 							{
-	// 								MountPath: to.Ptr("/mnt/path1"),
-	// 								SubPath: to.Ptr("subPath1"),
-	// 								VolumeName: to.Ptr("azurefile"),
-	// 							},
-	// 							{
-	// 								MountPath: to.Ptr("/mnt/path2"),
-	// 								SubPath: to.Ptr("subPath2"),
-	// 								VolumeName: to.Ptr("nfsazurefile"),
-	// 							},
-	// 						},
-	// 					},
-	// 				},
-	// 				InitContainers: []*armappcontainers.InitContainer{
-	// 					{
-	// 						Name: to.Ptr("testinitcontainerApp0"),
-	// 						Image: to.Ptr("repo/testcontainerApp0:v4"),
-	// 						Resources: &armappcontainers.ContainerResources{
-	// 							CPU: to.Ptr[float64](0.2),
-	// 							Memory: to.Ptr("100Mi"),
-	// 						},
-	// 					},
-	// 				},
-	// 				Scale: &armappcontainers.Scale{
-	// 					CooldownPeriod: to.Ptr[int32](350),
-	// 					MaxReplicas: to.Ptr[int32](5),
-	// 					MinReplicas: to.Ptr[int32](1),
-	// 					PollingInterval: to.Ptr[int32](35),
-	// 					Rules: []*armappcontainers.ScaleRule{
-	// 						{
-	// 							Name: to.Ptr("httpscalingrule"),
-	// 							HTTP: &armappcontainers.HTTPScaleRule{
-	// 								Metadata: map[string]*string{
-	// 									"concurrentRequests": to.Ptr("50"),
-	// 								},
-	// 							},
-	// 						},
-	// 						{
-	// 							Name: to.Ptr("servicebus"),
-	// 							Custom: &armappcontainers.CustomScaleRule{
-	// 								Type: to.Ptr("azure-servicebus"),
-	// 								Identity: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourcegroups/rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity"),
-	// 								Metadata: map[string]*string{
-	// 									"messageCount": to.Ptr("5"),
-	// 									"namespace": to.Ptr("mynamespace"),
-	// 									"queueName": to.Ptr("myqueue"),
-	// 								},
-	// 							},
-	// 						},
-	// 					},
-	// 				},
-	// 				ServiceBinds: []*armappcontainers.ServiceBind{
-	// 					{
-	// 						Name: to.Ptr("service"),
-	// 						ServiceID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/containerApps/service"),
-	// 					},
-	// 				},
-	// 				Volumes: []*armappcontainers.Volume{
-	// 					{
-	// 						Name: to.Ptr("azurefile"),
-	// 						StorageName: to.Ptr("storage"),
-	// 						StorageType: to.Ptr(armappcontainers.StorageTypeAzureFile),
-	// 					},
-	// 					{
-	// 						Name: to.Ptr("nfsazurefile"),
-	// 						StorageName: to.Ptr("nfsStorage"),
-	// 						StorageType: to.Ptr(armappcontainers.StorageTypeNfsAzureFile),
-	// 					},
-	// 				},
-	// 			},
-	// 			WorkloadProfileName: to.Ptr("My-GP-01"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-07-01/ContainerApps_GetAuthToken.json
-func ExampleContainerAppsClient_GetAuthToken() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappcontainers.NewClientFactory("651f8027-33e8-4ec4-97b4-f6e9f3dc8744", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewContainerAppsClient().GetAuthToken(ctx, "rg", "testcontainerApp0", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armappcontainers.ContainerAppsClientGetAuthTokenResponse{
-	// 	ContainerAppAuthToken: armappcontainers.ContainerAppAuthToken{
-	// 		Name: to.Ptr("testcontainerApp0"),
-	// 		Type: to.Ptr("Microsoft.App/containerApps/accesstoken"),
-	// 		ID: to.Ptr("/subscriptions/651f8027-33e8-4ec4-97b4-f6e9f3dc8744/resourceGroups/rg/providers/Microsoft.App/containerApps/testcontainerApp0"),
-	// 		Location: to.Ptr("East US"),
-	// 		Properties: &armappcontainers.ContainerAppAuthTokenProperties{
-	// 			Expires: to.Ptr(time.Date(2022, time.July, 14, 19, 22, 50, 308022300, time.UTC)),
-	// 			Token: to.Ptr("testToken"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-07-01/ContainerApps_ListByResourceGroup.json
-func ExampleContainerAppsClient_NewListByResourceGroupPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappcontainers.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewContainerAppsClient().NewListByResourceGroupPager("rg", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armappcontainers.ContainerAppsClientListByResourceGroupResponse{
-		// 	ContainerAppCollection: armappcontainers.ContainerAppCollection{
-		// 		Value: []*armappcontainers.ContainerApp{
-		// 			{
-		// 				Name: to.Ptr("testcontainerApp0"),
-		// 				Type: to.Ptr("Microsoft.App/containerApps"),
-		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/containerApps/testcontainerApp0"),
-		// 				Location: to.Ptr("East US"),
-		// 				Properties: &armappcontainers.ContainerAppProperties{
-		// 					Configuration: &armappcontainers.Configuration{
-		// 						Dapr: &armappcontainers.Dapr{
-		// 							AppHealth: &armappcontainers.DaprAppHealth{
-		// 								Path: to.Ptr("/health"),
-		// 								Enabled: to.Ptr(true),
-		// 								ProbeIntervalSeconds: to.Ptr[int32](3),
-		// 								ProbeTimeoutMilliseconds: to.Ptr[int32](1000),
-		// 								Threshold: to.Ptr[int32](3),
-		// 							},
-		// 							AppPort: to.Ptr[int32](3000),
-		// 							AppProtocol: to.Ptr(armappcontainers.AppProtocolHTTP),
-		// 							EnableAPILogging: to.Ptr(true),
-		// 							Enabled: to.Ptr(true),
-		// 							HTTPMaxRequestSize: to.Ptr[int32](10),
-		// 							HTTPReadBufferSize: to.Ptr[int32](30),
-		// 							LogLevel: to.Ptr(armappcontainers.LogLevelDebug),
-		// 							MaxConcurrency: to.Ptr[int32](10),
-		// 						},
-		// 						Ingress: &armappcontainers.Ingress{
-		// 							CustomDomains: []*armappcontainers.CustomDomain{
-		// 								{
-		// 									Name: to.Ptr("www.my-name.com"),
-		// 									BindingType: to.Ptr(armappcontainers.BindingTypeSniEnabled),
-		// 									CertificateID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/managedEnvironments/demokube/certificates/my-certificate-for-my-name-dot-com"),
-		// 								},
-		// 								{
-		// 									Name: to.Ptr("www.my--other-name.com"),
-		// 									BindingType: to.Ptr(armappcontainers.BindingTypeSniEnabled),
-		// 									CertificateID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/managedEnvironments/demokube/certificates/my-certificate-for-my-other-name-dot-com"),
-		// 								},
-		// 							},
-		// 							External: to.Ptr(true),
-		// 							Fqdn: to.Ptr("testcontainerApp0.demokube-t24clv0g.eastus.containerApps.k4apps.io"),
-		// 							IPSecurityRestrictions: []*armappcontainers.IPSecurityRestrictionRule{
-		// 								{
-		// 									Name: to.Ptr("Allow work IP A subnet"),
-		// 									Description: to.Ptr("Allowing all IP's within the subnet below to access containerapp"),
-		// 									Action: to.Ptr(armappcontainers.ActionAllow),
-		// 									IPAddressRange: to.Ptr("192.168.1.1/32"),
-		// 								},
-		// 								{
-		// 									Name: to.Ptr("Allow work IP B subnet"),
-		// 									Description: to.Ptr("Allowing all IP's within the subnet below to access containerapp"),
-		// 									Action: to.Ptr(armappcontainers.ActionAllow),
-		// 									IPAddressRange: to.Ptr("192.168.1.1/8"),
-		// 								},
-		// 							},
-		// 							StickySessions: &armappcontainers.IngressStickySessions{
-		// 								Affinity: to.Ptr(armappcontainers.AffinitySticky),
-		// 							},
-		// 							TargetPort: to.Ptr[int32](3000),
-		// 							Traffic: []*armappcontainers.TrafficWeight{
-		// 								{
-		// 									RevisionName: to.Ptr("testcontainerApp0-ab1234"),
-		// 								},
-		// 								{
-		// 									Label: to.Ptr("staging"),
-		// 									RevisionName: to.Ptr("testcontainerApp0-ab4321"),
-		// 								},
-		// 							},
-		// 							Transport: to.Ptr(armappcontainers.IngressTransportMethodAuto),
-		// 						},
-		// 						MaxInactiveRevisions: to.Ptr[int32](10),
-		// 						Runtime: &armappcontainers.Runtime{
-		// 							Java: &armappcontainers.RuntimeJava{
-		// 								EnableMetrics: to.Ptr(true),
-		// 							},
-		// 						},
-		// 					},
-		// 					EventStreamEndpoint: to.Ptr("testEndpoint"),
-		// 					LatestReadyRevisionName: to.Ptr("testcontainerApp0-pjxhsye"),
-		// 					LatestRevisionFqdn: to.Ptr("testcontainerApp0-pjxhsye.demokube-t24clv0g.eastus.containerApps.k4apps.io"),
-		// 					ManagedEnvironmentID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/managedEnvironments/demokube"),
-		// 					ProvisioningState: to.Ptr(armappcontainers.ContainerAppProvisioningStateSucceeded),
-		// 					RunningStatus: to.Ptr(armappcontainers.ContainerAppRunningStatusRunning),
-		// 					Template: &armappcontainers.Template{
-		// 						Containers: []*armappcontainers.Container{
-		// 							{
-		// 								Name: to.Ptr("testcontainerApp0"),
-		// 								Image: to.Ptr("repo/testcontainerApp0:v4"),
-		// 								Resources: &armappcontainers.ContainerResources{
-		// 									CPU: to.Ptr[float64](0.2),
-		// 									Memory: to.Ptr("100Mi"),
-		// 								},
-		// 							},
-		// 						},
-		// 						InitContainers: []*armappcontainers.InitContainer{
-		// 							{
-		// 								Name: to.Ptr("testinitcontainerApp0"),
-		// 								Image: to.Ptr("repo/testcontainerApp0:v4"),
-		// 								Resources: &armappcontainers.ContainerResources{
-		// 									CPU: to.Ptr[float64](0.2),
-		// 									Memory: to.Ptr("100Mi"),
-		// 								},
-		// 							},
-		// 						},
-		// 						Scale: &armappcontainers.Scale{
-		// 							CooldownPeriod: to.Ptr[int32](350),
-		// 							MaxReplicas: to.Ptr[int32](5),
-		// 							MinReplicas: to.Ptr[int32](1),
-		// 							PollingInterval: to.Ptr[int32](35),
-		// 							Rules: []*armappcontainers.ScaleRule{
-		// 								{
-		// 									Name: to.Ptr("httpscalingrule"),
-		// 									HTTP: &armappcontainers.HTTPScaleRule{
-		// 										Metadata: map[string]*string{
-		// 											"concurrentRequests": to.Ptr("50"),
-		// 										},
-		// 									},
-		// 								},
-		// 							},
-		// 						},
-		// 					},
-		// 					WorkloadProfileName: to.Ptr("My-GP-01"),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("testcontainerApp1"),
-		// 				Type: to.Ptr("Microsoft.App/containerApps"),
-		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/containerApps/testcontainerApp1"),
-		// 				Location: to.Ptr("East US"),
-		// 				Properties: &armappcontainers.ContainerAppProperties{
-		// 					Configuration: &armappcontainers.Configuration{
-		// 						Ingress: &armappcontainers.Ingress{
-		// 							External: to.Ptr(true),
-		// 							Fqdn: to.Ptr("testcontainerApp1.demokube-t24clv0g.eastus.containerApps.k4apps.io"),
-		// 							TargetPort: to.Ptr[int32](3000),
-		// 							Transport: to.Ptr(armappcontainers.IngressTransportMethodAuto),
-		// 						},
-		// 						MaxInactiveRevisions: to.Ptr[int32](10),
-		// 					},
-		// 					EventStreamEndpoint: to.Ptr("testEndpoint"),
-		// 					LatestReadyRevisionName: to.Ptr("testcontainerApp0-pjxhsye"),
-		// 					LatestRevisionFqdn: to.Ptr("testcontainerApp1-pjxhsye.demokube-t24clv0g.eastus.containerApps.k4apps.io"),
-		// 					ManagedEnvironmentID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/managedEnvironments/demokube"),
-		// 					ProvisioningState: to.Ptr(armappcontainers.ContainerAppProvisioningStateFailed),
-		// 					Template: &armappcontainers.Template{
-		// 						Containers: []*armappcontainers.Container{
-		// 							{
-		// 								Name: to.Ptr("testcontainerApp1"),
-		// 								Image: to.Ptr("repo/testcontainerApp1:v4"),
-		// 								Resources: &armappcontainers.ContainerResources{
-		// 									CPU: to.Ptr[float64](0.2),
-		// 									Memory: to.Ptr("100Mi"),
-		// 								},
-		// 							},
-		// 						},
-		// 						InitContainers: []*armappcontainers.InitContainer{
-		// 							{
-		// 								Name: to.Ptr("testcontainerApp1"),
-		// 								Image: to.Ptr("repo/testcontainerApp1:v4"),
-		// 								Resources: &armappcontainers.ContainerResources{
-		// 									CPU: to.Ptr[float64](0.2),
-		// 									Memory: to.Ptr("100Mi"),
-		// 								},
-		// 							},
-		// 						},
-		// 						Scale: &armappcontainers.Scale{
-		// 							CooldownPeriod: to.Ptr[int32](350),
-		// 							MaxReplicas: to.Ptr[int32](5),
-		// 							MinReplicas: to.Ptr[int32](1),
-		// 							PollingInterval: to.Ptr[int32](35),
-		// 						},
-		// 					},
-		// 					WorkloadProfileName: to.Ptr("Consumption"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-07-01/ContainerApps_ListBySubscription.json
-func ExampleContainerAppsClient_NewListBySubscriptionPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappcontainers.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewContainerAppsClient().NewListBySubscriptionPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armappcontainers.ContainerAppsClientListBySubscriptionResponse{
-		// 	ContainerAppCollection: armappcontainers.ContainerAppCollection{
-		// 		Value: []*armappcontainers.ContainerApp{
-		// 			{
-		// 				Name: to.Ptr("testcontainerApp0"),
-		// 				Type: to.Ptr("Microsoft.App/containerApps"),
-		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/containerApps/testcontainerApp0"),
-		// 				Location: to.Ptr("East US"),
-		// 				Properties: &armappcontainers.ContainerAppProperties{
-		// 					Configuration: &armappcontainers.Configuration{
-		// 						Dapr: &armappcontainers.Dapr{
-		// 							AppHealth: &armappcontainers.DaprAppHealth{
-		// 								Path: to.Ptr("/health"),
-		// 								Enabled: to.Ptr(true),
-		// 								ProbeIntervalSeconds: to.Ptr[int32](3),
-		// 								ProbeTimeoutMilliseconds: to.Ptr[int32](1000),
-		// 								Threshold: to.Ptr[int32](3),
-		// 							},
-		// 							AppPort: to.Ptr[int32](3000),
-		// 							AppProtocol: to.Ptr(armappcontainers.AppProtocolHTTP),
-		// 							EnableAPILogging: to.Ptr(true),
-		// 							Enabled: to.Ptr(true),
-		// 							HTTPMaxRequestSize: to.Ptr[int32](10),
-		// 							HTTPReadBufferSize: to.Ptr[int32](30),
-		// 							LogLevel: to.Ptr(armappcontainers.LogLevelDebug),
-		// 						},
-		// 						Ingress: &armappcontainers.Ingress{
-		// 							CustomDomains: []*armappcontainers.CustomDomain{
-		// 								{
-		// 									Name: to.Ptr("www.my-name.com"),
-		// 									BindingType: to.Ptr(armappcontainers.BindingTypeSniEnabled),
-		// 									CertificateID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/managedEnvironments/demokube/certificates/my-certificate-for-my-name-dot-com"),
-		// 								},
-		// 								{
-		// 									Name: to.Ptr("www.my--other-name.com"),
-		// 									BindingType: to.Ptr(armappcontainers.BindingTypeSniEnabled),
-		// 									CertificateID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/managedEnvironments/demokube/certificates/my-certificate-for-my-other-name-dot-com"),
-		// 								},
-		// 							},
-		// 							External: to.Ptr(true),
-		// 							Fqdn: to.Ptr("testcontainerApp0.demokube-t24clv0g.eastus.containerApps.k4apps.io"),
-		// 							IPSecurityRestrictions: []*armappcontainers.IPSecurityRestrictionRule{
-		// 								{
-		// 									Name: to.Ptr("Allow work IP A subnet"),
-		// 									Description: to.Ptr("Allowing all IP's within the subnet below to access containerapp"),
-		// 									Action: to.Ptr(armappcontainers.ActionAllow),
-		// 									IPAddressRange: to.Ptr("192.168.1.1/32"),
-		// 								},
-		// 								{
-		// 									Name: to.Ptr("Allow work IP B subnet"),
-		// 									Description: to.Ptr("Allowing all IP's within the subnet below to access containerapp"),
-		// 									Action: to.Ptr(armappcontainers.ActionAllow),
-		// 									IPAddressRange: to.Ptr("192.168.1.1/8"),
-		// 								},
-		// 							},
-		// 							StickySessions: &armappcontainers.IngressStickySessions{
-		// 								Affinity: to.Ptr(armappcontainers.AffinitySticky),
-		// 							},
-		// 							TargetPort: to.Ptr[int32](3000),
-		// 							Traffic: []*armappcontainers.TrafficWeight{
-		// 								{
-		// 									RevisionName: to.Ptr("testcontainerApp0-ab1234"),
-		// 								},
-		// 								{
-		// 									Label: to.Ptr("staging"),
-		// 									RevisionName: to.Ptr("testcontainerApp0-ab4321"),
-		// 								},
-		// 							},
-		// 							Transport: to.Ptr(armappcontainers.IngressTransportMethodAuto),
-		// 						},
-		// 						MaxInactiveRevisions: to.Ptr[int32](10),
-		// 						Runtime: &armappcontainers.Runtime{
-		// 							Java: &armappcontainers.RuntimeJava{
-		// 								EnableMetrics: to.Ptr(true),
-		// 							},
-		// 						},
-		// 						Service: &armappcontainers.Service{
-		// 							Type: to.Ptr("redis"),
-		// 						},
-		// 					},
-		// 					EventStreamEndpoint: to.Ptr("testEndpoint"),
-		// 					LatestReadyRevisionName: to.Ptr("testcontainerApp0-pjxhsye"),
-		// 					LatestRevisionFqdn: to.Ptr("testcontainerApp0-pjxhsye.demokube-t24clv0g.eastus.containerApps.k4apps.io"),
-		// 					ManagedEnvironmentID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/managedEnvironments/demokube"),
-		// 					ProvisioningState: to.Ptr(armappcontainers.ContainerAppProvisioningStateSucceeded),
-		// 					RunningStatus: to.Ptr(armappcontainers.ContainerAppRunningStatusRunning),
-		// 					Template: &armappcontainers.Template{
-		// 						Containers: []*armappcontainers.Container{
-		// 							{
-		// 								Name: to.Ptr("testcontainerApp0"),
-		// 								Image: to.Ptr("repo/testcontainerApp0:v4"),
-		// 								Resources: &armappcontainers.ContainerResources{
-		// 									CPU: to.Ptr[float64](0.2),
-		// 									Memory: to.Ptr("100Mi"),
-		// 								},
-		// 							},
-		// 						},
-		// 						InitContainers: []*armappcontainers.InitContainer{
-		// 							{
-		// 								Name: to.Ptr("testinitcontainerApp0"),
-		// 								Image: to.Ptr("repo/testcontainerApp0:v4"),
-		// 								Resources: &armappcontainers.ContainerResources{
-		// 									CPU: to.Ptr[float64](0.2),
-		// 									Memory: to.Ptr("100Mi"),
-		// 								},
-		// 							},
-		// 						},
-		// 						Scale: &armappcontainers.Scale{
-		// 							CooldownPeriod: to.Ptr[int32](350),
-		// 							MaxReplicas: to.Ptr[int32](5),
-		// 							MinReplicas: to.Ptr[int32](1),
-		// 							PollingInterval: to.Ptr[int32](35),
-		// 							Rules: []*armappcontainers.ScaleRule{
-		// 								{
-		// 									Name: to.Ptr("httpscalingrule"),
-		// 									HTTP: &armappcontainers.HTTPScaleRule{
-		// 										Metadata: map[string]*string{
-		// 											"concurrentRequests": to.Ptr("50"),
-		// 										},
-		// 									},
-		// 								},
-		// 							},
-		// 						},
-		// 						ServiceBinds: []*armappcontainers.ServiceBind{
-		// 							{
-		// 								Name: to.Ptr("service"),
-		// 								ServiceID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/containerApps/service"),
-		// 							},
-		// 						},
-		// 					},
-		// 					WorkloadProfileName: to.Ptr("My-GP-01"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-07-01/ContainerApps_ListCustomHostNameAnalysis.json
-func ExampleContainerAppsClient_ListCustomHostNameAnalysis() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappcontainers.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewContainerAppsClient().ListCustomHostNameAnalysis(ctx, "rg", "testcontainerApp0", &armappcontainers.ContainerAppsClientListCustomHostNameAnalysisOptions{
-		CustomHostname: to.Ptr("my.name.corp")})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armappcontainers.ContainerAppsClientListCustomHostNameAnalysisResponse{
-	// 	CustomHostnameAnalysisResult: armappcontainers.CustomHostnameAnalysisResult{
-	// 		ARecords: []*string{
-	// 			to.Ptr("aRecord1"),
-	// 			to.Ptr("aRecord2"),
-	// 		},
-	// 		AlternateCNameRecords: []*string{
-	// 			to.Ptr("cNameRecord1"),
-	// 			to.Ptr("cNameRecord2"),
-	// 		},
-	// 		AlternateTxtRecords: []*string{
-	// 			to.Ptr("txtRecord1"),
-	// 			to.Ptr("txtRecord2"),
-	// 		},
-	// 		CNameRecords: []*string{
-	// 			to.Ptr("cNameRecord1"),
-	// 			to.Ptr("cNameRecord2"),
-	// 		},
-	// 		ConflictingContainerAppResourceID: to.Ptr(""),
-	// 		CustomDomainVerificationFailureInfo: &armappcontainers.CustomHostnameAnalysisResultCustomDomainVerificationFailureInfo{
-	// 		},
-	// 		CustomDomainVerificationTest: to.Ptr(armappcontainers.DNSVerificationTestResultPassed),
-	// 		HasConflictOnManagedEnvironment: to.Ptr(false),
-	// 		HostName: to.Ptr("my.name.corp"),
-	// 		IsHostnameAlreadyVerified: to.Ptr(true),
-	// 		TxtRecords: []*string{
-	// 			to.Ptr("txtRecord1"),
-	// 			to.Ptr("txtRecord2"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-07-01/ContainerApps_ListSecrets.json
-func ExampleContainerAppsClient_ListSecrets() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappcontainers.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewContainerAppsClient().ListSecrets(ctx, "rg", "testcontainerApp0", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armappcontainers.ContainerAppsClientListSecretsResponse{
-	// 	SecretsCollection: armappcontainers.SecretsCollection{
-	// 		Value: []*armappcontainers.ContainerAppSecret{
-	// 			{
-	// 				Name: to.Ptr("secret1"),
-	// 			},
-	// 			{
-	// 				Name: to.Ptr("secret2"),
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
 // Generated from example definition: 2026-07-01/ContainerApps_Start.json
 func ExampleContainerAppsClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -2682,4 +1991,695 @@ func ExampleContainerAppsClient_BeginUpdate() {
 	// 		},
 	// 	},
 	// }
+}
+
+// Generated from example definition: 2026-07-01/ContainerApps_Get.json
+func ExampleContainerAppsClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappcontainers.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewContainerAppsClient().Get(ctx, "rg", "testcontainerApp0", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armappcontainers.ContainerAppsClientGetResponse{
+	// 	ContainerApp: armappcontainers.ContainerApp{
+	// 		Name: to.Ptr("testcontainerApp0"),
+	// 		Type: to.Ptr("Microsoft.App/containerApps"),
+	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/containerApps/testcontainerApp0"),
+	// 		Identity: &armappcontainers.ManagedServiceIdentity{
+	// 			Type: to.Ptr(armappcontainers.ManagedServiceIdentityTypeSystemAssignedUserAssigned),
+	// 			PrincipalID: to.Ptr("24adfa4f-dedf-8dc0-ca29-b6d1a69ab319"),
+	// 			TenantID: to.Ptr("23adfa4f-eedf-1dc0-ba29-a6d1a69ab3d0"),
+	// 			UserAssignedIdentities: map[string]*armappcontainers.UserAssignedIdentity{
+	// 				"/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourcegroups/rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity": &armappcontainers.UserAssignedIdentity{
+	// 					ClientID: to.Ptr("14adfa4f-eedf-1dc0-ba29-a6d1a69ab3df"),
+	// 					PrincipalID: to.Ptr("74adfa4f-dedf-8dc0-ca29-b6d1a69ab312"),
+	// 				},
+	// 			},
+	// 		},
+	// 		Location: to.Ptr("East US"),
+	// 		Properties: &armappcontainers.ContainerAppProperties{
+	// 			Configuration: &armappcontainers.Configuration{
+	// 				Dapr: &armappcontainers.Dapr{
+	// 					AppHealth: &armappcontainers.DaprAppHealth{
+	// 						Path: to.Ptr("/health"),
+	// 						Enabled: to.Ptr(true),
+	// 						ProbeIntervalSeconds: to.Ptr[int32](3),
+	// 						ProbeTimeoutMilliseconds: to.Ptr[int32](1000),
+	// 						Threshold: to.Ptr[int32](3),
+	// 					},
+	// 					AppPort: to.Ptr[int32](3000),
+	// 					AppProtocol: to.Ptr(armappcontainers.AppProtocolHTTP),
+	// 					EnableAPILogging: to.Ptr(true),
+	// 					Enabled: to.Ptr(true),
+	// 					HTTPMaxRequestSize: to.Ptr[int32](10),
+	// 					HTTPReadBufferSize: to.Ptr[int32](30),
+	// 					LogLevel: to.Ptr(armappcontainers.LogLevelDebug),
+	// 					MaxConcurrency: to.Ptr[int32](10),
+	// 				},
+	// 				IdentitySettings: []*armappcontainers.IdentitySettings{
+	// 					{
+	// 						Identity: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourcegroups/rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity"),
+	// 						Lifecycle: to.Ptr(armappcontainers.IdentitySettingsLifeCycleAll),
+	// 					},
+	// 					{
+	// 						Identity: to.Ptr("system"),
+	// 						Lifecycle: to.Ptr(armappcontainers.IdentitySettingsLifeCycleInit),
+	// 					},
+	// 				},
+	// 				Ingress: &armappcontainers.Ingress{
+	// 					CustomDomains: []*armappcontainers.CustomDomain{
+	// 						{
+	// 							Name: to.Ptr("www.my-name.com"),
+	// 							BindingType: to.Ptr(armappcontainers.BindingTypeSniEnabled),
+	// 							CertificateID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/managedEnvironments/demokube/certificates/my-certificate-for-my-name-dot-com"),
+	// 						},
+	// 						{
+	// 							Name: to.Ptr("www.my--other-name.com"),
+	// 							BindingType: to.Ptr(armappcontainers.BindingTypeSniEnabled),
+	// 							CertificateID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/managedEnvironments/demokube/certificates/my-certificate-for-my-other-name-dot-com"),
+	// 						},
+	// 					},
+	// 					External: to.Ptr(true),
+	// 					Fqdn: to.Ptr("testcontainerApp0.demokube-t24clv0g.eastus.containerApps.k4apps.io"),
+	// 					IPSecurityRestrictions: []*armappcontainers.IPSecurityRestrictionRule{
+	// 						{
+	// 							Name: to.Ptr("Allow work IP A subnet"),
+	// 							Description: to.Ptr("Allowing all IP's within the subnet below to access containerapp"),
+	// 							Action: to.Ptr(armappcontainers.ActionAllow),
+	// 							IPAddressRange: to.Ptr("192.168.1.1/32"),
+	// 						},
+	// 						{
+	// 							Name: to.Ptr("Allow work IP B subnet"),
+	// 							Description: to.Ptr("Allowing all IP's within the subnet below to access containerapp"),
+	// 							Action: to.Ptr(armappcontainers.ActionAllow),
+	// 							IPAddressRange: to.Ptr("192.168.1.1/8"),
+	// 						},
+	// 					},
+	// 					StickySessions: &armappcontainers.IngressStickySessions{
+	// 						Affinity: to.Ptr(armappcontainers.AffinitySticky),
+	// 					},
+	// 					TargetPort: to.Ptr[int32](3000),
+	// 					Traffic: []*armappcontainers.TrafficWeight{
+	// 						{
+	// 							RevisionName: to.Ptr("testcontainerApp0-ab1234"),
+	// 						},
+	// 						{
+	// 							Label: to.Ptr("staging"),
+	// 							RevisionName: to.Ptr("testcontainerApp0-ab4321"),
+	// 						},
+	// 					},
+	// 					Transport: to.Ptr(armappcontainers.IngressTransportMethodAuto),
+	// 				},
+	// 				MaxInactiveRevisions: to.Ptr[int32](10),
+	// 				Runtime: &armappcontainers.Runtime{
+	// 					Java: &armappcontainers.RuntimeJava{
+	// 						EnableMetrics: to.Ptr(true),
+	// 					},
+	// 				},
+	// 				Service: &armappcontainers.Service{
+	// 					Type: to.Ptr("redis"),
+	// 				},
+	// 			},
+	// 			EventStreamEndpoint: to.Ptr("testEndpoint"),
+	// 			LatestReadyRevisionName: to.Ptr("testcontainerApp0-pjxhsye"),
+	// 			LatestRevisionFqdn: to.Ptr("testcontainerApp0-pjxhsye.demokube-t24clv0g.eastus.containerApps.k4apps.io"),
+	// 			ManagedEnvironmentID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/managedEnvironments/demokube"),
+	// 			ProvisioningState: to.Ptr(armappcontainers.ContainerAppProvisioningStateSucceeded),
+	// 			RunningStatus: to.Ptr(armappcontainers.ContainerAppRunningStatusRunning),
+	// 			Template: &armappcontainers.Template{
+	// 				Containers: []*armappcontainers.Container{
+	// 					{
+	// 						Name: to.Ptr("testcontainerApp0"),
+	// 						Image: to.Ptr("repo/testcontainerApp0:v4"),
+	// 						Resources: &armappcontainers.ContainerResources{
+	// 							CPU: to.Ptr[float64](0.2),
+	// 							Memory: to.Ptr("100Mi"),
+	// 						},
+	// 						VolumeMounts: []*armappcontainers.VolumeMount{
+	// 							{
+	// 								MountPath: to.Ptr("/mnt/path1"),
+	// 								SubPath: to.Ptr("subPath1"),
+	// 								VolumeName: to.Ptr("azurefile"),
+	// 							},
+	// 							{
+	// 								MountPath: to.Ptr("/mnt/path2"),
+	// 								SubPath: to.Ptr("subPath2"),
+	// 								VolumeName: to.Ptr("nfsazurefile"),
+	// 							},
+	// 						},
+	// 					},
+	// 				},
+	// 				InitContainers: []*armappcontainers.InitContainer{
+	// 					{
+	// 						Name: to.Ptr("testinitcontainerApp0"),
+	// 						Image: to.Ptr("repo/testcontainerApp0:v4"),
+	// 						Resources: &armappcontainers.ContainerResources{
+	// 							CPU: to.Ptr[float64](0.2),
+	// 							Memory: to.Ptr("100Mi"),
+	// 						},
+	// 					},
+	// 				},
+	// 				Scale: &armappcontainers.Scale{
+	// 					CooldownPeriod: to.Ptr[int32](350),
+	// 					MaxReplicas: to.Ptr[int32](5),
+	// 					MinReplicas: to.Ptr[int32](1),
+	// 					PollingInterval: to.Ptr[int32](35),
+	// 					Rules: []*armappcontainers.ScaleRule{
+	// 						{
+	// 							Name: to.Ptr("httpscalingrule"),
+	// 							HTTP: &armappcontainers.HTTPScaleRule{
+	// 								Metadata: map[string]*string{
+	// 									"concurrentRequests": to.Ptr("50"),
+	// 								},
+	// 							},
+	// 						},
+	// 						{
+	// 							Name: to.Ptr("servicebus"),
+	// 							Custom: &armappcontainers.CustomScaleRule{
+	// 								Type: to.Ptr("azure-servicebus"),
+	// 								Identity: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourcegroups/rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity"),
+	// 								Metadata: map[string]*string{
+	// 									"messageCount": to.Ptr("5"),
+	// 									"namespace": to.Ptr("mynamespace"),
+	// 									"queueName": to.Ptr("myqueue"),
+	// 								},
+	// 							},
+	// 						},
+	// 					},
+	// 				},
+	// 				ServiceBinds: []*armappcontainers.ServiceBind{
+	// 					{
+	// 						Name: to.Ptr("service"),
+	// 						ServiceID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/containerApps/service"),
+	// 					},
+	// 				},
+	// 				Volumes: []*armappcontainers.Volume{
+	// 					{
+	// 						Name: to.Ptr("azurefile"),
+	// 						StorageName: to.Ptr("storage"),
+	// 						StorageType: to.Ptr(armappcontainers.StorageTypeAzureFile),
+	// 					},
+	// 					{
+	// 						Name: to.Ptr("nfsazurefile"),
+	// 						StorageName: to.Ptr("nfsStorage"),
+	// 						StorageType: to.Ptr(armappcontainers.StorageTypeNfsAzureFile),
+	// 					},
+	// 				},
+	// 			},
+	// 			WorkloadProfileName: to.Ptr("My-GP-01"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-07-01/ContainerApps_GetAuthToken.json
+func ExampleContainerAppsClient_GetAuthToken() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappcontainers.NewClientFactory("651f8027-33e8-4ec4-97b4-f6e9f3dc8744", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewContainerAppsClient().GetAuthToken(ctx, "rg", "testcontainerApp0", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armappcontainers.ContainerAppsClientGetAuthTokenResponse{
+	// 	ContainerAppAuthToken: armappcontainers.ContainerAppAuthToken{
+	// 		Name: to.Ptr("testcontainerApp0"),
+	// 		Type: to.Ptr("Microsoft.App/containerApps/accesstoken"),
+	// 		ID: to.Ptr("/subscriptions/651f8027-33e8-4ec4-97b4-f6e9f3dc8744/resourceGroups/rg/providers/Microsoft.App/containerApps/testcontainerApp0"),
+	// 		Location: to.Ptr("East US"),
+	// 		Properties: &armappcontainers.ContainerAppAuthTokenProperties{
+	// 			Expires: to.Ptr(time.Date(2022, time.July, 14, 19, 22, 50, 308022300, time.UTC)),
+	// 			Token: to.Ptr("testToken"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-07-01/ContainerApps_ListCustomHostNameAnalysis.json
+func ExampleContainerAppsClient_ListCustomHostNameAnalysis() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappcontainers.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewContainerAppsClient().ListCustomHostNameAnalysis(ctx, "rg", "testcontainerApp0", &armappcontainers.ContainerAppsClientListCustomHostNameAnalysisOptions{
+		CustomHostname: to.Ptr("my.name.corp")})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armappcontainers.ContainerAppsClientListCustomHostNameAnalysisResponse{
+	// 	CustomHostnameAnalysisResult: armappcontainers.CustomHostnameAnalysisResult{
+	// 		ARecords: []*string{
+	// 			to.Ptr("aRecord1"),
+	// 			to.Ptr("aRecord2"),
+	// 		},
+	// 		AlternateCNameRecords: []*string{
+	// 			to.Ptr("cNameRecord1"),
+	// 			to.Ptr("cNameRecord2"),
+	// 		},
+	// 		AlternateTxtRecords: []*string{
+	// 			to.Ptr("txtRecord1"),
+	// 			to.Ptr("txtRecord2"),
+	// 		},
+	// 		CNameRecords: []*string{
+	// 			to.Ptr("cNameRecord1"),
+	// 			to.Ptr("cNameRecord2"),
+	// 		},
+	// 		ConflictingContainerAppResourceID: to.Ptr(""),
+	// 		CustomDomainVerificationFailureInfo: &armappcontainers.CustomHostnameAnalysisResultCustomDomainVerificationFailureInfo{
+	// 		},
+	// 		CustomDomainVerificationTest: to.Ptr(armappcontainers.DNSVerificationTestResultPassed),
+	// 		HasConflictOnManagedEnvironment: to.Ptr(false),
+	// 		HostName: to.Ptr("my.name.corp"),
+	// 		IsHostnameAlreadyVerified: to.Ptr(true),
+	// 		TxtRecords: []*string{
+	// 			to.Ptr("txtRecord1"),
+	// 			to.Ptr("txtRecord2"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-07-01/ContainerApps_ListSecrets.json
+func ExampleContainerAppsClient_ListSecrets() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappcontainers.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewContainerAppsClient().ListSecrets(ctx, "rg", "testcontainerApp0", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armappcontainers.ContainerAppsClientListSecretsResponse{
+	// 	SecretsCollection: armappcontainers.SecretsCollection{
+	// 		Value: []*armappcontainers.ContainerAppSecret{
+	// 			{
+	// 				Name: to.Ptr("secret1"),
+	// 			},
+	// 			{
+	// 				Name: to.Ptr("secret2"),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-07-01/ContainerApps_ListByResourceGroup.json
+func ExampleContainerAppsClient_NewListByResourceGroupPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappcontainers.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewContainerAppsClient().NewListByResourceGroupPager("rg", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armappcontainers.ContainerAppsClientListByResourceGroupResponse{
+		// 	ContainerAppCollection: armappcontainers.ContainerAppCollection{
+		// 		Value: []*armappcontainers.ContainerApp{
+		// 			{
+		// 				Name: to.Ptr("testcontainerApp0"),
+		// 				Type: to.Ptr("Microsoft.App/containerApps"),
+		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/containerApps/testcontainerApp0"),
+		// 				Location: to.Ptr("East US"),
+		// 				Properties: &armappcontainers.ContainerAppProperties{
+		// 					Configuration: &armappcontainers.Configuration{
+		// 						Dapr: &armappcontainers.Dapr{
+		// 							AppHealth: &armappcontainers.DaprAppHealth{
+		// 								Path: to.Ptr("/health"),
+		// 								Enabled: to.Ptr(true),
+		// 								ProbeIntervalSeconds: to.Ptr[int32](3),
+		// 								ProbeTimeoutMilliseconds: to.Ptr[int32](1000),
+		// 								Threshold: to.Ptr[int32](3),
+		// 							},
+		// 							AppPort: to.Ptr[int32](3000),
+		// 							AppProtocol: to.Ptr(armappcontainers.AppProtocolHTTP),
+		// 							EnableAPILogging: to.Ptr(true),
+		// 							Enabled: to.Ptr(true),
+		// 							HTTPMaxRequestSize: to.Ptr[int32](10),
+		// 							HTTPReadBufferSize: to.Ptr[int32](30),
+		// 							LogLevel: to.Ptr(armappcontainers.LogLevelDebug),
+		// 							MaxConcurrency: to.Ptr[int32](10),
+		// 						},
+		// 						Ingress: &armappcontainers.Ingress{
+		// 							CustomDomains: []*armappcontainers.CustomDomain{
+		// 								{
+		// 									Name: to.Ptr("www.my-name.com"),
+		// 									BindingType: to.Ptr(armappcontainers.BindingTypeSniEnabled),
+		// 									CertificateID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/managedEnvironments/demokube/certificates/my-certificate-for-my-name-dot-com"),
+		// 								},
+		// 								{
+		// 									Name: to.Ptr("www.my--other-name.com"),
+		// 									BindingType: to.Ptr(armappcontainers.BindingTypeSniEnabled),
+		// 									CertificateID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/managedEnvironments/demokube/certificates/my-certificate-for-my-other-name-dot-com"),
+		// 								},
+		// 							},
+		// 							External: to.Ptr(true),
+		// 							Fqdn: to.Ptr("testcontainerApp0.demokube-t24clv0g.eastus.containerApps.k4apps.io"),
+		// 							IPSecurityRestrictions: []*armappcontainers.IPSecurityRestrictionRule{
+		// 								{
+		// 									Name: to.Ptr("Allow work IP A subnet"),
+		// 									Description: to.Ptr("Allowing all IP's within the subnet below to access containerapp"),
+		// 									Action: to.Ptr(armappcontainers.ActionAllow),
+		// 									IPAddressRange: to.Ptr("192.168.1.1/32"),
+		// 								},
+		// 								{
+		// 									Name: to.Ptr("Allow work IP B subnet"),
+		// 									Description: to.Ptr("Allowing all IP's within the subnet below to access containerapp"),
+		// 									Action: to.Ptr(armappcontainers.ActionAllow),
+		// 									IPAddressRange: to.Ptr("192.168.1.1/8"),
+		// 								},
+		// 							},
+		// 							StickySessions: &armappcontainers.IngressStickySessions{
+		// 								Affinity: to.Ptr(armappcontainers.AffinitySticky),
+		// 							},
+		// 							TargetPort: to.Ptr[int32](3000),
+		// 							Traffic: []*armappcontainers.TrafficWeight{
+		// 								{
+		// 									RevisionName: to.Ptr("testcontainerApp0-ab1234"),
+		// 								},
+		// 								{
+		// 									Label: to.Ptr("staging"),
+		// 									RevisionName: to.Ptr("testcontainerApp0-ab4321"),
+		// 								},
+		// 							},
+		// 							Transport: to.Ptr(armappcontainers.IngressTransportMethodAuto),
+		// 						},
+		// 						MaxInactiveRevisions: to.Ptr[int32](10),
+		// 						Runtime: &armappcontainers.Runtime{
+		// 							Java: &armappcontainers.RuntimeJava{
+		// 								EnableMetrics: to.Ptr(true),
+		// 							},
+		// 						},
+		// 					},
+		// 					EventStreamEndpoint: to.Ptr("testEndpoint"),
+		// 					LatestReadyRevisionName: to.Ptr("testcontainerApp0-pjxhsye"),
+		// 					LatestRevisionFqdn: to.Ptr("testcontainerApp0-pjxhsye.demokube-t24clv0g.eastus.containerApps.k4apps.io"),
+		// 					ManagedEnvironmentID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/managedEnvironments/demokube"),
+		// 					ProvisioningState: to.Ptr(armappcontainers.ContainerAppProvisioningStateSucceeded),
+		// 					RunningStatus: to.Ptr(armappcontainers.ContainerAppRunningStatusRunning),
+		// 					Template: &armappcontainers.Template{
+		// 						Containers: []*armappcontainers.Container{
+		// 							{
+		// 								Name: to.Ptr("testcontainerApp0"),
+		// 								Image: to.Ptr("repo/testcontainerApp0:v4"),
+		// 								Resources: &armappcontainers.ContainerResources{
+		// 									CPU: to.Ptr[float64](0.2),
+		// 									Memory: to.Ptr("100Mi"),
+		// 								},
+		// 							},
+		// 						},
+		// 						InitContainers: []*armappcontainers.InitContainer{
+		// 							{
+		// 								Name: to.Ptr("testinitcontainerApp0"),
+		// 								Image: to.Ptr("repo/testcontainerApp0:v4"),
+		// 								Resources: &armappcontainers.ContainerResources{
+		// 									CPU: to.Ptr[float64](0.2),
+		// 									Memory: to.Ptr("100Mi"),
+		// 								},
+		// 							},
+		// 						},
+		// 						Scale: &armappcontainers.Scale{
+		// 							CooldownPeriod: to.Ptr[int32](350),
+		// 							MaxReplicas: to.Ptr[int32](5),
+		// 							MinReplicas: to.Ptr[int32](1),
+		// 							PollingInterval: to.Ptr[int32](35),
+		// 							Rules: []*armappcontainers.ScaleRule{
+		// 								{
+		// 									Name: to.Ptr("httpscalingrule"),
+		// 									HTTP: &armappcontainers.HTTPScaleRule{
+		// 										Metadata: map[string]*string{
+		// 											"concurrentRequests": to.Ptr("50"),
+		// 										},
+		// 									},
+		// 								},
+		// 							},
+		// 						},
+		// 					},
+		// 					WorkloadProfileName: to.Ptr("My-GP-01"),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("testcontainerApp1"),
+		// 				Type: to.Ptr("Microsoft.App/containerApps"),
+		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/containerApps/testcontainerApp1"),
+		// 				Location: to.Ptr("East US"),
+		// 				Properties: &armappcontainers.ContainerAppProperties{
+		// 					Configuration: &armappcontainers.Configuration{
+		// 						Ingress: &armappcontainers.Ingress{
+		// 							External: to.Ptr(true),
+		// 							Fqdn: to.Ptr("testcontainerApp1.demokube-t24clv0g.eastus.containerApps.k4apps.io"),
+		// 							TargetPort: to.Ptr[int32](3000),
+		// 							Transport: to.Ptr(armappcontainers.IngressTransportMethodAuto),
+		// 						},
+		// 						MaxInactiveRevisions: to.Ptr[int32](10),
+		// 					},
+		// 					EventStreamEndpoint: to.Ptr("testEndpoint"),
+		// 					LatestReadyRevisionName: to.Ptr("testcontainerApp0-pjxhsye"),
+		// 					LatestRevisionFqdn: to.Ptr("testcontainerApp1-pjxhsye.demokube-t24clv0g.eastus.containerApps.k4apps.io"),
+		// 					ManagedEnvironmentID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/managedEnvironments/demokube"),
+		// 					ProvisioningState: to.Ptr(armappcontainers.ContainerAppProvisioningStateFailed),
+		// 					Template: &armappcontainers.Template{
+		// 						Containers: []*armappcontainers.Container{
+		// 							{
+		// 								Name: to.Ptr("testcontainerApp1"),
+		// 								Image: to.Ptr("repo/testcontainerApp1:v4"),
+		// 								Resources: &armappcontainers.ContainerResources{
+		// 									CPU: to.Ptr[float64](0.2),
+		// 									Memory: to.Ptr("100Mi"),
+		// 								},
+		// 							},
+		// 						},
+		// 						InitContainers: []*armappcontainers.InitContainer{
+		// 							{
+		// 								Name: to.Ptr("testcontainerApp1"),
+		// 								Image: to.Ptr("repo/testcontainerApp1:v4"),
+		// 								Resources: &armappcontainers.ContainerResources{
+		// 									CPU: to.Ptr[float64](0.2),
+		// 									Memory: to.Ptr("100Mi"),
+		// 								},
+		// 							},
+		// 						},
+		// 						Scale: &armappcontainers.Scale{
+		// 							CooldownPeriod: to.Ptr[int32](350),
+		// 							MaxReplicas: to.Ptr[int32](5),
+		// 							MinReplicas: to.Ptr[int32](1),
+		// 							PollingInterval: to.Ptr[int32](35),
+		// 						},
+		// 					},
+		// 					WorkloadProfileName: to.Ptr("Consumption"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-07-01/ContainerApps_ListBySubscription.json
+func ExampleContainerAppsClient_NewListBySubscriptionPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappcontainers.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewContainerAppsClient().NewListBySubscriptionPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armappcontainers.ContainerAppsClientListBySubscriptionResponse{
+		// 	ContainerAppCollection: armappcontainers.ContainerAppCollection{
+		// 		Value: []*armappcontainers.ContainerApp{
+		// 			{
+		// 				Name: to.Ptr("testcontainerApp0"),
+		// 				Type: to.Ptr("Microsoft.App/containerApps"),
+		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/containerApps/testcontainerApp0"),
+		// 				Location: to.Ptr("East US"),
+		// 				Properties: &armappcontainers.ContainerAppProperties{
+		// 					Configuration: &armappcontainers.Configuration{
+		// 						Dapr: &armappcontainers.Dapr{
+		// 							AppHealth: &armappcontainers.DaprAppHealth{
+		// 								Path: to.Ptr("/health"),
+		// 								Enabled: to.Ptr(true),
+		// 								ProbeIntervalSeconds: to.Ptr[int32](3),
+		// 								ProbeTimeoutMilliseconds: to.Ptr[int32](1000),
+		// 								Threshold: to.Ptr[int32](3),
+		// 							},
+		// 							AppPort: to.Ptr[int32](3000),
+		// 							AppProtocol: to.Ptr(armappcontainers.AppProtocolHTTP),
+		// 							EnableAPILogging: to.Ptr(true),
+		// 							Enabled: to.Ptr(true),
+		// 							HTTPMaxRequestSize: to.Ptr[int32](10),
+		// 							HTTPReadBufferSize: to.Ptr[int32](30),
+		// 							LogLevel: to.Ptr(armappcontainers.LogLevelDebug),
+		// 						},
+		// 						Ingress: &armappcontainers.Ingress{
+		// 							CustomDomains: []*armappcontainers.CustomDomain{
+		// 								{
+		// 									Name: to.Ptr("www.my-name.com"),
+		// 									BindingType: to.Ptr(armappcontainers.BindingTypeSniEnabled),
+		// 									CertificateID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/managedEnvironments/demokube/certificates/my-certificate-for-my-name-dot-com"),
+		// 								},
+		// 								{
+		// 									Name: to.Ptr("www.my--other-name.com"),
+		// 									BindingType: to.Ptr(armappcontainers.BindingTypeSniEnabled),
+		// 									CertificateID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/managedEnvironments/demokube/certificates/my-certificate-for-my-other-name-dot-com"),
+		// 								},
+		// 							},
+		// 							External: to.Ptr(true),
+		// 							Fqdn: to.Ptr("testcontainerApp0.demokube-t24clv0g.eastus.containerApps.k4apps.io"),
+		// 							IPSecurityRestrictions: []*armappcontainers.IPSecurityRestrictionRule{
+		// 								{
+		// 									Name: to.Ptr("Allow work IP A subnet"),
+		// 									Description: to.Ptr("Allowing all IP's within the subnet below to access containerapp"),
+		// 									Action: to.Ptr(armappcontainers.ActionAllow),
+		// 									IPAddressRange: to.Ptr("192.168.1.1/32"),
+		// 								},
+		// 								{
+		// 									Name: to.Ptr("Allow work IP B subnet"),
+		// 									Description: to.Ptr("Allowing all IP's within the subnet below to access containerapp"),
+		// 									Action: to.Ptr(armappcontainers.ActionAllow),
+		// 									IPAddressRange: to.Ptr("192.168.1.1/8"),
+		// 								},
+		// 							},
+		// 							StickySessions: &armappcontainers.IngressStickySessions{
+		// 								Affinity: to.Ptr(armappcontainers.AffinitySticky),
+		// 							},
+		// 							TargetPort: to.Ptr[int32](3000),
+		// 							Traffic: []*armappcontainers.TrafficWeight{
+		// 								{
+		// 									RevisionName: to.Ptr("testcontainerApp0-ab1234"),
+		// 								},
+		// 								{
+		// 									Label: to.Ptr("staging"),
+		// 									RevisionName: to.Ptr("testcontainerApp0-ab4321"),
+		// 								},
+		// 							},
+		// 							Transport: to.Ptr(armappcontainers.IngressTransportMethodAuto),
+		// 						},
+		// 						MaxInactiveRevisions: to.Ptr[int32](10),
+		// 						Runtime: &armappcontainers.Runtime{
+		// 							Java: &armappcontainers.RuntimeJava{
+		// 								EnableMetrics: to.Ptr(true),
+		// 							},
+		// 						},
+		// 						Service: &armappcontainers.Service{
+		// 							Type: to.Ptr("redis"),
+		// 						},
+		// 					},
+		// 					EventStreamEndpoint: to.Ptr("testEndpoint"),
+		// 					LatestReadyRevisionName: to.Ptr("testcontainerApp0-pjxhsye"),
+		// 					LatestRevisionFqdn: to.Ptr("testcontainerApp0-pjxhsye.demokube-t24clv0g.eastus.containerApps.k4apps.io"),
+		// 					ManagedEnvironmentID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/managedEnvironments/demokube"),
+		// 					ProvisioningState: to.Ptr(armappcontainers.ContainerAppProvisioningStateSucceeded),
+		// 					RunningStatus: to.Ptr(armappcontainers.ContainerAppRunningStatusRunning),
+		// 					Template: &armappcontainers.Template{
+		// 						Containers: []*armappcontainers.Container{
+		// 							{
+		// 								Name: to.Ptr("testcontainerApp0"),
+		// 								Image: to.Ptr("repo/testcontainerApp0:v4"),
+		// 								Resources: &armappcontainers.ContainerResources{
+		// 									CPU: to.Ptr[float64](0.2),
+		// 									Memory: to.Ptr("100Mi"),
+		// 								},
+		// 							},
+		// 						},
+		// 						InitContainers: []*armappcontainers.InitContainer{
+		// 							{
+		// 								Name: to.Ptr("testinitcontainerApp0"),
+		// 								Image: to.Ptr("repo/testcontainerApp0:v4"),
+		// 								Resources: &armappcontainers.ContainerResources{
+		// 									CPU: to.Ptr[float64](0.2),
+		// 									Memory: to.Ptr("100Mi"),
+		// 								},
+		// 							},
+		// 						},
+		// 						Scale: &armappcontainers.Scale{
+		// 							CooldownPeriod: to.Ptr[int32](350),
+		// 							MaxReplicas: to.Ptr[int32](5),
+		// 							MinReplicas: to.Ptr[int32](1),
+		// 							PollingInterval: to.Ptr[int32](35),
+		// 							Rules: []*armappcontainers.ScaleRule{
+		// 								{
+		// 									Name: to.Ptr("httpscalingrule"),
+		// 									HTTP: &armappcontainers.HTTPScaleRule{
+		// 										Metadata: map[string]*string{
+		// 											"concurrentRequests": to.Ptr("50"),
+		// 										},
+		// 									},
+		// 								},
+		// 							},
+		// 						},
+		// 						ServiceBinds: []*armappcontainers.ServiceBind{
+		// 							{
+		// 								Name: to.Ptr("service"),
+		// 								ServiceID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/containerApps/service"),
+		// 							},
+		// 						},
+		// 					},
+		// 					WorkloadProfileName: to.Ptr("My-GP-01"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
 }

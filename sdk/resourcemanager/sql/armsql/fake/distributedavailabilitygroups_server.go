@@ -33,14 +33,6 @@ type DistributedAvailabilityGroupsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginFailover func(ctx context.Context, resourceGroupName string, managedInstanceName string, distributedAvailabilityGroupName string, parameters armsql.DistributedAvailabilityGroupsFailoverRequest, options *armsql.DistributedAvailabilityGroupsClientBeginFailoverOptions) (resp azfake.PollerResponder[armsql.DistributedAvailabilityGroupsClientFailoverResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method DistributedAvailabilityGroupsClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, managedInstanceName string, distributedAvailabilityGroupName string, options *armsql.DistributedAvailabilityGroupsClientGetOptions) (resp azfake.Responder[armsql.DistributedAvailabilityGroupsClientGetResponse], errResp azfake.ErrorResponder)
-
-	// NewListByInstancePager is the fake for method DistributedAvailabilityGroupsClient.NewListByInstancePager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByInstancePager func(resourceGroupName string, managedInstanceName string, options *armsql.DistributedAvailabilityGroupsClientListByInstanceOptions) (resp azfake.PagerResponder[armsql.DistributedAvailabilityGroupsClientListByInstanceResponse])
-
 	// BeginSetRole is the fake for method DistributedAvailabilityGroupsClient.BeginSetRole
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginSetRole func(ctx context.Context, resourceGroupName string, managedInstanceName string, distributedAvailabilityGroupName string, parameters armsql.DistributedAvailabilityGroupSetRole, options *armsql.DistributedAvailabilityGroupsClientBeginSetRoleOptions) (resp azfake.PollerResponder[armsql.DistributedAvailabilityGroupsClientSetRoleResponse], errResp azfake.ErrorResponder)
@@ -48,6 +40,14 @@ type DistributedAvailabilityGroupsServer struct {
 	// BeginUpdate is the fake for method DistributedAvailabilityGroupsClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, resourceGroupName string, managedInstanceName string, distributedAvailabilityGroupName string, parameters armsql.DistributedAvailabilityGroup, options *armsql.DistributedAvailabilityGroupsClientBeginUpdateOptions) (resp azfake.PollerResponder[armsql.DistributedAvailabilityGroupsClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method DistributedAvailabilityGroupsClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, managedInstanceName string, distributedAvailabilityGroupName string, options *armsql.DistributedAvailabilityGroupsClientGetOptions) (resp azfake.Responder[armsql.DistributedAvailabilityGroupsClientGetResponse], errResp azfake.ErrorResponder)
+
+	// NewListByInstancePager is the fake for method DistributedAvailabilityGroupsClient.NewListByInstancePager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByInstancePager func(resourceGroupName string, managedInstanceName string, options *armsql.DistributedAvailabilityGroupsClientListByInstanceOptions) (resp azfake.PagerResponder[armsql.DistributedAvailabilityGroupsClientListByInstanceResponse])
 }
 
 // NewDistributedAvailabilityGroupsServerTransport creates a new instance of DistributedAvailabilityGroupsServerTransport with the provided implementation.
@@ -59,9 +59,9 @@ func NewDistributedAvailabilityGroupsServerTransport(srv *DistributedAvailabilit
 		beginCreateOrUpdate:    newTracker[azfake.PollerResponder[armsql.DistributedAvailabilityGroupsClientCreateOrUpdateResponse]](),
 		beginDelete:            newTracker[azfake.PollerResponder[armsql.DistributedAvailabilityGroupsClientDeleteResponse]](),
 		beginFailover:          newTracker[azfake.PollerResponder[armsql.DistributedAvailabilityGroupsClientFailoverResponse]](),
-		newListByInstancePager: newTracker[azfake.PagerResponder[armsql.DistributedAvailabilityGroupsClientListByInstanceResponse]](),
 		beginSetRole:           newTracker[azfake.PollerResponder[armsql.DistributedAvailabilityGroupsClientSetRoleResponse]](),
 		beginUpdate:            newTracker[azfake.PollerResponder[armsql.DistributedAvailabilityGroupsClientUpdateResponse]](),
+		newListByInstancePager: newTracker[azfake.PagerResponder[armsql.DistributedAvailabilityGroupsClientListByInstanceResponse]](),
 	}
 }
 
@@ -72,9 +72,9 @@ type DistributedAvailabilityGroupsServerTransport struct {
 	beginCreateOrUpdate    *tracker[azfake.PollerResponder[armsql.DistributedAvailabilityGroupsClientCreateOrUpdateResponse]]
 	beginDelete            *tracker[azfake.PollerResponder[armsql.DistributedAvailabilityGroupsClientDeleteResponse]]
 	beginFailover          *tracker[azfake.PollerResponder[armsql.DistributedAvailabilityGroupsClientFailoverResponse]]
-	newListByInstancePager *tracker[azfake.PagerResponder[armsql.DistributedAvailabilityGroupsClientListByInstanceResponse]]
 	beginSetRole           *tracker[azfake.PollerResponder[armsql.DistributedAvailabilityGroupsClientSetRoleResponse]]
 	beginUpdate            *tracker[azfake.PollerResponder[armsql.DistributedAvailabilityGroupsClientUpdateResponse]]
+	newListByInstancePager *tracker[azfake.PagerResponder[armsql.DistributedAvailabilityGroupsClientListByInstanceResponse]]
 }
 
 // Do implements the policy.Transporter interface for DistributedAvailabilityGroupsServerTransport.
@@ -104,14 +104,14 @@ func (d *DistributedAvailabilityGroupsServerTransport) dispatchToMethodFake(req 
 				res.resp, res.err = d.dispatchBeginDelete(req)
 			case "DistributedAvailabilityGroupsClient.BeginFailover":
 				res.resp, res.err = d.dispatchBeginFailover(req)
-			case "DistributedAvailabilityGroupsClient.Get":
-				res.resp, res.err = d.dispatchGet(req)
-			case "DistributedAvailabilityGroupsClient.NewListByInstancePager":
-				res.resp, res.err = d.dispatchNewListByInstancePager(req)
 			case "DistributedAvailabilityGroupsClient.BeginSetRole":
 				res.resp, res.err = d.dispatchBeginSetRole(req)
 			case "DistributedAvailabilityGroupsClient.BeginUpdate":
 				res.resp, res.err = d.dispatchBeginUpdate(req)
+			case "DistributedAvailabilityGroupsClient.Get":
+				res.resp, res.err = d.dispatchGet(req)
+			case "DistributedAvailabilityGroupsClient.NewListByInstancePager":
+				res.resp, res.err = d.dispatchNewListByInstancePager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -280,84 +280,6 @@ func (d *DistributedAvailabilityGroupsServerTransport) dispatchBeginFailover(req
 	return resp, nil
 }
 
-func (d *DistributedAvailabilityGroupsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if d.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/managedInstances/(?P<managedInstanceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/distributedAvailabilityGroups/(?P<distributedAvailabilityGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	managedInstanceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("managedInstanceName")])
-	if err != nil {
-		return nil, err
-	}
-	distributedAvailabilityGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("distributedAvailabilityGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := d.srv.Get(req.Context(), resourceGroupNameParam, managedInstanceNameParam, distributedAvailabilityGroupNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DistributedAvailabilityGroup, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (d *DistributedAvailabilityGroupsServerTransport) dispatchNewListByInstancePager(req *http.Request) (*http.Response, error) {
-	if d.srv.NewListByInstancePager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByInstancePager not implemented")}
-	}
-	newListByInstancePager := d.newListByInstancePager.get(req)
-	if newListByInstancePager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/managedInstances/(?P<managedInstanceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/distributedAvailabilityGroups`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		managedInstanceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("managedInstanceName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := d.srv.NewListByInstancePager(resourceGroupNameParam, managedInstanceNameParam, nil)
-		newListByInstancePager = &resp
-		d.newListByInstancePager.add(req, newListByInstancePager)
-		server.PagerResponderInjectNextLinks(newListByInstancePager, req, func(page *armsql.DistributedAvailabilityGroupsClientListByInstanceResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByInstancePager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		d.newListByInstancePager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByInstancePager) {
-		d.newListByInstancePager.remove(req)
-	}
-	return resp, nil
-}
-
 func (d *DistributedAvailabilityGroupsServerTransport) dispatchBeginSetRole(req *http.Request) (*http.Response, error) {
 	if d.srv.BeginSetRole == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginSetRole not implemented")}
@@ -459,6 +381,84 @@ func (d *DistributedAvailabilityGroupsServerTransport) dispatchBeginUpdate(req *
 		d.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (d *DistributedAvailabilityGroupsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if d.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/managedInstances/(?P<managedInstanceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/distributedAvailabilityGroups/(?P<distributedAvailabilityGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	managedInstanceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("managedInstanceName")])
+	if err != nil {
+		return nil, err
+	}
+	distributedAvailabilityGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("distributedAvailabilityGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := d.srv.Get(req.Context(), resourceGroupNameParam, managedInstanceNameParam, distributedAvailabilityGroupNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DistributedAvailabilityGroup, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (d *DistributedAvailabilityGroupsServerTransport) dispatchNewListByInstancePager(req *http.Request) (*http.Response, error) {
+	if d.srv.NewListByInstancePager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByInstancePager not implemented")}
+	}
+	newListByInstancePager := d.newListByInstancePager.get(req)
+	if newListByInstancePager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/managedInstances/(?P<managedInstanceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/distributedAvailabilityGroups`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		managedInstanceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("managedInstanceName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := d.srv.NewListByInstancePager(resourceGroupNameParam, managedInstanceNameParam, nil)
+		newListByInstancePager = &resp
+		d.newListByInstancePager.add(req, newListByInstancePager)
+		server.PagerResponderInjectNextLinks(newListByInstancePager, req, func(page *armsql.DistributedAvailabilityGroupsClientListByInstanceResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByInstancePager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		d.newListByInstancePager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByInstancePager) {
+		d.newListByInstancePager.remove(req)
+	}
 	return resp, nil
 }
 

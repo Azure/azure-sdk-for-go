@@ -29,6 +29,14 @@ type ContainerGroupsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, containerGroupName string, options *armcontainerinstance.ContainerGroupsClientBeginDeleteOptions) (resp azfake.PollerResponder[armcontainerinstance.ContainerGroupsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginRestart is the fake for method ContainerGroupsClient.BeginRestart
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
+	BeginRestart func(ctx context.Context, resourceGroupName string, containerGroupName string, options *armcontainerinstance.ContainerGroupsClientBeginRestartOptions) (resp azfake.PollerResponder[armcontainerinstance.ContainerGroupsClientRestartResponse], errResp azfake.ErrorResponder)
+
+	// BeginStart is the fake for method ContainerGroupsClient.BeginStart
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginStart func(ctx context.Context, resourceGroupName string, containerGroupName string, options *armcontainerinstance.ContainerGroupsClientBeginStartOptions) (resp azfake.PollerResponder[armcontainerinstance.ContainerGroupsClientStartResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method ContainerGroupsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, containerGroupName string, options *armcontainerinstance.ContainerGroupsClientGetOptions) (resp azfake.Responder[armcontainerinstance.ContainerGroupsClientGetResponse], errResp azfake.ErrorResponder)
@@ -37,21 +45,13 @@ type ContainerGroupsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetOutboundNetworkDependenciesEndpoints func(ctx context.Context, resourceGroupName string, containerGroupName string, options *armcontainerinstance.ContainerGroupsClientGetOutboundNetworkDependenciesEndpointsOptions) (resp azfake.Responder[armcontainerinstance.ContainerGroupsClientGetOutboundNetworkDependenciesEndpointsResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method ContainerGroupsClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armcontainerinstance.ContainerGroupsClientListOptions) (resp azfake.PagerResponder[armcontainerinstance.ContainerGroupsClientListResponse])
-
 	// NewListByResourceGroupPager is the fake for method ContainerGroupsClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, options *armcontainerinstance.ContainerGroupsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armcontainerinstance.ContainerGroupsClientListByResourceGroupResponse])
 
-	// BeginRestart is the fake for method ContainerGroupsClient.BeginRestart
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
-	BeginRestart func(ctx context.Context, resourceGroupName string, containerGroupName string, options *armcontainerinstance.ContainerGroupsClientBeginRestartOptions) (resp azfake.PollerResponder[armcontainerinstance.ContainerGroupsClientRestartResponse], errResp azfake.ErrorResponder)
-
-	// BeginStart is the fake for method ContainerGroupsClient.BeginStart
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginStart func(ctx context.Context, resourceGroupName string, containerGroupName string, options *armcontainerinstance.ContainerGroupsClientBeginStartOptions) (resp azfake.PollerResponder[armcontainerinstance.ContainerGroupsClientStartResponse], errResp azfake.ErrorResponder)
+	// NewListPager is the fake for method ContainerGroupsClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armcontainerinstance.ContainerGroupsClientListOptions) (resp azfake.PagerResponder[armcontainerinstance.ContainerGroupsClientListResponse])
 
 	// Stop is the fake for method ContainerGroupsClient.Stop
 	// HTTP status codes to indicate success: http.StatusNoContent
@@ -70,10 +70,10 @@ func NewContainerGroupsServerTransport(srv *ContainerGroupsServer) *ContainerGro
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armcontainerinstance.ContainerGroupsClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armcontainerinstance.ContainerGroupsClientDeleteResponse]](),
-		newListPager:                newTracker[azfake.PagerResponder[armcontainerinstance.ContainerGroupsClientListResponse]](),
-		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armcontainerinstance.ContainerGroupsClientListByResourceGroupResponse]](),
 		beginRestart:                newTracker[azfake.PollerResponder[armcontainerinstance.ContainerGroupsClientRestartResponse]](),
 		beginStart:                  newTracker[azfake.PollerResponder[armcontainerinstance.ContainerGroupsClientStartResponse]](),
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armcontainerinstance.ContainerGroupsClientListByResourceGroupResponse]](),
+		newListPager:                newTracker[azfake.PagerResponder[armcontainerinstance.ContainerGroupsClientListResponse]](),
 	}
 }
 
@@ -83,10 +83,10 @@ type ContainerGroupsServerTransport struct {
 	srv                         *ContainerGroupsServer
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armcontainerinstance.ContainerGroupsClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armcontainerinstance.ContainerGroupsClientDeleteResponse]]
-	newListPager                *tracker[azfake.PagerResponder[armcontainerinstance.ContainerGroupsClientListResponse]]
-	newListByResourceGroupPager *tracker[azfake.PagerResponder[armcontainerinstance.ContainerGroupsClientListByResourceGroupResponse]]
 	beginRestart                *tracker[azfake.PollerResponder[armcontainerinstance.ContainerGroupsClientRestartResponse]]
 	beginStart                  *tracker[azfake.PollerResponder[armcontainerinstance.ContainerGroupsClientStartResponse]]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armcontainerinstance.ContainerGroupsClientListByResourceGroupResponse]]
+	newListPager                *tracker[azfake.PagerResponder[armcontainerinstance.ContainerGroupsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for ContainerGroupsServerTransport.
@@ -114,18 +114,18 @@ func (c *ContainerGroupsServerTransport) dispatchToMethodFake(req *http.Request,
 				res.resp, res.err = c.dispatchBeginCreateOrUpdate(req)
 			case "ContainerGroupsClient.BeginDelete":
 				res.resp, res.err = c.dispatchBeginDelete(req)
-			case "ContainerGroupsClient.Get":
-				res.resp, res.err = c.dispatchGet(req)
-			case "ContainerGroupsClient.GetOutboundNetworkDependenciesEndpoints":
-				res.resp, res.err = c.dispatchGetOutboundNetworkDependenciesEndpoints(req)
-			case "ContainerGroupsClient.NewListPager":
-				res.resp, res.err = c.dispatchNewListPager(req)
-			case "ContainerGroupsClient.NewListByResourceGroupPager":
-				res.resp, res.err = c.dispatchNewListByResourceGroupPager(req)
 			case "ContainerGroupsClient.BeginRestart":
 				res.resp, res.err = c.dispatchBeginRestart(req)
 			case "ContainerGroupsClient.BeginStart":
 				res.resp, res.err = c.dispatchBeginStart(req)
+			case "ContainerGroupsClient.Get":
+				res.resp, res.err = c.dispatchGet(req)
+			case "ContainerGroupsClient.GetOutboundNetworkDependenciesEndpoints":
+				res.resp, res.err = c.dispatchGetOutboundNetworkDependenciesEndpoints(req)
+			case "ContainerGroupsClient.NewListByResourceGroupPager":
+				res.resp, res.err = c.dispatchNewListByResourceGroupPager(req)
+			case "ContainerGroupsClient.NewListPager":
+				res.resp, res.err = c.dispatchNewListPager(req)
 			case "ContainerGroupsClient.Stop":
 				res.resp, res.err = c.dispatchStop(req)
 			case "ContainerGroupsClient.Update":
@@ -238,142 +238,6 @@ func (c *ContainerGroupsServerTransport) dispatchBeginDelete(req *http.Request) 
 	return resp, nil
 }
 
-func (c *ContainerGroupsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if c.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerInstance/containerGroups/(?P<containerGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	containerGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("containerGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := c.srv.Get(req.Context(), resourceGroupNameParam, containerGroupNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ContainerGroup, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (c *ContainerGroupsServerTransport) dispatchGetOutboundNetworkDependenciesEndpoints(req *http.Request) (*http.Response, error) {
-	if c.srv.GetOutboundNetworkDependenciesEndpoints == nil {
-		return nil, &nonRetriableError{errors.New("fake for method GetOutboundNetworkDependenciesEndpoints not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerInstance/containerGroups/(?P<containerGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/outboundNetworkDependenciesEndpoints`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	containerGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("containerGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := c.srv.GetOutboundNetworkDependenciesEndpoints(req.Context(), resourceGroupNameParam, containerGroupNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).StringArray, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (c *ContainerGroupsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if c.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := c.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerInstance/containerGroups`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := c.srv.NewListPager(nil)
-		newListPager = &resp
-		c.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcontainerinstance.ContainerGroupsClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		c.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		c.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (c *ContainerGroupsServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
-	if c.srv.NewListByResourceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
-	}
-	newListByResourceGroupPager := c.newListByResourceGroupPager.get(req)
-	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerInstance/containerGroups`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := c.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
-		newListByResourceGroupPager = &resp
-		c.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armcontainerinstance.ContainerGroupsClientListByResourceGroupResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		c.newListByResourceGroupPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByResourceGroupPager) {
-		c.newListByResourceGroupPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (c *ContainerGroupsServerTransport) dispatchBeginRestart(req *http.Request) (*http.Response, error) {
 	if c.srv.BeginRestart == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginRestart not implemented")}
@@ -459,6 +323,142 @@ func (c *ContainerGroupsServerTransport) dispatchBeginStart(req *http.Request) (
 		c.beginStart.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (c *ContainerGroupsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if c.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerInstance/containerGroups/(?P<containerGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	containerGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("containerGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := c.srv.Get(req.Context(), resourceGroupNameParam, containerGroupNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ContainerGroup, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (c *ContainerGroupsServerTransport) dispatchGetOutboundNetworkDependenciesEndpoints(req *http.Request) (*http.Response, error) {
+	if c.srv.GetOutboundNetworkDependenciesEndpoints == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetOutboundNetworkDependenciesEndpoints not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerInstance/containerGroups/(?P<containerGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/outboundNetworkDependenciesEndpoints`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	containerGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("containerGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := c.srv.GetOutboundNetworkDependenciesEndpoints(req.Context(), resourceGroupNameParam, containerGroupNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).StringArray, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (c *ContainerGroupsServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
+	if c.srv.NewListByResourceGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
+	}
+	newListByResourceGroupPager := c.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerInstance/containerGroups`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := c.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
+		newListByResourceGroupPager = &resp
+		c.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armcontainerinstance.ContainerGroupsClientListByResourceGroupResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		c.newListByResourceGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		c.newListByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (c *ContainerGroupsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if c.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := c.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerInstance/containerGroups`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := c.srv.NewListPager(nil)
+		newListPager = &resp
+		c.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcontainerinstance.ContainerGroupsClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		c.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		c.newListPager.remove(req)
+	}
 	return resp, nil
 }
 

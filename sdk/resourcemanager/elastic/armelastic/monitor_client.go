@@ -66,7 +66,7 @@ func (client *MonitorClient) BeginUpgrade(ctx context.Context, resourceGroupName
 	}
 }
 
-// Upgrade - Upgrade the Elastic monitor resource to a newer version, ensuring optimal observability and performance.
+// upgrade - Upgrade the Elastic monitor resource to a newer version, ensuring optimal observability and performance.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *MonitorClient) upgrade(ctx context.Context, resourceGroupName string, monitorName string, options *MonitorClientBeginUpgradeOptions) (*http.Response, error) {
 	var err error
@@ -88,7 +88,7 @@ func (client *MonitorClient) upgrade(ctx context.Context, resourceGroupName stri
 	return httpResp, nil
 }
 
-// upgradeCreateRequest creates the Upgrade request.
+// upgradeCreateRequest creates the upgrade request.
 func (client *MonitorClient) upgradeCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, options *MonitorClientBeginUpgradeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/upgrade"
 	if client.subscriptionID == "" {

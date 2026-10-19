@@ -70,7 +70,7 @@ func (client *MachineRunCommandsClient) BeginCreateOrUpdate(ctx context.Context,
 	}
 }
 
-// CreateOrUpdate - The operation to create or update a run command.
+// createOrUpdate - The operation to create or update a run command.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *MachineRunCommandsClient) createOrUpdate(ctx context.Context, resourceGroupName string, machineName string, runCommandName string, runCommandProperties MachineRunCommand, options *MachineRunCommandsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -92,7 +92,7 @@ func (client *MachineRunCommandsClient) createOrUpdate(ctx context.Context, reso
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *MachineRunCommandsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, machineName string, runCommandName string, runCommandProperties MachineRunCommand, _ *MachineRunCommandsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{machineName}/runCommands/{runCommandName}"
 	if client.subscriptionID == "" {
@@ -150,7 +150,7 @@ func (client *MachineRunCommandsClient) BeginDelete(ctx context.Context, resourc
 	}
 }
 
-// Delete - The operation to delete a run command.
+// deleteOperation - The operation to delete a run command.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *MachineRunCommandsClient) deleteOperation(ctx context.Context, resourceGroupName string, machineName string, runCommandName string, options *MachineRunCommandsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -172,7 +172,7 @@ func (client *MachineRunCommandsClient) deleteOperation(ctx context.Context, res
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *MachineRunCommandsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, machineName string, runCommandName string, _ *MachineRunCommandsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{machineName}/runCommands/{runCommandName}"
 	if client.subscriptionID == "" {

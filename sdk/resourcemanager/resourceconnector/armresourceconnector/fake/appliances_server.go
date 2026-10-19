@@ -41,14 +41,6 @@ type AppliancesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetUpgradeGraph func(ctx context.Context, resourceGroupName string, resourceName string, upgradeGraph string, options *armresourceconnector.AppliancesClientGetUpgradeGraphOptions) (resp azfake.Responder[armresourceconnector.AppliancesClientGetUpgradeGraphResponse], errResp azfake.ErrorResponder)
 
-	// NewListByResourceGroupPager is the fake for method AppliancesClient.NewListByResourceGroupPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupPager func(resourceGroupName string, options *armresourceconnector.AppliancesClientListByResourceGroupOptions) (resp azfake.PagerResponder[armresourceconnector.AppliancesClientListByResourceGroupResponse])
-
-	// NewListBySubscriptionPager is the fake for method AppliancesClient.NewListBySubscriptionPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListBySubscriptionPager func(options *armresourceconnector.AppliancesClientListBySubscriptionOptions) (resp azfake.PagerResponder[armresourceconnector.AppliancesClientListBySubscriptionResponse])
-
 	// ListClusterUserCredential is the fake for method AppliancesClient.ListClusterUserCredential
 	// HTTP status codes to indicate success: http.StatusOK
 	ListClusterUserCredential func(ctx context.Context, resourceGroupName string, resourceName string, options *armresourceconnector.AppliancesClientListClusterUserCredentialOptions) (resp azfake.Responder[armresourceconnector.AppliancesClientListClusterUserCredentialResponse], errResp azfake.ErrorResponder)
@@ -56,6 +48,14 @@ type AppliancesServer struct {
 	// ListKeys is the fake for method AppliancesClient.ListKeys
 	// HTTP status codes to indicate success: http.StatusOK
 	ListKeys func(ctx context.Context, resourceGroupName string, resourceName string, options *armresourceconnector.AppliancesClientListKeysOptions) (resp azfake.Responder[armresourceconnector.AppliancesClientListKeysResponse], errResp azfake.ErrorResponder)
+
+	// NewListByResourceGroupPager is the fake for method AppliancesClient.NewListByResourceGroupPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByResourceGroupPager func(resourceGroupName string, options *armresourceconnector.AppliancesClientListByResourceGroupOptions) (resp azfake.PagerResponder[armresourceconnector.AppliancesClientListByResourceGroupResponse])
+
+	// NewListBySubscriptionPager is the fake for method AppliancesClient.NewListBySubscriptionPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListBySubscriptionPager func(options *armresourceconnector.AppliancesClientListBySubscriptionOptions) (resp azfake.PagerResponder[armresourceconnector.AppliancesClientListBySubscriptionResponse])
 
 	// NewListOperationsPager is the fake for method AppliancesClient.NewListOperationsPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -122,14 +122,14 @@ func (a *AppliancesServerTransport) dispatchToMethodFake(req *http.Request, meth
 				res.resp, res.err = a.dispatchGetTelemetryConfig(req)
 			case "AppliancesClient.GetUpgradeGraph":
 				res.resp, res.err = a.dispatchGetUpgradeGraph(req)
-			case "AppliancesClient.NewListByResourceGroupPager":
-				res.resp, res.err = a.dispatchNewListByResourceGroupPager(req)
-			case "AppliancesClient.NewListBySubscriptionPager":
-				res.resp, res.err = a.dispatchNewListBySubscriptionPager(req)
 			case "AppliancesClient.ListClusterUserCredential":
 				res.resp, res.err = a.dispatchListClusterUserCredential(req)
 			case "AppliancesClient.ListKeys":
 				res.resp, res.err = a.dispatchListKeys(req)
+			case "AppliancesClient.NewListByResourceGroupPager":
+				res.resp, res.err = a.dispatchNewListByResourceGroupPager(req)
+			case "AppliancesClient.NewListBySubscriptionPager":
+				res.resp, res.err = a.dispatchNewListBySubscriptionPager(req)
 			case "AppliancesClient.NewListOperationsPager":
 				res.resp, res.err = a.dispatchNewListOperationsPager(req)
 			case "AppliancesClient.Update":
@@ -337,76 +337,6 @@ func (a *AppliancesServerTransport) dispatchGetUpgradeGraph(req *http.Request) (
 	return resp, nil
 }
 
-func (a *AppliancesServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
-	if a.srv.NewListByResourceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
-	}
-	newListByResourceGroupPager := a.newListByResourceGroupPager.get(req)
-	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ResourceConnector/appliances`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := a.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
-		newListByResourceGroupPager = &resp
-		a.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armresourceconnector.AppliancesClientListByResourceGroupResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		a.newListByResourceGroupPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByResourceGroupPager) {
-		a.newListByResourceGroupPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (a *AppliancesServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
-	if a.srv.NewListBySubscriptionPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
-	}
-	newListBySubscriptionPager := a.newListBySubscriptionPager.get(req)
-	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ResourceConnector/appliances`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := a.srv.NewListBySubscriptionPager(nil)
-		newListBySubscriptionPager = &resp
-		a.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
-		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armresourceconnector.AppliancesClientListBySubscriptionResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		a.newListBySubscriptionPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListBySubscriptionPager) {
-		a.newListBySubscriptionPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (a *AppliancesServerTransport) dispatchListClusterUserCredential(req *http.Request) (*http.Response, error) {
 	if a.srv.ListClusterUserCredential == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListClusterUserCredential not implemented")}
@@ -477,6 +407,76 @@ func (a *AppliancesServerTransport) dispatchListKeys(req *http.Request) (*http.R
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ApplianceListKeysResults, req)
 	if err != nil {
 		return nil, err
+	}
+	return resp, nil
+}
+
+func (a *AppliancesServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
+	if a.srv.NewListByResourceGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
+	}
+	newListByResourceGroupPager := a.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ResourceConnector/appliances`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := a.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
+		newListByResourceGroupPager = &resp
+		a.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armresourceconnector.AppliancesClientListByResourceGroupResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		a.newListByResourceGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		a.newListByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (a *AppliancesServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
+	if a.srv.NewListBySubscriptionPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
+	}
+	newListBySubscriptionPager := a.newListBySubscriptionPager.get(req)
+	if newListBySubscriptionPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ResourceConnector/appliances`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := a.srv.NewListBySubscriptionPager(nil)
+		newListBySubscriptionPager = &resp
+		a.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
+		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armresourceconnector.AppliancesClientListBySubscriptionResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		a.newListBySubscriptionPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListBySubscriptionPager) {
+		a.newListBySubscriptionPager.remove(req)
 	}
 	return resp, nil
 }

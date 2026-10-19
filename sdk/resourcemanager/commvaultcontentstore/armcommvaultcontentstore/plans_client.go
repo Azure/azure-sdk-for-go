@@ -133,7 +133,7 @@ func (client *PlansClient) createOrupdateCreateRequest(ctx context.Context, reso
 //   - options - PlansClientBeginDeleteOptions contains the optional parameters for the PlansClient.BeginDelete method.
 func (client *PlansClient) BeginDelete(ctx context.Context, resourceGroupName string, cloudAccountName string, planName string, options *PlansClientBeginDeleteOptions) (*runtime.Poller[PlansClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, cloudAccountName, planName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, cloudAccountName, planName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -148,9 +148,9 @@ func (client *PlansClient) BeginDelete(ctx context.Context, resourceGroupName st
 	}
 }
 
-// delete - Delete a CommvaultPlan
+// deleteOperation - Delete a CommvaultPlan
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *PlansClient) delete(ctx context.Context, resourceGroupName string, cloudAccountName string, planName string, options *PlansClientBeginDeleteOptions) (*http.Response, error) {
+func (client *PlansClient) deleteOperation(ctx context.Context, resourceGroupName string, cloudAccountName string, planName string, options *PlansClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PlansClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)

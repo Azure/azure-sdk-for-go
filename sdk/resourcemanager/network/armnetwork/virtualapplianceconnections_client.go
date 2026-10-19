@@ -133,7 +133,7 @@ func (client *VirtualApplianceConnectionsClient) createOrUpdateCreateRequest(ctx
 //     method.
 func (client *VirtualApplianceConnectionsClient) BeginDelete(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, connectionName string, options *VirtualApplianceConnectionsClientBeginDeleteOptions) (*runtime.Poller[VirtualApplianceConnectionsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, networkVirtualApplianceName, connectionName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, networkVirtualApplianceName, connectionName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -148,9 +148,9 @@ func (client *VirtualApplianceConnectionsClient) BeginDelete(ctx context.Context
 	}
 }
 
-// delete - Deletes a NVA connection.
+// deleteOperation - Deletes a NVA connection.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *VirtualApplianceConnectionsClient) delete(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, connectionName string, options *VirtualApplianceConnectionsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *VirtualApplianceConnectionsClient) deleteOperation(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, connectionName string, options *VirtualApplianceConnectionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualApplianceConnectionsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)

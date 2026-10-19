@@ -44,6 +44,243 @@ func NewSandboxCustomImagesClient(subscriptionID string, credential azcore.Token
 	return client, nil
 }
 
+// BeginCreateOrUpdate - Creates or updates a sandbox custom image.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - clusterName - The name of the Kusto cluster.
+//   - sandboxCustomImageName - The name of the sandbox custom image.
+//   - parameters - The sandbox custom image parameters.
+//   - options - SandboxCustomImagesClientBeginCreateOrUpdateOptions contains the optional parameters for the SandboxCustomImagesClient.BeginCreateOrUpdate
+//     method.
+func (client *SandboxCustomImagesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, sandboxCustomImageName string, parameters SandboxCustomImage, options *SandboxCustomImagesClientBeginCreateOrUpdateOptions) (*runtime.Poller[SandboxCustomImagesClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, clusterName, sandboxCustomImageName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SandboxCustomImagesClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SandboxCustomImagesClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// createOrUpdate - Creates or updates a sandbox custom image.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *SandboxCustomImagesClient) createOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, sandboxCustomImageName string, parameters SandboxCustomImage, options *SandboxCustomImagesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "SandboxCustomImagesClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, clusterName, sandboxCustomImageName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// createOrUpdateCreateRequest creates the createOrUpdate request.
+func (client *SandboxCustomImagesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, sandboxCustomImageName string, parameters SandboxCustomImage, _ *SandboxCustomImagesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/sandboxCustomImages/{sandboxCustomImageName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if clusterName == "" {
+		return nil, errors.New("parameter clusterName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
+	if sandboxCustomImageName == "" {
+		return nil, errors.New("parameter sandboxCustomImageName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{sandboxCustomImageName}", url.PathEscape(sandboxCustomImageName))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250214)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginDelete - Deletes a sandbox custom image.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - clusterName - The name of the Kusto cluster.
+//   - sandboxCustomImageName - The name of the sandbox custom image.
+//   - options - SandboxCustomImagesClientBeginDeleteOptions contains the optional parameters for the SandboxCustomImagesClient.BeginDelete
+//     method.
+func (client *SandboxCustomImagesClient) BeginDelete(ctx context.Context, resourceGroupName string, clusterName string, sandboxCustomImageName string, options *SandboxCustomImagesClientBeginDeleteOptions) (*runtime.Poller[SandboxCustomImagesClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, clusterName, sandboxCustomImageName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SandboxCustomImagesClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SandboxCustomImagesClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// deleteOperation - Deletes a sandbox custom image.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *SandboxCustomImagesClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, sandboxCustomImageName string, options *SandboxCustomImagesClientBeginDeleteOptions) (*http.Response, error) {
+	var err error
+	const operationName = "SandboxCustomImagesClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, clusterName, sandboxCustomImageName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// deleteCreateRequest creates the delete request.
+func (client *SandboxCustomImagesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, sandboxCustomImageName string, _ *SandboxCustomImagesClientBeginDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/sandboxCustomImages/{sandboxCustomImageName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if clusterName == "" {
+		return nil, errors.New("parameter clusterName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
+	if sandboxCustomImageName == "" {
+		return nil, errors.New("parameter sandboxCustomImageName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{sandboxCustomImageName}", url.PathEscape(sandboxCustomImageName))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250214)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - Updates a sandbox custom image.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - clusterName - The name of the Kusto cluster.
+//   - sandboxCustomImageName - The name of the sandbox custom image.
+//   - parameters - The sandbox custom image parameters.
+//   - options - SandboxCustomImagesClientBeginUpdateOptions contains the optional parameters for the SandboxCustomImagesClient.BeginUpdate
+//     method.
+func (client *SandboxCustomImagesClient) BeginUpdate(ctx context.Context, resourceGroupName string, clusterName string, sandboxCustomImageName string, parameters SandboxCustomImage, options *SandboxCustomImagesClientBeginUpdateOptions) (*runtime.Poller[SandboxCustomImagesClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, clusterName, sandboxCustomImageName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SandboxCustomImagesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SandboxCustomImagesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Updates a sandbox custom image.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *SandboxCustomImagesClient) update(ctx context.Context, resourceGroupName string, clusterName string, sandboxCustomImageName string, parameters SandboxCustomImage, options *SandboxCustomImagesClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "SandboxCustomImagesClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, clusterName, sandboxCustomImageName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *SandboxCustomImagesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, sandboxCustomImageName string, parameters SandboxCustomImage, _ *SandboxCustomImagesClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/sandboxCustomImages/{sandboxCustomImageName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if clusterName == "" {
+		return nil, errors.New("parameter clusterName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
+	if sandboxCustomImageName == "" {
+		return nil, errors.New("parameter sandboxCustomImageName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{sandboxCustomImageName}", url.PathEscape(sandboxCustomImageName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250214)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
 // CheckNameAvailability - Checks that the sandbox custom image resource name is valid and is not already in use.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -108,162 +345,6 @@ func (client *SandboxCustomImagesClient) checkNameAvailabilityHandleResponse(res
 		return SandboxCustomImagesClientCheckNameAvailabilityResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginCreateOrUpdate - Creates or updates a sandbox custom image.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - clusterName - The name of the Kusto cluster.
-//   - sandboxCustomImageName - The name of the sandbox custom image.
-//   - parameters - The sandbox custom image parameters.
-//   - options - SandboxCustomImagesClientBeginCreateOrUpdateOptions contains the optional parameters for the SandboxCustomImagesClient.BeginCreateOrUpdate
-//     method.
-func (client *SandboxCustomImagesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, sandboxCustomImageName string, parameters SandboxCustomImage, options *SandboxCustomImagesClientBeginCreateOrUpdateOptions) (*runtime.Poller[SandboxCustomImagesClientCreateOrUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.createOrUpdate(ctx, resourceGroupName, clusterName, sandboxCustomImageName, parameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SandboxCustomImagesClientCreateOrUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SandboxCustomImagesClientCreateOrUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// CreateOrUpdate - Creates or updates a sandbox custom image.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *SandboxCustomImagesClient) createOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, sandboxCustomImageName string, parameters SandboxCustomImage, options *SandboxCustomImagesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "SandboxCustomImagesClient.BeginCreateOrUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, clusterName, sandboxCustomImageName, parameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *SandboxCustomImagesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, sandboxCustomImageName string, parameters SandboxCustomImage, _ *SandboxCustomImagesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/sandboxCustomImages/{sandboxCustomImageName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if clusterName == "" {
-		return nil, errors.New("parameter clusterName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	if sandboxCustomImageName == "" {
-		return nil, errors.New("parameter sandboxCustomImageName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{sandboxCustomImageName}", url.PathEscape(sandboxCustomImageName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250214)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginDelete - Deletes a sandbox custom image.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - clusterName - The name of the Kusto cluster.
-//   - sandboxCustomImageName - The name of the sandbox custom image.
-//   - options - SandboxCustomImagesClientBeginDeleteOptions contains the optional parameters for the SandboxCustomImagesClient.BeginDelete
-//     method.
-func (client *SandboxCustomImagesClient) BeginDelete(ctx context.Context, resourceGroupName string, clusterName string, sandboxCustomImageName string, options *SandboxCustomImagesClientBeginDeleteOptions) (*runtime.Poller[SandboxCustomImagesClientDeleteResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, clusterName, sandboxCustomImageName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SandboxCustomImagesClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SandboxCustomImagesClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Delete - Deletes a sandbox custom image.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *SandboxCustomImagesClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, sandboxCustomImageName string, options *SandboxCustomImagesClientBeginDeleteOptions) (*http.Response, error) {
-	var err error
-	const operationName = "SandboxCustomImagesClient.BeginDelete"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, clusterName, sandboxCustomImageName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// deleteCreateRequest creates the Delete request.
-func (client *SandboxCustomImagesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, sandboxCustomImageName string, _ *SandboxCustomImagesClientBeginDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/sandboxCustomImages/{sandboxCustomImageName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if clusterName == "" {
-		return nil, errors.New("parameter clusterName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	if sandboxCustomImageName == "" {
-		return nil, errors.New("parameter sandboxCustomImageName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{sandboxCustomImageName}", url.PathEscape(sandboxCustomImageName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250214)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
 }
 
 // Get - Returns a sandbox custom image
@@ -406,85 +487,4 @@ func (client *SandboxCustomImagesClient) listByClusterHandleResponse(resp *http.
 		return SandboxCustomImagesClientListByClusterResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Updates a sandbox custom image.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - clusterName - The name of the Kusto cluster.
-//   - sandboxCustomImageName - The name of the sandbox custom image.
-//   - parameters - The sandbox custom image parameters.
-//   - options - SandboxCustomImagesClientBeginUpdateOptions contains the optional parameters for the SandboxCustomImagesClient.BeginUpdate
-//     method.
-func (client *SandboxCustomImagesClient) BeginUpdate(ctx context.Context, resourceGroupName string, clusterName string, sandboxCustomImageName string, parameters SandboxCustomImage, options *SandboxCustomImagesClientBeginUpdateOptions) (*runtime.Poller[SandboxCustomImagesClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, clusterName, sandboxCustomImageName, parameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SandboxCustomImagesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SandboxCustomImagesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Updates a sandbox custom image.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *SandboxCustomImagesClient) update(ctx context.Context, resourceGroupName string, clusterName string, sandboxCustomImageName string, parameters SandboxCustomImage, options *SandboxCustomImagesClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "SandboxCustomImagesClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, clusterName, sandboxCustomImageName, parameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *SandboxCustomImagesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, sandboxCustomImageName string, parameters SandboxCustomImage, _ *SandboxCustomImagesClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/sandboxCustomImages/{sandboxCustomImageName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if clusterName == "" {
-		return nil, errors.New("parameter clusterName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	if sandboxCustomImageName == "" {
-		return nil, errors.New("parameter sandboxCustomImageName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{sandboxCustomImageName}", url.PathEscape(sandboxCustomImageName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250214)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

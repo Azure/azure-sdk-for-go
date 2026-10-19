@@ -23,10 +23,6 @@ import (
 
 // JobExecutionsServer is a fake server for instances of the armsql.JobExecutionsClient type.
 type JobExecutionsServer struct {
-	// Cancel is the fake for method JobExecutionsClient.Cancel
-	// HTTP status codes to indicate success: http.StatusOK
-	Cancel func(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, jobExecutionID string, options *armsql.JobExecutionsClientCancelOptions) (resp azfake.Responder[armsql.JobExecutionsClientCancelResponse], errResp azfake.ErrorResponder)
-
 	// BeginCreate is the fake for method JobExecutionsClient.BeginCreate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginCreate func(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, options *armsql.JobExecutionsClientBeginCreateOptions) (resp azfake.PollerResponder[armsql.JobExecutionsClientCreateResponse], errResp azfake.ErrorResponder)
@@ -34,6 +30,10 @@ type JobExecutionsServer struct {
 	// BeginCreateOrUpdate is the fake for method JobExecutionsClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated, http.StatusAccepted
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, jobExecutionID string, options *armsql.JobExecutionsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armsql.JobExecutionsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+
+	// Cancel is the fake for method JobExecutionsClient.Cancel
+	// HTTP status codes to indicate success: http.StatusOK
+	Cancel func(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, jobExecutionID string, options *armsql.JobExecutionsClientCancelOptions) (resp azfake.Responder[armsql.JobExecutionsClientCancelResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method JobExecutionsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -92,12 +92,12 @@ func (j *JobExecutionsServerTransport) dispatchToMethodFake(req *http.Request, m
 		}
 		if !intercepted {
 			switch method {
-			case "JobExecutionsClient.Cancel":
-				res.resp, res.err = j.dispatchCancel(req)
 			case "JobExecutionsClient.BeginCreate":
 				res.resp, res.err = j.dispatchBeginCreate(req)
 			case "JobExecutionsClient.BeginCreateOrUpdate":
 				res.resp, res.err = j.dispatchBeginCreateOrUpdate(req)
+			case "JobExecutionsClient.Cancel":
+				res.resp, res.err = j.dispatchCancel(req)
 			case "JobExecutionsClient.Get":
 				res.resp, res.err = j.dispatchGet(req)
 			case "JobExecutionsClient.NewListByAgentPager":
@@ -118,51 +118,6 @@ func (j *JobExecutionsServerTransport) dispatchToMethodFake(req *http.Request, m
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (j *JobExecutionsServerTransport) dispatchCancel(req *http.Request) (*http.Response, error) {
-	if j.srv.Cancel == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Cancel not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/servers/(?P<serverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/jobAgents/(?P<jobAgentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/jobs/(?P<jobName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/executions/(?P<jobExecutionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/cancel`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 7 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
-	if err != nil {
-		return nil, err
-	}
-	jobAgentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("jobAgentName")])
-	if err != nil {
-		return nil, err
-	}
-	jobNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("jobName")])
-	if err != nil {
-		return nil, err
-	}
-	jobExecutionIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("jobExecutionId")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := j.srv.Cancel(req.Context(), resourceGroupNameParam, serverNameParam, jobAgentNameParam, jobNameParam, jobExecutionIDParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (j *JobExecutionsServerTransport) dispatchBeginCreate(req *http.Request) (*http.Response, error) {
@@ -270,6 +225,51 @@ func (j *JobExecutionsServerTransport) dispatchBeginCreateOrUpdate(req *http.Req
 		j.beginCreateOrUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (j *JobExecutionsServerTransport) dispatchCancel(req *http.Request) (*http.Response, error) {
+	if j.srv.Cancel == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Cancel not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/servers/(?P<serverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/jobAgents/(?P<jobAgentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/jobs/(?P<jobName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/executions/(?P<jobExecutionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/cancel`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 7 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
+	if err != nil {
+		return nil, err
+	}
+	jobAgentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("jobAgentName")])
+	if err != nil {
+		return nil, err
+	}
+	jobNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("jobName")])
+	if err != nil {
+		return nil, err
+	}
+	jobExecutionIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("jobExecutionId")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := j.srv.Cancel(req.Context(), resourceGroupNameParam, serverNameParam, jobAgentNameParam, jobNameParam, jobExecutionIDParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.NewResponse(respContent, req, nil)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 

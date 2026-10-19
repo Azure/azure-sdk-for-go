@@ -45,6 +45,91 @@ func NewWorkflowTriggerHistoriesClient(subscriptionID string, credential azcore.
 	return client, nil
 }
 
+// BeginResubmit - Resubmits a workflow run based on the trigger history.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - name - Site name.
+//   - workflowName - The workflow name.
+//   - triggerName - The workflow trigger name.
+//   - historyName - The workflow trigger history name. Corresponds to the run name for triggers that resulted in a run.
+//   - options - WorkflowTriggerHistoriesClientBeginResubmitOptions contains the optional parameters for the WorkflowTriggerHistoriesClient.BeginResubmit
+//     method.
+func (client *WorkflowTriggerHistoriesClient) BeginResubmit(ctx context.Context, resourceGroupName string, name string, workflowName string, triggerName string, historyName string, options *WorkflowTriggerHistoriesClientBeginResubmitOptions) (*runtime.Poller[WorkflowTriggerHistoriesClientResubmitResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.resubmit(ctx, resourceGroupName, name, workflowName, triggerName, historyName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WorkflowTriggerHistoriesClientResubmitResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[WorkflowTriggerHistoriesClientResubmitResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// resubmit - Resubmits a workflow run based on the trigger history.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *WorkflowTriggerHistoriesClient) resubmit(ctx context.Context, resourceGroupName string, name string, workflowName string, triggerName string, historyName string, options *WorkflowTriggerHistoriesClientBeginResubmitOptions) (*http.Response, error) {
+	var err error
+	const operationName = "WorkflowTriggerHistoriesClient.BeginResubmit"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.resubmitCreateRequest(ctx, resourceGroupName, name, workflowName, triggerName, historyName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// resubmitCreateRequest creates the resubmit request.
+func (client *WorkflowTriggerHistoriesClient) resubmitCreateRequest(ctx context.Context, resourceGroupName string, name string, workflowName string, triggerName string, historyName string, _ *WorkflowTriggerHistoriesClientBeginResubmitOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/triggers/{triggerName}/histories/{historyName}/resubmit"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if name == "" {
+		return nil, errors.New("parameter name cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+	if workflowName == "" {
+		return nil, errors.New("parameter workflowName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{workflowName}", url.PathEscape(workflowName))
+	if triggerName == "" {
+		return nil, errors.New("parameter triggerName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{triggerName}", url.PathEscape(triggerName))
+	if historyName == "" {
+		return nil, errors.New("parameter historyName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{historyName}", url.PathEscape(historyName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250501)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
 // Get - Gets a workflow trigger history.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -212,89 +297,4 @@ func (client *WorkflowTriggerHistoriesClient) listHandleResponse(resp *http.Resp
 		return WorkflowTriggerHistoriesClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginResubmit - Resubmits a workflow run based on the trigger history.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - name - Site name.
-//   - workflowName - The workflow name.
-//   - triggerName - The workflow trigger name.
-//   - historyName - The workflow trigger history name. Corresponds to the run name for triggers that resulted in a run.
-//   - options - WorkflowTriggerHistoriesClientBeginResubmitOptions contains the optional parameters for the WorkflowTriggerHistoriesClient.BeginResubmit
-//     method.
-func (client *WorkflowTriggerHistoriesClient) BeginResubmit(ctx context.Context, resourceGroupName string, name string, workflowName string, triggerName string, historyName string, options *WorkflowTriggerHistoriesClientBeginResubmitOptions) (*runtime.Poller[WorkflowTriggerHistoriesClientResubmitResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.resubmit(ctx, resourceGroupName, name, workflowName, triggerName, historyName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WorkflowTriggerHistoriesClientResubmitResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[WorkflowTriggerHistoriesClientResubmitResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Resubmit - Resubmits a workflow run based on the trigger history.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *WorkflowTriggerHistoriesClient) resubmit(ctx context.Context, resourceGroupName string, name string, workflowName string, triggerName string, historyName string, options *WorkflowTriggerHistoriesClientBeginResubmitOptions) (*http.Response, error) {
-	var err error
-	const operationName = "WorkflowTriggerHistoriesClient.BeginResubmit"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.resubmitCreateRequest(ctx, resourceGroupName, name, workflowName, triggerName, historyName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// resubmitCreateRequest creates the Resubmit request.
-func (client *WorkflowTriggerHistoriesClient) resubmitCreateRequest(ctx context.Context, resourceGroupName string, name string, workflowName string, triggerName string, historyName string, _ *WorkflowTriggerHistoriesClientBeginResubmitOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/triggers/{triggerName}/histories/{historyName}/resubmit"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	if workflowName == "" {
-		return nil, errors.New("parameter workflowName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workflowName}", url.PathEscape(workflowName))
-	if triggerName == "" {
-		return nil, errors.New("parameter triggerName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{triggerName}", url.PathEscape(triggerName))
-	if historyName == "" {
-		return nil, errors.New("parameter historyName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{historyName}", url.PathEscape(historyName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
 }

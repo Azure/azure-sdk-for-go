@@ -42,10 +42,6 @@ type DeploymentOperationsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetAtTenantScope func(ctx context.Context, deploymentName string, operationID string, options *armdeployments.DeploymentOperationsClientGetAtTenantScopeOptions) (resp azfake.Responder[armdeployments.DeploymentOperationsClientGetAtTenantScopeResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method DeploymentOperationsClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, deploymentName string, options *armdeployments.DeploymentOperationsClientListOptions) (resp azfake.PagerResponder[armdeployments.DeploymentOperationsClientListResponse])
-
 	// NewListAtManagementGroupScopePager is the fake for method DeploymentOperationsClient.NewListAtManagementGroupScopePager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListAtManagementGroupScopePager func(groupID string, deploymentName string, options *armdeployments.DeploymentOperationsClientListAtManagementGroupScopeOptions) (resp azfake.PagerResponder[armdeployments.DeploymentOperationsClientListAtManagementGroupScopeResponse])
@@ -61,6 +57,10 @@ type DeploymentOperationsServer struct {
 	// NewListAtTenantScopePager is the fake for method DeploymentOperationsClient.NewListAtTenantScopePager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListAtTenantScopePager func(deploymentName string, options *armdeployments.DeploymentOperationsClientListAtTenantScopeOptions) (resp azfake.PagerResponder[armdeployments.DeploymentOperationsClientListAtTenantScopeResponse])
+
+	// NewListPager is the fake for method DeploymentOperationsClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(resourceGroupName string, deploymentName string, options *armdeployments.DeploymentOperationsClientListOptions) (resp azfake.PagerResponder[armdeployments.DeploymentOperationsClientListResponse])
 }
 
 // NewDeploymentOperationsServerTransport creates a new instance of DeploymentOperationsServerTransport with the provided implementation.
@@ -69,11 +69,11 @@ type DeploymentOperationsServer struct {
 func NewDeploymentOperationsServerTransport(srv *DeploymentOperationsServer) *DeploymentOperationsServerTransport {
 	return &DeploymentOperationsServerTransport{
 		srv:                                srv,
-		newListPager:                       newTracker[azfake.PagerResponder[armdeployments.DeploymentOperationsClientListResponse]](),
 		newListAtManagementGroupScopePager: newTracker[azfake.PagerResponder[armdeployments.DeploymentOperationsClientListAtManagementGroupScopeResponse]](),
 		newListAtScopePager:                newTracker[azfake.PagerResponder[armdeployments.DeploymentOperationsClientListAtScopeResponse]](),
 		newListAtSubscriptionScopePager:    newTracker[azfake.PagerResponder[armdeployments.DeploymentOperationsClientListAtSubscriptionScopeResponse]](),
 		newListAtTenantScopePager:          newTracker[azfake.PagerResponder[armdeployments.DeploymentOperationsClientListAtTenantScopeResponse]](),
+		newListPager:                       newTracker[azfake.PagerResponder[armdeployments.DeploymentOperationsClientListResponse]](),
 	}
 }
 
@@ -81,11 +81,11 @@ func NewDeploymentOperationsServerTransport(srv *DeploymentOperationsServer) *De
 // Don't use this type directly, use NewDeploymentOperationsServerTransport instead.
 type DeploymentOperationsServerTransport struct {
 	srv                                *DeploymentOperationsServer
-	newListPager                       *tracker[azfake.PagerResponder[armdeployments.DeploymentOperationsClientListResponse]]
 	newListAtManagementGroupScopePager *tracker[azfake.PagerResponder[armdeployments.DeploymentOperationsClientListAtManagementGroupScopeResponse]]
 	newListAtScopePager                *tracker[azfake.PagerResponder[armdeployments.DeploymentOperationsClientListAtScopeResponse]]
 	newListAtSubscriptionScopePager    *tracker[azfake.PagerResponder[armdeployments.DeploymentOperationsClientListAtSubscriptionScopeResponse]]
 	newListAtTenantScopePager          *tracker[azfake.PagerResponder[armdeployments.DeploymentOperationsClientListAtTenantScopeResponse]]
+	newListPager                       *tracker[azfake.PagerResponder[armdeployments.DeploymentOperationsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for DeploymentOperationsServerTransport.
@@ -119,8 +119,6 @@ func (d *DeploymentOperationsServerTransport) dispatchToMethodFake(req *http.Req
 				res.resp, res.err = d.dispatchGetAtSubscriptionScope(req)
 			case "DeploymentOperationsClient.GetAtTenantScope":
 				res.resp, res.err = d.dispatchGetAtTenantScope(req)
-			case "DeploymentOperationsClient.NewListPager":
-				res.resp, res.err = d.dispatchNewListPager(req)
 			case "DeploymentOperationsClient.NewListAtManagementGroupScopePager":
 				res.resp, res.err = d.dispatchNewListAtManagementGroupScopePager(req)
 			case "DeploymentOperationsClient.NewListAtScopePager":
@@ -129,6 +127,8 @@ func (d *DeploymentOperationsServerTransport) dispatchToMethodFake(req *http.Req
 				res.resp, res.err = d.dispatchNewListAtSubscriptionScopePager(req)
 			case "DeploymentOperationsClient.NewListAtTenantScopePager":
 				res.resp, res.err = d.dispatchNewListAtTenantScopePager(req)
+			case "DeploymentOperationsClient.NewListPager":
+				res.resp, res.err = d.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -315,64 +315,6 @@ func (d *DeploymentOperationsServerTransport) dispatchGetAtTenantScope(req *http
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DeploymentOperation, req)
 	if err != nil {
 		return nil, err
-	}
-	return resp, nil
-}
-
-func (d *DeploymentOperationsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if d.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := d.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcegroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/deployments/(?P<deploymentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/operations`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
-		if err != nil {
-			return nil, err
-		}
-		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
-		})
-		if err != nil {
-			return nil, err
-		}
-		var options *armdeployments.DeploymentOperationsClientListOptions
-		if topParam != nil {
-			options = &armdeployments.DeploymentOperationsClientListOptions{
-				Top: topParam,
-			}
-		}
-		resp := d.srv.NewListPager(resourceGroupNameParam, deploymentNameParam, options)
-		newListPager = &resp
-		d.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armdeployments.DeploymentOperationsClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		d.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		d.newListPager.remove(req)
 	}
 	return resp, nil
 }
@@ -594,6 +536,64 @@ func (d *DeploymentOperationsServerTransport) dispatchNewListAtTenantScopePager(
 	}
 	if !server.PagerResponderMore(newListAtTenantScopePager) {
 		d.newListAtTenantScopePager.remove(req)
+	}
+	return resp, nil
+}
+
+func (d *DeploymentOperationsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if d.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := d.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcegroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/deployments/(?P<deploymentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/operations`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
+		if err != nil {
+			return nil, err
+		}
+		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		var options *armdeployments.DeploymentOperationsClientListOptions
+		if topParam != nil {
+			options = &armdeployments.DeploymentOperationsClientListOptions{
+				Top: topParam,
+			}
+		}
+		resp := d.srv.NewListPager(resourceGroupNameParam, deploymentNameParam, options)
+		newListPager = &resp
+		d.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armdeployments.DeploymentOperationsClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		d.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		d.newListPager.remove(req)
 	}
 	return resp, nil
 }

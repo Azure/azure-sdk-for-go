@@ -25,6 +25,14 @@ type ReplicasServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, resourceName string, replicaName string, parameters armwebpubsub.Replica, options *armwebpubsub.ReplicasClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armwebpubsub.ReplicasClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
+	// BeginRestart is the fake for method ReplicasClient.BeginRestart
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginRestart func(ctx context.Context, resourceGroupName string, resourceName string, replicaName string, options *armwebpubsub.ReplicasClientBeginRestartOptions) (resp azfake.PollerResponder[armwebpubsub.ReplicasClientRestartResponse], errResp azfake.ErrorResponder)
+
+	// BeginUpdate is the fake for method ReplicasClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, resourceName string, replicaName string, parameters armwebpubsub.Replica, options *armwebpubsub.ReplicasClientBeginUpdateOptions) (resp azfake.PollerResponder[armwebpubsub.ReplicasClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Delete is the fake for method ReplicasClient.Delete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
 	Delete func(ctx context.Context, resourceGroupName string, resourceName string, replicaName string, options *armwebpubsub.ReplicasClientDeleteOptions) (resp azfake.Responder[armwebpubsub.ReplicasClientDeleteResponse], errResp azfake.ErrorResponder)
@@ -36,14 +44,6 @@ type ReplicasServer struct {
 	// NewListPager is the fake for method ReplicasClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(resourceGroupName string, resourceName string, options *armwebpubsub.ReplicasClientListOptions) (resp azfake.PagerResponder[armwebpubsub.ReplicasClientListResponse])
-
-	// BeginRestart is the fake for method ReplicasClient.BeginRestart
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginRestart func(ctx context.Context, resourceGroupName string, resourceName string, replicaName string, options *armwebpubsub.ReplicasClientBeginRestartOptions) (resp azfake.PollerResponder[armwebpubsub.ReplicasClientRestartResponse], errResp azfake.ErrorResponder)
-
-	// BeginUpdate is the fake for method ReplicasClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, resourceName string, replicaName string, parameters armwebpubsub.Replica, options *armwebpubsub.ReplicasClientBeginUpdateOptions) (resp azfake.PollerResponder[armwebpubsub.ReplicasClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewReplicasServerTransport creates a new instance of ReplicasServerTransport with the provided implementation.
@@ -53,9 +53,9 @@ func NewReplicasServerTransport(srv *ReplicasServer) *ReplicasServerTransport {
 	return &ReplicasServerTransport{
 		srv:                 srv,
 		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armwebpubsub.ReplicasClientCreateOrUpdateResponse]](),
-		newListPager:        newTracker[azfake.PagerResponder[armwebpubsub.ReplicasClientListResponse]](),
 		beginRestart:        newTracker[azfake.PollerResponder[armwebpubsub.ReplicasClientRestartResponse]](),
 		beginUpdate:         newTracker[azfake.PollerResponder[armwebpubsub.ReplicasClientUpdateResponse]](),
+		newListPager:        newTracker[azfake.PagerResponder[armwebpubsub.ReplicasClientListResponse]](),
 	}
 }
 
@@ -64,9 +64,9 @@ func NewReplicasServerTransport(srv *ReplicasServer) *ReplicasServerTransport {
 type ReplicasServerTransport struct {
 	srv                 *ReplicasServer
 	beginCreateOrUpdate *tracker[azfake.PollerResponder[armwebpubsub.ReplicasClientCreateOrUpdateResponse]]
-	newListPager        *tracker[azfake.PagerResponder[armwebpubsub.ReplicasClientListResponse]]
 	beginRestart        *tracker[azfake.PollerResponder[armwebpubsub.ReplicasClientRestartResponse]]
 	beginUpdate         *tracker[azfake.PollerResponder[armwebpubsub.ReplicasClientUpdateResponse]]
+	newListPager        *tracker[azfake.PagerResponder[armwebpubsub.ReplicasClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for ReplicasServerTransport.
@@ -92,16 +92,16 @@ func (r *ReplicasServerTransport) dispatchToMethodFake(req *http.Request, method
 			switch method {
 			case "ReplicasClient.BeginCreateOrUpdate":
 				res.resp, res.err = r.dispatchBeginCreateOrUpdate(req)
+			case "ReplicasClient.BeginRestart":
+				res.resp, res.err = r.dispatchBeginRestart(req)
+			case "ReplicasClient.BeginUpdate":
+				res.resp, res.err = r.dispatchBeginUpdate(req)
 			case "ReplicasClient.Delete":
 				res.resp, res.err = r.dispatchDelete(req)
 			case "ReplicasClient.Get":
 				res.resp, res.err = r.dispatchGet(req)
 			case "ReplicasClient.NewListPager":
 				res.resp, res.err = r.dispatchNewListPager(req)
-			case "ReplicasClient.BeginRestart":
-				res.resp, res.err = r.dispatchBeginRestart(req)
-			case "ReplicasClient.BeginUpdate":
-				res.resp, res.err = r.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -165,6 +165,106 @@ func (r *ReplicasServerTransport) dispatchBeginCreateOrUpdate(req *http.Request)
 	}
 	if !server.PollerResponderMore(beginCreateOrUpdate) {
 		r.beginCreateOrUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (r *ReplicasServerTransport) dispatchBeginRestart(req *http.Request) (*http.Response, error) {
+	if r.srv.BeginRestart == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginRestart not implemented")}
+	}
+	beginRestart := r.beginRestart.get(req)
+	if beginRestart == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.SignalRService/webPubSub/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/replicas/(?P<replicaName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/restart`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
+		if err != nil {
+			return nil, err
+		}
+		replicaNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("replicaName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := r.srv.BeginRestart(req.Context(), resourceGroupNameParam, resourceNameParam, replicaNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginRestart = &respr
+		r.beginRestart.add(req, beginRestart)
+	}
+
+	resp, err := server.PollerResponderNext(beginRestart, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		r.beginRestart.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginRestart) {
+		r.beginRestart.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (r *ReplicasServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if r.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := r.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.SignalRService/webPubSub/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/replicas/(?P<replicaName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armwebpubsub.Replica](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
+		if err != nil {
+			return nil, err
+		}
+		replicaNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("replicaName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := r.srv.BeginUpdate(req.Context(), resourceGroupNameParam, resourceNameParam, replicaNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		r.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		r.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		r.beginUpdate.remove(req)
 	}
 
 	return resp, nil
@@ -282,106 +382,6 @@ func (r *ReplicasServerTransport) dispatchNewListPager(req *http.Request) (*http
 	if !server.PagerResponderMore(newListPager) {
 		r.newListPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (r *ReplicasServerTransport) dispatchBeginRestart(req *http.Request) (*http.Response, error) {
-	if r.srv.BeginRestart == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginRestart not implemented")}
-	}
-	beginRestart := r.beginRestart.get(req)
-	if beginRestart == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.SignalRService/webPubSub/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/replicas/(?P<replicaName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/restart`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
-		if err != nil {
-			return nil, err
-		}
-		replicaNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("replicaName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := r.srv.BeginRestart(req.Context(), resourceGroupNameParam, resourceNameParam, replicaNameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginRestart = &respr
-		r.beginRestart.add(req, beginRestart)
-	}
-
-	resp, err := server.PollerResponderNext(beginRestart, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		r.beginRestart.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginRestart) {
-		r.beginRestart.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (r *ReplicasServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if r.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := r.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.SignalRService/webPubSub/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/replicas/(?P<replicaName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armwebpubsub.Replica](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
-		if err != nil {
-			return nil, err
-		}
-		replicaNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("replicaName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := r.srv.BeginUpdate(req.Context(), resourceGroupNameParam, resourceNameParam, replicaNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		r.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		r.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		r.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

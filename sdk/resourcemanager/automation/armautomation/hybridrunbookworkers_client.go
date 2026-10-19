@@ -252,6 +252,72 @@ func (client *HybridRunbookWorkersClient) getHandleResponse(resp *http.Response,
 	return result, nil
 }
 
+// Move - Move a hybrid worker to a different group.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - automationAccountName - The name of the automation account.
+//   - hybridRunbookWorkerGroupName - The hybrid runbook worker group name
+//   - hybridRunbookWorkerID - The hybrid runbook worker id
+//   - hybridRunbookWorkerMoveParameters - The hybrid runbook worker move parameters
+//   - options - HybridRunbookWorkersClientMoveOptions contains the optional parameters for the HybridRunbookWorkersClient.Move
+//     method.
+func (client *HybridRunbookWorkersClient) Move(ctx context.Context, resourceGroupName string, automationAccountName string, hybridRunbookWorkerGroupName string, hybridRunbookWorkerID string, hybridRunbookWorkerMoveParameters HybridRunbookWorkerMoveParameters, options *HybridRunbookWorkersClientMoveOptions) (HybridRunbookWorkersClientMoveResponse, error) {
+	var err error
+	const operationName = "HybridRunbookWorkersClient.Move"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.moveCreateRequest(ctx, resourceGroupName, automationAccountName, hybridRunbookWorkerGroupName, hybridRunbookWorkerID, hybridRunbookWorkerMoveParameters, options)
+	if err != nil {
+		return HybridRunbookWorkersClientMoveResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return HybridRunbookWorkersClientMoveResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		return HybridRunbookWorkersClientMoveResponse{}, runtime.NewResponseError(httpResp)
+	}
+	return HybridRunbookWorkersClientMoveResponse{}, nil
+}
+
+// moveCreateRequest creates the Move request.
+func (client *HybridRunbookWorkersClient) moveCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, hybridRunbookWorkerGroupName string, hybridRunbookWorkerID string, hybridRunbookWorkerMoveParameters HybridRunbookWorkerMoveParameters, _ *HybridRunbookWorkersClientMoveOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/hybridRunbookWorkerGroups/{hybridRunbookWorkerGroupName}/hybridRunbookWorkers/{hybridRunbookWorkerId}/move"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if automationAccountName == "" {
+		return nil, errors.New("parameter automationAccountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{automationAccountName}", url.PathEscape(automationAccountName))
+	if hybridRunbookWorkerGroupName == "" {
+		return nil, errors.New("parameter hybridRunbookWorkerGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{hybridRunbookWorkerGroupName}", url.PathEscape(hybridRunbookWorkerGroupName))
+	if hybridRunbookWorkerID == "" {
+		return nil, errors.New("parameter hybridRunbookWorkerID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{hybridRunbookWorkerId}", url.PathEscape(hybridRunbookWorkerID))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20241023)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, hybridRunbookWorkerMoveParameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
 // NewListByHybridRunbookWorkerGroupPager - Retrieve a list of hybrid runbook workers.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - automationAccountName - The name of the automation account.
@@ -335,72 +401,6 @@ func (client *HybridRunbookWorkersClient) listByHybridRunbookWorkerGroupHandleRe
 		return HybridRunbookWorkersClientListByHybridRunbookWorkerGroupResponse{}, err
 	}
 	return result, nil
-}
-
-// Move - Move a hybrid worker to a different group.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - automationAccountName - The name of the automation account.
-//   - hybridRunbookWorkerGroupName - The hybrid runbook worker group name
-//   - hybridRunbookWorkerID - The hybrid runbook worker id
-//   - hybridRunbookWorkerMoveParameters - The hybrid runbook worker move parameters
-//   - options - HybridRunbookWorkersClientMoveOptions contains the optional parameters for the HybridRunbookWorkersClient.Move
-//     method.
-func (client *HybridRunbookWorkersClient) Move(ctx context.Context, resourceGroupName string, automationAccountName string, hybridRunbookWorkerGroupName string, hybridRunbookWorkerID string, hybridRunbookWorkerMoveParameters HybridRunbookWorkerMoveParameters, options *HybridRunbookWorkersClientMoveOptions) (HybridRunbookWorkersClientMoveResponse, error) {
-	var err error
-	const operationName = "HybridRunbookWorkersClient.Move"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.moveCreateRequest(ctx, resourceGroupName, automationAccountName, hybridRunbookWorkerGroupName, hybridRunbookWorkerID, hybridRunbookWorkerMoveParameters, options)
-	if err != nil {
-		return HybridRunbookWorkersClientMoveResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return HybridRunbookWorkersClientMoveResponse{}, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return HybridRunbookWorkersClientMoveResponse{}, runtime.NewResponseError(httpResp)
-	}
-	return HybridRunbookWorkersClientMoveResponse{}, nil
-}
-
-// moveCreateRequest creates the Move request.
-func (client *HybridRunbookWorkersClient) moveCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, hybridRunbookWorkerGroupName string, hybridRunbookWorkerID string, hybridRunbookWorkerMoveParameters HybridRunbookWorkerMoveParameters, _ *HybridRunbookWorkersClientMoveOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/hybridRunbookWorkerGroups/{hybridRunbookWorkerGroupName}/hybridRunbookWorkers/{hybridRunbookWorkerId}/move"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if automationAccountName == "" {
-		return nil, errors.New("parameter automationAccountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{automationAccountName}", url.PathEscape(automationAccountName))
-	if hybridRunbookWorkerGroupName == "" {
-		return nil, errors.New("parameter hybridRunbookWorkerGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{hybridRunbookWorkerGroupName}", url.PathEscape(hybridRunbookWorkerGroupName))
-	if hybridRunbookWorkerID == "" {
-		return nil, errors.New("parameter hybridRunbookWorkerID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{hybridRunbookWorkerId}", url.PathEscape(hybridRunbookWorkerID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241023)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, hybridRunbookWorkerMoveParameters); err != nil {
-		return nil, err
-	}
-	return req, nil
 }
 
 // Patch - Update a hybrid runbook worker.

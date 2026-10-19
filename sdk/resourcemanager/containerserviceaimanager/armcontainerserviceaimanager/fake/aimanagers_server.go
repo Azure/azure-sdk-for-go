@@ -33,6 +33,10 @@ type AIManagersServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, aiManagerName string, options *armcontainerserviceaimanager.AIManagersClientGetOptions) (resp azfake.Responder[armcontainerserviceaimanager.AIManagersClientGetResponse], errResp azfake.ErrorResponder)
 
+	// ListCredential is the fake for method AIManagersClient.ListCredential
+	// HTTP status codes to indicate success: http.StatusOK
+	ListCredential func(ctx context.Context, resourceGroupName string, aiManagerName string, options *armcontainerserviceaimanager.AIManagersClientListCredentialOptions) (resp azfake.Responder[armcontainerserviceaimanager.AIManagersClientListCredentialResponse], errResp azfake.ErrorResponder)
+
 	// NewListByResourceGroupPager is the fake for method AIManagersClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, options *armcontainerserviceaimanager.AIManagersClientListByResourceGroupOptions) (resp azfake.PagerResponder[armcontainerserviceaimanager.AIManagersClientListByResourceGroupResponse])
@@ -40,10 +44,6 @@ type AIManagersServer struct {
 	// NewListBySubscriptionPager is the fake for method AIManagersClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armcontainerserviceaimanager.AIManagersClientListBySubscriptionOptions) (resp azfake.PagerResponder[armcontainerserviceaimanager.AIManagersClientListBySubscriptionResponse])
-
-	// ListCredential is the fake for method AIManagersClient.ListCredential
-	// HTTP status codes to indicate success: http.StatusOK
-	ListCredential func(ctx context.Context, resourceGroupName string, aiManagerName string, options *armcontainerserviceaimanager.AIManagersClientListCredentialOptions) (resp azfake.Responder[armcontainerserviceaimanager.AIManagersClientListCredentialResponse], errResp azfake.ErrorResponder)
 
 	// Update is the fake for method AIManagersClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
@@ -100,12 +100,12 @@ func (a *AIManagersServerTransport) dispatchToMethodFake(req *http.Request, meth
 				res.resp, res.err = a.dispatchBeginDelete(req)
 			case "AIManagersClient.Get":
 				res.resp, res.err = a.dispatchGet(req)
+			case "AIManagersClient.ListCredential":
+				res.resp, res.err = a.dispatchListCredential(req)
 			case "AIManagersClient.NewListByResourceGroupPager":
 				res.resp, res.err = a.dispatchNewListByResourceGroupPager(req)
 			case "AIManagersClient.NewListBySubscriptionPager":
 				res.resp, res.err = a.dispatchNewListBySubscriptionPager(req)
-			case "AIManagersClient.ListCredential":
-				res.resp, res.err = a.dispatchListCredential(req)
 			case "AIManagersClient.Update":
 				res.resp, res.err = a.dispatchUpdate(req)
 			default:
@@ -265,6 +265,39 @@ func (a *AIManagersServerTransport) dispatchGet(req *http.Request) (*http.Respon
 	return resp, nil
 }
 
+func (a *AIManagersServerTransport) dispatchListCredential(req *http.Request) (*http.Response, error) {
+	if a.srv.ListCredential == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListCredential not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/aiManagers/(?P<aiManagerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listCredential`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	aiManagerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("aiManagerName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := a.srv.ListCredential(req.Context(), resourceGroupNameParam, aiManagerNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CredentialResults, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (a *AIManagersServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
 	if a.srv.NewListByResourceGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
@@ -331,39 +364,6 @@ func (a *AIManagersServerTransport) dispatchNewListBySubscriptionPager(req *http
 	}
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		a.newListBySubscriptionPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (a *AIManagersServerTransport) dispatchListCredential(req *http.Request) (*http.Response, error) {
-	if a.srv.ListCredential == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListCredential not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/aiManagers/(?P<aiManagerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listCredential`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	aiManagerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("aiManagerName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := a.srv.ListCredential(req.Context(), resourceGroupNameParam, aiManagerNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CredentialResults, req)
-	if err != nil {
-		return nil, err
 	}
 	return resp, nil
 }

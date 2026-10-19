@@ -141,6 +141,54 @@ func ExamplePrivateAccessesClient_BeginDeleteAPrivateEndpointConnection() {
 	}
 }
 
+// Generated from example definition: 2026-08-01-preview/PrivateAccesses_Update.json
+func ExamplePrivateAccessesClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armchaos.NewClientFactory("6b052e15-03d3-4f17-b2e1-be7f07588291", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewPrivateAccessesClient().BeginUpdate(ctx, "myResourceGroup", "myPrivateAccess", armchaos.PrivateAccessPatch{
+		Tags: map[string]*string{
+			"tag1": to.Ptr("value1"),
+			"tag2": to.Ptr("value2"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armchaos.PrivateAccessesClientUpdateResponse{
+	// 	PrivateAccess: armchaos.PrivateAccess{
+	// 		Name: to.Ptr("myPrivateAccess"),
+	// 		Type: to.Ptr("Microsoft.Chaos/privateAccesses"),
+	// 		ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/myResourcegroup/providers/Microsoft.Chaos/privateAccesses/myPrivateAccess"),
+	// 		Location: to.Ptr("centraluseuap"),
+	// 		Properties: &armchaos.PrivateAccessProperties{
+	// 			ProvisioningState: to.Ptr(armchaos.ProvisioningStateSucceeded),
+	// 		},
+	// 		SystemData: &armchaos.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"tag1": to.Ptr("value1"),
+	// 			"tag2": to.Ptr("value2"),
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2026-08-01-preview/PrivateAccesses_Get_Get_A_Private_Access_Resource.json
 func ExamplePrivateAccessesClient_Get_getAPrivateAccessResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -307,80 +355,6 @@ func ExamplePrivateAccessesClient_GetPrivateLinkResources() {
 	// }
 }
 
-// Generated from example definition: 2026-08-01-preview/PrivateAccesses_List.json
-func ExamplePrivateAccessesClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armchaos.NewClientFactory("6b052e15-03d3-4f17-b2e1-be7f07588291", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewPrivateAccessesClient().NewListPager("myResourceGroup", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armchaos.PrivateAccessesClientListResponse{
-		// 	PrivateAccessListResult: armchaos.PrivateAccessListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/myResourceGroup/providers/Microsoft.Chaos/privateAccesses?continuationToken=&api-version=2026-08-01-preview"),
-		// 		Value: []*armchaos.PrivateAccess{
-		// 			{
-		// 				Name: to.Ptr("myPrivateAccess2"),
-		// 				Type: to.Ptr("Microsoft.Chaos/privateAccesses"),
-		// 				ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/myResourceGroup/providers/Microsoft.Chaos/privateAccesses/myPrivateAccess2"),
-		// 				Location: to.Ptr("centraluseuap"),
-		// 				Properties: &armchaos.PrivateAccessProperties{
-		// 				},
-		// 				SystemData: &armchaos.SystemData{
-		// 					CreatedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
-		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("myPrivateAccess"),
-		// 				Type: to.Ptr("Microsoft.Chaos/privateAccesses"),
-		// 				ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/myResourceGroup/providers/Microsoft.Chaos/privateAccesses/myPrivateAccess"),
-		// 				Location: to.Ptr("centraluseuap"),
-		// 				Properties: &armchaos.PrivateAccessProperties{
-		// 					PrivateEndpointConnections: []*armchaos.PrivateEndpointConnection{
-		// 						{
-		// 							Name: to.Ptr("myPrivateAccess.d4914cfa-6bc2-4049-a57c-3d1f622d8eef"),
-		// 							Type: to.Ptr("Microsoft.Chaos/privateAccesses/PrivateEndpointConnections"),
-		// 							ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/myResourceGroup/providers/Microsoft.Chaos/privateAccesses/myPrivateAccess/privateEndpoinConnections/myPrivateAccess.d4914cfa-6bc2-4049-a57c-3d1f622d8eef"),
-		// 							Properties: &armchaos.PrivateEndpointConnectionProperties{
-		// 								PrivateEndpoint: &armchaos.PrivateEndpoint{
-		// 									ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/myResourceGroup/providers/Microsoft.Network/privateEndpoints/myPrivateEndpoint"),
-		// 								},
-		// 								PrivateLinkServiceConnectionState: &armchaos.PrivateLinkServiceConnectionState{
-		// 									Description: to.Ptr("Auto-Approved"),
-		// 									ActionsRequired: to.Ptr("None"),
-		// 									Status: to.Ptr(armchaos.PrivateEndpointServiceConnectionStatusApproved),
-		// 								},
-		// 							},
-		// 						},
-		// 					},
-		// 					PublicNetworkAccess: to.Ptr(armchaos.PublicNetworkAccessOptionEnabled),
-		// 				},
-		// 				SystemData: &armchaos.SystemData{
-		// 					CreatedAt: to.Ptr(time.Date(2021, time.August, 1, 0, 0, 0, 0, time.UTC)),
-		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.August, 1, 0, 0, 0, 0, time.UTC)),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
 // Generated from example definition: 2026-08-01-preview/PrivateAccesses_ListAll.json
 func ExamplePrivateAccessesClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -455,6 +429,80 @@ func ExamplePrivateAccessesClient_NewListAllPager() {
 	}
 }
 
+// Generated from example definition: 2026-08-01-preview/PrivateAccesses_List.json
+func ExamplePrivateAccessesClient_NewListPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armchaos.NewClientFactory("6b052e15-03d3-4f17-b2e1-be7f07588291", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewPrivateAccessesClient().NewListPager("myResourceGroup", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armchaos.PrivateAccessesClientListResponse{
+		// 	PrivateAccessListResult: armchaos.PrivateAccessListResult{
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/myResourceGroup/providers/Microsoft.Chaos/privateAccesses?continuationToken=&api-version=2026-08-01-preview"),
+		// 		Value: []*armchaos.PrivateAccess{
+		// 			{
+		// 				Name: to.Ptr("myPrivateAccess2"),
+		// 				Type: to.Ptr("Microsoft.Chaos/privateAccesses"),
+		// 				ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/myResourceGroup/providers/Microsoft.Chaos/privateAccesses/myPrivateAccess2"),
+		// 				Location: to.Ptr("centraluseuap"),
+		// 				Properties: &armchaos.PrivateAccessProperties{
+		// 				},
+		// 				SystemData: &armchaos.SystemData{
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
+		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("myPrivateAccess"),
+		// 				Type: to.Ptr("Microsoft.Chaos/privateAccesses"),
+		// 				ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/myResourceGroup/providers/Microsoft.Chaos/privateAccesses/myPrivateAccess"),
+		// 				Location: to.Ptr("centraluseuap"),
+		// 				Properties: &armchaos.PrivateAccessProperties{
+		// 					PrivateEndpointConnections: []*armchaos.PrivateEndpointConnection{
+		// 						{
+		// 							Name: to.Ptr("myPrivateAccess.d4914cfa-6bc2-4049-a57c-3d1f622d8eef"),
+		// 							Type: to.Ptr("Microsoft.Chaos/privateAccesses/PrivateEndpointConnections"),
+		// 							ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/myResourceGroup/providers/Microsoft.Chaos/privateAccesses/myPrivateAccess/privateEndpoinConnections/myPrivateAccess.d4914cfa-6bc2-4049-a57c-3d1f622d8eef"),
+		// 							Properties: &armchaos.PrivateEndpointConnectionProperties{
+		// 								PrivateEndpoint: &armchaos.PrivateEndpoint{
+		// 									ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/myResourceGroup/providers/Microsoft.Network/privateEndpoints/myPrivateEndpoint"),
+		// 								},
+		// 								PrivateLinkServiceConnectionState: &armchaos.PrivateLinkServiceConnectionState{
+		// 									Description: to.Ptr("Auto-Approved"),
+		// 									ActionsRequired: to.Ptr("None"),
+		// 									Status: to.Ptr(armchaos.PrivateEndpointServiceConnectionStatusApproved),
+		// 								},
+		// 							},
+		// 						},
+		// 					},
+		// 					PublicNetworkAccess: to.Ptr(armchaos.PublicNetworkAccessOptionEnabled),
+		// 				},
+		// 				SystemData: &armchaos.SystemData{
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.August, 1, 0, 0, 0, 0, time.UTC)),
+		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.August, 1, 0, 0, 0, 0, time.UTC)),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
 // Generated from example definition: 2026-08-01-preview/PrivateAccesses_ListPrivateEndpointConnections.json
 func ExamplePrivateAccessesClient_NewListPrivateEndpointConnectionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -500,52 +548,4 @@ func ExamplePrivateAccessesClient_NewListPrivateEndpointConnectionsPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-08-01-preview/PrivateAccesses_Update.json
-func ExamplePrivateAccessesClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armchaos.NewClientFactory("6b052e15-03d3-4f17-b2e1-be7f07588291", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewPrivateAccessesClient().BeginUpdate(ctx, "myResourceGroup", "myPrivateAccess", armchaos.PrivateAccessPatch{
-		Tags: map[string]*string{
-			"tag1": to.Ptr("value1"),
-			"tag2": to.Ptr("value2"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armchaos.PrivateAccessesClientUpdateResponse{
-	// 	PrivateAccess: armchaos.PrivateAccess{
-	// 		Name: to.Ptr("myPrivateAccess"),
-	// 		Type: to.Ptr("Microsoft.Chaos/privateAccesses"),
-	// 		ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/myResourcegroup/providers/Microsoft.Chaos/privateAccesses/myPrivateAccess"),
-	// 		Location: to.Ptr("centraluseuap"),
-	// 		Properties: &armchaos.PrivateAccessProperties{
-	// 			ProvisioningState: to.Ptr(armchaos.ProvisioningStateSucceeded),
-	// 		},
-	// 		SystemData: &armchaos.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
-	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"tag1": to.Ptr("value1"),
-	// 			"tag2": to.Ptr("value2"),
-	// 		},
-	// 	},
-	// }
 }

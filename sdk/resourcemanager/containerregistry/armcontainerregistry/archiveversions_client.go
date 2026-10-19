@@ -70,7 +70,7 @@ func (client *ArchiveVersionsClient) BeginCreate(ctx context.Context, resourceGr
 	}
 }
 
-// Create - Creates a archive version for a container registry with the specified parameters.
+// create - Creates a archive version for a container registry with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ArchiveVersionsClient) create(ctx context.Context, resourceGroupName string, registryName string, packageType string, archiveName string, archiveVersionName string, options *ArchiveVersionsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
@@ -92,7 +92,7 @@ func (client *ArchiveVersionsClient) create(ctx context.Context, resourceGroupNa
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *ArchiveVersionsClient) createCreateRequest(ctx context.Context, resourceGroupName string, registryName string, packageType string, archiveName string, archiveVersionName string, _ *ArchiveVersionsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/packages/{packageType}/archives/{archiveName}/versions/{archiveVersionName}"
 	if client.subscriptionID == "" {
@@ -156,7 +156,7 @@ func (client *ArchiveVersionsClient) BeginDelete(ctx context.Context, resourceGr
 	}
 }
 
-// Delete - Deletes a archive version from a container registry.
+// deleteOperation - Deletes a archive version from a container registry.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ArchiveVersionsClient) deleteOperation(ctx context.Context, resourceGroupName string, registryName string, packageType string, archiveName string, archiveVersionName string, options *ArchiveVersionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -178,7 +178,7 @@ func (client *ArchiveVersionsClient) deleteOperation(ctx context.Context, resour
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ArchiveVersionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, registryName string, packageType string, archiveName string, archiveVersionName string, _ *ArchiveVersionsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/packages/{packageType}/archives/{archiveName}/versions/{archiveVersionName}"
 	if client.subscriptionID == "" {

@@ -63,7 +63,7 @@ func (client *GoalAssignmentsClient) BeginCreateOrUpdate(ctx context.Context, se
 	}
 }
 
-// CreateOrUpdate - Creates or updates a goal assignment.
+// createOrUpdate - Creates or updates a goal assignment.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *GoalAssignmentsClient) createOrUpdate(ctx context.Context, serviceGroupName string, goalAssignmentName string, resource GoalAssignment, options *GoalAssignmentsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -85,7 +85,7 @@ func (client *GoalAssignmentsClient) createOrUpdate(ctx context.Context, service
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *GoalAssignmentsClient) createOrUpdateCreateRequest(ctx context.Context, serviceGroupName string, goalAssignmentName string, resource GoalAssignment, _ *GoalAssignmentsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Management/serviceGroups/{serviceGroupName}/providers/Microsoft.AzureResilienceManagement/goalAssignments/{goalAssignmentName}"
 	if serviceGroupName == "" {
@@ -134,7 +134,7 @@ func (client *GoalAssignmentsClient) BeginDelete(ctx context.Context, serviceGro
 	}
 }
 
-// Delete - Deletes a goal assignment.
+// deleteOperation - Deletes a goal assignment.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *GoalAssignmentsClient) deleteOperation(ctx context.Context, serviceGroupName string, goalAssignmentName string, options *GoalAssignmentsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -156,7 +156,7 @@ func (client *GoalAssignmentsClient) deleteOperation(ctx context.Context, servic
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *GoalAssignmentsClient) deleteCreateRequest(ctx context.Context, serviceGroupName string, goalAssignmentName string, _ *GoalAssignmentsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Management/serviceGroups/{serviceGroupName}/providers/Microsoft.AzureResilienceManagement/goalAssignments/{goalAssignmentName}"
 	if serviceGroupName == "" {
@@ -174,6 +174,293 @@ func (client *GoalAssignmentsClient) deleteCreateRequest(ctx context.Context, se
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginRecommendCapacity - Recommends capacity improvements for resources under the goal assignment's scope. Returns AI-powered
+// capacity assessments and recommendations.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - serviceGroupName - The name of the service group.
+//   - goalAssignmentName - The name of the goal assignment.
+//   - body - The content of the action request
+//   - options - GoalAssignmentsClientBeginRecommendCapacityOptions contains the optional parameters for the GoalAssignmentsClient.BeginRecommendCapacity
+//     method.
+func (client *GoalAssignmentsClient) BeginRecommendCapacity(ctx context.Context, serviceGroupName string, goalAssignmentName string, body RecommendCapacityRequest, options *GoalAssignmentsClientBeginRecommendCapacityOptions) (*runtime.Poller[GoalAssignmentsClientRecommendCapacityResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.recommendCapacity(ctx, serviceGroupName, goalAssignmentName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[GoalAssignmentsClientRecommendCapacityResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[GoalAssignmentsClientRecommendCapacityResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// recommendCapacity - Recommends capacity improvements for resources under the goal assignment's scope. Returns AI-powered
+// capacity assessments and recommendations.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *GoalAssignmentsClient) recommendCapacity(ctx context.Context, serviceGroupName string, goalAssignmentName string, body RecommendCapacityRequest, options *GoalAssignmentsClientBeginRecommendCapacityOptions) (*http.Response, error) {
+	var err error
+	const operationName = "GoalAssignmentsClient.BeginRecommendCapacity"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.recommendCapacityCreateRequest(ctx, serviceGroupName, goalAssignmentName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// recommendCapacityCreateRequest creates the recommendCapacity request.
+func (client *GoalAssignmentsClient) recommendCapacityCreateRequest(ctx context.Context, serviceGroupName string, goalAssignmentName string, body RecommendCapacityRequest, _ *GoalAssignmentsClientBeginRecommendCapacityOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Management/serviceGroups/{serviceGroupName}/providers/Microsoft.AzureResilienceManagement/goalAssignments/{goalAssignmentName}/recommendCapacity"
+	if serviceGroupName == "" {
+		return nil, errors.New("parameter serviceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{serviceGroupName}", url.PathEscape(serviceGroupName))
+	if goalAssignmentName == "" {
+		return nil, errors.New("parameter goalAssignmentName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{goalAssignmentName}", url.PathEscape(goalAssignmentName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261001)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginRefreshGoalResources - Refreshes the goal resources under a goal assignment. This operation scans for new resources
+// under the scope of the assignment.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - serviceGroupName - The name of the service group.
+//   - goalAssignmentName - The name of the goal assignment.
+//   - options - GoalAssignmentsClientBeginRefreshGoalResourcesOptions contains the optional parameters for the GoalAssignmentsClient.BeginRefreshGoalResources
+//     method.
+func (client *GoalAssignmentsClient) BeginRefreshGoalResources(ctx context.Context, serviceGroupName string, goalAssignmentName string, options *GoalAssignmentsClientBeginRefreshGoalResourcesOptions) (*runtime.Poller[GoalAssignmentsClientRefreshGoalResourcesResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.refreshGoalResources(ctx, serviceGroupName, goalAssignmentName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[GoalAssignmentsClientRefreshGoalResourcesResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[GoalAssignmentsClientRefreshGoalResourcesResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// refreshGoalResources - Refreshes the goal resources under a goal assignment. This operation scans for new resources under
+// the scope of the assignment.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *GoalAssignmentsClient) refreshGoalResources(ctx context.Context, serviceGroupName string, goalAssignmentName string, options *GoalAssignmentsClientBeginRefreshGoalResourcesOptions) (*http.Response, error) {
+	var err error
+	const operationName = "GoalAssignmentsClient.BeginRefreshGoalResources"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.refreshGoalResourcesCreateRequest(ctx, serviceGroupName, goalAssignmentName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// refreshGoalResourcesCreateRequest creates the refreshGoalResources request.
+func (client *GoalAssignmentsClient) refreshGoalResourcesCreateRequest(ctx context.Context, serviceGroupName string, goalAssignmentName string, _ *GoalAssignmentsClientBeginRefreshGoalResourcesOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Management/serviceGroups/{serviceGroupName}/providers/Microsoft.AzureResilienceManagement/goalAssignments/{goalAssignmentName}/refreshGoalResources"
+	if serviceGroupName == "" {
+		return nil, errors.New("parameter serviceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{serviceGroupName}", url.PathEscape(serviceGroupName))
+	if goalAssignmentName == "" {
+		return nil, errors.New("parameter goalAssignmentName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{goalAssignmentName}", url.PathEscape(goalAssignmentName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261001)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// BeginUpdate - Updates a goal assignment.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - serviceGroupName - The name of the service group.
+//   - goalAssignmentName - The name of the goal assignment.
+//   - properties - The resource properties to be updated.
+//   - options - GoalAssignmentsClientBeginUpdateOptions contains the optional parameters for the GoalAssignmentsClient.BeginUpdate
+//     method.
+func (client *GoalAssignmentsClient) BeginUpdate(ctx context.Context, serviceGroupName string, goalAssignmentName string, properties GoalAssignment, options *GoalAssignmentsClientBeginUpdateOptions) (*runtime.Poller[GoalAssignmentsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, serviceGroupName, goalAssignmentName, properties, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[GoalAssignmentsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[GoalAssignmentsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Updates a goal assignment.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *GoalAssignmentsClient) update(ctx context.Context, serviceGroupName string, goalAssignmentName string, properties GoalAssignment, options *GoalAssignmentsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "GoalAssignmentsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, serviceGroupName, goalAssignmentName, properties, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *GoalAssignmentsClient) updateCreateRequest(ctx context.Context, serviceGroupName string, goalAssignmentName string, properties GoalAssignment, _ *GoalAssignmentsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Management/serviceGroups/{serviceGroupName}/providers/Microsoft.AzureResilienceManagement/goalAssignments/{goalAssignmentName}"
+	if serviceGroupName == "" {
+		return nil, errors.New("parameter serviceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{serviceGroupName}", url.PathEscape(serviceGroupName))
+	if goalAssignmentName == "" {
+		return nil, errors.New("parameter goalAssignmentName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{goalAssignmentName}", url.PathEscape(goalAssignmentName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261001)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, properties); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginUpdateGoalResources - Updates goal resources under a goal assignment.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - serviceGroupName - The name of the service group.
+//   - goalAssignmentName - The name of the goal assignment.
+//   - body - The content of the action request
+//   - options - GoalAssignmentsClientBeginUpdateGoalResourcesOptions contains the optional parameters for the GoalAssignmentsClient.BeginUpdateGoalResources
+//     method.
+func (client *GoalAssignmentsClient) BeginUpdateGoalResources(ctx context.Context, serviceGroupName string, goalAssignmentName string, body UpdateGoalResourceRequest, options *GoalAssignmentsClientBeginUpdateGoalResourcesOptions) (*runtime.Poller[GoalAssignmentsClientUpdateGoalResourcesResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.updateGoalResources(ctx, serviceGroupName, goalAssignmentName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[GoalAssignmentsClientUpdateGoalResourcesResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[GoalAssignmentsClientUpdateGoalResourcesResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// updateGoalResources - Updates goal resources under a goal assignment.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *GoalAssignmentsClient) updateGoalResources(ctx context.Context, serviceGroupName string, goalAssignmentName string, body UpdateGoalResourceRequest, options *GoalAssignmentsClientBeginUpdateGoalResourcesOptions) (*http.Response, error) {
+	var err error
+	const operationName = "GoalAssignmentsClient.BeginUpdateGoalResources"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateGoalResourcesCreateRequest(ctx, serviceGroupName, goalAssignmentName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateGoalResourcesCreateRequest creates the updateGoalResources request.
+func (client *GoalAssignmentsClient) updateGoalResourcesCreateRequest(ctx context.Context, serviceGroupName string, goalAssignmentName string, body UpdateGoalResourceRequest, _ *GoalAssignmentsClientBeginUpdateGoalResourcesOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Management/serviceGroups/{serviceGroupName}/providers/Microsoft.AzureResilienceManagement/goalAssignments/{goalAssignmentName}/updateGoalResources"
+	if serviceGroupName == "" {
+		return nil, errors.New("parameter serviceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{serviceGroupName}", url.PathEscape(serviceGroupName))
+	if goalAssignmentName == "" {
+		return nil, errors.New("parameter goalAssignmentName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{goalAssignmentName}", url.PathEscape(goalAssignmentName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261001)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -305,291 +592,4 @@ func (client *GoalAssignmentsClient) listHandleResponse(resp *http.Response, suc
 		return GoalAssignmentsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginRecommendCapacity - Recommends capacity improvements for resources under the goal assignment's scope. Returns AI-powered
-// capacity assessments and recommendations.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - serviceGroupName - The name of the service group.
-//   - goalAssignmentName - The name of the goal assignment.
-//   - body - The content of the action request
-//   - options - GoalAssignmentsClientBeginRecommendCapacityOptions contains the optional parameters for the GoalAssignmentsClient.BeginRecommendCapacity
-//     method.
-func (client *GoalAssignmentsClient) BeginRecommendCapacity(ctx context.Context, serviceGroupName string, goalAssignmentName string, body RecommendCapacityRequest, options *GoalAssignmentsClientBeginRecommendCapacityOptions) (*runtime.Poller[GoalAssignmentsClientRecommendCapacityResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.recommendCapacity(ctx, serviceGroupName, goalAssignmentName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[GoalAssignmentsClientRecommendCapacityResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[GoalAssignmentsClientRecommendCapacityResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// RecommendCapacity - Recommends capacity improvements for resources under the goal assignment's scope. Returns AI-powered
-// capacity assessments and recommendations.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *GoalAssignmentsClient) recommendCapacity(ctx context.Context, serviceGroupName string, goalAssignmentName string, body RecommendCapacityRequest, options *GoalAssignmentsClientBeginRecommendCapacityOptions) (*http.Response, error) {
-	var err error
-	const operationName = "GoalAssignmentsClient.BeginRecommendCapacity"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.recommendCapacityCreateRequest(ctx, serviceGroupName, goalAssignmentName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// recommendCapacityCreateRequest creates the RecommendCapacity request.
-func (client *GoalAssignmentsClient) recommendCapacityCreateRequest(ctx context.Context, serviceGroupName string, goalAssignmentName string, body RecommendCapacityRequest, _ *GoalAssignmentsClientBeginRecommendCapacityOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Management/serviceGroups/{serviceGroupName}/providers/Microsoft.AzureResilienceManagement/goalAssignments/{goalAssignmentName}/recommendCapacity"
-	if serviceGroupName == "" {
-		return nil, errors.New("parameter serviceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{serviceGroupName}", url.PathEscape(serviceGroupName))
-	if goalAssignmentName == "" {
-		return nil, errors.New("parameter goalAssignmentName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{goalAssignmentName}", url.PathEscape(goalAssignmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20261001)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginRefreshGoalResources - Refreshes the goal resources under a goal assignment. This operation scans for new resources
-// under the scope of the assignment.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - serviceGroupName - The name of the service group.
-//   - goalAssignmentName - The name of the goal assignment.
-//   - options - GoalAssignmentsClientBeginRefreshGoalResourcesOptions contains the optional parameters for the GoalAssignmentsClient.BeginRefreshGoalResources
-//     method.
-func (client *GoalAssignmentsClient) BeginRefreshGoalResources(ctx context.Context, serviceGroupName string, goalAssignmentName string, options *GoalAssignmentsClientBeginRefreshGoalResourcesOptions) (*runtime.Poller[GoalAssignmentsClientRefreshGoalResourcesResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.refreshGoalResources(ctx, serviceGroupName, goalAssignmentName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[GoalAssignmentsClientRefreshGoalResourcesResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[GoalAssignmentsClientRefreshGoalResourcesResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// RefreshGoalResources - Refreshes the goal resources under a goal assignment. This operation scans for new resources under
-// the scope of the assignment.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *GoalAssignmentsClient) refreshGoalResources(ctx context.Context, serviceGroupName string, goalAssignmentName string, options *GoalAssignmentsClientBeginRefreshGoalResourcesOptions) (*http.Response, error) {
-	var err error
-	const operationName = "GoalAssignmentsClient.BeginRefreshGoalResources"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.refreshGoalResourcesCreateRequest(ctx, serviceGroupName, goalAssignmentName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// refreshGoalResourcesCreateRequest creates the RefreshGoalResources request.
-func (client *GoalAssignmentsClient) refreshGoalResourcesCreateRequest(ctx context.Context, serviceGroupName string, goalAssignmentName string, _ *GoalAssignmentsClientBeginRefreshGoalResourcesOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Management/serviceGroups/{serviceGroupName}/providers/Microsoft.AzureResilienceManagement/goalAssignments/{goalAssignmentName}/refreshGoalResources"
-	if serviceGroupName == "" {
-		return nil, errors.New("parameter serviceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{serviceGroupName}", url.PathEscape(serviceGroupName))
-	if goalAssignmentName == "" {
-		return nil, errors.New("parameter goalAssignmentName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{goalAssignmentName}", url.PathEscape(goalAssignmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20261001)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// BeginUpdate - Updates a goal assignment.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - serviceGroupName - The name of the service group.
-//   - goalAssignmentName - The name of the goal assignment.
-//   - properties - The resource properties to be updated.
-//   - options - GoalAssignmentsClientBeginUpdateOptions contains the optional parameters for the GoalAssignmentsClient.BeginUpdate
-//     method.
-func (client *GoalAssignmentsClient) BeginUpdate(ctx context.Context, serviceGroupName string, goalAssignmentName string, properties GoalAssignment, options *GoalAssignmentsClientBeginUpdateOptions) (*runtime.Poller[GoalAssignmentsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, serviceGroupName, goalAssignmentName, properties, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[GoalAssignmentsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[GoalAssignmentsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Updates a goal assignment.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *GoalAssignmentsClient) update(ctx context.Context, serviceGroupName string, goalAssignmentName string, properties GoalAssignment, options *GoalAssignmentsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "GoalAssignmentsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, serviceGroupName, goalAssignmentName, properties, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *GoalAssignmentsClient) updateCreateRequest(ctx context.Context, serviceGroupName string, goalAssignmentName string, properties GoalAssignment, _ *GoalAssignmentsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Management/serviceGroups/{serviceGroupName}/providers/Microsoft.AzureResilienceManagement/goalAssignments/{goalAssignmentName}"
-	if serviceGroupName == "" {
-		return nil, errors.New("parameter serviceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{serviceGroupName}", url.PathEscape(serviceGroupName))
-	if goalAssignmentName == "" {
-		return nil, errors.New("parameter goalAssignmentName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{goalAssignmentName}", url.PathEscape(goalAssignmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20261001)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginUpdateGoalResources - Updates goal resources under a goal assignment.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - serviceGroupName - The name of the service group.
-//   - goalAssignmentName - The name of the goal assignment.
-//   - body - The content of the action request
-//   - options - GoalAssignmentsClientBeginUpdateGoalResourcesOptions contains the optional parameters for the GoalAssignmentsClient.BeginUpdateGoalResources
-//     method.
-func (client *GoalAssignmentsClient) BeginUpdateGoalResources(ctx context.Context, serviceGroupName string, goalAssignmentName string, body UpdateGoalResourceRequest, options *GoalAssignmentsClientBeginUpdateGoalResourcesOptions) (*runtime.Poller[GoalAssignmentsClientUpdateGoalResourcesResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.updateGoalResources(ctx, serviceGroupName, goalAssignmentName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[GoalAssignmentsClientUpdateGoalResourcesResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[GoalAssignmentsClientUpdateGoalResourcesResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// UpdateGoalResources - Updates goal resources under a goal assignment.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *GoalAssignmentsClient) updateGoalResources(ctx context.Context, serviceGroupName string, goalAssignmentName string, body UpdateGoalResourceRequest, options *GoalAssignmentsClientBeginUpdateGoalResourcesOptions) (*http.Response, error) {
-	var err error
-	const operationName = "GoalAssignmentsClient.BeginUpdateGoalResources"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateGoalResourcesCreateRequest(ctx, serviceGroupName, goalAssignmentName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateGoalResourcesCreateRequest creates the UpdateGoalResources request.
-func (client *GoalAssignmentsClient) updateGoalResourcesCreateRequest(ctx context.Context, serviceGroupName string, goalAssignmentName string, body UpdateGoalResourceRequest, _ *GoalAssignmentsClientBeginUpdateGoalResourcesOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Management/serviceGroups/{serviceGroupName}/providers/Microsoft.AzureResilienceManagement/goalAssignments/{goalAssignmentName}/updateGoalResources"
-	if serviceGroupName == "" {
-		return nil, errors.New("parameter serviceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{serviceGroupName}", url.PathEscape(serviceGroupName))
-	if goalAssignmentName == "" {
-		return nil, errors.New("parameter goalAssignmentName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{goalAssignmentName}", url.PathEscape(goalAssignmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20261001)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

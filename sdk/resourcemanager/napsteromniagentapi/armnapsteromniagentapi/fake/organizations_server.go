@@ -29,6 +29,14 @@ type OrganizationsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, organizationname string, options *armnapsteromniagentapi.OrganizationsClientBeginDeleteOptions) (resp azfake.PollerResponder[armnapsteromniagentapi.OrganizationsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginLinkSaaS is the fake for method OrganizationsClient.BeginLinkSaaS
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginLinkSaaS func(ctx context.Context, resourceGroupName string, organizationname string, body armnapsteromniagentapi.SaaSData, options *armnapsteromniagentapi.OrganizationsClientBeginLinkSaaSOptions) (resp azfake.PollerResponder[armnapsteromniagentapi.OrganizationsClientLinkSaaSResponse], errResp azfake.ErrorResponder)
+
+	// BeginUpdate is the fake for method OrganizationsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, organizationname string, properties armnapsteromniagentapi.OrganizationResourceUpdate, options *armnapsteromniagentapi.OrganizationsClientBeginUpdateOptions) (resp azfake.PollerResponder[armnapsteromniagentapi.OrganizationsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method OrganizationsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, organizationname string, options *armnapsteromniagentapi.OrganizationsClientGetOptions) (resp azfake.Responder[armnapsteromniagentapi.OrganizationsClientGetResponse], errResp azfake.ErrorResponder)
@@ -37,10 +45,6 @@ type OrganizationsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	LatestLinkedSaaS func(ctx context.Context, resourceGroupName string, organizationname string, options *armnapsteromniagentapi.OrganizationsClientLatestLinkedSaaSOptions) (resp azfake.Responder[armnapsteromniagentapi.OrganizationsClientLatestLinkedSaaSResponse], errResp azfake.ErrorResponder)
 
-	// BeginLinkSaaS is the fake for method OrganizationsClient.BeginLinkSaaS
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginLinkSaaS func(ctx context.Context, resourceGroupName string, organizationname string, body armnapsteromniagentapi.SaaSData, options *armnapsteromniagentapi.OrganizationsClientBeginLinkSaaSOptions) (resp azfake.PollerResponder[armnapsteromniagentapi.OrganizationsClientLinkSaaSResponse], errResp azfake.ErrorResponder)
-
 	// NewListByResourceGroupPager is the fake for method OrganizationsClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, options *armnapsteromniagentapi.OrganizationsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armnapsteromniagentapi.OrganizationsClientListByResourceGroupResponse])
@@ -48,10 +52,6 @@ type OrganizationsServer struct {
 	// NewListBySubscriptionPager is the fake for method OrganizationsClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armnapsteromniagentapi.OrganizationsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armnapsteromniagentapi.OrganizationsClientListBySubscriptionResponse])
-
-	// BeginUpdate is the fake for method OrganizationsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, organizationname string, properties armnapsteromniagentapi.OrganizationResourceUpdate, options *armnapsteromniagentapi.OrganizationsClientBeginUpdateOptions) (resp azfake.PollerResponder[armnapsteromniagentapi.OrganizationsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewOrganizationsServerTransport creates a new instance of OrganizationsServerTransport with the provided implementation.
@@ -63,9 +63,9 @@ func NewOrganizationsServerTransport(srv *OrganizationsServer) *OrganizationsSer
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armnapsteromniagentapi.OrganizationsClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armnapsteromniagentapi.OrganizationsClientDeleteResponse]](),
 		beginLinkSaaS:               newTracker[azfake.PollerResponder[armnapsteromniagentapi.OrganizationsClientLinkSaaSResponse]](),
+		beginUpdate:                 newTracker[azfake.PollerResponder[armnapsteromniagentapi.OrganizationsClientUpdateResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armnapsteromniagentapi.OrganizationsClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armnapsteromniagentapi.OrganizationsClientListBySubscriptionResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armnapsteromniagentapi.OrganizationsClientUpdateResponse]](),
 	}
 }
 
@@ -76,9 +76,9 @@ type OrganizationsServerTransport struct {
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armnapsteromniagentapi.OrganizationsClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armnapsteromniagentapi.OrganizationsClientDeleteResponse]]
 	beginLinkSaaS               *tracker[azfake.PollerResponder[armnapsteromniagentapi.OrganizationsClientLinkSaaSResponse]]
+	beginUpdate                 *tracker[azfake.PollerResponder[armnapsteromniagentapi.OrganizationsClientUpdateResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armnapsteromniagentapi.OrganizationsClientListByResourceGroupResponse]]
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armnapsteromniagentapi.OrganizationsClientListBySubscriptionResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armnapsteromniagentapi.OrganizationsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for OrganizationsServerTransport.
@@ -106,18 +106,18 @@ func (o *OrganizationsServerTransport) dispatchToMethodFake(req *http.Request, m
 				res.resp, res.err = o.dispatchBeginCreateOrUpdate(req)
 			case "OrganizationsClient.BeginDelete":
 				res.resp, res.err = o.dispatchBeginDelete(req)
+			case "OrganizationsClient.BeginLinkSaaS":
+				res.resp, res.err = o.dispatchBeginLinkSaaS(req)
+			case "OrganizationsClient.BeginUpdate":
+				res.resp, res.err = o.dispatchBeginUpdate(req)
 			case "OrganizationsClient.Get":
 				res.resp, res.err = o.dispatchGet(req)
 			case "OrganizationsClient.LatestLinkedSaaS":
 				res.resp, res.err = o.dispatchLatestLinkedSaaS(req)
-			case "OrganizationsClient.BeginLinkSaaS":
-				res.resp, res.err = o.dispatchBeginLinkSaaS(req)
 			case "OrganizationsClient.NewListByResourceGroupPager":
 				res.resp, res.err = o.dispatchNewListByResourceGroupPager(req)
 			case "OrganizationsClient.NewListBySubscriptionPager":
 				res.resp, res.err = o.dispatchNewListBySubscriptionPager(req)
-			case "OrganizationsClient.BeginUpdate":
-				res.resp, res.err = o.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -226,6 +226,102 @@ func (o *OrganizationsServerTransport) dispatchBeginDelete(req *http.Request) (*
 	return resp, nil
 }
 
+func (o *OrganizationsServerTransport) dispatchBeginLinkSaaS(req *http.Request) (*http.Response, error) {
+	if o.srv.BeginLinkSaaS == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginLinkSaaS not implemented")}
+	}
+	beginLinkSaaS := o.beginLinkSaaS.get(req)
+	if beginLinkSaaS == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Napster\.CompanionAPI/organizations/(?P<organizationname>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/linkSaaS`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armnapsteromniagentapi.SaaSData](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		organizationnameParam, err := url.PathUnescape(matches[regex.SubexpIndex("organizationname")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := o.srv.BeginLinkSaaS(req.Context(), resourceGroupNameParam, organizationnameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginLinkSaaS = &respr
+		o.beginLinkSaaS.add(req, beginLinkSaaS)
+	}
+
+	resp, err := server.PollerResponderNext(beginLinkSaaS, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		o.beginLinkSaaS.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginLinkSaaS) {
+		o.beginLinkSaaS.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (o *OrganizationsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if o.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := o.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Napster\.CompanionAPI/organizations/(?P<organizationname>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armnapsteromniagentapi.OrganizationResourceUpdate](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		organizationnameParam, err := url.PathUnescape(matches[regex.SubexpIndex("organizationname")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := o.srv.BeginUpdate(req.Context(), resourceGroupNameParam, organizationnameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		o.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		o.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		o.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (o *OrganizationsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if o.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -289,54 +385,6 @@ func (o *OrganizationsServerTransport) dispatchLatestLinkedSaaS(req *http.Reques
 	if err != nil {
 		return nil, err
 	}
-	return resp, nil
-}
-
-func (o *OrganizationsServerTransport) dispatchBeginLinkSaaS(req *http.Request) (*http.Response, error) {
-	if o.srv.BeginLinkSaaS == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginLinkSaaS not implemented")}
-	}
-	beginLinkSaaS := o.beginLinkSaaS.get(req)
-	if beginLinkSaaS == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Napster\.CompanionAPI/organizations/(?P<organizationname>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/linkSaaS`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armnapsteromniagentapi.SaaSData](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		organizationnameParam, err := url.PathUnescape(matches[regex.SubexpIndex("organizationname")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := o.srv.BeginLinkSaaS(req.Context(), resourceGroupNameParam, organizationnameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginLinkSaaS = &respr
-		o.beginLinkSaaS.add(req, beginLinkSaaS)
-	}
-
-	resp, err := server.PollerResponderNext(beginLinkSaaS, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		o.beginLinkSaaS.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginLinkSaaS) {
-		o.beginLinkSaaS.remove(req)
-	}
-
 	return resp, nil
 }
 
@@ -407,54 +455,6 @@ func (o *OrganizationsServerTransport) dispatchNewListBySubscriptionPager(req *h
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		o.newListBySubscriptionPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (o *OrganizationsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if o.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := o.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Napster\.CompanionAPI/organizations/(?P<organizationname>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armnapsteromniagentapi.OrganizationResourceUpdate](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		organizationnameParam, err := url.PathUnescape(matches[regex.SubexpIndex("organizationname")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := o.srv.BeginUpdate(req.Context(), resourceGroupNameParam, organizationnameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		o.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		o.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		o.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

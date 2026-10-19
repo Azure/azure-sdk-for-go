@@ -29,6 +29,10 @@ type ResourceAnchorsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, resourceAnchorName string, options *armoracledatabase.ResourceAnchorsClientBeginDeleteOptions) (resp azfake.PollerResponder[armoracledatabase.ResourceAnchorsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method ResourceAnchorsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, resourceAnchorName string, properties armoracledatabase.ResourceAnchorUpdate, options *armoracledatabase.ResourceAnchorsClientBeginUpdateOptions) (resp azfake.PollerResponder[armoracledatabase.ResourceAnchorsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method ResourceAnchorsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, resourceAnchorName string, options *armoracledatabase.ResourceAnchorsClientGetOptions) (resp azfake.Responder[armoracledatabase.ResourceAnchorsClientGetResponse], errResp azfake.ErrorResponder)
@@ -40,10 +44,6 @@ type ResourceAnchorsServer struct {
 	// NewListBySubscriptionPager is the fake for method ResourceAnchorsClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armoracledatabase.ResourceAnchorsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armoracledatabase.ResourceAnchorsClientListBySubscriptionResponse])
-
-	// BeginUpdate is the fake for method ResourceAnchorsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, resourceAnchorName string, properties armoracledatabase.ResourceAnchorUpdate, options *armoracledatabase.ResourceAnchorsClientBeginUpdateOptions) (resp azfake.PollerResponder[armoracledatabase.ResourceAnchorsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewResourceAnchorsServerTransport creates a new instance of ResourceAnchorsServerTransport with the provided implementation.
@@ -54,9 +54,9 @@ func NewResourceAnchorsServerTransport(srv *ResourceAnchorsServer) *ResourceAnch
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armoracledatabase.ResourceAnchorsClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armoracledatabase.ResourceAnchorsClientDeleteResponse]](),
+		beginUpdate:                 newTracker[azfake.PollerResponder[armoracledatabase.ResourceAnchorsClientUpdateResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armoracledatabase.ResourceAnchorsClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armoracledatabase.ResourceAnchorsClientListBySubscriptionResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armoracledatabase.ResourceAnchorsClientUpdateResponse]](),
 	}
 }
 
@@ -66,9 +66,9 @@ type ResourceAnchorsServerTransport struct {
 	srv                         *ResourceAnchorsServer
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armoracledatabase.ResourceAnchorsClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armoracledatabase.ResourceAnchorsClientDeleteResponse]]
+	beginUpdate                 *tracker[azfake.PollerResponder[armoracledatabase.ResourceAnchorsClientUpdateResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armoracledatabase.ResourceAnchorsClientListByResourceGroupResponse]]
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armoracledatabase.ResourceAnchorsClientListBySubscriptionResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armoracledatabase.ResourceAnchorsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for ResourceAnchorsServerTransport.
@@ -96,14 +96,14 @@ func (r *ResourceAnchorsServerTransport) dispatchToMethodFake(req *http.Request,
 				res.resp, res.err = r.dispatchBeginCreateOrUpdate(req)
 			case "ResourceAnchorsClient.BeginDelete":
 				res.resp, res.err = r.dispatchBeginDelete(req)
+			case "ResourceAnchorsClient.BeginUpdate":
+				res.resp, res.err = r.dispatchBeginUpdate(req)
 			case "ResourceAnchorsClient.Get":
 				res.resp, res.err = r.dispatchGet(req)
 			case "ResourceAnchorsClient.NewListByResourceGroupPager":
 				res.resp, res.err = r.dispatchNewListByResourceGroupPager(req)
 			case "ResourceAnchorsClient.NewListBySubscriptionPager":
 				res.resp, res.err = r.dispatchNewListBySubscriptionPager(req)
-			case "ResourceAnchorsClient.BeginUpdate":
-				res.resp, res.err = r.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -212,6 +212,54 @@ func (r *ResourceAnchorsServerTransport) dispatchBeginDelete(req *http.Request) 
 	return resp, nil
 }
 
+func (r *ResourceAnchorsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if r.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := r.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Oracle\.Database/resourceAnchors/(?P<resourceAnchorName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armoracledatabase.ResourceAnchorUpdate](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resourceAnchorNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceAnchorName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := r.srv.BeginUpdate(req.Context(), resourceGroupNameParam, resourceAnchorNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		r.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		r.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		r.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (r *ResourceAnchorsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if r.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -312,54 +360,6 @@ func (r *ResourceAnchorsServerTransport) dispatchNewListBySubscriptionPager(req 
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		r.newListBySubscriptionPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (r *ResourceAnchorsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if r.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := r.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Oracle\.Database/resourceAnchors/(?P<resourceAnchorName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armoracledatabase.ResourceAnchorUpdate](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resourceAnchorNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceAnchorName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := r.srv.BeginUpdate(req.Context(), resourceGroupNameParam, resourceAnchorNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		r.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		r.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		r.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

@@ -141,7 +141,7 @@ func (client *AccountCapabilityHostsClient) createOrUpdateCreateRequest(ctx cont
 //     method.
 func (client *AccountCapabilityHostsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, capabilityHostName string, options *AccountCapabilityHostsClientBeginDeleteOptions) (*runtime.Poller[AccountCapabilityHostsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, accountName, capabilityHostName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, capabilityHostName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -156,11 +156,11 @@ func (client *AccountCapabilityHostsClient) BeginDelete(ctx context.Context, res
 	}
 }
 
-// delete - Delete account capabilityHost.
+// deleteOperation - Delete account capabilityHost.
 //
 // Delete account capabilityHost.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *AccountCapabilityHostsClient) delete(ctx context.Context, resourceGroupName string, accountName string, capabilityHostName string, options *AccountCapabilityHostsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *AccountCapabilityHostsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, capabilityHostName string, options *AccountCapabilityHostsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AccountCapabilityHostsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)

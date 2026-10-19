@@ -1172,6 +1172,674 @@ func ExampleSQLResourcesClient_BeginDeleteSQLUserDefinedFunction() {
 	}
 }
 
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlContainerPartitionMerge.json
+func ExampleSQLResourcesClient_BeginListSQLContainerPartitionMerge() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewSQLResourcesClient().BeginListSQLContainerPartitionMerge(ctx, "rgName", "ddb1", "databaseName", "containerName", armcosmos.MergeParameters{
+		IsDryRun: to.Ptr(false),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcosmos.SQLResourcesClientListSQLContainerPartitionMergeResponse{
+	// 	PhysicalPartitionStorageInfoCollection: armcosmos.PhysicalPartitionStorageInfoCollection{
+	// 		PhysicalPartitionStorageInfoCollection: []*armcosmos.PhysicalPartitionStorageInfo{
+	// 			{
+	// 				ID: to.Ptr("0"),
+	// 				StorageInKB: to.Ptr[float64](333),
+	// 			},
+	// 			{
+	// 				ID: to.Ptr("1"),
+	// 				StorageInKB: to.Ptr[float64](305),
+	// 			},
+	// 			{
+	// 				ID: to.Ptr("177"),
+	// 				StorageInKB: to.Ptr[float64](368),
+	// 			},
+	// 			{
+	// 				ID: to.Ptr("178"),
+	// 				StorageInKB: to.Ptr[float64](96313),
+	// 			},
+	// 			{
+	// 				ID: to.Ptr("5"),
+	// 				StorageInKB: to.Ptr[float64](194),
+	// 			},
+	// 			{
+	// 				ID: to.Ptr("6"),
+	// 				StorageInKB: to.Ptr[float64](331),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlContainerMigrateToAutoscale.json
+func ExampleSQLResourcesClient_BeginMigrateSQLContainerToAutoscale() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewSQLResourcesClient().BeginMigrateSQLContainerToAutoscale(ctx, "rg1", "ddb1", "databaseName", "containerName", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcosmos.SQLResourcesClientMigrateSQLContainerToAutoscaleResponse{
+	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
+	// 		Properties: &armcosmos.ThroughputSettingsGetProperties{
+	// 			Resource: &armcosmos.ThroughputSettingsGetPropertiesResource{
+	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
+	// 				Rid: to.Ptr("PD5DALigDgw="),
+	// 				Ts: to.Ptr[float32](1459200611),
+	// 				AutoscaleSettings: &armcosmos.AutoscaleSettingsResource{
+	// 					MaxThroughput: to.Ptr[int32](4000),
+	// 				},
+	// 				MinimumThroughput: to.Ptr("4000"),
+	// 				OfferReplacePending: to.Ptr("false"),
+	// 				Throughput: to.Ptr[int32](400),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlContainerMigrateToManualThroughput.json
+func ExampleSQLResourcesClient_BeginMigrateSQLContainerToManualThroughput() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewSQLResourcesClient().BeginMigrateSQLContainerToManualThroughput(ctx, "rg1", "ddb1", "databaseName", "containerName", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcosmos.SQLResourcesClientMigrateSQLContainerToManualThroughputResponse{
+	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
+	// 		Properties: &armcosmos.ThroughputSettingsGetProperties{
+	// 			Resource: &armcosmos.ThroughputSettingsGetPropertiesResource{
+	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
+	// 				Rid: to.Ptr("PD5DALigDgw="),
+	// 				Ts: to.Ptr[float32](1459200611),
+	// 				MinimumThroughput: to.Ptr("400"),
+	// 				OfferReplacePending: to.Ptr("true"),
+	// 				Throughput: to.Ptr[int32](400),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlDatabaseMigrateToAutoscale.json
+func ExampleSQLResourcesClient_BeginMigrateSQLDatabaseToAutoscale() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewSQLResourcesClient().BeginMigrateSQLDatabaseToAutoscale(ctx, "rg1", "ddb1", "databaseName", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcosmos.SQLResourcesClientMigrateSQLDatabaseToAutoscaleResponse{
+	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
+	// 		Properties: &armcosmos.ThroughputSettingsGetProperties{
+	// 			Resource: &armcosmos.ThroughputSettingsGetPropertiesResource{
+	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
+	// 				Rid: to.Ptr("PD5DALigDgw="),
+	// 				Ts: to.Ptr[float32](1459200611),
+	// 				AutoscaleSettings: &armcosmos.AutoscaleSettingsResource{
+	// 					MaxThroughput: to.Ptr[int32](4000),
+	// 				},
+	// 				MinimumThroughput: to.Ptr("4000"),
+	// 				OfferReplacePending: to.Ptr("false"),
+	// 				Throughput: to.Ptr[int32](400),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlDatabaseMigrateToManualThroughput.json
+func ExampleSQLResourcesClient_BeginMigrateSQLDatabaseToManualThroughput() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewSQLResourcesClient().BeginMigrateSQLDatabaseToManualThroughput(ctx, "rg1", "ddb1", "databaseName", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcosmos.SQLResourcesClientMigrateSQLDatabaseToManualThroughputResponse{
+	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
+	// 		Properties: &armcosmos.ThroughputSettingsGetProperties{
+	// 			Resource: &armcosmos.ThroughputSettingsGetPropertiesResource{
+	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
+	// 				Rid: to.Ptr("PD5DALigDgw="),
+	// 				Ts: to.Ptr[float32](1459200611),
+	// 				MinimumThroughput: to.Ptr("400"),
+	// 				OfferReplacePending: to.Ptr("true"),
+	// 				Throughput: to.Ptr[int32](400),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlContainerBackupInformation.json
+func ExampleSQLResourcesClient_BeginRetrieveContinuousBackupInformation() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewSQLResourcesClient().BeginRetrieveContinuousBackupInformation(ctx, "rgName", "ddb1", "databaseName", "containerName", armcosmos.ContinuousBackupRestoreLocation{
+		Location: to.Ptr("North Europe"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcosmos.SQLResourcesClientRetrieveContinuousBackupInformationResponse{
+	// 	BackupInformation: armcosmos.BackupInformation{
+	// 		ContinuousBackupInformation: &armcosmos.ContinuousBackupInformation{
+	// 			LatestRestorableTimestamp: to.Ptr("2021-02-05T02:40:50Z"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlContainerRedistributeThroughput.json
+func ExampleSQLResourcesClient_BeginSQLContainerRedistributeThroughput() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewSQLResourcesClient().BeginSQLContainerRedistributeThroughput(ctx, "rg1", "ddb1", "databaseName", "containerName", armcosmos.RedistributeThroughputParameters{
+		Properties: &armcosmos.RedistributeThroughputProperties{
+			Resource: &armcosmos.RedistributeThroughputPropertiesResource{
+				SourcePhysicalPartitionThroughputInfo: []*armcosmos.PhysicalPartitionThroughputInfoResource{
+					{
+						ID:         to.Ptr("2"),
+						Throughput: to.Ptr[float64](5000),
+					},
+					{
+						ID: to.Ptr("3"),
+					},
+				},
+				TargetPhysicalPartitionThroughputInfo: []*armcosmos.PhysicalPartitionThroughputInfoResource{
+					{
+						ID:         to.Ptr("0"),
+						Throughput: to.Ptr[float64](5000),
+					},
+					{
+						ID:         to.Ptr("1"),
+						Throughput: to.Ptr[float64](5000),
+					},
+				},
+				ThroughputPolicy: to.Ptr(armcosmos.ThroughputPolicyTypeCustom),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcosmos.SQLResourcesClientSQLContainerRedistributeThroughputResponse{
+	// 	PhysicalPartitionThroughputInfoResult: armcosmos.PhysicalPartitionThroughputInfoResult{
+	// 		Properties: &armcosmos.PhysicalPartitionThroughputInfoResultProperties{
+	// 			Resource: &armcosmos.PhysicalPartitionThroughputInfoResultPropertiesResource{
+	// 				PhysicalPartitionThroughputInfo: []*armcosmos.PhysicalPartitionThroughputInfoResource{
+	// 					{
+	// 						ID: to.Ptr("0"),
+	// 						TargetThroughput: to.Ptr[float64](5000),
+	// 						Throughput: to.Ptr[float64](5000),
+	// 					},
+	// 					{
+	// 						ID: to.Ptr("1"),
+	// 						TargetThroughput: to.Ptr[float64](5000),
+	// 						Throughput: to.Ptr[float64](5000),
+	// 					},
+	// 					{
+	// 						ID: to.Ptr("2"),
+	// 						TargetThroughput: to.Ptr[float64](5000),
+	// 						Throughput: to.Ptr[float64](5000),
+	// 					},
+	// 					{
+	// 						ID: to.Ptr("3"),
+	// 						TargetThroughput: to.Ptr[float64](3000),
+	// 						Throughput: to.Ptr[float64](3000),
+	// 					},
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlContainerRetrieveThroughputDistribution.json
+func ExampleSQLResourcesClient_BeginSQLContainerRetrieveThroughputDistribution() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewSQLResourcesClient().BeginSQLContainerRetrieveThroughputDistribution(ctx, "rg1", "ddb1", "databaseName", "containerName", armcosmos.RetrieveThroughputParameters{
+		Properties: &armcosmos.RetrieveThroughputProperties{
+			Resource: &armcosmos.RetrieveThroughputPropertiesResource{
+				PhysicalPartitionIDs: []*armcosmos.PhysicalPartitionID{
+					{
+						ID: to.Ptr("0"),
+					},
+					{
+						ID: to.Ptr("1"),
+					},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcosmos.SQLResourcesClientSQLContainerRetrieveThroughputDistributionResponse{
+	// 	PhysicalPartitionThroughputInfoResult: armcosmos.PhysicalPartitionThroughputInfoResult{
+	// 		Properties: &armcosmos.PhysicalPartitionThroughputInfoResultProperties{
+	// 			Resource: &armcosmos.PhysicalPartitionThroughputInfoResultPropertiesResource{
+	// 				PhysicalPartitionThroughputInfo: []*armcosmos.PhysicalPartitionThroughputInfoResource{
+	// 					{
+	// 						ID: to.Ptr("0"),
+	// 						TargetThroughput: to.Ptr[float64](5000),
+	// 						Throughput: to.Ptr[float64](5000),
+	// 					},
+	// 					{
+	// 						ID: to.Ptr("1"),
+	// 						TargetThroughput: to.Ptr[float64](5000),
+	// 						Throughput: to.Ptr[float64](5000),
+	// 					},
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlDatabasePartitionMerge.json
+func ExampleSQLResourcesClient_BeginSQLDatabasePartitionMerge() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewSQLResourcesClient().BeginSQLDatabasePartitionMerge(ctx, "rgName", "ddb1", "databaseName", armcosmos.MergeParameters{
+		IsDryRun: to.Ptr(false),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcosmos.SQLResourcesClientSQLDatabasePartitionMergeResponse{
+	// 	PhysicalPartitionStorageInfoCollection: armcosmos.PhysicalPartitionStorageInfoCollection{
+	// 		PhysicalPartitionStorageInfoCollection: []*armcosmos.PhysicalPartitionStorageInfo{
+	// 			{
+	// 				ID: to.Ptr("0"),
+	// 				StorageInKB: to.Ptr[float64](333),
+	// 			},
+	// 			{
+	// 				ID: to.Ptr("1"),
+	// 				StorageInKB: to.Ptr[float64](305),
+	// 			},
+	// 			{
+	// 				ID: to.Ptr("177"),
+	// 				StorageInKB: to.Ptr[float64](368),
+	// 			},
+	// 			{
+	// 				ID: to.Ptr("178"),
+	// 				StorageInKB: to.Ptr[float64](96313),
+	// 			},
+	// 			{
+	// 				ID: to.Ptr("5"),
+	// 				StorageInKB: to.Ptr[float64](194),
+	// 			},
+	// 			{
+	// 				ID: to.Ptr("6"),
+	// 				StorageInKB: to.Ptr[float64](331),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlDatabaseRedistributeThroughput.json
+func ExampleSQLResourcesClient_BeginSQLDatabaseRedistributeThroughput() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewSQLResourcesClient().BeginSQLDatabaseRedistributeThroughput(ctx, "rg1", "ddb1", "databaseName", armcosmos.RedistributeThroughputParameters{
+		Properties: &armcosmos.RedistributeThroughputProperties{
+			Resource: &armcosmos.RedistributeThroughputPropertiesResource{
+				SourcePhysicalPartitionThroughputInfo: []*armcosmos.PhysicalPartitionThroughputInfoResource{
+					{
+						ID:         to.Ptr("2"),
+						Throughput: to.Ptr[float64](5000),
+					},
+					{
+						ID: to.Ptr("3"),
+					},
+				},
+				TargetPhysicalPartitionThroughputInfo: []*armcosmos.PhysicalPartitionThroughputInfoResource{
+					{
+						ID:         to.Ptr("0"),
+						Throughput: to.Ptr[float64](5000),
+					},
+					{
+						ID:         to.Ptr("1"),
+						Throughput: to.Ptr[float64](5000),
+					},
+				},
+				ThroughputPolicy: to.Ptr(armcosmos.ThroughputPolicyTypeCustom),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcosmos.SQLResourcesClientSQLDatabaseRedistributeThroughputResponse{
+	// 	PhysicalPartitionThroughputInfoResult: armcosmos.PhysicalPartitionThroughputInfoResult{
+	// 		Properties: &armcosmos.PhysicalPartitionThroughputInfoResultProperties{
+	// 			Resource: &armcosmos.PhysicalPartitionThroughputInfoResultPropertiesResource{
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlDatabaseRetrieveThroughputDistribution.json
+func ExampleSQLResourcesClient_BeginSQLDatabaseRetrieveThroughputDistribution() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewSQLResourcesClient().BeginSQLDatabaseRetrieveThroughputDistribution(ctx, "rg1", "ddb1", "databaseName", armcosmos.RetrieveThroughputParameters{
+		Properties: &armcosmos.RetrieveThroughputProperties{
+			Resource: &armcosmos.RetrieveThroughputPropertiesResource{
+				PhysicalPartitionIDs: []*armcosmos.PhysicalPartitionID{
+					{
+						ID: to.Ptr("0"),
+					},
+					{
+						ID: to.Ptr("1"),
+					},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcosmos.SQLResourcesClientSQLDatabaseRetrieveThroughputDistributionResponse{
+	// 	PhysicalPartitionThroughputInfoResult: armcosmos.PhysicalPartitionThroughputInfoResult{
+	// 		Properties: &armcosmos.PhysicalPartitionThroughputInfoResultProperties{
+	// 			Resource: &armcosmos.PhysicalPartitionThroughputInfoResultPropertiesResource{
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlContainerThroughputUpdate.json
+func ExampleSQLResourcesClient_BeginUpdateSQLContainerThroughput() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcosmos.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewSQLResourcesClient().BeginUpdateSQLContainerThroughput(ctx, "rg1", "ddb1", "databaseName", "containerName", armcosmos.ThroughputSettingsUpdateParameters{
+		Location: to.Ptr("West US"),
+		Tags:     map[string]*string{},
+		Properties: &armcosmos.ThroughputSettingsUpdateProperties{
+			Resource: &armcosmos.ThroughputSettingsResource{
+				Throughput: to.Ptr[int32](400),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcosmos.SQLResourcesClientUpdateSQLContainerThroughputResponse{
+	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
+	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName/sqlContainers/containerName/throughputSettings/default"),
+	// 		Name: to.Ptr("default"),
+	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases/sqlContainers/throughputSettings"),
+	// 		Location: to.Ptr("West US"),
+	// 		Tags: map[string]*string{
+	// 		},
+	// 		Properties: &armcosmos.ThroughputSettingsGetProperties{
+	// 			Resource: &armcosmos.ThroughputSettingsGetPropertiesResource{
+	// 				Throughput: to.Ptr[int32](400),
+	// 				MinimumThroughput: to.Ptr("400"),
+	// 				OfferReplacePending: to.Ptr("true"),
+	// 				ThroughputBuckets: []*armcosmos.ThroughputBucketResource{
+	// 					{
+	// 						ID: to.Ptr[int32](1),
+	// 						MaxThroughputPercentage: to.Ptr[int32](10),
+	// 					},
+	// 					{
+	// 						ID: to.Ptr[int32](2),
+	// 						MaxThroughputPercentage: to.Ptr[int32](5),
+	// 						IsDefaultBucket: to.Ptr(true),
+	// 					},
+	// 					{
+	// 						ID: to.Ptr[int32](3),
+	// 						MaxThroughputPercentage: to.Ptr[int32](15),
+	// 					},
+	// 					{
+	// 						ID: to.Ptr[int32](4),
+	// 						MaxThroughputPercentage: to.Ptr[int32](10),
+	// 					},
+	// 					{
+	// 						ID: to.Ptr[int32](5),
+	// 						MaxThroughputPercentage: to.Ptr[int32](20),
+	// 					},
+	// 				},
+	// 				Rid: to.Ptr("PD5DALigDgw="),
+	// 				Ts: to.Ptr[float32](1459200611),
+	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlDatabaseThroughputUpdate.json
+func ExampleSQLResourcesClient_BeginUpdateSQLDatabaseThroughput() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewSQLResourcesClient().BeginUpdateSQLDatabaseThroughput(ctx, "rg1", "ddb1", "databaseName", armcosmos.ThroughputSettingsUpdateParameters{
+		Location: to.Ptr("West US"),
+		Properties: &armcosmos.ThroughputSettingsUpdateProperties{
+			Resource: &armcosmos.ThroughputSettingsResource{
+				Throughput: to.Ptr[int32](400),
+			},
+		},
+		Tags: map[string]*string{},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcosmos.SQLResourcesClientUpdateSQLDatabaseThroughputResponse{
+	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
+	// 		Name: to.Ptr("default"),
+	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases/throughputSettings"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName/throughputSettings/default"),
+	// 		Location: to.Ptr("West US"),
+	// 		Properties: &armcosmos.ThroughputSettingsGetProperties{
+	// 			Resource: &armcosmos.ThroughputSettingsGetPropertiesResource{
+	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
+	// 				Rid: to.Ptr("PD5DALigDgw="),
+	// 				Ts: to.Ptr[float32](1459200611),
+	// 				MinimumThroughput: to.Ptr("400"),
+	// 				OfferReplacePending: to.Ptr("true"),
+	// 				Throughput: to.Ptr[int32](400),
+	// 			},
+	// 		},
+	// 		Tags: map[string]*string{
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2026-04-01-preview/CosmosDBSqlClientEncryptionKeyGet.json
 func ExampleSQLResourcesClient_GetClientEncryptionKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -1830,62 +2498,6 @@ func ExampleSQLResourcesClient_NewListClientEncryptionKeysPager() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBSqlContainerPartitionMerge.json
-func ExampleSQLResourcesClient_BeginListSQLContainerPartitionMerge() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewSQLResourcesClient().BeginListSQLContainerPartitionMerge(ctx, "rgName", "ddb1", "databaseName", "containerName", armcosmos.MergeParameters{
-		IsDryRun: to.Ptr(false),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcosmos.SQLResourcesClientListSQLContainerPartitionMergeResponse{
-	// 	PhysicalPartitionStorageInfoCollection: armcosmos.PhysicalPartitionStorageInfoCollection{
-	// 		PhysicalPartitionStorageInfoCollection: []*armcosmos.PhysicalPartitionStorageInfo{
-	// 			{
-	// 				ID: to.Ptr("0"),
-	// 				StorageInKB: to.Ptr[float64](333),
-	// 			},
-	// 			{
-	// 				ID: to.Ptr("1"),
-	// 				StorageInKB: to.Ptr[float64](305),
-	// 			},
-	// 			{
-	// 				ID: to.Ptr("177"),
-	// 				StorageInKB: to.Ptr[float64](368),
-	// 			},
-	// 			{
-	// 				ID: to.Ptr("178"),
-	// 				StorageInKB: to.Ptr[float64](96313),
-	// 			},
-	// 			{
-	// 				ID: to.Ptr("5"),
-	// 				StorageInKB: to.Ptr[float64](194),
-	// 			},
-	// 			{
-	// 				ID: to.Ptr("6"),
-	// 				StorageInKB: to.Ptr[float64](331),
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
 // Generated from example definition: 2026-04-01-preview/CosmosDBSqlContainerList.json
 func ExampleSQLResourcesClient_NewListSQLContainersPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -2504,616 +3116,4 @@ func ExampleSQLResourcesClient_NewListSQLUserDefinedFunctionsPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-04-01-preview/CosmosDBSqlContainerMigrateToAutoscale.json
-func ExampleSQLResourcesClient_BeginMigrateSQLContainerToAutoscale() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewSQLResourcesClient().BeginMigrateSQLContainerToAutoscale(ctx, "rg1", "ddb1", "databaseName", "containerName", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcosmos.SQLResourcesClientMigrateSQLContainerToAutoscaleResponse{
-	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
-	// 		Properties: &armcosmos.ThroughputSettingsGetProperties{
-	// 			Resource: &armcosmos.ThroughputSettingsGetPropertiesResource{
-	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
-	// 				Rid: to.Ptr("PD5DALigDgw="),
-	// 				Ts: to.Ptr[float32](1459200611),
-	// 				AutoscaleSettings: &armcosmos.AutoscaleSettingsResource{
-	// 					MaxThroughput: to.Ptr[int32](4000),
-	// 				},
-	// 				MinimumThroughput: to.Ptr("4000"),
-	// 				OfferReplacePending: to.Ptr("false"),
-	// 				Throughput: to.Ptr[int32](400),
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-04-01-preview/CosmosDBSqlContainerMigrateToManualThroughput.json
-func ExampleSQLResourcesClient_BeginMigrateSQLContainerToManualThroughput() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewSQLResourcesClient().BeginMigrateSQLContainerToManualThroughput(ctx, "rg1", "ddb1", "databaseName", "containerName", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcosmos.SQLResourcesClientMigrateSQLContainerToManualThroughputResponse{
-	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
-	// 		Properties: &armcosmos.ThroughputSettingsGetProperties{
-	// 			Resource: &armcosmos.ThroughputSettingsGetPropertiesResource{
-	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
-	// 				Rid: to.Ptr("PD5DALigDgw="),
-	// 				Ts: to.Ptr[float32](1459200611),
-	// 				MinimumThroughput: to.Ptr("400"),
-	// 				OfferReplacePending: to.Ptr("true"),
-	// 				Throughput: to.Ptr[int32](400),
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-04-01-preview/CosmosDBSqlDatabaseMigrateToAutoscale.json
-func ExampleSQLResourcesClient_BeginMigrateSQLDatabaseToAutoscale() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewSQLResourcesClient().BeginMigrateSQLDatabaseToAutoscale(ctx, "rg1", "ddb1", "databaseName", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcosmos.SQLResourcesClientMigrateSQLDatabaseToAutoscaleResponse{
-	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
-	// 		Properties: &armcosmos.ThroughputSettingsGetProperties{
-	// 			Resource: &armcosmos.ThroughputSettingsGetPropertiesResource{
-	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
-	// 				Rid: to.Ptr("PD5DALigDgw="),
-	// 				Ts: to.Ptr[float32](1459200611),
-	// 				AutoscaleSettings: &armcosmos.AutoscaleSettingsResource{
-	// 					MaxThroughput: to.Ptr[int32](4000),
-	// 				},
-	// 				MinimumThroughput: to.Ptr("4000"),
-	// 				OfferReplacePending: to.Ptr("false"),
-	// 				Throughput: to.Ptr[int32](400),
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-04-01-preview/CosmosDBSqlDatabaseMigrateToManualThroughput.json
-func ExampleSQLResourcesClient_BeginMigrateSQLDatabaseToManualThroughput() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewSQLResourcesClient().BeginMigrateSQLDatabaseToManualThroughput(ctx, "rg1", "ddb1", "databaseName", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcosmos.SQLResourcesClientMigrateSQLDatabaseToManualThroughputResponse{
-	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
-	// 		Properties: &armcosmos.ThroughputSettingsGetProperties{
-	// 			Resource: &armcosmos.ThroughputSettingsGetPropertiesResource{
-	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
-	// 				Rid: to.Ptr("PD5DALigDgw="),
-	// 				Ts: to.Ptr[float32](1459200611),
-	// 				MinimumThroughput: to.Ptr("400"),
-	// 				OfferReplacePending: to.Ptr("true"),
-	// 				Throughput: to.Ptr[int32](400),
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-04-01-preview/CosmosDBSqlContainerBackupInformation.json
-func ExampleSQLResourcesClient_BeginRetrieveContinuousBackupInformation() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewSQLResourcesClient().BeginRetrieveContinuousBackupInformation(ctx, "rgName", "ddb1", "databaseName", "containerName", armcosmos.ContinuousBackupRestoreLocation{
-		Location: to.Ptr("North Europe"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcosmos.SQLResourcesClientRetrieveContinuousBackupInformationResponse{
-	// 	BackupInformation: armcosmos.BackupInformation{
-	// 		ContinuousBackupInformation: &armcosmos.ContinuousBackupInformation{
-	// 			LatestRestorableTimestamp: to.Ptr("2021-02-05T02:40:50Z"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-04-01-preview/CosmosDBSqlContainerRedistributeThroughput.json
-func ExampleSQLResourcesClient_BeginSQLContainerRedistributeThroughput() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewSQLResourcesClient().BeginSQLContainerRedistributeThroughput(ctx, "rg1", "ddb1", "databaseName", "containerName", armcosmos.RedistributeThroughputParameters{
-		Properties: &armcosmos.RedistributeThroughputProperties{
-			Resource: &armcosmos.RedistributeThroughputPropertiesResource{
-				SourcePhysicalPartitionThroughputInfo: []*armcosmos.PhysicalPartitionThroughputInfoResource{
-					{
-						ID:         to.Ptr("2"),
-						Throughput: to.Ptr[float64](5000),
-					},
-					{
-						ID: to.Ptr("3"),
-					},
-				},
-				TargetPhysicalPartitionThroughputInfo: []*armcosmos.PhysicalPartitionThroughputInfoResource{
-					{
-						ID:         to.Ptr("0"),
-						Throughput: to.Ptr[float64](5000),
-					},
-					{
-						ID:         to.Ptr("1"),
-						Throughput: to.Ptr[float64](5000),
-					},
-				},
-				ThroughputPolicy: to.Ptr(armcosmos.ThroughputPolicyTypeCustom),
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcosmos.SQLResourcesClientSQLContainerRedistributeThroughputResponse{
-	// 	PhysicalPartitionThroughputInfoResult: armcosmos.PhysicalPartitionThroughputInfoResult{
-	// 		Properties: &armcosmos.PhysicalPartitionThroughputInfoResultProperties{
-	// 			Resource: &armcosmos.PhysicalPartitionThroughputInfoResultPropertiesResource{
-	// 				PhysicalPartitionThroughputInfo: []*armcosmos.PhysicalPartitionThroughputInfoResource{
-	// 					{
-	// 						ID: to.Ptr("0"),
-	// 						TargetThroughput: to.Ptr[float64](5000),
-	// 						Throughput: to.Ptr[float64](5000),
-	// 					},
-	// 					{
-	// 						ID: to.Ptr("1"),
-	// 						TargetThroughput: to.Ptr[float64](5000),
-	// 						Throughput: to.Ptr[float64](5000),
-	// 					},
-	// 					{
-	// 						ID: to.Ptr("2"),
-	// 						TargetThroughput: to.Ptr[float64](5000),
-	// 						Throughput: to.Ptr[float64](5000),
-	// 					},
-	// 					{
-	// 						ID: to.Ptr("3"),
-	// 						TargetThroughput: to.Ptr[float64](3000),
-	// 						Throughput: to.Ptr[float64](3000),
-	// 					},
-	// 				},
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-04-01-preview/CosmosDBSqlContainerRetrieveThroughputDistribution.json
-func ExampleSQLResourcesClient_BeginSQLContainerRetrieveThroughputDistribution() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewSQLResourcesClient().BeginSQLContainerRetrieveThroughputDistribution(ctx, "rg1", "ddb1", "databaseName", "containerName", armcosmos.RetrieveThroughputParameters{
-		Properties: &armcosmos.RetrieveThroughputProperties{
-			Resource: &armcosmos.RetrieveThroughputPropertiesResource{
-				PhysicalPartitionIDs: []*armcosmos.PhysicalPartitionID{
-					{
-						ID: to.Ptr("0"),
-					},
-					{
-						ID: to.Ptr("1"),
-					},
-				},
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcosmos.SQLResourcesClientSQLContainerRetrieveThroughputDistributionResponse{
-	// 	PhysicalPartitionThroughputInfoResult: armcosmos.PhysicalPartitionThroughputInfoResult{
-	// 		Properties: &armcosmos.PhysicalPartitionThroughputInfoResultProperties{
-	// 			Resource: &armcosmos.PhysicalPartitionThroughputInfoResultPropertiesResource{
-	// 				PhysicalPartitionThroughputInfo: []*armcosmos.PhysicalPartitionThroughputInfoResource{
-	// 					{
-	// 						ID: to.Ptr("0"),
-	// 						TargetThroughput: to.Ptr[float64](5000),
-	// 						Throughput: to.Ptr[float64](5000),
-	// 					},
-	// 					{
-	// 						ID: to.Ptr("1"),
-	// 						TargetThroughput: to.Ptr[float64](5000),
-	// 						Throughput: to.Ptr[float64](5000),
-	// 					},
-	// 				},
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-04-01-preview/CosmosDBSqlDatabasePartitionMerge.json
-func ExampleSQLResourcesClient_BeginSQLDatabasePartitionMerge() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewSQLResourcesClient().BeginSQLDatabasePartitionMerge(ctx, "rgName", "ddb1", "databaseName", armcosmos.MergeParameters{
-		IsDryRun: to.Ptr(false),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcosmos.SQLResourcesClientSQLDatabasePartitionMergeResponse{
-	// 	PhysicalPartitionStorageInfoCollection: armcosmos.PhysicalPartitionStorageInfoCollection{
-	// 		PhysicalPartitionStorageInfoCollection: []*armcosmos.PhysicalPartitionStorageInfo{
-	// 			{
-	// 				ID: to.Ptr("0"),
-	// 				StorageInKB: to.Ptr[float64](333),
-	// 			},
-	// 			{
-	// 				ID: to.Ptr("1"),
-	// 				StorageInKB: to.Ptr[float64](305),
-	// 			},
-	// 			{
-	// 				ID: to.Ptr("177"),
-	// 				StorageInKB: to.Ptr[float64](368),
-	// 			},
-	// 			{
-	// 				ID: to.Ptr("178"),
-	// 				StorageInKB: to.Ptr[float64](96313),
-	// 			},
-	// 			{
-	// 				ID: to.Ptr("5"),
-	// 				StorageInKB: to.Ptr[float64](194),
-	// 			},
-	// 			{
-	// 				ID: to.Ptr("6"),
-	// 				StorageInKB: to.Ptr[float64](331),
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-04-01-preview/CosmosDBSqlDatabaseRedistributeThroughput.json
-func ExampleSQLResourcesClient_BeginSQLDatabaseRedistributeThroughput() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewSQLResourcesClient().BeginSQLDatabaseRedistributeThroughput(ctx, "rg1", "ddb1", "databaseName", armcosmos.RedistributeThroughputParameters{
-		Properties: &armcosmos.RedistributeThroughputProperties{
-			Resource: &armcosmos.RedistributeThroughputPropertiesResource{
-				SourcePhysicalPartitionThroughputInfo: []*armcosmos.PhysicalPartitionThroughputInfoResource{
-					{
-						ID:         to.Ptr("2"),
-						Throughput: to.Ptr[float64](5000),
-					},
-					{
-						ID: to.Ptr("3"),
-					},
-				},
-				TargetPhysicalPartitionThroughputInfo: []*armcosmos.PhysicalPartitionThroughputInfoResource{
-					{
-						ID:         to.Ptr("0"),
-						Throughput: to.Ptr[float64](5000),
-					},
-					{
-						ID:         to.Ptr("1"),
-						Throughput: to.Ptr[float64](5000),
-					},
-				},
-				ThroughputPolicy: to.Ptr(armcosmos.ThroughputPolicyTypeCustom),
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcosmos.SQLResourcesClientSQLDatabaseRedistributeThroughputResponse{
-	// 	PhysicalPartitionThroughputInfoResult: armcosmos.PhysicalPartitionThroughputInfoResult{
-	// 		Properties: &armcosmos.PhysicalPartitionThroughputInfoResultProperties{
-	// 			Resource: &armcosmos.PhysicalPartitionThroughputInfoResultPropertiesResource{
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-04-01-preview/CosmosDBSqlDatabaseRetrieveThroughputDistribution.json
-func ExampleSQLResourcesClient_BeginSQLDatabaseRetrieveThroughputDistribution() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewSQLResourcesClient().BeginSQLDatabaseRetrieveThroughputDistribution(ctx, "rg1", "ddb1", "databaseName", armcosmos.RetrieveThroughputParameters{
-		Properties: &armcosmos.RetrieveThroughputProperties{
-			Resource: &armcosmos.RetrieveThroughputPropertiesResource{
-				PhysicalPartitionIDs: []*armcosmos.PhysicalPartitionID{
-					{
-						ID: to.Ptr("0"),
-					},
-					{
-						ID: to.Ptr("1"),
-					},
-				},
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcosmos.SQLResourcesClientSQLDatabaseRetrieveThroughputDistributionResponse{
-	// 	PhysicalPartitionThroughputInfoResult: armcosmos.PhysicalPartitionThroughputInfoResult{
-	// 		Properties: &armcosmos.PhysicalPartitionThroughputInfoResultProperties{
-	// 			Resource: &armcosmos.PhysicalPartitionThroughputInfoResultPropertiesResource{
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-04-01-preview/CosmosDBSqlContainerThroughputUpdate.json
-func ExampleSQLResourcesClient_BeginUpdateSQLContainerThroughput() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewSQLResourcesClient().BeginUpdateSQLContainerThroughput(ctx, "rg1", "ddb1", "databaseName", "containerName", armcosmos.ThroughputSettingsUpdateParameters{
-		Location: to.Ptr("West US"),
-		Tags:     map[string]*string{},
-		Properties: &armcosmos.ThroughputSettingsUpdateProperties{
-			Resource: &armcosmos.ThroughputSettingsResource{
-				Throughput: to.Ptr[int32](400),
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcosmos.SQLResourcesClientUpdateSQLContainerThroughputResponse{
-	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
-	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName/sqlContainers/containerName/throughputSettings/default"),
-	// 		Name: to.Ptr("default"),
-	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases/sqlContainers/throughputSettings"),
-	// 		Location: to.Ptr("West US"),
-	// 		Tags: map[string]*string{
-	// 		},
-	// 		Properties: &armcosmos.ThroughputSettingsGetProperties{
-	// 			Resource: &armcosmos.ThroughputSettingsGetPropertiesResource{
-	// 				Throughput: to.Ptr[int32](400),
-	// 				MinimumThroughput: to.Ptr("400"),
-	// 				OfferReplacePending: to.Ptr("true"),
-	// 				ThroughputBuckets: []*armcosmos.ThroughputBucketResource{
-	// 					{
-	// 						ID: to.Ptr[int32](1),
-	// 						MaxThroughputPercentage: to.Ptr[int32](10),
-	// 					},
-	// 					{
-	// 						ID: to.Ptr[int32](2),
-	// 						MaxThroughputPercentage: to.Ptr[int32](5),
-	// 						IsDefaultBucket: to.Ptr(true),
-	// 					},
-	// 					{
-	// 						ID: to.Ptr[int32](3),
-	// 						MaxThroughputPercentage: to.Ptr[int32](15),
-	// 					},
-	// 					{
-	// 						ID: to.Ptr[int32](4),
-	// 						MaxThroughputPercentage: to.Ptr[int32](10),
-	// 					},
-	// 					{
-	// 						ID: to.Ptr[int32](5),
-	// 						MaxThroughputPercentage: to.Ptr[int32](20),
-	// 					},
-	// 				},
-	// 				Rid: to.Ptr("PD5DALigDgw="),
-	// 				Ts: to.Ptr[float32](1459200611),
-	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-04-01-preview/CosmosDBSqlDatabaseThroughputUpdate.json
-func ExampleSQLResourcesClient_BeginUpdateSQLDatabaseThroughput() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewSQLResourcesClient().BeginUpdateSQLDatabaseThroughput(ctx, "rg1", "ddb1", "databaseName", armcosmos.ThroughputSettingsUpdateParameters{
-		Location: to.Ptr("West US"),
-		Properties: &armcosmos.ThroughputSettingsUpdateProperties{
-			Resource: &armcosmos.ThroughputSettingsResource{
-				Throughput: to.Ptr[int32](400),
-			},
-		},
-		Tags: map[string]*string{},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcosmos.SQLResourcesClientUpdateSQLDatabaseThroughputResponse{
-	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
-	// 		Name: to.Ptr("default"),
-	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases/throughputSettings"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName/throughputSettings/default"),
-	// 		Location: to.Ptr("West US"),
-	// 		Properties: &armcosmos.ThroughputSettingsGetProperties{
-	// 			Resource: &armcosmos.ThroughputSettingsGetPropertiesResource{
-	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
-	// 				Rid: to.Ptr("PD5DALigDgw="),
-	// 				Ts: to.Ptr[float32](1459200611),
-	// 				MinimumThroughput: to.Ptr("400"),
-	// 				OfferReplacePending: to.Ptr("true"),
-	// 				Throughput: to.Ptr[int32](400),
-	// 			},
-	// 		},
-	// 		Tags: map[string]*string{
-	// 		},
-	// 	},
-	// }
 }

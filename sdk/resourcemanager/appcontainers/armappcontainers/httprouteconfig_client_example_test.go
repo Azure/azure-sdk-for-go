@@ -12,6 +12,27 @@ import (
 	"log"
 )
 
+// Generated from example definition: 2026-07-01/HttpRouteConfig_Delete.json
+func ExampleHTTPRouteConfigClient_BeginDelete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappcontainers.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewHTTPRouteConfigClient().BeginDelete(ctx, "examplerg", "testcontainerenv", "httproutefriendlyname", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
 // Generated from example definition: 2026-07-01/HttpRouteConfig_CreateOrUpdate.json
 func ExampleHTTPRouteConfigClient_CreateOrUpdate_createOrUpdateHttpRoute() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -283,27 +304,6 @@ func ExampleHTTPRouteConfigClient_CreateOrUpdate_createOrUpdateHttpRoutePathSepa
 	// 		},
 	// 	},
 	// }
-}
-
-// Generated from example definition: 2026-07-01/HttpRouteConfig_Delete.json
-func ExampleHTTPRouteConfigClient_BeginDelete() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappcontainers.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewHTTPRouteConfigClient().BeginDelete(ctx, "examplerg", "testcontainerenv", "httproutefriendlyname", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
 }
 
 // Generated from example definition: 2026-07-01/HttpRouteConfig_Get.json

@@ -29,6 +29,10 @@ type NodePoolsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, supercomputerName string, nodePoolName string, options *armdiscovery.NodePoolsClientBeginDeleteOptions) (resp azfake.PollerResponder[armdiscovery.NodePoolsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method NodePoolsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, supercomputerName string, nodePoolName string, properties armdiscovery.NodePool, options *armdiscovery.NodePoolsClientBeginUpdateOptions) (resp azfake.PollerResponder[armdiscovery.NodePoolsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method NodePoolsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, supercomputerName string, nodePoolName string, options *armdiscovery.NodePoolsClientGetOptions) (resp azfake.Responder[armdiscovery.NodePoolsClientGetResponse], errResp azfake.ErrorResponder)
@@ -36,10 +40,6 @@ type NodePoolsServer struct {
 	// NewListBySupercomputerPager is the fake for method NodePoolsClient.NewListBySupercomputerPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySupercomputerPager func(resourceGroupName string, supercomputerName string, options *armdiscovery.NodePoolsClientListBySupercomputerOptions) (resp azfake.PagerResponder[armdiscovery.NodePoolsClientListBySupercomputerResponse])
-
-	// BeginUpdate is the fake for method NodePoolsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, supercomputerName string, nodePoolName string, properties armdiscovery.NodePool, options *armdiscovery.NodePoolsClientBeginUpdateOptions) (resp azfake.PollerResponder[armdiscovery.NodePoolsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewNodePoolsServerTransport creates a new instance of NodePoolsServerTransport with the provided implementation.
@@ -50,8 +50,8 @@ func NewNodePoolsServerTransport(srv *NodePoolsServer) *NodePoolsServerTransport
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armdiscovery.NodePoolsClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armdiscovery.NodePoolsClientDeleteResponse]](),
-		newListBySupercomputerPager: newTracker[azfake.PagerResponder[armdiscovery.NodePoolsClientListBySupercomputerResponse]](),
 		beginUpdate:                 newTracker[azfake.PollerResponder[armdiscovery.NodePoolsClientUpdateResponse]](),
+		newListBySupercomputerPager: newTracker[azfake.PagerResponder[armdiscovery.NodePoolsClientListBySupercomputerResponse]](),
 	}
 }
 
@@ -61,8 +61,8 @@ type NodePoolsServerTransport struct {
 	srv                         *NodePoolsServer
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armdiscovery.NodePoolsClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armdiscovery.NodePoolsClientDeleteResponse]]
-	newListBySupercomputerPager *tracker[azfake.PagerResponder[armdiscovery.NodePoolsClientListBySupercomputerResponse]]
 	beginUpdate                 *tracker[azfake.PollerResponder[armdiscovery.NodePoolsClientUpdateResponse]]
+	newListBySupercomputerPager *tracker[azfake.PagerResponder[armdiscovery.NodePoolsClientListBySupercomputerResponse]]
 }
 
 // Do implements the policy.Transporter interface for NodePoolsServerTransport.
@@ -90,12 +90,12 @@ func (n *NodePoolsServerTransport) dispatchToMethodFake(req *http.Request, metho
 				res.resp, res.err = n.dispatchBeginCreateOrUpdate(req)
 			case "NodePoolsClient.BeginDelete":
 				res.resp, res.err = n.dispatchBeginDelete(req)
+			case "NodePoolsClient.BeginUpdate":
+				res.resp, res.err = n.dispatchBeginUpdate(req)
 			case "NodePoolsClient.Get":
 				res.resp, res.err = n.dispatchGet(req)
 			case "NodePoolsClient.NewListBySupercomputerPager":
 				res.resp, res.err = n.dispatchNewListBySupercomputerPager(req)
-			case "NodePoolsClient.BeginUpdate":
-				res.resp, res.err = n.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -212,6 +212,58 @@ func (n *NodePoolsServerTransport) dispatchBeginDelete(req *http.Request) (*http
 	return resp, nil
 }
 
+func (n *NodePoolsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if n.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := n.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Discovery/supercomputers/(?P<supercomputerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/nodePools/(?P<nodePoolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armdiscovery.NodePool](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		supercomputerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("supercomputerName")])
+		if err != nil {
+			return nil, err
+		}
+		nodePoolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("nodePoolName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := n.srv.BeginUpdate(req.Context(), resourceGroupNameParam, supercomputerNameParam, nodePoolNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		n.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		n.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		n.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (n *NodePoolsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if n.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -287,58 +339,6 @@ func (n *NodePoolsServerTransport) dispatchNewListBySupercomputerPager(req *http
 	if !server.PagerResponderMore(newListBySupercomputerPager) {
 		n.newListBySupercomputerPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (n *NodePoolsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if n.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := n.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Discovery/supercomputers/(?P<supercomputerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/nodePools/(?P<nodePoolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armdiscovery.NodePool](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		supercomputerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("supercomputerName")])
-		if err != nil {
-			return nil, err
-		}
-		nodePoolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("nodePoolName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := n.srv.BeginUpdate(req.Context(), resourceGroupNameParam, supercomputerNameParam, nodePoolNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		n.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		n.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		n.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

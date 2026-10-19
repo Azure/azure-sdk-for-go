@@ -30,38 +30,6 @@ type SubscriptionsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, billingAccountName string, billingSubscriptionName string, options *armbilling.SubscriptionsClientBeginDeleteOptions) (resp azfake.PollerResponder[armbilling.SubscriptionsClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method SubscriptionsClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, billingAccountName string, billingSubscriptionName string, options *armbilling.SubscriptionsClientGetOptions) (resp azfake.Responder[armbilling.SubscriptionsClientGetResponse], errResp azfake.ErrorResponder)
-
-	// GetByBillingProfile is the fake for method SubscriptionsClient.GetByBillingProfile
-	// HTTP status codes to indicate success: http.StatusOK
-	GetByBillingProfile func(ctx context.Context, billingAccountName string, billingProfileName string, billingSubscriptionName string, options *armbilling.SubscriptionsClientGetByBillingProfileOptions) (resp azfake.Responder[armbilling.SubscriptionsClientGetByBillingProfileResponse], errResp azfake.ErrorResponder)
-
-	// NewListByBillingAccountPager is the fake for method SubscriptionsClient.NewListByBillingAccountPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByBillingAccountPager func(billingAccountName string, options *armbilling.SubscriptionsClientListByBillingAccountOptions) (resp azfake.PagerResponder[armbilling.SubscriptionsClientListByBillingAccountResponse])
-
-	// NewListByBillingProfilePager is the fake for method SubscriptionsClient.NewListByBillingProfilePager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByBillingProfilePager func(billingAccountName string, billingProfileName string, options *armbilling.SubscriptionsClientListByBillingProfileOptions) (resp azfake.PagerResponder[armbilling.SubscriptionsClientListByBillingProfileResponse])
-
-	// NewListByCustomerPager is the fake for method SubscriptionsClient.NewListByCustomerPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByCustomerPager func(billingAccountName string, billingProfileName string, customerName string, options *armbilling.SubscriptionsClientListByCustomerOptions) (resp azfake.PagerResponder[armbilling.SubscriptionsClientListByCustomerResponse])
-
-	// NewListByCustomerAtBillingAccountPager is the fake for method SubscriptionsClient.NewListByCustomerAtBillingAccountPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByCustomerAtBillingAccountPager func(billingAccountName string, customerName string, options *armbilling.SubscriptionsClientListByCustomerAtBillingAccountOptions) (resp azfake.PagerResponder[armbilling.SubscriptionsClientListByCustomerAtBillingAccountResponse])
-
-	// NewListByEnrollmentAccountPager is the fake for method SubscriptionsClient.NewListByEnrollmentAccountPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByEnrollmentAccountPager func(billingAccountName string, enrollmentAccountName string, options *armbilling.SubscriptionsClientListByEnrollmentAccountOptions) (resp azfake.PagerResponder[armbilling.SubscriptionsClientListByEnrollmentAccountResponse])
-
-	// NewListByInvoiceSectionPager is the fake for method SubscriptionsClient.NewListByInvoiceSectionPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByInvoiceSectionPager func(billingAccountName string, billingProfileName string, invoiceSectionName string, options *armbilling.SubscriptionsClientListByInvoiceSectionOptions) (resp azfake.PagerResponder[armbilling.SubscriptionsClientListByInvoiceSectionResponse])
-
 	// BeginMerge is the fake for method SubscriptionsClient.BeginMerge
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginMerge func(ctx context.Context, billingAccountName string, billingSubscriptionName string, parameters armbilling.SubscriptionMergeRequest, options *armbilling.SubscriptionsClientBeginMergeOptions) (resp azfake.PollerResponder[armbilling.SubscriptionsClientMergeResponse], errResp azfake.ErrorResponder)
@@ -78,6 +46,38 @@ type SubscriptionsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, billingAccountName string, billingSubscriptionName string, parameters armbilling.SubscriptionPatch, options *armbilling.SubscriptionsClientBeginUpdateOptions) (resp azfake.PollerResponder[armbilling.SubscriptionsClientUpdateResponse], errResp azfake.ErrorResponder)
 
+	// Get is the fake for method SubscriptionsClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, billingAccountName string, billingSubscriptionName string, options *armbilling.SubscriptionsClientGetOptions) (resp azfake.Responder[armbilling.SubscriptionsClientGetResponse], errResp azfake.ErrorResponder)
+
+	// GetByBillingProfile is the fake for method SubscriptionsClient.GetByBillingProfile
+	// HTTP status codes to indicate success: http.StatusOK
+	GetByBillingProfile func(ctx context.Context, billingAccountName string, billingProfileName string, billingSubscriptionName string, options *armbilling.SubscriptionsClientGetByBillingProfileOptions) (resp azfake.Responder[armbilling.SubscriptionsClientGetByBillingProfileResponse], errResp azfake.ErrorResponder)
+
+	// NewListByBillingAccountPager is the fake for method SubscriptionsClient.NewListByBillingAccountPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByBillingAccountPager func(billingAccountName string, options *armbilling.SubscriptionsClientListByBillingAccountOptions) (resp azfake.PagerResponder[armbilling.SubscriptionsClientListByBillingAccountResponse])
+
+	// NewListByBillingProfilePager is the fake for method SubscriptionsClient.NewListByBillingProfilePager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByBillingProfilePager func(billingAccountName string, billingProfileName string, options *armbilling.SubscriptionsClientListByBillingProfileOptions) (resp azfake.PagerResponder[armbilling.SubscriptionsClientListByBillingProfileResponse])
+
+	// NewListByCustomerAtBillingAccountPager is the fake for method SubscriptionsClient.NewListByCustomerAtBillingAccountPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByCustomerAtBillingAccountPager func(billingAccountName string, customerName string, options *armbilling.SubscriptionsClientListByCustomerAtBillingAccountOptions) (resp azfake.PagerResponder[armbilling.SubscriptionsClientListByCustomerAtBillingAccountResponse])
+
+	// NewListByCustomerPager is the fake for method SubscriptionsClient.NewListByCustomerPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByCustomerPager func(billingAccountName string, billingProfileName string, customerName string, options *armbilling.SubscriptionsClientListByCustomerOptions) (resp azfake.PagerResponder[armbilling.SubscriptionsClientListByCustomerResponse])
+
+	// NewListByEnrollmentAccountPager is the fake for method SubscriptionsClient.NewListByEnrollmentAccountPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByEnrollmentAccountPager func(billingAccountName string, enrollmentAccountName string, options *armbilling.SubscriptionsClientListByEnrollmentAccountOptions) (resp azfake.PagerResponder[armbilling.SubscriptionsClientListByEnrollmentAccountResponse])
+
+	// NewListByInvoiceSectionPager is the fake for method SubscriptionsClient.NewListByInvoiceSectionPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByInvoiceSectionPager func(billingAccountName string, billingProfileName string, invoiceSectionName string, options *armbilling.SubscriptionsClientListByInvoiceSectionOptions) (resp azfake.PagerResponder[armbilling.SubscriptionsClientListByInvoiceSectionResponse])
+
 	// ValidateMoveEligibility is the fake for method SubscriptionsClient.ValidateMoveEligibility
 	// HTTP status codes to indicate success: http.StatusOK
 	ValidateMoveEligibility func(ctx context.Context, billingAccountName string, billingSubscriptionName string, parameters armbilling.MoveBillingSubscriptionRequest, options *armbilling.SubscriptionsClientValidateMoveEligibilityOptions) (resp azfake.Responder[armbilling.SubscriptionsClientValidateMoveEligibilityResponse], errResp azfake.ErrorResponder)
@@ -91,16 +91,16 @@ func NewSubscriptionsServerTransport(srv *SubscriptionsServer) *SubscriptionsSer
 		srv:                                    srv,
 		beginCancel:                            newTracker[azfake.PollerResponder[armbilling.SubscriptionsClientCancelResponse]](),
 		beginDelete:                            newTracker[azfake.PollerResponder[armbilling.SubscriptionsClientDeleteResponse]](),
-		newListByBillingAccountPager:           newTracker[azfake.PagerResponder[armbilling.SubscriptionsClientListByBillingAccountResponse]](),
-		newListByBillingProfilePager:           newTracker[azfake.PagerResponder[armbilling.SubscriptionsClientListByBillingProfileResponse]](),
-		newListByCustomerPager:                 newTracker[azfake.PagerResponder[armbilling.SubscriptionsClientListByCustomerResponse]](),
-		newListByCustomerAtBillingAccountPager: newTracker[azfake.PagerResponder[armbilling.SubscriptionsClientListByCustomerAtBillingAccountResponse]](),
-		newListByEnrollmentAccountPager:        newTracker[azfake.PagerResponder[armbilling.SubscriptionsClientListByEnrollmentAccountResponse]](),
-		newListByInvoiceSectionPager:           newTracker[azfake.PagerResponder[armbilling.SubscriptionsClientListByInvoiceSectionResponse]](),
 		beginMerge:                             newTracker[azfake.PollerResponder[armbilling.SubscriptionsClientMergeResponse]](),
 		beginMove:                              newTracker[azfake.PollerResponder[armbilling.SubscriptionsClientMoveResponse]](),
 		beginSplit:                             newTracker[azfake.PollerResponder[armbilling.SubscriptionsClientSplitResponse]](),
 		beginUpdate:                            newTracker[azfake.PollerResponder[armbilling.SubscriptionsClientUpdateResponse]](),
+		newListByBillingAccountPager:           newTracker[azfake.PagerResponder[armbilling.SubscriptionsClientListByBillingAccountResponse]](),
+		newListByBillingProfilePager:           newTracker[azfake.PagerResponder[armbilling.SubscriptionsClientListByBillingProfileResponse]](),
+		newListByCustomerAtBillingAccountPager: newTracker[azfake.PagerResponder[armbilling.SubscriptionsClientListByCustomerAtBillingAccountResponse]](),
+		newListByCustomerPager:                 newTracker[azfake.PagerResponder[armbilling.SubscriptionsClientListByCustomerResponse]](),
+		newListByEnrollmentAccountPager:        newTracker[azfake.PagerResponder[armbilling.SubscriptionsClientListByEnrollmentAccountResponse]](),
+		newListByInvoiceSectionPager:           newTracker[azfake.PagerResponder[armbilling.SubscriptionsClientListByInvoiceSectionResponse]](),
 	}
 }
 
@@ -110,16 +110,16 @@ type SubscriptionsServerTransport struct {
 	srv                                    *SubscriptionsServer
 	beginCancel                            *tracker[azfake.PollerResponder[armbilling.SubscriptionsClientCancelResponse]]
 	beginDelete                            *tracker[azfake.PollerResponder[armbilling.SubscriptionsClientDeleteResponse]]
-	newListByBillingAccountPager           *tracker[azfake.PagerResponder[armbilling.SubscriptionsClientListByBillingAccountResponse]]
-	newListByBillingProfilePager           *tracker[azfake.PagerResponder[armbilling.SubscriptionsClientListByBillingProfileResponse]]
-	newListByCustomerPager                 *tracker[azfake.PagerResponder[armbilling.SubscriptionsClientListByCustomerResponse]]
-	newListByCustomerAtBillingAccountPager *tracker[azfake.PagerResponder[armbilling.SubscriptionsClientListByCustomerAtBillingAccountResponse]]
-	newListByEnrollmentAccountPager        *tracker[azfake.PagerResponder[armbilling.SubscriptionsClientListByEnrollmentAccountResponse]]
-	newListByInvoiceSectionPager           *tracker[azfake.PagerResponder[armbilling.SubscriptionsClientListByInvoiceSectionResponse]]
 	beginMerge                             *tracker[azfake.PollerResponder[armbilling.SubscriptionsClientMergeResponse]]
 	beginMove                              *tracker[azfake.PollerResponder[armbilling.SubscriptionsClientMoveResponse]]
 	beginSplit                             *tracker[azfake.PollerResponder[armbilling.SubscriptionsClientSplitResponse]]
 	beginUpdate                            *tracker[azfake.PollerResponder[armbilling.SubscriptionsClientUpdateResponse]]
+	newListByBillingAccountPager           *tracker[azfake.PagerResponder[armbilling.SubscriptionsClientListByBillingAccountResponse]]
+	newListByBillingProfilePager           *tracker[azfake.PagerResponder[armbilling.SubscriptionsClientListByBillingProfileResponse]]
+	newListByCustomerAtBillingAccountPager *tracker[azfake.PagerResponder[armbilling.SubscriptionsClientListByCustomerAtBillingAccountResponse]]
+	newListByCustomerPager                 *tracker[azfake.PagerResponder[armbilling.SubscriptionsClientListByCustomerResponse]]
+	newListByEnrollmentAccountPager        *tracker[azfake.PagerResponder[armbilling.SubscriptionsClientListByEnrollmentAccountResponse]]
+	newListByInvoiceSectionPager           *tracker[azfake.PagerResponder[armbilling.SubscriptionsClientListByInvoiceSectionResponse]]
 }
 
 // Do implements the policy.Transporter interface for SubscriptionsServerTransport.
@@ -147,22 +147,6 @@ func (s *SubscriptionsServerTransport) dispatchToMethodFake(req *http.Request, m
 				res.resp, res.err = s.dispatchBeginCancel(req)
 			case "SubscriptionsClient.BeginDelete":
 				res.resp, res.err = s.dispatchBeginDelete(req)
-			case "SubscriptionsClient.Get":
-				res.resp, res.err = s.dispatchGet(req)
-			case "SubscriptionsClient.GetByBillingProfile":
-				res.resp, res.err = s.dispatchGetByBillingProfile(req)
-			case "SubscriptionsClient.NewListByBillingAccountPager":
-				res.resp, res.err = s.dispatchNewListByBillingAccountPager(req)
-			case "SubscriptionsClient.NewListByBillingProfilePager":
-				res.resp, res.err = s.dispatchNewListByBillingProfilePager(req)
-			case "SubscriptionsClient.NewListByCustomerPager":
-				res.resp, res.err = s.dispatchNewListByCustomerPager(req)
-			case "SubscriptionsClient.NewListByCustomerAtBillingAccountPager":
-				res.resp, res.err = s.dispatchNewListByCustomerAtBillingAccountPager(req)
-			case "SubscriptionsClient.NewListByEnrollmentAccountPager":
-				res.resp, res.err = s.dispatchNewListByEnrollmentAccountPager(req)
-			case "SubscriptionsClient.NewListByInvoiceSectionPager":
-				res.resp, res.err = s.dispatchNewListByInvoiceSectionPager(req)
 			case "SubscriptionsClient.BeginMerge":
 				res.resp, res.err = s.dispatchBeginMerge(req)
 			case "SubscriptionsClient.BeginMove":
@@ -171,6 +155,22 @@ func (s *SubscriptionsServerTransport) dispatchToMethodFake(req *http.Request, m
 				res.resp, res.err = s.dispatchBeginSplit(req)
 			case "SubscriptionsClient.BeginUpdate":
 				res.resp, res.err = s.dispatchBeginUpdate(req)
+			case "SubscriptionsClient.Get":
+				res.resp, res.err = s.dispatchGet(req)
+			case "SubscriptionsClient.GetByBillingProfile":
+				res.resp, res.err = s.dispatchGetByBillingProfile(req)
+			case "SubscriptionsClient.NewListByBillingAccountPager":
+				res.resp, res.err = s.dispatchNewListByBillingAccountPager(req)
+			case "SubscriptionsClient.NewListByBillingProfilePager":
+				res.resp, res.err = s.dispatchNewListByBillingProfilePager(req)
+			case "SubscriptionsClient.NewListByCustomerAtBillingAccountPager":
+				res.resp, res.err = s.dispatchNewListByCustomerAtBillingAccountPager(req)
+			case "SubscriptionsClient.NewListByCustomerPager":
+				res.resp, res.err = s.dispatchNewListByCustomerPager(req)
+			case "SubscriptionsClient.NewListByEnrollmentAccountPager":
+				res.resp, res.err = s.dispatchNewListByEnrollmentAccountPager(req)
+			case "SubscriptionsClient.NewListByInvoiceSectionPager":
+				res.resp, res.err = s.dispatchNewListByInvoiceSectionPager(req)
 			case "SubscriptionsClient.ValidateMoveEligibility":
 				res.resp, res.err = s.dispatchValidateMoveEligibility(req)
 			default:
@@ -276,6 +276,198 @@ func (s *SubscriptionsServerTransport) dispatchBeginDelete(req *http.Request) (*
 	}
 	if !server.PollerResponderMore(beginDelete) {
 		s.beginDelete.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (s *SubscriptionsServerTransport) dispatchBeginMerge(req *http.Request) (*http.Response, error) {
+	if s.srv.BeginMerge == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginMerge not implemented")}
+	}
+	beginMerge := s.beginMerge.get(req)
+	if beginMerge == nil {
+		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/billingSubscriptions/(?P<billingSubscriptionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/merge`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armbilling.SubscriptionMergeRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
+		if err != nil {
+			return nil, err
+		}
+		billingSubscriptionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingSubscriptionName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := s.srv.BeginMerge(req.Context(), billingAccountNameParam, billingSubscriptionNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginMerge = &respr
+		s.beginMerge.add(req, beginMerge)
+	}
+
+	resp, err := server.PollerResponderNext(beginMerge, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		s.beginMerge.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginMerge) {
+		s.beginMerge.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (s *SubscriptionsServerTransport) dispatchBeginMove(req *http.Request) (*http.Response, error) {
+	if s.srv.BeginMove == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginMove not implemented")}
+	}
+	beginMove := s.beginMove.get(req)
+	if beginMove == nil {
+		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/billingSubscriptions/(?P<billingSubscriptionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/move`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armbilling.MoveBillingSubscriptionRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
+		if err != nil {
+			return nil, err
+		}
+		billingSubscriptionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingSubscriptionName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := s.srv.BeginMove(req.Context(), billingAccountNameParam, billingSubscriptionNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginMove = &respr
+		s.beginMove.add(req, beginMove)
+	}
+
+	resp, err := server.PollerResponderNext(beginMove, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		s.beginMove.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginMove) {
+		s.beginMove.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (s *SubscriptionsServerTransport) dispatchBeginSplit(req *http.Request) (*http.Response, error) {
+	if s.srv.BeginSplit == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginSplit not implemented")}
+	}
+	beginSplit := s.beginSplit.get(req)
+	if beginSplit == nil {
+		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/billingSubscriptions/(?P<billingSubscriptionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/split`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armbilling.SubscriptionSplitRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
+		if err != nil {
+			return nil, err
+		}
+		billingSubscriptionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingSubscriptionName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := s.srv.BeginSplit(req.Context(), billingAccountNameParam, billingSubscriptionNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginSplit = &respr
+		s.beginSplit.add(req, beginSplit)
+	}
+
+	resp, err := server.PollerResponderNext(beginSplit, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		s.beginSplit.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginSplit) {
+		s.beginSplit.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (s *SubscriptionsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if s.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := s.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/billingSubscriptions/(?P<billingSubscriptionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armbilling.SubscriptionPatch](req)
+		if err != nil {
+			return nil, err
+		}
+		billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
+		if err != nil {
+			return nil, err
+		}
+		billingSubscriptionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingSubscriptionName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := s.srv.BeginUpdate(req.Context(), billingAccountNameParam, billingSubscriptionNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		s.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		s.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		s.beginUpdate.remove(req)
 	}
 
 	return resp, nil
@@ -547,6 +739,93 @@ func (s *SubscriptionsServerTransport) dispatchNewListByBillingProfilePager(req 
 	return resp, nil
 }
 
+func (s *SubscriptionsServerTransport) dispatchNewListByCustomerAtBillingAccountPager(req *http.Request) (*http.Response, error) {
+	if s.srv.NewListByCustomerAtBillingAccountPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByCustomerAtBillingAccountPager not implemented")}
+	}
+	newListByCustomerAtBillingAccountPager := s.newListByCustomerAtBillingAccountPager.get(req)
+	if newListByCustomerAtBillingAccountPager == nil {
+		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/customers/(?P<customerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/billingSubscriptions`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
+		if err != nil {
+			return nil, err
+		}
+		customerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("customerName")])
+		if err != nil {
+			return nil, err
+		}
+		includeDeletedParam, err := parseOptional(qp.Get("includeDeleted"), strconv.ParseBool)
+		if err != nil {
+			return nil, err
+		}
+		expandParam := getOptional(qp.Get("expand"))
+		filterParam := getOptional(qp.Get("filter"))
+		orderByParam := getOptional(qp.Get("orderBy"))
+		topParam, err := parseOptional(qp.Get("top"), func(v string) (int64, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 64)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return p, nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		skipParam, err := parseOptional(qp.Get("skip"), func(v string) (int64, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 64)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return p, nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		countParam, err := parseOptional(qp.Get("count"), strconv.ParseBool)
+		if err != nil {
+			return nil, err
+		}
+		searchParam := getOptional(qp.Get("search"))
+		var options *armbilling.SubscriptionsClientListByCustomerAtBillingAccountOptions
+		if includeDeletedParam != nil || expandParam != nil || filterParam != nil || orderByParam != nil || topParam != nil || skipParam != nil || countParam != nil || searchParam != nil {
+			options = &armbilling.SubscriptionsClientListByCustomerAtBillingAccountOptions{
+				IncludeDeleted: includeDeletedParam,
+				Expand:         expandParam,
+				Filter:         filterParam,
+				OrderBy:        orderByParam,
+				Top:            topParam,
+				Skip:           skipParam,
+				Count:          countParam,
+				Search:         searchParam,
+			}
+		}
+		resp := s.srv.NewListByCustomerAtBillingAccountPager(billingAccountNameParam, customerNameParam, options)
+		newListByCustomerAtBillingAccountPager = &resp
+		s.newListByCustomerAtBillingAccountPager.add(req, newListByCustomerAtBillingAccountPager)
+		server.PagerResponderInjectNextLinks(newListByCustomerAtBillingAccountPager, req, func(page *armbilling.SubscriptionsClientListByCustomerAtBillingAccountResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByCustomerAtBillingAccountPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		s.newListByCustomerAtBillingAccountPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByCustomerAtBillingAccountPager) {
+		s.newListByCustomerAtBillingAccountPager.remove(req)
+	}
+	return resp, nil
+}
+
 func (s *SubscriptionsServerTransport) dispatchNewListByCustomerPager(req *http.Request) (*http.Response, error) {
 	if s.srv.NewListByCustomerPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByCustomerPager not implemented")}
@@ -634,93 +913,6 @@ func (s *SubscriptionsServerTransport) dispatchNewListByCustomerPager(req *http.
 	}
 	if !server.PagerResponderMore(newListByCustomerPager) {
 		s.newListByCustomerPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (s *SubscriptionsServerTransport) dispatchNewListByCustomerAtBillingAccountPager(req *http.Request) (*http.Response, error) {
-	if s.srv.NewListByCustomerAtBillingAccountPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByCustomerAtBillingAccountPager not implemented")}
-	}
-	newListByCustomerAtBillingAccountPager := s.newListByCustomerAtBillingAccountPager.get(req)
-	if newListByCustomerAtBillingAccountPager == nil {
-		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/customers/(?P<customerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/billingSubscriptions`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
-		if err != nil {
-			return nil, err
-		}
-		customerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("customerName")])
-		if err != nil {
-			return nil, err
-		}
-		includeDeletedParam, err := parseOptional(qp.Get("includeDeleted"), strconv.ParseBool)
-		if err != nil {
-			return nil, err
-		}
-		expandParam := getOptional(qp.Get("expand"))
-		filterParam := getOptional(qp.Get("filter"))
-		orderByParam := getOptional(qp.Get("orderBy"))
-		topParam, err := parseOptional(qp.Get("top"), func(v string) (int64, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 64)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return p, nil
-		})
-		if err != nil {
-			return nil, err
-		}
-		skipParam, err := parseOptional(qp.Get("skip"), func(v string) (int64, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 64)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return p, nil
-		})
-		if err != nil {
-			return nil, err
-		}
-		countParam, err := parseOptional(qp.Get("count"), strconv.ParseBool)
-		if err != nil {
-			return nil, err
-		}
-		searchParam := getOptional(qp.Get("search"))
-		var options *armbilling.SubscriptionsClientListByCustomerAtBillingAccountOptions
-		if includeDeletedParam != nil || expandParam != nil || filterParam != nil || orderByParam != nil || topParam != nil || skipParam != nil || countParam != nil || searchParam != nil {
-			options = &armbilling.SubscriptionsClientListByCustomerAtBillingAccountOptions{
-				IncludeDeleted: includeDeletedParam,
-				Expand:         expandParam,
-				Filter:         filterParam,
-				OrderBy:        orderByParam,
-				Top:            topParam,
-				Skip:           skipParam,
-				Count:          countParam,
-				Search:         searchParam,
-			}
-		}
-		resp := s.srv.NewListByCustomerAtBillingAccountPager(billingAccountNameParam, customerNameParam, options)
-		newListByCustomerAtBillingAccountPager = &resp
-		s.newListByCustomerAtBillingAccountPager.add(req, newListByCustomerAtBillingAccountPager)
-		server.PagerResponderInjectNextLinks(newListByCustomerAtBillingAccountPager, req, func(page *armbilling.SubscriptionsClientListByCustomerAtBillingAccountResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByCustomerAtBillingAccountPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		s.newListByCustomerAtBillingAccountPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByCustomerAtBillingAccountPager) {
-		s.newListByCustomerAtBillingAccountPager.remove(req)
 	}
 	return resp, nil
 }
@@ -893,198 +1085,6 @@ func (s *SubscriptionsServerTransport) dispatchNewListByInvoiceSectionPager(req 
 	if !server.PagerResponderMore(newListByInvoiceSectionPager) {
 		s.newListByInvoiceSectionPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (s *SubscriptionsServerTransport) dispatchBeginMerge(req *http.Request) (*http.Response, error) {
-	if s.srv.BeginMerge == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginMerge not implemented")}
-	}
-	beginMerge := s.beginMerge.get(req)
-	if beginMerge == nil {
-		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/billingSubscriptions/(?P<billingSubscriptionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/merge`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armbilling.SubscriptionMergeRequest](req)
-		if err != nil {
-			return nil, err
-		}
-		billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
-		if err != nil {
-			return nil, err
-		}
-		billingSubscriptionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingSubscriptionName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := s.srv.BeginMerge(req.Context(), billingAccountNameParam, billingSubscriptionNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginMerge = &respr
-		s.beginMerge.add(req, beginMerge)
-	}
-
-	resp, err := server.PollerResponderNext(beginMerge, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		s.beginMerge.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginMerge) {
-		s.beginMerge.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (s *SubscriptionsServerTransport) dispatchBeginMove(req *http.Request) (*http.Response, error) {
-	if s.srv.BeginMove == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginMove not implemented")}
-	}
-	beginMove := s.beginMove.get(req)
-	if beginMove == nil {
-		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/billingSubscriptions/(?P<billingSubscriptionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/move`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armbilling.MoveBillingSubscriptionRequest](req)
-		if err != nil {
-			return nil, err
-		}
-		billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
-		if err != nil {
-			return nil, err
-		}
-		billingSubscriptionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingSubscriptionName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := s.srv.BeginMove(req.Context(), billingAccountNameParam, billingSubscriptionNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginMove = &respr
-		s.beginMove.add(req, beginMove)
-	}
-
-	resp, err := server.PollerResponderNext(beginMove, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		s.beginMove.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginMove) {
-		s.beginMove.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (s *SubscriptionsServerTransport) dispatchBeginSplit(req *http.Request) (*http.Response, error) {
-	if s.srv.BeginSplit == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginSplit not implemented")}
-	}
-	beginSplit := s.beginSplit.get(req)
-	if beginSplit == nil {
-		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/billingSubscriptions/(?P<billingSubscriptionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/split`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armbilling.SubscriptionSplitRequest](req)
-		if err != nil {
-			return nil, err
-		}
-		billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
-		if err != nil {
-			return nil, err
-		}
-		billingSubscriptionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingSubscriptionName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := s.srv.BeginSplit(req.Context(), billingAccountNameParam, billingSubscriptionNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginSplit = &respr
-		s.beginSplit.add(req, beginSplit)
-	}
-
-	resp, err := server.PollerResponderNext(beginSplit, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		s.beginSplit.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginSplit) {
-		s.beginSplit.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (s *SubscriptionsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if s.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := s.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/billingSubscriptions/(?P<billingSubscriptionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armbilling.SubscriptionPatch](req)
-		if err != nil {
-			return nil, err
-		}
-		billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
-		if err != nil {
-			return nil, err
-		}
-		billingSubscriptionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingSubscriptionName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := s.srv.BeginUpdate(req.Context(), billingAccountNameParam, billingSubscriptionNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		s.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		s.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		s.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

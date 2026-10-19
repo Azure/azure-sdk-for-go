@@ -69,7 +69,7 @@ func (client *EdgeActionExecutionFiltersClient) BeginCreate(ctx context.Context,
 	}
 }
 
-// Create - Create a EdgeActionExecutionFilter
+// create - Create a EdgeActionExecutionFilter
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *EdgeActionExecutionFiltersClient) create(ctx context.Context, resourceGroupName string, edgeActionName string, executionFilter string, resource EdgeActionExecutionFilter, options *EdgeActionExecutionFiltersClientBeginCreateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *EdgeActionExecutionFiltersClient) create(ctx context.Context, reso
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *EdgeActionExecutionFiltersClient) createCreateRequest(ctx context.Context, resourceGroupName string, edgeActionName string, executionFilter string, resource EdgeActionExecutionFilter, _ *EdgeActionExecutionFiltersClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}/executionFilters/{executionFilter}"
 	if client.subscriptionID == "" {
@@ -149,7 +149,7 @@ func (client *EdgeActionExecutionFiltersClient) BeginDelete(ctx context.Context,
 	}
 }
 
-// Delete - Delete a EdgeActionExecutionFilter
+// deleteOperation - Delete a EdgeActionExecutionFilter
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *EdgeActionExecutionFiltersClient) deleteOperation(ctx context.Context, resourceGroupName string, edgeActionName string, executionFilter string, options *EdgeActionExecutionFiltersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -171,7 +171,7 @@ func (client *EdgeActionExecutionFiltersClient) deleteOperation(ctx context.Cont
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *EdgeActionExecutionFiltersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, edgeActionName string, executionFilter string, _ *EdgeActionExecutionFiltersClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}/executionFilters/{executionFilter}"
 	if client.subscriptionID == "" {
@@ -197,6 +197,87 @@ func (client *EdgeActionExecutionFiltersClient) deleteCreateRequest(ctx context.
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20251201Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - Update a EdgeActionExecutionFilter
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - edgeActionName - The name of the Edge Action
+//   - executionFilter - The name of the execution filter
+//   - properties - The resource properties to be updated.
+//   - options - EdgeActionExecutionFiltersClientBeginUpdateOptions contains the optional parameters for the EdgeActionExecutionFiltersClient.BeginUpdate
+//     method.
+func (client *EdgeActionExecutionFiltersClient) BeginUpdate(ctx context.Context, resourceGroupName string, edgeActionName string, executionFilter string, properties EdgeActionExecutionFilterUpdate, options *EdgeActionExecutionFiltersClientBeginUpdateOptions) (*runtime.Poller[EdgeActionExecutionFiltersClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, edgeActionName, executionFilter, properties, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[EdgeActionExecutionFiltersClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[EdgeActionExecutionFiltersClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update a EdgeActionExecutionFilter
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *EdgeActionExecutionFiltersClient) update(ctx context.Context, resourceGroupName string, edgeActionName string, executionFilter string, properties EdgeActionExecutionFilterUpdate, options *EdgeActionExecutionFiltersClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "EdgeActionExecutionFiltersClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, edgeActionName, executionFilter, properties, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *EdgeActionExecutionFiltersClient) updateCreateRequest(ctx context.Context, resourceGroupName string, edgeActionName string, executionFilter string, properties EdgeActionExecutionFilterUpdate, _ *EdgeActionExecutionFiltersClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}/executionFilters/{executionFilter}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if edgeActionName == "" {
+		return nil, errors.New("parameter edgeActionName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{edgeActionName}", url.PathEscape(edgeActionName))
+	if executionFilter == "" {
+		return nil, errors.New("parameter executionFilter cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{executionFilter}", url.PathEscape(executionFilter))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20251201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, properties); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -341,85 +422,4 @@ func (client *EdgeActionExecutionFiltersClient) listByEdgeActionHandleResponse(r
 		return EdgeActionExecutionFiltersClientListByEdgeActionResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Update a EdgeActionExecutionFilter
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - edgeActionName - The name of the Edge Action
-//   - executionFilter - The name of the execution filter
-//   - properties - The resource properties to be updated.
-//   - options - EdgeActionExecutionFiltersClientBeginUpdateOptions contains the optional parameters for the EdgeActionExecutionFiltersClient.BeginUpdate
-//     method.
-func (client *EdgeActionExecutionFiltersClient) BeginUpdate(ctx context.Context, resourceGroupName string, edgeActionName string, executionFilter string, properties EdgeActionExecutionFilterUpdate, options *EdgeActionExecutionFiltersClientBeginUpdateOptions) (*runtime.Poller[EdgeActionExecutionFiltersClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, edgeActionName, executionFilter, properties, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[EdgeActionExecutionFiltersClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[EdgeActionExecutionFiltersClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update a EdgeActionExecutionFilter
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *EdgeActionExecutionFiltersClient) update(ctx context.Context, resourceGroupName string, edgeActionName string, executionFilter string, properties EdgeActionExecutionFilterUpdate, options *EdgeActionExecutionFiltersClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "EdgeActionExecutionFiltersClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, edgeActionName, executionFilter, properties, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *EdgeActionExecutionFiltersClient) updateCreateRequest(ctx context.Context, resourceGroupName string, edgeActionName string, executionFilter string, properties EdgeActionExecutionFilterUpdate, _ *EdgeActionExecutionFiltersClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}/executionFilters/{executionFilter}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if edgeActionName == "" {
-		return nil, errors.New("parameter edgeActionName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{edgeActionName}", url.PathEscape(edgeActionName))
-	if executionFilter == "" {
-		return nil, errors.New("parameter executionFilter cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{executionFilter}", url.PathEscape(executionFilter))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251201Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

@@ -67,7 +67,7 @@ func (client *ConnectorsClient) BeginCreateOrUpdate(ctx context.Context, connect
 	}
 }
 
-// CreateOrUpdate - Create a Connector
+// createOrUpdate - Create a Connector
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ConnectorsClient) createOrUpdate(ctx context.Context, connectorName string, resource Connector, options *ConnectorsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -89,7 +89,7 @@ func (client *ConnectorsClient) createOrUpdate(ctx context.Context, connectorNam
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ConnectorsClient) createOrUpdateCreateRequest(ctx context.Context, connectorName string, resource Connector, _ *ConnectorsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Impact/connectors/{connectorName}"
 	if client.subscriptionID == "" {

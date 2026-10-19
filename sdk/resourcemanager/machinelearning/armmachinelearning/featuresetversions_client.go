@@ -73,7 +73,7 @@ func (client *FeaturesetVersionsClient) BeginBackfill(ctx context.Context, resou
 	}
 }
 
-// Backfill - Backfill.
+// backfill - Backfill.
 //
 // Backfill.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -97,7 +97,7 @@ func (client *FeaturesetVersionsClient) backfill(ctx context.Context, resourceGr
 	return httpResp, nil
 }
 
-// backfillCreateRequest creates the Backfill request.
+// backfillCreateRequest creates the backfill request.
 func (client *FeaturesetVersionsClient) backfillCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, name string, version string, body FeaturesetVersionBackfillRequest, _ *FeaturesetVersionsClientBeginBackfillOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/featuresets/{name}/versions/{version}/backfill"
 	if client.subscriptionID == "" {
@@ -164,7 +164,7 @@ func (client *FeaturesetVersionsClient) BeginCreateOrUpdate(ctx context.Context,
 	}
 }
 
-// CreateOrUpdate - Create or update version.
+// createOrUpdate - Create or update version.
 //
 // Create or update version.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -188,7 +188,7 @@ func (client *FeaturesetVersionsClient) createOrUpdate(ctx context.Context, reso
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *FeaturesetVersionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, name string, version string, body FeaturesetVersion, _ *FeaturesetVersionsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/featuresets/{name}/versions/{version}"
 	if client.subscriptionID == "" {
@@ -253,7 +253,7 @@ func (client *FeaturesetVersionsClient) BeginDelete(ctx context.Context, resourc
 	}
 }
 
-// Delete - Delete version.
+// deleteOperation - Delete version.
 //
 // Delete version.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -277,7 +277,7 @@ func (client *FeaturesetVersionsClient) deleteOperation(ctx context.Context, res
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *FeaturesetVersionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, name string, version string, _ *FeaturesetVersionsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/featuresets/{name}/versions/{version}"
 	if client.subscriptionID == "" {

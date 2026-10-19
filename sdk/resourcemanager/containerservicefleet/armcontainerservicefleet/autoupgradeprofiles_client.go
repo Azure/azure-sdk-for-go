@@ -70,7 +70,7 @@ func (client *AutoUpgradeProfilesClient) BeginCreateOrUpdate(ctx context.Context
 	}
 }
 
-// CreateOrUpdate - Create a AutoUpgradeProfile
+// createOrUpdate - Create a AutoUpgradeProfile
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AutoUpgradeProfilesClient) createOrUpdate(ctx context.Context, resourceGroupName string, fleetName string, autoUpgradeProfileName string, resource AutoUpgradeProfile, options *AutoUpgradeProfilesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -92,7 +92,7 @@ func (client *AutoUpgradeProfilesClient) createOrUpdate(ctx context.Context, res
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *AutoUpgradeProfilesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, fleetName string, autoUpgradeProfileName string, resource AutoUpgradeProfile, options *AutoUpgradeProfilesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/autoUpgradeProfiles/{autoUpgradeProfileName}"
 	if client.subscriptionID == "" {
@@ -156,7 +156,7 @@ func (client *AutoUpgradeProfilesClient) BeginDelete(ctx context.Context, resour
 	}
 }
 
-// Delete - Delete a AutoUpgradeProfile
+// deleteOperation - Delete a AutoUpgradeProfile
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AutoUpgradeProfilesClient) deleteOperation(ctx context.Context, resourceGroupName string, fleetName string, autoUpgradeProfileName string, options *AutoUpgradeProfilesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -178,7 +178,7 @@ func (client *AutoUpgradeProfilesClient) deleteOperation(ctx context.Context, re
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *AutoUpgradeProfilesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, fleetName string, autoUpgradeProfileName string, options *AutoUpgradeProfilesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/autoUpgradeProfiles/{autoUpgradeProfileName}"
 	if client.subscriptionID == "" {

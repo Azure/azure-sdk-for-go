@@ -37,13 +37,13 @@ type IacProfilesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, iacProfileName string, options *armdevhub.IacProfilesClientGetOptions) (resp azfake.Responder[armdevhub.IacProfilesClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method IacProfilesClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armdevhub.IacProfilesClientListOptions) (resp azfake.PagerResponder[armdevhub.IacProfilesClientListResponse])
-
 	// NewListByResourceGroupPager is the fake for method IacProfilesClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, options *armdevhub.IacProfilesClientListByResourceGroupOptions) (resp azfake.PagerResponder[armdevhub.IacProfilesClientListByResourceGroupResponse])
+
+	// NewListPager is the fake for method IacProfilesClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armdevhub.IacProfilesClientListOptions) (resp azfake.PagerResponder[armdevhub.IacProfilesClientListResponse])
 
 	// Scale is the fake for method IacProfilesClient.Scale
 	// HTTP status codes to indicate success: http.StatusOK
@@ -64,8 +64,8 @@ type IacProfilesServer struct {
 func NewIacProfilesServerTransport(srv *IacProfilesServer) *IacProfilesServerTransport {
 	return &IacProfilesServerTransport{
 		srv:                         srv,
-		newListPager:                newTracker[azfake.PagerResponder[armdevhub.IacProfilesClientListResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armdevhub.IacProfilesClientListByResourceGroupResponse]](),
+		newListPager:                newTracker[azfake.PagerResponder[armdevhub.IacProfilesClientListResponse]](),
 	}
 }
 
@@ -73,8 +73,8 @@ func NewIacProfilesServerTransport(srv *IacProfilesServer) *IacProfilesServerTra
 // Don't use this type directly, use NewIacProfilesServerTransport instead.
 type IacProfilesServerTransport struct {
 	srv                         *IacProfilesServer
-	newListPager                *tracker[azfake.PagerResponder[armdevhub.IacProfilesClientListResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armdevhub.IacProfilesClientListByResourceGroupResponse]]
+	newListPager                *tracker[azfake.PagerResponder[armdevhub.IacProfilesClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for IacProfilesServerTransport.
@@ -106,10 +106,10 @@ func (i *IacProfilesServerTransport) dispatchToMethodFake(req *http.Request, met
 				res.resp, res.err = i.dispatchExport(req)
 			case "IacProfilesClient.Get":
 				res.resp, res.err = i.dispatchGet(req)
-			case "IacProfilesClient.NewListPager":
-				res.resp, res.err = i.dispatchNewListPager(req)
 			case "IacProfilesClient.NewListByResourceGroupPager":
 				res.resp, res.err = i.dispatchNewListByResourceGroupPager(req)
+			case "IacProfilesClient.NewListPager":
+				res.resp, res.err = i.dispatchNewListPager(req)
 			case "IacProfilesClient.Scale":
 				res.resp, res.err = i.dispatchScale(req)
 			case "IacProfilesClient.Sync":
@@ -272,39 +272,6 @@ func (i *IacProfilesServerTransport) dispatchGet(req *http.Request) (*http.Respo
 	return resp, nil
 }
 
-func (i *IacProfilesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if i.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := i.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DevHub/iacProfiles`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := i.srv.NewListPager(nil)
-		newListPager = &resp
-		i.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armdevhub.IacProfilesClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		i.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		i.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (i *IacProfilesServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
 	if i.srv.NewListByResourceGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
@@ -338,6 +305,39 @@ func (i *IacProfilesServerTransport) dispatchNewListByResourceGroupPager(req *ht
 	}
 	if !server.PagerResponderMore(newListByResourceGroupPager) {
 		i.newListByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (i *IacProfilesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if i.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := i.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DevHub/iacProfiles`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := i.srv.NewListPager(nil)
+		newListPager = &resp
+		i.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armdevhub.IacProfilesClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		i.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		i.newListPager.remove(req)
 	}
 	return resp, nil
 }

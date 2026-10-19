@@ -69,7 +69,7 @@ func (client *MeshMembershipsClient) BeginCreateOrUpdate(ctx context.Context, re
 	}
 }
 
-// CreateOrUpdate - Creates or updates the mesh membership of a managed cluster.
+// createOrUpdate - Creates or updates the mesh membership of a managed cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *MeshMembershipsClient) createOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, meshMembershipName string, parameters MeshMembership, options *MeshMembershipsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *MeshMembershipsClient) createOrUpdate(ctx context.Context, resourc
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *MeshMembershipsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, meshMembershipName string, parameters MeshMembership, _ *MeshMembershipsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/meshMemberships/{meshMembershipName}"
 	if client.subscriptionID == "" {
@@ -149,7 +149,7 @@ func (client *MeshMembershipsClient) BeginDelete(ctx context.Context, resourceGr
 	}
 }
 
-// Delete - Deletes the mesh membership of a managed cluster.
+// deleteOperation - Deletes the mesh membership of a managed cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *MeshMembershipsClient) deleteOperation(ctx context.Context, resourceGroupName string, resourceName string, meshMembershipName string, options *MeshMembershipsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -171,7 +171,7 @@ func (client *MeshMembershipsClient) deleteOperation(ctx context.Context, resour
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *MeshMembershipsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, meshMembershipName string, _ *MeshMembershipsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/meshMemberships/{meshMembershipName}"
 	if client.subscriptionID == "" {

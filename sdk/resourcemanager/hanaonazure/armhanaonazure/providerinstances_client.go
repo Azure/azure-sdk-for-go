@@ -71,7 +71,7 @@ func (client *ProviderInstancesClient) BeginCreate(ctx context.Context, resource
 	}
 }
 
-// Create - Creates a provider instance.
+// create - Creates a provider instance.
 //
 // The product Microsoft.Workloads/sapMonitors (AMS Classic) is officially retired as of May 31, 2023.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -95,7 +95,7 @@ func (client *ProviderInstancesClient) create(ctx context.Context, resourceGroup
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *ProviderInstancesClient) createCreateRequest(ctx context.Context, resourceGroupName string, sapMonitorName string, providerInstanceName string, providerInstanceParameter ProviderInstance, _ *ProviderInstancesClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HanaOnAzure/sapMonitors/{sapMonitorName}/providerInstances/{providerInstanceName}"
 	if client.subscriptionID == "" {
@@ -155,7 +155,7 @@ func (client *ProviderInstancesClient) BeginDelete(ctx context.Context, resource
 	}
 }
 
-// Delete - Deletes a provider instance.
+// deleteOperation - Deletes a provider instance.
 //
 // The product Microsoft.Workloads/sapMonitors (AMS Classic) is officially retired as of May 31, 2023.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -179,7 +179,7 @@ func (client *ProviderInstancesClient) deleteOperation(ctx context.Context, reso
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ProviderInstancesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, sapMonitorName string, providerInstanceName string, _ *ProviderInstancesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HanaOnAzure/sapMonitors/{sapMonitorName}/providerInstances/{providerInstanceName}"
 	if client.subscriptionID == "" {

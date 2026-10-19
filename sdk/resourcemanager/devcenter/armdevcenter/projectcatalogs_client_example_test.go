@@ -194,6 +194,93 @@ func ExampleProjectCatalogsClient_BeginDelete() {
 	}
 }
 
+// Generated from example definition: 2026-01-01-preview/ProjectCatalogs_Patch.json
+func ExampleProjectCatalogsClient_BeginPatch() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdevcenter.NewClientFactory("0ac520ee-14c0-480f-b6c9-0a90c58fffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewProjectCatalogsClient().BeginPatch(ctx, "rg1", "DevProject", "CentralCatalog", armdevcenter.CatalogUpdate{
+		Properties: &armdevcenter.CatalogUpdateProperties{
+			GitHub: &armdevcenter.GitCatalog{
+				Path: to.Ptr("/environments"),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdevcenter.ProjectCatalogsClientPatchResponse{
+	// 	Catalog: armdevcenter.Catalog{
+	// 		Name: to.Ptr("CentralCatalog"),
+	// 		Type: to.Ptr("Microsoft.DevCenter/projects/catalogs"),
+	// 		ID: to.Ptr("/subscriptions/0ac520ee-14c0-480f-b6c9-0a90c58ffff/resourceGroups/rg1/providers/Microsoft.DevCenter/projects/DevProject/catalogs/CentralCatalog"),
+	// 		Properties: &armdevcenter.CatalogProperties{
+	// 			ConnectionState: to.Ptr(armdevcenter.CatalogConnectionStateConnected),
+	// 			GitHub: &armdevcenter.GitCatalog{
+	// 				Path: to.Ptr("/environments"),
+	// 				Branch: to.Ptr("main"),
+	// 				SecretIdentifier: to.Ptr("https://contosokv.vault.azure.net/secrets/CentralRepoPat"),
+	// 				URI: to.Ptr("https://github.com/Contoso/centralrepo-fake.git"),
+	// 			},
+	// 			LastConnectionTime: to.Ptr(time.Date(2020, time.November, 18, 18, 28, 0, 314000000, time.UTC)),
+	// 			LastSyncStats: &armdevcenter.SyncStats{
+	// 				Added: to.Ptr[int32](1),
+	// 				Removed: to.Ptr[int32](1),
+	// 				SynchronizationErrors: to.Ptr[int32](1),
+	// 				Unchanged: to.Ptr[int32](1),
+	// 				Updated: to.Ptr[int32](1),
+	// 				ValidationErrors: to.Ptr[int32](1),
+	// 			},
+	// 			LastSyncTime: to.Ptr(time.Date(2020, time.November, 18, 18, 28, 0, 314000000, time.UTC)),
+	// 			ProvisioningState: to.Ptr(armdevcenter.ProvisioningStateSucceeded),
+	// 			SyncState: to.Ptr(armdevcenter.CatalogSyncStateSucceeded),
+	// 		},
+	// 		SystemData: &armdevcenter.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.November, 18, 18, 24, 24, 818000000, time.UTC)),
+	// 			CreatedBy: to.Ptr("User1"),
+	// 			CreatedByType: to.Ptr(armdevcenter.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.November, 18, 18, 24, 24, 818000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("User1"),
+	// 			LastModifiedByType: to.Ptr(armdevcenter.CreatedByTypeUser),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-01-01-preview/ProjectCatalogs_Sync.json
+func ExampleProjectCatalogsClient_BeginSync() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdevcenter.NewClientFactory("0ac520ee-14c0-480f-b6c9-0a90c58fffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewProjectCatalogsClient().BeginSync(ctx, "rg1", "DevProject", "CentralCatalog", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
 // Generated from example definition: 2026-01-01-preview/ProjectCatalogs_Get.json
 func ExampleProjectCatalogsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -360,92 +447,5 @@ func ExampleProjectCatalogsClient_NewListPager() {
 		// 		},
 		// 	},
 		// }
-	}
-}
-
-// Generated from example definition: 2026-01-01-preview/ProjectCatalogs_Patch.json
-func ExampleProjectCatalogsClient_BeginPatch() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdevcenter.NewClientFactory("0ac520ee-14c0-480f-b6c9-0a90c58fffff", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewProjectCatalogsClient().BeginPatch(ctx, "rg1", "DevProject", "CentralCatalog", armdevcenter.CatalogUpdate{
-		Properties: &armdevcenter.CatalogUpdateProperties{
-			GitHub: &armdevcenter.GitCatalog{
-				Path: to.Ptr("/environments"),
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdevcenter.ProjectCatalogsClientPatchResponse{
-	// 	Catalog: armdevcenter.Catalog{
-	// 		Name: to.Ptr("CentralCatalog"),
-	// 		Type: to.Ptr("Microsoft.DevCenter/projects/catalogs"),
-	// 		ID: to.Ptr("/subscriptions/0ac520ee-14c0-480f-b6c9-0a90c58ffff/resourceGroups/rg1/providers/Microsoft.DevCenter/projects/DevProject/catalogs/CentralCatalog"),
-	// 		Properties: &armdevcenter.CatalogProperties{
-	// 			ConnectionState: to.Ptr(armdevcenter.CatalogConnectionStateConnected),
-	// 			GitHub: &armdevcenter.GitCatalog{
-	// 				Path: to.Ptr("/environments"),
-	// 				Branch: to.Ptr("main"),
-	// 				SecretIdentifier: to.Ptr("https://contosokv.vault.azure.net/secrets/CentralRepoPat"),
-	// 				URI: to.Ptr("https://github.com/Contoso/centralrepo-fake.git"),
-	// 			},
-	// 			LastConnectionTime: to.Ptr(time.Date(2020, time.November, 18, 18, 28, 0, 314000000, time.UTC)),
-	// 			LastSyncStats: &armdevcenter.SyncStats{
-	// 				Added: to.Ptr[int32](1),
-	// 				Removed: to.Ptr[int32](1),
-	// 				SynchronizationErrors: to.Ptr[int32](1),
-	// 				Unchanged: to.Ptr[int32](1),
-	// 				Updated: to.Ptr[int32](1),
-	// 				ValidationErrors: to.Ptr[int32](1),
-	// 			},
-	// 			LastSyncTime: to.Ptr(time.Date(2020, time.November, 18, 18, 28, 0, 314000000, time.UTC)),
-	// 			ProvisioningState: to.Ptr(armdevcenter.ProvisioningStateSucceeded),
-	// 			SyncState: to.Ptr(armdevcenter.CatalogSyncStateSucceeded),
-	// 		},
-	// 		SystemData: &armdevcenter.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2020, time.November, 18, 18, 24, 24, 818000000, time.UTC)),
-	// 			CreatedBy: to.Ptr("User1"),
-	// 			CreatedByType: to.Ptr(armdevcenter.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.November, 18, 18, 24, 24, 818000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("User1"),
-	// 			LastModifiedByType: to.Ptr(armdevcenter.CreatedByTypeUser),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-01-01-preview/ProjectCatalogs_Sync.json
-func ExampleProjectCatalogsClient_BeginSync() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdevcenter.NewClientFactory("0ac520ee-14c0-480f-b6c9-0a90c58fffff", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewProjectCatalogsClient().BeginSync(ctx, "rg1", "DevProject", "CentralCatalog", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
 	}
 }

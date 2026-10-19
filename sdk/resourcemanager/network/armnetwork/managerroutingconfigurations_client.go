@@ -54,7 +54,7 @@ func NewManagerRoutingConfigurationsClient(subscriptionID string, credential azc
 //     method.
 func (client *ManagerRoutingConfigurationsClient) BeginDelete(ctx context.Context, resourceGroupName string, networkManagerName string, configurationName string, options *ManagerRoutingConfigurationsClientBeginDeleteOptions) (*runtime.Poller[ManagerRoutingConfigurationsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, networkManagerName, configurationName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, networkManagerName, configurationName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -69,9 +69,9 @@ func (client *ManagerRoutingConfigurationsClient) BeginDelete(ctx context.Contex
 	}
 }
 
-// delete - Deletes a network manager routing configuration.
+// deleteOperation - Deletes a network manager routing configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *ManagerRoutingConfigurationsClient) delete(ctx context.Context, resourceGroupName string, networkManagerName string, configurationName string, options *ManagerRoutingConfigurationsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *ManagerRoutingConfigurationsClient) deleteOperation(ctx context.Context, resourceGroupName string, networkManagerName string, configurationName string, options *ManagerRoutingConfigurationsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ManagerRoutingConfigurationsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)

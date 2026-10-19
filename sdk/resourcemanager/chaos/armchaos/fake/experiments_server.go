@@ -34,6 +34,14 @@ type ExperimentsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, experimentName string, options *armchaos.ExperimentsClientBeginDeleteOptions) (resp azfake.PollerResponder[armchaos.ExperimentsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginStart is the fake for method ExperimentsClient.BeginStart
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginStart func(ctx context.Context, resourceGroupName string, experimentName string, options *armchaos.ExperimentsClientBeginStartOptions) (resp azfake.PollerResponder[armchaos.ExperimentsClientStartResponse], errResp azfake.ErrorResponder)
+
+	// BeginUpdate is the fake for method ExperimentsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, experimentName string, properties armchaos.ExperimentUpdate, options *armchaos.ExperimentsClientBeginUpdateOptions) (resp azfake.PollerResponder[armchaos.ExperimentsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// ExecutionDetails is the fake for method ExperimentsClient.ExecutionDetails
 	// HTTP status codes to indicate success: http.StatusOK
 	ExecutionDetails func(ctx context.Context, resourceGroupName string, experimentName string, executionID string, options *armchaos.ExperimentsClientExecutionDetailsOptions) (resp azfake.Responder[armchaos.ExperimentsClientExecutionDetailsResponse], errResp azfake.ErrorResponder)
@@ -46,25 +54,17 @@ type ExperimentsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetExecution func(ctx context.Context, resourceGroupName string, experimentName string, executionID string, options *armchaos.ExperimentsClientGetExecutionOptions) (resp azfake.Responder[armchaos.ExperimentsClientGetExecutionResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method ExperimentsClient.NewListPager
+	// NewListAllExecutionsPager is the fake for method ExperimentsClient.NewListAllExecutionsPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, options *armchaos.ExperimentsClientListOptions) (resp azfake.PagerResponder[armchaos.ExperimentsClientListResponse])
+	NewListAllExecutionsPager func(resourceGroupName string, experimentName string, options *armchaos.ExperimentsClientListAllExecutionsOptions) (resp azfake.PagerResponder[armchaos.ExperimentsClientListAllExecutionsResponse])
 
 	// NewListAllPager is the fake for method ExperimentsClient.NewListAllPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListAllPager func(options *armchaos.ExperimentsClientListAllOptions) (resp azfake.PagerResponder[armchaos.ExperimentsClientListAllResponse])
 
-	// NewListAllExecutionsPager is the fake for method ExperimentsClient.NewListAllExecutionsPager
+	// NewListPager is the fake for method ExperimentsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListAllExecutionsPager func(resourceGroupName string, experimentName string, options *armchaos.ExperimentsClientListAllExecutionsOptions) (resp azfake.PagerResponder[armchaos.ExperimentsClientListAllExecutionsResponse])
-
-	// BeginStart is the fake for method ExperimentsClient.BeginStart
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginStart func(ctx context.Context, resourceGroupName string, experimentName string, options *armchaos.ExperimentsClientBeginStartOptions) (resp azfake.PollerResponder[armchaos.ExperimentsClientStartResponse], errResp azfake.ErrorResponder)
-
-	// BeginUpdate is the fake for method ExperimentsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, experimentName string, properties armchaos.ExperimentUpdate, options *armchaos.ExperimentsClientBeginUpdateOptions) (resp azfake.PollerResponder[armchaos.ExperimentsClientUpdateResponse], errResp azfake.ErrorResponder)
+	NewListPager func(resourceGroupName string, options *armchaos.ExperimentsClientListOptions) (resp azfake.PagerResponder[armchaos.ExperimentsClientListResponse])
 }
 
 // NewExperimentsServerTransport creates a new instance of ExperimentsServerTransport with the provided implementation.
@@ -76,11 +76,11 @@ func NewExperimentsServerTransport(srv *ExperimentsServer) *ExperimentsServerTra
 		beginCancel:               newTracker[azfake.PollerResponder[armchaos.ExperimentsClientCancelResponse]](),
 		beginCreateOrUpdate:       newTracker[azfake.PollerResponder[armchaos.ExperimentsClientCreateOrUpdateResponse]](),
 		beginDelete:               newTracker[azfake.PollerResponder[armchaos.ExperimentsClientDeleteResponse]](),
-		newListPager:              newTracker[azfake.PagerResponder[armchaos.ExperimentsClientListResponse]](),
-		newListAllPager:           newTracker[azfake.PagerResponder[armchaos.ExperimentsClientListAllResponse]](),
-		newListAllExecutionsPager: newTracker[azfake.PagerResponder[armchaos.ExperimentsClientListAllExecutionsResponse]](),
 		beginStart:                newTracker[azfake.PollerResponder[armchaos.ExperimentsClientStartResponse]](),
 		beginUpdate:               newTracker[azfake.PollerResponder[armchaos.ExperimentsClientUpdateResponse]](),
+		newListAllExecutionsPager: newTracker[azfake.PagerResponder[armchaos.ExperimentsClientListAllExecutionsResponse]](),
+		newListAllPager:           newTracker[azfake.PagerResponder[armchaos.ExperimentsClientListAllResponse]](),
+		newListPager:              newTracker[azfake.PagerResponder[armchaos.ExperimentsClientListResponse]](),
 	}
 }
 
@@ -91,11 +91,11 @@ type ExperimentsServerTransport struct {
 	beginCancel               *tracker[azfake.PollerResponder[armchaos.ExperimentsClientCancelResponse]]
 	beginCreateOrUpdate       *tracker[azfake.PollerResponder[armchaos.ExperimentsClientCreateOrUpdateResponse]]
 	beginDelete               *tracker[azfake.PollerResponder[armchaos.ExperimentsClientDeleteResponse]]
-	newListPager              *tracker[azfake.PagerResponder[armchaos.ExperimentsClientListResponse]]
-	newListAllPager           *tracker[azfake.PagerResponder[armchaos.ExperimentsClientListAllResponse]]
-	newListAllExecutionsPager *tracker[azfake.PagerResponder[armchaos.ExperimentsClientListAllExecutionsResponse]]
 	beginStart                *tracker[azfake.PollerResponder[armchaos.ExperimentsClientStartResponse]]
 	beginUpdate               *tracker[azfake.PollerResponder[armchaos.ExperimentsClientUpdateResponse]]
+	newListAllExecutionsPager *tracker[azfake.PagerResponder[armchaos.ExperimentsClientListAllExecutionsResponse]]
+	newListAllPager           *tracker[azfake.PagerResponder[armchaos.ExperimentsClientListAllResponse]]
+	newListPager              *tracker[azfake.PagerResponder[armchaos.ExperimentsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for ExperimentsServerTransport.
@@ -125,22 +125,22 @@ func (e *ExperimentsServerTransport) dispatchToMethodFake(req *http.Request, met
 				res.resp, res.err = e.dispatchBeginCreateOrUpdate(req)
 			case "ExperimentsClient.BeginDelete":
 				res.resp, res.err = e.dispatchBeginDelete(req)
+			case "ExperimentsClient.BeginStart":
+				res.resp, res.err = e.dispatchBeginStart(req)
+			case "ExperimentsClient.BeginUpdate":
+				res.resp, res.err = e.dispatchBeginUpdate(req)
 			case "ExperimentsClient.ExecutionDetails":
 				res.resp, res.err = e.dispatchExecutionDetails(req)
 			case "ExperimentsClient.Get":
 				res.resp, res.err = e.dispatchGet(req)
 			case "ExperimentsClient.GetExecution":
 				res.resp, res.err = e.dispatchGetExecution(req)
-			case "ExperimentsClient.NewListPager":
-				res.resp, res.err = e.dispatchNewListPager(req)
-			case "ExperimentsClient.NewListAllPager":
-				res.resp, res.err = e.dispatchNewListAllPager(req)
 			case "ExperimentsClient.NewListAllExecutionsPager":
 				res.resp, res.err = e.dispatchNewListAllExecutionsPager(req)
-			case "ExperimentsClient.BeginStart":
-				res.resp, res.err = e.dispatchBeginStart(req)
-			case "ExperimentsClient.BeginUpdate":
-				res.resp, res.err = e.dispatchBeginUpdate(req)
+			case "ExperimentsClient.NewListAllPager":
+				res.resp, res.err = e.dispatchNewListAllPager(req)
+			case "ExperimentsClient.NewListPager":
+				res.resp, res.err = e.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -293,6 +293,98 @@ func (e *ExperimentsServerTransport) dispatchBeginDelete(req *http.Request) (*ht
 	return resp, nil
 }
 
+func (e *ExperimentsServerTransport) dispatchBeginStart(req *http.Request) (*http.Response, error) {
+	if e.srv.BeginStart == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginStart not implemented")}
+	}
+	beginStart := e.beginStart.get(req)
+	if beginStart == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Chaos/experiments/(?P<experimentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/start`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		experimentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("experimentName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := e.srv.BeginStart(req.Context(), resourceGroupNameParam, experimentNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginStart = &respr
+		e.beginStart.add(req, beginStart)
+	}
+
+	resp, err := server.PollerResponderNext(beginStart, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		e.beginStart.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginStart) {
+		e.beginStart.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (e *ExperimentsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if e.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := e.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Chaos/experiments/(?P<experimentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armchaos.ExperimentUpdate](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		experimentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("experimentName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := e.srv.BeginUpdate(req.Context(), resourceGroupNameParam, experimentNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		e.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		e.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		e.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (e *ExperimentsServerTransport) dispatchExecutionDetails(req *http.Request) (*http.Response, error) {
 	if e.srv.ExecutionDetails == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ExecutionDetails not implemented")}
@@ -400,52 +492,43 @@ func (e *ExperimentsServerTransport) dispatchGetExecution(req *http.Request) (*h
 	return resp, nil
 }
 
-func (e *ExperimentsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if e.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+func (e *ExperimentsServerTransport) dispatchNewListAllExecutionsPager(req *http.Request) (*http.Response, error) {
+	if e.srv.NewListAllExecutionsPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListAllExecutionsPager not implemented")}
 	}
-	newListPager := e.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Chaos/experiments`
+	newListAllExecutionsPager := e.newListAllExecutionsPager.get(req)
+	if newListAllExecutionsPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Chaos/experiments/(?P<experimentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/executions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		qp := req.URL.Query()
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
 		}
-		runningParam, err := parseOptional(qp.Get("running"), strconv.ParseBool)
+		experimentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("experimentName")])
 		if err != nil {
 			return nil, err
 		}
-		continuationTokenParam := getOptional(qp.Get("continuationToken"))
-		var options *armchaos.ExperimentsClientListOptions
-		if runningParam != nil || continuationTokenParam != nil {
-			options = &armchaos.ExperimentsClientListOptions{
-				Running:           runningParam,
-				ContinuationToken: continuationTokenParam,
-			}
-		}
-		resp := e.srv.NewListPager(resourceGroupNameParam, options)
-		newListPager = &resp
-		e.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armchaos.ExperimentsClientListResponse, createLink func() string) {
+		resp := e.srv.NewListAllExecutionsPager(resourceGroupNameParam, experimentNameParam, nil)
+		newListAllExecutionsPager = &resp
+		e.newListAllExecutionsPager.add(req, newListAllExecutionsPager)
+		server.PagerResponderInjectNextLinks(newListAllExecutionsPager, req, func(page *armchaos.ExperimentsClientListAllExecutionsResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(newListPager, req)
+	resp, err := server.PagerResponderNext(newListAllExecutionsPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		e.newListPager.remove(req)
+		e.newListAllExecutionsPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(newListPager) {
-		e.newListPager.remove(req)
+	if !server.PagerResponderMore(newListAllExecutionsPager) {
+		e.newListAllExecutionsPager.remove(req)
 	}
 	return resp, nil
 }
@@ -496,136 +579,53 @@ func (e *ExperimentsServerTransport) dispatchNewListAllPager(req *http.Request) 
 	return resp, nil
 }
 
-func (e *ExperimentsServerTransport) dispatchNewListAllExecutionsPager(req *http.Request) (*http.Response, error) {
-	if e.srv.NewListAllExecutionsPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListAllExecutionsPager not implemented")}
+func (e *ExperimentsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if e.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	newListAllExecutionsPager := e.newListAllExecutionsPager.get(req)
-	if newListAllExecutionsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Chaos/experiments/(?P<experimentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/executions`
+	newListPager := e.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Chaos/experiments`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
+		qp := req.URL.Query()
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
 		}
-		experimentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("experimentName")])
+		runningParam, err := parseOptional(qp.Get("running"), strconv.ParseBool)
 		if err != nil {
 			return nil, err
 		}
-		resp := e.srv.NewListAllExecutionsPager(resourceGroupNameParam, experimentNameParam, nil)
-		newListAllExecutionsPager = &resp
-		e.newListAllExecutionsPager.add(req, newListAllExecutionsPager)
-		server.PagerResponderInjectNextLinks(newListAllExecutionsPager, req, func(page *armchaos.ExperimentsClientListAllExecutionsResponse, createLink func() string) {
+		continuationTokenParam := getOptional(qp.Get("continuationToken"))
+		var options *armchaos.ExperimentsClientListOptions
+		if runningParam != nil || continuationTokenParam != nil {
+			options = &armchaos.ExperimentsClientListOptions{
+				Running:           runningParam,
+				ContinuationToken: continuationTokenParam,
+			}
+		}
+		resp := e.srv.NewListPager(resourceGroupNameParam, options)
+		newListPager = &resp
+		e.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armchaos.ExperimentsClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(newListAllExecutionsPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		e.newListAllExecutionsPager.remove(req)
+		e.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(newListAllExecutionsPager) {
-		e.newListAllExecutionsPager.remove(req)
+	if !server.PagerResponderMore(newListPager) {
+		e.newListPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (e *ExperimentsServerTransport) dispatchBeginStart(req *http.Request) (*http.Response, error) {
-	if e.srv.BeginStart == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginStart not implemented")}
-	}
-	beginStart := e.beginStart.get(req)
-	if beginStart == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Chaos/experiments/(?P<experimentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/start`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		experimentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("experimentName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := e.srv.BeginStart(req.Context(), resourceGroupNameParam, experimentNameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginStart = &respr
-		e.beginStart.add(req, beginStart)
-	}
-
-	resp, err := server.PollerResponderNext(beginStart, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		e.beginStart.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginStart) {
-		e.beginStart.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (e *ExperimentsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if e.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := e.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Chaos/experiments/(?P<experimentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armchaos.ExperimentUpdate](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		experimentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("experimentName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := e.srv.BeginUpdate(req.Context(), resourceGroupNameParam, experimentNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		e.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		e.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		e.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

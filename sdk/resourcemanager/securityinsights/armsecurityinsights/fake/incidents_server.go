@@ -35,10 +35,6 @@ type IncidentsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, workspaceName string, incidentID string, options *armsecurityinsights.IncidentsClientGetOptions) (resp azfake.Responder[armsecurityinsights.IncidentsClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method IncidentsClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, workspaceName string, options *armsecurityinsights.IncidentsClientListOptions) (resp azfake.PagerResponder[armsecurityinsights.IncidentsClientListResponse])
-
 	// ListAlerts is the fake for method IncidentsClient.ListAlerts
 	// HTTP status codes to indicate success: http.StatusOK
 	ListAlerts func(ctx context.Context, resourceGroupName string, workspaceName string, incidentID string, options *armsecurityinsights.IncidentsClientListAlertsOptions) (resp azfake.Responder[armsecurityinsights.IncidentsClientListAlertsResponse], errResp azfake.ErrorResponder)
@@ -50,6 +46,10 @@ type IncidentsServer struct {
 	// ListEntities is the fake for method IncidentsClient.ListEntities
 	// HTTP status codes to indicate success: http.StatusOK
 	ListEntities func(ctx context.Context, resourceGroupName string, workspaceName string, incidentID string, options *armsecurityinsights.IncidentsClientListEntitiesOptions) (resp azfake.Responder[armsecurityinsights.IncidentsClientListEntitiesResponse], errResp azfake.ErrorResponder)
+
+	// NewListPager is the fake for method IncidentsClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(resourceGroupName string, workspaceName string, options *armsecurityinsights.IncidentsClientListOptions) (resp azfake.PagerResponder[armsecurityinsights.IncidentsClientListResponse])
 
 	// RunPlaybook is the fake for method IncidentsClient.RunPlaybook
 	// HTTP status codes to indicate success: http.StatusNoContent
@@ -100,14 +100,14 @@ func (i *IncidentsServerTransport) dispatchToMethodFake(req *http.Request, metho
 				res.resp, res.err = i.dispatchDelete(req)
 			case "IncidentsClient.Get":
 				res.resp, res.err = i.dispatchGet(req)
-			case "IncidentsClient.NewListPager":
-				res.resp, res.err = i.dispatchNewListPager(req)
 			case "IncidentsClient.ListAlerts":
 				res.resp, res.err = i.dispatchListAlerts(req)
 			case "IncidentsClient.ListBookmarks":
 				res.resp, res.err = i.dispatchListBookmarks(req)
 			case "IncidentsClient.ListEntities":
 				res.resp, res.err = i.dispatchListEntities(req)
+			case "IncidentsClient.NewListPager":
+				res.resp, res.err = i.dispatchNewListPager(req)
 			case "IncidentsClient.RunPlaybook":
 				res.resp, res.err = i.dispatchRunPlaybook(req)
 			default:
@@ -241,70 +241,6 @@ func (i *IncidentsServerTransport) dispatchGet(req *http.Request) (*http.Respons
 	return resp, nil
 }
 
-func (i *IncidentsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if i.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := i.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.OperationalInsights/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.SecurityInsights/incidents`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
-		if err != nil {
-			return nil, err
-		}
-		filterParam := getOptional(qp.Get("$filter"))
-		orderbyParam := getOptional(qp.Get("$orderby"))
-		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
-		})
-		if err != nil {
-			return nil, err
-		}
-		skipTokenParam := getOptional(qp.Get("$skipToken"))
-		var options *armsecurityinsights.IncidentsClientListOptions
-		if filterParam != nil || orderbyParam != nil || topParam != nil || skipTokenParam != nil {
-			options = &armsecurityinsights.IncidentsClientListOptions{
-				Filter:    filterParam,
-				Orderby:   orderbyParam,
-				Top:       topParam,
-				SkipToken: skipTokenParam,
-			}
-		}
-		resp := i.srv.NewListPager(resourceGroupNameParam, workspaceNameParam, options)
-		newListPager = &resp
-		i.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armsecurityinsights.IncidentsClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		i.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		i.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (i *IncidentsServerTransport) dispatchListAlerts(req *http.Request) (*http.Response, error) {
 	if i.srv.ListAlerts == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListAlerts not implemented")}
@@ -412,6 +348,70 @@ func (i *IncidentsServerTransport) dispatchListEntities(req *http.Request) (*htt
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).IncidentEntitiesResponse, req)
 	if err != nil {
 		return nil, err
+	}
+	return resp, nil
+}
+
+func (i *IncidentsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if i.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := i.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.OperationalInsights/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.SecurityInsights/incidents`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
+		if err != nil {
+			return nil, err
+		}
+		filterParam := getOptional(qp.Get("$filter"))
+		orderbyParam := getOptional(qp.Get("$orderby"))
+		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		skipTokenParam := getOptional(qp.Get("$skipToken"))
+		var options *armsecurityinsights.IncidentsClientListOptions
+		if filterParam != nil || orderbyParam != nil || topParam != nil || skipTokenParam != nil {
+			options = &armsecurityinsights.IncidentsClientListOptions{
+				Filter:    filterParam,
+				Orderby:   orderbyParam,
+				Top:       topParam,
+				SkipToken: skipTokenParam,
+			}
+		}
+		resp := i.srv.NewListPager(resourceGroupNameParam, workspaceNameParam, options)
+		newListPager = &resp
+		i.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armsecurityinsights.IncidentsClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		i.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		i.newListPager.remove(req)
 	}
 	return resp, nil
 }

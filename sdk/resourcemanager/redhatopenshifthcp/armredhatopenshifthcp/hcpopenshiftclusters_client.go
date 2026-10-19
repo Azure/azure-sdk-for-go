@@ -68,7 +68,7 @@ func (client *HcpOpenShiftClustersClient) BeginCreateOrUpdate(ctx context.Contex
 	}
 }
 
-// CreateOrUpdate - Create a HcpOpenShiftCluster
+// createOrUpdate - Create a HcpOpenShiftCluster
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *HcpOpenShiftClustersClient) createOrUpdate(ctx context.Context, resourceGroupName string, hcpOpenShiftClusterName string, resource HcpOpenShiftCluster, options *HcpOpenShiftClustersClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -90,7 +90,7 @@ func (client *HcpOpenShiftClustersClient) createOrUpdate(ctx context.Context, re
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *HcpOpenShiftClustersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, hcpOpenShiftClusterName string, resource HcpOpenShiftCluster, _ *HcpOpenShiftClustersClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RedHatOpenShift/hcpOpenShiftClusters/{hcpOpenShiftClusterName}"
 	if client.subscriptionID == "" {
@@ -143,7 +143,7 @@ func (client *HcpOpenShiftClustersClient) BeginDelete(ctx context.Context, resou
 	}
 }
 
-// Delete - Delete a HcpOpenShiftCluster
+// deleteOperation - Delete a HcpOpenShiftCluster
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *HcpOpenShiftClustersClient) deleteOperation(ctx context.Context, resourceGroupName string, hcpOpenShiftClusterName string, options *HcpOpenShiftClustersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -165,7 +165,7 @@ func (client *HcpOpenShiftClustersClient) deleteOperation(ctx context.Context, r
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *HcpOpenShiftClustersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, hcpOpenShiftClusterName string, _ *HcpOpenShiftClustersClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RedHatOpenShift/hcpOpenShiftClusters/{hcpOpenShiftClusterName}"
 	if client.subscriptionID == "" {
@@ -187,6 +187,228 @@ func (client *HcpOpenShiftClustersClient) deleteCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20260901Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginRequestAdminCredential - Request a temporary admin kubeconfig for the cluster
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - hcpOpenShiftClusterName - The name of the HcpOpenShiftCluster
+//   - body - The content of the action request
+//   - options - HcpOpenShiftClustersClientBeginRequestAdminCredentialOptions contains the optional parameters for the HcpOpenShiftClustersClient.BeginRequestAdminCredential
+//     method.
+func (client *HcpOpenShiftClustersClient) BeginRequestAdminCredential(ctx context.Context, resourceGroupName string, hcpOpenShiftClusterName string, body HcpOpenShiftClusterAdminCredentialRequest, options *HcpOpenShiftClustersClientBeginRequestAdminCredentialOptions) (*runtime.Poller[HcpOpenShiftClustersClientRequestAdminCredentialResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.requestAdminCredential(ctx, resourceGroupName, hcpOpenShiftClusterName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[HcpOpenShiftClustersClientRequestAdminCredentialResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[HcpOpenShiftClustersClientRequestAdminCredentialResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// requestAdminCredential - Request a temporary admin kubeconfig for the cluster
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *HcpOpenShiftClustersClient) requestAdminCredential(ctx context.Context, resourceGroupName string, hcpOpenShiftClusterName string, body HcpOpenShiftClusterAdminCredentialRequest, options *HcpOpenShiftClustersClientBeginRequestAdminCredentialOptions) (*http.Response, error) {
+	var err error
+	const operationName = "HcpOpenShiftClustersClient.BeginRequestAdminCredential"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.requestAdminCredentialCreateRequest(ctx, resourceGroupName, hcpOpenShiftClusterName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// requestAdminCredentialCreateRequest creates the requestAdminCredential request.
+func (client *HcpOpenShiftClustersClient) requestAdminCredentialCreateRequest(ctx context.Context, resourceGroupName string, hcpOpenShiftClusterName string, body HcpOpenShiftClusterAdminCredentialRequest, _ *HcpOpenShiftClustersClientBeginRequestAdminCredentialOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RedHatOpenShift/hcpOpenShiftClusters/{hcpOpenShiftClusterName}/requestAdminCredential"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if hcpOpenShiftClusterName == "" {
+		return nil, errors.New("parameter hcpOpenShiftClusterName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{hcpOpenShiftClusterName}", url.PathEscape(hcpOpenShiftClusterName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260901Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginRevokeCredentials - Revoke all credentials issued by requestAdminCredential
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - hcpOpenShiftClusterName - The name of the HcpOpenShiftCluster
+//   - options - HcpOpenShiftClustersClientBeginRevokeCredentialsOptions contains the optional parameters for the HcpOpenShiftClustersClient.BeginRevokeCredentials
+//     method.
+func (client *HcpOpenShiftClustersClient) BeginRevokeCredentials(ctx context.Context, resourceGroupName string, hcpOpenShiftClusterName string, options *HcpOpenShiftClustersClientBeginRevokeCredentialsOptions) (*runtime.Poller[HcpOpenShiftClustersClientRevokeCredentialsResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.revokeCredentials(ctx, resourceGroupName, hcpOpenShiftClusterName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[HcpOpenShiftClustersClientRevokeCredentialsResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[HcpOpenShiftClustersClientRevokeCredentialsResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// revokeCredentials - Revoke all credentials issued by requestAdminCredential
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *HcpOpenShiftClustersClient) revokeCredentials(ctx context.Context, resourceGroupName string, hcpOpenShiftClusterName string, options *HcpOpenShiftClustersClientBeginRevokeCredentialsOptions) (*http.Response, error) {
+	var err error
+	const operationName = "HcpOpenShiftClustersClient.BeginRevokeCredentials"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.revokeCredentialsCreateRequest(ctx, resourceGroupName, hcpOpenShiftClusterName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// revokeCredentialsCreateRequest creates the revokeCredentials request.
+func (client *HcpOpenShiftClustersClient) revokeCredentialsCreateRequest(ctx context.Context, resourceGroupName string, hcpOpenShiftClusterName string, _ *HcpOpenShiftClustersClientBeginRevokeCredentialsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RedHatOpenShift/hcpOpenShiftClusters/{hcpOpenShiftClusterName}/revokeCredentials"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if hcpOpenShiftClusterName == "" {
+		return nil, errors.New("parameter hcpOpenShiftClusterName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{hcpOpenShiftClusterName}", url.PathEscape(hcpOpenShiftClusterName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260901Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - Update a HcpOpenShiftCluster
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - hcpOpenShiftClusterName - The name of the HcpOpenShiftCluster
+//   - properties - The resource properties to be updated.
+//   - options - HcpOpenShiftClustersClientBeginUpdateOptions contains the optional parameters for the HcpOpenShiftClustersClient.BeginUpdate
+//     method.
+func (client *HcpOpenShiftClustersClient) BeginUpdate(ctx context.Context, resourceGroupName string, hcpOpenShiftClusterName string, properties HcpOpenShiftCluster, options *HcpOpenShiftClustersClientBeginUpdateOptions) (*runtime.Poller[HcpOpenShiftClustersClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, hcpOpenShiftClusterName, properties, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[HcpOpenShiftClustersClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[HcpOpenShiftClustersClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update a HcpOpenShiftCluster
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *HcpOpenShiftClustersClient) update(ctx context.Context, resourceGroupName string, hcpOpenShiftClusterName string, properties HcpOpenShiftCluster, options *HcpOpenShiftClustersClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "HcpOpenShiftClustersClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, hcpOpenShiftClusterName, properties, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *HcpOpenShiftClustersClient) updateCreateRequest(ctx context.Context, resourceGroupName string, hcpOpenShiftClusterName string, properties HcpOpenShiftCluster, _ *HcpOpenShiftClustersClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RedHatOpenShift/hcpOpenShiftClusters/{hcpOpenShiftClusterName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if hcpOpenShiftClusterName == "" {
+		return nil, errors.New("parameter hcpOpenShiftClusterName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{hcpOpenShiftClusterName}", url.PathEscape(hcpOpenShiftClusterName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260901Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, properties); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -388,226 +610,4 @@ func (client *HcpOpenShiftClustersClient) listBySubscriptionHandleResponse(resp 
 		return HcpOpenShiftClustersClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginRequestAdminCredential - Request a temporary admin kubeconfig for the cluster
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - hcpOpenShiftClusterName - The name of the HcpOpenShiftCluster
-//   - body - The content of the action request
-//   - options - HcpOpenShiftClustersClientBeginRequestAdminCredentialOptions contains the optional parameters for the HcpOpenShiftClustersClient.BeginRequestAdminCredential
-//     method.
-func (client *HcpOpenShiftClustersClient) BeginRequestAdminCredential(ctx context.Context, resourceGroupName string, hcpOpenShiftClusterName string, body HcpOpenShiftClusterAdminCredentialRequest, options *HcpOpenShiftClustersClientBeginRequestAdminCredentialOptions) (*runtime.Poller[HcpOpenShiftClustersClientRequestAdminCredentialResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.requestAdminCredential(ctx, resourceGroupName, hcpOpenShiftClusterName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[HcpOpenShiftClustersClientRequestAdminCredentialResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[HcpOpenShiftClustersClientRequestAdminCredentialResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// RequestAdminCredential - Request a temporary admin kubeconfig for the cluster
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *HcpOpenShiftClustersClient) requestAdminCredential(ctx context.Context, resourceGroupName string, hcpOpenShiftClusterName string, body HcpOpenShiftClusterAdminCredentialRequest, options *HcpOpenShiftClustersClientBeginRequestAdminCredentialOptions) (*http.Response, error) {
-	var err error
-	const operationName = "HcpOpenShiftClustersClient.BeginRequestAdminCredential"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.requestAdminCredentialCreateRequest(ctx, resourceGroupName, hcpOpenShiftClusterName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// requestAdminCredentialCreateRequest creates the RequestAdminCredential request.
-func (client *HcpOpenShiftClustersClient) requestAdminCredentialCreateRequest(ctx context.Context, resourceGroupName string, hcpOpenShiftClusterName string, body HcpOpenShiftClusterAdminCredentialRequest, _ *HcpOpenShiftClustersClientBeginRequestAdminCredentialOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RedHatOpenShift/hcpOpenShiftClusters/{hcpOpenShiftClusterName}/requestAdminCredential"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if hcpOpenShiftClusterName == "" {
-		return nil, errors.New("parameter hcpOpenShiftClusterName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{hcpOpenShiftClusterName}", url.PathEscape(hcpOpenShiftClusterName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260901Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginRevokeCredentials - Revoke all credentials issued by requestAdminCredential
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - hcpOpenShiftClusterName - The name of the HcpOpenShiftCluster
-//   - options - HcpOpenShiftClustersClientBeginRevokeCredentialsOptions contains the optional parameters for the HcpOpenShiftClustersClient.BeginRevokeCredentials
-//     method.
-func (client *HcpOpenShiftClustersClient) BeginRevokeCredentials(ctx context.Context, resourceGroupName string, hcpOpenShiftClusterName string, options *HcpOpenShiftClustersClientBeginRevokeCredentialsOptions) (*runtime.Poller[HcpOpenShiftClustersClientRevokeCredentialsResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.revokeCredentials(ctx, resourceGroupName, hcpOpenShiftClusterName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[HcpOpenShiftClustersClientRevokeCredentialsResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[HcpOpenShiftClustersClientRevokeCredentialsResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// RevokeCredentials - Revoke all credentials issued by requestAdminCredential
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *HcpOpenShiftClustersClient) revokeCredentials(ctx context.Context, resourceGroupName string, hcpOpenShiftClusterName string, options *HcpOpenShiftClustersClientBeginRevokeCredentialsOptions) (*http.Response, error) {
-	var err error
-	const operationName = "HcpOpenShiftClustersClient.BeginRevokeCredentials"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.revokeCredentialsCreateRequest(ctx, resourceGroupName, hcpOpenShiftClusterName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// revokeCredentialsCreateRequest creates the RevokeCredentials request.
-func (client *HcpOpenShiftClustersClient) revokeCredentialsCreateRequest(ctx context.Context, resourceGroupName string, hcpOpenShiftClusterName string, _ *HcpOpenShiftClustersClientBeginRevokeCredentialsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RedHatOpenShift/hcpOpenShiftClusters/{hcpOpenShiftClusterName}/revokeCredentials"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if hcpOpenShiftClusterName == "" {
-		return nil, errors.New("parameter hcpOpenShiftClusterName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{hcpOpenShiftClusterName}", url.PathEscape(hcpOpenShiftClusterName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260901Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
-}
-
-// BeginUpdate - Update a HcpOpenShiftCluster
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - hcpOpenShiftClusterName - The name of the HcpOpenShiftCluster
-//   - properties - The resource properties to be updated.
-//   - options - HcpOpenShiftClustersClientBeginUpdateOptions contains the optional parameters for the HcpOpenShiftClustersClient.BeginUpdate
-//     method.
-func (client *HcpOpenShiftClustersClient) BeginUpdate(ctx context.Context, resourceGroupName string, hcpOpenShiftClusterName string, properties HcpOpenShiftCluster, options *HcpOpenShiftClustersClientBeginUpdateOptions) (*runtime.Poller[HcpOpenShiftClustersClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, hcpOpenShiftClusterName, properties, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[HcpOpenShiftClustersClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[HcpOpenShiftClustersClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update a HcpOpenShiftCluster
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *HcpOpenShiftClustersClient) update(ctx context.Context, resourceGroupName string, hcpOpenShiftClusterName string, properties HcpOpenShiftCluster, options *HcpOpenShiftClustersClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "HcpOpenShiftClustersClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, hcpOpenShiftClusterName, properties, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *HcpOpenShiftClustersClient) updateCreateRequest(ctx context.Context, resourceGroupName string, hcpOpenShiftClusterName string, properties HcpOpenShiftCluster, _ *HcpOpenShiftClustersClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RedHatOpenShift/hcpOpenShiftClusters/{hcpOpenShiftClusterName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if hcpOpenShiftClusterName == "" {
-		return nil, errors.New("parameter hcpOpenShiftClusterName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{hcpOpenShiftClusterName}", url.PathEscape(hcpOpenShiftClusterName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260901Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

@@ -25,13 +25,13 @@ type TopicTypesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, topicTypeName string, options *armeventgrid.TopicTypesClientGetOptions) (resp azfake.Responder[armeventgrid.TopicTypesClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method TopicTypesClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armeventgrid.TopicTypesClientListOptions) (resp azfake.PagerResponder[armeventgrid.TopicTypesClientListResponse])
-
 	// NewListEventTypesPager is the fake for method TopicTypesClient.NewListEventTypesPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListEventTypesPager func(topicTypeName string, options *armeventgrid.TopicTypesClientListEventTypesOptions) (resp azfake.PagerResponder[armeventgrid.TopicTypesClientListEventTypesResponse])
+
+	// NewListPager is the fake for method TopicTypesClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armeventgrid.TopicTypesClientListOptions) (resp azfake.PagerResponder[armeventgrid.TopicTypesClientListResponse])
 }
 
 // NewTopicTypesServerTransport creates a new instance of TopicTypesServerTransport with the provided implementation.
@@ -40,8 +40,8 @@ type TopicTypesServer struct {
 func NewTopicTypesServerTransport(srv *TopicTypesServer) *TopicTypesServerTransport {
 	return &TopicTypesServerTransport{
 		srv:                    srv,
-		newListPager:           newTracker[azfake.PagerResponder[armeventgrid.TopicTypesClientListResponse]](),
 		newListEventTypesPager: newTracker[azfake.PagerResponder[armeventgrid.TopicTypesClientListEventTypesResponse]](),
+		newListPager:           newTracker[azfake.PagerResponder[armeventgrid.TopicTypesClientListResponse]](),
 	}
 }
 
@@ -49,8 +49,8 @@ func NewTopicTypesServerTransport(srv *TopicTypesServer) *TopicTypesServerTransp
 // Don't use this type directly, use NewTopicTypesServerTransport instead.
 type TopicTypesServerTransport struct {
 	srv                    *TopicTypesServer
-	newListPager           *tracker[azfake.PagerResponder[armeventgrid.TopicTypesClientListResponse]]
 	newListEventTypesPager *tracker[azfake.PagerResponder[armeventgrid.TopicTypesClientListEventTypesResponse]]
+	newListPager           *tracker[azfake.PagerResponder[armeventgrid.TopicTypesClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for TopicTypesServerTransport.
@@ -76,10 +76,10 @@ func (t *TopicTypesServerTransport) dispatchToMethodFake(req *http.Request, meth
 			switch method {
 			case "TopicTypesClient.Get":
 				res.resp, res.err = t.dispatchGet(req)
-			case "TopicTypesClient.NewListPager":
-				res.resp, res.err = t.dispatchNewListPager(req)
 			case "TopicTypesClient.NewListEventTypesPager":
 				res.resp, res.err = t.dispatchNewListEventTypesPager(req)
+			case "TopicTypesClient.NewListPager":
+				res.resp, res.err = t.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -125,33 +125,6 @@ func (t *TopicTypesServerTransport) dispatchGet(req *http.Request) (*http.Respon
 	return resp, nil
 }
 
-func (t *TopicTypesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if t.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := t.newListPager.get(req)
-	if newListPager == nil {
-		resp := t.srv.NewListPager(nil)
-		newListPager = &resp
-		t.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armeventgrid.TopicTypesClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		t.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		t.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (t *TopicTypesServerTransport) dispatchNewListEventTypesPager(req *http.Request) (*http.Response, error) {
 	if t.srv.NewListEventTypesPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListEventTypesPager not implemented")}
@@ -185,6 +158,33 @@ func (t *TopicTypesServerTransport) dispatchNewListEventTypesPager(req *http.Req
 	}
 	if !server.PagerResponderMore(newListEventTypesPager) {
 		t.newListEventTypesPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (t *TopicTypesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if t.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := t.newListPager.get(req)
+	if newListPager == nil {
+		resp := t.srv.NewListPager(nil)
+		newListPager = &resp
+		t.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armeventgrid.TopicTypesClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		t.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		t.newListPager.remove(req)
 	}
 	return resp, nil
 }

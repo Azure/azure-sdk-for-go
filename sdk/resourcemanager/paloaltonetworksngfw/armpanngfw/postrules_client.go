@@ -62,7 +62,7 @@ func (client *PostRulesClient) BeginCreateOrUpdate(ctx context.Context, globalRu
 	}
 }
 
-// CreateOrUpdate - Create a PostRulesResource
+// createOrUpdate - Create a PostRulesResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *PostRulesClient) createOrUpdate(ctx context.Context, globalRulestackName string, priority string, resource PostRulesResource, options *PostRulesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -84,7 +84,7 @@ func (client *PostRulesClient) createOrUpdate(ctx context.Context, globalRulesta
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *PostRulesClient) createOrUpdateCreateRequest(ctx context.Context, globalRulestackName string, priority string, resource PostRulesResource, _ *PostRulesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks/{globalRulestackName}/postRules/{priority}"
 	if globalRulestackName == "" {
@@ -132,7 +132,7 @@ func (client *PostRulesClient) BeginDelete(ctx context.Context, globalRulestackN
 	}
 }
 
-// Delete - Delete a PostRulesResource
+// deleteOperation - Delete a PostRulesResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *PostRulesClient) deleteOperation(ctx context.Context, globalRulestackName string, priority string, options *PostRulesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -154,7 +154,7 @@ func (client *PostRulesClient) deleteOperation(ctx context.Context, globalRulest
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *PostRulesClient) deleteCreateRequest(ctx context.Context, globalRulestackName string, priority string, _ *PostRulesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks/{globalRulestackName}/postRules/{priority}"
 	if globalRulestackName == "" {

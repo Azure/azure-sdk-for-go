@@ -67,7 +67,7 @@ func (client *SitesBySubscriptionClient) BeginCreateOrUpdate(ctx context.Context
 	}
 }
 
-// CreateOrUpdate - Create a Site
+// createOrUpdate - Create a Site
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *SitesBySubscriptionClient) createOrUpdate(ctx context.Context, siteName string, resource Site, options *SitesBySubscriptionClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -89,7 +89,7 @@ func (client *SitesBySubscriptionClient) createOrUpdate(ctx context.Context, sit
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *SitesBySubscriptionClient) createOrUpdateCreateRequest(ctx context.Context, siteName string, resource Site, _ *SitesBySubscriptionClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Edge/sites/{siteName}"
 	if client.subscriptionID == "" {

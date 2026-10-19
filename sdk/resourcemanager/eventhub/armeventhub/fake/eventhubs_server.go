@@ -46,6 +46,10 @@ type EventHubsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetAuthorizationRule func(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, authorizationRuleName string, options *armeventhub.EventHubsClientGetAuthorizationRuleOptions) (resp azfake.Responder[armeventhub.EventHubsClientGetAuthorizationRuleResponse], errResp azfake.ErrorResponder)
 
+	// ListKeys is the fake for method EventHubsClient.ListKeys
+	// HTTP status codes to indicate success: http.StatusOK
+	ListKeys func(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, authorizationRuleName string, options *armeventhub.EventHubsClientListKeysOptions) (resp azfake.Responder[armeventhub.EventHubsClientListKeysResponse], errResp azfake.ErrorResponder)
+
 	// NewListAuthorizationRulesPager is the fake for method EventHubsClient.NewListAuthorizationRulesPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListAuthorizationRulesPager func(resourceGroupName string, namespaceName string, eventHubName string, options *armeventhub.EventHubsClientListAuthorizationRulesOptions) (resp azfake.PagerResponder[armeventhub.EventHubsClientListAuthorizationRulesResponse])
@@ -53,10 +57,6 @@ type EventHubsServer struct {
 	// NewListByNamespacePager is the fake for method EventHubsClient.NewListByNamespacePager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByNamespacePager func(resourceGroupName string, namespaceName string, options *armeventhub.EventHubsClientListByNamespaceOptions) (resp azfake.PagerResponder[armeventhub.EventHubsClientListByNamespaceResponse])
-
-	// ListKeys is the fake for method EventHubsClient.ListKeys
-	// HTTP status codes to indicate success: http.StatusOK
-	ListKeys func(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, authorizationRuleName string, options *armeventhub.EventHubsClientListKeysOptions) (resp azfake.Responder[armeventhub.EventHubsClientListKeysResponse], errResp azfake.ErrorResponder)
 
 	// RegenerateKeys is the fake for method EventHubsClient.RegenerateKeys
 	// HTTP status codes to indicate success: http.StatusOK
@@ -115,12 +115,12 @@ func (e *EventHubsServerTransport) dispatchToMethodFake(req *http.Request, metho
 				res.resp, res.err = e.dispatchGet(req)
 			case "EventHubsClient.GetAuthorizationRule":
 				res.resp, res.err = e.dispatchGetAuthorizationRule(req)
+			case "EventHubsClient.ListKeys":
+				res.resp, res.err = e.dispatchListKeys(req)
 			case "EventHubsClient.NewListAuthorizationRulesPager":
 				res.resp, res.err = e.dispatchNewListAuthorizationRulesPager(req)
 			case "EventHubsClient.NewListByNamespacePager":
 				res.resp, res.err = e.dispatchNewListByNamespacePager(req)
-			case "EventHubsClient.ListKeys":
-				res.resp, res.err = e.dispatchListKeys(req)
 			case "EventHubsClient.RegenerateKeys":
 				res.resp, res.err = e.dispatchRegenerateKeys(req)
 			default:
@@ -381,6 +381,47 @@ func (e *EventHubsServerTransport) dispatchGetAuthorizationRule(req *http.Reques
 	return resp, nil
 }
 
+func (e *EventHubsServerTransport) dispatchListKeys(req *http.Request) (*http.Response, error) {
+	if e.srv.ListKeys == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListKeys not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventHub/namespaces/(?P<namespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/eventhubs/(?P<eventHubName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/authorizationRules/(?P<authorizationRuleName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listKeys`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 6 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	namespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("namespaceName")])
+	if err != nil {
+		return nil, err
+	}
+	eventHubNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("eventHubName")])
+	if err != nil {
+		return nil, err
+	}
+	authorizationRuleNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("authorizationRuleName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := e.srv.ListKeys(req.Context(), resourceGroupNameParam, namespaceNameParam, eventHubNameParam, authorizationRuleNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AccessKeys, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (e *EventHubsServerTransport) dispatchNewListAuthorizationRulesPager(req *http.Request) (*http.Response, error) {
 	if e.srv.NewListAuthorizationRulesPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListAuthorizationRulesPager not implemented")}
@@ -491,47 +532,6 @@ func (e *EventHubsServerTransport) dispatchNewListByNamespacePager(req *http.Req
 	}
 	if !server.PagerResponderMore(newListByNamespacePager) {
 		e.newListByNamespacePager.remove(req)
-	}
-	return resp, nil
-}
-
-func (e *EventHubsServerTransport) dispatchListKeys(req *http.Request) (*http.Response, error) {
-	if e.srv.ListKeys == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListKeys not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventHub/namespaces/(?P<namespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/eventhubs/(?P<eventHubName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/authorizationRules/(?P<authorizationRuleName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listKeys`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 6 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	namespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("namespaceName")])
-	if err != nil {
-		return nil, err
-	}
-	eventHubNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("eventHubName")])
-	if err != nil {
-		return nil, err
-	}
-	authorizationRuleNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("authorizationRuleName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := e.srv.ListKeys(req.Context(), resourceGroupNameParam, namespaceNameParam, eventHubNameParam, authorizationRuleNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AccessKeys, req)
-	if err != nil {
-		return nil, err
 	}
 	return resp, nil
 }

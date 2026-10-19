@@ -29,6 +29,14 @@ type ReservationsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, reservationName string, options *armpurestorageblock.ReservationsClientBeginDeleteOptions) (resp azfake.PollerResponder[armpurestorageblock.ReservationsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginLinkSaaS is the fake for method ReservationsClient.BeginLinkSaaS
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginLinkSaaS func(ctx context.Context, resourceGroupName string, reservationName string, body armpurestorageblock.LinkSaaSRequest, options *armpurestorageblock.ReservationsClientBeginLinkSaaSOptions) (resp azfake.PollerResponder[armpurestorageblock.ReservationsClientLinkSaaSResponse], errResp azfake.ErrorResponder)
+
+	// BeginUpdate is the fake for method ReservationsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, reservationName string, properties armpurestorageblock.ReservationUpdate, options *armpurestorageblock.ReservationsClientBeginUpdateOptions) (resp azfake.PollerResponder[armpurestorageblock.ReservationsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method ReservationsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, reservationName string, options *armpurestorageblock.ReservationsClientGetOptions) (resp azfake.Responder[armpurestorageblock.ReservationsClientGetResponse], errResp azfake.ErrorResponder)
@@ -49,10 +57,6 @@ type ReservationsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	LatestLinkedSaaS func(ctx context.Context, resourceGroupName string, reservationName string, options *armpurestorageblock.ReservationsClientLatestLinkedSaaSOptions) (resp azfake.Responder[armpurestorageblock.ReservationsClientLatestLinkedSaaSResponse], errResp azfake.ErrorResponder)
 
-	// BeginLinkSaaS is the fake for method ReservationsClient.BeginLinkSaaS
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginLinkSaaS func(ctx context.Context, resourceGroupName string, reservationName string, body armpurestorageblock.LinkSaaSRequest, options *armpurestorageblock.ReservationsClientBeginLinkSaaSOptions) (resp azfake.PollerResponder[armpurestorageblock.ReservationsClientLinkSaaSResponse], errResp azfake.ErrorResponder)
-
 	// NewListByResourceGroupPager is the fake for method ReservationsClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, options *armpurestorageblock.ReservationsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armpurestorageblock.ReservationsClientListByResourceGroupResponse])
@@ -60,10 +64,6 @@ type ReservationsServer struct {
 	// NewListBySubscriptionPager is the fake for method ReservationsClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armpurestorageblock.ReservationsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armpurestorageblock.ReservationsClientListBySubscriptionResponse])
-
-	// BeginUpdate is the fake for method ReservationsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, reservationName string, properties armpurestorageblock.ReservationUpdate, options *armpurestorageblock.ReservationsClientBeginUpdateOptions) (resp azfake.PollerResponder[armpurestorageblock.ReservationsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewReservationsServerTransport creates a new instance of ReservationsServerTransport with the provided implementation.
@@ -75,9 +75,9 @@ func NewReservationsServerTransport(srv *ReservationsServer) *ReservationsServer
 		beginCreate:                 newTracker[azfake.PollerResponder[armpurestorageblock.ReservationsClientCreateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armpurestorageblock.ReservationsClientDeleteResponse]](),
 		beginLinkSaaS:               newTracker[azfake.PollerResponder[armpurestorageblock.ReservationsClientLinkSaaSResponse]](),
+		beginUpdate:                 newTracker[azfake.PollerResponder[armpurestorageblock.ReservationsClientUpdateResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armpurestorageblock.ReservationsClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armpurestorageblock.ReservationsClientListBySubscriptionResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armpurestorageblock.ReservationsClientUpdateResponse]](),
 	}
 }
 
@@ -88,9 +88,9 @@ type ReservationsServerTransport struct {
 	beginCreate                 *tracker[azfake.PollerResponder[armpurestorageblock.ReservationsClientCreateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armpurestorageblock.ReservationsClientDeleteResponse]]
 	beginLinkSaaS               *tracker[azfake.PollerResponder[armpurestorageblock.ReservationsClientLinkSaaSResponse]]
+	beginUpdate                 *tracker[azfake.PollerResponder[armpurestorageblock.ReservationsClientUpdateResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armpurestorageblock.ReservationsClientListByResourceGroupResponse]]
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armpurestorageblock.ReservationsClientListBySubscriptionResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armpurestorageblock.ReservationsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for ReservationsServerTransport.
@@ -118,6 +118,10 @@ func (r *ReservationsServerTransport) dispatchToMethodFake(req *http.Request, me
 				res.resp, res.err = r.dispatchBeginCreate(req)
 			case "ReservationsClient.BeginDelete":
 				res.resp, res.err = r.dispatchBeginDelete(req)
+			case "ReservationsClient.BeginLinkSaaS":
+				res.resp, res.err = r.dispatchBeginLinkSaaS(req)
+			case "ReservationsClient.BeginUpdate":
+				res.resp, res.err = r.dispatchBeginUpdate(req)
 			case "ReservationsClient.Get":
 				res.resp, res.err = r.dispatchGet(req)
 			case "ReservationsClient.GetBillingReport":
@@ -128,14 +132,10 @@ func (r *ReservationsServerTransport) dispatchToMethodFake(req *http.Request, me
 				res.resp, res.err = r.dispatchGetResourceLimits(req)
 			case "ReservationsClient.LatestLinkedSaaS":
 				res.resp, res.err = r.dispatchLatestLinkedSaaS(req)
-			case "ReservationsClient.BeginLinkSaaS":
-				res.resp, res.err = r.dispatchBeginLinkSaaS(req)
 			case "ReservationsClient.NewListByResourceGroupPager":
 				res.resp, res.err = r.dispatchNewListByResourceGroupPager(req)
 			case "ReservationsClient.NewListBySubscriptionPager":
 				res.resp, res.err = r.dispatchNewListBySubscriptionPager(req)
-			case "ReservationsClient.BeginUpdate":
-				res.resp, res.err = r.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -239,6 +239,102 @@ func (r *ReservationsServerTransport) dispatchBeginDelete(req *http.Request) (*h
 	}
 	if !server.PollerResponderMore(beginDelete) {
 		r.beginDelete.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (r *ReservationsServerTransport) dispatchBeginLinkSaaS(req *http.Request) (*http.Response, error) {
+	if r.srv.BeginLinkSaaS == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginLinkSaaS not implemented")}
+	}
+	beginLinkSaaS := r.beginLinkSaaS.get(req)
+	if beginLinkSaaS == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/PureStorage\.Block/reservations/(?P<reservationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/linkSaaS`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armpurestorageblock.LinkSaaSRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		reservationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("reservationName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := r.srv.BeginLinkSaaS(req.Context(), resourceGroupNameParam, reservationNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginLinkSaaS = &respr
+		r.beginLinkSaaS.add(req, beginLinkSaaS)
+	}
+
+	resp, err := server.PollerResponderNext(beginLinkSaaS, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		r.beginLinkSaaS.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginLinkSaaS) {
+		r.beginLinkSaaS.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (r *ReservationsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if r.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := r.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/PureStorage\.Block/reservations/(?P<reservationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armpurestorageblock.ReservationUpdate](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		reservationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("reservationName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := r.srv.BeginUpdate(req.Context(), resourceGroupNameParam, reservationNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		r.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		r.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		r.beginUpdate.remove(req)
 	}
 
 	return resp, nil
@@ -409,54 +505,6 @@ func (r *ReservationsServerTransport) dispatchLatestLinkedSaaS(req *http.Request
 	return resp, nil
 }
 
-func (r *ReservationsServerTransport) dispatchBeginLinkSaaS(req *http.Request) (*http.Response, error) {
-	if r.srv.BeginLinkSaaS == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginLinkSaaS not implemented")}
-	}
-	beginLinkSaaS := r.beginLinkSaaS.get(req)
-	if beginLinkSaaS == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/PureStorage\.Block/reservations/(?P<reservationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/linkSaaS`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armpurestorageblock.LinkSaaSRequest](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		reservationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("reservationName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := r.srv.BeginLinkSaaS(req.Context(), resourceGroupNameParam, reservationNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginLinkSaaS = &respr
-		r.beginLinkSaaS.add(req, beginLinkSaaS)
-	}
-
-	resp, err := server.PollerResponderNext(beginLinkSaaS, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		r.beginLinkSaaS.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginLinkSaaS) {
-		r.beginLinkSaaS.remove(req)
-	}
-
-	return resp, nil
-}
-
 func (r *ReservationsServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
 	if r.srv.NewListByResourceGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
@@ -524,54 +572,6 @@ func (r *ReservationsServerTransport) dispatchNewListBySubscriptionPager(req *ht
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		r.newListBySubscriptionPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (r *ReservationsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if r.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := r.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/PureStorage\.Block/reservations/(?P<reservationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armpurestorageblock.ReservationUpdate](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		reservationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("reservationName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := r.srv.BeginUpdate(req.Context(), resourceGroupNameParam, reservationNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		r.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		r.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		r.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

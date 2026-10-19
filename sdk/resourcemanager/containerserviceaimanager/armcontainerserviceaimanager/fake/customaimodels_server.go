@@ -21,10 +21,6 @@ import (
 
 // CustomAIModelsServer is a fake server for instances of the armcontainerserviceaimanager.CustomAIModelsClient type.
 type CustomAIModelsServer struct {
-	// CalculateCost is the fake for method CustomAIModelsClient.CalculateCost
-	// HTTP status codes to indicate success: http.StatusOK
-	CalculateCost func(ctx context.Context, resourceGroupName string, aiManagerName string, customAIModelName string, options *armcontainerserviceaimanager.CustomAIModelsClientCalculateCostOptions) (resp azfake.Responder[armcontainerserviceaimanager.CustomAIModelsClientCalculateCostResponse], errResp azfake.ErrorResponder)
-
 	// BeginCreateOrUpdate is the fake for method CustomAIModelsClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, aiManagerName string, customAIModelName string, resource armcontainerserviceaimanager.CustomAIModel, options *armcontainerserviceaimanager.CustomAIModelsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armcontainerserviceaimanager.CustomAIModelsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -32,6 +28,10 @@ type CustomAIModelsServer struct {
 	// BeginDelete is the fake for method CustomAIModelsClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, aiManagerName string, customAIModelName string, options *armcontainerserviceaimanager.CustomAIModelsClientBeginDeleteOptions) (resp azfake.PollerResponder[armcontainerserviceaimanager.CustomAIModelsClientDeleteResponse], errResp azfake.ErrorResponder)
+
+	// CalculateCost is the fake for method CustomAIModelsClient.CalculateCost
+	// HTTP status codes to indicate success: http.StatusOK
+	CalculateCost func(ctx context.Context, resourceGroupName string, aiManagerName string, customAIModelName string, options *armcontainerserviceaimanager.CustomAIModelsClientCalculateCostOptions) (resp azfake.Responder[armcontainerserviceaimanager.CustomAIModelsClientCalculateCostResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method CustomAIModelsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -84,12 +84,12 @@ func (c *CustomAIModelsServerTransport) dispatchToMethodFake(req *http.Request, 
 		}
 		if !intercepted {
 			switch method {
-			case "CustomAIModelsClient.CalculateCost":
-				res.resp, res.err = c.dispatchCalculateCost(req)
 			case "CustomAIModelsClient.BeginCreateOrUpdate":
 				res.resp, res.err = c.dispatchBeginCreateOrUpdate(req)
 			case "CustomAIModelsClient.BeginDelete":
 				res.resp, res.err = c.dispatchBeginDelete(req)
+			case "CustomAIModelsClient.CalculateCost":
+				res.resp, res.err = c.dispatchCalculateCost(req)
 			case "CustomAIModelsClient.Get":
 				res.resp, res.err = c.dispatchGet(req)
 			case "CustomAIModelsClient.NewListPager":
@@ -108,43 +108,6 @@ func (c *CustomAIModelsServerTransport) dispatchToMethodFake(req *http.Request, 
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (c *CustomAIModelsServerTransport) dispatchCalculateCost(req *http.Request) (*http.Response, error) {
-	if c.srv.CalculateCost == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CalculateCost not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/aiManagers/(?P<aiManagerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/customAIModels/(?P<customAIModelName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/calculateCost`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	aiManagerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("aiManagerName")])
-	if err != nil {
-		return nil, err
-	}
-	customAIModelNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("customAIModelName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := c.srv.CalculateCost(req.Context(), resourceGroupNameParam, aiManagerNameParam, customAIModelNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CalculateCostResponse, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (c *CustomAIModelsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -260,6 +223,43 @@ func (c *CustomAIModelsServerTransport) dispatchBeginDelete(req *http.Request) (
 		c.beginDelete.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (c *CustomAIModelsServerTransport) dispatchCalculateCost(req *http.Request) (*http.Response, error) {
+	if c.srv.CalculateCost == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CalculateCost not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/aiManagers/(?P<aiManagerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/customAIModels/(?P<customAIModelName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/calculateCost`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	aiManagerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("aiManagerName")])
+	if err != nil {
+		return nil, err
+	}
+	customAIModelNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("customAIModelName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := c.srv.CalculateCost(req.Context(), resourceGroupNameParam, aiManagerNameParam, customAIModelNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CalculateCostResponse, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 

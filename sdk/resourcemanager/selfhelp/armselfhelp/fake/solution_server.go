@@ -25,13 +25,13 @@ type SolutionServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreate func(ctx context.Context, scope string, solutionResourceName string, solutionRequestBody armselfhelp.SolutionResource, options *armselfhelp.SolutionClientBeginCreateOptions) (resp azfake.PollerResponder[armselfhelp.SolutionClientCreateResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method SolutionClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, scope string, solutionResourceName string, options *armselfhelp.SolutionClientGetOptions) (resp azfake.Responder[armselfhelp.SolutionClientGetResponse], errResp azfake.ErrorResponder)
-
 	// BeginUpdate is the fake for method SolutionClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, scope string, solutionResourceName string, solutionPatchRequestBody armselfhelp.SolutionPatchRequestBody, options *armselfhelp.SolutionClientBeginUpdateOptions) (resp azfake.PollerResponder[armselfhelp.SolutionClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method SolutionClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, scope string, solutionResourceName string, options *armselfhelp.SolutionClientGetOptions) (resp azfake.Responder[armselfhelp.SolutionClientGetResponse], errResp azfake.ErrorResponder)
 
 	// WarmUp is the fake for method SolutionClient.WarmUp
 	// HTTP status codes to indicate success: http.StatusNoContent
@@ -80,10 +80,10 @@ func (s *SolutionServerTransport) dispatchToMethodFake(req *http.Request, method
 			switch method {
 			case "SolutionClient.BeginCreate":
 				res.resp, res.err = s.dispatchBeginCreate(req)
-			case "SolutionClient.Get":
-				res.resp, res.err = s.dispatchGet(req)
 			case "SolutionClient.BeginUpdate":
 				res.resp, res.err = s.dispatchBeginUpdate(req)
+			case "SolutionClient.Get":
+				res.resp, res.err = s.dispatchGet(req)
 			case "SolutionClient.WarmUp":
 				res.resp, res.err = s.dispatchWarmUp(req)
 			default:
@@ -147,36 +147,6 @@ func (s *SolutionServerTransport) dispatchBeginCreate(req *http.Request) (*http.
 	return resp, nil
 }
 
-func (s *SolutionServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if s.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.Help/solutions/(?P<solutionResourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	scopeParam := matches[regex.SubexpIndex("scope")]
-	solutionResourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("solutionResourceName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := s.srv.Get(req.Context(), scopeParam, solutionResourceNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SolutionResource, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (s *SolutionServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
 	if s.srv.BeginUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
@@ -219,6 +189,36 @@ func (s *SolutionServerTransport) dispatchBeginUpdate(req *http.Request) (*http.
 		s.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (s *SolutionServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if s.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.Help/solutions/(?P<solutionResourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	scopeParam := matches[regex.SubexpIndex("scope")]
+	solutionResourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("solutionResourceName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.Get(req.Context(), scopeParam, solutionResourceNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SolutionResource, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 

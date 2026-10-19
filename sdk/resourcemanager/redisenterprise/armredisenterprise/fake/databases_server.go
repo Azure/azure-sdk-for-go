@@ -46,21 +46,9 @@ type DatabasesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginForceUnlink func(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, parameters armredisenterprise.ForceUnlinkParameters, options *armredisenterprise.DatabasesClientBeginForceUnlinkOptions) (resp azfake.PollerResponder[armredisenterprise.DatabasesClientForceUnlinkResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method DatabasesClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, options *armredisenterprise.DatabasesClientGetOptions) (resp azfake.Responder[armredisenterprise.DatabasesClientGetResponse], errResp azfake.ErrorResponder)
-
 	// BeginImport is the fake for method DatabasesClient.BeginImport
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginImport func(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, parameters armredisenterprise.ImportClusterParameters, options *armredisenterprise.DatabasesClientBeginImportOptions) (resp azfake.PollerResponder[armredisenterprise.DatabasesClientImportResponse], errResp azfake.ErrorResponder)
-
-	// NewListByClusterPager is the fake for method DatabasesClient.NewListByClusterPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByClusterPager func(resourceGroupName string, clusterName string, options *armredisenterprise.DatabasesClientListByClusterOptions) (resp azfake.PagerResponder[armredisenterprise.DatabasesClientListByClusterResponse])
-
-	// ListKeys is the fake for method DatabasesClient.ListKeys
-	// HTTP status codes to indicate success: http.StatusOK
-	ListKeys func(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, options *armredisenterprise.DatabasesClientListKeysOptions) (resp azfake.Responder[armredisenterprise.DatabasesClientListKeysResponse], errResp azfake.ErrorResponder)
 
 	// BeginRegenerateKey is the fake for method DatabasesClient.BeginRegenerateKey
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
@@ -73,6 +61,18 @@ type DatabasesServer struct {
 	// BeginUpgradeDBRedisVersion is the fake for method DatabasesClient.BeginUpgradeDBRedisVersion
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginUpgradeDBRedisVersion func(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, options *armredisenterprise.DatabasesClientBeginUpgradeDBRedisVersionOptions) (resp azfake.PollerResponder[armredisenterprise.DatabasesClientUpgradeDBRedisVersionResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method DatabasesClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, options *armredisenterprise.DatabasesClientGetOptions) (resp azfake.Responder[armredisenterprise.DatabasesClientGetResponse], errResp azfake.ErrorResponder)
+
+	// ListKeys is the fake for method DatabasesClient.ListKeys
+	// HTTP status codes to indicate success: http.StatusOK
+	ListKeys func(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, options *armredisenterprise.DatabasesClientListKeysOptions) (resp azfake.Responder[armredisenterprise.DatabasesClientListKeysResponse], errResp azfake.ErrorResponder)
+
+	// NewListByClusterPager is the fake for method DatabasesClient.NewListByClusterPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByClusterPager func(resourceGroupName string, clusterName string, options *armredisenterprise.DatabasesClientListByClusterOptions) (resp azfake.PagerResponder[armredisenterprise.DatabasesClientListByClusterResponse])
 }
 
 // NewDatabasesServerTransport creates a new instance of DatabasesServerTransport with the provided implementation.
@@ -88,10 +88,10 @@ func NewDatabasesServerTransport(srv *DatabasesServer) *DatabasesServerTransport
 		beginForceLinkToReplicationGroup: newTracker[azfake.PollerResponder[armredisenterprise.DatabasesClientForceLinkToReplicationGroupResponse]](),
 		beginForceUnlink:                 newTracker[azfake.PollerResponder[armredisenterprise.DatabasesClientForceUnlinkResponse]](),
 		beginImport:                      newTracker[azfake.PollerResponder[armredisenterprise.DatabasesClientImportResponse]](),
-		newListByClusterPager:            newTracker[azfake.PagerResponder[armredisenterprise.DatabasesClientListByClusterResponse]](),
 		beginRegenerateKey:               newTracker[azfake.PollerResponder[armredisenterprise.DatabasesClientRegenerateKeyResponse]](),
 		beginUpdate:                      newTracker[azfake.PollerResponder[armredisenterprise.DatabasesClientUpdateResponse]](),
 		beginUpgradeDBRedisVersion:       newTracker[azfake.PollerResponder[armredisenterprise.DatabasesClientUpgradeDBRedisVersionResponse]](),
+		newListByClusterPager:            newTracker[azfake.PagerResponder[armredisenterprise.DatabasesClientListByClusterResponse]](),
 	}
 }
 
@@ -106,10 +106,10 @@ type DatabasesServerTransport struct {
 	beginForceLinkToReplicationGroup *tracker[azfake.PollerResponder[armredisenterprise.DatabasesClientForceLinkToReplicationGroupResponse]]
 	beginForceUnlink                 *tracker[azfake.PollerResponder[armredisenterprise.DatabasesClientForceUnlinkResponse]]
 	beginImport                      *tracker[azfake.PollerResponder[armredisenterprise.DatabasesClientImportResponse]]
-	newListByClusterPager            *tracker[azfake.PagerResponder[armredisenterprise.DatabasesClientListByClusterResponse]]
 	beginRegenerateKey               *tracker[azfake.PollerResponder[armredisenterprise.DatabasesClientRegenerateKeyResponse]]
 	beginUpdate                      *tracker[azfake.PollerResponder[armredisenterprise.DatabasesClientUpdateResponse]]
 	beginUpgradeDBRedisVersion       *tracker[azfake.PollerResponder[armredisenterprise.DatabasesClientUpgradeDBRedisVersionResponse]]
+	newListByClusterPager            *tracker[azfake.PagerResponder[armredisenterprise.DatabasesClientListByClusterResponse]]
 }
 
 // Do implements the policy.Transporter interface for DatabasesServerTransport.
@@ -145,20 +145,20 @@ func (d *DatabasesServerTransport) dispatchToMethodFake(req *http.Request, metho
 				res.resp, res.err = d.dispatchBeginForceLinkToReplicationGroup(req)
 			case "DatabasesClient.BeginForceUnlink":
 				res.resp, res.err = d.dispatchBeginForceUnlink(req)
-			case "DatabasesClient.Get":
-				res.resp, res.err = d.dispatchGet(req)
 			case "DatabasesClient.BeginImport":
 				res.resp, res.err = d.dispatchBeginImport(req)
-			case "DatabasesClient.NewListByClusterPager":
-				res.resp, res.err = d.dispatchNewListByClusterPager(req)
-			case "DatabasesClient.ListKeys":
-				res.resp, res.err = d.dispatchListKeys(req)
 			case "DatabasesClient.BeginRegenerateKey":
 				res.resp, res.err = d.dispatchBeginRegenerateKey(req)
 			case "DatabasesClient.BeginUpdate":
 				res.resp, res.err = d.dispatchBeginUpdate(req)
 			case "DatabasesClient.BeginUpgradeDBRedisVersion":
 				res.resp, res.err = d.dispatchBeginUpgradeDBRedisVersion(req)
+			case "DatabasesClient.Get":
+				res.resp, res.err = d.dispatchGet(req)
+			case "DatabasesClient.ListKeys":
+				res.resp, res.err = d.dispatchListKeys(req)
+			case "DatabasesClient.NewListByClusterPager":
+				res.resp, res.err = d.dispatchNewListByClusterPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -489,43 +489,6 @@ func (d *DatabasesServerTransport) dispatchBeginForceUnlink(req *http.Request) (
 	return resp, nil
 }
 
-func (d *DatabasesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if d.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Cache/redisEnterprise/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
-	if err != nil {
-		return nil, err
-	}
-	databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := d.srv.Get(req.Context(), resourceGroupNameParam, clusterNameParam, databaseNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Database, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (d *DatabasesServerTransport) dispatchBeginImport(req *http.Request) (*http.Response, error) {
 	if d.srv.BeginImport == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginImport not implemented")}
@@ -575,84 +538,6 @@ func (d *DatabasesServerTransport) dispatchBeginImport(req *http.Request) (*http
 		d.beginImport.remove(req)
 	}
 
-	return resp, nil
-}
-
-func (d *DatabasesServerTransport) dispatchNewListByClusterPager(req *http.Request) (*http.Response, error) {
-	if d.srv.NewListByClusterPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByClusterPager not implemented")}
-	}
-	newListByClusterPager := d.newListByClusterPager.get(req)
-	if newListByClusterPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Cache/redisEnterprise/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databases`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := d.srv.NewListByClusterPager(resourceGroupNameParam, clusterNameParam, nil)
-		newListByClusterPager = &resp
-		d.newListByClusterPager.add(req, newListByClusterPager)
-		server.PagerResponderInjectNextLinks(newListByClusterPager, req, func(page *armredisenterprise.DatabasesClientListByClusterResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByClusterPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		d.newListByClusterPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByClusterPager) {
-		d.newListByClusterPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (d *DatabasesServerTransport) dispatchListKeys(req *http.Request) (*http.Response, error) {
-	if d.srv.ListKeys == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListKeys not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Cache/redisEnterprise/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listKeys`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
-	if err != nil {
-		return nil, err
-	}
-	databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := d.srv.ListKeys(req.Context(), resourceGroupNameParam, clusterNameParam, databaseNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AccessKeys, req)
-	if err != nil {
-		return nil, err
-	}
 	return resp, nil
 }
 
@@ -805,6 +690,121 @@ func (d *DatabasesServerTransport) dispatchBeginUpgradeDBRedisVersion(req *http.
 		d.beginUpgradeDBRedisVersion.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (d *DatabasesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if d.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Cache/redisEnterprise/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
+	if err != nil {
+		return nil, err
+	}
+	databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := d.srv.Get(req.Context(), resourceGroupNameParam, clusterNameParam, databaseNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Database, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (d *DatabasesServerTransport) dispatchListKeys(req *http.Request) (*http.Response, error) {
+	if d.srv.ListKeys == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListKeys not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Cache/redisEnterprise/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listKeys`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
+	if err != nil {
+		return nil, err
+	}
+	databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := d.srv.ListKeys(req.Context(), resourceGroupNameParam, clusterNameParam, databaseNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AccessKeys, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (d *DatabasesServerTransport) dispatchNewListByClusterPager(req *http.Request) (*http.Response, error) {
+	if d.srv.NewListByClusterPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByClusterPager not implemented")}
+	}
+	newListByClusterPager := d.newListByClusterPager.get(req)
+	if newListByClusterPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Cache/redisEnterprise/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databases`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := d.srv.NewListByClusterPager(resourceGroupNameParam, clusterNameParam, nil)
+		newListByClusterPager = &resp
+		d.newListByClusterPager.add(req, newListByClusterPager)
+		server.PagerResponderInjectNextLinks(newListByClusterPager, req, func(page *armredisenterprise.DatabasesClientListByClusterResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByClusterPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		d.newListByClusterPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByClusterPager) {
+		d.newListByClusterPager.remove(req)
+	}
 	return resp, nil
 }
 

@@ -133,7 +133,7 @@ func (client *StoragesClient) createOrUpdateCreateRequest(ctx context.Context, r
 //   - options - StoragesClientBeginDeleteOptions contains the optional parameters for the StoragesClient.BeginDelete method.
 func (client *StoragesClient) BeginDelete(ctx context.Context, resourceGroupName string, cloudAccountName string, storageName string, options *StoragesClientBeginDeleteOptions) (*runtime.Poller[StoragesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, cloudAccountName, storageName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, cloudAccountName, storageName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -148,9 +148,9 @@ func (client *StoragesClient) BeginDelete(ctx context.Context, resourceGroupName
 	}
 }
 
-// delete - Delete a Storage
+// deleteOperation - Delete a Storage
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *StoragesClient) delete(ctx context.Context, resourceGroupName string, cloudAccountName string, storageName string, options *StoragesClientBeginDeleteOptions) (*http.Response, error) {
+func (client *StoragesClient) deleteOperation(ctx context.Context, resourceGroupName string, cloudAccountName string, storageName string, options *StoragesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "StoragesClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)

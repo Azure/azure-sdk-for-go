@@ -69,7 +69,7 @@ func (client *VNetPeeringClient) BeginCreateOrUpdate(ctx context.Context, resour
 	}
 }
 
-// CreateOrUpdate - Creates vNet Peering for workspace.
+// createOrUpdate - Creates vNet Peering for workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *VNetPeeringClient) createOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, peeringName string, virtualNetworkPeeringParameters VirtualNetworkPeering, options *VNetPeeringClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *VNetPeeringClient) createOrUpdate(ctx context.Context, resourceGro
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *VNetPeeringClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, peeringName string, virtualNetworkPeeringParameters VirtualNetworkPeering, _ *VNetPeeringClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Databricks/workspaces/{workspaceName}/virtualNetworkPeerings/{peeringName}"
 	if client.subscriptionID == "" {
@@ -148,7 +148,7 @@ func (client *VNetPeeringClient) BeginDelete(ctx context.Context, resourceGroupN
 	}
 }
 
-// Delete - Deletes the workspace vNetPeering.
+// deleteOperation - Deletes the workspace vNetPeering.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *VNetPeeringClient) deleteOperation(ctx context.Context, resourceGroupName string, workspaceName string, peeringName string, options *VNetPeeringClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -170,7 +170,7 @@ func (client *VNetPeeringClient) deleteOperation(ctx context.Context, resourceGr
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *VNetPeeringClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, peeringName string, _ *VNetPeeringClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Databricks/workspaces/{workspaceName}/virtualNetworkPeerings/{peeringName}"
 	if client.subscriptionID == "" {

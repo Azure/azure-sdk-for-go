@@ -68,7 +68,7 @@ func (client *BareMetalMachinesClient) BeginCordon(ctx context.Context, resource
 	}
 }
 
-// Cordon - Cordon the provided bare metal machine's Kubernetes node.
+// cordon - Cordon the provided bare metal machine's Kubernetes node.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *BareMetalMachinesClient) cordon(ctx context.Context, resourceGroupName string, bareMetalMachineName string, options *BareMetalMachinesClientBeginCordonOptions) (*http.Response, error) {
 	var err error
@@ -90,7 +90,7 @@ func (client *BareMetalMachinesClient) cordon(ctx context.Context, resourceGroup
 	return httpResp, nil
 }
 
-// cordonCreateRequest creates the Cordon request.
+// cordonCreateRequest creates the cordon request.
 func (client *BareMetalMachinesClient) cordonCreateRequest(ctx context.Context, resourceGroupName string, bareMetalMachineName string, options *BareMetalMachinesClientBeginCordonOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/bareMetalMachines/{bareMetalMachineName}/cordon"
 	if client.subscriptionID == "" {
@@ -147,7 +147,7 @@ func (client *BareMetalMachinesClient) BeginCreateOrUpdate(ctx context.Context, 
 	}
 }
 
-// CreateOrUpdate - Create a new bare metal machine or update the properties of the existing one. All customer initiated requests
+// createOrUpdate - Create a new bare metal machine or update the properties of the existing one. All customer initiated requests
 // will be rejected as the life cycle of this resource is managed by the system.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *BareMetalMachinesClient) createOrUpdate(ctx context.Context, resourceGroupName string, bareMetalMachineName string, bareMetalMachineParameters BareMetalMachine, options *BareMetalMachinesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
@@ -170,7 +170,7 @@ func (client *BareMetalMachinesClient) createOrUpdate(ctx context.Context, resou
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *BareMetalMachinesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, bareMetalMachineName string, bareMetalMachineParameters BareMetalMachine, options *BareMetalMachinesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/bareMetalMachines/{bareMetalMachineName}"
 	if client.subscriptionID == "" {
@@ -230,8 +230,8 @@ func (client *BareMetalMachinesClient) BeginDelete(ctx context.Context, resource
 	}
 }
 
-// Delete - Delete the provided bare metal machine. All customer initiated requests will be rejected as the life cycle of
-// this resource is managed by the system.
+// deleteOperation - Delete the provided bare metal machine. All customer initiated requests will be rejected as the life
+// cycle of this resource is managed by the system.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *BareMetalMachinesClient) deleteOperation(ctx context.Context, resourceGroupName string, bareMetalMachineName string, options *BareMetalMachinesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -253,7 +253,7 @@ func (client *BareMetalMachinesClient) deleteOperation(ctx context.Context, reso
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *BareMetalMachinesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, bareMetalMachineName string, options *BareMetalMachinesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/bareMetalMachines/{bareMetalMachineName}"
 	if client.subscriptionID == "" {
@@ -280,6 +280,841 @@ func (client *BareMetalMachinesClient) deleteCreateRequest(ctx context.Context, 
 	}
 	if options != nil && options.IfNoneMatch != nil {
 		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
+	}
+	return req, nil
+}
+
+// BeginPowerOff - Power off the provided bare metal machine.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - bareMetalMachineName - The name of the bare metal machine.
+//   - options - BareMetalMachinesClientBeginPowerOffOptions contains the optional parameters for the BareMetalMachinesClient.BeginPowerOff
+//     method.
+func (client *BareMetalMachinesClient) BeginPowerOff(ctx context.Context, resourceGroupName string, bareMetalMachineName string, options *BareMetalMachinesClientBeginPowerOffOptions) (*runtime.Poller[BareMetalMachinesClientPowerOffResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.powerOff(ctx, resourceGroupName, bareMetalMachineName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[BareMetalMachinesClientPowerOffResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[BareMetalMachinesClientPowerOffResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// powerOff - Power off the provided bare metal machine.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *BareMetalMachinesClient) powerOff(ctx context.Context, resourceGroupName string, bareMetalMachineName string, options *BareMetalMachinesClientBeginPowerOffOptions) (*http.Response, error) {
+	var err error
+	const operationName = "BareMetalMachinesClient.BeginPowerOff"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.powerOffCreateRequest(ctx, resourceGroupName, bareMetalMachineName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// powerOffCreateRequest creates the powerOff request.
+func (client *BareMetalMachinesClient) powerOffCreateRequest(ctx context.Context, resourceGroupName string, bareMetalMachineName string, options *BareMetalMachinesClientBeginPowerOffOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/bareMetalMachines/{bareMetalMachineName}/powerOff"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if bareMetalMachineName == "" {
+		return nil, errors.New("parameter bareMetalMachineName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{bareMetalMachineName}", url.PathEscape(bareMetalMachineName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	if options != nil && options.BareMetalMachinePowerOffParameters != nil {
+		req.Raw().Header["Content-Type"] = []string{"application/json"}
+		if err := runtime.MarshalAsJSON(req, *options.BareMetalMachinePowerOffParameters); err != nil {
+			return nil, err
+		}
+		return req, nil
+	}
+	return req, nil
+}
+
+// BeginReimage - Reimage the provided bare metal machine.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - bareMetalMachineName - The name of the bare metal machine.
+//   - options - BareMetalMachinesClientBeginReimageOptions contains the optional parameters for the BareMetalMachinesClient.BeginReimage
+//     method.
+func (client *BareMetalMachinesClient) BeginReimage(ctx context.Context, resourceGroupName string, bareMetalMachineName string, options *BareMetalMachinesClientBeginReimageOptions) (*runtime.Poller[BareMetalMachinesClientReimageResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.reimage(ctx, resourceGroupName, bareMetalMachineName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[BareMetalMachinesClientReimageResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[BareMetalMachinesClientReimageResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// reimage - Reimage the provided bare metal machine.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *BareMetalMachinesClient) reimage(ctx context.Context, resourceGroupName string, bareMetalMachineName string, options *BareMetalMachinesClientBeginReimageOptions) (*http.Response, error) {
+	var err error
+	const operationName = "BareMetalMachinesClient.BeginReimage"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.reimageCreateRequest(ctx, resourceGroupName, bareMetalMachineName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// reimageCreateRequest creates the reimage request.
+func (client *BareMetalMachinesClient) reimageCreateRequest(ctx context.Context, resourceGroupName string, bareMetalMachineName string, options *BareMetalMachinesClientBeginReimageOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/bareMetalMachines/{bareMetalMachineName}/reimage"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if bareMetalMachineName == "" {
+		return nil, errors.New("parameter bareMetalMachineName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{bareMetalMachineName}", url.PathEscape(bareMetalMachineName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	if options != nil && options.Body != nil {
+		req.Raw().Header["Content-Type"] = []string{"application/json"}
+		if err := runtime.MarshalAsJSON(req, *options.Body); err != nil {
+			return nil, err
+		}
+		return req, nil
+	}
+	return req, nil
+}
+
+// BeginReplace - Replace the provided bare metal machine.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - bareMetalMachineName - The name of the bare metal machine.
+//   - options - BareMetalMachinesClientBeginReplaceOptions contains the optional parameters for the BareMetalMachinesClient.BeginReplace
+//     method.
+func (client *BareMetalMachinesClient) BeginReplace(ctx context.Context, resourceGroupName string, bareMetalMachineName string, options *BareMetalMachinesClientBeginReplaceOptions) (*runtime.Poller[BareMetalMachinesClientReplaceResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.replace(ctx, resourceGroupName, bareMetalMachineName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[BareMetalMachinesClientReplaceResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[BareMetalMachinesClientReplaceResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// replace - Replace the provided bare metal machine.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *BareMetalMachinesClient) replace(ctx context.Context, resourceGroupName string, bareMetalMachineName string, options *BareMetalMachinesClientBeginReplaceOptions) (*http.Response, error) {
+	var err error
+	const operationName = "BareMetalMachinesClient.BeginReplace"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.replaceCreateRequest(ctx, resourceGroupName, bareMetalMachineName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// replaceCreateRequest creates the replace request.
+func (client *BareMetalMachinesClient) replaceCreateRequest(ctx context.Context, resourceGroupName string, bareMetalMachineName string, options *BareMetalMachinesClientBeginReplaceOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/bareMetalMachines/{bareMetalMachineName}/replace"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if bareMetalMachineName == "" {
+		return nil, errors.New("parameter bareMetalMachineName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{bareMetalMachineName}", url.PathEscape(bareMetalMachineName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	if options != nil && options.BareMetalMachineReplaceParameters != nil {
+		req.Raw().Header["Content-Type"] = []string{"application/json"}
+		if err := runtime.MarshalAsJSON(req, *options.BareMetalMachineReplaceParameters); err != nil {
+			return nil, err
+		}
+		return req, nil
+	}
+	return req, nil
+}
+
+// BeginRestart - Restart the provided bare metal machine.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - bareMetalMachineName - The name of the bare metal machine.
+//   - options - BareMetalMachinesClientBeginRestartOptions contains the optional parameters for the BareMetalMachinesClient.BeginRestart
+//     method.
+func (client *BareMetalMachinesClient) BeginRestart(ctx context.Context, resourceGroupName string, bareMetalMachineName string, options *BareMetalMachinesClientBeginRestartOptions) (*runtime.Poller[BareMetalMachinesClientRestartResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.restart(ctx, resourceGroupName, bareMetalMachineName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[BareMetalMachinesClientRestartResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[BareMetalMachinesClientRestartResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// restart - Restart the provided bare metal machine.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *BareMetalMachinesClient) restart(ctx context.Context, resourceGroupName string, bareMetalMachineName string, options *BareMetalMachinesClientBeginRestartOptions) (*http.Response, error) {
+	var err error
+	const operationName = "BareMetalMachinesClient.BeginRestart"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.restartCreateRequest(ctx, resourceGroupName, bareMetalMachineName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// restartCreateRequest creates the restart request.
+func (client *BareMetalMachinesClient) restartCreateRequest(ctx context.Context, resourceGroupName string, bareMetalMachineName string, _ *BareMetalMachinesClientBeginRestartOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/bareMetalMachines/{bareMetalMachineName}/restart"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if bareMetalMachineName == "" {
+		return nil, errors.New("parameter bareMetalMachineName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{bareMetalMachineName}", url.PathEscape(bareMetalMachineName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginRunCommand - Run the command or the script on the provided bare metal machine. The URL to storage account with the
+// command execution results and the command exit code can be retrieved from the operation status API once available.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - bareMetalMachineName - The name of the bare metal machine.
+//   - bareMetalMachineRunCommandParameters - The request body.
+//   - options - BareMetalMachinesClientBeginRunCommandOptions contains the optional parameters for the BareMetalMachinesClient.BeginRunCommand
+//     method.
+func (client *BareMetalMachinesClient) BeginRunCommand(ctx context.Context, resourceGroupName string, bareMetalMachineName string, bareMetalMachineRunCommandParameters BareMetalMachineRunCommandParameters, options *BareMetalMachinesClientBeginRunCommandOptions) (*runtime.Poller[BareMetalMachinesClientRunCommandResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.runCommand(ctx, resourceGroupName, bareMetalMachineName, bareMetalMachineRunCommandParameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[BareMetalMachinesClientRunCommandResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[BareMetalMachinesClientRunCommandResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// runCommand - Run the command or the script on the provided bare metal machine. The URL to storage account with the command
+// execution results and the command exit code can be retrieved from the operation status API once available.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *BareMetalMachinesClient) runCommand(ctx context.Context, resourceGroupName string, bareMetalMachineName string, bareMetalMachineRunCommandParameters BareMetalMachineRunCommandParameters, options *BareMetalMachinesClientBeginRunCommandOptions) (*http.Response, error) {
+	var err error
+	const operationName = "BareMetalMachinesClient.BeginRunCommand"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.runCommandCreateRequest(ctx, resourceGroupName, bareMetalMachineName, bareMetalMachineRunCommandParameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// runCommandCreateRequest creates the runCommand request.
+func (client *BareMetalMachinesClient) runCommandCreateRequest(ctx context.Context, resourceGroupName string, bareMetalMachineName string, bareMetalMachineRunCommandParameters BareMetalMachineRunCommandParameters, _ *BareMetalMachinesClientBeginRunCommandOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/bareMetalMachines/{bareMetalMachineName}/runCommand"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if bareMetalMachineName == "" {
+		return nil, errors.New("parameter bareMetalMachineName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{bareMetalMachineName}", url.PathEscape(bareMetalMachineName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, bareMetalMachineRunCommandParameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginRunDataExtracts - Run one or more data extractions on the provided bare metal machine. The URL to storage account
+// with the command execution results and the command exit code can be retrieved from the operation status API once available.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - bareMetalMachineName - The name of the bare metal machine.
+//   - bareMetalMachineRunDataExtractsParameters - The request body.
+//   - options - BareMetalMachinesClientBeginRunDataExtractsOptions contains the optional parameters for the BareMetalMachinesClient.BeginRunDataExtracts
+//     method.
+func (client *BareMetalMachinesClient) BeginRunDataExtracts(ctx context.Context, resourceGroupName string, bareMetalMachineName string, bareMetalMachineRunDataExtractsParameters BareMetalMachineRunDataExtractsParameters, options *BareMetalMachinesClientBeginRunDataExtractsOptions) (*runtime.Poller[BareMetalMachinesClientRunDataExtractsResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.runDataExtracts(ctx, resourceGroupName, bareMetalMachineName, bareMetalMachineRunDataExtractsParameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[BareMetalMachinesClientRunDataExtractsResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[BareMetalMachinesClientRunDataExtractsResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// runDataExtracts - Run one or more data extractions on the provided bare metal machine. The URL to storage account with
+// the command execution results and the command exit code can be retrieved from the operation status API once available.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *BareMetalMachinesClient) runDataExtracts(ctx context.Context, resourceGroupName string, bareMetalMachineName string, bareMetalMachineRunDataExtractsParameters BareMetalMachineRunDataExtractsParameters, options *BareMetalMachinesClientBeginRunDataExtractsOptions) (*http.Response, error) {
+	var err error
+	const operationName = "BareMetalMachinesClient.BeginRunDataExtracts"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.runDataExtractsCreateRequest(ctx, resourceGroupName, bareMetalMachineName, bareMetalMachineRunDataExtractsParameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// runDataExtractsCreateRequest creates the runDataExtracts request.
+func (client *BareMetalMachinesClient) runDataExtractsCreateRequest(ctx context.Context, resourceGroupName string, bareMetalMachineName string, bareMetalMachineRunDataExtractsParameters BareMetalMachineRunDataExtractsParameters, _ *BareMetalMachinesClientBeginRunDataExtractsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/bareMetalMachines/{bareMetalMachineName}/runDataExtracts"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if bareMetalMachineName == "" {
+		return nil, errors.New("parameter bareMetalMachineName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{bareMetalMachineName}", url.PathEscape(bareMetalMachineName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, bareMetalMachineRunDataExtractsParameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginRunDataExtractsRestricted - Run one or more restricted data extractions on the provided bare metal machine. The URL
+// to storage account with the command execution results and the command exit code can be retrieved from the operation status
+// API once available.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - bareMetalMachineName - The name of the bare metal machine.
+//   - bareMetalMachineRunDataExtractsRestrictedParameters - The request body.
+//   - options - BareMetalMachinesClientBeginRunDataExtractsRestrictedOptions contains the optional parameters for the BareMetalMachinesClient.BeginRunDataExtractsRestricted
+//     method.
+func (client *BareMetalMachinesClient) BeginRunDataExtractsRestricted(ctx context.Context, resourceGroupName string, bareMetalMachineName string, bareMetalMachineRunDataExtractsRestrictedParameters BareMetalMachineRunDataExtractsParameters, options *BareMetalMachinesClientBeginRunDataExtractsRestrictedOptions) (*runtime.Poller[BareMetalMachinesClientRunDataExtractsRestrictedResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.runDataExtractsRestricted(ctx, resourceGroupName, bareMetalMachineName, bareMetalMachineRunDataExtractsRestrictedParameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[BareMetalMachinesClientRunDataExtractsRestrictedResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[BareMetalMachinesClientRunDataExtractsRestrictedResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// runDataExtractsRestricted - Run one or more restricted data extractions on the provided bare metal machine. The URL to
+// storage account with the command execution results and the command exit code can be retrieved from the operation status
+// API once available.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *BareMetalMachinesClient) runDataExtractsRestricted(ctx context.Context, resourceGroupName string, bareMetalMachineName string, bareMetalMachineRunDataExtractsRestrictedParameters BareMetalMachineRunDataExtractsParameters, options *BareMetalMachinesClientBeginRunDataExtractsRestrictedOptions) (*http.Response, error) {
+	var err error
+	const operationName = "BareMetalMachinesClient.BeginRunDataExtractsRestricted"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.runDataExtractsRestrictedCreateRequest(ctx, resourceGroupName, bareMetalMachineName, bareMetalMachineRunDataExtractsRestrictedParameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// runDataExtractsRestrictedCreateRequest creates the runDataExtractsRestricted request.
+func (client *BareMetalMachinesClient) runDataExtractsRestrictedCreateRequest(ctx context.Context, resourceGroupName string, bareMetalMachineName string, bareMetalMachineRunDataExtractsRestrictedParameters BareMetalMachineRunDataExtractsParameters, _ *BareMetalMachinesClientBeginRunDataExtractsRestrictedOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/bareMetalMachines/{bareMetalMachineName}/runDataExtractsRestricted"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if bareMetalMachineName == "" {
+		return nil, errors.New("parameter bareMetalMachineName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{bareMetalMachineName}", url.PathEscape(bareMetalMachineName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, bareMetalMachineRunDataExtractsRestrictedParameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginRunReadCommands - Run one or more read-only commands on the provided bare metal machine. The URL to storage account
+// with the command execution results and the command exit code can be retrieved from the operation status API once available.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - bareMetalMachineName - The name of the bare metal machine.
+//   - bareMetalMachineRunReadCommandsParameters - The request body.
+//   - options - BareMetalMachinesClientBeginRunReadCommandsOptions contains the optional parameters for the BareMetalMachinesClient.BeginRunReadCommands
+//     method.
+func (client *BareMetalMachinesClient) BeginRunReadCommands(ctx context.Context, resourceGroupName string, bareMetalMachineName string, bareMetalMachineRunReadCommandsParameters BareMetalMachineRunReadCommandsParameters, options *BareMetalMachinesClientBeginRunReadCommandsOptions) (*runtime.Poller[BareMetalMachinesClientRunReadCommandsResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.runReadCommands(ctx, resourceGroupName, bareMetalMachineName, bareMetalMachineRunReadCommandsParameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[BareMetalMachinesClientRunReadCommandsResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[BareMetalMachinesClientRunReadCommandsResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// runReadCommands - Run one or more read-only commands on the provided bare metal machine. The URL to storage account with
+// the command execution results and the command exit code can be retrieved from the operation status API once available.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *BareMetalMachinesClient) runReadCommands(ctx context.Context, resourceGroupName string, bareMetalMachineName string, bareMetalMachineRunReadCommandsParameters BareMetalMachineRunReadCommandsParameters, options *BareMetalMachinesClientBeginRunReadCommandsOptions) (*http.Response, error) {
+	var err error
+	const operationName = "BareMetalMachinesClient.BeginRunReadCommands"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.runReadCommandsCreateRequest(ctx, resourceGroupName, bareMetalMachineName, bareMetalMachineRunReadCommandsParameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// runReadCommandsCreateRequest creates the runReadCommands request.
+func (client *BareMetalMachinesClient) runReadCommandsCreateRequest(ctx context.Context, resourceGroupName string, bareMetalMachineName string, bareMetalMachineRunReadCommandsParameters BareMetalMachineRunReadCommandsParameters, _ *BareMetalMachinesClientBeginRunReadCommandsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/bareMetalMachines/{bareMetalMachineName}/runReadCommands"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if bareMetalMachineName == "" {
+		return nil, errors.New("parameter bareMetalMachineName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{bareMetalMachineName}", url.PathEscape(bareMetalMachineName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, bareMetalMachineRunReadCommandsParameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginStart - Start the provided bare metal machine.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - bareMetalMachineName - The name of the bare metal machine.
+//   - options - BareMetalMachinesClientBeginStartOptions contains the optional parameters for the BareMetalMachinesClient.BeginStart
+//     method.
+func (client *BareMetalMachinesClient) BeginStart(ctx context.Context, resourceGroupName string, bareMetalMachineName string, options *BareMetalMachinesClientBeginStartOptions) (*runtime.Poller[BareMetalMachinesClientStartResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.start(ctx, resourceGroupName, bareMetalMachineName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[BareMetalMachinesClientStartResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[BareMetalMachinesClientStartResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// start - Start the provided bare metal machine.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *BareMetalMachinesClient) start(ctx context.Context, resourceGroupName string, bareMetalMachineName string, options *BareMetalMachinesClientBeginStartOptions) (*http.Response, error) {
+	var err error
+	const operationName = "BareMetalMachinesClient.BeginStart"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.startCreateRequest(ctx, resourceGroupName, bareMetalMachineName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// startCreateRequest creates the start request.
+func (client *BareMetalMachinesClient) startCreateRequest(ctx context.Context, resourceGroupName string, bareMetalMachineName string, _ *BareMetalMachinesClientBeginStartOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/bareMetalMachines/{bareMetalMachineName}/start"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if bareMetalMachineName == "" {
+		return nil, errors.New("parameter bareMetalMachineName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{bareMetalMachineName}", url.PathEscape(bareMetalMachineName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUncordon - Uncordon the provided bare metal machine's Kubernetes node.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - bareMetalMachineName - The name of the bare metal machine.
+//   - options - BareMetalMachinesClientBeginUncordonOptions contains the optional parameters for the BareMetalMachinesClient.BeginUncordon
+//     method.
+func (client *BareMetalMachinesClient) BeginUncordon(ctx context.Context, resourceGroupName string, bareMetalMachineName string, options *BareMetalMachinesClientBeginUncordonOptions) (*runtime.Poller[BareMetalMachinesClientUncordonResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.uncordon(ctx, resourceGroupName, bareMetalMachineName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[BareMetalMachinesClientUncordonResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[BareMetalMachinesClientUncordonResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// uncordon - Uncordon the provided bare metal machine's Kubernetes node.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *BareMetalMachinesClient) uncordon(ctx context.Context, resourceGroupName string, bareMetalMachineName string, options *BareMetalMachinesClientBeginUncordonOptions) (*http.Response, error) {
+	var err error
+	const operationName = "BareMetalMachinesClient.BeginUncordon"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.uncordonCreateRequest(ctx, resourceGroupName, bareMetalMachineName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// uncordonCreateRequest creates the uncordon request.
+func (client *BareMetalMachinesClient) uncordonCreateRequest(ctx context.Context, resourceGroupName string, bareMetalMachineName string, _ *BareMetalMachinesClientBeginUncordonOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/bareMetalMachines/{bareMetalMachineName}/uncordon"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if bareMetalMachineName == "" {
+		return nil, errors.New("parameter bareMetalMachineName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{bareMetalMachineName}", url.PathEscape(bareMetalMachineName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - Patch properties of the provided bare metal machine, or update tags associated with the bare metal machine.
+// Properties and tag updates can be done independently.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - bareMetalMachineName - The name of the bare metal machine.
+//   - bareMetalMachineUpdateParameters - The request body.
+//   - options - BareMetalMachinesClientBeginUpdateOptions contains the optional parameters for the BareMetalMachinesClient.BeginUpdate
+//     method.
+func (client *BareMetalMachinesClient) BeginUpdate(ctx context.Context, resourceGroupName string, bareMetalMachineName string, bareMetalMachineUpdateParameters BareMetalMachinePatchParameters, options *BareMetalMachinesClientBeginUpdateOptions) (*runtime.Poller[BareMetalMachinesClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, bareMetalMachineName, bareMetalMachineUpdateParameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[BareMetalMachinesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[BareMetalMachinesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Patch properties of the provided bare metal machine, or update tags associated with the bare metal machine. Properties
+// and tag updates can be done independently.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *BareMetalMachinesClient) update(ctx context.Context, resourceGroupName string, bareMetalMachineName string, bareMetalMachineUpdateParameters BareMetalMachinePatchParameters, options *BareMetalMachinesClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "BareMetalMachinesClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, bareMetalMachineName, bareMetalMachineUpdateParameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *BareMetalMachinesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, bareMetalMachineName string, bareMetalMachineUpdateParameters BareMetalMachinePatchParameters, options *BareMetalMachinesClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/bareMetalMachines/{bareMetalMachineName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if bareMetalMachineName == "" {
+		return nil, errors.New("parameter bareMetalMachineName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{bareMetalMachineName}", url.PathEscape(bareMetalMachineName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if options != nil && options.IfMatch != nil {
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
+	}
+	if options != nil && options.IfNoneMatch != nil {
+		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
+	}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, bareMetalMachineUpdateParameters); err != nil {
+		return nil, err
 	}
 	return req, nil
 }
@@ -493,839 +1328,4 @@ func (client *BareMetalMachinesClient) listBySubscriptionHandleResponse(resp *ht
 		return BareMetalMachinesClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginPowerOff - Power off the provided bare metal machine.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - bareMetalMachineName - The name of the bare metal machine.
-//   - options - BareMetalMachinesClientBeginPowerOffOptions contains the optional parameters for the BareMetalMachinesClient.BeginPowerOff
-//     method.
-func (client *BareMetalMachinesClient) BeginPowerOff(ctx context.Context, resourceGroupName string, bareMetalMachineName string, options *BareMetalMachinesClientBeginPowerOffOptions) (*runtime.Poller[BareMetalMachinesClientPowerOffResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.powerOff(ctx, resourceGroupName, bareMetalMachineName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[BareMetalMachinesClientPowerOffResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[BareMetalMachinesClientPowerOffResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// PowerOff - Power off the provided bare metal machine.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *BareMetalMachinesClient) powerOff(ctx context.Context, resourceGroupName string, bareMetalMachineName string, options *BareMetalMachinesClientBeginPowerOffOptions) (*http.Response, error) {
-	var err error
-	const operationName = "BareMetalMachinesClient.BeginPowerOff"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.powerOffCreateRequest(ctx, resourceGroupName, bareMetalMachineName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// powerOffCreateRequest creates the PowerOff request.
-func (client *BareMetalMachinesClient) powerOffCreateRequest(ctx context.Context, resourceGroupName string, bareMetalMachineName string, options *BareMetalMachinesClientBeginPowerOffOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/bareMetalMachines/{bareMetalMachineName}/powerOff"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if bareMetalMachineName == "" {
-		return nil, errors.New("parameter bareMetalMachineName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{bareMetalMachineName}", url.PathEscape(bareMetalMachineName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	if options != nil && options.BareMetalMachinePowerOffParameters != nil {
-		req.Raw().Header["Content-Type"] = []string{"application/json"}
-		if err := runtime.MarshalAsJSON(req, *options.BareMetalMachinePowerOffParameters); err != nil {
-			return nil, err
-		}
-		return req, nil
-	}
-	return req, nil
-}
-
-// BeginReimage - Reimage the provided bare metal machine.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - bareMetalMachineName - The name of the bare metal machine.
-//   - options - BareMetalMachinesClientBeginReimageOptions contains the optional parameters for the BareMetalMachinesClient.BeginReimage
-//     method.
-func (client *BareMetalMachinesClient) BeginReimage(ctx context.Context, resourceGroupName string, bareMetalMachineName string, options *BareMetalMachinesClientBeginReimageOptions) (*runtime.Poller[BareMetalMachinesClientReimageResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.reimage(ctx, resourceGroupName, bareMetalMachineName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[BareMetalMachinesClientReimageResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[BareMetalMachinesClientReimageResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Reimage - Reimage the provided bare metal machine.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *BareMetalMachinesClient) reimage(ctx context.Context, resourceGroupName string, bareMetalMachineName string, options *BareMetalMachinesClientBeginReimageOptions) (*http.Response, error) {
-	var err error
-	const operationName = "BareMetalMachinesClient.BeginReimage"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.reimageCreateRequest(ctx, resourceGroupName, bareMetalMachineName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// reimageCreateRequest creates the Reimage request.
-func (client *BareMetalMachinesClient) reimageCreateRequest(ctx context.Context, resourceGroupName string, bareMetalMachineName string, options *BareMetalMachinesClientBeginReimageOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/bareMetalMachines/{bareMetalMachineName}/reimage"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if bareMetalMachineName == "" {
-		return nil, errors.New("parameter bareMetalMachineName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{bareMetalMachineName}", url.PathEscape(bareMetalMachineName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	if options != nil && options.Body != nil {
-		req.Raw().Header["Content-Type"] = []string{"application/json"}
-		if err := runtime.MarshalAsJSON(req, *options.Body); err != nil {
-			return nil, err
-		}
-		return req, nil
-	}
-	return req, nil
-}
-
-// BeginReplace - Replace the provided bare metal machine.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - bareMetalMachineName - The name of the bare metal machine.
-//   - options - BareMetalMachinesClientBeginReplaceOptions contains the optional parameters for the BareMetalMachinesClient.BeginReplace
-//     method.
-func (client *BareMetalMachinesClient) BeginReplace(ctx context.Context, resourceGroupName string, bareMetalMachineName string, options *BareMetalMachinesClientBeginReplaceOptions) (*runtime.Poller[BareMetalMachinesClientReplaceResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.replace(ctx, resourceGroupName, bareMetalMachineName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[BareMetalMachinesClientReplaceResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[BareMetalMachinesClientReplaceResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Replace - Replace the provided bare metal machine.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *BareMetalMachinesClient) replace(ctx context.Context, resourceGroupName string, bareMetalMachineName string, options *BareMetalMachinesClientBeginReplaceOptions) (*http.Response, error) {
-	var err error
-	const operationName = "BareMetalMachinesClient.BeginReplace"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.replaceCreateRequest(ctx, resourceGroupName, bareMetalMachineName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// replaceCreateRequest creates the Replace request.
-func (client *BareMetalMachinesClient) replaceCreateRequest(ctx context.Context, resourceGroupName string, bareMetalMachineName string, options *BareMetalMachinesClientBeginReplaceOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/bareMetalMachines/{bareMetalMachineName}/replace"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if bareMetalMachineName == "" {
-		return nil, errors.New("parameter bareMetalMachineName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{bareMetalMachineName}", url.PathEscape(bareMetalMachineName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	if options != nil && options.BareMetalMachineReplaceParameters != nil {
-		req.Raw().Header["Content-Type"] = []string{"application/json"}
-		if err := runtime.MarshalAsJSON(req, *options.BareMetalMachineReplaceParameters); err != nil {
-			return nil, err
-		}
-		return req, nil
-	}
-	return req, nil
-}
-
-// BeginRestart - Restart the provided bare metal machine.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - bareMetalMachineName - The name of the bare metal machine.
-//   - options - BareMetalMachinesClientBeginRestartOptions contains the optional parameters for the BareMetalMachinesClient.BeginRestart
-//     method.
-func (client *BareMetalMachinesClient) BeginRestart(ctx context.Context, resourceGroupName string, bareMetalMachineName string, options *BareMetalMachinesClientBeginRestartOptions) (*runtime.Poller[BareMetalMachinesClientRestartResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.restart(ctx, resourceGroupName, bareMetalMachineName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[BareMetalMachinesClientRestartResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[BareMetalMachinesClientRestartResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Restart - Restart the provided bare metal machine.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *BareMetalMachinesClient) restart(ctx context.Context, resourceGroupName string, bareMetalMachineName string, options *BareMetalMachinesClientBeginRestartOptions) (*http.Response, error) {
-	var err error
-	const operationName = "BareMetalMachinesClient.BeginRestart"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.restartCreateRequest(ctx, resourceGroupName, bareMetalMachineName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// restartCreateRequest creates the Restart request.
-func (client *BareMetalMachinesClient) restartCreateRequest(ctx context.Context, resourceGroupName string, bareMetalMachineName string, _ *BareMetalMachinesClientBeginRestartOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/bareMetalMachines/{bareMetalMachineName}/restart"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if bareMetalMachineName == "" {
-		return nil, errors.New("parameter bareMetalMachineName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{bareMetalMachineName}", url.PathEscape(bareMetalMachineName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
-}
-
-// BeginRunCommand - Run the command or the script on the provided bare metal machine. The URL to storage account with the
-// command execution results and the command exit code can be retrieved from the operation status API once available.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - bareMetalMachineName - The name of the bare metal machine.
-//   - bareMetalMachineRunCommandParameters - The request body.
-//   - options - BareMetalMachinesClientBeginRunCommandOptions contains the optional parameters for the BareMetalMachinesClient.BeginRunCommand
-//     method.
-func (client *BareMetalMachinesClient) BeginRunCommand(ctx context.Context, resourceGroupName string, bareMetalMachineName string, bareMetalMachineRunCommandParameters BareMetalMachineRunCommandParameters, options *BareMetalMachinesClientBeginRunCommandOptions) (*runtime.Poller[BareMetalMachinesClientRunCommandResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.runCommand(ctx, resourceGroupName, bareMetalMachineName, bareMetalMachineRunCommandParameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[BareMetalMachinesClientRunCommandResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[BareMetalMachinesClientRunCommandResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// RunCommand - Run the command or the script on the provided bare metal machine. The URL to storage account with the command
-// execution results and the command exit code can be retrieved from the operation status API once available.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *BareMetalMachinesClient) runCommand(ctx context.Context, resourceGroupName string, bareMetalMachineName string, bareMetalMachineRunCommandParameters BareMetalMachineRunCommandParameters, options *BareMetalMachinesClientBeginRunCommandOptions) (*http.Response, error) {
-	var err error
-	const operationName = "BareMetalMachinesClient.BeginRunCommand"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.runCommandCreateRequest(ctx, resourceGroupName, bareMetalMachineName, bareMetalMachineRunCommandParameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// runCommandCreateRequest creates the RunCommand request.
-func (client *BareMetalMachinesClient) runCommandCreateRequest(ctx context.Context, resourceGroupName string, bareMetalMachineName string, bareMetalMachineRunCommandParameters BareMetalMachineRunCommandParameters, _ *BareMetalMachinesClientBeginRunCommandOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/bareMetalMachines/{bareMetalMachineName}/runCommand"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if bareMetalMachineName == "" {
-		return nil, errors.New("parameter bareMetalMachineName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{bareMetalMachineName}", url.PathEscape(bareMetalMachineName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, bareMetalMachineRunCommandParameters); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginRunDataExtracts - Run one or more data extractions on the provided bare metal machine. The URL to storage account
-// with the command execution results and the command exit code can be retrieved from the operation status API once available.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - bareMetalMachineName - The name of the bare metal machine.
-//   - bareMetalMachineRunDataExtractsParameters - The request body.
-//   - options - BareMetalMachinesClientBeginRunDataExtractsOptions contains the optional parameters for the BareMetalMachinesClient.BeginRunDataExtracts
-//     method.
-func (client *BareMetalMachinesClient) BeginRunDataExtracts(ctx context.Context, resourceGroupName string, bareMetalMachineName string, bareMetalMachineRunDataExtractsParameters BareMetalMachineRunDataExtractsParameters, options *BareMetalMachinesClientBeginRunDataExtractsOptions) (*runtime.Poller[BareMetalMachinesClientRunDataExtractsResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.runDataExtracts(ctx, resourceGroupName, bareMetalMachineName, bareMetalMachineRunDataExtractsParameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[BareMetalMachinesClientRunDataExtractsResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[BareMetalMachinesClientRunDataExtractsResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// RunDataExtracts - Run one or more data extractions on the provided bare metal machine. The URL to storage account with
-// the command execution results and the command exit code can be retrieved from the operation status API once available.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *BareMetalMachinesClient) runDataExtracts(ctx context.Context, resourceGroupName string, bareMetalMachineName string, bareMetalMachineRunDataExtractsParameters BareMetalMachineRunDataExtractsParameters, options *BareMetalMachinesClientBeginRunDataExtractsOptions) (*http.Response, error) {
-	var err error
-	const operationName = "BareMetalMachinesClient.BeginRunDataExtracts"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.runDataExtractsCreateRequest(ctx, resourceGroupName, bareMetalMachineName, bareMetalMachineRunDataExtractsParameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// runDataExtractsCreateRequest creates the RunDataExtracts request.
-func (client *BareMetalMachinesClient) runDataExtractsCreateRequest(ctx context.Context, resourceGroupName string, bareMetalMachineName string, bareMetalMachineRunDataExtractsParameters BareMetalMachineRunDataExtractsParameters, _ *BareMetalMachinesClientBeginRunDataExtractsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/bareMetalMachines/{bareMetalMachineName}/runDataExtracts"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if bareMetalMachineName == "" {
-		return nil, errors.New("parameter bareMetalMachineName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{bareMetalMachineName}", url.PathEscape(bareMetalMachineName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, bareMetalMachineRunDataExtractsParameters); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginRunDataExtractsRestricted - Run one or more restricted data extractions on the provided bare metal machine. The URL
-// to storage account with the command execution results and the command exit code can be retrieved from the operation status
-// API once available.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - bareMetalMachineName - The name of the bare metal machine.
-//   - bareMetalMachineRunDataExtractsRestrictedParameters - The request body.
-//   - options - BareMetalMachinesClientBeginRunDataExtractsRestrictedOptions contains the optional parameters for the BareMetalMachinesClient.BeginRunDataExtractsRestricted
-//     method.
-func (client *BareMetalMachinesClient) BeginRunDataExtractsRestricted(ctx context.Context, resourceGroupName string, bareMetalMachineName string, bareMetalMachineRunDataExtractsRestrictedParameters BareMetalMachineRunDataExtractsParameters, options *BareMetalMachinesClientBeginRunDataExtractsRestrictedOptions) (*runtime.Poller[BareMetalMachinesClientRunDataExtractsRestrictedResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.runDataExtractsRestricted(ctx, resourceGroupName, bareMetalMachineName, bareMetalMachineRunDataExtractsRestrictedParameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[BareMetalMachinesClientRunDataExtractsRestrictedResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[BareMetalMachinesClientRunDataExtractsRestrictedResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// RunDataExtractsRestricted - Run one or more restricted data extractions on the provided bare metal machine. The URL to
-// storage account with the command execution results and the command exit code can be retrieved from the operation status
-// API once available.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *BareMetalMachinesClient) runDataExtractsRestricted(ctx context.Context, resourceGroupName string, bareMetalMachineName string, bareMetalMachineRunDataExtractsRestrictedParameters BareMetalMachineRunDataExtractsParameters, options *BareMetalMachinesClientBeginRunDataExtractsRestrictedOptions) (*http.Response, error) {
-	var err error
-	const operationName = "BareMetalMachinesClient.BeginRunDataExtractsRestricted"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.runDataExtractsRestrictedCreateRequest(ctx, resourceGroupName, bareMetalMachineName, bareMetalMachineRunDataExtractsRestrictedParameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// runDataExtractsRestrictedCreateRequest creates the RunDataExtractsRestricted request.
-func (client *BareMetalMachinesClient) runDataExtractsRestrictedCreateRequest(ctx context.Context, resourceGroupName string, bareMetalMachineName string, bareMetalMachineRunDataExtractsRestrictedParameters BareMetalMachineRunDataExtractsParameters, _ *BareMetalMachinesClientBeginRunDataExtractsRestrictedOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/bareMetalMachines/{bareMetalMachineName}/runDataExtractsRestricted"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if bareMetalMachineName == "" {
-		return nil, errors.New("parameter bareMetalMachineName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{bareMetalMachineName}", url.PathEscape(bareMetalMachineName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, bareMetalMachineRunDataExtractsRestrictedParameters); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginRunReadCommands - Run one or more read-only commands on the provided bare metal machine. The URL to storage account
-// with the command execution results and the command exit code can be retrieved from the operation status API once available.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - bareMetalMachineName - The name of the bare metal machine.
-//   - bareMetalMachineRunReadCommandsParameters - The request body.
-//   - options - BareMetalMachinesClientBeginRunReadCommandsOptions contains the optional parameters for the BareMetalMachinesClient.BeginRunReadCommands
-//     method.
-func (client *BareMetalMachinesClient) BeginRunReadCommands(ctx context.Context, resourceGroupName string, bareMetalMachineName string, bareMetalMachineRunReadCommandsParameters BareMetalMachineRunReadCommandsParameters, options *BareMetalMachinesClientBeginRunReadCommandsOptions) (*runtime.Poller[BareMetalMachinesClientRunReadCommandsResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.runReadCommands(ctx, resourceGroupName, bareMetalMachineName, bareMetalMachineRunReadCommandsParameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[BareMetalMachinesClientRunReadCommandsResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[BareMetalMachinesClientRunReadCommandsResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// RunReadCommands - Run one or more read-only commands on the provided bare metal machine. The URL to storage account with
-// the command execution results and the command exit code can be retrieved from the operation status API once available.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *BareMetalMachinesClient) runReadCommands(ctx context.Context, resourceGroupName string, bareMetalMachineName string, bareMetalMachineRunReadCommandsParameters BareMetalMachineRunReadCommandsParameters, options *BareMetalMachinesClientBeginRunReadCommandsOptions) (*http.Response, error) {
-	var err error
-	const operationName = "BareMetalMachinesClient.BeginRunReadCommands"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.runReadCommandsCreateRequest(ctx, resourceGroupName, bareMetalMachineName, bareMetalMachineRunReadCommandsParameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// runReadCommandsCreateRequest creates the RunReadCommands request.
-func (client *BareMetalMachinesClient) runReadCommandsCreateRequest(ctx context.Context, resourceGroupName string, bareMetalMachineName string, bareMetalMachineRunReadCommandsParameters BareMetalMachineRunReadCommandsParameters, _ *BareMetalMachinesClientBeginRunReadCommandsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/bareMetalMachines/{bareMetalMachineName}/runReadCommands"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if bareMetalMachineName == "" {
-		return nil, errors.New("parameter bareMetalMachineName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{bareMetalMachineName}", url.PathEscape(bareMetalMachineName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, bareMetalMachineRunReadCommandsParameters); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginStart - Start the provided bare metal machine.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - bareMetalMachineName - The name of the bare metal machine.
-//   - options - BareMetalMachinesClientBeginStartOptions contains the optional parameters for the BareMetalMachinesClient.BeginStart
-//     method.
-func (client *BareMetalMachinesClient) BeginStart(ctx context.Context, resourceGroupName string, bareMetalMachineName string, options *BareMetalMachinesClientBeginStartOptions) (*runtime.Poller[BareMetalMachinesClientStartResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.start(ctx, resourceGroupName, bareMetalMachineName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[BareMetalMachinesClientStartResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[BareMetalMachinesClientStartResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Start - Start the provided bare metal machine.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *BareMetalMachinesClient) start(ctx context.Context, resourceGroupName string, bareMetalMachineName string, options *BareMetalMachinesClientBeginStartOptions) (*http.Response, error) {
-	var err error
-	const operationName = "BareMetalMachinesClient.BeginStart"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.startCreateRequest(ctx, resourceGroupName, bareMetalMachineName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// startCreateRequest creates the Start request.
-func (client *BareMetalMachinesClient) startCreateRequest(ctx context.Context, resourceGroupName string, bareMetalMachineName string, _ *BareMetalMachinesClientBeginStartOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/bareMetalMachines/{bareMetalMachineName}/start"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if bareMetalMachineName == "" {
-		return nil, errors.New("parameter bareMetalMachineName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{bareMetalMachineName}", url.PathEscape(bareMetalMachineName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
-}
-
-// BeginUncordon - Uncordon the provided bare metal machine's Kubernetes node.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - bareMetalMachineName - The name of the bare metal machine.
-//   - options - BareMetalMachinesClientBeginUncordonOptions contains the optional parameters for the BareMetalMachinesClient.BeginUncordon
-//     method.
-func (client *BareMetalMachinesClient) BeginUncordon(ctx context.Context, resourceGroupName string, bareMetalMachineName string, options *BareMetalMachinesClientBeginUncordonOptions) (*runtime.Poller[BareMetalMachinesClientUncordonResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.uncordon(ctx, resourceGroupName, bareMetalMachineName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[BareMetalMachinesClientUncordonResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[BareMetalMachinesClientUncordonResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Uncordon - Uncordon the provided bare metal machine's Kubernetes node.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *BareMetalMachinesClient) uncordon(ctx context.Context, resourceGroupName string, bareMetalMachineName string, options *BareMetalMachinesClientBeginUncordonOptions) (*http.Response, error) {
-	var err error
-	const operationName = "BareMetalMachinesClient.BeginUncordon"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.uncordonCreateRequest(ctx, resourceGroupName, bareMetalMachineName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// uncordonCreateRequest creates the Uncordon request.
-func (client *BareMetalMachinesClient) uncordonCreateRequest(ctx context.Context, resourceGroupName string, bareMetalMachineName string, _ *BareMetalMachinesClientBeginUncordonOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/bareMetalMachines/{bareMetalMachineName}/uncordon"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if bareMetalMachineName == "" {
-		return nil, errors.New("parameter bareMetalMachineName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{bareMetalMachineName}", url.PathEscape(bareMetalMachineName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
-}
-
-// BeginUpdate - Patch properties of the provided bare metal machine, or update tags associated with the bare metal machine.
-// Properties and tag updates can be done independently.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - bareMetalMachineName - The name of the bare metal machine.
-//   - bareMetalMachineUpdateParameters - The request body.
-//   - options - BareMetalMachinesClientBeginUpdateOptions contains the optional parameters for the BareMetalMachinesClient.BeginUpdate
-//     method.
-func (client *BareMetalMachinesClient) BeginUpdate(ctx context.Context, resourceGroupName string, bareMetalMachineName string, bareMetalMachineUpdateParameters BareMetalMachinePatchParameters, options *BareMetalMachinesClientBeginUpdateOptions) (*runtime.Poller[BareMetalMachinesClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, bareMetalMachineName, bareMetalMachineUpdateParameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[BareMetalMachinesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[BareMetalMachinesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Patch properties of the provided bare metal machine, or update tags associated with the bare metal machine. Properties
-// and tag updates can be done independently.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *BareMetalMachinesClient) update(ctx context.Context, resourceGroupName string, bareMetalMachineName string, bareMetalMachineUpdateParameters BareMetalMachinePatchParameters, options *BareMetalMachinesClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "BareMetalMachinesClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, bareMetalMachineName, bareMetalMachineUpdateParameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *BareMetalMachinesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, bareMetalMachineName string, bareMetalMachineUpdateParameters BareMetalMachinePatchParameters, options *BareMetalMachinesClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/bareMetalMachines/{bareMetalMachineName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if bareMetalMachineName == "" {
-		return nil, errors.New("parameter bareMetalMachineName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{bareMetalMachineName}", url.PathEscape(bareMetalMachineName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
-	}
-	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
-	}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, bareMetalMachineUpdateParameters); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

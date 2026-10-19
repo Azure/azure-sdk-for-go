@@ -67,7 +67,7 @@ func (client *AssociateTrafficFilterClient) BeginAssociate(ctx context.Context, 
 	}
 }
 
-// Associate - Associate a traffic filter with your Elastic monitor resource to control and manage network traffic.
+// associate - Associate a traffic filter with your Elastic monitor resource to control and manage network traffic.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AssociateTrafficFilterClient) associate(ctx context.Context, resourceGroupName string, monitorName string, options *AssociateTrafficFilterClientBeginAssociateOptions) (*http.Response, error) {
 	var err error
@@ -89,7 +89,7 @@ func (client *AssociateTrafficFilterClient) associate(ctx context.Context, resou
 	return httpResp, nil
 }
 
-// associateCreateRequest creates the Associate request.
+// associateCreateRequest creates the associate request.
 func (client *AssociateTrafficFilterClient) associateCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, options *AssociateTrafficFilterClientBeginAssociateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/associateTrafficFilter"
 	if client.subscriptionID == "" {

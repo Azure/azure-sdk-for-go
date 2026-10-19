@@ -37,13 +37,13 @@ type BotsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetCheckNameAvailability func(ctx context.Context, parameters armbotservice.CheckNameAvailabilityRequestBody, options *armbotservice.BotsClientGetCheckNameAvailabilityOptions) (resp azfake.Responder[armbotservice.BotsClientGetCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method BotsClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armbotservice.BotsClientListOptions) (resp azfake.PagerResponder[armbotservice.BotsClientListResponse])
-
 	// NewListByResourceGroupPager is the fake for method BotsClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, options *armbotservice.BotsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armbotservice.BotsClientListByResourceGroupResponse])
+
+	// NewListPager is the fake for method BotsClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armbotservice.BotsClientListOptions) (resp azfake.PagerResponder[armbotservice.BotsClientListResponse])
 
 	// Update is the fake for method BotsClient.Update
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
@@ -56,8 +56,8 @@ type BotsServer struct {
 func NewBotsServerTransport(srv *BotsServer) *BotsServerTransport {
 	return &BotsServerTransport{
 		srv:                         srv,
-		newListPager:                newTracker[azfake.PagerResponder[armbotservice.BotsClientListResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armbotservice.BotsClientListByResourceGroupResponse]](),
+		newListPager:                newTracker[azfake.PagerResponder[armbotservice.BotsClientListResponse]](),
 	}
 }
 
@@ -65,8 +65,8 @@ func NewBotsServerTransport(srv *BotsServer) *BotsServerTransport {
 // Don't use this type directly, use NewBotsServerTransport instead.
 type BotsServerTransport struct {
 	srv                         *BotsServer
-	newListPager                *tracker[azfake.PagerResponder[armbotservice.BotsClientListResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armbotservice.BotsClientListByResourceGroupResponse]]
+	newListPager                *tracker[azfake.PagerResponder[armbotservice.BotsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for BotsServerTransport.
@@ -98,10 +98,10 @@ func (b *BotsServerTransport) dispatchToMethodFake(req *http.Request, method str
 				res.resp, res.err = b.dispatchGet(req)
 			case "BotsClient.GetCheckNameAvailability":
 				res.resp, res.err = b.dispatchGetCheckNameAvailability(req)
-			case "BotsClient.NewListPager":
-				res.resp, res.err = b.dispatchNewListPager(req)
 			case "BotsClient.NewListByResourceGroupPager":
 				res.resp, res.err = b.dispatchNewListByResourceGroupPager(req)
+			case "BotsClient.NewListPager":
+				res.resp, res.err = b.dispatchNewListPager(req)
 			case "BotsClient.Update":
 				res.resp, res.err = b.dispatchUpdate(req)
 			default:
@@ -246,39 +246,6 @@ func (b *BotsServerTransport) dispatchGetCheckNameAvailability(req *http.Request
 	return resp, nil
 }
 
-func (b *BotsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if b.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := b.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.BotService/botServices`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := b.srv.NewListPager(nil)
-		newListPager = &resp
-		b.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armbotservice.BotsClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		b.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		b.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (b *BotsServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
 	if b.srv.NewListByResourceGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
@@ -312,6 +279,39 @@ func (b *BotsServerTransport) dispatchNewListByResourceGroupPager(req *http.Requ
 	}
 	if !server.PagerResponderMore(newListByResourceGroupPager) {
 		b.newListByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (b *BotsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if b.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := b.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.BotService/botServices`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := b.srv.NewListPager(nil)
+		newListPager = &resp
+		b.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armbotservice.BotsClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		b.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		b.newListPager.remove(req)
 	}
 	return resp, nil
 }

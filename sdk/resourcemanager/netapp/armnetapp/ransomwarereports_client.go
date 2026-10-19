@@ -74,7 +74,7 @@ func (client *RansomwareReportsClient) BeginClearSuspects(ctx context.Context, r
 	}
 }
 
-// ClearSuspects - Clear ransomware suspects for the given Advanced Ransomware Protection report. You should evaluate the
+// clearSuspects - Clear ransomware suspects for the given Advanced Ransomware Protection report. You should evaluate the
 // report to determine whether the activity is acceptable (false positive) or whether an attack seems malicious.
 // ARP creates snapshots named Anti_ransomware_backup when it detects a potential ransomware threat. You can use one of these
 // ARP snapshots or another snapshot of your volume to restore data",
@@ -99,7 +99,7 @@ func (client *RansomwareReportsClient) clearSuspects(ctx context.Context, resour
 	return httpResp, nil
 }
 
-// clearSuspectsCreateRequest creates the ClearSuspects request.
+// clearSuspectsCreateRequest creates the clearSuspects request.
 func (client *RansomwareReportsClient) clearSuspectsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, ransomwareReportName string, body RansomwareSuspectsClearRequest, _ *RansomwareReportsClientBeginClearSuspectsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/ransomwareReports/{ransomwareReportName}/clearSuspects"
 	if client.subscriptionID == "" {

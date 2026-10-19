@@ -45,6 +45,87 @@ func NewRunbookDraftClient(subscriptionID string, credential azcore.TokenCredent
 	return client, nil
 }
 
+// BeginReplaceContent - Replaces the runbook draft content.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - automationAccountName - The name of the automation account.
+//   - runbookName - The runbook name.
+//   - runbookContent - The runbook draft content.
+//   - options - RunbookDraftClientBeginReplaceContentOptions contains the optional parameters for the RunbookDraftClient.BeginReplaceContent
+//     method.
+func (client *RunbookDraftClient) BeginReplaceContent(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, runbookContent string, options *RunbookDraftClientBeginReplaceContentOptions) (*runtime.Poller[RunbookDraftClientReplaceContentResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.replaceContent(ctx, resourceGroupName, automationAccountName, runbookName, runbookContent, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[RunbookDraftClientReplaceContentResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[RunbookDraftClientReplaceContentResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// replaceContent - Replaces the runbook draft content.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *RunbookDraftClient) replaceContent(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, runbookContent string, options *RunbookDraftClientBeginReplaceContentOptions) (*http.Response, error) {
+	var err error
+	const operationName = "RunbookDraftClient.BeginReplaceContent"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.replaceContentCreateRequest(ctx, resourceGroupName, automationAccountName, runbookName, runbookContent, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// replaceContentCreateRequest creates the replaceContent request.
+func (client *RunbookDraftClient) replaceContentCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, runbookContent string, _ *RunbookDraftClientBeginReplaceContentOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/runbooks/{runbookName}/draft/content"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if automationAccountName == "" {
+		return nil, errors.New("parameter automationAccountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{automationAccountName}", url.PathEscape(automationAccountName))
+	if runbookName == "" {
+		return nil, errors.New("parameter runbookName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{runbookName}", url.PathEscape(runbookName))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20241023)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	body := streaming.NopCloser(strings.NewReader(runbookContent))
+	req.Raw().Header["Content-Type"] = []string{"text/plain"}
+	if err := req.SetBody(body, "text/plain"); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
 // Get - Retrieve the runbook draft identified by runbook name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -176,87 +257,6 @@ func (client *RunbookDraftClient) getContentHandleResponse(resp *http.Response, 
 	txt := string(body)
 	result.Value = &txt
 	return result, nil
-}
-
-// BeginReplaceContent - Replaces the runbook draft content.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - automationAccountName - The name of the automation account.
-//   - runbookName - The runbook name.
-//   - runbookContent - The runbook draft content.
-//   - options - RunbookDraftClientBeginReplaceContentOptions contains the optional parameters for the RunbookDraftClient.BeginReplaceContent
-//     method.
-func (client *RunbookDraftClient) BeginReplaceContent(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, runbookContent string, options *RunbookDraftClientBeginReplaceContentOptions) (*runtime.Poller[RunbookDraftClientReplaceContentResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.replaceContent(ctx, resourceGroupName, automationAccountName, runbookName, runbookContent, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[RunbookDraftClientReplaceContentResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[RunbookDraftClientReplaceContentResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// ReplaceContent - Replaces the runbook draft content.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *RunbookDraftClient) replaceContent(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, runbookContent string, options *RunbookDraftClientBeginReplaceContentOptions) (*http.Response, error) {
-	var err error
-	const operationName = "RunbookDraftClient.BeginReplaceContent"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.replaceContentCreateRequest(ctx, resourceGroupName, automationAccountName, runbookName, runbookContent, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// replaceContentCreateRequest creates the ReplaceContent request.
-func (client *RunbookDraftClient) replaceContentCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, runbookContent string, _ *RunbookDraftClientBeginReplaceContentOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/runbooks/{runbookName}/draft/content"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if automationAccountName == "" {
-		return nil, errors.New("parameter automationAccountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{automationAccountName}", url.PathEscape(automationAccountName))
-	if runbookName == "" {
-		return nil, errors.New("parameter runbookName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{runbookName}", url.PathEscape(runbookName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241023)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	body := streaming.NopCloser(strings.NewReader(runbookContent))
-	req.Raw().Header["Content-Type"] = []string{"text/plain"}
-	if err := req.SetBody(body, "text/plain"); err != nil {
-		return nil, err
-	}
-	return req, nil
 }
 
 // UndoEdit - Undo draft edit to last known published state identified by runbook name.

@@ -157,6 +157,56 @@ func ExampleInstancePoolsClient_BeginDelete() {
 	// }
 }
 
+// Generated from example definition: 2026-08-01-preview/PatchInstancePool.json
+func ExampleInstancePoolsClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewInstancePoolsClient().BeginUpdate(ctx, "group1", "testIP", armsql.InstancePoolUpdate{
+		Tags: map[string]*string{
+			"x": to.Ptr("y"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsql.InstancePoolsClientUpdateResponse{
+	// 	InstancePool: armsql.InstancePool{
+	// 		Name: to.Ptr("testIP"),
+	// 		Type: to.Ptr("Microsoft.Sql/instancePools"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/instancePools/testIP"),
+	// 		Location: to.Ptr("japaneast"),
+	// 		Properties: &armsql.InstancePoolProperties{
+	// 			LicenseType: to.Ptr(armsql.InstancePoolLicenseTypeLicenseIncluded),
+	// 			MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_JapanEast_MI_1"),
+	// 			SubnetID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Network/virtualNetwork/myvnet/subnets/mysubnet1"),
+	// 			VCores: to.Ptr[int32](8),
+	// 		},
+	// 		SKU: &armsql.SKU{
+	// 			Name: to.Ptr("GP_Gen5"),
+	// 			Family: to.Ptr("Gen5"),
+	// 			Tier: to.Ptr("GeneralPurpose"),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"x": to.Ptr("y"),
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2026-08-01-preview/GetInstancePool.json
 func ExampleInstancePoolsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -198,79 +248,6 @@ func ExampleInstancePoolsClient_Get() {
 	// 		},
 	// 	},
 	// }
-}
-
-// Generated from example definition: 2026-08-01-preview/ListInstancePoolsBySubscriptionId.json
-func ExampleInstancePoolsClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewInstancePoolsClient().NewListPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armsql.InstancePoolsClientListResponse{
-		// 	InstancePoolListResult: armsql.InstancePoolListResult{
-		// 		Value: []*armsql.InstancePool{
-		// 			{
-		// 				Name: to.Ptr("testIP"),
-		// 				Type: to.Ptr("Microsoft.Sql/instancePools"),
-		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/instancePools/testIP"),
-		// 				Location: to.Ptr("japaneast"),
-		// 				Properties: &armsql.InstancePoolProperties{
-		// 					DNSZone: to.Ptr("1234567890"),
-		// 					LicenseType: to.Ptr(armsql.InstancePoolLicenseTypeLicenseIncluded),
-		// 					MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_JapanEast_MI_1"),
-		// 					SubnetID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Network/virtualNetwork/myvnet/subnets/mysubnet1"),
-		// 					VCores: to.Ptr[int32](8),
-		// 				},
-		// 				SKU: &armsql.SKU{
-		// 					Name: to.Ptr("GP_Gen5"),
-		// 					Family: to.Ptr("Gen5"),
-		// 					Tier: to.Ptr("GeneralPurpose"),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 					"a": to.Ptr("b"),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("testIP2"),
-		// 				Type: to.Ptr("Microsoft.Sql/instancePools"),
-		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group2/providers/Microsoft.Sql/instancePools/testIP2"),
-		// 				Location: to.Ptr("japaneast"),
-		// 				Properties: &armsql.InstancePoolProperties{
-		// 					DNSZone: to.Ptr("1234567890"),
-		// 					LicenseType: to.Ptr(armsql.InstancePoolLicenseTypeLicenseIncluded),
-		// 					MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_JapanEast_MI_1"),
-		// 					SubnetID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group2/providers/Microsoft.Network/virtualNetwork/myvnet/subnets/mysubnet1"),
-		// 					VCores: to.Ptr[int32](8),
-		// 				},
-		// 				SKU: &armsql.SKU{
-		// 					Name: to.Ptr("GP_Gen5"),
-		// 					Family: to.Ptr("Gen5"),
-		// 					Tier: to.Ptr("GeneralPurpose"),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 					"a": to.Ptr("b"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
 }
 
 // Generated from example definition: 2026-08-01-preview/ListInstancePoolsByResourceGroup.json
@@ -346,8 +323,8 @@ func ExampleInstancePoolsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-08-01-preview/PatchInstancePool.json
-func ExampleInstancePoolsClient_BeginUpdate() {
+// Generated from example definition: 2026-08-01-preview/ListInstancePoolsBySubscriptionId.json
+func ExampleInstancePoolsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -357,41 +334,64 @@ func ExampleInstancePoolsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewInstancePoolsClient().BeginUpdate(ctx, "group1", "testIP", armsql.InstancePoolUpdate{
-		Tags: map[string]*string{
-			"x": to.Ptr("y"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
+	pager := clientFactory.NewInstancePoolsClient().NewListPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armsql.InstancePoolsClientListResponse{
+		// 	InstancePoolListResult: armsql.InstancePoolListResult{
+		// 		Value: []*armsql.InstancePool{
+		// 			{
+		// 				Name: to.Ptr("testIP"),
+		// 				Type: to.Ptr("Microsoft.Sql/instancePools"),
+		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/instancePools/testIP"),
+		// 				Location: to.Ptr("japaneast"),
+		// 				Properties: &armsql.InstancePoolProperties{
+		// 					DNSZone: to.Ptr("1234567890"),
+		// 					LicenseType: to.Ptr(armsql.InstancePoolLicenseTypeLicenseIncluded),
+		// 					MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_JapanEast_MI_1"),
+		// 					SubnetID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Network/virtualNetwork/myvnet/subnets/mysubnet1"),
+		// 					VCores: to.Ptr[int32](8),
+		// 				},
+		// 				SKU: &armsql.SKU{
+		// 					Name: to.Ptr("GP_Gen5"),
+		// 					Family: to.Ptr("Gen5"),
+		// 					Tier: to.Ptr("GeneralPurpose"),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"a": to.Ptr("b"),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("testIP2"),
+		// 				Type: to.Ptr("Microsoft.Sql/instancePools"),
+		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group2/providers/Microsoft.Sql/instancePools/testIP2"),
+		// 				Location: to.Ptr("japaneast"),
+		// 				Properties: &armsql.InstancePoolProperties{
+		// 					DNSZone: to.Ptr("1234567890"),
+		// 					LicenseType: to.Ptr(armsql.InstancePoolLicenseTypeLicenseIncluded),
+		// 					MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_JapanEast_MI_1"),
+		// 					SubnetID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group2/providers/Microsoft.Network/virtualNetwork/myvnet/subnets/mysubnet1"),
+		// 					VCores: to.Ptr[int32](8),
+		// 				},
+		// 				SKU: &armsql.SKU{
+		// 					Name: to.Ptr("GP_Gen5"),
+		// 					Family: to.Ptr("Gen5"),
+		// 					Tier: to.Ptr("GeneralPurpose"),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"a": to.Ptr("b"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
 	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armsql.InstancePoolsClientUpdateResponse{
-	// 	InstancePool: armsql.InstancePool{
-	// 		Name: to.Ptr("testIP"),
-	// 		Type: to.Ptr("Microsoft.Sql/instancePools"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/instancePools/testIP"),
-	// 		Location: to.Ptr("japaneast"),
-	// 		Properties: &armsql.InstancePoolProperties{
-	// 			LicenseType: to.Ptr(armsql.InstancePoolLicenseTypeLicenseIncluded),
-	// 			MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_JapanEast_MI_1"),
-	// 			SubnetID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Network/virtualNetwork/myvnet/subnets/mysubnet1"),
-	// 			VCores: to.Ptr[int32](8),
-	// 		},
-	// 		SKU: &armsql.SKU{
-	// 			Name: to.Ptr("GP_Gen5"),
-	// 			Family: to.Ptr("Gen5"),
-	// 			Tier: to.Ptr("GeneralPurpose"),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"x": to.Ptr("y"),
-	// 		},
-	// 	},
-	// }
 }

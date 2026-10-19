@@ -30,21 +30,21 @@ type PrivateZonesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, privateZoneName string, options *armprivatedns.PrivateZonesClientBeginDeleteOptions) (resp azfake.PollerResponder[armprivatedns.PrivateZonesClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method PrivateZonesClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, privateZoneName string, parameters armprivatedns.PrivateZone, options *armprivatedns.PrivateZonesClientBeginUpdateOptions) (resp azfake.PollerResponder[armprivatedns.PrivateZonesClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method PrivateZonesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, privateZoneName string, options *armprivatedns.PrivateZonesClientGetOptions) (resp azfake.Responder[armprivatedns.PrivateZonesClientGetResponse], errResp azfake.ErrorResponder)
-
-	// NewListPager is the fake for method PrivateZonesClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armprivatedns.PrivateZonesClientListOptions) (resp azfake.PagerResponder[armprivatedns.PrivateZonesClientListResponse])
 
 	// NewListByResourceGroupPager is the fake for method PrivateZonesClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, options *armprivatedns.PrivateZonesClientListByResourceGroupOptions) (resp azfake.PagerResponder[armprivatedns.PrivateZonesClientListByResourceGroupResponse])
 
-	// BeginUpdate is the fake for method PrivateZonesClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, privateZoneName string, parameters armprivatedns.PrivateZone, options *armprivatedns.PrivateZonesClientBeginUpdateOptions) (resp azfake.PollerResponder[armprivatedns.PrivateZonesClientUpdateResponse], errResp azfake.ErrorResponder)
+	// NewListPager is the fake for method PrivateZonesClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armprivatedns.PrivateZonesClientListOptions) (resp azfake.PagerResponder[armprivatedns.PrivateZonesClientListResponse])
 }
 
 // NewPrivateZonesServerTransport creates a new instance of PrivateZonesServerTransport with the provided implementation.
@@ -55,9 +55,9 @@ func NewPrivateZonesServerTransport(srv *PrivateZonesServer) *PrivateZonesServer
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armprivatedns.PrivateZonesClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armprivatedns.PrivateZonesClientDeleteResponse]](),
-		newListPager:                newTracker[azfake.PagerResponder[armprivatedns.PrivateZonesClientListResponse]](),
-		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armprivatedns.PrivateZonesClientListByResourceGroupResponse]](),
 		beginUpdate:                 newTracker[azfake.PollerResponder[armprivatedns.PrivateZonesClientUpdateResponse]](),
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armprivatedns.PrivateZonesClientListByResourceGroupResponse]](),
+		newListPager:                newTracker[azfake.PagerResponder[armprivatedns.PrivateZonesClientListResponse]](),
 	}
 }
 
@@ -67,9 +67,9 @@ type PrivateZonesServerTransport struct {
 	srv                         *PrivateZonesServer
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armprivatedns.PrivateZonesClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armprivatedns.PrivateZonesClientDeleteResponse]]
-	newListPager                *tracker[azfake.PagerResponder[armprivatedns.PrivateZonesClientListResponse]]
-	newListByResourceGroupPager *tracker[azfake.PagerResponder[armprivatedns.PrivateZonesClientListByResourceGroupResponse]]
 	beginUpdate                 *tracker[azfake.PollerResponder[armprivatedns.PrivateZonesClientUpdateResponse]]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armprivatedns.PrivateZonesClientListByResourceGroupResponse]]
+	newListPager                *tracker[azfake.PagerResponder[armprivatedns.PrivateZonesClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for PrivateZonesServerTransport.
@@ -97,14 +97,14 @@ func (p *PrivateZonesServerTransport) dispatchToMethodFake(req *http.Request, me
 				res.resp, res.err = p.dispatchBeginCreateOrUpdate(req)
 			case "PrivateZonesClient.BeginDelete":
 				res.resp, res.err = p.dispatchBeginDelete(req)
-			case "PrivateZonesClient.Get":
-				res.resp, res.err = p.dispatchGet(req)
-			case "PrivateZonesClient.NewListPager":
-				res.resp, res.err = p.dispatchNewListPager(req)
-			case "PrivateZonesClient.NewListByResourceGroupPager":
-				res.resp, res.err = p.dispatchNewListByResourceGroupPager(req)
 			case "PrivateZonesClient.BeginUpdate":
 				res.resp, res.err = p.dispatchBeginUpdate(req)
+			case "PrivateZonesClient.Get":
+				res.resp, res.err = p.dispatchGet(req)
+			case "PrivateZonesClient.NewListByResourceGroupPager":
+				res.resp, res.err = p.dispatchNewListByResourceGroupPager(req)
+			case "PrivateZonesClient.NewListPager":
+				res.resp, res.err = p.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -229,6 +229,61 @@ func (p *PrivateZonesServerTransport) dispatchBeginDelete(req *http.Request) (*h
 	return resp, nil
 }
 
+func (p *PrivateZonesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if p.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := p.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/privateDnsZones/(?P<privateZoneName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armprivatedns.PrivateZone](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		privateZoneNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("privateZoneName")])
+		if err != nil {
+			return nil, err
+		}
+		ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
+		var options *armprivatedns.PrivateZonesClientBeginUpdateOptions
+		if ifMatchParam != nil {
+			options = &armprivatedns.PrivateZonesClientBeginUpdateOptions{
+				IfMatch: ifMatchParam,
+			}
+		}
+		respr, errRespr := p.srv.BeginUpdate(req.Context(), resourceGroupNameParam, privateZoneNameParam, body, options)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		p.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		p.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		p.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (p *PrivateZonesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if p.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -258,56 +313,6 @@ func (p *PrivateZonesServerTransport) dispatchGet(req *http.Request) (*http.Resp
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).PrivateZone, req)
 	if err != nil {
 		return nil, err
-	}
-	return resp, nil
-}
-
-func (p *PrivateZonesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if p.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := p.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/privateDnsZones`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
-		})
-		if err != nil {
-			return nil, err
-		}
-		var options *armprivatedns.PrivateZonesClientListOptions
-		if topParam != nil {
-			options = &armprivatedns.PrivateZonesClientListOptions{
-				Top: topParam,
-			}
-		}
-		resp := p.srv.NewListPager(options)
-		newListPager = &resp
-		p.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armprivatedns.PrivateZonesClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		p.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		p.newListPager.remove(req)
 	}
 	return resp, nil
 }
@@ -366,58 +371,53 @@ func (p *PrivateZonesServerTransport) dispatchNewListByResourceGroupPager(req *h
 	return resp, nil
 }
 
-func (p *PrivateZonesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if p.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+func (p *PrivateZonesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if p.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	beginUpdate := p.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/privateDnsZones/(?P<privateZoneName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	newListPager := p.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/privateDnsZones`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		body, err := server.UnmarshalRequestAsJSON[armprivatedns.PrivateZone](req)
+		qp := req.URL.Query()
+		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
 		if err != nil {
 			return nil, err
 		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		privateZoneNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("privateZoneName")])
-		if err != nil {
-			return nil, err
-		}
-		ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
-		var options *armprivatedns.PrivateZonesClientBeginUpdateOptions
-		if ifMatchParam != nil {
-			options = &armprivatedns.PrivateZonesClientBeginUpdateOptions{
-				IfMatch: ifMatchParam,
+		var options *armprivatedns.PrivateZonesClientListOptions
+		if topParam != nil {
+			options = &armprivatedns.PrivateZonesClientListOptions{
+				Top: topParam,
 			}
 		}
-		respr, errRespr := p.srv.BeginUpdate(req.Context(), resourceGroupNameParam, privateZoneNameParam, body, options)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		p.beginUpdate.add(req, beginUpdate)
+		resp := p.srv.NewListPager(options)
+		newListPager = &resp
+		p.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armprivatedns.PrivateZonesClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
 	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		p.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		p.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(beginUpdate) {
-		p.beginUpdate.remove(req)
+	if !server.PagerResponderMore(newListPager) {
+		p.newListPager.remove(req)
 	}
-
 	return resp, nil
 }
 

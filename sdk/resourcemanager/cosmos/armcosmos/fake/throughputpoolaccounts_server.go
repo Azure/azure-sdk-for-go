@@ -87,7 +87,7 @@ func (t *ThroughputPoolAccountsServerTransport) dispatchNewListPager(req *http.R
 	}
 	newListPager := t.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/throughputPools/(?P<throughputPoolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/throughputPoolAccounts`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/throughputPools/(?P<throughputPoolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/throughputPoolAccounts`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {

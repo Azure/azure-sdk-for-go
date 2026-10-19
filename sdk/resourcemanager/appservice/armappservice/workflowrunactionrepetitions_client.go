@@ -125,98 +125,6 @@ func (client *WorkflowRunActionRepetitionsClient) getHandleResponse(resp *http.R
 	return result, nil
 }
 
-// NewListPager - Get all of a workflow run action repetitions.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - name - Site name.
-//   - workflowName - The workflow name.
-//   - runName - The workflow run name.
-//   - actionName - The workflow action name.
-//   - options - WorkflowRunActionRepetitionsClientListOptions contains the optional parameters for the WorkflowRunActionRepetitionsClient.NewListPager
-//     method.
-func (client *WorkflowRunActionRepetitionsClient) NewListPager(resourceGroupName string, name string, workflowName string, runName string, actionName string, options *WorkflowRunActionRepetitionsClientListOptions) *runtime.Pager[WorkflowRunActionRepetitionsClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[WorkflowRunActionRepetitionsClientListResponse]{
-		More: func(page WorkflowRunActionRepetitionsClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *WorkflowRunActionRepetitionsClientListResponse) (WorkflowRunActionRepetitionsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "WorkflowRunActionRepetitionsClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listCreateRequest(ctx, resourceGroupName, name, workflowName, runName, actionName, nextLink, options)
-			if err != nil {
-				return WorkflowRunActionRepetitionsClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return WorkflowRunActionRepetitionsClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *WorkflowRunActionRepetitionsClient) listCreateRequest(ctx context.Context, resourceGroupName string, name string, workflowName string, runName string, actionName string, nextLink string, _ *WorkflowRunActionRepetitionsClientListOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/runs/{runName}/actions/{actionName}/repetitions"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		if resourceGroupName == "" {
-			return nil, errors.New("parameter resourceGroupName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-		if name == "" {
-			return nil, errors.New("parameter name cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-		if workflowName == "" {
-			return nil, errors.New("parameter workflowName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{workflowName}", url.PathEscape(workflowName))
-		if runName == "" {
-			return nil, errors.New("parameter runName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{runName}", url.PathEscape(runName))
-		if actionName == "" {
-			return nil, errors.New("parameter actionName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{actionName}", url.PathEscape(actionName))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250501)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *WorkflowRunActionRepetitionsClient) listHandleResponse(resp *http.Response, successCodes ...int) (WorkflowRunActionRepetitionsClientListResponse, error) {
-	result := WorkflowRunActionRepetitionsClientListResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.WorkflowRunActionRepetitionDefinitionCollection); err != nil {
-		return WorkflowRunActionRepetitionsClientListResponse{}, err
-	}
-	return result, nil
-}
-
 // NewListExpressionTracesPager - Lists a workflow run expression trace.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Site name.
@@ -310,6 +218,98 @@ func (client *WorkflowRunActionRepetitionsClient) listExpressionTracesHandleResp
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExpressionTraces); err != nil {
 		return WorkflowRunActionRepetitionsClientListExpressionTracesResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListPager - Get all of a workflow run action repetitions.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - name - Site name.
+//   - workflowName - The workflow name.
+//   - runName - The workflow run name.
+//   - actionName - The workflow action name.
+//   - options - WorkflowRunActionRepetitionsClientListOptions contains the optional parameters for the WorkflowRunActionRepetitionsClient.NewListPager
+//     method.
+func (client *WorkflowRunActionRepetitionsClient) NewListPager(resourceGroupName string, name string, workflowName string, runName string, actionName string, options *WorkflowRunActionRepetitionsClientListOptions) *runtime.Pager[WorkflowRunActionRepetitionsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[WorkflowRunActionRepetitionsClientListResponse]{
+		More: func(page WorkflowRunActionRepetitionsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *WorkflowRunActionRepetitionsClientListResponse) (WorkflowRunActionRepetitionsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "WorkflowRunActionRepetitionsClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, resourceGroupName, name, workflowName, runName, actionName, nextLink, options)
+			if err != nil {
+				return WorkflowRunActionRepetitionsClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WorkflowRunActionRepetitionsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listCreateRequest creates the List request.
+func (client *WorkflowRunActionRepetitionsClient) listCreateRequest(ctx context.Context, resourceGroupName string, name string, workflowName string, runName string, actionName string, nextLink string, _ *WorkflowRunActionRepetitionsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/runs/{runName}/actions/{actionName}/repetitions"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		if workflowName == "" {
+			return nil, errors.New("parameter workflowName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{workflowName}", url.PathEscape(workflowName))
+		if runName == "" {
+			return nil, errors.New("parameter runName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{runName}", url.PathEscape(runName))
+		if actionName == "" {
+			return nil, errors.New("parameter actionName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{actionName}", url.PathEscape(actionName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listHandleResponse handles the List response.
+func (client *WorkflowRunActionRepetitionsClient) listHandleResponse(resp *http.Response, successCodes ...int) (WorkflowRunActionRepetitionsClientListResponse, error) {
+	result := WorkflowRunActionRepetitionsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.WorkflowRunActionRepetitionDefinitionCollection); err != nil {
+		return WorkflowRunActionRepetitionsClientListResponse{}, err
 	}
 	return result, nil
 }

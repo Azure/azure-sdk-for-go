@@ -322,8 +322,8 @@ func ExampleIacProfilesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01-preview/IacProfile_List.json
-func ExampleIacProfilesClient_NewListPager() {
+// Generated from example definition: 2025-03-01-preview/IacProfile_ListByResourceGroup.json
+func ExampleIacProfilesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -333,7 +333,7 @@ func ExampleIacProfilesClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewIacProfilesClient().NewListPager(nil)
+	pager := clientFactory.NewIacProfilesClient().NewListByResourceGroupPager("resourceGroup1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -344,9 +344,9 @@ func ExampleIacProfilesClient_NewListPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armdevhub.IacProfilesClientListResponse{
+		// page = armdevhub.IacProfilesClientListByResourceGroupResponse{
 		// 	IacProfileListResult: armdevhub.IacProfileListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com:443/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DevHub/iacProfiles?api-version=2018-05-05-preview&timeRange=1&$skipToken="),
+		// 		NextLink: to.Ptr("https://management.azure.com:443/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroup1/providers/Microsoft.DevHub/iacProfiles?api-version=2018-05-05-preview&timeRange=1&$skipToken="),
 		// 		Value: []*armdevhub.IacProfile{
 		// 			{
 		// 				Name: to.Ptr("profilename"),
@@ -429,8 +429,8 @@ func ExampleIacProfilesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-03-01-preview/IacProfile_ListByResourceGroup.json
-func ExampleIacProfilesClient_NewListByResourceGroupPager() {
+// Generated from example definition: 2025-03-01-preview/IacProfile_List.json
+func ExampleIacProfilesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -440,7 +440,7 @@ func ExampleIacProfilesClient_NewListByResourceGroupPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewIacProfilesClient().NewListByResourceGroupPager("resourceGroup1", nil)
+	pager := clientFactory.NewIacProfilesClient().NewListPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -451,9 +451,9 @@ func ExampleIacProfilesClient_NewListByResourceGroupPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armdevhub.IacProfilesClientListByResourceGroupResponse{
+		// page = armdevhub.IacProfilesClientListResponse{
 		// 	IacProfileListResult: armdevhub.IacProfileListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com:443/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroup1/providers/Microsoft.DevHub/iacProfiles?api-version=2018-05-05-preview&timeRange=1&$skipToken="),
+		// 		NextLink: to.Ptr("https://management.azure.com:443/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DevHub/iacProfiles?api-version=2018-05-05-preview&timeRange=1&$skipToken="),
 		// 		Value: []*armdevhub.IacProfile{
 		// 			{
 		// 				Name: to.Ptr("profilename"),

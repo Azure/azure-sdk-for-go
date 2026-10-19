@@ -29,6 +29,10 @@ type ScopeMapsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, registryName string, scopeMapName string, options *armcontainerregistry.ScopeMapsClientBeginDeleteOptions) (resp azfake.PollerResponder[armcontainerregistry.ScopeMapsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method ScopeMapsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	BeginUpdate func(ctx context.Context, resourceGroupName string, registryName string, scopeMapName string, scopeMapUpdateParameters armcontainerregistry.ScopeMapUpdateParameters, options *armcontainerregistry.ScopeMapsClientBeginUpdateOptions) (resp azfake.PollerResponder[armcontainerregistry.ScopeMapsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method ScopeMapsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, registryName string, scopeMapName string, options *armcontainerregistry.ScopeMapsClientGetOptions) (resp azfake.Responder[armcontainerregistry.ScopeMapsClientGetResponse], errResp azfake.ErrorResponder)
@@ -36,10 +40,6 @@ type ScopeMapsServer struct {
 	// NewListPager is the fake for method ScopeMapsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(resourceGroupName string, registryName string, options *armcontainerregistry.ScopeMapsClientListOptions) (resp azfake.PagerResponder[armcontainerregistry.ScopeMapsClientListResponse])
-
-	// BeginUpdate is the fake for method ScopeMapsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginUpdate func(ctx context.Context, resourceGroupName string, registryName string, scopeMapName string, scopeMapUpdateParameters armcontainerregistry.ScopeMapUpdateParameters, options *armcontainerregistry.ScopeMapsClientBeginUpdateOptions) (resp azfake.PollerResponder[armcontainerregistry.ScopeMapsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewScopeMapsServerTransport creates a new instance of ScopeMapsServerTransport with the provided implementation.
@@ -50,8 +50,8 @@ func NewScopeMapsServerTransport(srv *ScopeMapsServer) *ScopeMapsServerTransport
 		srv:          srv,
 		beginCreate:  newTracker[azfake.PollerResponder[armcontainerregistry.ScopeMapsClientCreateResponse]](),
 		beginDelete:  newTracker[azfake.PollerResponder[armcontainerregistry.ScopeMapsClientDeleteResponse]](),
-		newListPager: newTracker[azfake.PagerResponder[armcontainerregistry.ScopeMapsClientListResponse]](),
 		beginUpdate:  newTracker[azfake.PollerResponder[armcontainerregistry.ScopeMapsClientUpdateResponse]](),
+		newListPager: newTracker[azfake.PagerResponder[armcontainerregistry.ScopeMapsClientListResponse]](),
 	}
 }
 
@@ -61,8 +61,8 @@ type ScopeMapsServerTransport struct {
 	srv          *ScopeMapsServer
 	beginCreate  *tracker[azfake.PollerResponder[armcontainerregistry.ScopeMapsClientCreateResponse]]
 	beginDelete  *tracker[azfake.PollerResponder[armcontainerregistry.ScopeMapsClientDeleteResponse]]
-	newListPager *tracker[azfake.PagerResponder[armcontainerregistry.ScopeMapsClientListResponse]]
 	beginUpdate  *tracker[azfake.PollerResponder[armcontainerregistry.ScopeMapsClientUpdateResponse]]
+	newListPager *tracker[azfake.PagerResponder[armcontainerregistry.ScopeMapsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for ScopeMapsServerTransport.
@@ -90,12 +90,12 @@ func (s *ScopeMapsServerTransport) dispatchToMethodFake(req *http.Request, metho
 				res.resp, res.err = s.dispatchBeginCreate(req)
 			case "ScopeMapsClient.BeginDelete":
 				res.resp, res.err = s.dispatchBeginDelete(req)
+			case "ScopeMapsClient.BeginUpdate":
+				res.resp, res.err = s.dispatchBeginUpdate(req)
 			case "ScopeMapsClient.Get":
 				res.resp, res.err = s.dispatchGet(req)
 			case "ScopeMapsClient.NewListPager":
 				res.resp, res.err = s.dispatchNewListPager(req)
-			case "ScopeMapsClient.BeginUpdate":
-				res.resp, res.err = s.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -212,6 +212,58 @@ func (s *ScopeMapsServerTransport) dispatchBeginDelete(req *http.Request) (*http
 	return resp, nil
 }
 
+func (s *ScopeMapsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if s.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := s.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerRegistry/registries/(?P<registryName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/scopeMaps/(?P<scopeMapName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armcontainerregistry.ScopeMapUpdateParameters](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		registryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
+		if err != nil {
+			return nil, err
+		}
+		scopeMapNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("scopeMapName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := s.srv.BeginUpdate(req.Context(), resourceGroupNameParam, registryNameParam, scopeMapNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		s.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		s.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		s.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (s *ScopeMapsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if s.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -287,58 +339,6 @@ func (s *ScopeMapsServerTransport) dispatchNewListPager(req *http.Request) (*htt
 	if !server.PagerResponderMore(newListPager) {
 		s.newListPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (s *ScopeMapsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if s.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := s.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerRegistry/registries/(?P<registryName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/scopeMaps/(?P<scopeMapName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcontainerregistry.ScopeMapUpdateParameters](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		registryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
-		if err != nil {
-			return nil, err
-		}
-		scopeMapNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("scopeMapName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := s.srv.BeginUpdate(req.Context(), resourceGroupNameParam, registryNameParam, scopeMapNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		s.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
-		s.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		s.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

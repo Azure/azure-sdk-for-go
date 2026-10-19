@@ -21,21 +21,21 @@ import (
 
 // DeletedServersServer is a fake server for instances of the armsql.DeletedServersClient type.
 type DeletedServersServer struct {
+	// BeginRecover is the fake for method DeletedServersClient.BeginRecover
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginRecover func(ctx context.Context, locationName string, deletedServerName string, options *armsql.DeletedServersClientBeginRecoverOptions) (resp azfake.PollerResponder[armsql.DeletedServersClientRecoverResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method DeletedServersClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, locationName string, deletedServerName string, options *armsql.DeletedServersClientGetOptions) (resp azfake.Responder[armsql.DeletedServersClientGetResponse], errResp azfake.ErrorResponder)
-
-	// NewListPager is the fake for method DeletedServersClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armsql.DeletedServersClientListOptions) (resp azfake.PagerResponder[armsql.DeletedServersClientListResponse])
 
 	// NewListByLocationPager is the fake for method DeletedServersClient.NewListByLocationPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByLocationPager func(locationName string, options *armsql.DeletedServersClientListByLocationOptions) (resp azfake.PagerResponder[armsql.DeletedServersClientListByLocationResponse])
 
-	// BeginRecover is the fake for method DeletedServersClient.BeginRecover
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginRecover func(ctx context.Context, locationName string, deletedServerName string, options *armsql.DeletedServersClientBeginRecoverOptions) (resp azfake.PollerResponder[armsql.DeletedServersClientRecoverResponse], errResp azfake.ErrorResponder)
+	// NewListPager is the fake for method DeletedServersClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armsql.DeletedServersClientListOptions) (resp azfake.PagerResponder[armsql.DeletedServersClientListResponse])
 }
 
 // NewDeletedServersServerTransport creates a new instance of DeletedServersServerTransport with the provided implementation.
@@ -44,9 +44,9 @@ type DeletedServersServer struct {
 func NewDeletedServersServerTransport(srv *DeletedServersServer) *DeletedServersServerTransport {
 	return &DeletedServersServerTransport{
 		srv:                    srv,
-		newListPager:           newTracker[azfake.PagerResponder[armsql.DeletedServersClientListResponse]](),
-		newListByLocationPager: newTracker[azfake.PagerResponder[armsql.DeletedServersClientListByLocationResponse]](),
 		beginRecover:           newTracker[azfake.PollerResponder[armsql.DeletedServersClientRecoverResponse]](),
+		newListByLocationPager: newTracker[azfake.PagerResponder[armsql.DeletedServersClientListByLocationResponse]](),
+		newListPager:           newTracker[azfake.PagerResponder[armsql.DeletedServersClientListResponse]](),
 	}
 }
 
@@ -54,9 +54,9 @@ func NewDeletedServersServerTransport(srv *DeletedServersServer) *DeletedServers
 // Don't use this type directly, use NewDeletedServersServerTransport instead.
 type DeletedServersServerTransport struct {
 	srv                    *DeletedServersServer
-	newListPager           *tracker[azfake.PagerResponder[armsql.DeletedServersClientListResponse]]
-	newListByLocationPager *tracker[azfake.PagerResponder[armsql.DeletedServersClientListByLocationResponse]]
 	beginRecover           *tracker[azfake.PollerResponder[armsql.DeletedServersClientRecoverResponse]]
+	newListByLocationPager *tracker[azfake.PagerResponder[armsql.DeletedServersClientListByLocationResponse]]
+	newListPager           *tracker[azfake.PagerResponder[armsql.DeletedServersClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for DeletedServersServerTransport.
@@ -80,14 +80,14 @@ func (d *DeletedServersServerTransport) dispatchToMethodFake(req *http.Request, 
 		}
 		if !intercepted {
 			switch method {
-			case "DeletedServersClient.Get":
-				res.resp, res.err = d.dispatchGet(req)
-			case "DeletedServersClient.NewListPager":
-				res.resp, res.err = d.dispatchNewListPager(req)
-			case "DeletedServersClient.NewListByLocationPager":
-				res.resp, res.err = d.dispatchNewListByLocationPager(req)
 			case "DeletedServersClient.BeginRecover":
 				res.resp, res.err = d.dispatchBeginRecover(req)
+			case "DeletedServersClient.Get":
+				res.resp, res.err = d.dispatchGet(req)
+			case "DeletedServersClient.NewListByLocationPager":
+				res.resp, res.err = d.dispatchNewListByLocationPager(req)
+			case "DeletedServersClient.NewListPager":
+				res.resp, res.err = d.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -102,109 +102,6 @@ func (d *DeletedServersServerTransport) dispatchToMethodFake(req *http.Request, 
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (d *DeletedServersServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if d.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/deletedServers/(?P<deletedServerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	locationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("locationName")])
-	if err != nil {
-		return nil, err
-	}
-	deletedServerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deletedServerName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := d.srv.Get(req.Context(), locationNameParam, deletedServerNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DeletedServer, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (d *DeletedServersServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if d.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := d.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/deletedServers`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := d.srv.NewListPager(nil)
-		newListPager = &resp
-		d.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armsql.DeletedServersClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		d.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		d.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (d *DeletedServersServerTransport) dispatchNewListByLocationPager(req *http.Request) (*http.Response, error) {
-	if d.srv.NewListByLocationPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByLocationPager not implemented")}
-	}
-	newListByLocationPager := d.newListByLocationPager.get(req)
-	if newListByLocationPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/deletedServers`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		locationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("locationName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := d.srv.NewListByLocationPager(locationNameParam, nil)
-		newListByLocationPager = &resp
-		d.newListByLocationPager.add(req, newListByLocationPager)
-		server.PagerResponderInjectNextLinks(newListByLocationPager, req, func(page *armsql.DeletedServersClientListByLocationResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByLocationPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		d.newListByLocationPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByLocationPager) {
-		d.newListByLocationPager.remove(req)
-	}
-	return resp, nil
 }
 
 func (d *DeletedServersServerTransport) dispatchBeginRecover(req *http.Request) (*http.Response, error) {
@@ -248,6 +145,109 @@ func (d *DeletedServersServerTransport) dispatchBeginRecover(req *http.Request) 
 		d.beginRecover.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (d *DeletedServersServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if d.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/deletedServers/(?P<deletedServerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	locationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("locationName")])
+	if err != nil {
+		return nil, err
+	}
+	deletedServerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deletedServerName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := d.srv.Get(req.Context(), locationNameParam, deletedServerNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DeletedServer, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (d *DeletedServersServerTransport) dispatchNewListByLocationPager(req *http.Request) (*http.Response, error) {
+	if d.srv.NewListByLocationPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByLocationPager not implemented")}
+	}
+	newListByLocationPager := d.newListByLocationPager.get(req)
+	if newListByLocationPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/deletedServers`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		locationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("locationName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := d.srv.NewListByLocationPager(locationNameParam, nil)
+		newListByLocationPager = &resp
+		d.newListByLocationPager.add(req, newListByLocationPager)
+		server.PagerResponderInjectNextLinks(newListByLocationPager, req, func(page *armsql.DeletedServersClientListByLocationResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByLocationPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		d.newListByLocationPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByLocationPager) {
+		d.newListByLocationPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (d *DeletedServersServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if d.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := d.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/deletedServers`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := d.srv.NewListPager(nil)
+		newListPager = &resp
+		d.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armsql.DeletedServersClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		d.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		d.newListPager.remove(req)
+	}
 	return resp, nil
 }
 

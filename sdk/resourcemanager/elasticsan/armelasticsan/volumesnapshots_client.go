@@ -70,7 +70,7 @@ func (client *VolumeSnapshotsClient) BeginCreate(ctx context.Context, resourceGr
 	}
 }
 
-// Create - Create a Volume Snapshot.
+// create - Create a Volume Snapshot.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *VolumeSnapshotsClient) create(ctx context.Context, resourceGroupName string, elasticSanName string, volumeGroupName string, snapshotName string, parameters Snapshot, options *VolumeSnapshotsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
@@ -92,7 +92,7 @@ func (client *VolumeSnapshotsClient) create(ctx context.Context, resourceGroupNa
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *VolumeSnapshotsClient) createCreateRequest(ctx context.Context, resourceGroupName string, elasticSanName string, volumeGroupName string, snapshotName string, parameters Snapshot, _ *VolumeSnapshotsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}/volumegroups/{volumeGroupName}/snapshots/{snapshotName}"
 	if client.subscriptionID == "" {
@@ -155,7 +155,7 @@ func (client *VolumeSnapshotsClient) BeginDelete(ctx context.Context, resourceGr
 	}
 }
 
-// Delete - Delete a Volume Snapshot.
+// deleteOperation - Delete a Volume Snapshot.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *VolumeSnapshotsClient) deleteOperation(ctx context.Context, resourceGroupName string, elasticSanName string, volumeGroupName string, snapshotName string, options *VolumeSnapshotsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -177,7 +177,7 @@ func (client *VolumeSnapshotsClient) deleteOperation(ctx context.Context, resour
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *VolumeSnapshotsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, elasticSanName string, volumeGroupName string, snapshotName string, _ *VolumeSnapshotsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}/volumegroups/{volumeGroupName}/snapshots/{snapshotName}"
 	if client.subscriptionID == "" {

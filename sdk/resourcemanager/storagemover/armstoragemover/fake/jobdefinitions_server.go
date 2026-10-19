@@ -21,13 +21,13 @@ import (
 
 // JobDefinitionsServer is a fake server for instances of the armstoragemover.JobDefinitionsClient type.
 type JobDefinitionsServer struct {
-	// CreateOrUpdate is the fake for method JobDefinitionsClient.CreateOrUpdate
-	// HTTP status codes to indicate success: http.StatusOK
-	CreateOrUpdate func(ctx context.Context, resourceGroupName string, storageMoverName string, projectName string, jobDefinitionName string, jobDefinition armstoragemover.JobDefinition, options *armstoragemover.JobDefinitionsClientCreateOrUpdateOptions) (resp azfake.Responder[armstoragemover.JobDefinitionsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
-
 	// BeginDelete is the fake for method JobDefinitionsClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, storageMoverName string, projectName string, jobDefinitionName string, options *armstoragemover.JobDefinitionsClientBeginDeleteOptions) (resp azfake.PollerResponder[armstoragemover.JobDefinitionsClientDeleteResponse], errResp azfake.ErrorResponder)
+
+	// CreateOrUpdate is the fake for method JobDefinitionsClient.CreateOrUpdate
+	// HTTP status codes to indicate success: http.StatusOK
+	CreateOrUpdate func(ctx context.Context, resourceGroupName string, storageMoverName string, projectName string, jobDefinitionName string, jobDefinition armstoragemover.JobDefinition, options *armstoragemover.JobDefinitionsClientCreateOrUpdateOptions) (resp azfake.Responder[armstoragemover.JobDefinitionsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method JobDefinitionsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -90,10 +90,10 @@ func (j *JobDefinitionsServerTransport) dispatchToMethodFake(req *http.Request, 
 		}
 		if !intercepted {
 			switch method {
-			case "JobDefinitionsClient.CreateOrUpdate":
-				res.resp, res.err = j.dispatchCreateOrUpdate(req)
 			case "JobDefinitionsClient.BeginDelete":
 				res.resp, res.err = j.dispatchBeginDelete(req)
+			case "JobDefinitionsClient.CreateOrUpdate":
+				res.resp, res.err = j.dispatchCreateOrUpdate(req)
 			case "JobDefinitionsClient.Get":
 				res.resp, res.err = j.dispatchGet(req)
 			case "JobDefinitionsClient.NewListPager":
@@ -118,51 +118,6 @@ func (j *JobDefinitionsServerTransport) dispatchToMethodFake(req *http.Request, 
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (j *JobDefinitionsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
-	if j.srv.CreateOrUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.StorageMover/storageMovers/(?P<storageMoverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/projects/(?P<projectName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/jobDefinitions/(?P<jobDefinitionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 6 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armstoragemover.JobDefinition](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	storageMoverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("storageMoverName")])
-	if err != nil {
-		return nil, err
-	}
-	projectNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("projectName")])
-	if err != nil {
-		return nil, err
-	}
-	jobDefinitionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("jobDefinitionName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := j.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, storageMoverNameParam, projectNameParam, jobDefinitionNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).JobDefinition, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (j *JobDefinitionsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
@@ -214,6 +169,51 @@ func (j *JobDefinitionsServerTransport) dispatchBeginDelete(req *http.Request) (
 		j.beginDelete.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (j *JobDefinitionsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
+	if j.srv.CreateOrUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.StorageMover/storageMovers/(?P<storageMoverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/projects/(?P<projectName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/jobDefinitions/(?P<jobDefinitionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 6 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armstoragemover.JobDefinition](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	storageMoverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("storageMoverName")])
+	if err != nil {
+		return nil, err
+	}
+	projectNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("projectName")])
+	if err != nil {
+		return nil, err
+	}
+	jobDefinitionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("jobDefinitionName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := j.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, storageMoverNameParam, projectNameParam, jobDefinitionNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).JobDefinition, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 

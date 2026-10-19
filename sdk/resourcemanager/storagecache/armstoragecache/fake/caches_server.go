@@ -38,18 +38,6 @@ type CachesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginFlush func(ctx context.Context, resourceGroupName string, cacheName string, options *armstoragecache.CachesClientBeginFlushOptions) (resp azfake.PollerResponder[armstoragecache.CachesClientFlushResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method CachesClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, cacheName string, options *armstoragecache.CachesClientGetOptions) (resp azfake.Responder[armstoragecache.CachesClientGetResponse], errResp azfake.ErrorResponder)
-
-	// NewListPager is the fake for method CachesClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armstoragecache.CachesClientListOptions) (resp azfake.PagerResponder[armstoragecache.CachesClientListResponse])
-
-	// NewListByResourceGroupPager is the fake for method CachesClient.NewListByResourceGroupPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupPager func(resourceGroupName string, options *armstoragecache.CachesClientListByResourceGroupOptions) (resp azfake.PagerResponder[armstoragecache.CachesClientListByResourceGroupResponse])
-
 	// BeginPausePrimingJob is the fake for method CachesClient.BeginPausePrimingJob
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginPausePrimingJob func(ctx context.Context, resourceGroupName string, cacheName string, options *armstoragecache.CachesClientBeginPausePrimingJobOptions) (resp azfake.PollerResponder[armstoragecache.CachesClientPausePrimingJobResponse], errResp azfake.ErrorResponder)
@@ -85,6 +73,18 @@ type CachesServer struct {
 	// BeginUpgradeFirmware is the fake for method CachesClient.BeginUpgradeFirmware
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated, http.StatusAccepted, http.StatusNoContent
 	BeginUpgradeFirmware func(ctx context.Context, resourceGroupName string, cacheName string, options *armstoragecache.CachesClientBeginUpgradeFirmwareOptions) (resp azfake.PollerResponder[armstoragecache.CachesClientUpgradeFirmwareResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method CachesClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, cacheName string, options *armstoragecache.CachesClientGetOptions) (resp azfake.Responder[armstoragecache.CachesClientGetResponse], errResp azfake.ErrorResponder)
+
+	// NewListByResourceGroupPager is the fake for method CachesClient.NewListByResourceGroupPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByResourceGroupPager func(resourceGroupName string, options *armstoragecache.CachesClientListByResourceGroupOptions) (resp azfake.PagerResponder[armstoragecache.CachesClientListByResourceGroupResponse])
+
+	// NewListPager is the fake for method CachesClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armstoragecache.CachesClientListOptions) (resp azfake.PagerResponder[armstoragecache.CachesClientListResponse])
 }
 
 // NewCachesServerTransport creates a new instance of CachesServerTransport with the provided implementation.
@@ -97,8 +97,6 @@ func NewCachesServerTransport(srv *CachesServer) *CachesServerTransport {
 		beginDebugInfo:              newTracker[azfake.PollerResponder[armstoragecache.CachesClientDebugInfoResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armstoragecache.CachesClientDeleteResponse]](),
 		beginFlush:                  newTracker[azfake.PollerResponder[armstoragecache.CachesClientFlushResponse]](),
-		newListPager:                newTracker[azfake.PagerResponder[armstoragecache.CachesClientListResponse]](),
-		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armstoragecache.CachesClientListByResourceGroupResponse]](),
 		beginPausePrimingJob:        newTracker[azfake.PollerResponder[armstoragecache.CachesClientPausePrimingJobResponse]](),
 		beginResumePrimingJob:       newTracker[azfake.PollerResponder[armstoragecache.CachesClientResumePrimingJobResponse]](),
 		beginSpaceAllocation:        newTracker[azfake.PollerResponder[armstoragecache.CachesClientSpaceAllocationResponse]](),
@@ -108,6 +106,8 @@ func NewCachesServerTransport(srv *CachesServer) *CachesServerTransport {
 		beginStopPrimingJob:         newTracker[azfake.PollerResponder[armstoragecache.CachesClientStopPrimingJobResponse]](),
 		beginUpdate:                 newTracker[azfake.PollerResponder[armstoragecache.CachesClientUpdateResponse]](),
 		beginUpgradeFirmware:        newTracker[azfake.PollerResponder[armstoragecache.CachesClientUpgradeFirmwareResponse]](),
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armstoragecache.CachesClientListByResourceGroupResponse]](),
+		newListPager:                newTracker[azfake.PagerResponder[armstoragecache.CachesClientListResponse]](),
 	}
 }
 
@@ -119,8 +119,6 @@ type CachesServerTransport struct {
 	beginDebugInfo              *tracker[azfake.PollerResponder[armstoragecache.CachesClientDebugInfoResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armstoragecache.CachesClientDeleteResponse]]
 	beginFlush                  *tracker[azfake.PollerResponder[armstoragecache.CachesClientFlushResponse]]
-	newListPager                *tracker[azfake.PagerResponder[armstoragecache.CachesClientListResponse]]
-	newListByResourceGroupPager *tracker[azfake.PagerResponder[armstoragecache.CachesClientListByResourceGroupResponse]]
 	beginPausePrimingJob        *tracker[azfake.PollerResponder[armstoragecache.CachesClientPausePrimingJobResponse]]
 	beginResumePrimingJob       *tracker[azfake.PollerResponder[armstoragecache.CachesClientResumePrimingJobResponse]]
 	beginSpaceAllocation        *tracker[azfake.PollerResponder[armstoragecache.CachesClientSpaceAllocationResponse]]
@@ -130,6 +128,8 @@ type CachesServerTransport struct {
 	beginStopPrimingJob         *tracker[azfake.PollerResponder[armstoragecache.CachesClientStopPrimingJobResponse]]
 	beginUpdate                 *tracker[azfake.PollerResponder[armstoragecache.CachesClientUpdateResponse]]
 	beginUpgradeFirmware        *tracker[azfake.PollerResponder[armstoragecache.CachesClientUpgradeFirmwareResponse]]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armstoragecache.CachesClientListByResourceGroupResponse]]
+	newListPager                *tracker[azfake.PagerResponder[armstoragecache.CachesClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for CachesServerTransport.
@@ -161,12 +161,6 @@ func (c *CachesServerTransport) dispatchToMethodFake(req *http.Request, method s
 				res.resp, res.err = c.dispatchBeginDelete(req)
 			case "CachesClient.BeginFlush":
 				res.resp, res.err = c.dispatchBeginFlush(req)
-			case "CachesClient.Get":
-				res.resp, res.err = c.dispatchGet(req)
-			case "CachesClient.NewListPager":
-				res.resp, res.err = c.dispatchNewListPager(req)
-			case "CachesClient.NewListByResourceGroupPager":
-				res.resp, res.err = c.dispatchNewListByResourceGroupPager(req)
 			case "CachesClient.BeginPausePrimingJob":
 				res.resp, res.err = c.dispatchBeginPausePrimingJob(req)
 			case "CachesClient.BeginResumePrimingJob":
@@ -185,6 +179,12 @@ func (c *CachesServerTransport) dispatchToMethodFake(req *http.Request, method s
 				res.resp, res.err = c.dispatchBeginUpdate(req)
 			case "CachesClient.BeginUpgradeFirmware":
 				res.resp, res.err = c.dispatchBeginUpgradeFirmware(req)
+			case "CachesClient.Get":
+				res.resp, res.err = c.dispatchGet(req)
+			case "CachesClient.NewListByResourceGroupPager":
+				res.resp, res.err = c.dispatchNewListByResourceGroupPager(req)
+			case "CachesClient.NewListPager":
+				res.resp, res.err = c.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -378,109 +378,6 @@ func (c *CachesServerTransport) dispatchBeginFlush(req *http.Request) (*http.Res
 		c.beginFlush.remove(req)
 	}
 
-	return resp, nil
-}
-
-func (c *CachesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if c.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.StorageCache/caches/(?P<cacheName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	cacheNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("cacheName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := c.srv.Get(req.Context(), resourceGroupNameParam, cacheNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Cache, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (c *CachesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if c.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := c.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.StorageCache/caches`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := c.srv.NewListPager(nil)
-		newListPager = &resp
-		c.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armstoragecache.CachesClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		c.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		c.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (c *CachesServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
-	if c.srv.NewListByResourceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
-	}
-	newListByResourceGroupPager := c.newListByResourceGroupPager.get(req)
-	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.StorageCache/caches`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := c.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
-		newListByResourceGroupPager = &resp
-		c.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armstoragecache.CachesClientListByResourceGroupResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		c.newListByResourceGroupPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByResourceGroupPager) {
-		c.newListByResourceGroupPager.remove(req)
-	}
 	return resp, nil
 }
 
@@ -931,6 +828,109 @@ func (c *CachesServerTransport) dispatchBeginUpgradeFirmware(req *http.Request) 
 		c.beginUpgradeFirmware.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (c *CachesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if c.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.StorageCache/caches/(?P<cacheName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	cacheNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("cacheName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := c.srv.Get(req.Context(), resourceGroupNameParam, cacheNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Cache, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (c *CachesServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
+	if c.srv.NewListByResourceGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
+	}
+	newListByResourceGroupPager := c.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.StorageCache/caches`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := c.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
+		newListByResourceGroupPager = &resp
+		c.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armstoragecache.CachesClientListByResourceGroupResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		c.newListByResourceGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		c.newListByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (c *CachesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if c.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := c.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.StorageCache/caches`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := c.srv.NewListPager(nil)
+		newListPager = &resp
+		c.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armstoragecache.CachesClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		c.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		c.newListPager.remove(req)
+	}
 	return resp, nil
 }
 

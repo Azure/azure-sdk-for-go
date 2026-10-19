@@ -26,6 +26,10 @@ type WhatIfResultsAtSubscriptionServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreateOrUpdate func(ctx context.Context, deploymentStacksWhatIfResultName string, resource armdeploymentstacks.WhatIfResult, options *armdeploymentstacks.WhatIfResultsAtSubscriptionClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armdeploymentstacks.WhatIfResultsAtSubscriptionClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
+	// BeginWhatIf is the fake for method WhatIfResultsAtSubscriptionClient.BeginWhatIf
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginWhatIf func(ctx context.Context, deploymentStacksWhatIfResultName string, options *armdeploymentstacks.WhatIfResultsAtSubscriptionClientBeginWhatIfOptions) (resp azfake.PollerResponder[armdeploymentstacks.WhatIfResultsAtSubscriptionClientWhatIfResponse], errResp azfake.ErrorResponder)
+
 	// Delete is the fake for method WhatIfResultsAtSubscriptionClient.Delete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
 	Delete func(ctx context.Context, deploymentStacksWhatIfResultName string, options *armdeploymentstacks.WhatIfResultsAtSubscriptionClientDeleteOptions) (resp azfake.Responder[armdeploymentstacks.WhatIfResultsAtSubscriptionClientDeleteResponse], errResp azfake.ErrorResponder)
@@ -37,10 +41,6 @@ type WhatIfResultsAtSubscriptionServer struct {
 	// NewListPager is the fake for method WhatIfResultsAtSubscriptionClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(options *armdeploymentstacks.WhatIfResultsAtSubscriptionClientListOptions) (resp azfake.PagerResponder[armdeploymentstacks.WhatIfResultsAtSubscriptionClientListResponse])
-
-	// BeginWhatIf is the fake for method WhatIfResultsAtSubscriptionClient.BeginWhatIf
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginWhatIf func(ctx context.Context, deploymentStacksWhatIfResultName string, options *armdeploymentstacks.WhatIfResultsAtSubscriptionClientBeginWhatIfOptions) (resp azfake.PollerResponder[armdeploymentstacks.WhatIfResultsAtSubscriptionClientWhatIfResponse], errResp azfake.ErrorResponder)
 }
 
 // NewWhatIfResultsAtSubscriptionServerTransport creates a new instance of WhatIfResultsAtSubscriptionServerTransport with the provided implementation.
@@ -50,8 +50,8 @@ func NewWhatIfResultsAtSubscriptionServerTransport(srv *WhatIfResultsAtSubscript
 	return &WhatIfResultsAtSubscriptionServerTransport{
 		srv:                 srv,
 		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armdeploymentstacks.WhatIfResultsAtSubscriptionClientCreateOrUpdateResponse]](),
-		newListPager:        newTracker[azfake.PagerResponder[armdeploymentstacks.WhatIfResultsAtSubscriptionClientListResponse]](),
 		beginWhatIf:         newTracker[azfake.PollerResponder[armdeploymentstacks.WhatIfResultsAtSubscriptionClientWhatIfResponse]](),
+		newListPager:        newTracker[azfake.PagerResponder[armdeploymentstacks.WhatIfResultsAtSubscriptionClientListResponse]](),
 	}
 }
 
@@ -60,8 +60,8 @@ func NewWhatIfResultsAtSubscriptionServerTransport(srv *WhatIfResultsAtSubscript
 type WhatIfResultsAtSubscriptionServerTransport struct {
 	srv                 *WhatIfResultsAtSubscriptionServer
 	beginCreateOrUpdate *tracker[azfake.PollerResponder[armdeploymentstacks.WhatIfResultsAtSubscriptionClientCreateOrUpdateResponse]]
-	newListPager        *tracker[azfake.PagerResponder[armdeploymentstacks.WhatIfResultsAtSubscriptionClientListResponse]]
 	beginWhatIf         *tracker[azfake.PollerResponder[armdeploymentstacks.WhatIfResultsAtSubscriptionClientWhatIfResponse]]
+	newListPager        *tracker[azfake.PagerResponder[armdeploymentstacks.WhatIfResultsAtSubscriptionClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for WhatIfResultsAtSubscriptionServerTransport.
@@ -87,14 +87,14 @@ func (w *WhatIfResultsAtSubscriptionServerTransport) dispatchToMethodFake(req *h
 			switch method {
 			case "WhatIfResultsAtSubscriptionClient.BeginCreateOrUpdate":
 				res.resp, res.err = w.dispatchBeginCreateOrUpdate(req)
+			case "WhatIfResultsAtSubscriptionClient.BeginWhatIf":
+				res.resp, res.err = w.dispatchBeginWhatIf(req)
 			case "WhatIfResultsAtSubscriptionClient.Delete":
 				res.resp, res.err = w.dispatchDelete(req)
 			case "WhatIfResultsAtSubscriptionClient.Get":
 				res.resp, res.err = w.dispatchGet(req)
 			case "WhatIfResultsAtSubscriptionClient.NewListPager":
 				res.resp, res.err = w.dispatchNewListPager(req)
-			case "WhatIfResultsAtSubscriptionClient.BeginWhatIf":
-				res.resp, res.err = w.dispatchBeginWhatIf(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -150,6 +150,46 @@ func (w *WhatIfResultsAtSubscriptionServerTransport) dispatchBeginCreateOrUpdate
 	}
 	if !server.PollerResponderMore(beginCreateOrUpdate) {
 		w.beginCreateOrUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (w *WhatIfResultsAtSubscriptionServerTransport) dispatchBeginWhatIf(req *http.Request) (*http.Response, error) {
+	if w.srv.BeginWhatIf == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginWhatIf not implemented")}
+	}
+	beginWhatIf := w.beginWhatIf.get(req)
+	if beginWhatIf == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Resources/deploymentStacksWhatIfResults/(?P<deploymentStacksWhatIfResultName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/whatIf`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		deploymentStacksWhatIfResultNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentStacksWhatIfResultName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := w.srv.BeginWhatIf(req.Context(), deploymentStacksWhatIfResultNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginWhatIf = &respr
+		w.beginWhatIf.add(req, beginWhatIf)
+	}
+
+	resp, err := server.PollerResponderNext(beginWhatIf, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		w.beginWhatIf.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginWhatIf) {
+		w.beginWhatIf.remove(req)
 	}
 
 	return resp, nil
@@ -262,46 +302,6 @@ func (w *WhatIfResultsAtSubscriptionServerTransport) dispatchNewListPager(req *h
 	if !server.PagerResponderMore(newListPager) {
 		w.newListPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (w *WhatIfResultsAtSubscriptionServerTransport) dispatchBeginWhatIf(req *http.Request) (*http.Response, error) {
-	if w.srv.BeginWhatIf == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginWhatIf not implemented")}
-	}
-	beginWhatIf := w.beginWhatIf.get(req)
-	if beginWhatIf == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Resources/deploymentStacksWhatIfResults/(?P<deploymentStacksWhatIfResultName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/whatIf`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		deploymentStacksWhatIfResultNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentStacksWhatIfResultName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := w.srv.BeginWhatIf(req.Context(), deploymentStacksWhatIfResultNameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginWhatIf = &respr
-		w.beginWhatIf.add(req, beginWhatIf)
-	}
-
-	resp, err := server.PollerResponderNext(beginWhatIf, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		w.beginWhatIf.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginWhatIf) {
-		w.beginWhatIf.remove(req)
-	}
-
 	return resp, nil
 }
 

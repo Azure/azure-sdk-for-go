@@ -134,7 +134,7 @@ func (client *VirtualRouterPeeringsClient) createOrUpdateCreateRequest(ctx conte
 //     method.
 func (client *VirtualRouterPeeringsClient) BeginDelete(ctx context.Context, resourceGroupName string, virtualRouterName string, peeringName string, options *VirtualRouterPeeringsClientBeginDeleteOptions) (*runtime.Poller[VirtualRouterPeeringsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, virtualRouterName, peeringName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, virtualRouterName, peeringName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -149,9 +149,9 @@ func (client *VirtualRouterPeeringsClient) BeginDelete(ctx context.Context, reso
 	}
 }
 
-// delete - Deletes the specified peering from a Virtual Router.
+// deleteOperation - Deletes the specified peering from a Virtual Router.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *VirtualRouterPeeringsClient) delete(ctx context.Context, resourceGroupName string, virtualRouterName string, peeringName string, options *VirtualRouterPeeringsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *VirtualRouterPeeringsClient) deleteOperation(ctx context.Context, resourceGroupName string, virtualRouterName string, peeringName string, options *VirtualRouterPeeringsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualRouterPeeringsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)

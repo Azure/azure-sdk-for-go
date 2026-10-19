@@ -21,10 +21,6 @@ import (
 
 // WorkspacesServer is a fake server for instances of the armplaywright.WorkspacesClient type.
 type WorkspacesServer struct {
-	// CheckNameAvailability is the fake for method WorkspacesClient.CheckNameAvailability
-	// HTTP status codes to indicate success: http.StatusOK
-	CheckNameAvailability func(ctx context.Context, body armplaywright.CheckNameAvailabilityRequest, options *armplaywright.WorkspacesClientCheckNameAvailabilityOptions) (resp azfake.Responder[armplaywright.WorkspacesClientCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
-
 	// BeginCreateOrUpdate is the fake for method WorkspacesClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, playwrightWorkspaceName string, resource armplaywright.Workspace, options *armplaywright.WorkspacesClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armplaywright.WorkspacesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -32,6 +28,10 @@ type WorkspacesServer struct {
 	// BeginDelete is the fake for method WorkspacesClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, playwrightWorkspaceName string, options *armplaywright.WorkspacesClientBeginDeleteOptions) (resp azfake.PollerResponder[armplaywright.WorkspacesClientDeleteResponse], errResp azfake.ErrorResponder)
+
+	// CheckNameAvailability is the fake for method WorkspacesClient.CheckNameAvailability
+	// HTTP status codes to indicate success: http.StatusOK
+	CheckNameAvailability func(ctx context.Context, body armplaywright.CheckNameAvailabilityRequest, options *armplaywright.WorkspacesClientCheckNameAvailabilityOptions) (resp azfake.Responder[armplaywright.WorkspacesClientCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method WorkspacesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -94,12 +94,12 @@ func (w *WorkspacesServerTransport) dispatchToMethodFake(req *http.Request, meth
 		}
 		if !intercepted {
 			switch method {
-			case "WorkspacesClient.CheckNameAvailability":
-				res.resp, res.err = w.dispatchCheckNameAvailability(req)
 			case "WorkspacesClient.BeginCreateOrUpdate":
 				res.resp, res.err = w.dispatchBeginCreateOrUpdate(req)
 			case "WorkspacesClient.BeginDelete":
 				res.resp, res.err = w.dispatchBeginDelete(req)
+			case "WorkspacesClient.CheckNameAvailability":
+				res.resp, res.err = w.dispatchCheckNameAvailability(req)
 			case "WorkspacesClient.Get":
 				res.resp, res.err = w.dispatchGet(req)
 			case "WorkspacesClient.NewListByResourceGroupPager":
@@ -122,35 +122,6 @@ func (w *WorkspacesServerTransport) dispatchToMethodFake(req *http.Request, meth
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (w *WorkspacesServerTransport) dispatchCheckNameAvailability(req *http.Request) (*http.Response, error) {
-	if w.srv.CheckNameAvailability == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CheckNameAvailability not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.LoadTestService/checkNameAvailability`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 2 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armplaywright.CheckNameAvailabilityRequest](req)
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := w.srv.CheckNameAvailability(req.Context(), body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CheckNameAvailabilityResponse, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (w *WorkspacesServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -242,6 +213,35 @@ func (w *WorkspacesServerTransport) dispatchBeginDelete(req *http.Request) (*htt
 		w.beginDelete.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (w *WorkspacesServerTransport) dispatchCheckNameAvailability(req *http.Request) (*http.Response, error) {
+	if w.srv.CheckNameAvailability == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CheckNameAvailability not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.LoadTestService/checkNameAvailability`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armplaywright.CheckNameAvailabilityRequest](req)
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := w.srv.CheckNameAvailability(req.Context(), body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CheckNameAvailabilityResponse, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 

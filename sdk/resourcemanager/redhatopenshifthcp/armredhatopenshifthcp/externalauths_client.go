@@ -69,7 +69,7 @@ func (client *ExternalAuthsClient) BeginCreateOrUpdate(ctx context.Context, reso
 	}
 }
 
-// CreateOrUpdate - Create a ExternalAuth
+// createOrUpdate - Create a ExternalAuth
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ExternalAuthsClient) createOrUpdate(ctx context.Context, resourceGroupName string, hcpOpenShiftClusterName string, externalAuthName string, resource ExternalAuth, options *ExternalAuthsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *ExternalAuthsClient) createOrUpdate(ctx context.Context, resourceG
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ExternalAuthsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, hcpOpenShiftClusterName string, externalAuthName string, resource ExternalAuth, _ *ExternalAuthsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RedHatOpenShift/hcpOpenShiftClusters/{hcpOpenShiftClusterName}/externalAuths/{externalAuthName}"
 	if client.subscriptionID == "" {
@@ -149,7 +149,7 @@ func (client *ExternalAuthsClient) BeginDelete(ctx context.Context, resourceGrou
 	}
 }
 
-// Delete - Delete a ExternalAuth
+// deleteOperation - Delete a ExternalAuth
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ExternalAuthsClient) deleteOperation(ctx context.Context, resourceGroupName string, hcpOpenShiftClusterName string, externalAuthName string, options *ExternalAuthsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -171,7 +171,7 @@ func (client *ExternalAuthsClient) deleteOperation(ctx context.Context, resource
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ExternalAuthsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, hcpOpenShiftClusterName string, externalAuthName string, _ *ExternalAuthsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RedHatOpenShift/hcpOpenShiftClusters/{hcpOpenShiftClusterName}/externalAuths/{externalAuthName}"
 	if client.subscriptionID == "" {
@@ -197,6 +197,87 @@ func (client *ExternalAuthsClient) deleteCreateRequest(ctx context.Context, reso
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20260901Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - Update a ExternalAuth
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - hcpOpenShiftClusterName - The name of the HcpOpenShiftCluster
+//   - externalAuthName - The name of the ExternalAuth
+//   - properties - The resource properties to be updated.
+//   - options - ExternalAuthsClientBeginUpdateOptions contains the optional parameters for the ExternalAuthsClient.BeginUpdate
+//     method.
+func (client *ExternalAuthsClient) BeginUpdate(ctx context.Context, resourceGroupName string, hcpOpenShiftClusterName string, externalAuthName string, properties ExternalAuth, options *ExternalAuthsClientBeginUpdateOptions) (*runtime.Poller[ExternalAuthsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, hcpOpenShiftClusterName, externalAuthName, properties, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ExternalAuthsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ExternalAuthsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update a ExternalAuth
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ExternalAuthsClient) update(ctx context.Context, resourceGroupName string, hcpOpenShiftClusterName string, externalAuthName string, properties ExternalAuth, options *ExternalAuthsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ExternalAuthsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, hcpOpenShiftClusterName, externalAuthName, properties, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *ExternalAuthsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, hcpOpenShiftClusterName string, externalAuthName string, properties ExternalAuth, _ *ExternalAuthsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RedHatOpenShift/hcpOpenShiftClusters/{hcpOpenShiftClusterName}/externalAuths/{externalAuthName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if hcpOpenShiftClusterName == "" {
+		return nil, errors.New("parameter hcpOpenShiftClusterName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{hcpOpenShiftClusterName}", url.PathEscape(hcpOpenShiftClusterName))
+	if externalAuthName == "" {
+		return nil, errors.New("parameter externalAuthName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{externalAuthName}", url.PathEscape(externalAuthName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260901Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, properties); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -340,85 +421,4 @@ func (client *ExternalAuthsClient) listByParentHandleResponse(resp *http.Respons
 		return ExternalAuthsClientListByParentResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Update a ExternalAuth
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - hcpOpenShiftClusterName - The name of the HcpOpenShiftCluster
-//   - externalAuthName - The name of the ExternalAuth
-//   - properties - The resource properties to be updated.
-//   - options - ExternalAuthsClientBeginUpdateOptions contains the optional parameters for the ExternalAuthsClient.BeginUpdate
-//     method.
-func (client *ExternalAuthsClient) BeginUpdate(ctx context.Context, resourceGroupName string, hcpOpenShiftClusterName string, externalAuthName string, properties ExternalAuth, options *ExternalAuthsClientBeginUpdateOptions) (*runtime.Poller[ExternalAuthsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, hcpOpenShiftClusterName, externalAuthName, properties, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ExternalAuthsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ExternalAuthsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update a ExternalAuth
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ExternalAuthsClient) update(ctx context.Context, resourceGroupName string, hcpOpenShiftClusterName string, externalAuthName string, properties ExternalAuth, options *ExternalAuthsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ExternalAuthsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, hcpOpenShiftClusterName, externalAuthName, properties, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *ExternalAuthsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, hcpOpenShiftClusterName string, externalAuthName string, properties ExternalAuth, _ *ExternalAuthsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RedHatOpenShift/hcpOpenShiftClusters/{hcpOpenShiftClusterName}/externalAuths/{externalAuthName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if hcpOpenShiftClusterName == "" {
-		return nil, errors.New("parameter hcpOpenShiftClusterName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{hcpOpenShiftClusterName}", url.PathEscape(hcpOpenShiftClusterName))
-	if externalAuthName == "" {
-		return nil, errors.New("parameter externalAuthName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{externalAuthName}", url.PathEscape(externalAuthName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260901Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

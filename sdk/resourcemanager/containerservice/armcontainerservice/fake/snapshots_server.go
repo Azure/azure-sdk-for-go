@@ -33,13 +33,13 @@ type SnapshotsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, resourceName string, options *armcontainerservice.SnapshotsClientGetOptions) (resp azfake.Responder[armcontainerservice.SnapshotsClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method SnapshotsClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armcontainerservice.SnapshotsClientListOptions) (resp azfake.PagerResponder[armcontainerservice.SnapshotsClientListResponse])
-
 	// NewListByResourceGroupPager is the fake for method SnapshotsClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, options *armcontainerservice.SnapshotsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armcontainerservice.SnapshotsClientListByResourceGroupResponse])
+
+	// NewListPager is the fake for method SnapshotsClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armcontainerservice.SnapshotsClientListOptions) (resp azfake.PagerResponder[armcontainerservice.SnapshotsClientListResponse])
 
 	// UpdateTags is the fake for method SnapshotsClient.UpdateTags
 	// HTTP status codes to indicate success: http.StatusOK
@@ -52,8 +52,8 @@ type SnapshotsServer struct {
 func NewSnapshotsServerTransport(srv *SnapshotsServer) *SnapshotsServerTransport {
 	return &SnapshotsServerTransport{
 		srv:                         srv,
-		newListPager:                newTracker[azfake.PagerResponder[armcontainerservice.SnapshotsClientListResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armcontainerservice.SnapshotsClientListByResourceGroupResponse]](),
+		newListPager:                newTracker[azfake.PagerResponder[armcontainerservice.SnapshotsClientListResponse]](),
 	}
 }
 
@@ -61,8 +61,8 @@ func NewSnapshotsServerTransport(srv *SnapshotsServer) *SnapshotsServerTransport
 // Don't use this type directly, use NewSnapshotsServerTransport instead.
 type SnapshotsServerTransport struct {
 	srv                         *SnapshotsServer
-	newListPager                *tracker[azfake.PagerResponder[armcontainerservice.SnapshotsClientListResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armcontainerservice.SnapshotsClientListByResourceGroupResponse]]
+	newListPager                *tracker[azfake.PagerResponder[armcontainerservice.SnapshotsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for SnapshotsServerTransport.
@@ -92,10 +92,10 @@ func (s *SnapshotsServerTransport) dispatchToMethodFake(req *http.Request, metho
 				res.resp, res.err = s.dispatchDelete(req)
 			case "SnapshotsClient.Get":
 				res.resp, res.err = s.dispatchGet(req)
-			case "SnapshotsClient.NewListPager":
-				res.resp, res.err = s.dispatchNewListPager(req)
 			case "SnapshotsClient.NewListByResourceGroupPager":
 				res.resp, res.err = s.dispatchNewListByResourceGroupPager(req)
+			case "SnapshotsClient.NewListPager":
+				res.resp, res.err = s.dispatchNewListPager(req)
 			case "SnapshotsClient.UpdateTags":
 				res.resp, res.err = s.dispatchUpdateTags(req)
 			default:
@@ -217,39 +217,6 @@ func (s *SnapshotsServerTransport) dispatchGet(req *http.Request) (*http.Respons
 	return resp, nil
 }
 
-func (s *SnapshotsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if s.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := s.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/snapshots`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := s.srv.NewListPager(nil)
-		newListPager = &resp
-		s.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcontainerservice.SnapshotsClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		s.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		s.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (s *SnapshotsServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
 	if s.srv.NewListByResourceGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
@@ -283,6 +250,39 @@ func (s *SnapshotsServerTransport) dispatchNewListByResourceGroupPager(req *http
 	}
 	if !server.PagerResponderMore(newListByResourceGroupPager) {
 		s.newListByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (s *SnapshotsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if s.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := s.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/snapshots`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := s.srv.NewListPager(nil)
+		newListPager = &resp
+		s.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcontainerservice.SnapshotsClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		s.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		s.newListPager.remove(req)
 	}
 	return resp, nil
 }

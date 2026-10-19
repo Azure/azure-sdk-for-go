@@ -11,8 +11,8 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-04-01-preview/throughputPool/CosmosDBThroughputPoolList.json
-func ExampleThroughputPoolsClient_NewListPager() {
+// Generated from example definition: 2026-04-01-preview/throughputPool/CosmosDBThroughputPoolList_ListByResourceGroup.json
+func ExampleThroughputPoolsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -22,7 +22,7 @@ func ExampleThroughputPoolsClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewThroughputPoolsClient().NewListPager(nil)
+	pager := clientFactory.NewThroughputPoolsClient().NewListByResourceGroupPager("rgName", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -33,7 +33,7 @@ func ExampleThroughputPoolsClient_NewListPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcosmos.ThroughputPoolsClientListResponse{
+		// page = armcosmos.ThroughputPoolsClientListByResourceGroupResponse{
 		// 	ThroughputPoolsListResult: armcosmos.ThroughputPoolsListResult{
 		// 		Value: []*armcosmos.ThroughputPoolResource{
 		// 			{
@@ -70,8 +70,8 @@ func ExampleThroughputPoolsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/throughputPool/CosmosDBThroughputPoolList_ListByResourceGroup.json
-func ExampleThroughputPoolsClient_NewListByResourceGroupPager() {
+// Generated from example definition: 2026-04-01-preview/throughputPool/CosmosDBThroughputPoolList.json
+func ExampleThroughputPoolsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -81,7 +81,7 @@ func ExampleThroughputPoolsClient_NewListByResourceGroupPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewThroughputPoolsClient().NewListByResourceGroupPager("rgName", nil)
+	pager := clientFactory.NewThroughputPoolsClient().NewListPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -92,7 +92,7 @@ func ExampleThroughputPoolsClient_NewListByResourceGroupPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcosmos.ThroughputPoolsClientListByResourceGroupResponse{
+		// page = armcosmos.ThroughputPoolsClientListResponse{
 		// 	ThroughputPoolsListResult: armcosmos.ThroughputPoolsListResult{
 		// 		Value: []*armcosmos.ThroughputPoolResource{
 		// 			{

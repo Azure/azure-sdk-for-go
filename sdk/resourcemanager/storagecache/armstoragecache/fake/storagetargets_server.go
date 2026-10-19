@@ -33,6 +33,10 @@ type StorageTargetsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *armstoragecache.StorageTargetsClientBeginDeleteOptions) (resp azfake.PollerResponder[armstoragecache.StorageTargetsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginRestoreDefaults is the fake for method StorageTargetsClient.BeginRestoreDefaults
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginRestoreDefaults func(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *armstoragecache.StorageTargetsClientBeginRestoreDefaultsOptions) (resp azfake.PollerResponder[armstoragecache.StorageTargetsClientRestoreDefaultsResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method StorageTargetsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *armstoragecache.StorageTargetsClientGetOptions) (resp azfake.Responder[armstoragecache.StorageTargetsClientGetResponse], errResp azfake.ErrorResponder)
@@ -40,10 +44,6 @@ type StorageTargetsServer struct {
 	// NewListByCachePager is the fake for method StorageTargetsClient.NewListByCachePager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByCachePager func(resourceGroupName string, cacheName string, options *armstoragecache.StorageTargetsClientListByCacheOptions) (resp azfake.PagerResponder[armstoragecache.StorageTargetsClientListByCacheResponse])
-
-	// BeginRestoreDefaults is the fake for method StorageTargetsClient.BeginRestoreDefaults
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginRestoreDefaults func(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *armstoragecache.StorageTargetsClientBeginRestoreDefaultsOptions) (resp azfake.PollerResponder[armstoragecache.StorageTargetsClientRestoreDefaultsResponse], errResp azfake.ErrorResponder)
 }
 
 // NewStorageTargetsServerTransport creates a new instance of StorageTargetsServerTransport with the provided implementation.
@@ -55,8 +55,8 @@ func NewStorageTargetsServerTransport(srv *StorageTargetsServer) *StorageTargets
 		beginCreateOrUpdate:  newTracker[azfake.PollerResponder[armstoragecache.StorageTargetsClientCreateOrUpdateResponse]](),
 		beginDNSRefresh:      newTracker[azfake.PollerResponder[armstoragecache.StorageTargetsClientDNSRefreshResponse]](),
 		beginDelete:          newTracker[azfake.PollerResponder[armstoragecache.StorageTargetsClientDeleteResponse]](),
-		newListByCachePager:  newTracker[azfake.PagerResponder[armstoragecache.StorageTargetsClientListByCacheResponse]](),
 		beginRestoreDefaults: newTracker[azfake.PollerResponder[armstoragecache.StorageTargetsClientRestoreDefaultsResponse]](),
+		newListByCachePager:  newTracker[azfake.PagerResponder[armstoragecache.StorageTargetsClientListByCacheResponse]](),
 	}
 }
 
@@ -67,8 +67,8 @@ type StorageTargetsServerTransport struct {
 	beginCreateOrUpdate  *tracker[azfake.PollerResponder[armstoragecache.StorageTargetsClientCreateOrUpdateResponse]]
 	beginDNSRefresh      *tracker[azfake.PollerResponder[armstoragecache.StorageTargetsClientDNSRefreshResponse]]
 	beginDelete          *tracker[azfake.PollerResponder[armstoragecache.StorageTargetsClientDeleteResponse]]
-	newListByCachePager  *tracker[azfake.PagerResponder[armstoragecache.StorageTargetsClientListByCacheResponse]]
 	beginRestoreDefaults *tracker[azfake.PollerResponder[armstoragecache.StorageTargetsClientRestoreDefaultsResponse]]
+	newListByCachePager  *tracker[azfake.PagerResponder[armstoragecache.StorageTargetsClientListByCacheResponse]]
 }
 
 // Do implements the policy.Transporter interface for StorageTargetsServerTransport.
@@ -98,12 +98,12 @@ func (s *StorageTargetsServerTransport) dispatchToMethodFake(req *http.Request, 
 				res.resp, res.err = s.dispatchBeginDNSRefresh(req)
 			case "StorageTargetsClient.BeginDelete":
 				res.resp, res.err = s.dispatchBeginDelete(req)
+			case "StorageTargetsClient.BeginRestoreDefaults":
+				res.resp, res.err = s.dispatchBeginRestoreDefaults(req)
 			case "StorageTargetsClient.Get":
 				res.resp, res.err = s.dispatchGet(req)
 			case "StorageTargetsClient.NewListByCachePager":
 				res.resp, res.err = s.dispatchNewListByCachePager(req)
-			case "StorageTargetsClient.BeginRestoreDefaults":
-				res.resp, res.err = s.dispatchBeginRestoreDefaults(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -276,6 +276,54 @@ func (s *StorageTargetsServerTransport) dispatchBeginDelete(req *http.Request) (
 	return resp, nil
 }
 
+func (s *StorageTargetsServerTransport) dispatchBeginRestoreDefaults(req *http.Request) (*http.Response, error) {
+	if s.srv.BeginRestoreDefaults == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginRestoreDefaults not implemented")}
+	}
+	beginRestoreDefaults := s.beginRestoreDefaults.get(req)
+	if beginRestoreDefaults == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.StorageCache/caches/(?P<cacheName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/storageTargets/(?P<storageTargetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/restoreDefaults`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		cacheNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("cacheName")])
+		if err != nil {
+			return nil, err
+		}
+		storageTargetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("storageTargetName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := s.srv.BeginRestoreDefaults(req.Context(), resourceGroupNameParam, cacheNameParam, storageTargetNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginRestoreDefaults = &respr
+		s.beginRestoreDefaults.add(req, beginRestoreDefaults)
+	}
+
+	resp, err := server.PollerResponderNext(beginRestoreDefaults, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		s.beginRestoreDefaults.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginRestoreDefaults) {
+		s.beginRestoreDefaults.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (s *StorageTargetsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if s.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -351,54 +399,6 @@ func (s *StorageTargetsServerTransport) dispatchNewListByCachePager(req *http.Re
 	if !server.PagerResponderMore(newListByCachePager) {
 		s.newListByCachePager.remove(req)
 	}
-	return resp, nil
-}
-
-func (s *StorageTargetsServerTransport) dispatchBeginRestoreDefaults(req *http.Request) (*http.Response, error) {
-	if s.srv.BeginRestoreDefaults == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginRestoreDefaults not implemented")}
-	}
-	beginRestoreDefaults := s.beginRestoreDefaults.get(req)
-	if beginRestoreDefaults == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.StorageCache/caches/(?P<cacheName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/storageTargets/(?P<storageTargetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/restoreDefaults`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		cacheNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("cacheName")])
-		if err != nil {
-			return nil, err
-		}
-		storageTargetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("storageTargetName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := s.srv.BeginRestoreDefaults(req.Context(), resourceGroupNameParam, cacheNameParam, storageTargetNameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginRestoreDefaults = &respr
-		s.beginRestoreDefaults.add(req, beginRestoreDefaults)
-	}
-
-	resp, err := server.PollerResponderNext(beginRestoreDefaults, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		s.beginRestoreDefaults.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginRestoreDefaults) {
-		s.beginRestoreDefaults.remove(req)
-	}
-
 	return resp, nil
 }
 

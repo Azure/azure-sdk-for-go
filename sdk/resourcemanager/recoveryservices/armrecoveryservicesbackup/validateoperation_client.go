@@ -69,7 +69,7 @@ func (client *ValidateOperationClient) BeginTrigger(ctx context.Context, vaultNa
 	}
 }
 
-// Trigger - Validate operation for specified backed up item in the form of an asynchronous operation. Returns tracking headers
+// trigger - Validate operation for specified backed up item in the form of an asynchronous operation. Returns tracking headers
 // which can be tracked using GetValidateOperationResult API.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ValidateOperationClient) trigger(ctx context.Context, vaultName string, resourceGroupName string, parameters ValidateOperationRequestResource, options *ValidateOperationClientBeginTriggerOptions) (*http.Response, error) {
@@ -92,7 +92,7 @@ func (client *ValidateOperationClient) trigger(ctx context.Context, vaultName st
 	return httpResp, nil
 }
 
-// triggerCreateRequest creates the Trigger request.
+// triggerCreateRequest creates the trigger request.
 func (client *ValidateOperationClient) triggerCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, parameters ValidateOperationRequestResource, _ *ValidateOperationClientBeginTriggerOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupTriggerValidateOperation"
 	if client.subscriptionID == "" {

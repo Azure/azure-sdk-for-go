@@ -222,190 +222,6 @@ func ExampleDistributedAvailabilityGroupsClient_BeginFailover() {
 	// }
 }
 
-// Generated from example definition: 2026-08-01-preview/DistributedAvailabilityGroupsGet.json
-func ExampleDistributedAvailabilityGroupsClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewDistributedAvailabilityGroupsClient().Get(ctx, "testrg", "testcl", "dag", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armsql.DistributedAvailabilityGroupsClientGetResponse{
-	// 	DistributedAvailabilityGroup: armsql.DistributedAvailabilityGroup{
-	// 		Name: to.Ptr("dag"),
-	// 		Type: to.Ptr("Microsoft.Sql/managedInstances/distributedAvailabilityGroups"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Sql/managedInstances/testcl/distributedAvailabilityGroups/dag"),
-	// 		Properties: &armsql.DistributedAvailabilityGroupProperties{
-	// 			Databases: []*armsql.DistributedAvailabilityGroupDatabase{
-	// 				{
-	// 					ConnectedState: to.Ptr(armsql.ReplicaConnectedStateCONNECTED),
-	// 					DatabaseName: to.Ptr("testdb"),
-	// 					InstanceRedoReplicationLagSeconds: to.Ptr[int32](1),
-	// 					InstanceReplicaID: to.Ptr("4713ed91-1e8c-497d-9bd4-d8a3935ae49a"),
-	// 					InstanceSendReplicationLagSeconds: to.Ptr[int32](1),
-	// 					LastBackupLsn: to.Ptr("71000009405700001"),
-	// 					LastBackupTime: to.Ptr(time.Date(2026, time.August, 1, 0, 0, 0, 0, time.UTC)),
-	// 					LastCommitLsn: to.Ptr("71000009407900004"),
-	// 					LastCommitTime: to.Ptr(time.Date(2026, time.August, 1, 0, 0, 0, 0, time.UTC)),
-	// 					LastHardenedLsn: to.Ptr("71000009408100001"),
-	// 					LastHardenedTime: to.Ptr(time.Date(2026, time.August, 1, 0, 0, 0, 0, time.UTC)),
-	// 					LastReceivedLsn: to.Ptr("71000009407900001"),
-	// 					LastReceivedTime: to.Ptr(time.Date(2026, time.August, 1, 0, 0, 0, 0, time.UTC)),
-	// 					PartnerReplicaID: to.Ptr("8ffa9723-a1ec-4323-b929-c4aedee3894b"),
-	// 					ReplicaState: to.Ptr("Seeding"),
-	// 					SeedingProgress: to.Ptr("80%"),
-	// 					SynchronizationHealth: to.Ptr(armsql.ReplicaSynchronizationHealthHEALTHY),
-	// 				},
-	// 			},
-	// 			DistributedAvailabilityGroupID: to.Ptr("c856cff5-a6fe-418e-8894-17799cc20f5d"),
-	// 			DistributedAvailabilityGroupName: to.Ptr("dag"),
-	// 			FailoverMode: to.Ptr(armsql.FailoverModeTypeNone),
-	// 			InstanceAvailabilityGroupName: to.Ptr("testcl"),
-	// 			InstanceLinkRole: to.Ptr(armsql.LinkRolePrimary),
-	// 			PartnerAvailabilityGroupName: to.Ptr("BoxLocalAg1"),
-	// 			PartnerEndpoint: to.Ptr("TCP://SERVER:7022"),
-	// 			PartnerLinkRole: to.Ptr(armsql.LinkRoleSecondary),
-	// 			ReplicationMode: to.Ptr(armsql.ReplicationModeTypeAsync),
-	// 			SeedingMode: to.Ptr(armsql.SeedingModeTypeAutomatic),
-	// 			LinkMode: to.Ptr(armsql.LinkModeTypeSingleDatabase),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-08-01-preview/DistributedAvailabilityGroupsListByInstance.json
-func ExampleDistributedAvailabilityGroupsClient_NewListByInstancePager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewDistributedAvailabilityGroupsClient().NewListByInstancePager("testrg", "testcl", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armsql.DistributedAvailabilityGroupsClientListByInstanceResponse{
-		// 	DistributedAvailabilityGroupsListResult: armsql.DistributedAvailabilityGroupsListResult{
-		// 		Value: []*armsql.DistributedAvailabilityGroup{
-		// 			{
-		// 				Name: to.Ptr("dag"),
-		// 				Type: to.Ptr("Microsoft.Sql/managedInstances/distributedAvailabilityGroups"),
-		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Sql/managedInstances/testcl/distributedAvailabilityGroups/dag"),
-		// 				Properties: &armsql.DistributedAvailabilityGroupProperties{
-		// 					Databases: []*armsql.DistributedAvailabilityGroupDatabase{
-		// 						{
-		// 							ConnectedState: to.Ptr(armsql.ReplicaConnectedStateCONNECTED),
-		// 							DatabaseName: to.Ptr("testdb"),
-		// 							InstanceRedoReplicationLagSeconds: to.Ptr[int32](1),
-		// 							InstanceReplicaID: to.Ptr("4713ed91-1e8c-497d-9bd4-d8a3935ae49a"),
-		// 							InstanceSendReplicationLagSeconds: to.Ptr[int32](1),
-		// 							LastBackupLsn: to.Ptr("71000009405700001"),
-		// 							LastBackupTime: to.Ptr(time.Date(2023, time.August, 1, 0, 0, 0, 0, time.UTC)),
-		// 							LastCommitLsn: to.Ptr("71000009407900004"),
-		// 							LastCommitTime: to.Ptr(time.Date(2023, time.August, 1, 0, 0, 0, 0, time.UTC)),
-		// 							LastHardenedLsn: to.Ptr("71000009408100001"),
-		// 							LastHardenedTime: to.Ptr(time.Date(2023, time.August, 1, 0, 0, 0, 0, time.UTC)),
-		// 							LastReceivedLsn: to.Ptr("71000009407900001"),
-		// 							LastReceivedTime: to.Ptr(time.Date(2023, time.August, 1, 0, 0, 0, 0, time.UTC)),
-		// 							PartnerReplicaID: to.Ptr("8ffa9723-a1ec-4323-b929-c4aedee3894b"),
-		// 							ReplicaState: to.Ptr("Catchup"),
-		// 							SynchronizationHealth: to.Ptr(armsql.ReplicaSynchronizationHealthHEALTHY),
-		// 						},
-		// 					},
-		// 					DistributedAvailabilityGroupID: to.Ptr("c856cff5-a6fe-418e-8894-17799cc20f5d"),
-		// 					DistributedAvailabilityGroupName: to.Ptr("dag"),
-		// 					FailoverMode: to.Ptr(armsql.FailoverModeTypeNone),
-		// 					InstanceAvailabilityGroupName: to.Ptr("testcl"),
-		// 					InstanceLinkRole: to.Ptr(armsql.LinkRolePrimary),
-		// 					PartnerAvailabilityGroupName: to.Ptr("BoxLocalAg1"),
-		// 					PartnerEndpoint: to.Ptr("TCP://SERVER:7022"),
-		// 					PartnerLinkRole: to.Ptr(armsql.LinkRoleSecondary),
-		// 					ReplicationMode: to.Ptr(armsql.ReplicationModeTypeAsync),
-		// 					SeedingMode: to.Ptr(armsql.SeedingModeTypeAutomatic),
-		// 					LinkMode: to.Ptr(armsql.LinkModeTypeSingleDatabase),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("dag2"),
-		// 				Type: to.Ptr("Microsoft.Sql/managedInstances/distributedAvailabilityGroups"),
-		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Sql/managedInstances/testcl/distributedAvailabilityGroups/dag2"),
-		// 				Properties: &armsql.DistributedAvailabilityGroupProperties{
-		// 					Databases: []*armsql.DistributedAvailabilityGroupDatabase{
-		// 						{
-		// 							DatabaseName: to.Ptr("testdb1"),
-		// 							InstanceReplicaID: to.Ptr("4713ed91-1e8c-497d-9bd4-d8a3935ae49a"),
-		// 							PartnerReplicaID: to.Ptr("8ffa9723-a1ec-4323-b929-c4aedee3894b"),
-		// 							ReplicaState: to.Ptr("Catchup"),
-		// 							SynchronizationHealth: to.Ptr(armsql.ReplicaSynchronizationHealthHEALTHY),
-		// 							ConnectedState: to.Ptr(armsql.ReplicaConnectedStateCONNECTED),
-		// 							LastReceivedLsn: to.Ptr("71000009407900001"),
-		// 							LastReceivedTime: to.Ptr(time.Date(2026, time.August, 1, 0, 0, 0, 0, time.UTC)),
-		// 							LastCommitLsn: to.Ptr("71000009407900004"),
-		// 							LastCommitTime: to.Ptr(time.Date(2026, time.August, 1, 0, 0, 0, 0, time.UTC)),
-		// 							LastHardenedLsn: to.Ptr("71000009408100001"),
-		// 							LastHardenedTime: to.Ptr(time.Date(2026, time.August, 1, 0, 0, 0, 0, time.UTC)),
-		// 							LastBackupLsn: to.Ptr("71000009405700001"),
-		// 							LastBackupTime: to.Ptr(time.Date(2026, time.August, 1, 0, 0, 0, 0, time.UTC)),
-		// 							InstanceSendReplicationLagSeconds: to.Ptr[int32](1),
-		// 							InstanceRedoReplicationLagSeconds: to.Ptr[int32](1),
-		// 						},
-		// 						{
-		// 							ConnectedState: to.Ptr(armsql.ReplicaConnectedStateCONNECTED),
-		// 							DatabaseName: to.Ptr("testdb2"),
-		// 							InstanceReplicaID: to.Ptr("81608df4-0840-4219-b3ae-9cc46be9dae9"),
-		// 							LastBackupLsn: to.Ptr("71000009405700001"),
-		// 							LastBackupTime: to.Ptr(time.Date(2023, time.August, 1, 0, 0, 0, 0, time.UTC)),
-		// 							LastCommitLsn: to.Ptr("71000009407900004"),
-		// 							LastCommitTime: to.Ptr(time.Date(2023, time.August, 1, 0, 0, 0, 0, time.UTC)),
-		// 							LastHardenedLsn: to.Ptr("71000009408100001"),
-		// 							LastHardenedTime: to.Ptr(time.Date(2023, time.August, 1, 0, 0, 0, 0, time.UTC)),
-		// 							LastReceivedLsn: to.Ptr("71000009407900001"),
-		// 							LastReceivedTime: to.Ptr(time.Date(2023, time.August, 1, 0, 0, 0, 0, time.UTC)),
-		// 							PartnerReplicaID: to.Ptr("57bc3421-e77a-4fdc-8a62-af105c4b1e38"),
-		// 							ReplicaState: to.Ptr("Seeding"),
-		// 							SeedingProgress: to.Ptr("80%"),
-		// 							SynchronizationHealth: to.Ptr(armsql.ReplicaSynchronizationHealthHEALTHY),
-		// 						},
-		// 					},
-		// 					DistributedAvailabilityGroupID: to.Ptr("8a52d869-c17e-4546-ab03-e038569e672a"),
-		// 					DistributedAvailabilityGroupName: to.Ptr("dag2"),
-		// 					InstanceAvailabilityGroupName: to.Ptr("testcl2"),
-		// 					InstanceLinkRole: to.Ptr(armsql.LinkRoleSecondary),
-		// 					PartnerAvailabilityGroupName: to.Ptr("BoxLocalAg2"),
-		// 					PartnerEndpoint: to.Ptr("TCP://SERVER:7022"),
-		// 					PartnerLinkRole: to.Ptr(armsql.LinkRolePrimary),
-		// 					ReplicationMode: to.Ptr(armsql.ReplicationModeTypeAsync),
-		// 					SeedingMode: to.Ptr(armsql.SeedingModeTypeAutomatic),
-		// 					LinkMode: to.Ptr(armsql.LinkModeTypeMultiDatabase),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
 // Generated from example definition: 2026-08-01-preview/DistributedAvailabilityGroupsSetRole.json
 func ExampleDistributedAvailabilityGroupsClient_BeginSetRole() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -597,4 +413,188 @@ func ExampleDistributedAvailabilityGroupsClient_BeginUpdate_updateTheDatabasesOf
 	// 		Type: to.Ptr("Microsoft.Sql/managedInstances/distributedAvailabilityGroups"),
 	// 	},
 	// }
+}
+
+// Generated from example definition: 2026-08-01-preview/DistributedAvailabilityGroupsGet.json
+func ExampleDistributedAvailabilityGroupsClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewDistributedAvailabilityGroupsClient().Get(ctx, "testrg", "testcl", "dag", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsql.DistributedAvailabilityGroupsClientGetResponse{
+	// 	DistributedAvailabilityGroup: armsql.DistributedAvailabilityGroup{
+	// 		Name: to.Ptr("dag"),
+	// 		Type: to.Ptr("Microsoft.Sql/managedInstances/distributedAvailabilityGroups"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Sql/managedInstances/testcl/distributedAvailabilityGroups/dag"),
+	// 		Properties: &armsql.DistributedAvailabilityGroupProperties{
+	// 			Databases: []*armsql.DistributedAvailabilityGroupDatabase{
+	// 				{
+	// 					ConnectedState: to.Ptr(armsql.ReplicaConnectedStateCONNECTED),
+	// 					DatabaseName: to.Ptr("testdb"),
+	// 					InstanceRedoReplicationLagSeconds: to.Ptr[int32](1),
+	// 					InstanceReplicaID: to.Ptr("4713ed91-1e8c-497d-9bd4-d8a3935ae49a"),
+	// 					InstanceSendReplicationLagSeconds: to.Ptr[int32](1),
+	// 					LastBackupLsn: to.Ptr("71000009405700001"),
+	// 					LastBackupTime: to.Ptr(time.Date(2026, time.August, 1, 0, 0, 0, 0, time.UTC)),
+	// 					LastCommitLsn: to.Ptr("71000009407900004"),
+	// 					LastCommitTime: to.Ptr(time.Date(2026, time.August, 1, 0, 0, 0, 0, time.UTC)),
+	// 					LastHardenedLsn: to.Ptr("71000009408100001"),
+	// 					LastHardenedTime: to.Ptr(time.Date(2026, time.August, 1, 0, 0, 0, 0, time.UTC)),
+	// 					LastReceivedLsn: to.Ptr("71000009407900001"),
+	// 					LastReceivedTime: to.Ptr(time.Date(2026, time.August, 1, 0, 0, 0, 0, time.UTC)),
+	// 					PartnerReplicaID: to.Ptr("8ffa9723-a1ec-4323-b929-c4aedee3894b"),
+	// 					ReplicaState: to.Ptr("Seeding"),
+	// 					SeedingProgress: to.Ptr("80%"),
+	// 					SynchronizationHealth: to.Ptr(armsql.ReplicaSynchronizationHealthHEALTHY),
+	// 				},
+	// 			},
+	// 			DistributedAvailabilityGroupID: to.Ptr("c856cff5-a6fe-418e-8894-17799cc20f5d"),
+	// 			DistributedAvailabilityGroupName: to.Ptr("dag"),
+	// 			FailoverMode: to.Ptr(armsql.FailoverModeTypeNone),
+	// 			InstanceAvailabilityGroupName: to.Ptr("testcl"),
+	// 			InstanceLinkRole: to.Ptr(armsql.LinkRolePrimary),
+	// 			PartnerAvailabilityGroupName: to.Ptr("BoxLocalAg1"),
+	// 			PartnerEndpoint: to.Ptr("TCP://SERVER:7022"),
+	// 			PartnerLinkRole: to.Ptr(armsql.LinkRoleSecondary),
+	// 			ReplicationMode: to.Ptr(armsql.ReplicationModeTypeAsync),
+	// 			SeedingMode: to.Ptr(armsql.SeedingModeTypeAutomatic),
+	// 			LinkMode: to.Ptr(armsql.LinkModeTypeSingleDatabase),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-08-01-preview/DistributedAvailabilityGroupsListByInstance.json
+func ExampleDistributedAvailabilityGroupsClient_NewListByInstancePager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewDistributedAvailabilityGroupsClient().NewListByInstancePager("testrg", "testcl", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armsql.DistributedAvailabilityGroupsClientListByInstanceResponse{
+		// 	DistributedAvailabilityGroupsListResult: armsql.DistributedAvailabilityGroupsListResult{
+		// 		Value: []*armsql.DistributedAvailabilityGroup{
+		// 			{
+		// 				Name: to.Ptr("dag"),
+		// 				Type: to.Ptr("Microsoft.Sql/managedInstances/distributedAvailabilityGroups"),
+		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Sql/managedInstances/testcl/distributedAvailabilityGroups/dag"),
+		// 				Properties: &armsql.DistributedAvailabilityGroupProperties{
+		// 					Databases: []*armsql.DistributedAvailabilityGroupDatabase{
+		// 						{
+		// 							ConnectedState: to.Ptr(armsql.ReplicaConnectedStateCONNECTED),
+		// 							DatabaseName: to.Ptr("testdb"),
+		// 							InstanceRedoReplicationLagSeconds: to.Ptr[int32](1),
+		// 							InstanceReplicaID: to.Ptr("4713ed91-1e8c-497d-9bd4-d8a3935ae49a"),
+		// 							InstanceSendReplicationLagSeconds: to.Ptr[int32](1),
+		// 							LastBackupLsn: to.Ptr("71000009405700001"),
+		// 							LastBackupTime: to.Ptr(time.Date(2023, time.August, 1, 0, 0, 0, 0, time.UTC)),
+		// 							LastCommitLsn: to.Ptr("71000009407900004"),
+		// 							LastCommitTime: to.Ptr(time.Date(2023, time.August, 1, 0, 0, 0, 0, time.UTC)),
+		// 							LastHardenedLsn: to.Ptr("71000009408100001"),
+		// 							LastHardenedTime: to.Ptr(time.Date(2023, time.August, 1, 0, 0, 0, 0, time.UTC)),
+		// 							LastReceivedLsn: to.Ptr("71000009407900001"),
+		// 							LastReceivedTime: to.Ptr(time.Date(2023, time.August, 1, 0, 0, 0, 0, time.UTC)),
+		// 							PartnerReplicaID: to.Ptr("8ffa9723-a1ec-4323-b929-c4aedee3894b"),
+		// 							ReplicaState: to.Ptr("Catchup"),
+		// 							SynchronizationHealth: to.Ptr(armsql.ReplicaSynchronizationHealthHEALTHY),
+		// 						},
+		// 					},
+		// 					DistributedAvailabilityGroupID: to.Ptr("c856cff5-a6fe-418e-8894-17799cc20f5d"),
+		// 					DistributedAvailabilityGroupName: to.Ptr("dag"),
+		// 					FailoverMode: to.Ptr(armsql.FailoverModeTypeNone),
+		// 					InstanceAvailabilityGroupName: to.Ptr("testcl"),
+		// 					InstanceLinkRole: to.Ptr(armsql.LinkRolePrimary),
+		// 					PartnerAvailabilityGroupName: to.Ptr("BoxLocalAg1"),
+		// 					PartnerEndpoint: to.Ptr("TCP://SERVER:7022"),
+		// 					PartnerLinkRole: to.Ptr(armsql.LinkRoleSecondary),
+		// 					ReplicationMode: to.Ptr(armsql.ReplicationModeTypeAsync),
+		// 					SeedingMode: to.Ptr(armsql.SeedingModeTypeAutomatic),
+		// 					LinkMode: to.Ptr(armsql.LinkModeTypeSingleDatabase),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("dag2"),
+		// 				Type: to.Ptr("Microsoft.Sql/managedInstances/distributedAvailabilityGroups"),
+		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Sql/managedInstances/testcl/distributedAvailabilityGroups/dag2"),
+		// 				Properties: &armsql.DistributedAvailabilityGroupProperties{
+		// 					Databases: []*armsql.DistributedAvailabilityGroupDatabase{
+		// 						{
+		// 							DatabaseName: to.Ptr("testdb1"),
+		// 							InstanceReplicaID: to.Ptr("4713ed91-1e8c-497d-9bd4-d8a3935ae49a"),
+		// 							PartnerReplicaID: to.Ptr("8ffa9723-a1ec-4323-b929-c4aedee3894b"),
+		// 							ReplicaState: to.Ptr("Catchup"),
+		// 							SynchronizationHealth: to.Ptr(armsql.ReplicaSynchronizationHealthHEALTHY),
+		// 							ConnectedState: to.Ptr(armsql.ReplicaConnectedStateCONNECTED),
+		// 							LastReceivedLsn: to.Ptr("71000009407900001"),
+		// 							LastReceivedTime: to.Ptr(time.Date(2026, time.August, 1, 0, 0, 0, 0, time.UTC)),
+		// 							LastCommitLsn: to.Ptr("71000009407900004"),
+		// 							LastCommitTime: to.Ptr(time.Date(2026, time.August, 1, 0, 0, 0, 0, time.UTC)),
+		// 							LastHardenedLsn: to.Ptr("71000009408100001"),
+		// 							LastHardenedTime: to.Ptr(time.Date(2026, time.August, 1, 0, 0, 0, 0, time.UTC)),
+		// 							LastBackupLsn: to.Ptr("71000009405700001"),
+		// 							LastBackupTime: to.Ptr(time.Date(2026, time.August, 1, 0, 0, 0, 0, time.UTC)),
+		// 							InstanceSendReplicationLagSeconds: to.Ptr[int32](1),
+		// 							InstanceRedoReplicationLagSeconds: to.Ptr[int32](1),
+		// 						},
+		// 						{
+		// 							ConnectedState: to.Ptr(armsql.ReplicaConnectedStateCONNECTED),
+		// 							DatabaseName: to.Ptr("testdb2"),
+		// 							InstanceReplicaID: to.Ptr("81608df4-0840-4219-b3ae-9cc46be9dae9"),
+		// 							LastBackupLsn: to.Ptr("71000009405700001"),
+		// 							LastBackupTime: to.Ptr(time.Date(2023, time.August, 1, 0, 0, 0, 0, time.UTC)),
+		// 							LastCommitLsn: to.Ptr("71000009407900004"),
+		// 							LastCommitTime: to.Ptr(time.Date(2023, time.August, 1, 0, 0, 0, 0, time.UTC)),
+		// 							LastHardenedLsn: to.Ptr("71000009408100001"),
+		// 							LastHardenedTime: to.Ptr(time.Date(2023, time.August, 1, 0, 0, 0, 0, time.UTC)),
+		// 							LastReceivedLsn: to.Ptr("71000009407900001"),
+		// 							LastReceivedTime: to.Ptr(time.Date(2023, time.August, 1, 0, 0, 0, 0, time.UTC)),
+		// 							PartnerReplicaID: to.Ptr("57bc3421-e77a-4fdc-8a62-af105c4b1e38"),
+		// 							ReplicaState: to.Ptr("Seeding"),
+		// 							SeedingProgress: to.Ptr("80%"),
+		// 							SynchronizationHealth: to.Ptr(armsql.ReplicaSynchronizationHealthHEALTHY),
+		// 						},
+		// 					},
+		// 					DistributedAvailabilityGroupID: to.Ptr("8a52d869-c17e-4546-ab03-e038569e672a"),
+		// 					DistributedAvailabilityGroupName: to.Ptr("dag2"),
+		// 					InstanceAvailabilityGroupName: to.Ptr("testcl2"),
+		// 					InstanceLinkRole: to.Ptr(armsql.LinkRoleSecondary),
+		// 					PartnerAvailabilityGroupName: to.Ptr("BoxLocalAg2"),
+		// 					PartnerEndpoint: to.Ptr("TCP://SERVER:7022"),
+		// 					PartnerLinkRole: to.Ptr(armsql.LinkRolePrimary),
+		// 					ReplicationMode: to.Ptr(armsql.ReplicationModeTypeAsync),
+		// 					SeedingMode: to.Ptr(armsql.SeedingModeTypeAutomatic),
+		// 					LinkMode: to.Ptr(armsql.LinkModeTypeMultiDatabase),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
 }

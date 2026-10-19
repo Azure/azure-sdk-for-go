@@ -12,34 +12,6 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-09-01-preview/FabricCapacities_CheckNameAvailability.json
-func ExampleCapacitiesClient_CheckNameAvailability() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armfabric.NewClientFactory("548B7FB7-3B2A-4F46-BB02-66473F1FC22C", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewCapacitiesClient().CheckNameAvailability(ctx, "westcentralus", armfabric.CheckNameAvailabilityRequest{
-		Name: to.Ptr("azsdktest"),
-		Type: to.Ptr("Microsoft.Fabric/capacities"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armfabric.CapacitiesClientCheckNameAvailabilityResponse{
-	// 	CheckNameAvailabilityResponse: armfabric.CheckNameAvailabilityResponse{
-	// 		NameAvailable: to.Ptr(true),
-	// 	},
-	// }
-}
-
 // Generated from example definition: 2026-09-01-preview/FabricCapacities_CreateOrUpdate.json
 func ExampleCapacitiesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -130,6 +102,157 @@ func ExampleCapacitiesClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to poll the result: %v", err)
 	}
+}
+
+// Generated from example definition: 2026-09-01-preview/FabricCapacities_Resume.json
+func ExampleCapacitiesClient_BeginResume() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armfabric.NewClientFactory("548B7FB7-3B2A-4F46-BB02-66473F1FC22C", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewCapacitiesClient().BeginResume(ctx, "TestRG", "azsdktest", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armfabric.CapacitiesClientResumeResponse{
+	// }
+}
+
+// Generated from example definition: 2026-09-01-preview/FabricCapacities_Suspend.json
+func ExampleCapacitiesClient_BeginSuspend() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armfabric.NewClientFactory("548B7FB7-3B2A-4F46-BB02-66473F1FC22C", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewCapacitiesClient().BeginSuspend(ctx, "TestRG", "azsdktest", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armfabric.CapacitiesClientSuspendResponse{
+	// }
+}
+
+// Generated from example definition: 2026-09-01-preview/FabricCapacities_Update.json
+func ExampleCapacitiesClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armfabric.NewClientFactory("548B7FB7-3B2A-4F46-BB02-66473F1FC22C", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewCapacitiesClient().BeginUpdate(ctx, "TestRG", "azsdktest", armfabric.CapacityUpdate{
+		SKU: &armfabric.RpSKU{
+			Name: to.Ptr("F8"),
+			Tier: to.Ptr(armfabric.RpSKUTierFabric),
+		},
+		Tags: map[string]*string{
+			"testKey": to.Ptr("testValue"),
+		},
+		Properties: &armfabric.CapacityUpdateProperties{
+			Overage: &armfabric.CapacityOverageProperties{
+				State:                      to.Ptr(armfabric.CapacityOverageStateEnabled),
+				ThresholdCapacityUnitHours: to.Ptr[int32](4),
+			},
+			Administration: &armfabric.CapacityAdministration{
+				Members: []*string{
+					to.Ptr("azsdktest2@microsoft.com"),
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armfabric.CapacitiesClientUpdateResponse{
+	// 	Capacity: armfabric.Capacity{
+	// 		Properties: &armfabric.CapacityProperties{
+	// 			ProvisioningState: to.Ptr(armfabric.ProvisioningStateUpdating),
+	// 			State: to.Ptr(armfabric.ResourceStatePreparing),
+	// 			Overage: &armfabric.CapacityOverageProperties{
+	// 				State: to.Ptr(armfabric.CapacityOverageStateEnabled),
+	// 				ThresholdCapacityUnitHours: to.Ptr[int32](4),
+	// 			},
+	// 			Administration: &armfabric.CapacityAdministration{
+	// 				Members: []*string{
+	// 					to.Ptr("azsdktest2@microsoft.com"),
+	// 				},
+	// 			},
+	// 		},
+	// 		SKU: &armfabric.RpSKU{
+	// 			Name: to.Ptr("F8"),
+	// 			Tier: to.Ptr(armfabric.RpSKUTierFabric),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"testKey": to.Ptr("testValue"),
+	// 		},
+	// 		Location: to.Ptr("westcentralus"),
+	// 		ID: to.Ptr("/subscriptions/548B7FB7-3B2A-4F46-BB02-66473F1FC22C/resourceGroups/TestRG/providers/Microsoft.Fabric/capacities/azsdktest"),
+	// 		Name: to.Ptr("azsdktest"),
+	// 		Type: to.Ptr("Microsoft.Fabric/capacities"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-09-01-preview/FabricCapacities_CheckNameAvailability.json
+func ExampleCapacitiesClient_CheckNameAvailability() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armfabric.NewClientFactory("548B7FB7-3B2A-4F46-BB02-66473F1FC22C", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewCapacitiesClient().CheckNameAvailability(ctx, "westcentralus", armfabric.CheckNameAvailabilityRequest{
+		Name: to.Ptr("azsdktest"),
+		Type: to.Ptr("Microsoft.Fabric/capacities"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armfabric.CapacitiesClientCheckNameAvailabilityResponse{
+	// 	CheckNameAvailabilityResponse: armfabric.CheckNameAvailabilityResponse{
+	// 		NameAvailable: to.Ptr(true),
+	// 	},
+	// }
 }
 
 // Generated from example definition: 2026-09-01-preview/FabricCapacities_Get.json
@@ -344,65 +467,6 @@ func ExampleCapacitiesClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-09-01-preview/FabricCapacities_ListSkus.json
-func ExampleCapacitiesClient_NewListSKUsPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armfabric.NewClientFactory("548B7FB7-3B2A-4F46-BB02-66473F1FC22C", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewCapacitiesClient().NewListSKUsPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armfabric.CapacitiesClientListSKUsResponse{
-		// 	RpSKUEnumerationForNewResourceResult: armfabric.RpSKUEnumerationForNewResourceResult{
-		// 		Value: []*armfabric.RpSKUDetailsForNewResource{
-		// 			{
-		// 				Name: to.Ptr("F8"),
-		// 				Locations: []*string{
-		// 					to.Ptr("West Europe"),
-		// 				},
-		// 				ResourceType: to.Ptr("Capacities"),
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("F64"),
-		// 				Locations: []*string{
-		// 					to.Ptr("West Europe"),
-		// 				},
-		// 				ResourceType: to.Ptr("Capacities"),
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("F128"),
-		// 				Locations: []*string{
-		// 					to.Ptr("West Europe"),
-		// 				},
-		// 				ResourceType: to.Ptr("Capacities"),
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("F512"),
-		// 				Locations: []*string{
-		// 					to.Ptr("West Europe"),
-		// 				},
-		// 				ResourceType: to.Ptr("Capacities"),
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
 // Generated from example definition: 2026-09-01-preview/FabricCapacities_ListSkusForCapacity.json
 func ExampleCapacitiesClient_NewListSKUsForCapacityPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -511,6 +575,65 @@ func ExampleCapacitiesClient_NewListSKUsForCapacityPager() {
 	}
 }
 
+// Generated from example definition: 2026-09-01-preview/FabricCapacities_ListSkus.json
+func ExampleCapacitiesClient_NewListSKUsPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armfabric.NewClientFactory("548B7FB7-3B2A-4F46-BB02-66473F1FC22C", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewCapacitiesClient().NewListSKUsPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armfabric.CapacitiesClientListSKUsResponse{
+		// 	RpSKUEnumerationForNewResourceResult: armfabric.RpSKUEnumerationForNewResourceResult{
+		// 		Value: []*armfabric.RpSKUDetailsForNewResource{
+		// 			{
+		// 				Name: to.Ptr("F8"),
+		// 				Locations: []*string{
+		// 					to.Ptr("West Europe"),
+		// 				},
+		// 				ResourceType: to.Ptr("Capacities"),
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("F64"),
+		// 				Locations: []*string{
+		// 					to.Ptr("West Europe"),
+		// 				},
+		// 				ResourceType: to.Ptr("Capacities"),
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("F128"),
+		// 				Locations: []*string{
+		// 					to.Ptr("West Europe"),
+		// 				},
+		// 				ResourceType: to.Ptr("Capacities"),
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("F512"),
+		// 				Locations: []*string{
+		// 					to.Ptr("West Europe"),
+		// 				},
+		// 				ResourceType: to.Ptr("Capacities"),
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
 // Generated from example definition: 2026-09-01-preview/FabricCapacities_ListUsagesBySubscription.json
 func ExampleCapacitiesClient_NewListUsagesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -549,127 +672,4 @@ func ExampleCapacitiesClient_NewListUsagesPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-09-01-preview/FabricCapacities_Resume.json
-func ExampleCapacitiesClient_BeginResume() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armfabric.NewClientFactory("548B7FB7-3B2A-4F46-BB02-66473F1FC22C", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewCapacitiesClient().BeginResume(ctx, "TestRG", "azsdktest", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armfabric.CapacitiesClientResumeResponse{
-	// }
-}
-
-// Generated from example definition: 2026-09-01-preview/FabricCapacities_Suspend.json
-func ExampleCapacitiesClient_BeginSuspend() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armfabric.NewClientFactory("548B7FB7-3B2A-4F46-BB02-66473F1FC22C", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewCapacitiesClient().BeginSuspend(ctx, "TestRG", "azsdktest", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armfabric.CapacitiesClientSuspendResponse{
-	// }
-}
-
-// Generated from example definition: 2026-09-01-preview/FabricCapacities_Update.json
-func ExampleCapacitiesClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armfabric.NewClientFactory("548B7FB7-3B2A-4F46-BB02-66473F1FC22C", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewCapacitiesClient().BeginUpdate(ctx, "TestRG", "azsdktest", armfabric.CapacityUpdate{
-		SKU: &armfabric.RpSKU{
-			Name: to.Ptr("F8"),
-			Tier: to.Ptr(armfabric.RpSKUTierFabric),
-		},
-		Tags: map[string]*string{
-			"testKey": to.Ptr("testValue"),
-		},
-		Properties: &armfabric.CapacityUpdateProperties{
-			Overage: &armfabric.CapacityOverageProperties{
-				State:                      to.Ptr(armfabric.CapacityOverageStateEnabled),
-				ThresholdCapacityUnitHours: to.Ptr[int32](4),
-			},
-			Administration: &armfabric.CapacityAdministration{
-				Members: []*string{
-					to.Ptr("azsdktest2@microsoft.com"),
-				},
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armfabric.CapacitiesClientUpdateResponse{
-	// 	Capacity: armfabric.Capacity{
-	// 		Properties: &armfabric.CapacityProperties{
-	// 			ProvisioningState: to.Ptr(armfabric.ProvisioningStateUpdating),
-	// 			State: to.Ptr(armfabric.ResourceStatePreparing),
-	// 			Overage: &armfabric.CapacityOverageProperties{
-	// 				State: to.Ptr(armfabric.CapacityOverageStateEnabled),
-	// 				ThresholdCapacityUnitHours: to.Ptr[int32](4),
-	// 			},
-	// 			Administration: &armfabric.CapacityAdministration{
-	// 				Members: []*string{
-	// 					to.Ptr("azsdktest2@microsoft.com"),
-	// 				},
-	// 			},
-	// 		},
-	// 		SKU: &armfabric.RpSKU{
-	// 			Name: to.Ptr("F8"),
-	// 			Tier: to.Ptr(armfabric.RpSKUTierFabric),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"testKey": to.Ptr("testValue"),
-	// 		},
-	// 		Location: to.Ptr("westcentralus"),
-	// 		ID: to.Ptr("/subscriptions/548B7FB7-3B2A-4F46-BB02-66473F1FC22C/resourceGroups/TestRG/providers/Microsoft.Fabric/capacities/azsdktest"),
-	// 		Name: to.Ptr("azsdktest"),
-	// 		Type: to.Ptr("Microsoft.Fabric/capacities"),
-	// 	},
-	// }
 }

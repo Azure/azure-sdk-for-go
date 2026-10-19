@@ -70,7 +70,7 @@ func (client *AutoExportJobsClient) BeginCreateOrUpdate(ctx context.Context, res
 	}
 }
 
-// CreateOrUpdate - Create or update an auto export job.
+// createOrUpdate - Create or update an auto export job.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AutoExportJobsClient) createOrUpdate(ctx context.Context, resourceGroupName string, amlFilesystemName string, autoExportJobName string, autoExportJob AutoExportJob, options *AutoExportJobsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -92,7 +92,7 @@ func (client *AutoExportJobsClient) createOrUpdate(ctx context.Context, resource
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *AutoExportJobsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, amlFilesystemName string, autoExportJobName string, autoExportJob AutoExportJob, _ *AutoExportJobsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}/autoExportJobs/{autoExportJobName}"
 	if client.subscriptionID == "" {
@@ -150,7 +150,7 @@ func (client *AutoExportJobsClient) BeginDelete(ctx context.Context, resourceGro
 	}
 }
 
-// Delete - Schedules an auto export job for deletion.
+// deleteOperation - Schedules an auto export job for deletion.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AutoExportJobsClient) deleteOperation(ctx context.Context, resourceGroupName string, amlFilesystemName string, autoExportJobName string, options *AutoExportJobsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -172,7 +172,7 @@ func (client *AutoExportJobsClient) deleteOperation(ctx context.Context, resourc
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *AutoExportJobsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, amlFilesystemName string, autoExportJobName string, _ *AutoExportJobsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}/autoExportJobs/{autoExportJobName}"
 	if client.subscriptionID == "" {
@@ -198,6 +198,89 @@ func (client *AutoExportJobsClient) deleteCreateRequest(ctx context.Context, res
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20260801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - Update an auto export job instance.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - amlFilesystemName - Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and end with alphanumeric.
+//   - autoExportJobName - Name for the auto export job. Allows alphanumerics, underscores, and hyphens. Start and end with alphanumeric.
+//   - autoExportJob - Object containing the user-selectable properties of the auto export job. If read-only properties are included,
+//     they must match the existing values of those properties.
+//   - options - AutoExportJobsClientBeginUpdateOptions contains the optional parameters for the AutoExportJobsClient.BeginUpdate
+//     method.
+func (client *AutoExportJobsClient) BeginUpdate(ctx context.Context, resourceGroupName string, amlFilesystemName string, autoExportJobName string, autoExportJob AutoExportJobUpdate, options *AutoExportJobsClientBeginUpdateOptions) (*runtime.Poller[AutoExportJobsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, amlFilesystemName, autoExportJobName, autoExportJob, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AutoExportJobsClientUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AutoExportJobsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update an auto export job instance.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *AutoExportJobsClient) update(ctx context.Context, resourceGroupName string, amlFilesystemName string, autoExportJobName string, autoExportJob AutoExportJobUpdate, options *AutoExportJobsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "AutoExportJobsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, amlFilesystemName, autoExportJobName, autoExportJob, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *AutoExportJobsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, amlFilesystemName string, autoExportJobName string, autoExportJob AutoExportJobUpdate, _ *AutoExportJobsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}/autoExportJobs/{autoExportJobName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if amlFilesystemName == "" {
+		return nil, errors.New("parameter amlFilesystemName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{amlFilesystemName}", url.PathEscape(amlFilesystemName))
+	if autoExportJobName == "" {
+		return nil, errors.New("parameter autoExportJobName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{autoExportJobName}", url.PathEscape(autoExportJobName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, autoExportJob); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -341,87 +424,4 @@ func (client *AutoExportJobsClient) listByAmlFilesystemHandleResponse(resp *http
 		return AutoExportJobsClientListByAmlFilesystemResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Update an auto export job instance.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - amlFilesystemName - Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and end with alphanumeric.
-//   - autoExportJobName - Name for the auto export job. Allows alphanumerics, underscores, and hyphens. Start and end with alphanumeric.
-//   - autoExportJob - Object containing the user-selectable properties of the auto export job. If read-only properties are included,
-//     they must match the existing values of those properties.
-//   - options - AutoExportJobsClientBeginUpdateOptions contains the optional parameters for the AutoExportJobsClient.BeginUpdate
-//     method.
-func (client *AutoExportJobsClient) BeginUpdate(ctx context.Context, resourceGroupName string, amlFilesystemName string, autoExportJobName string, autoExportJob AutoExportJobUpdate, options *AutoExportJobsClientBeginUpdateOptions) (*runtime.Poller[AutoExportJobsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, amlFilesystemName, autoExportJobName, autoExportJob, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AutoExportJobsClientUpdateResponse]{
-			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
-			Tracer:        client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AutoExportJobsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update an auto export job instance.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *AutoExportJobsClient) update(ctx context.Context, resourceGroupName string, amlFilesystemName string, autoExportJobName string, autoExportJob AutoExportJobUpdate, options *AutoExportJobsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "AutoExportJobsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, amlFilesystemName, autoExportJobName, autoExportJob, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *AutoExportJobsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, amlFilesystemName string, autoExportJobName string, autoExportJob AutoExportJobUpdate, _ *AutoExportJobsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}/autoExportJobs/{autoExportJobName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if amlFilesystemName == "" {
-		return nil, errors.New("parameter amlFilesystemName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{amlFilesystemName}", url.PathEscape(amlFilesystemName))
-	if autoExportJobName == "" {
-		return nil, errors.New("parameter autoExportJobName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{autoExportJobName}", url.PathEscape(autoExportJobName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, autoExportJob); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

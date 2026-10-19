@@ -128,7 +128,7 @@ func (client *LoadBalancersClient) createOrUpdateCreateRequest(ctx context.Conte
 //     method.
 func (client *LoadBalancersClient) BeginDelete(ctx context.Context, resourceGroupName string, loadBalancerName string, options *LoadBalancersClientBeginDeleteOptions) (*runtime.Poller[LoadBalancersClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, loadBalancerName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, loadBalancerName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -143,9 +143,9 @@ func (client *LoadBalancersClient) BeginDelete(ctx context.Context, resourceGrou
 	}
 }
 
-// delete - Deletes the specified load balancer.
+// deleteOperation - Deletes the specified load balancer.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *LoadBalancersClient) delete(ctx context.Context, resourceGroupName string, loadBalancerName string, options *LoadBalancersClientBeginDeleteOptions) (*http.Response, error) {
+func (client *LoadBalancersClient) deleteOperation(ctx context.Context, resourceGroupName string, loadBalancerName string, options *LoadBalancersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "LoadBalancersClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)

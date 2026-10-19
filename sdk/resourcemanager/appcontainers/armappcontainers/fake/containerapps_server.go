@@ -29,30 +29,6 @@ type ContainerAppsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, containerAppName string, options *armappcontainers.ContainerAppsClientBeginDeleteOptions) (resp azfake.PollerResponder[armappcontainers.ContainerAppsClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method ContainerAppsClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, containerAppName string, options *armappcontainers.ContainerAppsClientGetOptions) (resp azfake.Responder[armappcontainers.ContainerAppsClientGetResponse], errResp azfake.ErrorResponder)
-
-	// GetAuthToken is the fake for method ContainerAppsClient.GetAuthToken
-	// HTTP status codes to indicate success: http.StatusOK
-	GetAuthToken func(ctx context.Context, resourceGroupName string, containerAppName string, options *armappcontainers.ContainerAppsClientGetAuthTokenOptions) (resp azfake.Responder[armappcontainers.ContainerAppsClientGetAuthTokenResponse], errResp azfake.ErrorResponder)
-
-	// NewListByResourceGroupPager is the fake for method ContainerAppsClient.NewListByResourceGroupPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupPager func(resourceGroupName string, options *armappcontainers.ContainerAppsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armappcontainers.ContainerAppsClientListByResourceGroupResponse])
-
-	// NewListBySubscriptionPager is the fake for method ContainerAppsClient.NewListBySubscriptionPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListBySubscriptionPager func(options *armappcontainers.ContainerAppsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armappcontainers.ContainerAppsClientListBySubscriptionResponse])
-
-	// ListCustomHostNameAnalysis is the fake for method ContainerAppsClient.ListCustomHostNameAnalysis
-	// HTTP status codes to indicate success: http.StatusOK
-	ListCustomHostNameAnalysis func(ctx context.Context, resourceGroupName string, containerAppName string, options *armappcontainers.ContainerAppsClientListCustomHostNameAnalysisOptions) (resp azfake.Responder[armappcontainers.ContainerAppsClientListCustomHostNameAnalysisResponse], errResp azfake.ErrorResponder)
-
-	// ListSecrets is the fake for method ContainerAppsClient.ListSecrets
-	// HTTP status codes to indicate success: http.StatusOK
-	ListSecrets func(ctx context.Context, resourceGroupName string, containerAppName string, options *armappcontainers.ContainerAppsClientListSecretsOptions) (resp azfake.Responder[armappcontainers.ContainerAppsClientListSecretsResponse], errResp azfake.ErrorResponder)
-
 	// BeginStart is the fake for method ContainerAppsClient.BeginStart
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginStart func(ctx context.Context, resourceGroupName string, containerAppName string, options *armappcontainers.ContainerAppsClientBeginStartOptions) (resp azfake.PollerResponder[armappcontainers.ContainerAppsClientStartResponse], errResp azfake.ErrorResponder)
@@ -64,6 +40,30 @@ type ContainerAppsServer struct {
 	// BeginUpdate is the fake for method ContainerAppsClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, resourceGroupName string, containerAppName string, containerAppEnvelope armappcontainers.ContainerApp, options *armappcontainers.ContainerAppsClientBeginUpdateOptions) (resp azfake.PollerResponder[armappcontainers.ContainerAppsClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method ContainerAppsClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, containerAppName string, options *armappcontainers.ContainerAppsClientGetOptions) (resp azfake.Responder[armappcontainers.ContainerAppsClientGetResponse], errResp azfake.ErrorResponder)
+
+	// GetAuthToken is the fake for method ContainerAppsClient.GetAuthToken
+	// HTTP status codes to indicate success: http.StatusOK
+	GetAuthToken func(ctx context.Context, resourceGroupName string, containerAppName string, options *armappcontainers.ContainerAppsClientGetAuthTokenOptions) (resp azfake.Responder[armappcontainers.ContainerAppsClientGetAuthTokenResponse], errResp azfake.ErrorResponder)
+
+	// ListCustomHostNameAnalysis is the fake for method ContainerAppsClient.ListCustomHostNameAnalysis
+	// HTTP status codes to indicate success: http.StatusOK
+	ListCustomHostNameAnalysis func(ctx context.Context, resourceGroupName string, containerAppName string, options *armappcontainers.ContainerAppsClientListCustomHostNameAnalysisOptions) (resp azfake.Responder[armappcontainers.ContainerAppsClientListCustomHostNameAnalysisResponse], errResp azfake.ErrorResponder)
+
+	// ListSecrets is the fake for method ContainerAppsClient.ListSecrets
+	// HTTP status codes to indicate success: http.StatusOK
+	ListSecrets func(ctx context.Context, resourceGroupName string, containerAppName string, options *armappcontainers.ContainerAppsClientListSecretsOptions) (resp azfake.Responder[armappcontainers.ContainerAppsClientListSecretsResponse], errResp azfake.ErrorResponder)
+
+	// NewListByResourceGroupPager is the fake for method ContainerAppsClient.NewListByResourceGroupPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByResourceGroupPager func(resourceGroupName string, options *armappcontainers.ContainerAppsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armappcontainers.ContainerAppsClientListByResourceGroupResponse])
+
+	// NewListBySubscriptionPager is the fake for method ContainerAppsClient.NewListBySubscriptionPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListBySubscriptionPager func(options *armappcontainers.ContainerAppsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armappcontainers.ContainerAppsClientListBySubscriptionResponse])
 }
 
 // NewContainerAppsServerTransport creates a new instance of ContainerAppsServerTransport with the provided implementation.
@@ -74,11 +74,11 @@ func NewContainerAppsServerTransport(srv *ContainerAppsServer) *ContainerAppsSer
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armappcontainers.ContainerAppsClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armappcontainers.ContainerAppsClientDeleteResponse]](),
-		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armappcontainers.ContainerAppsClientListByResourceGroupResponse]](),
-		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armappcontainers.ContainerAppsClientListBySubscriptionResponse]](),
 		beginStart:                  newTracker[azfake.PollerResponder[armappcontainers.ContainerAppsClientStartResponse]](),
 		beginStop:                   newTracker[azfake.PollerResponder[armappcontainers.ContainerAppsClientStopResponse]](),
 		beginUpdate:                 newTracker[azfake.PollerResponder[armappcontainers.ContainerAppsClientUpdateResponse]](),
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armappcontainers.ContainerAppsClientListByResourceGroupResponse]](),
+		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armappcontainers.ContainerAppsClientListBySubscriptionResponse]](),
 	}
 }
 
@@ -88,11 +88,11 @@ type ContainerAppsServerTransport struct {
 	srv                         *ContainerAppsServer
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armappcontainers.ContainerAppsClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armappcontainers.ContainerAppsClientDeleteResponse]]
-	newListByResourceGroupPager *tracker[azfake.PagerResponder[armappcontainers.ContainerAppsClientListByResourceGroupResponse]]
-	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armappcontainers.ContainerAppsClientListBySubscriptionResponse]]
 	beginStart                  *tracker[azfake.PollerResponder[armappcontainers.ContainerAppsClientStartResponse]]
 	beginStop                   *tracker[azfake.PollerResponder[armappcontainers.ContainerAppsClientStopResponse]]
 	beginUpdate                 *tracker[azfake.PollerResponder[armappcontainers.ContainerAppsClientUpdateResponse]]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armappcontainers.ContainerAppsClientListByResourceGroupResponse]]
+	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armappcontainers.ContainerAppsClientListBySubscriptionResponse]]
 }
 
 // Do implements the policy.Transporter interface for ContainerAppsServerTransport.
@@ -120,24 +120,24 @@ func (c *ContainerAppsServerTransport) dispatchToMethodFake(req *http.Request, m
 				res.resp, res.err = c.dispatchBeginCreateOrUpdate(req)
 			case "ContainerAppsClient.BeginDelete":
 				res.resp, res.err = c.dispatchBeginDelete(req)
-			case "ContainerAppsClient.Get":
-				res.resp, res.err = c.dispatchGet(req)
-			case "ContainerAppsClient.GetAuthToken":
-				res.resp, res.err = c.dispatchGetAuthToken(req)
-			case "ContainerAppsClient.NewListByResourceGroupPager":
-				res.resp, res.err = c.dispatchNewListByResourceGroupPager(req)
-			case "ContainerAppsClient.NewListBySubscriptionPager":
-				res.resp, res.err = c.dispatchNewListBySubscriptionPager(req)
-			case "ContainerAppsClient.ListCustomHostNameAnalysis":
-				res.resp, res.err = c.dispatchListCustomHostNameAnalysis(req)
-			case "ContainerAppsClient.ListSecrets":
-				res.resp, res.err = c.dispatchListSecrets(req)
 			case "ContainerAppsClient.BeginStart":
 				res.resp, res.err = c.dispatchBeginStart(req)
 			case "ContainerAppsClient.BeginStop":
 				res.resp, res.err = c.dispatchBeginStop(req)
 			case "ContainerAppsClient.BeginUpdate":
 				res.resp, res.err = c.dispatchBeginUpdate(req)
+			case "ContainerAppsClient.Get":
+				res.resp, res.err = c.dispatchGet(req)
+			case "ContainerAppsClient.GetAuthToken":
+				res.resp, res.err = c.dispatchGetAuthToken(req)
+			case "ContainerAppsClient.ListCustomHostNameAnalysis":
+				res.resp, res.err = c.dispatchListCustomHostNameAnalysis(req)
+			case "ContainerAppsClient.ListSecrets":
+				res.resp, res.err = c.dispatchListSecrets(req)
+			case "ContainerAppsClient.NewListByResourceGroupPager":
+				res.resp, res.err = c.dispatchNewListByResourceGroupPager(req)
+			case "ContainerAppsClient.NewListBySubscriptionPager":
+				res.resp, res.err = c.dispatchNewListBySubscriptionPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -243,216 +243,6 @@ func (c *ContainerAppsServerTransport) dispatchBeginDelete(req *http.Request) (*
 		c.beginDelete.remove(req)
 	}
 
-	return resp, nil
-}
-
-func (c *ContainerAppsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if c.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.App/containerApps/(?P<containerAppName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	containerAppNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("containerAppName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := c.srv.Get(req.Context(), resourceGroupNameParam, containerAppNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ContainerApp, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (c *ContainerAppsServerTransport) dispatchGetAuthToken(req *http.Request) (*http.Response, error) {
-	if c.srv.GetAuthToken == nil {
-		return nil, &nonRetriableError{errors.New("fake for method GetAuthToken not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.App/containerApps/(?P<containerAppName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getAuthtoken`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	containerAppNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("containerAppName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := c.srv.GetAuthToken(req.Context(), resourceGroupNameParam, containerAppNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ContainerAppAuthToken, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (c *ContainerAppsServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
-	if c.srv.NewListByResourceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
-	}
-	newListByResourceGroupPager := c.newListByResourceGroupPager.get(req)
-	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.App/containerApps`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := c.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
-		newListByResourceGroupPager = &resp
-		c.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armappcontainers.ContainerAppsClientListByResourceGroupResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		c.newListByResourceGroupPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByResourceGroupPager) {
-		c.newListByResourceGroupPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (c *ContainerAppsServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
-	if c.srv.NewListBySubscriptionPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
-	}
-	newListBySubscriptionPager := c.newListBySubscriptionPager.get(req)
-	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.App/containerApps`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := c.srv.NewListBySubscriptionPager(nil)
-		newListBySubscriptionPager = &resp
-		c.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
-		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armappcontainers.ContainerAppsClientListBySubscriptionResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		c.newListBySubscriptionPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListBySubscriptionPager) {
-		c.newListBySubscriptionPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (c *ContainerAppsServerTransport) dispatchListCustomHostNameAnalysis(req *http.Request) (*http.Response, error) {
-	if c.srv.ListCustomHostNameAnalysis == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListCustomHostNameAnalysis not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.App/containerApps/(?P<containerAppName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listCustomHostNameAnalysis`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	qp := req.URL.Query()
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	containerAppNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("containerAppName")])
-	if err != nil {
-		return nil, err
-	}
-	customHostnameParam := getOptional(qp.Get("customHostname"))
-	var options *armappcontainers.ContainerAppsClientListCustomHostNameAnalysisOptions
-	if customHostnameParam != nil {
-		options = &armappcontainers.ContainerAppsClientListCustomHostNameAnalysisOptions{
-			CustomHostname: customHostnameParam,
-		}
-	}
-	respr, errRespr := c.srv.ListCustomHostNameAnalysis(req.Context(), resourceGroupNameParam, containerAppNameParam, options)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CustomHostnameAnalysisResult, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (c *ContainerAppsServerTransport) dispatchListSecrets(req *http.Request) (*http.Response, error) {
-	if c.srv.ListSecrets == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListSecrets not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.App/containerApps/(?P<containerAppName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listSecrets`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	containerAppNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("containerAppName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := c.srv.ListSecrets(req.Context(), resourceGroupNameParam, containerAppNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SecretsCollection, req)
-	if err != nil {
-		return nil, err
-	}
 	return resp, nil
 }
 
@@ -589,6 +379,216 @@ func (c *ContainerAppsServerTransport) dispatchBeginUpdate(req *http.Request) (*
 		c.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (c *ContainerAppsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if c.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.App/containerApps/(?P<containerAppName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	containerAppNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("containerAppName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := c.srv.Get(req.Context(), resourceGroupNameParam, containerAppNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ContainerApp, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (c *ContainerAppsServerTransport) dispatchGetAuthToken(req *http.Request) (*http.Response, error) {
+	if c.srv.GetAuthToken == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetAuthToken not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.App/containerApps/(?P<containerAppName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getAuthtoken`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	containerAppNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("containerAppName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := c.srv.GetAuthToken(req.Context(), resourceGroupNameParam, containerAppNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ContainerAppAuthToken, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (c *ContainerAppsServerTransport) dispatchListCustomHostNameAnalysis(req *http.Request) (*http.Response, error) {
+	if c.srv.ListCustomHostNameAnalysis == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListCustomHostNameAnalysis not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.App/containerApps/(?P<containerAppName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listCustomHostNameAnalysis`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	qp := req.URL.Query()
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	containerAppNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("containerAppName")])
+	if err != nil {
+		return nil, err
+	}
+	customHostnameParam := getOptional(qp.Get("customHostname"))
+	var options *armappcontainers.ContainerAppsClientListCustomHostNameAnalysisOptions
+	if customHostnameParam != nil {
+		options = &armappcontainers.ContainerAppsClientListCustomHostNameAnalysisOptions{
+			CustomHostname: customHostnameParam,
+		}
+	}
+	respr, errRespr := c.srv.ListCustomHostNameAnalysis(req.Context(), resourceGroupNameParam, containerAppNameParam, options)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CustomHostnameAnalysisResult, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (c *ContainerAppsServerTransport) dispatchListSecrets(req *http.Request) (*http.Response, error) {
+	if c.srv.ListSecrets == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListSecrets not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.App/containerApps/(?P<containerAppName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listSecrets`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	containerAppNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("containerAppName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := c.srv.ListSecrets(req.Context(), resourceGroupNameParam, containerAppNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SecretsCollection, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (c *ContainerAppsServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
+	if c.srv.NewListByResourceGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
+	}
+	newListByResourceGroupPager := c.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.App/containerApps`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := c.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
+		newListByResourceGroupPager = &resp
+		c.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armappcontainers.ContainerAppsClientListByResourceGroupResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		c.newListByResourceGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		c.newListByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (c *ContainerAppsServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
+	if c.srv.NewListBySubscriptionPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
+	}
+	newListBySubscriptionPager := c.newListBySubscriptionPager.get(req)
+	if newListBySubscriptionPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.App/containerApps`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := c.srv.NewListBySubscriptionPager(nil)
+		newListBySubscriptionPager = &resp
+		c.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
+		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armappcontainers.ContainerAppsClientListBySubscriptionResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		c.newListBySubscriptionPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListBySubscriptionPager) {
+		c.newListBySubscriptionPager.remove(req)
+	}
 	return resp, nil
 }
 

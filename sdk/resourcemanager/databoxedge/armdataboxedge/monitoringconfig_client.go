@@ -68,7 +68,7 @@ func (client *MonitoringConfigClient) BeginCreateOrUpdate(ctx context.Context, d
 	}
 }
 
-// CreateOrUpdate - Creates a new metric configuration or updates an existing one for a role.
+// createOrUpdate - Creates a new metric configuration or updates an existing one for a role.
 //
 // Creates a new metric configuration or updates an existing one for a role.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -92,7 +92,7 @@ func (client *MonitoringConfigClient) createOrUpdate(ctx context.Context, device
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *MonitoringConfigClient) createOrUpdateCreateRequest(ctx context.Context, deviceName string, roleName string, resourceGroupName string, monitoringMetricConfiguration MonitoringMetricConfiguration, _ *MonitoringConfigClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/roles/{roleName}/monitoringConfig/default"
 	if client.subscriptionID == "" {
@@ -150,7 +150,7 @@ func (client *MonitoringConfigClient) BeginDelete(ctx context.Context, deviceNam
 	}
 }
 
-// Delete - deletes a new metric configuration for a role.
+// deleteOperation - deletes a new metric configuration for a role.
 //
 // deletes a new metric configuration for a role.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -174,7 +174,7 @@ func (client *MonitoringConfigClient) deleteOperation(ctx context.Context, devic
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *MonitoringConfigClient) deleteCreateRequest(ctx context.Context, deviceName string, roleName string, resourceGroupName string, _ *MonitoringConfigClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/roles/{roleName}/monitoringConfig/default"
 	if client.subscriptionID == "" {

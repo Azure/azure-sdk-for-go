@@ -38,13 +38,13 @@ type PrivateStoreCollectionOfferServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, privateStoreID string, collectionID string, offerID string, options *armmarketplace.PrivateStoreCollectionOfferClientGetOptions) (resp azfake.Responder[armmarketplace.PrivateStoreCollectionOfferClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method PrivateStoreCollectionOfferClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(privateStoreID string, collectionID string, options *armmarketplace.PrivateStoreCollectionOfferClientListOptions) (resp azfake.PagerResponder[armmarketplace.PrivateStoreCollectionOfferClientListResponse])
-
 	// NewListByContextsPager is the fake for method PrivateStoreCollectionOfferClient.NewListByContextsPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByContextsPager func(privateStoreID string, collectionID string, options *armmarketplace.PrivateStoreCollectionOfferClientListByContextsOptions) (resp azfake.PagerResponder[armmarketplace.PrivateStoreCollectionOfferClientListByContextsResponse])
+
+	// NewListPager is the fake for method PrivateStoreCollectionOfferClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(privateStoreID string, collectionID string, options *armmarketplace.PrivateStoreCollectionOfferClientListOptions) (resp azfake.PagerResponder[armmarketplace.PrivateStoreCollectionOfferClientListResponse])
 
 	// Post is the fake for method PrivateStoreCollectionOfferClient.Post
 	// HTTP status codes to indicate success: http.StatusOK
@@ -61,8 +61,8 @@ type PrivateStoreCollectionOfferServer struct {
 func NewPrivateStoreCollectionOfferServerTransport(srv *PrivateStoreCollectionOfferServer) *PrivateStoreCollectionOfferServerTransport {
 	return &PrivateStoreCollectionOfferServerTransport{
 		srv:                    srv,
-		newListPager:           newTracker[azfake.PagerResponder[armmarketplace.PrivateStoreCollectionOfferClientListResponse]](),
 		newListByContextsPager: newTracker[azfake.PagerResponder[armmarketplace.PrivateStoreCollectionOfferClientListByContextsResponse]](),
+		newListPager:           newTracker[azfake.PagerResponder[armmarketplace.PrivateStoreCollectionOfferClientListResponse]](),
 	}
 }
 
@@ -70,8 +70,8 @@ func NewPrivateStoreCollectionOfferServerTransport(srv *PrivateStoreCollectionOf
 // Don't use this type directly, use NewPrivateStoreCollectionOfferServerTransport instead.
 type PrivateStoreCollectionOfferServerTransport struct {
 	srv                    *PrivateStoreCollectionOfferServer
-	newListPager           *tracker[azfake.PagerResponder[armmarketplace.PrivateStoreCollectionOfferClientListResponse]]
 	newListByContextsPager *tracker[azfake.PagerResponder[armmarketplace.PrivateStoreCollectionOfferClientListByContextsResponse]]
+	newListPager           *tracker[azfake.PagerResponder[armmarketplace.PrivateStoreCollectionOfferClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for PrivateStoreCollectionOfferServerTransport.
@@ -103,10 +103,10 @@ func (p *PrivateStoreCollectionOfferServerTransport) dispatchToMethodFake(req *h
 				res.resp, res.err = p.dispatchDelete(req)
 			case "PrivateStoreCollectionOfferClient.Get":
 				res.resp, res.err = p.dispatchGet(req)
-			case "PrivateStoreCollectionOfferClient.NewListPager":
-				res.resp, res.err = p.dispatchNewListPager(req)
 			case "PrivateStoreCollectionOfferClient.NewListByContextsPager":
 				res.resp, res.err = p.dispatchNewListByContextsPager(req)
+			case "PrivateStoreCollectionOfferClient.NewListPager":
+				res.resp, res.err = p.dispatchNewListPager(req)
 			case "PrivateStoreCollectionOfferClient.Post":
 				res.resp, res.err = p.dispatchPost(req)
 			case "PrivateStoreCollectionOfferClient.UpsertOfferWithMultiContext":
@@ -289,47 +289,6 @@ func (p *PrivateStoreCollectionOfferServerTransport) dispatchGet(req *http.Reque
 	return resp, nil
 }
 
-func (p *PrivateStoreCollectionOfferServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if p.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := p.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/collections/(?P<collectionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/offers`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		privateStoreIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("privateStoreId")])
-		if err != nil {
-			return nil, err
-		}
-		collectionIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("collectionId")])
-		if err != nil {
-			return nil, err
-		}
-		resp := p.srv.NewListPager(privateStoreIDParam, collectionIDParam, nil)
-		newListPager = &resp
-		p.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armmarketplace.PrivateStoreCollectionOfferClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		p.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		p.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (p *PrivateStoreCollectionOfferServerTransport) dispatchNewListByContextsPager(req *http.Request) (*http.Response, error) {
 	if p.srv.NewListByContextsPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByContextsPager not implemented")}
@@ -377,6 +336,47 @@ func (p *PrivateStoreCollectionOfferServerTransport) dispatchNewListByContextsPa
 	}
 	if !server.PagerResponderMore(newListByContextsPager) {
 		p.newListByContextsPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (p *PrivateStoreCollectionOfferServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if p.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := p.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/collections/(?P<collectionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/offers`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		privateStoreIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("privateStoreId")])
+		if err != nil {
+			return nil, err
+		}
+		collectionIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("collectionId")])
+		if err != nil {
+			return nil, err
+		}
+		resp := p.srv.NewListPager(privateStoreIDParam, collectionIDParam, nil)
+		newListPager = &resp
+		p.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armmarketplace.PrivateStoreCollectionOfferClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		p.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		p.newListPager.remove(req)
 	}
 	return resp, nil
 }

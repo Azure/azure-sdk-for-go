@@ -69,7 +69,7 @@ func (client *PipelineRunsClient) BeginCreate(ctx context.Context, resourceGroup
 	}
 }
 
-// Create - Creates a pipeline run for a container registry with the specified parameters
+// create - Creates a pipeline run for a container registry with the specified parameters
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *PipelineRunsClient) create(ctx context.Context, resourceGroupName string, registryName string, pipelineRunName string, pipelineRunCreateParameters PipelineRun, options *PipelineRunsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *PipelineRunsClient) create(ctx context.Context, resourceGroupName 
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *PipelineRunsClient) createCreateRequest(ctx context.Context, resourceGroupName string, registryName string, pipelineRunName string, pipelineRunCreateParameters PipelineRun, _ *PipelineRunsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/pipelineRuns/{pipelineRunName}"
 	if client.subscriptionID == "" {
@@ -149,7 +149,7 @@ func (client *PipelineRunsClient) BeginDelete(ctx context.Context, resourceGroup
 	}
 }
 
-// Delete - Deletes a pipeline run from a container registry.
+// deleteOperation - Deletes a pipeline run from a container registry.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *PipelineRunsClient) deleteOperation(ctx context.Context, resourceGroupName string, registryName string, pipelineRunName string, options *PipelineRunsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -171,7 +171,7 @@ func (client *PipelineRunsClient) deleteOperation(ctx context.Context, resourceG
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *PipelineRunsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, registryName string, pipelineRunName string, _ *PipelineRunsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/pipelineRuns/{pipelineRunName}"
 	if client.subscriptionID == "" {

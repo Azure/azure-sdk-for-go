@@ -133,7 +133,7 @@ func (client *DeploymentsClient) createOrUpdateCreateRequest(ctx context.Context
 //   - options - DeploymentsClientBeginDeleteOptions contains the optional parameters for the DeploymentsClient.BeginDelete method.
 func (client *DeploymentsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, options *DeploymentsClientBeginDeleteOptions) (*runtime.Poller[DeploymentsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, accountName, deploymentName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, deploymentName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -148,9 +148,9 @@ func (client *DeploymentsClient) BeginDelete(ctx context.Context, resourceGroupN
 	}
 }
 
-// delete - Deletes the specified deployment associated with the Cognitive Services account.
+// deleteOperation - Deletes the specified deployment associated with the Cognitive Services account.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *DeploymentsClient) delete(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, options *DeploymentsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *DeploymentsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, options *DeploymentsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DeploymentsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)

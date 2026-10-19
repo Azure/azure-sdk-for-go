@@ -33,13 +33,13 @@ type DatabaseMigrationsSQLDbServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, sqlDbInstanceName string, targetDbName string, options *armdatamigration.DatabaseMigrationsSQLDbClientBeginDeleteOptions) (resp azfake.PollerResponder[armdatamigration.DatabaseMigrationsSQLDbClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method DatabaseMigrationsSQLDbClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, sqlDbInstanceName string, targetDbName string, options *armdatamigration.DatabaseMigrationsSQLDbClientGetOptions) (resp azfake.Responder[armdatamigration.DatabaseMigrationsSQLDbClientGetResponse], errResp azfake.ErrorResponder)
-
 	// BeginRetry is the fake for method DatabaseMigrationsSQLDbClient.BeginRetry
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginRetry func(ctx context.Context, resourceGroupName string, sqlDbInstanceName string, targetDbName string, migrationOperationInput armdatamigration.MigrationOperationInput, options *armdatamigration.DatabaseMigrationsSQLDbClientBeginRetryOptions) (resp azfake.PollerResponder[armdatamigration.DatabaseMigrationsSQLDbClientRetryResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method DatabaseMigrationsSQLDbClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, sqlDbInstanceName string, targetDbName string, options *armdatamigration.DatabaseMigrationsSQLDbClientGetOptions) (resp azfake.Responder[armdatamigration.DatabaseMigrationsSQLDbClientGetResponse], errResp azfake.ErrorResponder)
 }
 
 // NewDatabaseMigrationsSQLDbServerTransport creates a new instance of DatabaseMigrationsSQLDbServerTransport with the provided implementation.
@@ -92,10 +92,10 @@ func (d *DatabaseMigrationsSQLDbServerTransport) dispatchToMethodFake(req *http.
 				res.resp, res.err = d.dispatchBeginCreateOrUpdate(req)
 			case "DatabaseMigrationsSQLDbClient.BeginDelete":
 				res.resp, res.err = d.dispatchBeginDelete(req)
-			case "DatabaseMigrationsSQLDbClient.Get":
-				res.resp, res.err = d.dispatchGet(req)
 			case "DatabaseMigrationsSQLDbClient.BeginRetry":
 				res.resp, res.err = d.dispatchBeginRetry(req)
+			case "DatabaseMigrationsSQLDbClient.Get":
+				res.resp, res.err = d.dispatchGet(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -275,53 +275,6 @@ func (d *DatabaseMigrationsSQLDbServerTransport) dispatchBeginDelete(req *http.R
 	return resp, nil
 }
 
-func (d *DatabaseMigrationsSQLDbServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if d.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/servers/(?P<sqlDbInstanceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataMigration/databaseMigrations/(?P<targetDbName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	qp := req.URL.Query()
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	sqlDbInstanceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("sqlDbInstanceName")])
-	if err != nil {
-		return nil, err
-	}
-	targetDbNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("targetDbName")])
-	if err != nil {
-		return nil, err
-	}
-	migrationOperationIDParam := getOptional(qp.Get("migrationOperationId"))
-	expandParam := getOptional(qp.Get("$expand"))
-	var options *armdatamigration.DatabaseMigrationsSQLDbClientGetOptions
-	if migrationOperationIDParam != nil || expandParam != nil {
-		options = &armdatamigration.DatabaseMigrationsSQLDbClientGetOptions{
-			MigrationOperationID: migrationOperationIDParam,
-			Expand:               expandParam,
-		}
-	}
-	respr, errRespr := d.srv.Get(req.Context(), resourceGroupNameParam, sqlDbInstanceNameParam, targetDbNameParam, options)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DatabaseMigrationSQLDb, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (d *DatabaseMigrationsSQLDbServerTransport) dispatchBeginRetry(req *http.Request) (*http.Response, error) {
 	if d.srv.BeginRetry == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginRetry not implemented")}
@@ -371,6 +324,53 @@ func (d *DatabaseMigrationsSQLDbServerTransport) dispatchBeginRetry(req *http.Re
 		d.beginRetry.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (d *DatabaseMigrationsSQLDbServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if d.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/servers/(?P<sqlDbInstanceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataMigration/databaseMigrations/(?P<targetDbName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	qp := req.URL.Query()
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	sqlDbInstanceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("sqlDbInstanceName")])
+	if err != nil {
+		return nil, err
+	}
+	targetDbNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("targetDbName")])
+	if err != nil {
+		return nil, err
+	}
+	migrationOperationIDParam := getOptional(qp.Get("migrationOperationId"))
+	expandParam := getOptional(qp.Get("$expand"))
+	var options *armdatamigration.DatabaseMigrationsSQLDbClientGetOptions
+	if migrationOperationIDParam != nil || expandParam != nil {
+		options = &armdatamigration.DatabaseMigrationsSQLDbClientGetOptions{
+			MigrationOperationID: migrationOperationIDParam,
+			Expand:               expandParam,
+		}
+	}
+	respr, errRespr := d.srv.Get(req.Context(), resourceGroupNameParam, sqlDbInstanceNameParam, targetDbNameParam, options)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DatabaseMigrationSQLDb, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 

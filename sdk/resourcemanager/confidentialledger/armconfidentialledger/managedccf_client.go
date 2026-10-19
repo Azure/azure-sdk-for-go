@@ -67,7 +67,7 @@ func (client *ManagedCCFClient) BeginBackup(ctx context.Context, resourceGroupNa
 	}
 }
 
-// Backup - Backs up a Managed CCF Resource.
+// backup - Backs up a Managed CCF Resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ManagedCCFClient) backup(ctx context.Context, resourceGroupName string, appName string, managedCCF ManagedCCFBackup, options *ManagedCCFClientBeginBackupOptions) (*http.Response, error) {
 	var err error
@@ -89,7 +89,7 @@ func (client *ManagedCCFClient) backup(ctx context.Context, resourceGroupName st
 	return httpResp, nil
 }
 
-// backupCreateRequest creates the Backup request.
+// backupCreateRequest creates the backup request.
 func (client *ManagedCCFClient) backupCreateRequest(ctx context.Context, resourceGroupName string, appName string, managedCCF ManagedCCFBackup, _ *ManagedCCFClientBeginBackupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConfidentialLedger/managedCCFs/{appName}/backup"
 	if client.subscriptionID == "" {
@@ -142,7 +142,7 @@ func (client *ManagedCCFClient) BeginCreate(ctx context.Context, resourceGroupNa
 	}
 }
 
-// Create - Creates a Managed CCF with the specified Managed CCF parameters.
+// create - Creates a Managed CCF with the specified Managed CCF parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ManagedCCFClient) create(ctx context.Context, resourceGroupName string, appName string, managedCCF ManagedCCF, options *ManagedCCFClientBeginCreateOptions) (*http.Response, error) {
 	var err error
@@ -164,7 +164,7 @@ func (client *ManagedCCFClient) create(ctx context.Context, resourceGroupName st
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *ManagedCCFClient) createCreateRequest(ctx context.Context, resourceGroupName string, appName string, managedCCF ManagedCCF, _ *ManagedCCFClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConfidentialLedger/managedCCFs/{appName}"
 	if client.subscriptionID == "" {
@@ -216,7 +216,7 @@ func (client *ManagedCCFClient) BeginDelete(ctx context.Context, resourceGroupNa
 	}
 }
 
-// Delete - Deletes an existing Managed CCF.
+// deleteOperation - Deletes an existing Managed CCF.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ManagedCCFClient) deleteOperation(ctx context.Context, resourceGroupName string, appName string, options *ManagedCCFClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -238,7 +238,7 @@ func (client *ManagedCCFClient) deleteOperation(ctx context.Context, resourceGro
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ManagedCCFClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, appName string, _ *ManagedCCFClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConfidentialLedger/managedCCFs/{appName}"
 	if client.subscriptionID == "" {
@@ -260,6 +260,156 @@ func (client *ManagedCCFClient) deleteCreateRequest(ctx context.Context, resourc
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20250610Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginRestore - Restores a Managed CCF Resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - appName - Name of the Managed CCF
+//   - managedCCF - Managed CCF Restore Request Body
+//   - options - ManagedCCFClientBeginRestoreOptions contains the optional parameters for the ManagedCCFClient.BeginRestore method.
+func (client *ManagedCCFClient) BeginRestore(ctx context.Context, resourceGroupName string, appName string, managedCCF ManagedCCFRestore, options *ManagedCCFClientBeginRestoreOptions) (*runtime.Poller[ManagedCCFClientRestoreResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.restore(ctx, resourceGroupName, appName, managedCCF, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagedCCFClientRestoreResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ManagedCCFClientRestoreResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// restore - Restores a Managed CCF Resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ManagedCCFClient) restore(ctx context.Context, resourceGroupName string, appName string, managedCCF ManagedCCFRestore, options *ManagedCCFClientBeginRestoreOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ManagedCCFClient.BeginRestore"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.restoreCreateRequest(ctx, resourceGroupName, appName, managedCCF, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// restoreCreateRequest creates the restore request.
+func (client *ManagedCCFClient) restoreCreateRequest(ctx context.Context, resourceGroupName string, appName string, managedCCF ManagedCCFRestore, _ *ManagedCCFClientBeginRestoreOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConfidentialLedger/managedCCFs/{appName}/restore"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if appName == "" {
+		return nil, errors.New("parameter appName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{appName}", url.PathEscape(appName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250610Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, managedCCF); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginUpdate - Updates properties of Managed CCF
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - appName - Name of the Managed CCF
+//   - managedCCF - Request body for Updating Managed CCF App
+//   - options - ManagedCCFClientBeginUpdateOptions contains the optional parameters for the ManagedCCFClient.BeginUpdate method.
+func (client *ManagedCCFClient) BeginUpdate(ctx context.Context, resourceGroupName string, appName string, managedCCF ManagedCCF, options *ManagedCCFClientBeginUpdateOptions) (*runtime.Poller[ManagedCCFClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, appName, managedCCF, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagedCCFClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ManagedCCFClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Updates properties of Managed CCF
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ManagedCCFClient) update(ctx context.Context, resourceGroupName string, appName string, managedCCF ManagedCCF, options *ManagedCCFClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ManagedCCFClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, appName, managedCCF, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *ManagedCCFClient) updateCreateRequest(ctx context.Context, resourceGroupName string, appName string, managedCCF ManagedCCF, _ *ManagedCCFClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConfidentialLedger/managedCCFs/{appName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if appName == "" {
+		return nil, errors.New("parameter appName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{appName}", url.PathEscape(appName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250610Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, managedCCF); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -466,154 +616,4 @@ func (client *ManagedCCFClient) listBySubscriptionHandleResponse(resp *http.Resp
 		return ManagedCCFClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginRestore - Restores a Managed CCF Resource.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - appName - Name of the Managed CCF
-//   - managedCCF - Managed CCF Restore Request Body
-//   - options - ManagedCCFClientBeginRestoreOptions contains the optional parameters for the ManagedCCFClient.BeginRestore method.
-func (client *ManagedCCFClient) BeginRestore(ctx context.Context, resourceGroupName string, appName string, managedCCF ManagedCCFRestore, options *ManagedCCFClientBeginRestoreOptions) (*runtime.Poller[ManagedCCFClientRestoreResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.restore(ctx, resourceGroupName, appName, managedCCF, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagedCCFClientRestoreResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ManagedCCFClientRestoreResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Restore - Restores a Managed CCF Resource.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ManagedCCFClient) restore(ctx context.Context, resourceGroupName string, appName string, managedCCF ManagedCCFRestore, options *ManagedCCFClientBeginRestoreOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ManagedCCFClient.BeginRestore"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.restoreCreateRequest(ctx, resourceGroupName, appName, managedCCF, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// restoreCreateRequest creates the Restore request.
-func (client *ManagedCCFClient) restoreCreateRequest(ctx context.Context, resourceGroupName string, appName string, managedCCF ManagedCCFRestore, _ *ManagedCCFClientBeginRestoreOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConfidentialLedger/managedCCFs/{appName}/restore"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if appName == "" {
-		return nil, errors.New("parameter appName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{appName}", url.PathEscape(appName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250610Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, managedCCF); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginUpdate - Updates properties of Managed CCF
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - appName - Name of the Managed CCF
-//   - managedCCF - Request body for Updating Managed CCF App
-//   - options - ManagedCCFClientBeginUpdateOptions contains the optional parameters for the ManagedCCFClient.BeginUpdate method.
-func (client *ManagedCCFClient) BeginUpdate(ctx context.Context, resourceGroupName string, appName string, managedCCF ManagedCCF, options *ManagedCCFClientBeginUpdateOptions) (*runtime.Poller[ManagedCCFClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, appName, managedCCF, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagedCCFClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ManagedCCFClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Updates properties of Managed CCF
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ManagedCCFClient) update(ctx context.Context, resourceGroupName string, appName string, managedCCF ManagedCCF, options *ManagedCCFClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ManagedCCFClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, appName, managedCCF, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *ManagedCCFClient) updateCreateRequest(ctx context.Context, resourceGroupName string, appName string, managedCCF ManagedCCF, _ *ManagedCCFClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConfidentialLedger/managedCCFs/{appName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if appName == "" {
-		return nil, errors.New("parameter appName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{appName}", url.PathEscape(appName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250610Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, managedCCF); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

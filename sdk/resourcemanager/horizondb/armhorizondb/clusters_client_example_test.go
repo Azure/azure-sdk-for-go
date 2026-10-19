@@ -98,6 +98,140 @@ func ExampleClustersClient_BeginDelete() {
 	}
 }
 
+// Generated from example definition: 2026-05-01-preview/Clusters_Restart.json
+func ExampleClustersClient_BeginRestart() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armhorizondb.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewClustersClient().BeginRestart(ctx, "exampleresourcegroup", "examplecluster", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armhorizondb.ClustersClientRestartResponse{
+	// }
+}
+
+// Generated from example definition: 2026-05-01-preview/Clusters_Start.json
+func ExampleClustersClient_BeginStart() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armhorizondb.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewClustersClient().BeginStart(ctx, "exampleresourcegroup", "examplecluster", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armhorizondb.ClustersClientStartResponse{
+	// }
+}
+
+// Generated from example definition: 2026-05-01-preview/Clusters_Stop.json
+func ExampleClustersClient_BeginStop() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armhorizondb.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewClustersClient().BeginStop(ctx, "exampleresourcegroup", "examplecluster", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armhorizondb.ClustersClientStopResponse{
+	// }
+}
+
+// Generated from example definition: 2026-05-01-preview/Clusters_Update.json
+func ExampleClustersClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armhorizondb.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewClustersClient().BeginUpdate(ctx, "exampleresourcegroup", "examplecluster", armhorizondb.ClusterForPatchUpdate{
+		Tags: map[string]*string{
+			"team": to.Ptr("updated-data-platform"),
+		},
+		Properties: &armhorizondb.ClusterPropertiesForPatchUpdate{
+			VCores:                     to.Ptr[int32](8),
+			AdministratorLoginPassword: to.Ptr("examplenewpassword"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armhorizondb.ClustersClientUpdateResponse{
+	// 	Cluster: armhorizondb.Cluster{
+	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.HorizonDb/clusters/examplecluster"),
+	// 		Name: to.Ptr("examplecluster"),
+	// 		Type: to.Ptr("Microsoft.HorizonDb/clusters"),
+	// 		Location: to.Ptr("westus2"),
+	// 		Tags: map[string]*string{
+	// 			"env": to.Ptr("dev"),
+	// 			"team": to.Ptr("updated-data-platform"),
+	// 		},
+	// 		Properties: &armhorizondb.ClusterProperties{
+	// 			AdministratorLogin: to.Ptr("exampleadministratorlogin"),
+	// 			Version: to.Ptr("17"),
+	// 			CreateMode: to.Ptr(armhorizondb.CreateModeClusterUpdate),
+	// 			VCores: to.Ptr[int32](8),
+	// 			ReplicaCount: to.Ptr[int32](2),
+	// 			ZonePlacementPolicy: to.Ptr(armhorizondb.ZonePlacementPolicyBestEffort),
+	// 			State: to.Ptr(armhorizondb.StateSucceeded),
+	// 			FullyQualifiedDomainName: to.Ptr("examplecluster.ffffffffffff.westus2.horizondb.azure.com"),
+	// 			ReadonlyEndpoint: to.Ptr("examplecluster-ro.westus2.horizondb.azure.com"),
+	// 			ProvisioningState: to.Ptr(armhorizondb.ProvisioningStateSucceeded),
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2026-05-01-preview/Clusters_Get.json
 func ExampleClustersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -300,138 +434,4 @@ func ExampleClustersClient_NewListBySubscriptionPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-05-01-preview/Clusters_Restart.json
-func ExampleClustersClient_BeginRestart() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armhorizondb.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewClustersClient().BeginRestart(ctx, "exampleresourcegroup", "examplecluster", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armhorizondb.ClustersClientRestartResponse{
-	// }
-}
-
-// Generated from example definition: 2026-05-01-preview/Clusters_Start.json
-func ExampleClustersClient_BeginStart() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armhorizondb.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewClustersClient().BeginStart(ctx, "exampleresourcegroup", "examplecluster", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armhorizondb.ClustersClientStartResponse{
-	// }
-}
-
-// Generated from example definition: 2026-05-01-preview/Clusters_Stop.json
-func ExampleClustersClient_BeginStop() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armhorizondb.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewClustersClient().BeginStop(ctx, "exampleresourcegroup", "examplecluster", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armhorizondb.ClustersClientStopResponse{
-	// }
-}
-
-// Generated from example definition: 2026-05-01-preview/Clusters_Update.json
-func ExampleClustersClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armhorizondb.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewClustersClient().BeginUpdate(ctx, "exampleresourcegroup", "examplecluster", armhorizondb.ClusterForPatchUpdate{
-		Tags: map[string]*string{
-			"team": to.Ptr("updated-data-platform"),
-		},
-		Properties: &armhorizondb.ClusterPropertiesForPatchUpdate{
-			VCores:                     to.Ptr[int32](8),
-			AdministratorLoginPassword: to.Ptr("examplenewpassword"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armhorizondb.ClustersClientUpdateResponse{
-	// 	Cluster: armhorizondb.Cluster{
-	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.HorizonDb/clusters/examplecluster"),
-	// 		Name: to.Ptr("examplecluster"),
-	// 		Type: to.Ptr("Microsoft.HorizonDb/clusters"),
-	// 		Location: to.Ptr("westus2"),
-	// 		Tags: map[string]*string{
-	// 			"env": to.Ptr("dev"),
-	// 			"team": to.Ptr("updated-data-platform"),
-	// 		},
-	// 		Properties: &armhorizondb.ClusterProperties{
-	// 			AdministratorLogin: to.Ptr("exampleadministratorlogin"),
-	// 			Version: to.Ptr("17"),
-	// 			CreateMode: to.Ptr(armhorizondb.CreateModeClusterUpdate),
-	// 			VCores: to.Ptr[int32](8),
-	// 			ReplicaCount: to.Ptr[int32](2),
-	// 			ZonePlacementPolicy: to.Ptr(armhorizondb.ZonePlacementPolicyBestEffort),
-	// 			State: to.Ptr(armhorizondb.StateSucceeded),
-	// 			FullyQualifiedDomainName: to.Ptr("examplecluster.ffffffffffff.westus2.horizondb.azure.com"),
-	// 			ReadonlyEndpoint: to.Ptr("examplecluster-ro.westus2.horizondb.azure.com"),
-	// 			ProvisioningState: to.Ptr(armhorizondb.ProvisioningStateSucceeded),
-	// 		},
-	// 	},
-	// }
 }

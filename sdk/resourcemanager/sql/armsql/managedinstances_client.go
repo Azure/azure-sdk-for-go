@@ -69,7 +69,7 @@ func (client *ManagedInstancesClient) BeginCreateOrUpdate(ctx context.Context, r
 	}
 }
 
-// CreateOrUpdate - Creates or updates a managed instance.
+// createOrUpdate - Creates or updates a managed instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ManagedInstancesClient) createOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, parameters ManagedInstance, options *ManagedInstancesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *ManagedInstancesClient) createOrUpdate(ctx context.Context, resour
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ManagedInstancesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, parameters ManagedInstance, _ *ManagedInstancesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}"
 	if client.subscriptionID == "" {
@@ -144,7 +144,7 @@ func (client *ManagedInstancesClient) BeginDelete(ctx context.Context, resourceG
 	}
 }
 
-// Delete - Deletes a managed instance.
+// deleteOperation - Deletes a managed instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ManagedInstancesClient) deleteOperation(ctx context.Context, resourceGroupName string, managedInstanceName string, options *ManagedInstancesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -166,7 +166,7 @@ func (client *ManagedInstancesClient) deleteOperation(ctx context.Context, resou
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ManagedInstancesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, _ *ManagedInstancesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}"
 	if client.subscriptionID == "" {
@@ -214,7 +214,7 @@ func (client *ManagedInstancesClient) BeginFailover(ctx context.Context, resourc
 	}
 }
 
-// Failover - Failovers a managed instance.
+// failover - Failovers a managed instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ManagedInstancesClient) failover(ctx context.Context, resourceGroupName string, managedInstanceName string, options *ManagedInstancesClientBeginFailoverOptions) (*http.Response, error) {
 	var err error
@@ -236,7 +236,7 @@ func (client *ManagedInstancesClient) failover(ctx context.Context, resourceGrou
 	return httpResp, nil
 }
 
-// failoverCreateRequest creates the Failover request.
+// failoverCreateRequest creates the failover request.
 func (client *ManagedInstancesClient) failoverCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, options *ManagedInstancesClientBeginFailoverOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/failover"
 	if client.subscriptionID == "" {
@@ -261,6 +261,440 @@ func (client *ManagedInstancesClient) failoverCreateRequest(ctx context.Context,
 		reqQP.Set("replicaType", string(*options.ReplicaType))
 	}
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginReevaluateInaccessibleDatabaseState - Reevaluates the inaccessibility state of all managed databases.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - managedInstanceName - The name of the managed instance.
+//   - options - ManagedInstancesClientBeginReevaluateInaccessibleDatabaseStateOptions contains the optional parameters for the
+//     ManagedInstancesClient.BeginReevaluateInaccessibleDatabaseState method.
+func (client *ManagedInstancesClient) BeginReevaluateInaccessibleDatabaseState(ctx context.Context, resourceGroupName string, managedInstanceName string, options *ManagedInstancesClientBeginReevaluateInaccessibleDatabaseStateOptions) (*runtime.Poller[ManagedInstancesClientReevaluateInaccessibleDatabaseStateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.reevaluateInaccessibleDatabaseState(ctx, resourceGroupName, managedInstanceName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagedInstancesClientReevaluateInaccessibleDatabaseStateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ManagedInstancesClientReevaluateInaccessibleDatabaseStateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// reevaluateInaccessibleDatabaseState - Reevaluates the inaccessibility state of all managed databases.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ManagedInstancesClient) reevaluateInaccessibleDatabaseState(ctx context.Context, resourceGroupName string, managedInstanceName string, options *ManagedInstancesClientBeginReevaluateInaccessibleDatabaseStateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ManagedInstancesClient.BeginReevaluateInaccessibleDatabaseState"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.reevaluateInaccessibleDatabaseStateCreateRequest(ctx, resourceGroupName, managedInstanceName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// reevaluateInaccessibleDatabaseStateCreateRequest creates the reevaluateInaccessibleDatabaseState request.
+func (client *ManagedInstancesClient) reevaluateInaccessibleDatabaseStateCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, _ *ManagedInstancesClientBeginReevaluateInaccessibleDatabaseStateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/reevaluateInaccessibleDatabaseState"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if managedInstanceName == "" {
+		return nil, errors.New("parameter managedInstanceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{managedInstanceName}", url.PathEscape(managedInstanceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260801Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginRefreshStatus - Refresh external governance enablement status.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - managedInstanceName - The name of the managed instance.
+//   - options - ManagedInstancesClientBeginRefreshStatusOptions contains the optional parameters for the ManagedInstancesClient.BeginRefreshStatus
+//     method.
+func (client *ManagedInstancesClient) BeginRefreshStatus(ctx context.Context, resourceGroupName string, managedInstanceName string, options *ManagedInstancesClientBeginRefreshStatusOptions) (*runtime.Poller[ManagedInstancesClientRefreshStatusResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.refreshStatus(ctx, resourceGroupName, managedInstanceName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagedInstancesClientRefreshStatusResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ManagedInstancesClientRefreshStatusResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// refreshStatus - Refresh external governance enablement status.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ManagedInstancesClient) refreshStatus(ctx context.Context, resourceGroupName string, managedInstanceName string, options *ManagedInstancesClientBeginRefreshStatusOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ManagedInstancesClient.BeginRefreshStatus"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.refreshStatusCreateRequest(ctx, resourceGroupName, managedInstanceName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// refreshStatusCreateRequest creates the refreshStatus request.
+func (client *ManagedInstancesClient) refreshStatusCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, _ *ManagedInstancesClientBeginRefreshStatusOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/refreshExternalGovernanceStatus"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if managedInstanceName == "" {
+		return nil, errors.New("parameter managedInstanceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{managedInstanceName}", url.PathEscape(managedInstanceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260801Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// BeginStart - Starts the managed instance.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - managedInstanceName - The name of the managed instance.
+//   - options - ManagedInstancesClientBeginStartOptions contains the optional parameters for the ManagedInstancesClient.BeginStart
+//     method.
+func (client *ManagedInstancesClient) BeginStart(ctx context.Context, resourceGroupName string, managedInstanceName string, options *ManagedInstancesClientBeginStartOptions) (*runtime.Poller[ManagedInstancesClientStartResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.start(ctx, resourceGroupName, managedInstanceName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagedInstancesClientStartResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ManagedInstancesClientStartResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// start - Starts the managed instance.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ManagedInstancesClient) start(ctx context.Context, resourceGroupName string, managedInstanceName string, options *ManagedInstancesClientBeginStartOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ManagedInstancesClient.BeginStart"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.startCreateRequest(ctx, resourceGroupName, managedInstanceName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// startCreateRequest creates the start request.
+func (client *ManagedInstancesClient) startCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, _ *ManagedInstancesClientBeginStartOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/start"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if managedInstanceName == "" {
+		return nil, errors.New("parameter managedInstanceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{managedInstanceName}", url.PathEscape(managedInstanceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260801Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// BeginStop - Stops the managed instance.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - managedInstanceName - The name of the managed instance.
+//   - options - ManagedInstancesClientBeginStopOptions contains the optional parameters for the ManagedInstancesClient.BeginStop
+//     method.
+func (client *ManagedInstancesClient) BeginStop(ctx context.Context, resourceGroupName string, managedInstanceName string, options *ManagedInstancesClientBeginStopOptions) (*runtime.Poller[ManagedInstancesClientStopResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.stop(ctx, resourceGroupName, managedInstanceName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagedInstancesClientStopResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ManagedInstancesClientStopResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// stop - Stops the managed instance.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ManagedInstancesClient) stop(ctx context.Context, resourceGroupName string, managedInstanceName string, options *ManagedInstancesClientBeginStopOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ManagedInstancesClient.BeginStop"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.stopCreateRequest(ctx, resourceGroupName, managedInstanceName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// stopCreateRequest creates the stop request.
+func (client *ManagedInstancesClient) stopCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, _ *ManagedInstancesClientBeginStopOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/stop"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if managedInstanceName == "" {
+		return nil, errors.New("parameter managedInstanceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{managedInstanceName}", url.PathEscape(managedInstanceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260801Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// BeginUpdate - Updates a managed instance.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - managedInstanceName - The name of the managed instance.
+//   - parameters - The requested managed instance resource state.
+//   - options - ManagedInstancesClientBeginUpdateOptions contains the optional parameters for the ManagedInstancesClient.BeginUpdate
+//     method.
+func (client *ManagedInstancesClient) BeginUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, parameters ManagedInstanceUpdate, options *ManagedInstancesClientBeginUpdateOptions) (*runtime.Poller[ManagedInstancesClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, managedInstanceName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagedInstancesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ManagedInstancesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Updates a managed instance.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ManagedInstancesClient) update(ctx context.Context, resourceGroupName string, managedInstanceName string, parameters ManagedInstanceUpdate, options *ManagedInstancesClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ManagedInstancesClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, managedInstanceName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *ManagedInstancesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, parameters ManagedInstanceUpdate, _ *ManagedInstancesClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if managedInstanceName == "" {
+		return nil, errors.New("parameter managedInstanceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{managedInstanceName}", url.PathEscape(managedInstanceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260801Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginValidateAzureKeyVaultEncryptionKey - Validates customer managed key.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - managedInstanceName - The name of the managed instance.
+//   - parameters - The validate azure key vault encryption key parameters.
+//   - options - ManagedInstancesClientBeginValidateAzureKeyVaultEncryptionKeyOptions contains the optional parameters for the
+//     ManagedInstancesClient.BeginValidateAzureKeyVaultEncryptionKey method.
+func (client *ManagedInstancesClient) BeginValidateAzureKeyVaultEncryptionKey(ctx context.Context, resourceGroupName string, managedInstanceName string, parameters ManagedInstanceValidateAzureKeyVaultEncryptionKeyRequest, options *ManagedInstancesClientBeginValidateAzureKeyVaultEncryptionKeyOptions) (*runtime.Poller[ManagedInstancesClientValidateAzureKeyVaultEncryptionKeyResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.validateAzureKeyVaultEncryptionKey(ctx, resourceGroupName, managedInstanceName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagedInstancesClientValidateAzureKeyVaultEncryptionKeyResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ManagedInstancesClientValidateAzureKeyVaultEncryptionKeyResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// validateAzureKeyVaultEncryptionKey - Validates customer managed key.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ManagedInstancesClient) validateAzureKeyVaultEncryptionKey(ctx context.Context, resourceGroupName string, managedInstanceName string, parameters ManagedInstanceValidateAzureKeyVaultEncryptionKeyRequest, options *ManagedInstancesClientBeginValidateAzureKeyVaultEncryptionKeyOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ManagedInstancesClient.BeginValidateAzureKeyVaultEncryptionKey"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.validateAzureKeyVaultEncryptionKeyCreateRequest(ctx, resourceGroupName, managedInstanceName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// validateAzureKeyVaultEncryptionKeyCreateRequest creates the validateAzureKeyVaultEncryptionKey request.
+func (client *ManagedInstancesClient) validateAzureKeyVaultEncryptionKeyCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, parameters ManagedInstanceValidateAzureKeyVaultEncryptionKeyRequest, _ *ManagedInstancesClientBeginValidateAzureKeyVaultEncryptionKeyOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/validateAzureKeyVaultEncryptionKey"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if managedInstanceName == "" {
+		return nil, errors.New("parameter managedInstanceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{managedInstanceName}", url.PathEscape(managedInstanceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260801Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -323,76 +757,6 @@ func (client *ManagedInstancesClient) getHandleResponse(resp *http.Response, suc
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedInstance); err != nil {
 		return ManagedInstancesClientGetResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListPager - Gets a list of all managed instances in the subscription.
-//   - options - ManagedInstancesClientListOptions contains the optional parameters for the ManagedInstancesClient.NewListPager
-//     method.
-func (client *ManagedInstancesClient) NewListPager(options *ManagedInstancesClientListOptions) *runtime.Pager[ManagedInstancesClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ManagedInstancesClientListResponse]{
-		More: func(page ManagedInstancesClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *ManagedInstancesClientListResponse) (ManagedInstancesClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ManagedInstancesClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listCreateRequest(ctx, nextLink, options)
-			if err != nil {
-				return ManagedInstancesClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ManagedInstancesClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *ManagedInstancesClient) listCreateRequest(ctx context.Context, nextLink string, options *ManagedInstancesClientListOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/managedInstances"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		if options != nil && options.Expand != nil {
-			reqQP.Set("$expand", *options.Expand)
-		}
-		reqQP.Set("api-version", version20260801Preview)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *ManagedInstancesClient) listHandleResponse(resp *http.Response, successCodes ...int) (ManagedInstancesClientListResponse, error) {
-	result := ManagedInstancesClientListResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedInstanceListResult); err != nil {
-		return ManagedInstancesClientListResponse{}, err
 	}
 	return result, nil
 }
@@ -728,436 +1092,72 @@ func (client *ManagedInstancesClient) listOutboundNetworkDependenciesByManagedIn
 	return result, nil
 }
 
-// BeginReevaluateInaccessibleDatabaseState - Reevaluates the inaccessibility state of all managed databases.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - managedInstanceName - The name of the managed instance.
-//   - options - ManagedInstancesClientBeginReevaluateInaccessibleDatabaseStateOptions contains the optional parameters for the
-//     ManagedInstancesClient.BeginReevaluateInaccessibleDatabaseState method.
-func (client *ManagedInstancesClient) BeginReevaluateInaccessibleDatabaseState(ctx context.Context, resourceGroupName string, managedInstanceName string, options *ManagedInstancesClientBeginReevaluateInaccessibleDatabaseStateOptions) (*runtime.Poller[ManagedInstancesClientReevaluateInaccessibleDatabaseStateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.reevaluateInaccessibleDatabaseState(ctx, resourceGroupName, managedInstanceName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagedInstancesClientReevaluateInaccessibleDatabaseStateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ManagedInstancesClientReevaluateInaccessibleDatabaseStateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// ReevaluateInaccessibleDatabaseState - Reevaluates the inaccessibility state of all managed databases.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ManagedInstancesClient) reevaluateInaccessibleDatabaseState(ctx context.Context, resourceGroupName string, managedInstanceName string, options *ManagedInstancesClientBeginReevaluateInaccessibleDatabaseStateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ManagedInstancesClient.BeginReevaluateInaccessibleDatabaseState"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.reevaluateInaccessibleDatabaseStateCreateRequest(ctx, resourceGroupName, managedInstanceName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// reevaluateInaccessibleDatabaseStateCreateRequest creates the ReevaluateInaccessibleDatabaseState request.
-func (client *ManagedInstancesClient) reevaluateInaccessibleDatabaseStateCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, _ *ManagedInstancesClientBeginReevaluateInaccessibleDatabaseStateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/reevaluateInaccessibleDatabaseState"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if managedInstanceName == "" {
-		return nil, errors.New("parameter managedInstanceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{managedInstanceName}", url.PathEscape(managedInstanceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
-}
-
-// BeginRefreshStatus - Refresh external governance enablement status.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - managedInstanceName - The name of the managed instance.
-//   - options - ManagedInstancesClientBeginRefreshStatusOptions contains the optional parameters for the ManagedInstancesClient.BeginRefreshStatus
+// NewListPager - Gets a list of all managed instances in the subscription.
+//   - options - ManagedInstancesClientListOptions contains the optional parameters for the ManagedInstancesClient.NewListPager
 //     method.
-func (client *ManagedInstancesClient) BeginRefreshStatus(ctx context.Context, resourceGroupName string, managedInstanceName string, options *ManagedInstancesClientBeginRefreshStatusOptions) (*runtime.Poller[ManagedInstancesClientRefreshStatusResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.refreshStatus(ctx, resourceGroupName, managedInstanceName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagedInstancesClientRefreshStatusResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ManagedInstancesClientRefreshStatusResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
+func (client *ManagedInstancesClient) NewListPager(options *ManagedInstancesClientListOptions) *runtime.Pager[ManagedInstancesClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ManagedInstancesClientListResponse]{
+		More: func(page ManagedInstancesClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *ManagedInstancesClientListResponse) (ManagedInstancesClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ManagedInstancesClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return ManagedInstancesClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ManagedInstancesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
 }
 
-// RefreshStatus - Refresh external governance enablement status.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ManagedInstancesClient) refreshStatus(ctx context.Context, resourceGroupName string, managedInstanceName string, options *ManagedInstancesClientBeginRefreshStatusOptions) (*http.Response, error) {
+// listCreateRequest creates the List request.
+func (client *ManagedInstancesClient) listCreateRequest(ctx context.Context, nextLink string, options *ManagedInstancesClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
 	var err error
-	const operationName = "ManagedInstancesClient.BeginRefreshStatus"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.refreshStatusCreateRequest(ctx, resourceGroupName, managedInstanceName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// refreshStatusCreateRequest creates the RefreshStatus request.
-func (client *ManagedInstancesClient) refreshStatusCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, _ *ManagedInstancesClientBeginRefreshStatusOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/refreshExternalGovernanceStatus"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if managedInstanceName == "" {
-		return nil, errors.New("parameter managedInstanceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{managedInstanceName}", url.PathEscape(managedInstanceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// BeginStart - Starts the managed instance.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - managedInstanceName - The name of the managed instance.
-//   - options - ManagedInstancesClientBeginStartOptions contains the optional parameters for the ManagedInstancesClient.BeginStart
-//     method.
-func (client *ManagedInstancesClient) BeginStart(ctx context.Context, resourceGroupName string, managedInstanceName string, options *ManagedInstancesClientBeginStartOptions) (*runtime.Poller[ManagedInstancesClientStartResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.start(ctx, resourceGroupName, managedInstanceName, options)
-		if err != nil {
-			return nil, err
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/managedInstances"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagedInstancesClientStartResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ManagedInstancesClientStartResponse]{
-			Tracer: client.internal.Tracer(),
-		})
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-}
-
-// Start - Starts the managed instance.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ManagedInstancesClient) start(ctx context.Context, resourceGroupName string, managedInstanceName string, options *ManagedInstancesClientBeginStartOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ManagedInstancesClient.BeginStart"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.startCreateRequest(ctx, resourceGroupName, managedInstanceName, options)
 	if err != nil {
 		return nil, err
 	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// startCreateRequest creates the Start request.
-func (client *ManagedInstancesClient) startCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, _ *ManagedInstancesClientBeginStartOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/start"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if managedInstanceName == "" {
-		return nil, errors.New("parameter managedInstanceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{managedInstanceName}", url.PathEscape(managedInstanceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// BeginStop - Stops the managed instance.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - managedInstanceName - The name of the managed instance.
-//   - options - ManagedInstancesClientBeginStopOptions contains the optional parameters for the ManagedInstancesClient.BeginStop
-//     method.
-func (client *ManagedInstancesClient) BeginStop(ctx context.Context, resourceGroupName string, managedInstanceName string, options *ManagedInstancesClientBeginStopOptions) (*runtime.Poller[ManagedInstancesClientStopResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.stop(ctx, resourceGroupName, managedInstanceName, options)
-		if err != nil {
-			return nil, err
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Expand != nil {
+			reqQP.Set("$expand", *options.Expand)
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagedInstancesClientStopResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ManagedInstancesClientStopResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Stop - Stops the managed instance.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ManagedInstancesClient) stop(ctx context.Context, resourceGroupName string, managedInstanceName string, options *ManagedInstancesClientBeginStopOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ManagedInstancesClient.BeginStop"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.stopCreateRequest(ctx, resourceGroupName, managedInstanceName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// stopCreateRequest creates the Stop request.
-func (client *ManagedInstancesClient) stopCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, _ *ManagedInstancesClientBeginStopOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/stop"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if managedInstanceName == "" {
-		return nil, errors.New("parameter managedInstanceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{managedInstanceName}", url.PathEscape(managedInstanceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// BeginUpdate - Updates a managed instance.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - managedInstanceName - The name of the managed instance.
-//   - parameters - The requested managed instance resource state.
-//   - options - ManagedInstancesClientBeginUpdateOptions contains the optional parameters for the ManagedInstancesClient.BeginUpdate
-//     method.
-func (client *ManagedInstancesClient) BeginUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, parameters ManagedInstanceUpdate, options *ManagedInstancesClientBeginUpdateOptions) (*runtime.Poller[ManagedInstancesClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, managedInstanceName, parameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagedInstancesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ManagedInstancesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Updates a managed instance.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ManagedInstancesClient) update(ctx context.Context, resourceGroupName string, managedInstanceName string, parameters ManagedInstanceUpdate, options *ManagedInstancesClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ManagedInstancesClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, managedInstanceName, parameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *ManagedInstancesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, parameters ManagedInstanceUpdate, _ *ManagedInstancesClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if managedInstanceName == "" {
-		return nil, errors.New("parameter managedInstanceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{managedInstanceName}", url.PathEscape(managedInstanceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
+		reqQP.Set("api-version", version20260801Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
 	return req, nil
 }
 
-// BeginValidateAzureKeyVaultEncryptionKey - Validates customer managed key.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - managedInstanceName - The name of the managed instance.
-//   - parameters - The validate azure key vault encryption key parameters.
-//   - options - ManagedInstancesClientBeginValidateAzureKeyVaultEncryptionKeyOptions contains the optional parameters for the
-//     ManagedInstancesClient.BeginValidateAzureKeyVaultEncryptionKey method.
-func (client *ManagedInstancesClient) BeginValidateAzureKeyVaultEncryptionKey(ctx context.Context, resourceGroupName string, managedInstanceName string, parameters ManagedInstanceValidateAzureKeyVaultEncryptionKeyRequest, options *ManagedInstancesClientBeginValidateAzureKeyVaultEncryptionKeyOptions) (*runtime.Poller[ManagedInstancesClientValidateAzureKeyVaultEncryptionKeyResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.validateAzureKeyVaultEncryptionKey(ctx, resourceGroupName, managedInstanceName, parameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagedInstancesClientValidateAzureKeyVaultEncryptionKeyResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ManagedInstancesClientValidateAzureKeyVaultEncryptionKeyResponse]{
-			Tracer: client.internal.Tracer(),
-		})
+// listHandleResponse handles the List response.
+func (client *ManagedInstancesClient) listHandleResponse(resp *http.Response, successCodes ...int) (ManagedInstancesClientListResponse, error) {
+	result := ManagedInstancesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
 	}
-}
-
-// ValidateAzureKeyVaultEncryptionKey - Validates customer managed key.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ManagedInstancesClient) validateAzureKeyVaultEncryptionKey(ctx context.Context, resourceGroupName string, managedInstanceName string, parameters ManagedInstanceValidateAzureKeyVaultEncryptionKeyRequest, options *ManagedInstancesClientBeginValidateAzureKeyVaultEncryptionKeyOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ManagedInstancesClient.BeginValidateAzureKeyVaultEncryptionKey"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.validateAzureKeyVaultEncryptionKeyCreateRequest(ctx, resourceGroupName, managedInstanceName, parameters, options)
-	if err != nil {
-		return nil, err
+	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedInstanceListResult); err != nil {
+		return ManagedInstancesClientListResponse{}, err
 	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// validateAzureKeyVaultEncryptionKeyCreateRequest creates the ValidateAzureKeyVaultEncryptionKey request.
-func (client *ManagedInstancesClient) validateAzureKeyVaultEncryptionKeyCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, parameters ManagedInstanceValidateAzureKeyVaultEncryptionKeyRequest, _ *ManagedInstancesClientBeginValidateAzureKeyVaultEncryptionKeyOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/validateAzureKeyVaultEncryptionKey"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if managedInstanceName == "" {
-		return nil, errors.New("parameter managedInstanceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{managedInstanceName}", url.PathEscape(managedInstanceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
-	return req, nil
+	return result, nil
 }

@@ -273,6 +273,27 @@ func ExampleScenarioConfigurationsClient_BeginFixResourcePermissions() {
 	}
 }
 
+// Generated from example definition: 2026-08-01-preview/ScenarioConfigurations_Validate.json
+func ExampleScenarioConfigurationsClient_BeginValidate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armchaos.NewClientFactory("6b052e15-03d3-4f17-b2e1-be7f07588291", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewScenarioConfigurationsClient().BeginValidate(ctx, "exampleRG", "exampleWorkspace", "12345678-1234-1234-1234-123456789012", "config-5678-9012-3456-789012345678", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
 // Generated from example definition: 2026-08-01-preview/ScenarioConfigurations_Get.json
 func ExampleScenarioConfigurationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -441,26 +462,5 @@ func ExampleScenarioConfigurationsClient_NewListAllPager() {
 		// 		},
 		// 	},
 		// }
-	}
-}
-
-// Generated from example definition: 2026-08-01-preview/ScenarioConfigurations_Validate.json
-func ExampleScenarioConfigurationsClient_BeginValidate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armchaos.NewClientFactory("6b052e15-03d3-4f17-b2e1-be7f07588291", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewScenarioConfigurationsClient().BeginValidate(ctx, "exampleRG", "exampleWorkspace", "12345678-1234-1234-1234-123456789012", "config-5678-9012-3456-789012345678", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
 	}
 }

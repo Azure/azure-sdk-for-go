@@ -94,6 +94,63 @@ func ExampleSolutionsClient_BeginDelete() {
 	}
 }
 
+// Generated from example definition: 2025-06-01/Solutions_Update_MaximumSet_Gen.json
+func ExampleSolutionsClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armworkloadorchestration.NewClientFactory("9D54FE4C-00AF-4836-8F48-B6A9C4E47192", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewSolutionsClient().BeginUpdate(ctx, "rgconfigurationmanager", "testname", "testname", armworkloadorchestration.SolutionUpdate{
+		Properties: &armworkloadorchestration.SolutionUpdateProperties{},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armworkloadorchestration.SolutionsClientUpdateResponse{
+	// 	Solution: armworkloadorchestration.Solution{
+	// 		Properties: &armworkloadorchestration.SolutionProperties{
+	// 			SolutionTemplateID: to.Ptr("fnfqvxxdfofpr"),
+	// 			AvailableSolutionTemplateVersions: []*armworkloadorchestration.AvailableSolutionTemplateVersion{
+	// 				{
+	// 					SolutionTemplateVersion: to.Ptr("uwlikibcqbawiphxhzmyxshr"),
+	// 					LatestConfigRevision: to.Ptr("gbvzfexxtqfhumfdnfokv"),
+	// 					IsConfigured: to.Ptr(true),
+	// 				},
+	// 			},
+	// 			ProvisioningState: to.Ptr(armworkloadorchestration.ProvisioningStateSucceeded),
+	// 		},
+	// 		ExtendedLocation: &armworkloadorchestration.ExtendedLocation{
+	// 			Name: to.Ptr("szjrwimeqyiue"),
+	// 			Type: to.Ptr(armworkloadorchestration.ExtendedLocationTypeEdgeZone),
+	// 		},
+	// 		ETag: to.Ptr("zhbbdeijrezsuqxubqbtvllponba"),
+	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"),
+	// 		Name: to.Ptr("ysvzlramfranmepecvpmpthbhxh"),
+	// 		Type: to.Ptr("t"),
+	// 		SystemData: &armworkloadorchestration.SystemData{
+	// 			CreatedBy: to.Ptr("nvjczgdguyvllp"),
+	// 			CreatedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.June, 9, 10, 11, 50, 747000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("uzbznzjgvaspvtqhyg"),
+	// 			LastModifiedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.June, 9, 10, 11, 50, 747000000, time.UTC)),
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2025-06-01/Solutions_Get_MaximumSet_Gen.json
 func ExampleSolutionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -204,61 +261,4 @@ func ExampleSolutionsClient_NewListByTargetPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2025-06-01/Solutions_Update_MaximumSet_Gen.json
-func ExampleSolutionsClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armworkloadorchestration.NewClientFactory("9D54FE4C-00AF-4836-8F48-B6A9C4E47192", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewSolutionsClient().BeginUpdate(ctx, "rgconfigurationmanager", "testname", "testname", armworkloadorchestration.SolutionUpdate{
-		Properties: &armworkloadorchestration.SolutionUpdateProperties{},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armworkloadorchestration.SolutionsClientUpdateResponse{
-	// 	Solution: armworkloadorchestration.Solution{
-	// 		Properties: &armworkloadorchestration.SolutionProperties{
-	// 			SolutionTemplateID: to.Ptr("fnfqvxxdfofpr"),
-	// 			AvailableSolutionTemplateVersions: []*armworkloadorchestration.AvailableSolutionTemplateVersion{
-	// 				{
-	// 					SolutionTemplateVersion: to.Ptr("uwlikibcqbawiphxhzmyxshr"),
-	// 					LatestConfigRevision: to.Ptr("gbvzfexxtqfhumfdnfokv"),
-	// 					IsConfigured: to.Ptr(true),
-	// 				},
-	// 			},
-	// 			ProvisioningState: to.Ptr(armworkloadorchestration.ProvisioningStateSucceeded),
-	// 		},
-	// 		ExtendedLocation: &armworkloadorchestration.ExtendedLocation{
-	// 			Name: to.Ptr("szjrwimeqyiue"),
-	// 			Type: to.Ptr(armworkloadorchestration.ExtendedLocationTypeEdgeZone),
-	// 		},
-	// 		ETag: to.Ptr("zhbbdeijrezsuqxubqbtvllponba"),
-	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"),
-	// 		Name: to.Ptr("ysvzlramfranmepecvpmpthbhxh"),
-	// 		Type: to.Ptr("t"),
-	// 		SystemData: &armworkloadorchestration.SystemData{
-	// 			CreatedBy: to.Ptr("nvjczgdguyvllp"),
-	// 			CreatedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2025, time.June, 9, 10, 11, 50, 747000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("uzbznzjgvaspvtqhyg"),
-	// 			LastModifiedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.June, 9, 10, 11, 50, 747000000, time.UTC)),
-	// 		},
-	// 	},
-	// }
 }

@@ -71,7 +71,7 @@ func (client *ConnectedEnvironmentsDaprComponentsClient) BeginCreateOrUpdate(ctx
 	}
 }
 
-// CreateOrUpdate - Creates or updates a Dapr Component.
+// createOrUpdate - Creates or updates a Dapr Component.
 //
 // Creates or updates a Dapr Component in a connected environment.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -95,7 +95,7 @@ func (client *ConnectedEnvironmentsDaprComponentsClient) createOrUpdate(ctx cont
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ConnectedEnvironmentsDaprComponentsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, connectedEnvironmentName string, componentName string, daprComponentEnvelope DaprComponent, _ *ConnectedEnvironmentsDaprComponentsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/daprComponents/{componentName}"
 	if client.subscriptionID == "" {
@@ -155,7 +155,7 @@ func (client *ConnectedEnvironmentsDaprComponentsClient) BeginDelete(ctx context
 	}
 }
 
-// Delete - Delete a Dapr Component.
+// deleteOperation - Delete a Dapr Component.
 //
 // Delete a Dapr Component from a connected environment.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -179,7 +179,7 @@ func (client *ConnectedEnvironmentsDaprComponentsClient) deleteOperation(ctx con
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ConnectedEnvironmentsDaprComponentsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, connectedEnvironmentName string, componentName string, _ *ConnectedEnvironmentsDaprComponentsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/daprComponents/{componentName}"
 	if client.subscriptionID == "" {
@@ -276,6 +276,74 @@ func (client *ConnectedEnvironmentsDaprComponentsClient) getHandleResponse(resp 
 	return result, nil
 }
 
+// ListSecrets - List secrets for a dapr component
+//
+// List secrets for a dapr component
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - connectedEnvironmentName - Name of the connected environment.
+//   - componentName - Name of the Dapr Component.
+//   - options - ConnectedEnvironmentsDaprComponentsClientListSecretsOptions contains the optional parameters for the ConnectedEnvironmentsDaprComponentsClient.ListSecrets
+//     method.
+func (client *ConnectedEnvironmentsDaprComponentsClient) ListSecrets(ctx context.Context, resourceGroupName string, connectedEnvironmentName string, componentName string, options *ConnectedEnvironmentsDaprComponentsClientListSecretsOptions) (ConnectedEnvironmentsDaprComponentsClientListSecretsResponse, error) {
+	var err error
+	const operationName = "ConnectedEnvironmentsDaprComponentsClient.ListSecrets"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listSecretsCreateRequest(ctx, resourceGroupName, connectedEnvironmentName, componentName, options)
+	if err != nil {
+		return ConnectedEnvironmentsDaprComponentsClientListSecretsResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ConnectedEnvironmentsDaprComponentsClientListSecretsResponse{}, err
+	}
+	return client.listSecretsHandleResponse(httpResp, http.StatusOK)
+}
+
+// listSecretsCreateRequest creates the ListSecrets request.
+func (client *ConnectedEnvironmentsDaprComponentsClient) listSecretsCreateRequest(ctx context.Context, resourceGroupName string, connectedEnvironmentName string, componentName string, _ *ConnectedEnvironmentsDaprComponentsClientListSecretsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/daprComponents/{componentName}/listSecrets"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if connectedEnvironmentName == "" {
+		return nil, errors.New("parameter connectedEnvironmentName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{connectedEnvironmentName}", url.PathEscape(connectedEnvironmentName))
+	if componentName == "" {
+		return nil, errors.New("parameter componentName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{componentName}", url.PathEscape(componentName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listSecretsHandleResponse handles the ListSecrets response.
+func (client *ConnectedEnvironmentsDaprComponentsClient) listSecretsHandleResponse(resp *http.Response, successCodes ...int) (ConnectedEnvironmentsDaprComponentsClientListSecretsResponse, error) {
+	result := ConnectedEnvironmentsDaprComponentsClientListSecretsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DaprSecretsCollection); err != nil {
+		return ConnectedEnvironmentsDaprComponentsClientListSecretsResponse{}, err
+	}
+	return result, nil
+}
+
 // NewListPager - Get the Dapr Components for a connected environment.
 //
 // Get the Dapr Components for a connected environment.
@@ -351,74 +419,6 @@ func (client *ConnectedEnvironmentsDaprComponentsClient) listHandleResponse(resp
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DaprComponentsCollection); err != nil {
 		return ConnectedEnvironmentsDaprComponentsClientListResponse{}, err
-	}
-	return result, nil
-}
-
-// ListSecrets - List secrets for a dapr component
-//
-// List secrets for a dapr component
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - connectedEnvironmentName - Name of the connected environment.
-//   - componentName - Name of the Dapr Component.
-//   - options - ConnectedEnvironmentsDaprComponentsClientListSecretsOptions contains the optional parameters for the ConnectedEnvironmentsDaprComponentsClient.ListSecrets
-//     method.
-func (client *ConnectedEnvironmentsDaprComponentsClient) ListSecrets(ctx context.Context, resourceGroupName string, connectedEnvironmentName string, componentName string, options *ConnectedEnvironmentsDaprComponentsClientListSecretsOptions) (ConnectedEnvironmentsDaprComponentsClientListSecretsResponse, error) {
-	var err error
-	const operationName = "ConnectedEnvironmentsDaprComponentsClient.ListSecrets"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listSecretsCreateRequest(ctx, resourceGroupName, connectedEnvironmentName, componentName, options)
-	if err != nil {
-		return ConnectedEnvironmentsDaprComponentsClientListSecretsResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return ConnectedEnvironmentsDaprComponentsClientListSecretsResponse{}, err
-	}
-	return client.listSecretsHandleResponse(httpResp, http.StatusOK)
-}
-
-// listSecretsCreateRequest creates the ListSecrets request.
-func (client *ConnectedEnvironmentsDaprComponentsClient) listSecretsCreateRequest(ctx context.Context, resourceGroupName string, connectedEnvironmentName string, componentName string, _ *ConnectedEnvironmentsDaprComponentsClientListSecretsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/daprComponents/{componentName}/listSecrets"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if connectedEnvironmentName == "" {
-		return nil, errors.New("parameter connectedEnvironmentName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{connectedEnvironmentName}", url.PathEscape(connectedEnvironmentName))
-	if componentName == "" {
-		return nil, errors.New("parameter componentName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{componentName}", url.PathEscape(componentName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listSecretsHandleResponse handles the ListSecrets response.
-func (client *ConnectedEnvironmentsDaprComponentsClient) listSecretsHandleResponse(resp *http.Response, successCodes ...int) (ConnectedEnvironmentsDaprComponentsClientListSecretsResponse, error) {
-	result := ConnectedEnvironmentsDaprComponentsClientListSecretsResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.DaprSecretsCollection); err != nil {
-		return ConnectedEnvironmentsDaprComponentsClientListSecretsResponse{}, err
 	}
 	return result, nil
 }

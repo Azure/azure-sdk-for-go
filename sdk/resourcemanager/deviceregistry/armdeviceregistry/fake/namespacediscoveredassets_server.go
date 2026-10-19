@@ -29,6 +29,10 @@ type NamespaceDiscoveredAssetsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, namespaceName string, discoveredAssetName string, options *armdeviceregistry.NamespaceDiscoveredAssetsClientBeginDeleteOptions) (resp azfake.PollerResponder[armdeviceregistry.NamespaceDiscoveredAssetsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method NamespaceDiscoveredAssetsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, namespaceName string, discoveredAssetName string, properties armdeviceregistry.NamespaceDiscoveredAssetUpdate, options *armdeviceregistry.NamespaceDiscoveredAssetsClientBeginUpdateOptions) (resp azfake.PollerResponder[armdeviceregistry.NamespaceDiscoveredAssetsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method NamespaceDiscoveredAssetsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, namespaceName string, discoveredAssetName string, options *armdeviceregistry.NamespaceDiscoveredAssetsClientGetOptions) (resp azfake.Responder[armdeviceregistry.NamespaceDiscoveredAssetsClientGetResponse], errResp azfake.ErrorResponder)
@@ -36,10 +40,6 @@ type NamespaceDiscoveredAssetsServer struct {
 	// NewListByResourceGroupPager is the fake for method NamespaceDiscoveredAssetsClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, namespaceName string, options *armdeviceregistry.NamespaceDiscoveredAssetsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armdeviceregistry.NamespaceDiscoveredAssetsClientListByResourceGroupResponse])
-
-	// BeginUpdate is the fake for method NamespaceDiscoveredAssetsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, namespaceName string, discoveredAssetName string, properties armdeviceregistry.NamespaceDiscoveredAssetUpdate, options *armdeviceregistry.NamespaceDiscoveredAssetsClientBeginUpdateOptions) (resp azfake.PollerResponder[armdeviceregistry.NamespaceDiscoveredAssetsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewNamespaceDiscoveredAssetsServerTransport creates a new instance of NamespaceDiscoveredAssetsServerTransport with the provided implementation.
@@ -50,8 +50,8 @@ func NewNamespaceDiscoveredAssetsServerTransport(srv *NamespaceDiscoveredAssetsS
 		srv:                         srv,
 		beginCreateOrReplace:        newTracker[azfake.PollerResponder[armdeviceregistry.NamespaceDiscoveredAssetsClientCreateOrReplaceResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armdeviceregistry.NamespaceDiscoveredAssetsClientDeleteResponse]](),
-		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armdeviceregistry.NamespaceDiscoveredAssetsClientListByResourceGroupResponse]](),
 		beginUpdate:                 newTracker[azfake.PollerResponder[armdeviceregistry.NamespaceDiscoveredAssetsClientUpdateResponse]](),
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armdeviceregistry.NamespaceDiscoveredAssetsClientListByResourceGroupResponse]](),
 	}
 }
 
@@ -61,8 +61,8 @@ type NamespaceDiscoveredAssetsServerTransport struct {
 	srv                         *NamespaceDiscoveredAssetsServer
 	beginCreateOrReplace        *tracker[azfake.PollerResponder[armdeviceregistry.NamespaceDiscoveredAssetsClientCreateOrReplaceResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armdeviceregistry.NamespaceDiscoveredAssetsClientDeleteResponse]]
-	newListByResourceGroupPager *tracker[azfake.PagerResponder[armdeviceregistry.NamespaceDiscoveredAssetsClientListByResourceGroupResponse]]
 	beginUpdate                 *tracker[azfake.PollerResponder[armdeviceregistry.NamespaceDiscoveredAssetsClientUpdateResponse]]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armdeviceregistry.NamespaceDiscoveredAssetsClientListByResourceGroupResponse]]
 }
 
 // Do implements the policy.Transporter interface for NamespaceDiscoveredAssetsServerTransport.
@@ -90,12 +90,12 @@ func (n *NamespaceDiscoveredAssetsServerTransport) dispatchToMethodFake(req *htt
 				res.resp, res.err = n.dispatchBeginCreateOrReplace(req)
 			case "NamespaceDiscoveredAssetsClient.BeginDelete":
 				res.resp, res.err = n.dispatchBeginDelete(req)
+			case "NamespaceDiscoveredAssetsClient.BeginUpdate":
+				res.resp, res.err = n.dispatchBeginUpdate(req)
 			case "NamespaceDiscoveredAssetsClient.Get":
 				res.resp, res.err = n.dispatchGet(req)
 			case "NamespaceDiscoveredAssetsClient.NewListByResourceGroupPager":
 				res.resp, res.err = n.dispatchNewListByResourceGroupPager(req)
-			case "NamespaceDiscoveredAssetsClient.BeginUpdate":
-				res.resp, res.err = n.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -212,6 +212,58 @@ func (n *NamespaceDiscoveredAssetsServerTransport) dispatchBeginDelete(req *http
 	return resp, nil
 }
 
+func (n *NamespaceDiscoveredAssetsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if n.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := n.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DeviceRegistry/namespaces/(?P<namespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/discoveredAssets/(?P<discoveredAssetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armdeviceregistry.NamespaceDiscoveredAssetUpdate](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		namespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("namespaceName")])
+		if err != nil {
+			return nil, err
+		}
+		discoveredAssetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("discoveredAssetName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := n.srv.BeginUpdate(req.Context(), resourceGroupNameParam, namespaceNameParam, discoveredAssetNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		n.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		n.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		n.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (n *NamespaceDiscoveredAssetsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if n.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -287,58 +339,6 @@ func (n *NamespaceDiscoveredAssetsServerTransport) dispatchNewListByResourceGrou
 	if !server.PagerResponderMore(newListByResourceGroupPager) {
 		n.newListByResourceGroupPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (n *NamespaceDiscoveredAssetsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if n.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := n.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DeviceRegistry/namespaces/(?P<namespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/discoveredAssets/(?P<discoveredAssetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armdeviceregistry.NamespaceDiscoveredAssetUpdate](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		namespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("namespaceName")])
-		if err != nil {
-			return nil, err
-		}
-		discoveredAssetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("discoveredAssetName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := n.srv.BeginUpdate(req.Context(), resourceGroupNameParam, namespaceNameParam, discoveredAssetNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		n.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		n.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		n.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

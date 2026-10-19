@@ -70,7 +70,7 @@ func (client *AdministratorsClient) BeginCreateOrUpdate(ctx context.Context, res
 	}
 }
 
-// CreateOrUpdate - Creates a new HorizonDB administrator or updates an existing administrator.
+// createOrUpdate - Creates a new HorizonDB administrator or updates an existing administrator.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AdministratorsClient) createOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, objectID string, resource AdministratorAdd, options *AdministratorsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -92,7 +92,7 @@ func (client *AdministratorsClient) createOrUpdate(ctx context.Context, resource
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *AdministratorsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, objectID string, resource AdministratorAdd, _ *AdministratorsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HorizonDb/clusters/{clusterName}/administrators/{objectId}"
 	if client.subscriptionID == "" {
@@ -150,7 +150,7 @@ func (client *AdministratorsClient) BeginDelete(ctx context.Context, resourceGro
 	}
 }
 
-// Delete - Deletes a HorizonDB administrator.
+// deleteOperation - Deletes a HorizonDB administrator.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AdministratorsClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, objectID string, options *AdministratorsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -172,7 +172,7 @@ func (client *AdministratorsClient) deleteOperation(ctx context.Context, resourc
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *AdministratorsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, objectID string, _ *AdministratorsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HorizonDb/clusters/{clusterName}/administrators/{objectId}"
 	if client.subscriptionID == "" {

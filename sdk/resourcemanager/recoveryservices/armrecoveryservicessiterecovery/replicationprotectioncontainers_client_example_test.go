@@ -125,129 +125,6 @@ func ExampleReplicationProtectionContainersClient_BeginDiscoverProtectableItem()
 	// }
 }
 
-// Generated from example definition: 2025-08-01/ReplicationProtectionContainers_Get.json
-func ExampleReplicationProtectionContainersClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armrecoveryservicessiterecovery.NewClientFactory("c183865e-6077-46f2-a3b1-deb0f4f4650a", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewReplicationProtectionContainersClient().Get(ctx, "resourceGroupPS1", "vault1", "cloud1", "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armrecoveryservicessiterecovery.ReplicationProtectionContainersClientGetResponse{
-	// 	ProtectionContainer: armrecoveryservicessiterecovery.ProtectionContainer{
-	// 		Name: to.Ptr("cloud_6d224fc6-f326-5d35-96de-fbf51efb3179"),
-	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers"),
-	// 		ID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/cloud1/replicationProtectionContainers/cloud_6d224fc6-f326-5d35-96de-fbf51efb3179"),
-	// 		Properties: &armrecoveryservicessiterecovery.ProtectionContainerProperties{
-	// 			FabricFriendlyName: to.Ptr("cloud1"),
-	// 			FabricType: to.Ptr("HyperVSite"),
-	// 			FriendlyName: to.Ptr("cloud1"),
-	// 			PairingStatus: to.Ptr("NotPaired"),
-	// 			ProtectedItemCount: to.Ptr[int32](0),
-	// 			Role: to.Ptr(""),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-08-01/ReplicationProtectionContainers_List.json
-func ExampleReplicationProtectionContainersClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armrecoveryservicessiterecovery.NewClientFactory("c183865e-6077-46f2-a3b1-deb0f4f4650a", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewReplicationProtectionContainersClient().NewListPager("resourceGroupPS1", "vault1", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armrecoveryservicessiterecovery.ReplicationProtectionContainersClientListResponse{
-		// 	ProtectionContainerCollection: armrecoveryservicessiterecovery.ProtectionContainerCollection{
-		// 		Value: []*armrecoveryservicessiterecovery.ProtectionContainer{
-		// 			{
-		// 				Name: to.Ptr("cloud_6d224fc6-f326-5d35-96de-fbf51efb3179"),
-		// 				Type: to.Ptr("Microsoft.RecoveryServices/vaults/replicationProtectionContainers"),
-		// 				ID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/cloud1/replicationProtectionContainers/cloud_6d224fc6-f326-5d35-96de-fbf51efb3179"),
-		// 				Properties: &armrecoveryservicessiterecovery.ProtectionContainerProperties{
-		// 					FabricFriendlyName: to.Ptr("cloud1"),
-		// 					FabricType: to.Ptr("HyperVSite"),
-		// 					FriendlyName: to.Ptr("cloud1"),
-		// 					PairingStatus: to.Ptr("NotPaired"),
-		// 					ProtectedItemCount: to.Ptr[int32](0),
-		// 					Role: to.Ptr(""),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2025-08-01/ReplicationProtectionContainers_ListByReplicationFabrics.json
-func ExampleReplicationProtectionContainersClient_NewListByReplicationFabricsPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armrecoveryservicessiterecovery.NewClientFactory("c183865e-6077-46f2-a3b1-deb0f4f4650a", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewReplicationProtectionContainersClient().NewListByReplicationFabricsPager("resourceGroupPS1", "vault1", "cloud1", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armrecoveryservicessiterecovery.ReplicationProtectionContainersClientListByReplicationFabricsResponse{
-		// 	ProtectionContainerCollection: armrecoveryservicessiterecovery.ProtectionContainerCollection{
-		// 		Value: []*armrecoveryservicessiterecovery.ProtectionContainer{
-		// 			{
-		// 				Name: to.Ptr("cloud_6d224fc6-f326-5d35-96de-fbf51efb3179"),
-		// 				Type: to.Ptr("Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers"),
-		// 				ID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/cloud1/replicationProtectionContainers/cloud_6d224fc6-f326-5d35-96de-fbf51efb3179"),
-		// 				Properties: &armrecoveryservicessiterecovery.ProtectionContainerProperties{
-		// 					FabricFriendlyName: to.Ptr("cloud1"),
-		// 					FabricType: to.Ptr("HyperVSite"),
-		// 					FriendlyName: to.Ptr("cloud1"),
-		// 					PairingStatus: to.Ptr("NotPaired"),
-		// 					ProtectedItemCount: to.Ptr[int32](0),
-		// 					Role: to.Ptr(""),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
 // Generated from example definition: 2025-08-01/ReplicationProtectionContainers_SwitchClusterProtection.json
 func ExampleReplicationProtectionContainersClient_BeginSwitchClusterProtection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -364,4 +241,127 @@ func ExampleReplicationProtectionContainersClient_BeginSwitchProtection() {
 	// 		},
 	// 	},
 	// }
+}
+
+// Generated from example definition: 2025-08-01/ReplicationProtectionContainers_Get.json
+func ExampleReplicationProtectionContainersClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armrecoveryservicessiterecovery.NewClientFactory("c183865e-6077-46f2-a3b1-deb0f4f4650a", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewReplicationProtectionContainersClient().Get(ctx, "resourceGroupPS1", "vault1", "cloud1", "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armrecoveryservicessiterecovery.ReplicationProtectionContainersClientGetResponse{
+	// 	ProtectionContainer: armrecoveryservicessiterecovery.ProtectionContainer{
+	// 		Name: to.Ptr("cloud_6d224fc6-f326-5d35-96de-fbf51efb3179"),
+	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers"),
+	// 		ID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/cloud1/replicationProtectionContainers/cloud_6d224fc6-f326-5d35-96de-fbf51efb3179"),
+	// 		Properties: &armrecoveryservicessiterecovery.ProtectionContainerProperties{
+	// 			FabricFriendlyName: to.Ptr("cloud1"),
+	// 			FabricType: to.Ptr("HyperVSite"),
+	// 			FriendlyName: to.Ptr("cloud1"),
+	// 			PairingStatus: to.Ptr("NotPaired"),
+	// 			ProtectedItemCount: to.Ptr[int32](0),
+	// 			Role: to.Ptr(""),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-08-01/ReplicationProtectionContainers_ListByReplicationFabrics.json
+func ExampleReplicationProtectionContainersClient_NewListByReplicationFabricsPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armrecoveryservicessiterecovery.NewClientFactory("c183865e-6077-46f2-a3b1-deb0f4f4650a", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewReplicationProtectionContainersClient().NewListByReplicationFabricsPager("resourceGroupPS1", "vault1", "cloud1", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armrecoveryservicessiterecovery.ReplicationProtectionContainersClientListByReplicationFabricsResponse{
+		// 	ProtectionContainerCollection: armrecoveryservicessiterecovery.ProtectionContainerCollection{
+		// 		Value: []*armrecoveryservicessiterecovery.ProtectionContainer{
+		// 			{
+		// 				Name: to.Ptr("cloud_6d224fc6-f326-5d35-96de-fbf51efb3179"),
+		// 				Type: to.Ptr("Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers"),
+		// 				ID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/cloud1/replicationProtectionContainers/cloud_6d224fc6-f326-5d35-96de-fbf51efb3179"),
+		// 				Properties: &armrecoveryservicessiterecovery.ProtectionContainerProperties{
+		// 					FabricFriendlyName: to.Ptr("cloud1"),
+		// 					FabricType: to.Ptr("HyperVSite"),
+		// 					FriendlyName: to.Ptr("cloud1"),
+		// 					PairingStatus: to.Ptr("NotPaired"),
+		// 					ProtectedItemCount: to.Ptr[int32](0),
+		// 					Role: to.Ptr(""),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-08-01/ReplicationProtectionContainers_List.json
+func ExampleReplicationProtectionContainersClient_NewListPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armrecoveryservicessiterecovery.NewClientFactory("c183865e-6077-46f2-a3b1-deb0f4f4650a", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewReplicationProtectionContainersClient().NewListPager("resourceGroupPS1", "vault1", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armrecoveryservicessiterecovery.ReplicationProtectionContainersClientListResponse{
+		// 	ProtectionContainerCollection: armrecoveryservicessiterecovery.ProtectionContainerCollection{
+		// 		Value: []*armrecoveryservicessiterecovery.ProtectionContainer{
+		// 			{
+		// 				Name: to.Ptr("cloud_6d224fc6-f326-5d35-96de-fbf51efb3179"),
+		// 				Type: to.Ptr("Microsoft.RecoveryServices/vaults/replicationProtectionContainers"),
+		// 				ID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/cloud1/replicationProtectionContainers/cloud_6d224fc6-f326-5d35-96de-fbf51efb3179"),
+		// 				Properties: &armrecoveryservicessiterecovery.ProtectionContainerProperties{
+		// 					FabricFriendlyName: to.Ptr("cloud1"),
+		// 					FabricType: to.Ptr("HyperVSite"),
+		// 					FriendlyName: to.Ptr("cloud1"),
+		// 					PairingStatus: to.Ptr("NotPaired"),
+		// 					ProtectedItemCount: to.Ptr[int32](0),
+		// 					Role: to.Ptr(""),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
 }

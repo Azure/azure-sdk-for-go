@@ -6928,6 +6928,296 @@ func ExampleManagedClustersClient_BeginDelete() {
 	}
 }
 
+// Generated from example definition: 2026-07-02-preview/LoadBalancers_Rebalance.json
+func ExampleManagedClustersClient_BeginRebalanceLoadBalancers() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcontainerservice.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewManagedClustersClient().BeginRebalanceLoadBalancers(ctx, "rg1", "clustername1", armcontainerservice.RebalanceLoadBalancersRequestBody{
+		LoadBalancerNames: []*string{
+			to.Ptr("kubernetes"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-07-02-preview/ManagedClustersResetAADProfile.json
+func ExampleManagedClustersClient_BeginResetAADProfile() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcontainerservice.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewManagedClustersClient().BeginResetAADProfile(ctx, "rg1", "clustername1", armcontainerservice.ManagedClusterAADProfile{
+		ClientAppID:     to.Ptr("clientappid"),
+		ServerAppID:     to.Ptr("serverappid"),
+		ServerAppSecret: to.Ptr("serverappsecret"),
+		TenantID:        to.Ptr("tenantid"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcontainerservice.ManagedClustersClientResetAADProfileResponse{
+	// }
+}
+
+// Generated from example definition: 2026-07-02-preview/ManagedClustersResetServicePrincipalProfile.json
+func ExampleManagedClustersClient_BeginResetServicePrincipalProfile() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcontainerservice.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewManagedClustersClient().BeginResetServicePrincipalProfile(ctx, "rg1", "clustername1", armcontainerservice.ManagedClusterServicePrincipalProfile{
+		ClientID: to.Ptr("clientid"),
+		Secret:   to.Ptr("secret"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcontainerservice.ManagedClustersClientResetServicePrincipalProfileResponse{
+	// }
+}
+
+// Generated from example definition: 2026-07-02-preview/ManagedClustersRotateClusterCertificates.json
+func ExampleManagedClustersClient_BeginRotateClusterCertificates() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcontainerservice.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewManagedClustersClient().BeginRotateClusterCertificates(ctx, "rg1", "clustername1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-07-02-preview/ManagedClustersRotateServiceAccountSigningKeys.json
+func ExampleManagedClustersClient_BeginRotateServiceAccountSigningKeys() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcontainerservice.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewManagedClustersClient().BeginRotateServiceAccountSigningKeys(ctx, "rg1", "clustername1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-07-02-preview/RunCommandRequest.json
+func ExampleManagedClustersClient_BeginRunCommand() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcontainerservice.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewManagedClustersClient().BeginRunCommand(ctx, "rg1", "clustername1", armcontainerservice.RunCommandRequest{
+		ClusterToken: to.Ptr(""),
+		Command:      to.Ptr("kubectl apply -f ns.yaml"),
+		Context:      to.Ptr(""),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcontainerservice.ManagedClustersClientRunCommandResponse{
+	// 	RunCommandResult: armcontainerservice.RunCommandResult{
+	// 		ID: to.Ptr("def7b3ea71bd4f7e9d226ddbc0f00ad9"),
+	// 		Properties: &armcontainerservice.CommandResultProperties{
+	// 			ExitCode: to.Ptr[int32](0),
+	// 			FinishedAt: to.Ptr(time.Date(2021, time.February, 17, 0, 28, 33, 0, time.UTC)),
+	// 			Logs: to.Ptr("namespace dummy created"),
+	// 			ProvisioningState: to.Ptr("succeeded"),
+	// 			StartedAt: to.Ptr(time.Date(2021, time.February, 17, 0, 28, 20, 0, time.UTC)),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-07-02-preview/ManagedClustersStart.json
+func ExampleManagedClustersClient_BeginStart() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcontainerservice.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewManagedClustersClient().BeginStart(ctx, "rg1", "clustername1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-07-02-preview/ManagedClustersStop.json
+func ExampleManagedClustersClient_BeginStop() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcontainerservice.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewManagedClustersClient().BeginStop(ctx, "rg1", "clustername1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-07-02-preview/ManagedClustersUpdateTags.json
+func ExampleManagedClustersClient_BeginUpdateTags() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcontainerservice.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewManagedClustersClient().BeginUpdateTags(ctx, "rg1", "clustername1", armcontainerservice.TagsObject{
+		Tags: map[string]*string{
+			"archv3": to.Ptr(""),
+			"tier":   to.Ptr("testing"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcontainerservice.ManagedClustersClientUpdateTagsResponse{
+	// 	ManagedCluster: armcontainerservice.ManagedCluster{
+	// 		Name: to.Ptr("clustername1"),
+	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusters"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1"),
+	// 		Location: to.Ptr("location1"),
+	// 		Properties: &armcontainerservice.ManagedClusterProperties{
+	// 			AgentPoolProfiles: []*armcontainerservice.ManagedClusterAgentPoolProfile{
+	// 				{
+	// 					Name: to.Ptr("nodepool1"),
+	// 					Count: to.Ptr[int32](3),
+	// 					CurrentOrchestratorVersion: to.Ptr("1.9.6"),
+	// 					MaxPods: to.Ptr[int32](110),
+	// 					OrchestratorVersion: to.Ptr("1.9.6"),
+	// 					OSType: to.Ptr(armcontainerservice.OSTypeLinux),
+	// 					ProvisioningState: to.Ptr("Succeeded"),
+	// 					VMSize: to.Ptr("Standard_DS1_v2"),
+	// 				},
+	// 			},
+	// 			DiskEncryptionSetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
+	// 			DNSPrefix: to.Ptr("dnsprefix1"),
+	// 			EnableRBAC: to.Ptr(false),
+	// 			Fqdn: to.Ptr("dnsprefix1-abcd1234.hcp.eastus.azmk8s.io"),
+	// 			KubernetesVersion: to.Ptr("1.9.6"),
+	// 			LinuxProfile: &armcontainerservice.LinuxProfile{
+	// 				AdminUsername: to.Ptr("azureuser"),
+	// 				SSH: &armcontainerservice.SSHConfiguration{
+	// 					PublicKeys: []*armcontainerservice.SSHPublicKey{
+	// 						{
+	// 							KeyData: to.Ptr("keydata"),
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 			NetworkProfile: &armcontainerservice.NetworkProfile{
+	// 				DNSServiceIP: to.Ptr("10.0.0.10"),
+	// 				NetworkPlugin: to.Ptr(armcontainerservice.NetworkPluginKubenet),
+	// 				PodCidr: to.Ptr("10.244.0.0/16"),
+	// 				ServiceCidr: to.Ptr("10.0.0.0/16"),
+	// 			},
+	// 			NodeResourceGroup: to.Ptr("MC_rg1_clustername1_location1"),
+	// 			ProvisioningState: to.Ptr("Succeeded"),
+	// 			ServicePrincipalProfile: &armcontainerservice.ManagedClusterServicePrincipalProfile{
+	// 				ClientID: to.Ptr("clientid"),
+	// 			},
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"archv3": to.Ptr(""),
+	// 			"tier": to.Ptr("testing"),
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2026-07-02-preview/ManagedClustersGet.json
 func ExampleManagedClustersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -7373,172 +7663,6 @@ func ExampleManagedClustersClient_GetUpgradeProfile() {
 	// }
 }
 
-// Generated from example definition: 2026-07-02-preview/ManagedClustersList.json
-func ExampleManagedClustersClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcontainerservice.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewManagedClustersClient().NewListPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcontainerservice.ManagedClustersClientListResponse{
-		// 	ManagedClusterListResult: armcontainerservice.ManagedClusterListResult{
-		// 		Value: []*armcontainerservice.ManagedCluster{
-		// 			{
-		// 				Name: to.Ptr("clustername1"),
-		// 				Type: to.Ptr("Microsoft.ContainerService/managedClusters"),
-		// 				ETag: to.Ptr("nvweuib"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ContainerService/managedClusters/clustername1"),
-		// 				Location: to.Ptr("location1"),
-		// 				Properties: &armcontainerservice.ManagedClusterProperties{
-		// 					AgentPoolProfiles: []*armcontainerservice.ManagedClusterAgentPoolProfile{
-		// 						{
-		// 							Name: to.Ptr("nodepool1"),
-		// 							Count: to.Ptr[int32](3),
-		// 							CurrentOrchestratorVersion: to.Ptr("1.9.6"),
-		// 							ETag: to.Ptr("byuefvwi"),
-		// 							MaxPods: to.Ptr[int32](110),
-		// 							OrchestratorVersion: to.Ptr("1.9.6"),
-		// 							OSType: to.Ptr(armcontainerservice.OSTypeLinux),
-		// 							ProvisioningState: to.Ptr("Succeeded"),
-		// 							VMSize: to.Ptr("Standard_DS1_v2"),
-		// 						},
-		// 					},
-		// 					DiskEncryptionSetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
-		// 					DNSPrefix: to.Ptr("dnsprefix1"),
-		// 					EnableRBAC: to.Ptr(false),
-		// 					Fqdn: to.Ptr("dnsprefix1-abcd1234.hcp.eastus.azmk8s.io"),
-		// 					KubernetesVersion: to.Ptr("1.9.6"),
-		// 					LinuxProfile: &armcontainerservice.LinuxProfile{
-		// 						AdminUsername: to.Ptr("azureuser"),
-		// 						SSH: &armcontainerservice.SSHConfiguration{
-		// 							PublicKeys: []*armcontainerservice.SSHPublicKey{
-		// 								{
-		// 									KeyData: to.Ptr("keydata"),
-		// 								},
-		// 							},
-		// 						},
-		// 					},
-		// 					MaxAgentPools: to.Ptr[int32](1),
-		// 					NetworkProfile: &armcontainerservice.NetworkProfile{
-		// 						DNSServiceIP: to.Ptr("10.0.0.10"),
-		// 						NetworkPlugin: to.Ptr(armcontainerservice.NetworkPluginKubenet),
-		// 						PodCidr: to.Ptr("10.244.0.0/16"),
-		// 						ServiceCidr: to.Ptr("10.0.0.0/16"),
-		// 					},
-		// 					NodeResourceGroup: to.Ptr("MC_rg1_clustername1_location1"),
-		// 					ProvisioningState: to.Ptr("Succeeded"),
-		// 					ServicePrincipalProfile: &armcontainerservice.ManagedClusterServicePrincipalProfile{
-		// 						ClientID: to.Ptr("clientid"),
-		// 					},
-		// 				},
-		// 				Tags: map[string]*string{
-		// 					"archv2": to.Ptr(""),
-		// 					"tier": to.Ptr("production"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-07-02-preview/ManagedClustersListByResourceGroup.json
-func ExampleManagedClustersClient_NewListByResourceGroupPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcontainerservice.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewManagedClustersClient().NewListByResourceGroupPager("rg1", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcontainerservice.ManagedClustersClientListByResourceGroupResponse{
-		// 	ManagedClusterListResult: armcontainerservice.ManagedClusterListResult{
-		// 		Value: []*armcontainerservice.ManagedCluster{
-		// 			{
-		// 				Name: to.Ptr("clustername1"),
-		// 				Type: to.Ptr("Microsoft.ContainerService/managedClusters"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1"),
-		// 				Location: to.Ptr("location1"),
-		// 				Properties: &armcontainerservice.ManagedClusterProperties{
-		// 					AgentPoolProfiles: []*armcontainerservice.ManagedClusterAgentPoolProfile{
-		// 						{
-		// 							Name: to.Ptr("nodepool1"),
-		// 							Count: to.Ptr[int32](3),
-		// 							CurrentOrchestratorVersion: to.Ptr("1.9.6"),
-		// 							MaxPods: to.Ptr[int32](110),
-		// 							OrchestratorVersion: to.Ptr("1.9.6"),
-		// 							OSType: to.Ptr(armcontainerservice.OSTypeLinux),
-		// 							ProvisioningState: to.Ptr("Succeeded"),
-		// 							VMSize: to.Ptr("Standard_DS1_v2"),
-		// 						},
-		// 					},
-		// 					DiskEncryptionSetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
-		// 					DNSPrefix: to.Ptr("dnsprefix1"),
-		// 					EnableRBAC: to.Ptr(false),
-		// 					Fqdn: to.Ptr("dnsprefix1-abcd1234.hcp.eastus.azmk8s.io"),
-		// 					KubernetesVersion: to.Ptr("1.9.6"),
-		// 					LinuxProfile: &armcontainerservice.LinuxProfile{
-		// 						AdminUsername: to.Ptr("azureuser"),
-		// 						SSH: &armcontainerservice.SSHConfiguration{
-		// 							PublicKeys: []*armcontainerservice.SSHPublicKey{
-		// 								{
-		// 									KeyData: to.Ptr("keydata"),
-		// 								},
-		// 							},
-		// 						},
-		// 					},
-		// 					MaxAgentPools: to.Ptr[int32](1),
-		// 					NetworkProfile: &armcontainerservice.NetworkProfile{
-		// 						DNSServiceIP: to.Ptr("10.0.0.10"),
-		// 						NetworkPlugin: to.Ptr(armcontainerservice.NetworkPluginKubenet),
-		// 						PodCidr: to.Ptr("10.244.0.0/16"),
-		// 						ServiceCidr: to.Ptr("10.0.0.0/16"),
-		// 					},
-		// 					NodeResourceGroup: to.Ptr("MC_rg1_clustername1_location1"),
-		// 					ProvisioningState: to.Ptr("Succeeded"),
-		// 					ServicePrincipalProfile: &armcontainerservice.ManagedClusterServicePrincipalProfile{
-		// 						ClientID: to.Ptr("clientid"),
-		// 					},
-		// 				},
-		// 				Tags: map[string]*string{
-		// 					"archv2": to.Ptr(""),
-		// 					"tier": to.Ptr("production"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
 // Generated from example definition: 2026-07-02-preview/ManagedClustersListClusterAdminCredentials.json
 func ExampleManagedClustersClient_ListClusterAdminCredentials() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -7627,46 +7751,6 @@ func ExampleManagedClustersClient_ListClusterUserCredentials() {
 	// 		},
 	// 	},
 	// }
-}
-
-// Generated from example definition: 2026-07-02-preview/ListGuardrailsVersions.json
-func ExampleManagedClustersClient_NewListGuardrailsVersionsPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcontainerservice.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewManagedClustersClient().NewListGuardrailsVersionsPager("location1", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcontainerservice.ManagedClustersClientListGuardrailsVersionsResponse{
-		// 	GuardrailsAvailableVersionsList: armcontainerservice.GuardrailsAvailableVersionsList{
-		// 		Value: []*armcontainerservice.GuardrailsAvailableVersion{
-		// 			{
-		// 				Name: to.Ptr("v1.0.0"),
-		// 				Type: to.Ptr("Microsoft.ContainerService/locations/guardrailsVersions"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ContainerService/locations/location1/guardrailsVersions/v1.0.0"),
-		// 				Properties: &armcontainerservice.GuardrailsAvailableVersionsProperties{
-		// 					IsDefaultVersion: to.Ptr(true),
-		// 					Support: to.Ptr(armcontainerservice.GuardrailsSupportPreview),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
 }
 
 // Generated from example definition: 2026-07-02-preview/KubernetesVersions_List.json
@@ -7776,6 +7860,128 @@ func ExampleManagedClustersClient_ListKubernetesVersions() {
 	// 		},
 	// 	},
 	// }
+}
+
+// Generated from example definition: 2026-07-02-preview/ManagedClustersListByResourceGroup.json
+func ExampleManagedClustersClient_NewListByResourceGroupPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcontainerservice.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewManagedClustersClient().NewListByResourceGroupPager("rg1", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armcontainerservice.ManagedClustersClientListByResourceGroupResponse{
+		// 	ManagedClusterListResult: armcontainerservice.ManagedClusterListResult{
+		// 		Value: []*armcontainerservice.ManagedCluster{
+		// 			{
+		// 				Name: to.Ptr("clustername1"),
+		// 				Type: to.Ptr("Microsoft.ContainerService/managedClusters"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1"),
+		// 				Location: to.Ptr("location1"),
+		// 				Properties: &armcontainerservice.ManagedClusterProperties{
+		// 					AgentPoolProfiles: []*armcontainerservice.ManagedClusterAgentPoolProfile{
+		// 						{
+		// 							Name: to.Ptr("nodepool1"),
+		// 							Count: to.Ptr[int32](3),
+		// 							CurrentOrchestratorVersion: to.Ptr("1.9.6"),
+		// 							MaxPods: to.Ptr[int32](110),
+		// 							OrchestratorVersion: to.Ptr("1.9.6"),
+		// 							OSType: to.Ptr(armcontainerservice.OSTypeLinux),
+		// 							ProvisioningState: to.Ptr("Succeeded"),
+		// 							VMSize: to.Ptr("Standard_DS1_v2"),
+		// 						},
+		// 					},
+		// 					DiskEncryptionSetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
+		// 					DNSPrefix: to.Ptr("dnsprefix1"),
+		// 					EnableRBAC: to.Ptr(false),
+		// 					Fqdn: to.Ptr("dnsprefix1-abcd1234.hcp.eastus.azmk8s.io"),
+		// 					KubernetesVersion: to.Ptr("1.9.6"),
+		// 					LinuxProfile: &armcontainerservice.LinuxProfile{
+		// 						AdminUsername: to.Ptr("azureuser"),
+		// 						SSH: &armcontainerservice.SSHConfiguration{
+		// 							PublicKeys: []*armcontainerservice.SSHPublicKey{
+		// 								{
+		// 									KeyData: to.Ptr("keydata"),
+		// 								},
+		// 							},
+		// 						},
+		// 					},
+		// 					MaxAgentPools: to.Ptr[int32](1),
+		// 					NetworkProfile: &armcontainerservice.NetworkProfile{
+		// 						DNSServiceIP: to.Ptr("10.0.0.10"),
+		// 						NetworkPlugin: to.Ptr(armcontainerservice.NetworkPluginKubenet),
+		// 						PodCidr: to.Ptr("10.244.0.0/16"),
+		// 						ServiceCidr: to.Ptr("10.0.0.0/16"),
+		// 					},
+		// 					NodeResourceGroup: to.Ptr("MC_rg1_clustername1_location1"),
+		// 					ProvisioningState: to.Ptr("Succeeded"),
+		// 					ServicePrincipalProfile: &armcontainerservice.ManagedClusterServicePrincipalProfile{
+		// 						ClientID: to.Ptr("clientid"),
+		// 					},
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"archv2": to.Ptr(""),
+		// 					"tier": to.Ptr("production"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-07-02-preview/ListGuardrailsVersions.json
+func ExampleManagedClustersClient_NewListGuardrailsVersionsPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcontainerservice.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewManagedClustersClient().NewListGuardrailsVersionsPager("location1", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armcontainerservice.ManagedClustersClientListGuardrailsVersionsResponse{
+		// 	GuardrailsAvailableVersionsList: armcontainerservice.GuardrailsAvailableVersionsList{
+		// 		Value: []*armcontainerservice.GuardrailsAvailableVersion{
+		// 			{
+		// 				Name: to.Ptr("v1.0.0"),
+		// 				Type: to.Ptr("Microsoft.ContainerService/locations/guardrailsVersions"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ContainerService/locations/location1/guardrailsVersions/v1.0.0"),
+		// 				Properties: &armcontainerservice.GuardrailsAvailableVersionsProperties{
+		// 					IsDefaultVersion: to.Ptr(true),
+		// 					Support: to.Ptr(armcontainerservice.GuardrailsSupportPreview),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
 }
 
 // Generated from example definition: 2026-07-02-preview/ManagedClustersList_MeshRevisionProfiles.json
@@ -8161,6 +8367,90 @@ func ExampleManagedClustersClient_NewListOutboundNetworkDependenciesEndpointsPag
 	}
 }
 
+// Generated from example definition: 2026-07-02-preview/ManagedClustersList.json
+func ExampleManagedClustersClient_NewListPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcontainerservice.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewManagedClustersClient().NewListPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armcontainerservice.ManagedClustersClientListResponse{
+		// 	ManagedClusterListResult: armcontainerservice.ManagedClusterListResult{
+		// 		Value: []*armcontainerservice.ManagedCluster{
+		// 			{
+		// 				Name: to.Ptr("clustername1"),
+		// 				Type: to.Ptr("Microsoft.ContainerService/managedClusters"),
+		// 				ETag: to.Ptr("nvweuib"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ContainerService/managedClusters/clustername1"),
+		// 				Location: to.Ptr("location1"),
+		// 				Properties: &armcontainerservice.ManagedClusterProperties{
+		// 					AgentPoolProfiles: []*armcontainerservice.ManagedClusterAgentPoolProfile{
+		// 						{
+		// 							Name: to.Ptr("nodepool1"),
+		// 							Count: to.Ptr[int32](3),
+		// 							CurrentOrchestratorVersion: to.Ptr("1.9.6"),
+		// 							ETag: to.Ptr("byuefvwi"),
+		// 							MaxPods: to.Ptr[int32](110),
+		// 							OrchestratorVersion: to.Ptr("1.9.6"),
+		// 							OSType: to.Ptr(armcontainerservice.OSTypeLinux),
+		// 							ProvisioningState: to.Ptr("Succeeded"),
+		// 							VMSize: to.Ptr("Standard_DS1_v2"),
+		// 						},
+		// 					},
+		// 					DiskEncryptionSetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
+		// 					DNSPrefix: to.Ptr("dnsprefix1"),
+		// 					EnableRBAC: to.Ptr(false),
+		// 					Fqdn: to.Ptr("dnsprefix1-abcd1234.hcp.eastus.azmk8s.io"),
+		// 					KubernetesVersion: to.Ptr("1.9.6"),
+		// 					LinuxProfile: &armcontainerservice.LinuxProfile{
+		// 						AdminUsername: to.Ptr("azureuser"),
+		// 						SSH: &armcontainerservice.SSHConfiguration{
+		// 							PublicKeys: []*armcontainerservice.SSHPublicKey{
+		// 								{
+		// 									KeyData: to.Ptr("keydata"),
+		// 								},
+		// 							},
+		// 						},
+		// 					},
+		// 					MaxAgentPools: to.Ptr[int32](1),
+		// 					NetworkProfile: &armcontainerservice.NetworkProfile{
+		// 						DNSServiceIP: to.Ptr("10.0.0.10"),
+		// 						NetworkPlugin: to.Ptr(armcontainerservice.NetworkPluginKubenet),
+		// 						PodCidr: to.Ptr("10.244.0.0/16"),
+		// 						ServiceCidr: to.Ptr("10.0.0.0/16"),
+		// 					},
+		// 					NodeResourceGroup: to.Ptr("MC_rg1_clustername1_location1"),
+		// 					ProvisioningState: to.Ptr("Succeeded"),
+		// 					ServicePrincipalProfile: &armcontainerservice.ManagedClusterServicePrincipalProfile{
+		// 						ClientID: to.Ptr("clientid"),
+		// 					},
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"archv2": to.Ptr(""),
+		// 					"tier": to.Ptr("production"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
 // Generated from example definition: 2026-07-02-preview/ListSafeguardsVersions.json
 func ExampleManagedClustersClient_NewListSafeguardsVersionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -8199,294 +8489,4 @@ func ExampleManagedClustersClient_NewListSafeguardsVersionsPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-07-02-preview/LoadBalancers_Rebalance.json
-func ExampleManagedClustersClient_BeginRebalanceLoadBalancers() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcontainerservice.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewManagedClustersClient().BeginRebalanceLoadBalancers(ctx, "rg1", "clustername1", armcontainerservice.RebalanceLoadBalancersRequestBody{
-		LoadBalancerNames: []*string{
-			to.Ptr("kubernetes"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2026-07-02-preview/ManagedClustersResetAADProfile.json
-func ExampleManagedClustersClient_BeginResetAADProfile() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcontainerservice.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewManagedClustersClient().BeginResetAADProfile(ctx, "rg1", "clustername1", armcontainerservice.ManagedClusterAADProfile{
-		ClientAppID:     to.Ptr("clientappid"),
-		ServerAppID:     to.Ptr("serverappid"),
-		ServerAppSecret: to.Ptr("serverappsecret"),
-		TenantID:        to.Ptr("tenantid"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcontainerservice.ManagedClustersClientResetAADProfileResponse{
-	// }
-}
-
-// Generated from example definition: 2026-07-02-preview/ManagedClustersResetServicePrincipalProfile.json
-func ExampleManagedClustersClient_BeginResetServicePrincipalProfile() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcontainerservice.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewManagedClustersClient().BeginResetServicePrincipalProfile(ctx, "rg1", "clustername1", armcontainerservice.ManagedClusterServicePrincipalProfile{
-		ClientID: to.Ptr("clientid"),
-		Secret:   to.Ptr("secret"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcontainerservice.ManagedClustersClientResetServicePrincipalProfileResponse{
-	// }
-}
-
-// Generated from example definition: 2026-07-02-preview/ManagedClustersRotateClusterCertificates.json
-func ExampleManagedClustersClient_BeginRotateClusterCertificates() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcontainerservice.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewManagedClustersClient().BeginRotateClusterCertificates(ctx, "rg1", "clustername1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2026-07-02-preview/ManagedClustersRotateServiceAccountSigningKeys.json
-func ExampleManagedClustersClient_BeginRotateServiceAccountSigningKeys() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcontainerservice.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewManagedClustersClient().BeginRotateServiceAccountSigningKeys(ctx, "rg1", "clustername1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2026-07-02-preview/RunCommandRequest.json
-func ExampleManagedClustersClient_BeginRunCommand() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcontainerservice.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewManagedClustersClient().BeginRunCommand(ctx, "rg1", "clustername1", armcontainerservice.RunCommandRequest{
-		ClusterToken: to.Ptr(""),
-		Command:      to.Ptr("kubectl apply -f ns.yaml"),
-		Context:      to.Ptr(""),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcontainerservice.ManagedClustersClientRunCommandResponse{
-	// 	RunCommandResult: armcontainerservice.RunCommandResult{
-	// 		ID: to.Ptr("def7b3ea71bd4f7e9d226ddbc0f00ad9"),
-	// 		Properties: &armcontainerservice.CommandResultProperties{
-	// 			ExitCode: to.Ptr[int32](0),
-	// 			FinishedAt: to.Ptr(time.Date(2021, time.February, 17, 0, 28, 33, 0, time.UTC)),
-	// 			Logs: to.Ptr("namespace dummy created"),
-	// 			ProvisioningState: to.Ptr("succeeded"),
-	// 			StartedAt: to.Ptr(time.Date(2021, time.February, 17, 0, 28, 20, 0, time.UTC)),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-07-02-preview/ManagedClustersStart.json
-func ExampleManagedClustersClient_BeginStart() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcontainerservice.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewManagedClustersClient().BeginStart(ctx, "rg1", "clustername1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2026-07-02-preview/ManagedClustersStop.json
-func ExampleManagedClustersClient_BeginStop() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcontainerservice.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewManagedClustersClient().BeginStop(ctx, "rg1", "clustername1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2026-07-02-preview/ManagedClustersUpdateTags.json
-func ExampleManagedClustersClient_BeginUpdateTags() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcontainerservice.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewManagedClustersClient().BeginUpdateTags(ctx, "rg1", "clustername1", armcontainerservice.TagsObject{
-		Tags: map[string]*string{
-			"archv3": to.Ptr(""),
-			"tier":   to.Ptr("testing"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcontainerservice.ManagedClustersClientUpdateTagsResponse{
-	// 	ManagedCluster: armcontainerservice.ManagedCluster{
-	// 		Name: to.Ptr("clustername1"),
-	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusters"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1"),
-	// 		Location: to.Ptr("location1"),
-	// 		Properties: &armcontainerservice.ManagedClusterProperties{
-	// 			AgentPoolProfiles: []*armcontainerservice.ManagedClusterAgentPoolProfile{
-	// 				{
-	// 					Name: to.Ptr("nodepool1"),
-	// 					Count: to.Ptr[int32](3),
-	// 					CurrentOrchestratorVersion: to.Ptr("1.9.6"),
-	// 					MaxPods: to.Ptr[int32](110),
-	// 					OrchestratorVersion: to.Ptr("1.9.6"),
-	// 					OSType: to.Ptr(armcontainerservice.OSTypeLinux),
-	// 					ProvisioningState: to.Ptr("Succeeded"),
-	// 					VMSize: to.Ptr("Standard_DS1_v2"),
-	// 				},
-	// 			},
-	// 			DiskEncryptionSetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
-	// 			DNSPrefix: to.Ptr("dnsprefix1"),
-	// 			EnableRBAC: to.Ptr(false),
-	// 			Fqdn: to.Ptr("dnsprefix1-abcd1234.hcp.eastus.azmk8s.io"),
-	// 			KubernetesVersion: to.Ptr("1.9.6"),
-	// 			LinuxProfile: &armcontainerservice.LinuxProfile{
-	// 				AdminUsername: to.Ptr("azureuser"),
-	// 				SSH: &armcontainerservice.SSHConfiguration{
-	// 					PublicKeys: []*armcontainerservice.SSHPublicKey{
-	// 						{
-	// 							KeyData: to.Ptr("keydata"),
-	// 						},
-	// 					},
-	// 				},
-	// 			},
-	// 			NetworkProfile: &armcontainerservice.NetworkProfile{
-	// 				DNSServiceIP: to.Ptr("10.0.0.10"),
-	// 				NetworkPlugin: to.Ptr(armcontainerservice.NetworkPluginKubenet),
-	// 				PodCidr: to.Ptr("10.244.0.0/16"),
-	// 				ServiceCidr: to.Ptr("10.0.0.0/16"),
-	// 			},
-	// 			NodeResourceGroup: to.Ptr("MC_rg1_clustername1_location1"),
-	// 			ProvisioningState: to.Ptr("Succeeded"),
-	// 			ServicePrincipalProfile: &armcontainerservice.ManagedClusterServicePrincipalProfile{
-	// 				ClientID: to.Ptr("clientid"),
-	// 			},
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"archv3": to.Ptr(""),
-	// 			"tier": to.Ptr("testing"),
-	// 		},
-	// 	},
-	// }
 }

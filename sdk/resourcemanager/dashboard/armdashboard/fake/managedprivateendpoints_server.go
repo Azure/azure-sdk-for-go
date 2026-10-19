@@ -29,14 +29,6 @@ type ManagedPrivateEndpointsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, workspaceName string, managedPrivateEndpointName string, options *armdashboard.ManagedPrivateEndpointsClientBeginDeleteOptions) (resp azfake.PollerResponder[armdashboard.ManagedPrivateEndpointsClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method ManagedPrivateEndpointsClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, workspaceName string, managedPrivateEndpointName string, options *armdashboard.ManagedPrivateEndpointsClientGetOptions) (resp azfake.Responder[armdashboard.ManagedPrivateEndpointsClientGetResponse], errResp azfake.ErrorResponder)
-
-	// NewListPager is the fake for method ManagedPrivateEndpointsClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, workspaceName string, options *armdashboard.ManagedPrivateEndpointsClientListOptions) (resp azfake.PagerResponder[armdashboard.ManagedPrivateEndpointsClientListResponse])
-
 	// BeginRefresh is the fake for method ManagedPrivateEndpointsClient.BeginRefresh
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginRefresh func(ctx context.Context, resourceGroupName string, workspaceName string, options *armdashboard.ManagedPrivateEndpointsClientBeginRefreshOptions) (resp azfake.PollerResponder[armdashboard.ManagedPrivateEndpointsClientRefreshResponse], errResp azfake.ErrorResponder)
@@ -44,6 +36,14 @@ type ManagedPrivateEndpointsServer struct {
 	// BeginUpdate is the fake for method ManagedPrivateEndpointsClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, resourceGroupName string, workspaceName string, managedPrivateEndpointName string, requestBodyParameters armdashboard.ManagedPrivateEndpointUpdateParameters, options *armdashboard.ManagedPrivateEndpointsClientBeginUpdateOptions) (resp azfake.PollerResponder[armdashboard.ManagedPrivateEndpointsClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method ManagedPrivateEndpointsClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, workspaceName string, managedPrivateEndpointName string, options *armdashboard.ManagedPrivateEndpointsClientGetOptions) (resp azfake.Responder[armdashboard.ManagedPrivateEndpointsClientGetResponse], errResp azfake.ErrorResponder)
+
+	// NewListPager is the fake for method ManagedPrivateEndpointsClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(resourceGroupName string, workspaceName string, options *armdashboard.ManagedPrivateEndpointsClientListOptions) (resp azfake.PagerResponder[armdashboard.ManagedPrivateEndpointsClientListResponse])
 }
 
 // NewManagedPrivateEndpointsServerTransport creates a new instance of ManagedPrivateEndpointsServerTransport with the provided implementation.
@@ -54,9 +54,9 @@ func NewManagedPrivateEndpointsServerTransport(srv *ManagedPrivateEndpointsServe
 		srv:          srv,
 		beginCreate:  newTracker[azfake.PollerResponder[armdashboard.ManagedPrivateEndpointsClientCreateResponse]](),
 		beginDelete:  newTracker[azfake.PollerResponder[armdashboard.ManagedPrivateEndpointsClientDeleteResponse]](),
-		newListPager: newTracker[azfake.PagerResponder[armdashboard.ManagedPrivateEndpointsClientListResponse]](),
 		beginRefresh: newTracker[azfake.PollerResponder[armdashboard.ManagedPrivateEndpointsClientRefreshResponse]](),
 		beginUpdate:  newTracker[azfake.PollerResponder[armdashboard.ManagedPrivateEndpointsClientUpdateResponse]](),
+		newListPager: newTracker[azfake.PagerResponder[armdashboard.ManagedPrivateEndpointsClientListResponse]](),
 	}
 }
 
@@ -66,9 +66,9 @@ type ManagedPrivateEndpointsServerTransport struct {
 	srv          *ManagedPrivateEndpointsServer
 	beginCreate  *tracker[azfake.PollerResponder[armdashboard.ManagedPrivateEndpointsClientCreateResponse]]
 	beginDelete  *tracker[azfake.PollerResponder[armdashboard.ManagedPrivateEndpointsClientDeleteResponse]]
-	newListPager *tracker[azfake.PagerResponder[armdashboard.ManagedPrivateEndpointsClientListResponse]]
 	beginRefresh *tracker[azfake.PollerResponder[armdashboard.ManagedPrivateEndpointsClientRefreshResponse]]
 	beginUpdate  *tracker[azfake.PollerResponder[armdashboard.ManagedPrivateEndpointsClientUpdateResponse]]
+	newListPager *tracker[azfake.PagerResponder[armdashboard.ManagedPrivateEndpointsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for ManagedPrivateEndpointsServerTransport.
@@ -96,14 +96,14 @@ func (m *ManagedPrivateEndpointsServerTransport) dispatchToMethodFake(req *http.
 				res.resp, res.err = m.dispatchBeginCreate(req)
 			case "ManagedPrivateEndpointsClient.BeginDelete":
 				res.resp, res.err = m.dispatchBeginDelete(req)
-			case "ManagedPrivateEndpointsClient.Get":
-				res.resp, res.err = m.dispatchGet(req)
-			case "ManagedPrivateEndpointsClient.NewListPager":
-				res.resp, res.err = m.dispatchNewListPager(req)
 			case "ManagedPrivateEndpointsClient.BeginRefresh":
 				res.resp, res.err = m.dispatchBeginRefresh(req)
 			case "ManagedPrivateEndpointsClient.BeginUpdate":
 				res.resp, res.err = m.dispatchBeginUpdate(req)
+			case "ManagedPrivateEndpointsClient.Get":
+				res.resp, res.err = m.dispatchGet(req)
+			case "ManagedPrivateEndpointsClient.NewListPager":
+				res.resp, res.err = m.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -220,84 +220,6 @@ func (m *ManagedPrivateEndpointsServerTransport) dispatchBeginDelete(req *http.R
 	return resp, nil
 }
 
-func (m *ManagedPrivateEndpointsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if m.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Dashboard/grafana/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/managedPrivateEndpoints/(?P<managedPrivateEndpointName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
-	if err != nil {
-		return nil, err
-	}
-	managedPrivateEndpointNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("managedPrivateEndpointName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := m.srv.Get(req.Context(), resourceGroupNameParam, workspaceNameParam, managedPrivateEndpointNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ManagedPrivateEndpointModel, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (m *ManagedPrivateEndpointsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if m.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := m.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Dashboard/grafana/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/managedPrivateEndpoints`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := m.srv.NewListPager(resourceGroupNameParam, workspaceNameParam, nil)
-		newListPager = &resp
-		m.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armdashboard.ManagedPrivateEndpointsClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		m.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		m.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (m *ManagedPrivateEndpointsServerTransport) dispatchBeginRefresh(req *http.Request) (*http.Response, error) {
 	if m.srv.BeginRefresh == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginRefresh not implemented")}
@@ -391,6 +313,84 @@ func (m *ManagedPrivateEndpointsServerTransport) dispatchBeginUpdate(req *http.R
 		m.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (m *ManagedPrivateEndpointsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if m.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Dashboard/grafana/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/managedPrivateEndpoints/(?P<managedPrivateEndpointName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
+	if err != nil {
+		return nil, err
+	}
+	managedPrivateEndpointNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("managedPrivateEndpointName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := m.srv.Get(req.Context(), resourceGroupNameParam, workspaceNameParam, managedPrivateEndpointNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ManagedPrivateEndpointModel, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (m *ManagedPrivateEndpointsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if m.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := m.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Dashboard/grafana/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/managedPrivateEndpoints`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := m.srv.NewListPager(resourceGroupNameParam, workspaceNameParam, nil)
+		newListPager = &resp
+		m.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armdashboard.ManagedPrivateEndpointsClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		m.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		m.newListPager.remove(req)
+	}
 	return resp, nil
 }
 

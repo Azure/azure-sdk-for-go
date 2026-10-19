@@ -30,6 +30,14 @@ type NetworkConnectionsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, networkConnectionName string, options *armdevcenter.NetworkConnectionsClientBeginDeleteOptions) (resp azfake.PollerResponder[armdevcenter.NetworkConnectionsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginRunHealthChecks is the fake for method NetworkConnectionsClient.BeginRunHealthChecks
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginRunHealthChecks func(ctx context.Context, resourceGroupName string, networkConnectionName string, options *armdevcenter.NetworkConnectionsClientBeginRunHealthChecksOptions) (resp azfake.PollerResponder[armdevcenter.NetworkConnectionsClientRunHealthChecksResponse], errResp azfake.ErrorResponder)
+
+	// BeginUpdate is the fake for method NetworkConnectionsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, networkConnectionName string, body armdevcenter.NetworkConnectionUpdate, options *armdevcenter.NetworkConnectionsClientBeginUpdateOptions) (resp azfake.PollerResponder[armdevcenter.NetworkConnectionsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method NetworkConnectionsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, networkConnectionName string, options *armdevcenter.NetworkConnectionsClientGetOptions) (resp azfake.Responder[armdevcenter.NetworkConnectionsClientGetResponse], errResp azfake.ErrorResponder)
@@ -53,14 +61,6 @@ type NetworkConnectionsServer struct {
 	// NewListOutboundNetworkDependenciesEndpointsPager is the fake for method NetworkConnectionsClient.NewListOutboundNetworkDependenciesEndpointsPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListOutboundNetworkDependenciesEndpointsPager func(resourceGroupName string, networkConnectionName string, options *armdevcenter.NetworkConnectionsClientListOutboundNetworkDependenciesEndpointsOptions) (resp azfake.PagerResponder[armdevcenter.NetworkConnectionsClientListOutboundNetworkDependenciesEndpointsResponse])
-
-	// BeginRunHealthChecks is the fake for method NetworkConnectionsClient.BeginRunHealthChecks
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginRunHealthChecks func(ctx context.Context, resourceGroupName string, networkConnectionName string, options *armdevcenter.NetworkConnectionsClientBeginRunHealthChecksOptions) (resp azfake.PollerResponder[armdevcenter.NetworkConnectionsClientRunHealthChecksResponse], errResp azfake.ErrorResponder)
-
-	// BeginUpdate is the fake for method NetworkConnectionsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, networkConnectionName string, body armdevcenter.NetworkConnectionUpdate, options *armdevcenter.NetworkConnectionsClientBeginUpdateOptions) (resp azfake.PollerResponder[armdevcenter.NetworkConnectionsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewNetworkConnectionsServerTransport creates a new instance of NetworkConnectionsServerTransport with the provided implementation.
@@ -71,12 +71,12 @@ func NewNetworkConnectionsServerTransport(srv *NetworkConnectionsServer) *Networ
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armdevcenter.NetworkConnectionsClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armdevcenter.NetworkConnectionsClientDeleteResponse]](),
+		beginRunHealthChecks:        newTracker[azfake.PollerResponder[armdevcenter.NetworkConnectionsClientRunHealthChecksResponse]](),
+		beginUpdate:                 newTracker[azfake.PollerResponder[armdevcenter.NetworkConnectionsClientUpdateResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armdevcenter.NetworkConnectionsClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armdevcenter.NetworkConnectionsClientListBySubscriptionResponse]](),
 		newListHealthDetailsPager:   newTracker[azfake.PagerResponder[armdevcenter.NetworkConnectionsClientListHealthDetailsResponse]](),
 		newListOutboundNetworkDependenciesEndpointsPager: newTracker[azfake.PagerResponder[armdevcenter.NetworkConnectionsClientListOutboundNetworkDependenciesEndpointsResponse]](),
-		beginRunHealthChecks:                             newTracker[azfake.PollerResponder[armdevcenter.NetworkConnectionsClientRunHealthChecksResponse]](),
-		beginUpdate:                                      newTracker[azfake.PollerResponder[armdevcenter.NetworkConnectionsClientUpdateResponse]](),
 	}
 }
 
@@ -86,12 +86,12 @@ type NetworkConnectionsServerTransport struct {
 	srv                                              *NetworkConnectionsServer
 	beginCreateOrUpdate                              *tracker[azfake.PollerResponder[armdevcenter.NetworkConnectionsClientCreateOrUpdateResponse]]
 	beginDelete                                      *tracker[azfake.PollerResponder[armdevcenter.NetworkConnectionsClientDeleteResponse]]
+	beginRunHealthChecks                             *tracker[azfake.PollerResponder[armdevcenter.NetworkConnectionsClientRunHealthChecksResponse]]
+	beginUpdate                                      *tracker[azfake.PollerResponder[armdevcenter.NetworkConnectionsClientUpdateResponse]]
 	newListByResourceGroupPager                      *tracker[azfake.PagerResponder[armdevcenter.NetworkConnectionsClientListByResourceGroupResponse]]
 	newListBySubscriptionPager                       *tracker[azfake.PagerResponder[armdevcenter.NetworkConnectionsClientListBySubscriptionResponse]]
 	newListHealthDetailsPager                        *tracker[azfake.PagerResponder[armdevcenter.NetworkConnectionsClientListHealthDetailsResponse]]
 	newListOutboundNetworkDependenciesEndpointsPager *tracker[azfake.PagerResponder[armdevcenter.NetworkConnectionsClientListOutboundNetworkDependenciesEndpointsResponse]]
-	beginRunHealthChecks                             *tracker[azfake.PollerResponder[armdevcenter.NetworkConnectionsClientRunHealthChecksResponse]]
-	beginUpdate                                      *tracker[azfake.PollerResponder[armdevcenter.NetworkConnectionsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for NetworkConnectionsServerTransport.
@@ -119,6 +119,10 @@ func (n *NetworkConnectionsServerTransport) dispatchToMethodFake(req *http.Reque
 				res.resp, res.err = n.dispatchBeginCreateOrUpdate(req)
 			case "NetworkConnectionsClient.BeginDelete":
 				res.resp, res.err = n.dispatchBeginDelete(req)
+			case "NetworkConnectionsClient.BeginRunHealthChecks":
+				res.resp, res.err = n.dispatchBeginRunHealthChecks(req)
+			case "NetworkConnectionsClient.BeginUpdate":
+				res.resp, res.err = n.dispatchBeginUpdate(req)
 			case "NetworkConnectionsClient.Get":
 				res.resp, res.err = n.dispatchGet(req)
 			case "NetworkConnectionsClient.GetHealthDetails":
@@ -131,10 +135,6 @@ func (n *NetworkConnectionsServerTransport) dispatchToMethodFake(req *http.Reque
 				res.resp, res.err = n.dispatchNewListHealthDetailsPager(req)
 			case "NetworkConnectionsClient.NewListOutboundNetworkDependenciesEndpointsPager":
 				res.resp, res.err = n.dispatchNewListOutboundNetworkDependenciesEndpointsPager(req)
-			case "NetworkConnectionsClient.BeginRunHealthChecks":
-				res.resp, res.err = n.dispatchBeginRunHealthChecks(req)
-			case "NetworkConnectionsClient.BeginUpdate":
-				res.resp, res.err = n.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -238,6 +238,98 @@ func (n *NetworkConnectionsServerTransport) dispatchBeginDelete(req *http.Reques
 	}
 	if !server.PollerResponderMore(beginDelete) {
 		n.beginDelete.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (n *NetworkConnectionsServerTransport) dispatchBeginRunHealthChecks(req *http.Request) (*http.Response, error) {
+	if n.srv.BeginRunHealthChecks == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginRunHealthChecks not implemented")}
+	}
+	beginRunHealthChecks := n.beginRunHealthChecks.get(req)
+	if beginRunHealthChecks == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DevCenter/networkConnections/(?P<networkConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/runHealthChecks`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		networkConnectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkConnectionName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := n.srv.BeginRunHealthChecks(req.Context(), resourceGroupNameParam, networkConnectionNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginRunHealthChecks = &respr
+		n.beginRunHealthChecks.add(req, beginRunHealthChecks)
+	}
+
+	resp, err := server.PollerResponderNext(beginRunHealthChecks, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		n.beginRunHealthChecks.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginRunHealthChecks) {
+		n.beginRunHealthChecks.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (n *NetworkConnectionsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if n.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := n.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DevCenter/networkConnections/(?P<networkConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armdevcenter.NetworkConnectionUpdate](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		networkConnectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkConnectionName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := n.srv.BeginUpdate(req.Context(), resourceGroupNameParam, networkConnectionNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		n.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		n.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		n.beginUpdate.remove(req)
 	}
 
 	return resp, nil
@@ -526,98 +618,6 @@ func (n *NetworkConnectionsServerTransport) dispatchNewListOutboundNetworkDepend
 	if !server.PagerResponderMore(newListOutboundNetworkDependenciesEndpointsPager) {
 		n.newListOutboundNetworkDependenciesEndpointsPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (n *NetworkConnectionsServerTransport) dispatchBeginRunHealthChecks(req *http.Request) (*http.Response, error) {
-	if n.srv.BeginRunHealthChecks == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginRunHealthChecks not implemented")}
-	}
-	beginRunHealthChecks := n.beginRunHealthChecks.get(req)
-	if beginRunHealthChecks == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DevCenter/networkConnections/(?P<networkConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/runHealthChecks`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		networkConnectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkConnectionName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := n.srv.BeginRunHealthChecks(req.Context(), resourceGroupNameParam, networkConnectionNameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginRunHealthChecks = &respr
-		n.beginRunHealthChecks.add(req, beginRunHealthChecks)
-	}
-
-	resp, err := server.PollerResponderNext(beginRunHealthChecks, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		n.beginRunHealthChecks.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginRunHealthChecks) {
-		n.beginRunHealthChecks.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (n *NetworkConnectionsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if n.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := n.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DevCenter/networkConnections/(?P<networkConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armdevcenter.NetworkConnectionUpdate](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		networkConnectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkConnectionName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := n.srv.BeginUpdate(req.Context(), resourceGroupNameParam, networkConnectionNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		n.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		n.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		n.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

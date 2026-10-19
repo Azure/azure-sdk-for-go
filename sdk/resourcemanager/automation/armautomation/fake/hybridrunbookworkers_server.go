@@ -33,13 +33,13 @@ type HybridRunbookWorkersServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, automationAccountName string, hybridRunbookWorkerGroupName string, hybridRunbookWorkerID string, options *armautomation.HybridRunbookWorkersClientGetOptions) (resp azfake.Responder[armautomation.HybridRunbookWorkersClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListByHybridRunbookWorkerGroupPager is the fake for method HybridRunbookWorkersClient.NewListByHybridRunbookWorkerGroupPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByHybridRunbookWorkerGroupPager func(resourceGroupName string, automationAccountName string, hybridRunbookWorkerGroupName string, options *armautomation.HybridRunbookWorkersClientListByHybridRunbookWorkerGroupOptions) (resp azfake.PagerResponder[armautomation.HybridRunbookWorkersClientListByHybridRunbookWorkerGroupResponse])
-
 	// Move is the fake for method HybridRunbookWorkersClient.Move
 	// HTTP status codes to indicate success: http.StatusOK
 	Move func(ctx context.Context, resourceGroupName string, automationAccountName string, hybridRunbookWorkerGroupName string, hybridRunbookWorkerID string, hybridRunbookWorkerMoveParameters armautomation.HybridRunbookWorkerMoveParameters, options *armautomation.HybridRunbookWorkersClientMoveOptions) (resp azfake.Responder[armautomation.HybridRunbookWorkersClientMoveResponse], errResp azfake.ErrorResponder)
+
+	// NewListByHybridRunbookWorkerGroupPager is the fake for method HybridRunbookWorkersClient.NewListByHybridRunbookWorkerGroupPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByHybridRunbookWorkerGroupPager func(resourceGroupName string, automationAccountName string, hybridRunbookWorkerGroupName string, options *armautomation.HybridRunbookWorkersClientListByHybridRunbookWorkerGroupOptions) (resp azfake.PagerResponder[armautomation.HybridRunbookWorkersClientListByHybridRunbookWorkerGroupResponse])
 
 	// Patch is the fake for method HybridRunbookWorkersClient.Patch
 	// HTTP status codes to indicate success: http.StatusOK
@@ -90,10 +90,10 @@ func (h *HybridRunbookWorkersServerTransport) dispatchToMethodFake(req *http.Req
 				res.resp, res.err = h.dispatchDelete(req)
 			case "HybridRunbookWorkersClient.Get":
 				res.resp, res.err = h.dispatchGet(req)
-			case "HybridRunbookWorkersClient.NewListByHybridRunbookWorkerGroupPager":
-				res.resp, res.err = h.dispatchNewListByHybridRunbookWorkerGroupPager(req)
 			case "HybridRunbookWorkersClient.Move":
 				res.resp, res.err = h.dispatchMove(req)
+			case "HybridRunbookWorkersClient.NewListByHybridRunbookWorkerGroupPager":
+				res.resp, res.err = h.dispatchNewListByHybridRunbookWorkerGroupPager(req)
 			case "HybridRunbookWorkersClient.Patch":
 				res.resp, res.err = h.dispatchPatch(req)
 			default:
@@ -239,6 +239,51 @@ func (h *HybridRunbookWorkersServerTransport) dispatchGet(req *http.Request) (*h
 	return resp, nil
 }
 
+func (h *HybridRunbookWorkersServerTransport) dispatchMove(req *http.Request) (*http.Response, error) {
+	if h.srv.Move == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Move not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/hybridRunbookWorkerGroups/(?P<hybridRunbookWorkerGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/hybridRunbookWorkers/(?P<hybridRunbookWorkerId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/move`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 6 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armautomation.HybridRunbookWorkerMoveParameters](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	automationAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("automationAccountName")])
+	if err != nil {
+		return nil, err
+	}
+	hybridRunbookWorkerGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("hybridRunbookWorkerGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	hybridRunbookWorkerIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("hybridRunbookWorkerId")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := h.srv.Move(req.Context(), resourceGroupNameParam, automationAccountNameParam, hybridRunbookWorkerGroupNameParam, hybridRunbookWorkerIDParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.NewResponse(respContent, req, nil)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (h *HybridRunbookWorkersServerTransport) dispatchNewListByHybridRunbookWorkerGroupPager(req *http.Request) (*http.Response, error) {
 	if h.srv.NewListByHybridRunbookWorkerGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByHybridRunbookWorkerGroupPager not implemented")}
@@ -288,51 +333,6 @@ func (h *HybridRunbookWorkersServerTransport) dispatchNewListByHybridRunbookWork
 	}
 	if !server.PagerResponderMore(newListByHybridRunbookWorkerGroupPager) {
 		h.newListByHybridRunbookWorkerGroupPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (h *HybridRunbookWorkersServerTransport) dispatchMove(req *http.Request) (*http.Response, error) {
-	if h.srv.Move == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Move not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/hybridRunbookWorkerGroups/(?P<hybridRunbookWorkerGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/hybridRunbookWorkers/(?P<hybridRunbookWorkerId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/move`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 6 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armautomation.HybridRunbookWorkerMoveParameters](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	automationAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("automationAccountName")])
-	if err != nil {
-		return nil, err
-	}
-	hybridRunbookWorkerGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("hybridRunbookWorkerGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	hybridRunbookWorkerIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("hybridRunbookWorkerId")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := h.srv.Move(req.Context(), resourceGroupNameParam, automationAccountNameParam, hybridRunbookWorkerGroupNameParam, hybridRunbookWorkerIDParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
 	}
 	return resp, nil
 }

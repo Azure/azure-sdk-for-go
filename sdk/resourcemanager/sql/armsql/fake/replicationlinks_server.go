@@ -37,6 +37,10 @@ type ReplicationLinksServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginFailoverAllowDataLoss func(ctx context.Context, resourceGroupName string, serverName string, databaseName string, linkID string, options *armsql.ReplicationLinksClientBeginFailoverAllowDataLossOptions) (resp azfake.PollerResponder[armsql.ReplicationLinksClientFailoverAllowDataLossResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method ReplicationLinksClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, serverName string, databaseName string, linkID string, parameters armsql.ReplicationLinkUpdate, options *armsql.ReplicationLinksClientBeginUpdateOptions) (resp azfake.PollerResponder[armsql.ReplicationLinksClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method ReplicationLinksClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, serverName string, databaseName string, linkID string, options *armsql.ReplicationLinksClientGetOptions) (resp azfake.Responder[armsql.ReplicationLinksClientGetResponse], errResp azfake.ErrorResponder)
@@ -48,10 +52,6 @@ type ReplicationLinksServer struct {
 	// NewListByServerPager is the fake for method ReplicationLinksClient.NewListByServerPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByServerPager func(resourceGroupName string, serverName string, options *armsql.ReplicationLinksClientListByServerOptions) (resp azfake.PagerResponder[armsql.ReplicationLinksClientListByServerResponse])
-
-	// BeginUpdate is the fake for method ReplicationLinksClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, serverName string, databaseName string, linkID string, parameters armsql.ReplicationLinkUpdate, options *armsql.ReplicationLinksClientBeginUpdateOptions) (resp azfake.PollerResponder[armsql.ReplicationLinksClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewReplicationLinksServerTransport creates a new instance of ReplicationLinksServerTransport with the provided implementation.
@@ -64,9 +64,9 @@ func NewReplicationLinksServerTransport(srv *ReplicationLinksServer) *Replicatio
 		beginDelete:                newTracker[azfake.PollerResponder[armsql.ReplicationLinksClientDeleteResponse]](),
 		beginFailover:              newTracker[azfake.PollerResponder[armsql.ReplicationLinksClientFailoverResponse]](),
 		beginFailoverAllowDataLoss: newTracker[azfake.PollerResponder[armsql.ReplicationLinksClientFailoverAllowDataLossResponse]](),
+		beginUpdate:                newTracker[azfake.PollerResponder[armsql.ReplicationLinksClientUpdateResponse]](),
 		newListByDatabasePager:     newTracker[azfake.PagerResponder[armsql.ReplicationLinksClientListByDatabaseResponse]](),
 		newListByServerPager:       newTracker[azfake.PagerResponder[armsql.ReplicationLinksClientListByServerResponse]](),
-		beginUpdate:                newTracker[azfake.PollerResponder[armsql.ReplicationLinksClientUpdateResponse]](),
 	}
 }
 
@@ -78,9 +78,9 @@ type ReplicationLinksServerTransport struct {
 	beginDelete                *tracker[azfake.PollerResponder[armsql.ReplicationLinksClientDeleteResponse]]
 	beginFailover              *tracker[azfake.PollerResponder[armsql.ReplicationLinksClientFailoverResponse]]
 	beginFailoverAllowDataLoss *tracker[azfake.PollerResponder[armsql.ReplicationLinksClientFailoverAllowDataLossResponse]]
+	beginUpdate                *tracker[azfake.PollerResponder[armsql.ReplicationLinksClientUpdateResponse]]
 	newListByDatabasePager     *tracker[azfake.PagerResponder[armsql.ReplicationLinksClientListByDatabaseResponse]]
 	newListByServerPager       *tracker[azfake.PagerResponder[armsql.ReplicationLinksClientListByServerResponse]]
-	beginUpdate                *tracker[azfake.PollerResponder[armsql.ReplicationLinksClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for ReplicationLinksServerTransport.
@@ -112,14 +112,14 @@ func (r *ReplicationLinksServerTransport) dispatchToMethodFake(req *http.Request
 				res.resp, res.err = r.dispatchBeginFailover(req)
 			case "ReplicationLinksClient.BeginFailoverAllowDataLoss":
 				res.resp, res.err = r.dispatchBeginFailoverAllowDataLoss(req)
+			case "ReplicationLinksClient.BeginUpdate":
+				res.resp, res.err = r.dispatchBeginUpdate(req)
 			case "ReplicationLinksClient.Get":
 				res.resp, res.err = r.dispatchGet(req)
 			case "ReplicationLinksClient.NewListByDatabasePager":
 				res.resp, res.err = r.dispatchNewListByDatabasePager(req)
 			case "ReplicationLinksClient.NewListByServerPager":
 				res.resp, res.err = r.dispatchNewListByServerPager(req)
-			case "ReplicationLinksClient.BeginUpdate":
-				res.resp, res.err = r.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -348,6 +348,62 @@ func (r *ReplicationLinksServerTransport) dispatchBeginFailoverAllowDataLoss(req
 	return resp, nil
 }
 
+func (r *ReplicationLinksServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if r.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := r.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/servers/(?P<serverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/replicationLinks/(?P<linkId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 6 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armsql.ReplicationLinkUpdate](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
+		if err != nil {
+			return nil, err
+		}
+		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
+		if err != nil {
+			return nil, err
+		}
+		linkIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("linkId")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := r.srv.BeginUpdate(req.Context(), resourceGroupNameParam, serverNameParam, databaseNameParam, linkIDParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		r.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		r.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		r.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (r *ReplicationLinksServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if r.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -472,62 +528,6 @@ func (r *ReplicationLinksServerTransport) dispatchNewListByServerPager(req *http
 	if !server.PagerResponderMore(newListByServerPager) {
 		r.newListByServerPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (r *ReplicationLinksServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if r.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := r.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/servers/(?P<serverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/replicationLinks/(?P<linkId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 6 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armsql.ReplicationLinkUpdate](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
-		if err != nil {
-			return nil, err
-		}
-		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
-		if err != nil {
-			return nil, err
-		}
-		linkIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("linkId")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := r.srv.BeginUpdate(req.Context(), resourceGroupNameParam, serverNameParam, databaseNameParam, linkIDParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		r.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		r.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		r.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

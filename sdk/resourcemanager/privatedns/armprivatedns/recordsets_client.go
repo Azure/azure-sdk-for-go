@@ -260,88 +260,6 @@ func (client *RecordSetsClient) getHandleResponse(resp *http.Response, successCo
 	return result, nil
 }
 
-// NewListPager - Lists all record sets in a Private DNS zone.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - privateZoneName - The name of the Private DNS zone (without a terminating dot).
-//   - options - RecordSetsClientListOptions contains the optional parameters for the RecordSetsClient.NewListPager method.
-func (client *RecordSetsClient) NewListPager(resourceGroupName string, privateZoneName string, options *RecordSetsClientListOptions) *runtime.Pager[RecordSetsClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[RecordSetsClientListResponse]{
-		More: func(page RecordSetsClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *RecordSetsClientListResponse) (RecordSetsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "RecordSetsClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listCreateRequest(ctx, resourceGroupName, privateZoneName, nextLink, options)
-			if err != nil {
-				return RecordSetsClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return RecordSetsClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *RecordSetsClient) listCreateRequest(ctx context.Context, resourceGroupName string, privateZoneName string, nextLink string, options *RecordSetsClientListOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateDnsZones/{privateZoneName}/aLL"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		if resourceGroupName == "" {
-			return nil, errors.New("parameter resourceGroupName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-		if privateZoneName == "" {
-			return nil, errors.New("parameter privateZoneName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{privateZoneName}", url.PathEscape(privateZoneName))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		if options != nil && options.Recordsetnamesuffix != nil {
-			reqQP.Set("$recordsetnamesuffix", *options.Recordsetnamesuffix)
-		}
-		if options != nil && options.Top != nil {
-			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-		}
-		reqQP.Set("api-version", version20240601)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *RecordSetsClient) listHandleResponse(resp *http.Response, successCodes ...int) (RecordSetsClientListResponse, error) {
-	result := RecordSetsClientListResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.RecordSetListResult); err != nil {
-		return RecordSetsClientListResponse{}, err
-	}
-	return result, nil
-}
-
 // NewListByTypePager - Lists the record sets of a specified type in a Private DNS zone.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateZoneName - The name of the DNS zone (without a terminating dot).
@@ -426,6 +344,88 @@ func (client *RecordSetsClient) listByTypeHandleResponse(resp *http.Response, su
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecordSetListResult); err != nil {
 		return RecordSetsClientListByTypeResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListPager - Lists all record sets in a Private DNS zone.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - privateZoneName - The name of the Private DNS zone (without a terminating dot).
+//   - options - RecordSetsClientListOptions contains the optional parameters for the RecordSetsClient.NewListPager method.
+func (client *RecordSetsClient) NewListPager(resourceGroupName string, privateZoneName string, options *RecordSetsClientListOptions) *runtime.Pager[RecordSetsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[RecordSetsClientListResponse]{
+		More: func(page RecordSetsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *RecordSetsClientListResponse) (RecordSetsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "RecordSetsClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, resourceGroupName, privateZoneName, nextLink, options)
+			if err != nil {
+				return RecordSetsClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return RecordSetsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listCreateRequest creates the List request.
+func (client *RecordSetsClient) listCreateRequest(ctx context.Context, resourceGroupName string, privateZoneName string, nextLink string, options *RecordSetsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateDnsZones/{privateZoneName}/aLL"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if privateZoneName == "" {
+			return nil, errors.New("parameter privateZoneName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{privateZoneName}", url.PathEscape(privateZoneName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Recordsetnamesuffix != nil {
+			reqQP.Set("$recordsetnamesuffix", *options.Recordsetnamesuffix)
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20240601)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listHandleResponse handles the List response.
+func (client *RecordSetsClient) listHandleResponse(resp *http.Response, successCodes ...int) (RecordSetsClientListResponse, error) {
+	result := RecordSetsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RecordSetListResult); err != nil {
+		return RecordSetsClientListResponse{}, err
 	}
 	return result, nil
 }

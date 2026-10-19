@@ -29,6 +29,10 @@ type OperatorAPIConnectionsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, operatorAPIConnectionName string, options *armprogrammableconnectivity.OperatorAPIConnectionsClientBeginDeleteOptions) (resp azfake.PollerResponder[armprogrammableconnectivity.OperatorAPIConnectionsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method OperatorAPIConnectionsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, operatorAPIConnectionName string, properties armprogrammableconnectivity.OperatorAPIConnectionUpdate, options *armprogrammableconnectivity.OperatorAPIConnectionsClientBeginUpdateOptions) (resp azfake.PollerResponder[armprogrammableconnectivity.OperatorAPIConnectionsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method OperatorAPIConnectionsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, operatorAPIConnectionName string, options *armprogrammableconnectivity.OperatorAPIConnectionsClientGetOptions) (resp azfake.Responder[armprogrammableconnectivity.OperatorAPIConnectionsClientGetResponse], errResp azfake.ErrorResponder)
@@ -40,10 +44,6 @@ type OperatorAPIConnectionsServer struct {
 	// NewListBySubscriptionPager is the fake for method OperatorAPIConnectionsClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armprogrammableconnectivity.OperatorAPIConnectionsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armprogrammableconnectivity.OperatorAPIConnectionsClientListBySubscriptionResponse])
-
-	// BeginUpdate is the fake for method OperatorAPIConnectionsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, operatorAPIConnectionName string, properties armprogrammableconnectivity.OperatorAPIConnectionUpdate, options *armprogrammableconnectivity.OperatorAPIConnectionsClientBeginUpdateOptions) (resp azfake.PollerResponder[armprogrammableconnectivity.OperatorAPIConnectionsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewOperatorAPIConnectionsServerTransport creates a new instance of OperatorAPIConnectionsServerTransport with the provided implementation.
@@ -54,9 +54,9 @@ func NewOperatorAPIConnectionsServerTransport(srv *OperatorAPIConnectionsServer)
 		srv:                         srv,
 		beginCreate:                 newTracker[azfake.PollerResponder[armprogrammableconnectivity.OperatorAPIConnectionsClientCreateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armprogrammableconnectivity.OperatorAPIConnectionsClientDeleteResponse]](),
+		beginUpdate:                 newTracker[azfake.PollerResponder[armprogrammableconnectivity.OperatorAPIConnectionsClientUpdateResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armprogrammableconnectivity.OperatorAPIConnectionsClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armprogrammableconnectivity.OperatorAPIConnectionsClientListBySubscriptionResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armprogrammableconnectivity.OperatorAPIConnectionsClientUpdateResponse]](),
 	}
 }
 
@@ -66,9 +66,9 @@ type OperatorAPIConnectionsServerTransport struct {
 	srv                         *OperatorAPIConnectionsServer
 	beginCreate                 *tracker[azfake.PollerResponder[armprogrammableconnectivity.OperatorAPIConnectionsClientCreateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armprogrammableconnectivity.OperatorAPIConnectionsClientDeleteResponse]]
+	beginUpdate                 *tracker[azfake.PollerResponder[armprogrammableconnectivity.OperatorAPIConnectionsClientUpdateResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armprogrammableconnectivity.OperatorAPIConnectionsClientListByResourceGroupResponse]]
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armprogrammableconnectivity.OperatorAPIConnectionsClientListBySubscriptionResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armprogrammableconnectivity.OperatorAPIConnectionsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for OperatorAPIConnectionsServerTransport.
@@ -96,14 +96,14 @@ func (o *OperatorAPIConnectionsServerTransport) dispatchToMethodFake(req *http.R
 				res.resp, res.err = o.dispatchBeginCreate(req)
 			case "OperatorAPIConnectionsClient.BeginDelete":
 				res.resp, res.err = o.dispatchBeginDelete(req)
+			case "OperatorAPIConnectionsClient.BeginUpdate":
+				res.resp, res.err = o.dispatchBeginUpdate(req)
 			case "OperatorAPIConnectionsClient.Get":
 				res.resp, res.err = o.dispatchGet(req)
 			case "OperatorAPIConnectionsClient.NewListByResourceGroupPager":
 				res.resp, res.err = o.dispatchNewListByResourceGroupPager(req)
 			case "OperatorAPIConnectionsClient.NewListBySubscriptionPager":
 				res.resp, res.err = o.dispatchNewListBySubscriptionPager(req)
-			case "OperatorAPIConnectionsClient.BeginUpdate":
-				res.resp, res.err = o.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -212,6 +212,54 @@ func (o *OperatorAPIConnectionsServerTransport) dispatchBeginDelete(req *http.Re
 	return resp, nil
 }
 
+func (o *OperatorAPIConnectionsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if o.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := o.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ProgrammableConnectivity/operatorApiConnections/(?P<operatorApiConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armprogrammableconnectivity.OperatorAPIConnectionUpdate](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		operatorAPIConnectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("operatorApiConnectionName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := o.srv.BeginUpdate(req.Context(), resourceGroupNameParam, operatorAPIConnectionNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		o.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		o.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		o.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (o *OperatorAPIConnectionsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if o.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -312,54 +360,6 @@ func (o *OperatorAPIConnectionsServerTransport) dispatchNewListBySubscriptionPag
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		o.newListBySubscriptionPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (o *OperatorAPIConnectionsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if o.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := o.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ProgrammableConnectivity/operatorApiConnections/(?P<operatorApiConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armprogrammableconnectivity.OperatorAPIConnectionUpdate](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		operatorAPIConnectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("operatorApiConnectionName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := o.srv.BeginUpdate(req.Context(), resourceGroupNameParam, operatorAPIConnectionNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		o.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		o.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		o.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

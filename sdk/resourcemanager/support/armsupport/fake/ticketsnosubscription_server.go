@@ -22,13 +22,13 @@ import (
 
 // TicketsNoSubscriptionServer is a fake server for instances of the armsupport.TicketsNoSubscriptionClient type.
 type TicketsNoSubscriptionServer struct {
-	// CheckNameAvailability is the fake for method TicketsNoSubscriptionClient.CheckNameAvailability
-	// HTTP status codes to indicate success: http.StatusOK
-	CheckNameAvailability func(ctx context.Context, checkNameAvailabilityInput armsupport.CheckNameAvailabilityInput, options *armsupport.TicketsNoSubscriptionClientCheckNameAvailabilityOptions) (resp azfake.Responder[armsupport.TicketsNoSubscriptionClientCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
-
 	// BeginCreate is the fake for method TicketsNoSubscriptionClient.BeginCreate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginCreate func(ctx context.Context, supportTicketName string, createSupportTicketParameters armsupport.TicketDetails, options *armsupport.TicketsNoSubscriptionClientBeginCreateOptions) (resp azfake.PollerResponder[armsupport.TicketsNoSubscriptionClientCreateResponse], errResp azfake.ErrorResponder)
+
+	// CheckNameAvailability is the fake for method TicketsNoSubscriptionClient.CheckNameAvailability
+	// HTTP status codes to indicate success: http.StatusOK
+	CheckNameAvailability func(ctx context.Context, checkNameAvailabilityInput armsupport.CheckNameAvailabilityInput, options *armsupport.TicketsNoSubscriptionClientCheckNameAvailabilityOptions) (resp azfake.Responder[armsupport.TicketsNoSubscriptionClientCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method TicketsNoSubscriptionClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -83,10 +83,10 @@ func (t *TicketsNoSubscriptionServerTransport) dispatchToMethodFake(req *http.Re
 		}
 		if !intercepted {
 			switch method {
-			case "TicketsNoSubscriptionClient.CheckNameAvailability":
-				res.resp, res.err = t.dispatchCheckNameAvailability(req)
 			case "TicketsNoSubscriptionClient.BeginCreate":
 				res.resp, res.err = t.dispatchBeginCreate(req)
+			case "TicketsNoSubscriptionClient.CheckNameAvailability":
+				res.resp, res.err = t.dispatchCheckNameAvailability(req)
 			case "TicketsNoSubscriptionClient.Get":
 				res.resp, res.err = t.dispatchGet(req)
 			case "TicketsNoSubscriptionClient.NewListPager":
@@ -107,29 +107,6 @@ func (t *TicketsNoSubscriptionServerTransport) dispatchToMethodFake(req *http.Re
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (t *TicketsNoSubscriptionServerTransport) dispatchCheckNameAvailability(req *http.Request) (*http.Response, error) {
-	if t.srv.CheckNameAvailability == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CheckNameAvailability not implemented")}
-	}
-	body, err := server.UnmarshalRequestAsJSON[armsupport.CheckNameAvailabilityInput](req)
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := t.srv.CheckNameAvailability(req.Context(), body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CheckNameAvailabilityOutput, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (t *TicketsNoSubscriptionServerTransport) dispatchBeginCreate(req *http.Request) (*http.Response, error) {
@@ -173,6 +150,29 @@ func (t *TicketsNoSubscriptionServerTransport) dispatchBeginCreate(req *http.Req
 		t.beginCreate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (t *TicketsNoSubscriptionServerTransport) dispatchCheckNameAvailability(req *http.Request) (*http.Response, error) {
+	if t.srv.CheckNameAvailability == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CheckNameAvailability not implemented")}
+	}
+	body, err := server.UnmarshalRequestAsJSON[armsupport.CheckNameAvailabilityInput](req)
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := t.srv.CheckNameAvailability(req.Context(), body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CheckNameAvailabilityOutput, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 

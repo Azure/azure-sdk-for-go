@@ -70,7 +70,7 @@ func (client *SecretsClient) BeginCreate(ctx context.Context, resourceGroupName 
 	}
 }
 
-// Create - Creates a new Secret within the specified profile.
+// create - Creates a new Secret within the specified profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *SecretsClient) create(ctx context.Context, resourceGroupName string, profileName string, secretName string, secret Secret, options *SecretsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
@@ -92,7 +92,7 @@ func (client *SecretsClient) create(ctx context.Context, resourceGroupName strin
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *SecretsClient) createCreateRequest(ctx context.Context, resourceGroupName string, profileName string, secretName string, secret Secret, _ *SecretsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/secrets/{secretName}"
 	if client.subscriptionID == "" {
@@ -151,7 +151,7 @@ func (client *SecretsClient) BeginDelete(ctx context.Context, resourceGroupName 
 	}
 }
 
-// Delete - Deletes an existing Secret within profile.
+// deleteOperation - Deletes an existing Secret within profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *SecretsClient) deleteOperation(ctx context.Context, resourceGroupName string, profileName string, secretName string, options *SecretsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -173,7 +173,7 @@ func (client *SecretsClient) deleteOperation(ctx context.Context, resourceGroupN
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *SecretsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, profileName string, secretName string, _ *SecretsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/secrets/{secretName}"
 	if client.subscriptionID == "" {

@@ -128,7 +128,7 @@ func (client *ExpressRoutePortsClient) createOrUpdateCreateRequest(ctx context.C
 //     method.
 func (client *ExpressRoutePortsClient) BeginDelete(ctx context.Context, resourceGroupName string, expressRoutePortName string, options *ExpressRoutePortsClientBeginDeleteOptions) (*runtime.Poller[ExpressRoutePortsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, expressRoutePortName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, expressRoutePortName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -144,9 +144,9 @@ func (client *ExpressRoutePortsClient) BeginDelete(ctx context.Context, resource
 	}
 }
 
-// delete - Deletes the specified ExpressRoutePort resource.
+// deleteOperation - Deletes the specified ExpressRoutePort resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *ExpressRoutePortsClient) delete(ctx context.Context, resourceGroupName string, expressRoutePortName string, options *ExpressRoutePortsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *ExpressRoutePortsClient) deleteOperation(ctx context.Context, resourceGroupName string, expressRoutePortName string, options *ExpressRoutePortsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ExpressRoutePortsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)

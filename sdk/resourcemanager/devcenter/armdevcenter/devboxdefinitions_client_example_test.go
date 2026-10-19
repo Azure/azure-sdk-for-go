@@ -94,6 +94,62 @@ func ExampleDevBoxDefinitionsClient_BeginDelete() {
 	}
 }
 
+// Generated from example definition: 2026-01-01-preview/DevBoxDefinitions_Patch.json
+func ExampleDevBoxDefinitionsClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdevcenter.NewClientFactory("0ac520ee-14c0-480f-b6c9-0a90c58fffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewDevBoxDefinitionsClient().BeginUpdate(ctx, "rg1", "Contoso", "WebDevBox", armdevcenter.DevBoxDefinitionUpdate{
+		Properties: &armdevcenter.DevBoxDefinitionUpdateProperties{
+			ImageReference: &armdevcenter.ImageReference{
+				ID: to.Ptr("/subscriptions/0ac520ee-14c0-480f-b6c9-0a90c58ffff/resourceGroups/Example/providers/Microsoft.DevCenter/devcenters/Contoso/galleries/contosogallery/images/exampleImage/version/2.0.0"),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdevcenter.DevBoxDefinitionsClientUpdateResponse{
+	// 	DevBoxDefinition: armdevcenter.DevBoxDefinition{
+	// 		Name: to.Ptr("WebDevBox"),
+	// 		Type: to.Ptr("Microsoft.DevCenter/devcenters/devboxdefinitions"),
+	// 		ID: to.Ptr("/subscriptions/0ac520ee-14c0-480f-b6c9-0a90c58ffff/resourceGroups/rg1/providers/Microsoft.DevCenter/devcenters/Contoso/devboxdefinitions/WebDevBox"),
+	// 		Location: to.Ptr("centralus"),
+	// 		Properties: &armdevcenter.DevBoxDefinitionProperties{
+	// 			HibernateSupport: to.Ptr(armdevcenter.HibernateSupportEnabled),
+	// 			ImageReference: &armdevcenter.ImageReference{
+	// 				ID: to.Ptr("/subscriptions/0ac520ee-14c0-480f-b6c9-0a90c58ffff/resourceGroups/Example/providers/Microsoft.DevCenter/devcenters/Contoso/galleries/contosogallery/images/exampleImage/version/2.0.0"),
+	// 			},
+	// 			ProvisioningState: to.Ptr(armdevcenter.ProvisioningStateSucceeded),
+	// 			SKU: &armdevcenter.SKU{
+	// 				Name: to.Ptr("Preview"),
+	// 			},
+	// 		},
+	// 		SystemData: &armdevcenter.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.November, 18, 18, 0, 36, 993000000, time.UTC)),
+	// 			CreatedBy: to.Ptr("user1"),
+	// 			CreatedByType: to.Ptr(armdevcenter.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.November, 18, 18, 30, 36, 993000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("user1"),
+	// 			LastModifiedByType: to.Ptr(armdevcenter.CreatedByTypeUser),
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2026-01-01-preview/DevBoxDefinitions_Get.json
 func ExampleDevBoxDefinitionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -294,60 +350,4 @@ func ExampleDevBoxDefinitionsClient_NewListByProjectPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-01-01-preview/DevBoxDefinitions_Patch.json
-func ExampleDevBoxDefinitionsClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdevcenter.NewClientFactory("0ac520ee-14c0-480f-b6c9-0a90c58fffff", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewDevBoxDefinitionsClient().BeginUpdate(ctx, "rg1", "Contoso", "WebDevBox", armdevcenter.DevBoxDefinitionUpdate{
-		Properties: &armdevcenter.DevBoxDefinitionUpdateProperties{
-			ImageReference: &armdevcenter.ImageReference{
-				ID: to.Ptr("/subscriptions/0ac520ee-14c0-480f-b6c9-0a90c58ffff/resourceGroups/Example/providers/Microsoft.DevCenter/devcenters/Contoso/galleries/contosogallery/images/exampleImage/version/2.0.0"),
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdevcenter.DevBoxDefinitionsClientUpdateResponse{
-	// 	DevBoxDefinition: armdevcenter.DevBoxDefinition{
-	// 		Name: to.Ptr("WebDevBox"),
-	// 		Type: to.Ptr("Microsoft.DevCenter/devcenters/devboxdefinitions"),
-	// 		ID: to.Ptr("/subscriptions/0ac520ee-14c0-480f-b6c9-0a90c58ffff/resourceGroups/rg1/providers/Microsoft.DevCenter/devcenters/Contoso/devboxdefinitions/WebDevBox"),
-	// 		Location: to.Ptr("centralus"),
-	// 		Properties: &armdevcenter.DevBoxDefinitionProperties{
-	// 			HibernateSupport: to.Ptr(armdevcenter.HibernateSupportEnabled),
-	// 			ImageReference: &armdevcenter.ImageReference{
-	// 				ID: to.Ptr("/subscriptions/0ac520ee-14c0-480f-b6c9-0a90c58ffff/resourceGroups/Example/providers/Microsoft.DevCenter/devcenters/Contoso/galleries/contosogallery/images/exampleImage/version/2.0.0"),
-	// 			},
-	// 			ProvisioningState: to.Ptr(armdevcenter.ProvisioningStateSucceeded),
-	// 			SKU: &armdevcenter.SKU{
-	// 				Name: to.Ptr("Preview"),
-	// 			},
-	// 		},
-	// 		SystemData: &armdevcenter.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2020, time.November, 18, 18, 0, 36, 993000000, time.UTC)),
-	// 			CreatedBy: to.Ptr("user1"),
-	// 			CreatedByType: to.Ptr(armdevcenter.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.November, 18, 18, 30, 36, 993000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("user1"),
-	// 			LastModifiedByType: to.Ptr(armdevcenter.CreatedByTypeUser),
-	// 		},
-	// 	},
-	// }
 }

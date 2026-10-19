@@ -21,13 +21,17 @@ import (
 
 // ServicesServer is a fake server for instances of the armsearch.ServicesClient type.
 type ServicesServer struct {
-	// CheckNameAvailability is the fake for method ServicesClient.CheckNameAvailability
-	// HTTP status codes to indicate success: http.StatusOK
-	CheckNameAvailability func(ctx context.Context, checkNameAvailabilityInput armsearch.CheckNameAvailabilityInput, options *armsearch.ServicesClientCheckNameAvailabilityOptions) (resp azfake.Responder[armsearch.ServicesClientCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
-
 	// BeginCreateOrUpdate is the fake for method ServicesClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, searchServiceName string, resource armsearch.Service, options *armsearch.ServicesClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armsearch.ServicesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+
+	// BeginUpgrade is the fake for method ServicesClient.BeginUpgrade
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpgrade func(ctx context.Context, resourceGroupName string, searchServiceName string, options *armsearch.ServicesClientBeginUpgradeOptions) (resp azfake.PollerResponder[armsearch.ServicesClientUpgradeResponse], errResp azfake.ErrorResponder)
+
+	// CheckNameAvailability is the fake for method ServicesClient.CheckNameAvailability
+	// HTTP status codes to indicate success: http.StatusOK
+	CheckNameAvailability func(ctx context.Context, checkNameAvailabilityInput armsearch.CheckNameAvailabilityInput, options *armsearch.ServicesClientCheckNameAvailabilityOptions) (resp azfake.Responder[armsearch.ServicesClientCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
 
 	// Delete is the fake for method ServicesClient.Delete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
@@ -48,10 +52,6 @@ type ServicesServer struct {
 	// Update is the fake for method ServicesClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
 	Update func(ctx context.Context, resourceGroupName string, searchServiceName string, properties armsearch.ServiceUpdate, options *armsearch.ServicesClientUpdateOptions) (resp azfake.Responder[armsearch.ServicesClientUpdateResponse], errResp azfake.ErrorResponder)
-
-	// BeginUpgrade is the fake for method ServicesClient.BeginUpgrade
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpgrade func(ctx context.Context, resourceGroupName string, searchServiceName string, options *armsearch.ServicesClientBeginUpgradeOptions) (resp azfake.PollerResponder[armsearch.ServicesClientUpgradeResponse], errResp azfake.ErrorResponder)
 }
 
 // NewServicesServerTransport creates a new instance of ServicesServerTransport with the provided implementation.
@@ -61,9 +61,9 @@ func NewServicesServerTransport(srv *ServicesServer) *ServicesServerTransport {
 	return &ServicesServerTransport{
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armsearch.ServicesClientCreateOrUpdateResponse]](),
+		beginUpgrade:                newTracker[azfake.PollerResponder[armsearch.ServicesClientUpgradeResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armsearch.ServicesClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armsearch.ServicesClientListBySubscriptionResponse]](),
-		beginUpgrade:                newTracker[azfake.PollerResponder[armsearch.ServicesClientUpgradeResponse]](),
 	}
 }
 
@@ -72,9 +72,9 @@ func NewServicesServerTransport(srv *ServicesServer) *ServicesServerTransport {
 type ServicesServerTransport struct {
 	srv                         *ServicesServer
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armsearch.ServicesClientCreateOrUpdateResponse]]
+	beginUpgrade                *tracker[azfake.PollerResponder[armsearch.ServicesClientUpgradeResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armsearch.ServicesClientListByResourceGroupResponse]]
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armsearch.ServicesClientListBySubscriptionResponse]]
-	beginUpgrade                *tracker[azfake.PollerResponder[armsearch.ServicesClientUpgradeResponse]]
 }
 
 // Do implements the policy.Transporter interface for ServicesServerTransport.
@@ -98,10 +98,12 @@ func (s *ServicesServerTransport) dispatchToMethodFake(req *http.Request, method
 		}
 		if !intercepted {
 			switch method {
-			case "ServicesClient.CheckNameAvailability":
-				res.resp, res.err = s.dispatchCheckNameAvailability(req)
 			case "ServicesClient.BeginCreateOrUpdate":
 				res.resp, res.err = s.dispatchBeginCreateOrUpdate(req)
+			case "ServicesClient.BeginUpgrade":
+				res.resp, res.err = s.dispatchBeginUpgrade(req)
+			case "ServicesClient.CheckNameAvailability":
+				res.resp, res.err = s.dispatchCheckNameAvailability(req)
 			case "ServicesClient.Delete":
 				res.resp, res.err = s.dispatchDelete(req)
 			case "ServicesClient.Get":
@@ -112,8 +114,6 @@ func (s *ServicesServerTransport) dispatchToMethodFake(req *http.Request, method
 				res.resp, res.err = s.dispatchNewListBySubscriptionPager(req)
 			case "ServicesClient.Update":
 				res.resp, res.err = s.dispatchUpdate(req)
-			case "ServicesClient.BeginUpgrade":
-				res.resp, res.err = s.dispatchBeginUpgrade(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -128,42 +128,6 @@ func (s *ServicesServerTransport) dispatchToMethodFake(req *http.Request, method
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (s *ServicesServerTransport) dispatchCheckNameAvailability(req *http.Request) (*http.Response, error) {
-	if s.srv.CheckNameAvailability == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CheckNameAvailability not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Search/checkNameAvailability`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 2 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armsearch.CheckNameAvailabilityInput](req)
-	if err != nil {
-		return nil, err
-	}
-	clientRequestIDParam := getOptional(getHeaderValue(req.Header, "x-ms-client-request-id"))
-	var options *armsearch.ServicesClientCheckNameAvailabilityOptions
-	if clientRequestIDParam != nil {
-		options = &armsearch.ServicesClientCheckNameAvailabilityOptions{
-			ClientRequestID: clientRequestIDParam,
-		}
-	}
-	respr, errRespr := s.srv.CheckNameAvailability(req.Context(), body, options)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CheckNameAvailabilityOutput, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (s *ServicesServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -218,6 +182,86 @@ func (s *ServicesServerTransport) dispatchBeginCreateOrUpdate(req *http.Request)
 		s.beginCreateOrUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (s *ServicesServerTransport) dispatchBeginUpgrade(req *http.Request) (*http.Response, error) {
+	if s.srv.BeginUpgrade == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpgrade not implemented")}
+	}
+	beginUpgrade := s.beginUpgrade.get(req)
+	if beginUpgrade == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Search/searchServices/(?P<searchServiceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/upgrade`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		searchServiceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("searchServiceName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := s.srv.BeginUpgrade(req.Context(), resourceGroupNameParam, searchServiceNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpgrade = &respr
+		s.beginUpgrade.add(req, beginUpgrade)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpgrade, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		s.beginUpgrade.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpgrade) {
+		s.beginUpgrade.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (s *ServicesServerTransport) dispatchCheckNameAvailability(req *http.Request) (*http.Response, error) {
+	if s.srv.CheckNameAvailability == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CheckNameAvailability not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Search/checkNameAvailability`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armsearch.CheckNameAvailabilityInput](req)
+	if err != nil {
+		return nil, err
+	}
+	clientRequestIDParam := getOptional(getHeaderValue(req.Header, "x-ms-client-request-id"))
+	var options *armsearch.ServicesClientCheckNameAvailabilityOptions
+	if clientRequestIDParam != nil {
+		options = &armsearch.ServicesClientCheckNameAvailabilityOptions{
+			ClientRequestID: clientRequestIDParam,
+		}
+	}
+	respr, errRespr := s.srv.CheckNameAvailability(req.Context(), body, options)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CheckNameAvailabilityOutput, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 
@@ -426,50 +470,6 @@ func (s *ServicesServerTransport) dispatchUpdate(req *http.Request) (*http.Respo
 	if err != nil {
 		return nil, err
 	}
-	return resp, nil
-}
-
-func (s *ServicesServerTransport) dispatchBeginUpgrade(req *http.Request) (*http.Response, error) {
-	if s.srv.BeginUpgrade == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpgrade not implemented")}
-	}
-	beginUpgrade := s.beginUpgrade.get(req)
-	if beginUpgrade == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Search/searchServices/(?P<searchServiceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/upgrade`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		searchServiceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("searchServiceName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := s.srv.BeginUpgrade(req.Context(), resourceGroupNameParam, searchServiceNameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpgrade = &respr
-		s.beginUpgrade.add(req, beginUpgrade)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpgrade, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		s.beginUpgrade.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpgrade) {
-		s.beginUpgrade.remove(req)
-	}
-
 	return resp, nil
 }
 

@@ -30,6 +30,10 @@ type EndpointServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, workspaceName string, endpointName string, options *armmachinelearning.EndpointClientGetOptions) (resp azfake.Responder[armmachinelearning.EndpointClientGetResponse], errResp azfake.ErrorResponder)
 
+	// ListKeys is the fake for method EndpointClient.ListKeys
+	// HTTP status codes to indicate success: http.StatusOK
+	ListKeys func(ctx context.Context, resourceGroupName string, workspaceName string, endpointName string, options *armmachinelearning.EndpointClientListKeysOptions) (resp azfake.Responder[armmachinelearning.EndpointClientListKeysResponse], errResp azfake.ErrorResponder)
+
 	// NewGetModelsPager is the fake for method EndpointClient.NewGetModelsPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewGetModelsPager func(resourceGroupName string, workspaceName string, endpointName string, options *armmachinelearning.EndpointClientGetModelsOptions) (resp azfake.PagerResponder[armmachinelearning.EndpointClientGetModelsResponse])
@@ -37,10 +41,6 @@ type EndpointServer struct {
 	// NewListPager is the fake for method EndpointClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(resourceGroupName string, workspaceName string, options *armmachinelearning.EndpointClientListOptions) (resp azfake.PagerResponder[armmachinelearning.EndpointClientListResponse])
-
-	// ListKeys is the fake for method EndpointClient.ListKeys
-	// HTTP status codes to indicate success: http.StatusOK
-	ListKeys func(ctx context.Context, resourceGroupName string, workspaceName string, endpointName string, options *armmachinelearning.EndpointClientListKeysOptions) (resp azfake.Responder[armmachinelearning.EndpointClientListKeysResponse], errResp azfake.ErrorResponder)
 
 	// RegenerateKeys is the fake for method EndpointClient.RegenerateKeys
 	// HTTP status codes to indicate success: http.StatusOK
@@ -93,12 +93,12 @@ func (e *EndpointServerTransport) dispatchToMethodFake(req *http.Request, method
 				res.resp, res.err = e.dispatchBeginCreateOrUpdate(req)
 			case "EndpointClient.Get":
 				res.resp, res.err = e.dispatchGet(req)
+			case "EndpointClient.ListKeys":
+				res.resp, res.err = e.dispatchListKeys(req)
 			case "EndpointClient.NewGetModelsPager":
 				res.resp, res.err = e.dispatchNewGetModelsPager(req)
 			case "EndpointClient.NewListPager":
 				res.resp, res.err = e.dispatchNewListPager(req)
-			case "EndpointClient.ListKeys":
-				res.resp, res.err = e.dispatchListKeys(req)
 			case "EndpointClient.RegenerateKeys":
 				res.resp, res.err = e.dispatchRegenerateKeys(req)
 			default:
@@ -200,6 +200,43 @@ func (e *EndpointServerTransport) dispatchGet(req *http.Request) (*http.Response
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).EndpointResourcePropertiesBasicResource, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (e *EndpointServerTransport) dispatchListKeys(req *http.Request) (*http.Response, error) {
+	if e.srv.ListKeys == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListKeys not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/endpoints/(?P<endpointName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listKeys`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
+	if err != nil {
+		return nil, err
+	}
+	endpointNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("endpointName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := e.srv.ListKeys(req.Context(), resourceGroupNameParam, workspaceNameParam, endpointNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).EndpointKeys, req)
 	if err != nil {
 		return nil, err
 	}
@@ -315,43 +352,6 @@ func (e *EndpointServerTransport) dispatchNewListPager(req *http.Request) (*http
 	}
 	if !server.PagerResponderMore(newListPager) {
 		e.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (e *EndpointServerTransport) dispatchListKeys(req *http.Request) (*http.Response, error) {
-	if e.srv.ListKeys == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListKeys not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/endpoints/(?P<endpointName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listKeys`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
-	if err != nil {
-		return nil, err
-	}
-	endpointNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("endpointName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := e.srv.ListKeys(req.Context(), resourceGroupNameParam, workspaceNameParam, endpointNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).EndpointKeys, req)
-	if err != nil {
-		return nil, err
 	}
 	return resp, nil
 }

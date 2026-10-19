@@ -164,6 +164,178 @@ func ExampleL2IsolationDomainsClient_BeginDelete() {
 	}
 }
 
+// Generated from example definition: 2025-07-15/L2IsolationDomains_Update.json
+func ExampleL2IsolationDomainsClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmanagednetworkfabric.NewClientFactory("0000ABCD-0A0B-0000-0000-000000ABCDEF", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewL2IsolationDomainsClient().BeginUpdate(ctx, "example-rg", "example-l2domain", armmanagednetworkfabric.L2IsolationDomainPatch{
+		Tags: map[string]*string{
+			"KeyId": to.Ptr("KeyValue"),
+		},
+		Identity: &armmanagednetworkfabric.ManagedServiceIdentityPatch{
+			Type: to.Ptr(armmanagednetworkfabric.ManagedServiceIdentityTypeNone),
+			UserAssignedIdentities: map[string]*armmanagednetworkfabric.UserAssignedIdentity{
+				"key8793": {},
+			},
+		},
+		Properties: &armmanagednetworkfabric.L2IsolationDomainPatchProperties{
+			Annotation:                     to.Ptr("annotation1"),
+			Mtu:                            to.Ptr[int32](6000),
+			NetworkToNetworkInterconnectID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric/networkToNetworkInterconnects/example-nni"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armmanagednetworkfabric.L2IsolationDomainsClientUpdateResponse{
+	// 	L2IsolationDomain: armmanagednetworkfabric.L2IsolationDomain{
+	// 		Properties: &armmanagednetworkfabric.L2IsolationDomainProperties{
+	// 			Annotation: to.Ptr("annotation"),
+	// 			NetworkFabricID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric"),
+	// 			VlanID: to.Ptr[int32](501),
+	// 			Mtu: to.Ptr[int32](1500),
+	// 			ExtendedVlan: to.Ptr(armmanagednetworkfabric.ExtendedVlanEnabled),
+	// 			NetworkToNetworkInterconnectID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric/networkToNetworkInterconnects/example-nni"),
+	// 			ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
+	// 			ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateAccepted),
+	// 			AdministrativeState: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnabled),
+	// 		},
+	// 		Identity: &armmanagednetworkfabric.ManagedServiceIdentity{
+	// 			PrincipalID: to.Ptr("0000ABCD-0A0B-0000-0000-000000ABCDEF"),
+	// 			TenantID: to.Ptr("0000ABCD-0A0B-0000-0000-000000ABCDEF"),
+	// 			Type: to.Ptr(armmanagednetworkfabric.ManagedServiceIdentityTypeNone),
+	// 			UserAssignedIdentities: map[string]*armmanagednetworkfabric.UserAssignedIdentity{
+	// 				"key4876": &armmanagednetworkfabric.UserAssignedIdentity{
+	// 					PrincipalID: to.Ptr("0000ABCD-0A0B-0000-0000-000000ABCDEF"),
+	// 					ClientID: to.Ptr("0000ABCD-0A0B-0000-0000-000000ABCDEF"),
+	// 				},
+	// 			},
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"KeyId": to.Ptr("KeyValue"),
+	// 		},
+	// 		Location: to.Ptr("eastus"),
+	// 		ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/l2IsolationDomains/example-l2domain"),
+	// 		Name: to.Ptr("example-l2domain"),
+	// 		Type: to.Ptr("microsoft.managednetworkfabric/l2IsolationDomains"),
+	// 		SystemData: &armmanagednetworkfabric.SystemData{
+	// 			CreatedBy: to.Ptr("email@address.com"),
+	// 			CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("UserId"),
+	// 			LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-07-15/L2IsolationDomains_UpdateAdministrativeState.json
+func ExampleL2IsolationDomainsClient_BeginUpdateAdministrativeState() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmanagednetworkfabric.NewClientFactory("0000ABCD-0A0B-0000-0000-000000ABCDEF", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewL2IsolationDomainsClient().BeginUpdateAdministrativeState(ctx, "example-rg", "example-l2domain", armmanagednetworkfabric.UpdateAdministrativeState{
+		ResourceIDs: []*string{
+			to.Ptr(""),
+		},
+		State: to.Ptr(armmanagednetworkfabric.EnableDisableStateEnable),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armmanagednetworkfabric.L2IsolationDomainsClientUpdateAdministrativeStateResponse{
+	// 	UpdateAdministrativeStateResponse: armmanagednetworkfabric.UpdateAdministrativeStateResponse{
+	// 		Status: to.Ptr("Failed"),
+	// 		Error: &armmanagednetworkfabric.ErrorDetail{
+	// 			Code: to.Ptr(""),
+	// 			Message: to.Ptr(""),
+	// 			Target: to.Ptr(""),
+	// 			Details: []*armmanagednetworkfabric.ErrorDetail{
+	// 			},
+	// 			AdditionalInfo: []*armmanagednetworkfabric.ErrorAdditionalInfo{
+	// 				{
+	// 					Type: to.Ptr(""),
+	// 					Info: map[string]any{
+	// 					},
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-07-15/L2IsolationDomains_ValidateConfiguration.json
+func ExampleL2IsolationDomainsClient_BeginValidateConfiguration() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmanagednetworkfabric.NewClientFactory("0000ABCD-0A0B-0000-0000-000000ABCDEF", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewL2IsolationDomainsClient().BeginValidateConfiguration(ctx, "example-rg", "example-l2domain", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armmanagednetworkfabric.L2IsolationDomainsClientValidateConfigurationResponse{
+	// 	ValidateConfigurationResponse: armmanagednetworkfabric.ValidateConfigurationResponse{
+	// 		Error: &armmanagednetworkfabric.ErrorDetail{
+	// 			Code: to.Ptr(""),
+	// 			Message: to.Ptr(""),
+	// 			Target: to.Ptr(""),
+	// 			Details: []*armmanagednetworkfabric.ErrorDetail{
+	// 			},
+	// 			AdditionalInfo: []*armmanagednetworkfabric.ErrorAdditionalInfo{
+	// 				{
+	// 					Type: to.Ptr(""),
+	// 					Info: map[string]any{
+	// 					},
+	// 				},
+	// 			},
+	// 		},
+	// 		ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
+	// 		URL: to.Ptr("https://ActionDetails"),
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2025-07-15/L2IsolationDomains_Get.json
 func ExampleL2IsolationDomainsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -374,176 +546,4 @@ func ExampleL2IsolationDomainsClient_NewListBySubscriptionPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2025-07-15/L2IsolationDomains_Update.json
-func ExampleL2IsolationDomainsClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmanagednetworkfabric.NewClientFactory("0000ABCD-0A0B-0000-0000-000000ABCDEF", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewL2IsolationDomainsClient().BeginUpdate(ctx, "example-rg", "example-l2domain", armmanagednetworkfabric.L2IsolationDomainPatch{
-		Tags: map[string]*string{
-			"KeyId": to.Ptr("KeyValue"),
-		},
-		Identity: &armmanagednetworkfabric.ManagedServiceIdentityPatch{
-			Type: to.Ptr(armmanagednetworkfabric.ManagedServiceIdentityTypeNone),
-			UserAssignedIdentities: map[string]*armmanagednetworkfabric.UserAssignedIdentity{
-				"key8793": {},
-			},
-		},
-		Properties: &armmanagednetworkfabric.L2IsolationDomainPatchProperties{
-			Annotation:                     to.Ptr("annotation1"),
-			Mtu:                            to.Ptr[int32](6000),
-			NetworkToNetworkInterconnectID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric/networkToNetworkInterconnects/example-nni"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armmanagednetworkfabric.L2IsolationDomainsClientUpdateResponse{
-	// 	L2IsolationDomain: armmanagednetworkfabric.L2IsolationDomain{
-	// 		Properties: &armmanagednetworkfabric.L2IsolationDomainProperties{
-	// 			Annotation: to.Ptr("annotation"),
-	// 			NetworkFabricID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric"),
-	// 			VlanID: to.Ptr[int32](501),
-	// 			Mtu: to.Ptr[int32](1500),
-	// 			ExtendedVlan: to.Ptr(armmanagednetworkfabric.ExtendedVlanEnabled),
-	// 			NetworkToNetworkInterconnectID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric/networkToNetworkInterconnects/example-nni"),
-	// 			ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
-	// 			ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateAccepted),
-	// 			AdministrativeState: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnabled),
-	// 		},
-	// 		Identity: &armmanagednetworkfabric.ManagedServiceIdentity{
-	// 			PrincipalID: to.Ptr("0000ABCD-0A0B-0000-0000-000000ABCDEF"),
-	// 			TenantID: to.Ptr("0000ABCD-0A0B-0000-0000-000000ABCDEF"),
-	// 			Type: to.Ptr(armmanagednetworkfabric.ManagedServiceIdentityTypeNone),
-	// 			UserAssignedIdentities: map[string]*armmanagednetworkfabric.UserAssignedIdentity{
-	// 				"key4876": &armmanagednetworkfabric.UserAssignedIdentity{
-	// 					PrincipalID: to.Ptr("0000ABCD-0A0B-0000-0000-000000ABCDEF"),
-	// 					ClientID: to.Ptr("0000ABCD-0A0B-0000-0000-000000ABCDEF"),
-	// 				},
-	// 			},
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"KeyId": to.Ptr("KeyValue"),
-	// 		},
-	// 		Location: to.Ptr("eastus"),
-	// 		ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/l2IsolationDomains/example-l2domain"),
-	// 		Name: to.Ptr("example-l2domain"),
-	// 		Type: to.Ptr("microsoft.managednetworkfabric/l2IsolationDomains"),
-	// 		SystemData: &armmanagednetworkfabric.SystemData{
-	// 			CreatedBy: to.Ptr("email@address.com"),
-	// 			CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("UserId"),
-	// 			LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-07-15/L2IsolationDomains_UpdateAdministrativeState.json
-func ExampleL2IsolationDomainsClient_BeginUpdateAdministrativeState() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmanagednetworkfabric.NewClientFactory("0000ABCD-0A0B-0000-0000-000000ABCDEF", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewL2IsolationDomainsClient().BeginUpdateAdministrativeState(ctx, "example-rg", "example-l2domain", armmanagednetworkfabric.UpdateAdministrativeState{
-		ResourceIDs: []*string{
-			to.Ptr(""),
-		},
-		State: to.Ptr(armmanagednetworkfabric.EnableDisableStateEnable),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armmanagednetworkfabric.L2IsolationDomainsClientUpdateAdministrativeStateResponse{
-	// 	UpdateAdministrativeStateResponse: armmanagednetworkfabric.UpdateAdministrativeStateResponse{
-	// 		Status: to.Ptr("Failed"),
-	// 		Error: &armmanagednetworkfabric.ErrorDetail{
-	// 			Code: to.Ptr(""),
-	// 			Message: to.Ptr(""),
-	// 			Target: to.Ptr(""),
-	// 			Details: []*armmanagednetworkfabric.ErrorDetail{
-	// 			},
-	// 			AdditionalInfo: []*armmanagednetworkfabric.ErrorAdditionalInfo{
-	// 				{
-	// 					Type: to.Ptr(""),
-	// 					Info: map[string]any{
-	// 					},
-	// 				},
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-07-15/L2IsolationDomains_ValidateConfiguration.json
-func ExampleL2IsolationDomainsClient_BeginValidateConfiguration() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmanagednetworkfabric.NewClientFactory("0000ABCD-0A0B-0000-0000-000000ABCDEF", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewL2IsolationDomainsClient().BeginValidateConfiguration(ctx, "example-rg", "example-l2domain", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armmanagednetworkfabric.L2IsolationDomainsClientValidateConfigurationResponse{
-	// 	ValidateConfigurationResponse: armmanagednetworkfabric.ValidateConfigurationResponse{
-	// 		Error: &armmanagednetworkfabric.ErrorDetail{
-	// 			Code: to.Ptr(""),
-	// 			Message: to.Ptr(""),
-	// 			Target: to.Ptr(""),
-	// 			Details: []*armmanagednetworkfabric.ErrorDetail{
-	// 			},
-	// 			AdditionalInfo: []*armmanagednetworkfabric.ErrorAdditionalInfo{
-	// 				{
-	// 					Type: to.Ptr(""),
-	// 					Info: map[string]any{
-	// 					},
-	// 				},
-	// 			},
-	// 		},
-	// 		ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
-	// 		URL: to.Ptr("https://ActionDetails"),
-	// 	},
-	// }
 }

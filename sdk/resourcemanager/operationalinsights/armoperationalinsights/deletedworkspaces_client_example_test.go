@@ -11,8 +11,8 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/WorkspacesSubscriptionList.json
-func ExampleDeletedWorkspacesClient_NewListPager() {
+// Generated from example definition: 2025-07-01/WorkspacesListByResourceGroupForDeleted.json
+func ExampleDeletedWorkspacesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -22,7 +22,7 @@ func ExampleDeletedWorkspacesClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewDeletedWorkspacesClient().NewListPager(nil)
+	pager := clientFactory.NewDeletedWorkspacesClient().NewListByResourceGroupPager("oiautorest6685", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -33,7 +33,7 @@ func ExampleDeletedWorkspacesClient_NewListPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armoperationalinsights.DeletedWorkspacesClientListResponse{
+		// page = armoperationalinsights.DeletedWorkspacesClientListByResourceGroupResponse{
 		// 	WorkspaceListResult: armoperationalinsights.WorkspaceListResult{
 		// 		Value: []*armoperationalinsights.Workspace{
 		// 			{
@@ -61,8 +61,8 @@ func ExampleDeletedWorkspacesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/WorkspacesListByResourceGroupForDeleted.json
-func ExampleDeletedWorkspacesClient_NewListByResourceGroupPager() {
+// Generated from example definition: 2025-07-01/WorkspacesSubscriptionList.json
+func ExampleDeletedWorkspacesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -72,7 +72,7 @@ func ExampleDeletedWorkspacesClient_NewListByResourceGroupPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewDeletedWorkspacesClient().NewListByResourceGroupPager("oiautorest6685", nil)
+	pager := clientFactory.NewDeletedWorkspacesClient().NewListPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -83,7 +83,7 @@ func ExampleDeletedWorkspacesClient_NewListByResourceGroupPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armoperationalinsights.DeletedWorkspacesClientListByResourceGroupResponse{
+		// page = armoperationalinsights.DeletedWorkspacesClientListResponse{
 		// 	WorkspaceListResult: armoperationalinsights.WorkspaceListResult{
 		// 		Value: []*armoperationalinsights.Workspace{
 		// 			{

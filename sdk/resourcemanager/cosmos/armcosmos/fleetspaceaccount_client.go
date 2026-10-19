@@ -70,7 +70,7 @@ func (client *FleetspaceAccountClient) BeginCreate(ctx context.Context, resource
 	}
 }
 
-// Create - Creates an Azure Cosmos DB fleetspace account under a fleetspace.
+// create - Creates an Azure Cosmos DB fleetspace account under a fleetspace.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *FleetspaceAccountClient) create(ctx context.Context, resourceGroupName string, fleetName string, fleetspaceName string, fleetspaceAccountName string, body FleetspaceAccountResource, options *FleetspaceAccountClientBeginCreateOptions) (*http.Response, error) {
 	var err error
@@ -92,7 +92,7 @@ func (client *FleetspaceAccountClient) create(ctx context.Context, resourceGroup
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *FleetspaceAccountClient) createCreateRequest(ctx context.Context, resourceGroupName string, fleetName string, fleetspaceName string, fleetspaceAccountName string, body FleetspaceAccountResource, _ *FleetspaceAccountClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/fleets/{fleetName}/fleetspaces/{fleetspaceName}/fleetspaceAccounts/{fleetspaceAccountName}"
 	if client.subscriptionID == "" {
@@ -156,7 +156,7 @@ func (client *FleetspaceAccountClient) BeginDelete(ctx context.Context, resource
 	}
 }
 
-// Delete - Removes an existing Azure Cosmos DB fleetspace account from a fleetspace.
+// deleteOperation - Removes an existing Azure Cosmos DB fleetspace account from a fleetspace.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *FleetspaceAccountClient) deleteOperation(ctx context.Context, resourceGroupName string, fleetName string, fleetspaceName string, fleetspaceAccountName string, options *FleetspaceAccountClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -178,7 +178,7 @@ func (client *FleetspaceAccountClient) deleteOperation(ctx context.Context, reso
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *FleetspaceAccountClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, fleetName string, fleetspaceName string, fleetspaceAccountName string, _ *FleetspaceAccountClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/fleets/{fleetName}/fleetspaces/{fleetspaceName}/fleetspaceAccounts/{fleetspaceAccountName}"
 	if client.subscriptionID == "" {

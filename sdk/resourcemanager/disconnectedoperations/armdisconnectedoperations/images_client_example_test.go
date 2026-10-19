@@ -64,6 +64,48 @@ func ExampleImagesClient_Get() {
 	// }
 }
 
+// Generated from example definition: 2026-03-15/Images_ListDownloadUri_MaximumSet_Gen.json
+func ExampleImagesClient_ListDownloadURI() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdisconnectedoperations.NewClientFactory("51DB5DE7-A66C-4789-BFFF-9F75C95A0201", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewImagesClient().ListDownloadURI(ctx, "rgdisconnectedOperations", "g_-5-160", "1Q6lGV4V65j-1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdisconnectedoperations.ImagesClientListDownloadURIResponse{
+	// 	ImageDownloadResult: armdisconnectedoperations.ImageDownloadResult{
+	// 		ReleaseVersion: to.Ptr("vbccjpcosofti"),
+	// 		ReleaseDisplayName: to.Ptr("thttwzm"),
+	// 		ReleaseNotes: to.Ptr("jswqauqfnwxk"),
+	// 		ReleaseDate: to.Ptr(time.Date(2024, time.December, 5, 0, 0, 0, 0, time.UTC)),
+	// 		CompatibleVersions: []*string{
+	// 			to.Ptr("czxghshqcn"),
+	// 		},
+	// 		UpdateProperties: &armdisconnectedoperations.ImageUpdateProperties{
+	// 			SystemReboot: to.Ptr(armdisconnectedoperations.SystemRebootNotRequired),
+	// 			SecurityUpdates: to.Ptr("security updates info"),
+	// 			OSVersion: to.Ptr("os version info"),
+	// 			AgentVersion: to.Ptr("agent version info"),
+	// 			FeatureUpdates: to.Ptr("feature updates info"),
+	// 		},
+	// 		TransactionID: to.Ptr("337b8e3a-dd7c-4872-a270-5d57632a8aea"),
+	// 		DownloadLink: to.Ptr("https://microsoft.com/akmzb"),
+	// 		ReleaseType: to.Ptr(armdisconnectedoperations.ReleaseTypeInstall),
+	// 		LinkExpiry: to.Ptr(time.Date(2024, time.December, 5, 20, 3, 13, 362000000, time.UTC)),
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2026-03-15/Images_ListByDisconnectedOperation_MaximumSet_Gen.json
 func ExampleImagesClient_NewListByDisconnectedOperationPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -127,46 +169,4 @@ func ExampleImagesClient_NewListByDisconnectedOperationPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-03-15/Images_ListDownloadUri_MaximumSet_Gen.json
-func ExampleImagesClient_ListDownloadURI() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdisconnectedoperations.NewClientFactory("51DB5DE7-A66C-4789-BFFF-9F75C95A0201", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewImagesClient().ListDownloadURI(ctx, "rgdisconnectedOperations", "g_-5-160", "1Q6lGV4V65j-1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdisconnectedoperations.ImagesClientListDownloadURIResponse{
-	// 	ImageDownloadResult: armdisconnectedoperations.ImageDownloadResult{
-	// 		ReleaseVersion: to.Ptr("vbccjpcosofti"),
-	// 		ReleaseDisplayName: to.Ptr("thttwzm"),
-	// 		ReleaseNotes: to.Ptr("jswqauqfnwxk"),
-	// 		ReleaseDate: to.Ptr(time.Date(2024, time.December, 5, 0, 0, 0, 0, time.UTC)),
-	// 		CompatibleVersions: []*string{
-	// 			to.Ptr("czxghshqcn"),
-	// 		},
-	// 		UpdateProperties: &armdisconnectedoperations.ImageUpdateProperties{
-	// 			SystemReboot: to.Ptr(armdisconnectedoperations.SystemRebootNotRequired),
-	// 			SecurityUpdates: to.Ptr("security updates info"),
-	// 			OSVersion: to.Ptr("os version info"),
-	// 			AgentVersion: to.Ptr("agent version info"),
-	// 			FeatureUpdates: to.Ptr("feature updates info"),
-	// 		},
-	// 		TransactionID: to.Ptr("337b8e3a-dd7c-4872-a270-5d57632a8aea"),
-	// 		DownloadLink: to.Ptr("https://microsoft.com/akmzb"),
-	// 		ReleaseType: to.Ptr(armdisconnectedoperations.ReleaseTypeInstall),
-	// 		LinkExpiry: to.Ptr(time.Date(2024, time.December, 5, 20, 3, 13, 362000000, time.UTC)),
-	// 	},
-	// }
 }

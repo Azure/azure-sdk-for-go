@@ -67,7 +67,7 @@ func (client *OperationResultClient) BeginGet(ctx context.Context, location stri
 	}
 }
 
-// Get - Get the result of a long running azure asynchronous operation.
+// get - Get the result of a long running azure asynchronous operation.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *OperationResultClient) get(ctx context.Context, location string, operationID string, options *OperationResultClientBeginGetOptions) (*http.Response, error) {
 	var err error
@@ -89,7 +89,7 @@ func (client *OperationResultClient) get(ctx context.Context, location string, o
 	return httpResp, nil
 }
 
-// getCreateRequest creates the Get request.
+// getCreateRequest creates the get request.
 func (client *OperationResultClient) getCreateRequest(ctx context.Context, location string, operationID string, _ *OperationResultClientBeginGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Maps/locations/{location}/operationResults/{operationId}"
 	if client.subscriptionID == "" {

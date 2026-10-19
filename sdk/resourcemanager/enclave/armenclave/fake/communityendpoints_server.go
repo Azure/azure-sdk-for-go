@@ -29,10 +29,6 @@ type CommunityEndpointsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, communityName string, communityEndpointName string, options *armenclave.CommunityEndpointsClientBeginDeleteOptions) (resp azfake.PollerResponder[armenclave.CommunityEndpointsClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method CommunityEndpointsClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, communityName string, communityEndpointName string, options *armenclave.CommunityEndpointsClientGetOptions) (resp azfake.Responder[armenclave.CommunityEndpointsClientGetResponse], errResp azfake.ErrorResponder)
-
 	// BeginHandleApprovalCreation is the fake for method CommunityEndpointsClient.BeginHandleApprovalCreation
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginHandleApprovalCreation func(ctx context.Context, resourceGroupName string, communityName string, communityEndpointName string, body armenclave.ApprovalCallbackRequest, options *armenclave.CommunityEndpointsClientBeginHandleApprovalCreationOptions) (resp azfake.PollerResponder[armenclave.CommunityEndpointsClientHandleApprovalCreationResponse], errResp azfake.ErrorResponder)
@@ -41,6 +37,14 @@ type CommunityEndpointsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginHandleApprovalDeletion func(ctx context.Context, resourceGroupName string, communityName string, communityEndpointName string, body armenclave.ApprovalDeletionCallbackRequest, options *armenclave.CommunityEndpointsClientBeginHandleApprovalDeletionOptions) (resp azfake.PollerResponder[armenclave.CommunityEndpointsClientHandleApprovalDeletionResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method CommunityEndpointsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, communityName string, communityEndpointName string, properties armenclave.CommunityEndpointPatchModel, options *armenclave.CommunityEndpointsClientBeginUpdateOptions) (resp azfake.PollerResponder[armenclave.CommunityEndpointsClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method CommunityEndpointsClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, communityName string, communityEndpointName string, options *armenclave.CommunityEndpointsClientGetOptions) (resp azfake.Responder[armenclave.CommunityEndpointsClientGetResponse], errResp azfake.ErrorResponder)
+
 	// NewListByCommunityResourcePager is the fake for method CommunityEndpointsClient.NewListByCommunityResourcePager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByCommunityResourcePager func(resourceGroupName string, communityName string, options *armenclave.CommunityEndpointsClientListByCommunityResourceOptions) (resp azfake.PagerResponder[armenclave.CommunityEndpointsClientListByCommunityResourceResponse])
@@ -48,10 +52,6 @@ type CommunityEndpointsServer struct {
 	// NewListBySubscriptionPager is the fake for method CommunityEndpointsClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(communityName string, options *armenclave.CommunityEndpointsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armenclave.CommunityEndpointsClientListBySubscriptionResponse])
-
-	// BeginUpdate is the fake for method CommunityEndpointsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, communityName string, communityEndpointName string, properties armenclave.CommunityEndpointPatchModel, options *armenclave.CommunityEndpointsClientBeginUpdateOptions) (resp azfake.PollerResponder[armenclave.CommunityEndpointsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewCommunityEndpointsServerTransport creates a new instance of CommunityEndpointsServerTransport with the provided implementation.
@@ -64,9 +64,9 @@ func NewCommunityEndpointsServerTransport(srv *CommunityEndpointsServer) *Commun
 		beginDelete:                     newTracker[azfake.PollerResponder[armenclave.CommunityEndpointsClientDeleteResponse]](),
 		beginHandleApprovalCreation:     newTracker[azfake.PollerResponder[armenclave.CommunityEndpointsClientHandleApprovalCreationResponse]](),
 		beginHandleApprovalDeletion:     newTracker[azfake.PollerResponder[armenclave.CommunityEndpointsClientHandleApprovalDeletionResponse]](),
+		beginUpdate:                     newTracker[azfake.PollerResponder[armenclave.CommunityEndpointsClientUpdateResponse]](),
 		newListByCommunityResourcePager: newTracker[azfake.PagerResponder[armenclave.CommunityEndpointsClientListByCommunityResourceResponse]](),
 		newListBySubscriptionPager:      newTracker[azfake.PagerResponder[armenclave.CommunityEndpointsClientListBySubscriptionResponse]](),
-		beginUpdate:                     newTracker[azfake.PollerResponder[armenclave.CommunityEndpointsClientUpdateResponse]](),
 	}
 }
 
@@ -78,9 +78,9 @@ type CommunityEndpointsServerTransport struct {
 	beginDelete                     *tracker[azfake.PollerResponder[armenclave.CommunityEndpointsClientDeleteResponse]]
 	beginHandleApprovalCreation     *tracker[azfake.PollerResponder[armenclave.CommunityEndpointsClientHandleApprovalCreationResponse]]
 	beginHandleApprovalDeletion     *tracker[azfake.PollerResponder[armenclave.CommunityEndpointsClientHandleApprovalDeletionResponse]]
+	beginUpdate                     *tracker[azfake.PollerResponder[armenclave.CommunityEndpointsClientUpdateResponse]]
 	newListByCommunityResourcePager *tracker[azfake.PagerResponder[armenclave.CommunityEndpointsClientListByCommunityResourceResponse]]
 	newListBySubscriptionPager      *tracker[azfake.PagerResponder[armenclave.CommunityEndpointsClientListBySubscriptionResponse]]
-	beginUpdate                     *tracker[azfake.PollerResponder[armenclave.CommunityEndpointsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for CommunityEndpointsServerTransport.
@@ -108,18 +108,18 @@ func (c *CommunityEndpointsServerTransport) dispatchToMethodFake(req *http.Reque
 				res.resp, res.err = c.dispatchBeginCreateOrUpdate(req)
 			case "CommunityEndpointsClient.BeginDelete":
 				res.resp, res.err = c.dispatchBeginDelete(req)
-			case "CommunityEndpointsClient.Get":
-				res.resp, res.err = c.dispatchGet(req)
 			case "CommunityEndpointsClient.BeginHandleApprovalCreation":
 				res.resp, res.err = c.dispatchBeginHandleApprovalCreation(req)
 			case "CommunityEndpointsClient.BeginHandleApprovalDeletion":
 				res.resp, res.err = c.dispatchBeginHandleApprovalDeletion(req)
+			case "CommunityEndpointsClient.BeginUpdate":
+				res.resp, res.err = c.dispatchBeginUpdate(req)
+			case "CommunityEndpointsClient.Get":
+				res.resp, res.err = c.dispatchGet(req)
 			case "CommunityEndpointsClient.NewListByCommunityResourcePager":
 				res.resp, res.err = c.dispatchNewListByCommunityResourcePager(req)
 			case "CommunityEndpointsClient.NewListBySubscriptionPager":
 				res.resp, res.err = c.dispatchNewListBySubscriptionPager(req)
-			case "CommunityEndpointsClient.BeginUpdate":
-				res.resp, res.err = c.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -236,43 +236,6 @@ func (c *CommunityEndpointsServerTransport) dispatchBeginDelete(req *http.Reques
 	return resp, nil
 }
 
-func (c *CommunityEndpointsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if c.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Mission/communities/(?P<communityName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/communityEndpoints/(?P<communityEndpointName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	communityNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("communityName")])
-	if err != nil {
-		return nil, err
-	}
-	communityEndpointNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("communityEndpointName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := c.srv.Get(req.Context(), resourceGroupNameParam, communityNameParam, communityEndpointNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CommunityEndpointResource, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (c *CommunityEndpointsServerTransport) dispatchBeginHandleApprovalCreation(req *http.Request) (*http.Response, error) {
 	if c.srv.BeginHandleApprovalCreation == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginHandleApprovalCreation not implemented")}
@@ -377,6 +340,95 @@ func (c *CommunityEndpointsServerTransport) dispatchBeginHandleApprovalDeletion(
 	return resp, nil
 }
 
+func (c *CommunityEndpointsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if c.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := c.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Mission/communities/(?P<communityName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/communityEndpoints/(?P<communityEndpointName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armenclave.CommunityEndpointPatchModel](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		communityNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("communityName")])
+		if err != nil {
+			return nil, err
+		}
+		communityEndpointNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("communityEndpointName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := c.srv.BeginUpdate(req.Context(), resourceGroupNameParam, communityNameParam, communityEndpointNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		c.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		c.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		c.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (c *CommunityEndpointsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if c.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Mission/communities/(?P<communityName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/communityEndpoints/(?P<communityEndpointName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	communityNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("communityName")])
+	if err != nil {
+		return nil, err
+	}
+	communityEndpointNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("communityEndpointName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := c.srv.Get(req.Context(), resourceGroupNameParam, communityNameParam, communityEndpointNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CommunityEndpointResource, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (c *CommunityEndpointsServerTransport) dispatchNewListByCommunityResourcePager(req *http.Request) (*http.Response, error) {
 	if c.srv.NewListByCommunityResourcePager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByCommunityResourcePager not implemented")}
@@ -452,58 +504,6 @@ func (c *CommunityEndpointsServerTransport) dispatchNewListBySubscriptionPager(r
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		c.newListBySubscriptionPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (c *CommunityEndpointsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if c.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := c.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Mission/communities/(?P<communityName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/communityEndpoints/(?P<communityEndpointName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armenclave.CommunityEndpointPatchModel](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		communityNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("communityName")])
-		if err != nil {
-			return nil, err
-		}
-		communityEndpointNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("communityEndpointName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := c.srv.BeginUpdate(req.Context(), resourceGroupNameParam, communityNameParam, communityEndpointNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		c.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		c.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		c.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

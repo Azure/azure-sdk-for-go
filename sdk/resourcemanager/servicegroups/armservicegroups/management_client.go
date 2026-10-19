@@ -62,7 +62,7 @@ func (client *ManagementClient) BeginCreateOrUpdateServiceGroup(ctx context.Cont
 	}
 }
 
-// CreateOrUpdateServiceGroup - Create or Update a serviceGroup
+// createOrUpdateServiceGroup - Create or Update a serviceGroup
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ManagementClient) createOrUpdateServiceGroup(ctx context.Context, serviceGroupName string, createServiceGroupRequest ServiceGroup, options *ManagementClientBeginCreateOrUpdateServiceGroupOptions) (*http.Response, error) {
 	var err error
@@ -84,7 +84,7 @@ func (client *ManagementClient) createOrUpdateServiceGroup(ctx context.Context, 
 	return httpResp, nil
 }
 
-// createOrUpdateServiceGroupCreateRequest creates the CreateOrUpdateServiceGroup request.
+// createOrUpdateServiceGroupCreateRequest creates the createOrUpdateServiceGroup request.
 func (client *ManagementClient) createOrUpdateServiceGroupCreateRequest(ctx context.Context, serviceGroupName string, createServiceGroupRequest ServiceGroup, _ *ManagementClientBeginCreateOrUpdateServiceGroupOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Management/serviceGroups/{serviceGroupName}"
 	if serviceGroupName == "" {
@@ -128,7 +128,7 @@ func (client *ManagementClient) BeginDeleteServiceGroup(ctx context.Context, ser
 	}
 }
 
-// DeleteServiceGroup - Delete a ServiceGroup
+// deleteServiceGroup - Delete a ServiceGroup
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ManagementClient) deleteServiceGroup(ctx context.Context, serviceGroupName string, options *ManagementClientBeginDeleteServiceGroupOptions) (*http.Response, error) {
 	var err error
@@ -150,7 +150,7 @@ func (client *ManagementClient) deleteServiceGroup(ctx context.Context, serviceG
 	return httpResp, nil
 }
 
-// deleteServiceGroupCreateRequest creates the DeleteServiceGroup request.
+// deleteServiceGroupCreateRequest creates the deleteServiceGroup request.
 func (client *ManagementClient) deleteServiceGroupCreateRequest(ctx context.Context, serviceGroupName string, _ *ManagementClientBeginDeleteServiceGroupOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Management/serviceGroups/{serviceGroupName}"
 	if serviceGroupName == "" {
@@ -190,7 +190,7 @@ func (client *ManagementClient) BeginUpdateServiceGroup(ctx context.Context, ser
 	}
 }
 
-// UpdateServiceGroup - Update a serviceGroup
+// updateServiceGroup - Update a serviceGroup
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ManagementClient) updateServiceGroup(ctx context.Context, serviceGroupName string, updateServiceGroupRequest ServiceGroup, options *ManagementClientBeginUpdateServiceGroupOptions) (*http.Response, error) {
 	var err error
@@ -212,7 +212,7 @@ func (client *ManagementClient) updateServiceGroup(ctx context.Context, serviceG
 	return httpResp, nil
 }
 
-// updateServiceGroupCreateRequest creates the UpdateServiceGroup request.
+// updateServiceGroupCreateRequest creates the updateServiceGroup request.
 func (client *ManagementClient) updateServiceGroupCreateRequest(ctx context.Context, serviceGroupName string, updateServiceGroupRequest ServiceGroup, _ *ManagementClientBeginUpdateServiceGroupOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Management/serviceGroups/{serviceGroupName}"
 	if serviceGroupName == "" {

@@ -30,6 +30,9 @@ type ThroughputPoolsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewThroughputPoolsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ThroughputPoolsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -39,73 +42,6 @@ func NewThroughputPoolsClient(subscriptionID string, credential azcore.TokenCred
 		internal:       cl,
 	}
 	return client, nil
-}
-
-// NewListPager - Lists all the Azure Cosmos DB Throughput Pools available under the subscription.
-//   - options - ThroughputPoolsClientListOptions contains the optional parameters for the ThroughputPoolsClient.NewListPager
-//     method.
-func (client *ThroughputPoolsClient) NewListPager(options *ThroughputPoolsClientListOptions) *runtime.Pager[ThroughputPoolsClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ThroughputPoolsClientListResponse]{
-		More: func(page ThroughputPoolsClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *ThroughputPoolsClientListResponse) (ThroughputPoolsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ThroughputPoolsClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listCreateRequest(ctx, nextLink, options)
-			if err != nil {
-				return ThroughputPoolsClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ThroughputPoolsClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *ThroughputPoolsClient) listCreateRequest(ctx context.Context, nextLink string, _ *ThroughputPoolsClientListOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/throughputPools"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260401Preview)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *ThroughputPoolsClient) listHandleResponse(resp *http.Response, successCodes ...int) (ThroughputPoolsClientListResponse, error) {
-	result := ThroughputPoolsClientListResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ThroughputPoolsListResult); err != nil {
-		return ThroughputPoolsClientListResponse{}, err
-	}
-	return result, nil
 }
 
 // NewListByResourceGroupPager - List all the ThroughputPools in a given resource group.
@@ -145,7 +81,7 @@ func (client *ThroughputPoolsClient) listByResourceGroupCreateRequest(ctx contex
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/throughputPools"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -176,6 +112,73 @@ func (client *ThroughputPoolsClient) listByResourceGroupHandleResponse(resp *htt
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ThroughputPoolsListResult); err != nil {
 		return ThroughputPoolsClientListByResourceGroupResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListPager - Lists all the Azure Cosmos DB Throughput Pools available under the subscription.
+//   - options - ThroughputPoolsClientListOptions contains the optional parameters for the ThroughputPoolsClient.NewListPager
+//     method.
+func (client *ThroughputPoolsClient) NewListPager(options *ThroughputPoolsClientListOptions) *runtime.Pager[ThroughputPoolsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ThroughputPoolsClientListResponse]{
+		More: func(page ThroughputPoolsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *ThroughputPoolsClientListResponse) (ThroughputPoolsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ThroughputPoolsClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return ThroughputPoolsClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ThroughputPoolsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listCreateRequest creates the List request.
+func (client *ThroughputPoolsClient) listCreateRequest(ctx context.Context, nextLink string, _ *ThroughputPoolsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/throughputPools"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260401Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listHandleResponse handles the List response.
+func (client *ThroughputPoolsClient) listHandleResponse(resp *http.Response, successCodes ...int) (ThroughputPoolsClientListResponse, error) {
+	result := ThroughputPoolsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ThroughputPoolsListResult); err != nil {
+		return ThroughputPoolsClientListResponse{}, err
 	}
 	return result, nil
 }

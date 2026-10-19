@@ -17,6 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/file"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/fileerror"
@@ -890,9 +891,12 @@ func (s *ShareRecordedTestsSuite) TestShareGetPropertiesCreationTime() {
 	_require.False(props.CreationTime.IsZero())
 }
 
-func newMockShareClient(t *testing.T, responses ...testcommon.MockResponse) *share.Client {
+// newMockShareClient returns a Client whose mock server returns a single response built from opts.
+func newMockShareClient(t *testing.T, opts ...mock.ResponseOption) *share.Client {
+	srv, clientOptions := testcommon.NewMockServer(t)
+	srv.AppendResponse(opts...)
 	client, err := share.NewClientWithNoCredential("https://account.file.core.windows.net/share", &share.ClientOptions{
-		ClientOptions: testcommon.MockClientOptions(testcommon.NewMockTransport(responses...)),
+		ClientOptions: clientOptions,
 	})
 	require.NoError(t, err)
 	return client
@@ -900,10 +904,8 @@ func newMockShareClient(t *testing.T, responses ...testcommon.MockResponse) *sha
 
 func TestShareGetPropertiesCreationTimeMocked(t *testing.T) {
 	_require := require.New(t)
-	client := newMockShareClient(t, testcommon.MockResponse{
-		StatusCode: http.StatusOK,
-		Header:     http.Header{"X-Ms-Share-Creation-Time": []string{"Tue, 13 Oct 2026 10:20:30 GMT"}},
-	})
+	client := newMockShareClient(t, mock.WithStatusCode(http.StatusOK),
+		mock.WithHeader("x-ms-share-creation-time", "Tue, 13 Oct 2026 10:20:30 GMT"))
 
 	props, err := client.GetProperties(context.Background(), nil)
 	_require.NoError(err)
@@ -913,7 +915,7 @@ func TestShareGetPropertiesCreationTimeMocked(t *testing.T) {
 
 func TestShareGetPropertiesCreationTimeMissingMocked(t *testing.T) {
 	_require := require.New(t)
-	client := newMockShareClient(t, testcommon.MockResponse{StatusCode: http.StatusOK})
+	client := newMockShareClient(t, mock.WithStatusCode(http.StatusOK))
 
 	props, err := client.GetProperties(context.Background(), nil)
 	_require.NoError(err)
@@ -921,10 +923,8 @@ func TestShareGetPropertiesCreationTimeMissingMocked(t *testing.T) {
 }
 
 func TestShareGetPropertiesCreationTimeInvalidMocked(t *testing.T) {
-	client := newMockShareClient(t, testcommon.MockResponse{
-		StatusCode: http.StatusOK,
-		Header:     http.Header{"X-Ms-Share-Creation-Time": []string{"not a date"}},
-	})
+	client := newMockShareClient(t, mock.WithStatusCode(http.StatusOK),
+		mock.WithHeader("x-ms-share-creation-time", "not a date"))
 
 	_, err := client.GetProperties(context.Background(), nil)
 	require.Error(t, err)

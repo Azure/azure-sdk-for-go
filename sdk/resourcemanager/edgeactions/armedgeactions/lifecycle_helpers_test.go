@@ -32,7 +32,8 @@ func versionCode(deploymentType armedgeactions.EdgeActionVersionDeploymentType) 
 		archive := zip.NewWriter(&buffer)
 		// Fixed DOS timestamp and creator metadata keep request bodies identical across platforms.
 		entry, err := archive.CreateHeader(&zip.FileHeader{
-			Name: "handler.js", Method: zip.Store, ModifiedDate: 33,
+			Name: "handler.js", Method: zip.Store,
+			ModifiedDate: 33, //nolint:staticcheck // Modified adds an extended timestamp, changing recorded ZIP payload bytes.
 		})
 		if err != nil {
 			return "", err

@@ -174,6 +174,14 @@ func (s *responseSpec) validate(op *specOperation, status int, body []byte, head
 	return nil
 }
 
+func (s *responseSpec) validateFinal(op *specOperation, status int, body []byte, headers http.Header) error {
+	var statusErr error
+	if status < http.StatusOK || status >= http.StatusMultipleChoices {
+		statusErr = fmt.Errorf("%s: final Location returned non-success HTTP %d", op.ID, status)
+	}
+	return errors.Join(statusErr, s.validate(op, status, body, headers))
+}
+
 func (s *responseSpec) validateBody(schema *responseSchema, body []byte, status int) error {
 	if schema == nil {
 		if len(bytes.TrimSpace(body)) != 0 {

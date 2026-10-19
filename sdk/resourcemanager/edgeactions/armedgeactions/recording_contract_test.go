@@ -19,6 +19,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -150,9 +151,9 @@ func auditRecording(spec *responseSpec, entries []contractEntry) recordingAudit 
 						if swapLocationException(op.op, entry.StatusCode, body) {
 							audit.exceptions++
 						} else {
-							audit.check(index, spec.validate(op.op, entry.StatusCode, body, headers))
+							audit.check(index, spec.validateFinal(op.op, entry.StatusCode, body, headers))
 						}
-						op.resultSeen = true
+						op.resultSeen = entry.StatusCode >= http.StatusOK && entry.StatusCode < http.StatusMultipleChoices
 					}
 					break
 				}
@@ -297,6 +298,38 @@ func TestContractRecordingLROAssociation(t *testing.T) {
 	}
 }
 
+func TestContractRecordingFailedLocation(t *testing.T) {
+	spec, err := loadResponseSpec()
+	require.NoError(t, err)
+	const statusURL = "https://management.azure.com/operations/one?api-version=" + apiVersion
+	const resultURL = "https://management.azure.com/results/one?api-version=" + apiVersion
+	for _, tc := range []struct {
+		name, body, schemaFailure string
+		status                    int
+	}{
+		{"not-found", `{"error":{"code":"NotFound","message":"Missing result"}}`, "", http.StatusNotFound},
+		{"server-error", `{"error":{"code":"InternalError","message":"Failed result"}}`, "", http.StatusInternalServerError},
+		{"invalid-error-body", `{"error":{"code":42}}`, "error.code", http.StatusNotFound},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			audit := auditRecording(spec, []contractEntry{
+				{RequestMethod: "POST", RequestURI: "https://management.azure.com" + versionPath + "/deployVersionCode?api-version=" + apiVersion,
+					StatusCode: 202, ResponseHeaders: map[string]recordedHeader{"Azure-AsyncOperation": {statusURL}, "Location": {resultURL}}},
+				{RequestMethod: "GET", RequestURI: statusURL, StatusCode: 200, ResponseBody: json.RawMessage(`{"status":"Succeeded"}`)},
+				{RequestMethod: "GET", RequestURI: resultURL, StatusCode: tc.status, ResponseBody: json.RawMessage(tc.body)},
+			})
+			require.Len(t, audit.issues, 2)
+			assert.Equal(t, 3, audit.issues[0].entry)
+			assert.ErrorContains(t, audit.issues[0].err, fmt.Sprintf("non-success HTTP %d", tc.status))
+			if tc.schemaFailure != "" {
+				assert.ErrorContains(t, audit.issues[0].err, tc.schemaFailure)
+			}
+			assert.Equal(t, 1, audit.issues[1].entry)
+			assert.ErrorContains(t, audit.issues[1].err, "lacks a completed final Location")
+		})
+	}
+}
+
 func TestContractRecordingAuditRetainsInvalidInitialLRO(t *testing.T) {
 	spec, err := loadResponseSpec()
 	require.NoError(t, err)
@@ -370,6 +403,9 @@ func recordingDirectory(ctx context.Context) (string, error) {
 }
 
 func TestRecordingResponseContracts(t *testing.T) {
+	if recording.GetRecordMode() == recording.LiveMode {
+		t.Skip("recording response audit applies only in record/playback modes")
+	}
 	spec, err := loadResponseSpec()
 	require.NoError(t, err)
 	directory, err := recordingDirectory(t.Context())

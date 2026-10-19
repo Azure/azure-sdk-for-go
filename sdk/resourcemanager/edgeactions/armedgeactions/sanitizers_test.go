@@ -178,7 +178,7 @@ func testSanitizerRoundTrip(t *testing.T, query string, recordedURL bool) {
 		require.NoError(t, err)
 		response, err := client.Post(base+"/"+mode+"/start", "application/json", bytes.NewReader(body))
 		require.NoError(t, err)
-		defer response.Body.Close()
+		defer func() { assert.NoError(t, response.Body.Close()) }()
 		data, err := io.ReadAll(response.Body)
 		require.NoError(t, err)
 		require.Equal(t, http.StatusOK, response.StatusCode, "%s", data)
@@ -194,7 +194,7 @@ func testSanitizerRoundTrip(t *testing.T, query string, recordedURL bool) {
 		req.Header.Set("x-recording-save", "true")
 		response, err := client.Do(req)
 		require.NoError(t, err)
-		defer response.Body.Close()
+		defer func() { assert.NoError(t, response.Body.Close()) }()
 		data, err := io.ReadAll(response.Body)
 		require.NoError(t, err)
 		require.Equal(t, http.StatusOK, response.StatusCode, "%s", data)
@@ -209,7 +209,7 @@ func testSanitizerRoundTrip(t *testing.T, query string, recordedURL bool) {
 		req.Header.Set("Cookie", "fake-request-cookie")
 		response, err := client.Do(req)
 		require.NoError(t, err)
-		defer response.Body.Close()
+		defer func() { assert.NoError(t, response.Body.Close()) }()
 		data, err := io.ReadAll(response.Body)
 		require.NoError(t, err)
 		require.Equal(t, http.StatusOK, response.StatusCode, "%s", data)
@@ -262,7 +262,7 @@ func testSanitizerRoundTrip(t *testing.T, query string, recordedURL bool) {
 	original, err := url.ParseQuery(strings.TrimPrefix(query, "?"))
 	require.NoError(t, err)
 	for key, values := range original {
-		if strings.Contains("tcsh", strings.ToLower(key)) && len(key) == 1 && values[0] != "" {
+		if len(key) == 1 && strings.ContainsAny(strings.ToLower(key), "tcsh") && values[0] != "" {
 			original.Set(key, recording.SanitizedValue)
 		}
 	}

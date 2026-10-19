@@ -6,6 +6,7 @@ package armedgeactions_test
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -79,7 +80,7 @@ func (v *responseValidator) Do(req *policy.Request) (*http.Response, error) {
 			// Only the known swapDefault final Location response is excluded.
 			// Its initial response, URLs, polling, and subsequent resource GETs are checked.
 			if !swapLocationException(p.op, resp.StatusCode, body) {
-				if err := v.spec.validate(p.op, resp.StatusCode, body, resp.Header); err != nil {
+				if err := v.spec.validateFinal(p.op, resp.StatusCode, body, resp.Header); err != nil {
 					return resp, err
 				}
 			}
@@ -173,14 +174,14 @@ func (v *responseValidator) complete(ctx context.Context) error {
 	return nil
 }
 
-func (v *responseValidator) get(ctx context.Context, address string) error {
+func (v *responseValidator) get(ctx context.Context, address string) (err error) {
 	request, err := runtime.NewRequest(ctx, http.MethodGet, address)
 	if err != nil {
 		return fmt.Errorf("invalid LRO validation request URL")
 	}
 	response, err := v.pipeline.Do(request)
 	if response != nil && response.Body != nil {
-		defer response.Body.Close()
+		defer func() { err = errors.Join(err, response.Body.Close()) }()
 	}
 	return err
 }
@@ -267,6 +268,8 @@ func TestContractInvalidLROResponses(t *testing.T) {
 		{"final-empty", monitor, final, `{"status":"Succeeded"}`, "", "requires a response body", 200, 200},
 		{"final-http202", monitor, final, `{"status":"Succeeded"}`, "", "still pending", 200, 202},
 		{"final-http204", monitor, final, `{"status":"Succeeded"}`, "", "not a documented response", 200, 204},
+		{"final-http404", monitor, final, `{"status":"Succeeded"}`, `{"error":{"code":"NotFound","message":"Missing result"}}`, "non-success HTTP 404", 200, 404},
+		{"final-http500", monitor, final, `{"status":"Succeeded"}`, `{"error":{"code":"InternalError","message":"Failed result"}}`, "non-success HTTP 500", 200, 500},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
 			spec, err := loadResponseSpec()
@@ -280,7 +283,7 @@ func TestContractInvalidLROResponses(t *testing.T) {
 				require.NoError(t, err)
 				response, err := validator.pipeline.Do(request)
 				if response != nil && response.Body != nil {
-					defer response.Body.Close()
+					defer func() { assert.NoError(t, response.Body.Close()) }()
 				}
 				return err
 			}
@@ -294,6 +297,35 @@ func TestContractInvalidLROResponses(t *testing.T) {
 				err = send("GET", final, tc.resultStatus, tc.resultBody)
 			}
 			require.ErrorContains(t, err, tc.failure)
+			if tc.resultStatus != 0 {
+				require.NotNil(t, validator.pending)
+				assert.False(t, validator.pending.resultSeen)
+			}
+		})
+	}
+}
+
+func TestContractCompleteRejectsFailedLocation(t *testing.T) {
+	for _, method := range []string{http.MethodPut, http.MethodPatch} {
+		t.Run(method, func(t *testing.T) {
+			spec, err := loadResponseSpec()
+			require.NoError(t, err)
+			op, err := spec.operation(method, "https://management.azure.com"+actionPath+"?api-version="+apiVersion)
+			require.NoError(t, err)
+			require.NotNil(t, op)
+			pending := &pendingOperation{
+				op: op, statusURL: "https://management.azure.com/operations/one?api-version=" + apiVersion,
+				resultURL:  "https://management.azure.com/results/one?api-version=" + apiVersion,
+				lastStatus: "Succeeded", polls: 1,
+			}
+			validator := &responseValidator{spec: spec, pending: pending}
+			_, server := newMockFactory(t, validator)
+			expectRequest(t, server, "GET", "/results/one", "", http.StatusNotFound,
+				`{"error":{"code":"NotFound","message":"Missing result"}}`)
+			require.ErrorContains(t, validator.complete(t.Context()), "non-success HTTP 404")
+			assert.False(t, pending.resultSeen)
+			assert.Nil(t, validator.pending)
+			assert.Equal(t, 1, server.Requests())
 		})
 	}
 }

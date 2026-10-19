@@ -1,6 +1,6 @@
 # Release History
 
-## 2.0.0-beta.1 (2026-09-23)
+## 2.0.0-beta.1 (2026-10-19)
 ### Breaking Changes
 
 - Function `*ClientFactory.NewScheduledEventClient` has been removed

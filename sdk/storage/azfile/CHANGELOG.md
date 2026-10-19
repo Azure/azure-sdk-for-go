@@ -19,6 +19,7 @@
   * Added `directory.FileType` (`Regular`, `Directory`, `SymLink`, `BlockDevice`, `CharacterDevice`, `Socket`, `Fifo`) and a `FileType()` method on each listed item type.
   * URL-encoded names of NFS items (`Encoded="true"`) are decoded before being returned.
 * Added Files Change Feed support on shares: `EnableChangeFeed` and `ChangeFeedRetentionInDays` in share `CreateOptions` and `SetPropertiesOptions`, and `EnableChangeFeed`, `ChangeFeedRetentionInDays` and `ChangeFeedBlobContainerName` in the share `GetProperties` response.
+* Added support for share creation time for service version `2027-03-07`. The creation time of a share is returned in `CreationTime` by `GetProperties` on share `Client` and in `ShareProperties` by `NewListSharesPager` on service `Client`.
 
 ### Breaking Changes
 

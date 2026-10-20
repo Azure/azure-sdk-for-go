@@ -278,3 +278,18 @@ func TestSynchronousCompletion(t *testing.T) {
 	require.Equal(t, poller.StatusSucceeded, ap.CurState)
 	require.True(t, ap.Done())
 }
+
+func TestPostInitialProvisioningStateIgnored(t *testing.T) {
+	for _, state := range []string{"Succeeded", "Failed", "Canceled"} {
+		t.Run(state, func(t *testing.T) {
+			resp := initialResponse(http.MethodPost, strings.NewReader(fmt.Sprintf(
+				`{ "properties": { "provisioningState": %q } }`, state)))
+			resp.StatusCode = http.StatusAccepted
+			resp.Header.Set(shared.HeaderAzureAsync, fakePollingURL)
+			ap, err := New[struct{}](exported.Pipeline{}, resp, "")
+			require.NoError(t, err)
+			require.Equal(t, poller.StatusInProgress, ap.CurState)
+			require.False(t, ap.Done())
+		})
+	}
+}

@@ -17,7 +17,6 @@ import (
 	"net/url"
 	"regexp"
 	"slices"
-	"strconv"
 )
 
 // ManagedClustersServer is a fake server for instances of the armcontainerservice.ManagedClustersClient type.
@@ -33,86 +32,6 @@ type ManagedClustersServer struct {
 	// BeginDelete is the fake for method ManagedClustersClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, resourceName string, options *armcontainerservice.ManagedClustersClientBeginDeleteOptions) (resp azfake.PollerResponder[armcontainerservice.ManagedClustersClientDeleteResponse], errResp azfake.ErrorResponder)
-
-	// Get is the fake for method ManagedClustersClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, resourceName string, options *armcontainerservice.ManagedClustersClientGetOptions) (resp azfake.Responder[armcontainerservice.ManagedClustersClientGetResponse], errResp azfake.ErrorResponder)
-
-	// GetAccessProfile is the fake for method ManagedClustersClient.GetAccessProfile
-	// HTTP status codes to indicate success: http.StatusOK
-	GetAccessProfile func(ctx context.Context, resourceGroupName string, resourceName string, roleName string, options *armcontainerservice.ManagedClustersClientGetAccessProfileOptions) (resp azfake.Responder[armcontainerservice.ManagedClustersClientGetAccessProfileResponse], errResp azfake.ErrorResponder)
-
-	// GetCommandResult is the fake for method ManagedClustersClient.GetCommandResult
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	GetCommandResult func(ctx context.Context, resourceGroupName string, resourceName string, commandID string, options *armcontainerservice.ManagedClustersClientGetCommandResultOptions) (resp azfake.Responder[armcontainerservice.ManagedClustersClientGetCommandResultResponse], errResp azfake.ErrorResponder)
-
-	// GetGuardrailsVersions is the fake for method ManagedClustersClient.GetGuardrailsVersions
-	// HTTP status codes to indicate success: http.StatusOK
-	GetGuardrailsVersions func(ctx context.Context, location string, version string, options *armcontainerservice.ManagedClustersClientGetGuardrailsVersionsOptions) (resp azfake.Responder[armcontainerservice.ManagedClustersClientGetGuardrailsVersionsResponse], errResp azfake.ErrorResponder)
-
-	// GetMeshRevisionProfile is the fake for method ManagedClustersClient.GetMeshRevisionProfile
-	// HTTP status codes to indicate success: http.StatusOK
-	GetMeshRevisionProfile func(ctx context.Context, location string, mode string, options *armcontainerservice.ManagedClustersClientGetMeshRevisionProfileOptions) (resp azfake.Responder[armcontainerservice.ManagedClustersClientGetMeshRevisionProfileResponse], errResp azfake.ErrorResponder)
-
-	// GetMeshUpgradeProfile is the fake for method ManagedClustersClient.GetMeshUpgradeProfile
-	// HTTP status codes to indicate success: http.StatusOK
-	GetMeshUpgradeProfile func(ctx context.Context, resourceGroupName string, resourceName string, mode string, options *armcontainerservice.ManagedClustersClientGetMeshUpgradeProfileOptions) (resp azfake.Responder[armcontainerservice.ManagedClustersClientGetMeshUpgradeProfileResponse], errResp azfake.ErrorResponder)
-
-	// GetSafeguardsVersions is the fake for method ManagedClustersClient.GetSafeguardsVersions
-	// HTTP status codes to indicate success: http.StatusOK
-	GetSafeguardsVersions func(ctx context.Context, location string, version string, options *armcontainerservice.ManagedClustersClientGetSafeguardsVersionsOptions) (resp azfake.Responder[armcontainerservice.ManagedClustersClientGetSafeguardsVersionsResponse], errResp azfake.ErrorResponder)
-
-	// GetUpgradeProfile is the fake for method ManagedClustersClient.GetUpgradeProfile
-	// HTTP status codes to indicate success: http.StatusOK
-	GetUpgradeProfile func(ctx context.Context, resourceGroupName string, resourceName string, options *armcontainerservice.ManagedClustersClientGetUpgradeProfileOptions) (resp azfake.Responder[armcontainerservice.ManagedClustersClientGetUpgradeProfileResponse], errResp azfake.ErrorResponder)
-
-	// NewListPager is the fake for method ManagedClustersClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armcontainerservice.ManagedClustersClientListOptions) (resp azfake.PagerResponder[armcontainerservice.ManagedClustersClientListResponse])
-
-	// NewListByResourceGroupPager is the fake for method ManagedClustersClient.NewListByResourceGroupPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupPager func(resourceGroupName string, options *armcontainerservice.ManagedClustersClientListByResourceGroupOptions) (resp azfake.PagerResponder[armcontainerservice.ManagedClustersClientListByResourceGroupResponse])
-
-	// ListClusterAdminCredentials is the fake for method ManagedClustersClient.ListClusterAdminCredentials
-	// HTTP status codes to indicate success: http.StatusOK
-	ListClusterAdminCredentials func(ctx context.Context, resourceGroupName string, resourceName string, options *armcontainerservice.ManagedClustersClientListClusterAdminCredentialsOptions) (resp azfake.Responder[armcontainerservice.ManagedClustersClientListClusterAdminCredentialsResponse], errResp azfake.ErrorResponder)
-
-	// ListClusterMonitoringUserCredentials is the fake for method ManagedClustersClient.ListClusterMonitoringUserCredentials
-	// HTTP status codes to indicate success: http.StatusOK
-	ListClusterMonitoringUserCredentials func(ctx context.Context, resourceGroupName string, resourceName string, options *armcontainerservice.ManagedClustersClientListClusterMonitoringUserCredentialsOptions) (resp azfake.Responder[armcontainerservice.ManagedClustersClientListClusterMonitoringUserCredentialsResponse], errResp azfake.ErrorResponder)
-
-	// ListClusterUserCredentials is the fake for method ManagedClustersClient.ListClusterUserCredentials
-	// HTTP status codes to indicate success: http.StatusOK
-	ListClusterUserCredentials func(ctx context.Context, resourceGroupName string, resourceName string, options *armcontainerservice.ManagedClustersClientListClusterUserCredentialsOptions) (resp azfake.Responder[armcontainerservice.ManagedClustersClientListClusterUserCredentialsResponse], errResp azfake.ErrorResponder)
-
-	// NewListGuardrailsVersionsPager is the fake for method ManagedClustersClient.NewListGuardrailsVersionsPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListGuardrailsVersionsPager func(location string, options *armcontainerservice.ManagedClustersClientListGuardrailsVersionsOptions) (resp azfake.PagerResponder[armcontainerservice.ManagedClustersClientListGuardrailsVersionsResponse])
-
-	// ListKubernetesVersions is the fake for method ManagedClustersClient.ListKubernetesVersions
-	// HTTP status codes to indicate success: http.StatusOK
-	ListKubernetesVersions func(ctx context.Context, location string, options *armcontainerservice.ManagedClustersClientListKubernetesVersionsOptions) (resp azfake.Responder[armcontainerservice.ManagedClustersClientListKubernetesVersionsResponse], errResp azfake.ErrorResponder)
-
-	// NewListMeshRevisionProfilesPager is the fake for method ManagedClustersClient.NewListMeshRevisionProfilesPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListMeshRevisionProfilesPager func(location string, options *armcontainerservice.ManagedClustersClientListMeshRevisionProfilesOptions) (resp azfake.PagerResponder[armcontainerservice.ManagedClustersClientListMeshRevisionProfilesResponse])
-
-	// NewListMeshUpgradeProfilesPager is the fake for method ManagedClustersClient.NewListMeshUpgradeProfilesPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListMeshUpgradeProfilesPager func(resourceGroupName string, resourceName string, options *armcontainerservice.ManagedClustersClientListMeshUpgradeProfilesOptions) (resp azfake.PagerResponder[armcontainerservice.ManagedClustersClientListMeshUpgradeProfilesResponse])
-
-	// NewListOutboundNetworkDependenciesEndpointsPager is the fake for method ManagedClustersClient.NewListOutboundNetworkDependenciesEndpointsPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListOutboundNetworkDependenciesEndpointsPager func(resourceGroupName string, resourceName string, options *armcontainerservice.ManagedClustersClientListOutboundNetworkDependenciesEndpointsOptions) (resp azfake.PagerResponder[armcontainerservice.ManagedClustersClientListOutboundNetworkDependenciesEndpointsResponse])
-
-	// NewListSafeguardsVersionsPager is the fake for method ManagedClustersClient.NewListSafeguardsVersionsPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListSafeguardsVersionsPager func(location string, options *armcontainerservice.ManagedClustersClientListSafeguardsVersionsOptions) (resp azfake.PagerResponder[armcontainerservice.ManagedClustersClientListSafeguardsVersionsResponse])
-
-	// BeginRebalanceLoadBalancers is the fake for method ManagedClustersClient.BeginRebalanceLoadBalancers
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginRebalanceLoadBalancers func(ctx context.Context, resourceGroupName string, resourceName string, parameters armcontainerservice.RebalanceLoadBalancersRequestBody, options *armcontainerservice.ManagedClustersClientBeginRebalanceLoadBalancersOptions) (resp azfake.PollerResponder[armcontainerservice.ManagedClustersClientRebalanceLoadBalancersResponse], errResp azfake.ErrorResponder)
 
 	// BeginResetAADProfile is the fake for method ManagedClustersClient.BeginResetAADProfile
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
@@ -145,6 +64,66 @@ type ManagedClustersServer struct {
 	// BeginUpdateTags is the fake for method ManagedClustersClient.BeginUpdateTags
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdateTags func(ctx context.Context, resourceGroupName string, resourceName string, parameters armcontainerservice.TagsObject, options *armcontainerservice.ManagedClustersClientBeginUpdateTagsOptions) (resp azfake.PollerResponder[armcontainerservice.ManagedClustersClientUpdateTagsResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method ManagedClustersClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, resourceName string, options *armcontainerservice.ManagedClustersClientGetOptions) (resp azfake.Responder[armcontainerservice.ManagedClustersClientGetResponse], errResp azfake.ErrorResponder)
+
+	// GetAccessProfile is the fake for method ManagedClustersClient.GetAccessProfile
+	// HTTP status codes to indicate success: http.StatusOK
+	GetAccessProfile func(ctx context.Context, resourceGroupName string, resourceName string, roleName string, options *armcontainerservice.ManagedClustersClientGetAccessProfileOptions) (resp azfake.Responder[armcontainerservice.ManagedClustersClientGetAccessProfileResponse], errResp azfake.ErrorResponder)
+
+	// GetCommandResult is the fake for method ManagedClustersClient.GetCommandResult
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	GetCommandResult func(ctx context.Context, resourceGroupName string, resourceName string, commandID string, options *armcontainerservice.ManagedClustersClientGetCommandResultOptions) (resp azfake.Responder[armcontainerservice.ManagedClustersClientGetCommandResultResponse], errResp azfake.ErrorResponder)
+
+	// GetMeshRevisionProfile is the fake for method ManagedClustersClient.GetMeshRevisionProfile
+	// HTTP status codes to indicate success: http.StatusOK
+	GetMeshRevisionProfile func(ctx context.Context, location string, mode string, options *armcontainerservice.ManagedClustersClientGetMeshRevisionProfileOptions) (resp azfake.Responder[armcontainerservice.ManagedClustersClientGetMeshRevisionProfileResponse], errResp azfake.ErrorResponder)
+
+	// GetMeshUpgradeProfile is the fake for method ManagedClustersClient.GetMeshUpgradeProfile
+	// HTTP status codes to indicate success: http.StatusOK
+	GetMeshUpgradeProfile func(ctx context.Context, resourceGroupName string, resourceName string, mode string, options *armcontainerservice.ManagedClustersClientGetMeshUpgradeProfileOptions) (resp azfake.Responder[armcontainerservice.ManagedClustersClientGetMeshUpgradeProfileResponse], errResp azfake.ErrorResponder)
+
+	// GetUpgradeProfile is the fake for method ManagedClustersClient.GetUpgradeProfile
+	// HTTP status codes to indicate success: http.StatusOK
+	GetUpgradeProfile func(ctx context.Context, resourceGroupName string, resourceName string, options *armcontainerservice.ManagedClustersClientGetUpgradeProfileOptions) (resp azfake.Responder[armcontainerservice.ManagedClustersClientGetUpgradeProfileResponse], errResp azfake.ErrorResponder)
+
+	// ListClusterAdminCredentials is the fake for method ManagedClustersClient.ListClusterAdminCredentials
+	// HTTP status codes to indicate success: http.StatusOK
+	ListClusterAdminCredentials func(ctx context.Context, resourceGroupName string, resourceName string, options *armcontainerservice.ManagedClustersClientListClusterAdminCredentialsOptions) (resp azfake.Responder[armcontainerservice.ManagedClustersClientListClusterAdminCredentialsResponse], errResp azfake.ErrorResponder)
+
+	// ListClusterMonitoringUserCredentials is the fake for method ManagedClustersClient.ListClusterMonitoringUserCredentials
+	// HTTP status codes to indicate success: http.StatusOK
+	ListClusterMonitoringUserCredentials func(ctx context.Context, resourceGroupName string, resourceName string, options *armcontainerservice.ManagedClustersClientListClusterMonitoringUserCredentialsOptions) (resp azfake.Responder[armcontainerservice.ManagedClustersClientListClusterMonitoringUserCredentialsResponse], errResp azfake.ErrorResponder)
+
+	// ListClusterUserCredentials is the fake for method ManagedClustersClient.ListClusterUserCredentials
+	// HTTP status codes to indicate success: http.StatusOK
+	ListClusterUserCredentials func(ctx context.Context, resourceGroupName string, resourceName string, options *armcontainerservice.ManagedClustersClientListClusterUserCredentialsOptions) (resp azfake.Responder[armcontainerservice.ManagedClustersClientListClusterUserCredentialsResponse], errResp azfake.ErrorResponder)
+
+	// ListKubernetesVersions is the fake for method ManagedClustersClient.ListKubernetesVersions
+	// HTTP status codes to indicate success: http.StatusOK
+	ListKubernetesVersions func(ctx context.Context, location string, options *armcontainerservice.ManagedClustersClientListKubernetesVersionsOptions) (resp azfake.Responder[armcontainerservice.ManagedClustersClientListKubernetesVersionsResponse], errResp azfake.ErrorResponder)
+
+	// NewListByResourceGroupPager is the fake for method ManagedClustersClient.NewListByResourceGroupPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByResourceGroupPager func(resourceGroupName string, options *armcontainerservice.ManagedClustersClientListByResourceGroupOptions) (resp azfake.PagerResponder[armcontainerservice.ManagedClustersClientListByResourceGroupResponse])
+
+	// NewListMeshRevisionProfilesPager is the fake for method ManagedClustersClient.NewListMeshRevisionProfilesPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListMeshRevisionProfilesPager func(location string, options *armcontainerservice.ManagedClustersClientListMeshRevisionProfilesOptions) (resp azfake.PagerResponder[armcontainerservice.ManagedClustersClientListMeshRevisionProfilesResponse])
+
+	// NewListMeshUpgradeProfilesPager is the fake for method ManagedClustersClient.NewListMeshUpgradeProfilesPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListMeshUpgradeProfilesPager func(resourceGroupName string, resourceName string, options *armcontainerservice.ManagedClustersClientListMeshUpgradeProfilesOptions) (resp azfake.PagerResponder[armcontainerservice.ManagedClustersClientListMeshUpgradeProfilesResponse])
+
+	// NewListOutboundNetworkDependenciesEndpointsPager is the fake for method ManagedClustersClient.NewListOutboundNetworkDependenciesEndpointsPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListOutboundNetworkDependenciesEndpointsPager func(resourceGroupName string, resourceName string, options *armcontainerservice.ManagedClustersClientListOutboundNetworkDependenciesEndpointsOptions) (resp azfake.PagerResponder[armcontainerservice.ManagedClustersClientListOutboundNetworkDependenciesEndpointsResponse])
+
+	// NewListPager is the fake for method ManagedClustersClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armcontainerservice.ManagedClustersClientListOptions) (resp azfake.PagerResponder[armcontainerservice.ManagedClustersClientListResponse])
 }
 
 // NewManagedClustersServerTransport creates a new instance of ManagedClustersServerTransport with the provided implementation.
@@ -152,26 +131,23 @@ type ManagedClustersServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewManagedClustersServerTransport(srv *ManagedClustersServer) *ManagedClustersServerTransport {
 	return &ManagedClustersServerTransport{
-		srv:                              srv,
-		beginAbortLatestOperation:        newTracker[azfake.PollerResponder[armcontainerservice.ManagedClustersClientAbortLatestOperationResponse]](),
-		beginCreateOrUpdate:              newTracker[azfake.PollerResponder[armcontainerservice.ManagedClustersClientCreateOrUpdateResponse]](),
-		beginDelete:                      newTracker[azfake.PollerResponder[armcontainerservice.ManagedClustersClientDeleteResponse]](),
-		newListPager:                     newTracker[azfake.PagerResponder[armcontainerservice.ManagedClustersClientListResponse]](),
-		newListByResourceGroupPager:      newTracker[azfake.PagerResponder[armcontainerservice.ManagedClustersClientListByResourceGroupResponse]](),
-		newListGuardrailsVersionsPager:   newTracker[azfake.PagerResponder[armcontainerservice.ManagedClustersClientListGuardrailsVersionsResponse]](),
-		newListMeshRevisionProfilesPager: newTracker[azfake.PagerResponder[armcontainerservice.ManagedClustersClientListMeshRevisionProfilesResponse]](),
-		newListMeshUpgradeProfilesPager:  newTracker[azfake.PagerResponder[armcontainerservice.ManagedClustersClientListMeshUpgradeProfilesResponse]](),
+		srv:                                  srv,
+		beginAbortLatestOperation:            newTracker[azfake.PollerResponder[armcontainerservice.ManagedClustersClientAbortLatestOperationResponse]](),
+		beginCreateOrUpdate:                  newTracker[azfake.PollerResponder[armcontainerservice.ManagedClustersClientCreateOrUpdateResponse]](),
+		beginDelete:                          newTracker[azfake.PollerResponder[armcontainerservice.ManagedClustersClientDeleteResponse]](),
+		beginResetAADProfile:                 newTracker[azfake.PollerResponder[armcontainerservice.ManagedClustersClientResetAADProfileResponse]](),
+		beginResetServicePrincipalProfile:    newTracker[azfake.PollerResponder[armcontainerservice.ManagedClustersClientResetServicePrincipalProfileResponse]](),
+		beginRotateClusterCertificates:       newTracker[azfake.PollerResponder[armcontainerservice.ManagedClustersClientRotateClusterCertificatesResponse]](),
+		beginRotateServiceAccountSigningKeys: newTracker[azfake.PollerResponder[armcontainerservice.ManagedClustersClientRotateServiceAccountSigningKeysResponse]](),
+		beginRunCommand:                      newTracker[azfake.PollerResponder[armcontainerservice.ManagedClustersClientRunCommandResponse]](),
+		beginStart:                           newTracker[azfake.PollerResponder[armcontainerservice.ManagedClustersClientStartResponse]](),
+		beginStop:                            newTracker[azfake.PollerResponder[armcontainerservice.ManagedClustersClientStopResponse]](),
+		beginUpdateTags:                      newTracker[azfake.PollerResponder[armcontainerservice.ManagedClustersClientUpdateTagsResponse]](),
+		newListByResourceGroupPager:          newTracker[azfake.PagerResponder[armcontainerservice.ManagedClustersClientListByResourceGroupResponse]](),
+		newListMeshRevisionProfilesPager:     newTracker[azfake.PagerResponder[armcontainerservice.ManagedClustersClientListMeshRevisionProfilesResponse]](),
+		newListMeshUpgradeProfilesPager:      newTracker[azfake.PagerResponder[armcontainerservice.ManagedClustersClientListMeshUpgradeProfilesResponse]](),
 		newListOutboundNetworkDependenciesEndpointsPager: newTracker[azfake.PagerResponder[armcontainerservice.ManagedClustersClientListOutboundNetworkDependenciesEndpointsResponse]](),
-		newListSafeguardsVersionsPager:                   newTracker[azfake.PagerResponder[armcontainerservice.ManagedClustersClientListSafeguardsVersionsResponse]](),
-		beginRebalanceLoadBalancers:                      newTracker[azfake.PollerResponder[armcontainerservice.ManagedClustersClientRebalanceLoadBalancersResponse]](),
-		beginResetAADProfile:                             newTracker[azfake.PollerResponder[armcontainerservice.ManagedClustersClientResetAADProfileResponse]](),
-		beginResetServicePrincipalProfile:                newTracker[azfake.PollerResponder[armcontainerservice.ManagedClustersClientResetServicePrincipalProfileResponse]](),
-		beginRotateClusterCertificates:                   newTracker[azfake.PollerResponder[armcontainerservice.ManagedClustersClientRotateClusterCertificatesResponse]](),
-		beginRotateServiceAccountSigningKeys:             newTracker[azfake.PollerResponder[armcontainerservice.ManagedClustersClientRotateServiceAccountSigningKeysResponse]](),
-		beginRunCommand:                                  newTracker[azfake.PollerResponder[armcontainerservice.ManagedClustersClientRunCommandResponse]](),
-		beginStart:                                       newTracker[azfake.PollerResponder[armcontainerservice.ManagedClustersClientStartResponse]](),
-		beginStop:                                        newTracker[azfake.PollerResponder[armcontainerservice.ManagedClustersClientStopResponse]](),
-		beginUpdateTags:                                  newTracker[azfake.PollerResponder[armcontainerservice.ManagedClustersClientUpdateTagsResponse]](),
+		newListPager: newTracker[azfake.PagerResponder[armcontainerservice.ManagedClustersClientListResponse]](),
 	}
 }
 
@@ -182,14 +158,6 @@ type ManagedClustersServerTransport struct {
 	beginAbortLatestOperation                        *tracker[azfake.PollerResponder[armcontainerservice.ManagedClustersClientAbortLatestOperationResponse]]
 	beginCreateOrUpdate                              *tracker[azfake.PollerResponder[armcontainerservice.ManagedClustersClientCreateOrUpdateResponse]]
 	beginDelete                                      *tracker[azfake.PollerResponder[armcontainerservice.ManagedClustersClientDeleteResponse]]
-	newListPager                                     *tracker[azfake.PagerResponder[armcontainerservice.ManagedClustersClientListResponse]]
-	newListByResourceGroupPager                      *tracker[azfake.PagerResponder[armcontainerservice.ManagedClustersClientListByResourceGroupResponse]]
-	newListGuardrailsVersionsPager                   *tracker[azfake.PagerResponder[armcontainerservice.ManagedClustersClientListGuardrailsVersionsResponse]]
-	newListMeshRevisionProfilesPager                 *tracker[azfake.PagerResponder[armcontainerservice.ManagedClustersClientListMeshRevisionProfilesResponse]]
-	newListMeshUpgradeProfilesPager                  *tracker[azfake.PagerResponder[armcontainerservice.ManagedClustersClientListMeshUpgradeProfilesResponse]]
-	newListOutboundNetworkDependenciesEndpointsPager *tracker[azfake.PagerResponder[armcontainerservice.ManagedClustersClientListOutboundNetworkDependenciesEndpointsResponse]]
-	newListSafeguardsVersionsPager                   *tracker[azfake.PagerResponder[armcontainerservice.ManagedClustersClientListSafeguardsVersionsResponse]]
-	beginRebalanceLoadBalancers                      *tracker[azfake.PollerResponder[armcontainerservice.ManagedClustersClientRebalanceLoadBalancersResponse]]
 	beginResetAADProfile                             *tracker[azfake.PollerResponder[armcontainerservice.ManagedClustersClientResetAADProfileResponse]]
 	beginResetServicePrincipalProfile                *tracker[azfake.PollerResponder[armcontainerservice.ManagedClustersClientResetServicePrincipalProfileResponse]]
 	beginRotateClusterCertificates                   *tracker[azfake.PollerResponder[armcontainerservice.ManagedClustersClientRotateClusterCertificatesResponse]]
@@ -198,6 +166,11 @@ type ManagedClustersServerTransport struct {
 	beginStart                                       *tracker[azfake.PollerResponder[armcontainerservice.ManagedClustersClientStartResponse]]
 	beginStop                                        *tracker[azfake.PollerResponder[armcontainerservice.ManagedClustersClientStopResponse]]
 	beginUpdateTags                                  *tracker[azfake.PollerResponder[armcontainerservice.ManagedClustersClientUpdateTagsResponse]]
+	newListByResourceGroupPager                      *tracker[azfake.PagerResponder[armcontainerservice.ManagedClustersClientListByResourceGroupResponse]]
+	newListMeshRevisionProfilesPager                 *tracker[azfake.PagerResponder[armcontainerservice.ManagedClustersClientListMeshRevisionProfilesResponse]]
+	newListMeshUpgradeProfilesPager                  *tracker[azfake.PagerResponder[armcontainerservice.ManagedClustersClientListMeshUpgradeProfilesResponse]]
+	newListOutboundNetworkDependenciesEndpointsPager *tracker[azfake.PagerResponder[armcontainerservice.ManagedClustersClientListOutboundNetworkDependenciesEndpointsResponse]]
+	newListPager                                     *tracker[azfake.PagerResponder[armcontainerservice.ManagedClustersClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for ManagedClustersServerTransport.
@@ -227,46 +200,6 @@ func (m *ManagedClustersServerTransport) dispatchToMethodFake(req *http.Request,
 				res.resp, res.err = m.dispatchBeginCreateOrUpdate(req)
 			case "ManagedClustersClient.BeginDelete":
 				res.resp, res.err = m.dispatchBeginDelete(req)
-			case "ManagedClustersClient.Get":
-				res.resp, res.err = m.dispatchGet(req)
-			case "ManagedClustersClient.GetAccessProfile":
-				res.resp, res.err = m.dispatchGetAccessProfile(req)
-			case "ManagedClustersClient.GetCommandResult":
-				res.resp, res.err = m.dispatchGetCommandResult(req)
-			case "ManagedClustersClient.GetGuardrailsVersions":
-				res.resp, res.err = m.dispatchGetGuardrailsVersions(req)
-			case "ManagedClustersClient.GetMeshRevisionProfile":
-				res.resp, res.err = m.dispatchGetMeshRevisionProfile(req)
-			case "ManagedClustersClient.GetMeshUpgradeProfile":
-				res.resp, res.err = m.dispatchGetMeshUpgradeProfile(req)
-			case "ManagedClustersClient.GetSafeguardsVersions":
-				res.resp, res.err = m.dispatchGetSafeguardsVersions(req)
-			case "ManagedClustersClient.GetUpgradeProfile":
-				res.resp, res.err = m.dispatchGetUpgradeProfile(req)
-			case "ManagedClustersClient.NewListPager":
-				res.resp, res.err = m.dispatchNewListPager(req)
-			case "ManagedClustersClient.NewListByResourceGroupPager":
-				res.resp, res.err = m.dispatchNewListByResourceGroupPager(req)
-			case "ManagedClustersClient.ListClusterAdminCredentials":
-				res.resp, res.err = m.dispatchListClusterAdminCredentials(req)
-			case "ManagedClustersClient.ListClusterMonitoringUserCredentials":
-				res.resp, res.err = m.dispatchListClusterMonitoringUserCredentials(req)
-			case "ManagedClustersClient.ListClusterUserCredentials":
-				res.resp, res.err = m.dispatchListClusterUserCredentials(req)
-			case "ManagedClustersClient.NewListGuardrailsVersionsPager":
-				res.resp, res.err = m.dispatchNewListGuardrailsVersionsPager(req)
-			case "ManagedClustersClient.ListKubernetesVersions":
-				res.resp, res.err = m.dispatchListKubernetesVersions(req)
-			case "ManagedClustersClient.NewListMeshRevisionProfilesPager":
-				res.resp, res.err = m.dispatchNewListMeshRevisionProfilesPager(req)
-			case "ManagedClustersClient.NewListMeshUpgradeProfilesPager":
-				res.resp, res.err = m.dispatchNewListMeshUpgradeProfilesPager(req)
-			case "ManagedClustersClient.NewListOutboundNetworkDependenciesEndpointsPager":
-				res.resp, res.err = m.dispatchNewListOutboundNetworkDependenciesEndpointsPager(req)
-			case "ManagedClustersClient.NewListSafeguardsVersionsPager":
-				res.resp, res.err = m.dispatchNewListSafeguardsVersionsPager(req)
-			case "ManagedClustersClient.BeginRebalanceLoadBalancers":
-				res.resp, res.err = m.dispatchBeginRebalanceLoadBalancers(req)
 			case "ManagedClustersClient.BeginResetAADProfile":
 				res.resp, res.err = m.dispatchBeginResetAADProfile(req)
 			case "ManagedClustersClient.BeginResetServicePrincipalProfile":
@@ -283,6 +216,36 @@ func (m *ManagedClustersServerTransport) dispatchToMethodFake(req *http.Request,
 				res.resp, res.err = m.dispatchBeginStop(req)
 			case "ManagedClustersClient.BeginUpdateTags":
 				res.resp, res.err = m.dispatchBeginUpdateTags(req)
+			case "ManagedClustersClient.Get":
+				res.resp, res.err = m.dispatchGet(req)
+			case "ManagedClustersClient.GetAccessProfile":
+				res.resp, res.err = m.dispatchGetAccessProfile(req)
+			case "ManagedClustersClient.GetCommandResult":
+				res.resp, res.err = m.dispatchGetCommandResult(req)
+			case "ManagedClustersClient.GetMeshRevisionProfile":
+				res.resp, res.err = m.dispatchGetMeshRevisionProfile(req)
+			case "ManagedClustersClient.GetMeshUpgradeProfile":
+				res.resp, res.err = m.dispatchGetMeshUpgradeProfile(req)
+			case "ManagedClustersClient.GetUpgradeProfile":
+				res.resp, res.err = m.dispatchGetUpgradeProfile(req)
+			case "ManagedClustersClient.ListClusterAdminCredentials":
+				res.resp, res.err = m.dispatchListClusterAdminCredentials(req)
+			case "ManagedClustersClient.ListClusterMonitoringUserCredentials":
+				res.resp, res.err = m.dispatchListClusterMonitoringUserCredentials(req)
+			case "ManagedClustersClient.ListClusterUserCredentials":
+				res.resp, res.err = m.dispatchListClusterUserCredentials(req)
+			case "ManagedClustersClient.ListKubernetesVersions":
+				res.resp, res.err = m.dispatchListKubernetesVersions(req)
+			case "ManagedClustersClient.NewListByResourceGroupPager":
+				res.resp, res.err = m.dispatchNewListByResourceGroupPager(req)
+			case "ManagedClustersClient.NewListMeshRevisionProfilesPager":
+				res.resp, res.err = m.dispatchNewListMeshRevisionProfilesPager(req)
+			case "ManagedClustersClient.NewListMeshUpgradeProfilesPager":
+				res.resp, res.err = m.dispatchNewListMeshUpgradeProfilesPager(req)
+			case "ManagedClustersClient.NewListOutboundNetworkDependenciesEndpointsPager":
+				res.resp, res.err = m.dispatchNewListOutboundNetworkDependenciesEndpointsPager(req)
+			case "ManagedClustersClient.NewListPager":
+				res.resp, res.err = m.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -412,7 +375,6 @@ func (m *ManagedClustersServerTransport) dispatchBeginDelete(req *http.Request) 
 		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		qp := req.URL.Query()
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
@@ -422,15 +384,10 @@ func (m *ManagedClustersServerTransport) dispatchBeginDelete(req *http.Request) 
 			return nil, err
 		}
 		ifMatchParam := getOptional(getHeaderValue(req.Header, "if-match"))
-		ignorePodDisruptionBudgetParam, err := parseOptional(qp.Get("ignore-pod-disruption-budget"), strconv.ParseBool)
-		if err != nil {
-			return nil, err
-		}
 		var options *armcontainerservice.ManagedClustersClientBeginDeleteOptions
-		if ifMatchParam != nil || ignorePodDisruptionBudgetParam != nil {
+		if ifMatchParam != nil {
 			options = &armcontainerservice.ManagedClustersClientBeginDeleteOptions{
-				IfMatch:                   ifMatchParam,
-				IgnorePodDisruptionBudget: ignorePodDisruptionBudgetParam,
+				IfMatch: ifMatchParam,
 			}
 		}
 		respr, errRespr := m.srv.BeginDelete(req.Context(), resourceGroupNameParam, resourceNameParam, options)
@@ -452,750 +409,6 @@ func (m *ManagedClustersServerTransport) dispatchBeginDelete(req *http.Request) 
 	}
 	if !server.PollerResponderMore(beginDelete) {
 		m.beginDelete.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (m *ManagedClustersServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if m.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := m.srv.Get(req.Context(), resourceGroupNameParam, resourceNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ManagedCluster, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (m *ManagedClustersServerTransport) dispatchGetAccessProfile(req *http.Request) (*http.Response, error) {
-	if m.srv.GetAccessProfile == nil {
-		return nil, &nonRetriableError{errors.New("fake for method GetAccessProfile not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/accessProfiles/(?P<roleName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listCredential`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
-	if err != nil {
-		return nil, err
-	}
-	roleNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("roleName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := m.srv.GetAccessProfile(req.Context(), resourceGroupNameParam, resourceNameParam, roleNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ManagedClusterAccessProfile, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (m *ManagedClustersServerTransport) dispatchGetCommandResult(req *http.Request) (*http.Response, error) {
-	if m.srv.GetCommandResult == nil {
-		return nil, &nonRetriableError{errors.New("fake for method GetCommandResult not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/commandResults/(?P<commandId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
-	if err != nil {
-		return nil, err
-	}
-	commandIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("commandId")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := m.srv.GetCommandResult(req.Context(), resourceGroupNameParam, resourceNameParam, commandIDParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RunCommandResult, req)
-	if err != nil {
-		return nil, err
-	}
-	if val := server.GetResponse(respr).Location; val != nil {
-		resp.Header.Set("Location", *val)
-	}
-	return resp, nil
-}
-
-func (m *ManagedClustersServerTransport) dispatchGetGuardrailsVersions(req *http.Request) (*http.Response, error) {
-	if m.srv.GetGuardrailsVersions == nil {
-		return nil, &nonRetriableError{errors.New("fake for method GetGuardrailsVersions not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/guardrailsVersions/(?P<version>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
-	if err != nil {
-		return nil, err
-	}
-	versionParam, err := url.PathUnescape(matches[regex.SubexpIndex("version")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := m.srv.GetGuardrailsVersions(req.Context(), locationParam, versionParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).GuardrailsAvailableVersion, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (m *ManagedClustersServerTransport) dispatchGetMeshRevisionProfile(req *http.Request) (*http.Response, error) {
-	if m.srv.GetMeshRevisionProfile == nil {
-		return nil, &nonRetriableError{errors.New("fake for method GetMeshRevisionProfile not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/meshRevisionProfiles/(?P<mode>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
-	if err != nil {
-		return nil, err
-	}
-	modeParam, err := url.PathUnescape(matches[regex.SubexpIndex("mode")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := m.srv.GetMeshRevisionProfile(req.Context(), locationParam, modeParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).MeshRevisionProfile, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (m *ManagedClustersServerTransport) dispatchGetMeshUpgradeProfile(req *http.Request) (*http.Response, error) {
-	if m.srv.GetMeshUpgradeProfile == nil {
-		return nil, &nonRetriableError{errors.New("fake for method GetMeshUpgradeProfile not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/meshUpgradeProfiles/(?P<mode>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
-	if err != nil {
-		return nil, err
-	}
-	modeParam, err := url.PathUnescape(matches[regex.SubexpIndex("mode")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := m.srv.GetMeshUpgradeProfile(req.Context(), resourceGroupNameParam, resourceNameParam, modeParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).MeshUpgradeProfile, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (m *ManagedClustersServerTransport) dispatchGetSafeguardsVersions(req *http.Request) (*http.Response, error) {
-	if m.srv.GetSafeguardsVersions == nil {
-		return nil, &nonRetriableError{errors.New("fake for method GetSafeguardsVersions not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/safeguardsVersions/(?P<version>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
-	if err != nil {
-		return nil, err
-	}
-	versionParam, err := url.PathUnescape(matches[regex.SubexpIndex("version")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := m.srv.GetSafeguardsVersions(req.Context(), locationParam, versionParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SafeguardsAvailableVersion, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (m *ManagedClustersServerTransport) dispatchGetUpgradeProfile(req *http.Request) (*http.Response, error) {
-	if m.srv.GetUpgradeProfile == nil {
-		return nil, &nonRetriableError{errors.New("fake for method GetUpgradeProfile not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/upgradeProfiles/default`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := m.srv.GetUpgradeProfile(req.Context(), resourceGroupNameParam, resourceNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ManagedClusterUpgradeProfile, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (m *ManagedClustersServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if m.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := m.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedClusters`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := m.srv.NewListPager(nil)
-		newListPager = &resp
-		m.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcontainerservice.ManagedClustersClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		m.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		m.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (m *ManagedClustersServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
-	if m.srv.NewListByResourceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
-	}
-	newListByResourceGroupPager := m.newListByResourceGroupPager.get(req)
-	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedClusters`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := m.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
-		newListByResourceGroupPager = &resp
-		m.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armcontainerservice.ManagedClustersClientListByResourceGroupResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		m.newListByResourceGroupPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByResourceGroupPager) {
-		m.newListByResourceGroupPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (m *ManagedClustersServerTransport) dispatchListClusterAdminCredentials(req *http.Request) (*http.Response, error) {
-	if m.srv.ListClusterAdminCredentials == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListClusterAdminCredentials not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listClusterAdminCredential`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	qp := req.URL.Query()
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
-	if err != nil {
-		return nil, err
-	}
-	serverFqdnParam := getOptional(qp.Get("server-fqdn"))
-	var options *armcontainerservice.ManagedClustersClientListClusterAdminCredentialsOptions
-	if serverFqdnParam != nil {
-		options = &armcontainerservice.ManagedClustersClientListClusterAdminCredentialsOptions{
-			ServerFqdn: serverFqdnParam,
-		}
-	}
-	respr, errRespr := m.srv.ListClusterAdminCredentials(req.Context(), resourceGroupNameParam, resourceNameParam, options)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CredentialResults, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (m *ManagedClustersServerTransport) dispatchListClusterMonitoringUserCredentials(req *http.Request) (*http.Response, error) {
-	if m.srv.ListClusterMonitoringUserCredentials == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListClusterMonitoringUserCredentials not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listClusterMonitoringUserCredential`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	qp := req.URL.Query()
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
-	if err != nil {
-		return nil, err
-	}
-	serverFqdnParam := getOptional(qp.Get("server-fqdn"))
-	var options *armcontainerservice.ManagedClustersClientListClusterMonitoringUserCredentialsOptions
-	if serverFqdnParam != nil {
-		options = &armcontainerservice.ManagedClustersClientListClusterMonitoringUserCredentialsOptions{
-			ServerFqdn: serverFqdnParam,
-		}
-	}
-	respr, errRespr := m.srv.ListClusterMonitoringUserCredentials(req.Context(), resourceGroupNameParam, resourceNameParam, options)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CredentialResults, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (m *ManagedClustersServerTransport) dispatchListClusterUserCredentials(req *http.Request) (*http.Response, error) {
-	if m.srv.ListClusterUserCredentials == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListClusterUserCredentials not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listClusterUserCredential`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	qp := req.URL.Query()
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
-	if err != nil {
-		return nil, err
-	}
-	serverFqdnParam := getOptional(qp.Get("server-fqdn"))
-	formatParam := getOptional(armcontainerservice.Format(qp.Get("format")))
-	var options *armcontainerservice.ManagedClustersClientListClusterUserCredentialsOptions
-	if serverFqdnParam != nil || formatParam != nil {
-		options = &armcontainerservice.ManagedClustersClientListClusterUserCredentialsOptions{
-			ServerFqdn: serverFqdnParam,
-			Format:     formatParam,
-		}
-	}
-	respr, errRespr := m.srv.ListClusterUserCredentials(req.Context(), resourceGroupNameParam, resourceNameParam, options)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CredentialResults, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (m *ManagedClustersServerTransport) dispatchNewListGuardrailsVersionsPager(req *http.Request) (*http.Response, error) {
-	if m.srv.NewListGuardrailsVersionsPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListGuardrailsVersionsPager not implemented")}
-	}
-	newListGuardrailsVersionsPager := m.newListGuardrailsVersionsPager.get(req)
-	if newListGuardrailsVersionsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/guardrailsVersions`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
-		if err != nil {
-			return nil, err
-		}
-		resp := m.srv.NewListGuardrailsVersionsPager(locationParam, nil)
-		newListGuardrailsVersionsPager = &resp
-		m.newListGuardrailsVersionsPager.add(req, newListGuardrailsVersionsPager)
-		server.PagerResponderInjectNextLinks(newListGuardrailsVersionsPager, req, func(page *armcontainerservice.ManagedClustersClientListGuardrailsVersionsResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListGuardrailsVersionsPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		m.newListGuardrailsVersionsPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListGuardrailsVersionsPager) {
-		m.newListGuardrailsVersionsPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (m *ManagedClustersServerTransport) dispatchListKubernetesVersions(req *http.Request) (*http.Response, error) {
-	if m.srv.ListKubernetesVersions == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListKubernetesVersions not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/kubernetesVersions`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := m.srv.ListKubernetesVersions(req.Context(), locationParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).KubernetesVersionListResult, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (m *ManagedClustersServerTransport) dispatchNewListMeshRevisionProfilesPager(req *http.Request) (*http.Response, error) {
-	if m.srv.NewListMeshRevisionProfilesPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListMeshRevisionProfilesPager not implemented")}
-	}
-	newListMeshRevisionProfilesPager := m.newListMeshRevisionProfilesPager.get(req)
-	if newListMeshRevisionProfilesPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/meshRevisionProfiles`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
-		if err != nil {
-			return nil, err
-		}
-		resp := m.srv.NewListMeshRevisionProfilesPager(locationParam, nil)
-		newListMeshRevisionProfilesPager = &resp
-		m.newListMeshRevisionProfilesPager.add(req, newListMeshRevisionProfilesPager)
-		server.PagerResponderInjectNextLinks(newListMeshRevisionProfilesPager, req, func(page *armcontainerservice.ManagedClustersClientListMeshRevisionProfilesResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListMeshRevisionProfilesPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		m.newListMeshRevisionProfilesPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListMeshRevisionProfilesPager) {
-		m.newListMeshRevisionProfilesPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (m *ManagedClustersServerTransport) dispatchNewListMeshUpgradeProfilesPager(req *http.Request) (*http.Response, error) {
-	if m.srv.NewListMeshUpgradeProfilesPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListMeshUpgradeProfilesPager not implemented")}
-	}
-	newListMeshUpgradeProfilesPager := m.newListMeshUpgradeProfilesPager.get(req)
-	if newListMeshUpgradeProfilesPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/meshUpgradeProfiles`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := m.srv.NewListMeshUpgradeProfilesPager(resourceGroupNameParam, resourceNameParam, nil)
-		newListMeshUpgradeProfilesPager = &resp
-		m.newListMeshUpgradeProfilesPager.add(req, newListMeshUpgradeProfilesPager)
-		server.PagerResponderInjectNextLinks(newListMeshUpgradeProfilesPager, req, func(page *armcontainerservice.ManagedClustersClientListMeshUpgradeProfilesResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListMeshUpgradeProfilesPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		m.newListMeshUpgradeProfilesPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListMeshUpgradeProfilesPager) {
-		m.newListMeshUpgradeProfilesPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (m *ManagedClustersServerTransport) dispatchNewListOutboundNetworkDependenciesEndpointsPager(req *http.Request) (*http.Response, error) {
-	if m.srv.NewListOutboundNetworkDependenciesEndpointsPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListOutboundNetworkDependenciesEndpointsPager not implemented")}
-	}
-	newListOutboundNetworkDependenciesEndpointsPager := m.newListOutboundNetworkDependenciesEndpointsPager.get(req)
-	if newListOutboundNetworkDependenciesEndpointsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/outboundNetworkDependenciesEndpoints`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := m.srv.NewListOutboundNetworkDependenciesEndpointsPager(resourceGroupNameParam, resourceNameParam, nil)
-		newListOutboundNetworkDependenciesEndpointsPager = &resp
-		m.newListOutboundNetworkDependenciesEndpointsPager.add(req, newListOutboundNetworkDependenciesEndpointsPager)
-		server.PagerResponderInjectNextLinks(newListOutboundNetworkDependenciesEndpointsPager, req, func(page *armcontainerservice.ManagedClustersClientListOutboundNetworkDependenciesEndpointsResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListOutboundNetworkDependenciesEndpointsPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		m.newListOutboundNetworkDependenciesEndpointsPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListOutboundNetworkDependenciesEndpointsPager) {
-		m.newListOutboundNetworkDependenciesEndpointsPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (m *ManagedClustersServerTransport) dispatchNewListSafeguardsVersionsPager(req *http.Request) (*http.Response, error) {
-	if m.srv.NewListSafeguardsVersionsPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListSafeguardsVersionsPager not implemented")}
-	}
-	newListSafeguardsVersionsPager := m.newListSafeguardsVersionsPager.get(req)
-	if newListSafeguardsVersionsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/safeguardsVersions`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
-		if err != nil {
-			return nil, err
-		}
-		resp := m.srv.NewListSafeguardsVersionsPager(locationParam, nil)
-		newListSafeguardsVersionsPager = &resp
-		m.newListSafeguardsVersionsPager.add(req, newListSafeguardsVersionsPager)
-		server.PagerResponderInjectNextLinks(newListSafeguardsVersionsPager, req, func(page *armcontainerservice.ManagedClustersClientListSafeguardsVersionsResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListSafeguardsVersionsPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		m.newListSafeguardsVersionsPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListSafeguardsVersionsPager) {
-		m.newListSafeguardsVersionsPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (m *ManagedClustersServerTransport) dispatchBeginRebalanceLoadBalancers(req *http.Request) (*http.Response, error) {
-	if m.srv.BeginRebalanceLoadBalancers == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginRebalanceLoadBalancers not implemented")}
-	}
-	beginRebalanceLoadBalancers := m.beginRebalanceLoadBalancers.get(req)
-	if beginRebalanceLoadBalancers == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/rebalanceLoadBalancers`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcontainerservice.RebalanceLoadBalancersRequestBody](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := m.srv.BeginRebalanceLoadBalancers(req.Context(), resourceGroupNameParam, resourceNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginRebalanceLoadBalancers = &respr
-		m.beginRebalanceLoadBalancers.add(req, beginRebalanceLoadBalancers)
-	}
-
-	resp, err := server.PollerResponderNext(beginRebalanceLoadBalancers, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		m.beginRebalanceLoadBalancers.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginRebalanceLoadBalancers) {
-		m.beginRebalanceLoadBalancers.remove(req)
 	}
 
 	return resp, nil
@@ -1573,6 +786,562 @@ func (m *ManagedClustersServerTransport) dispatchBeginUpdateTags(req *http.Reque
 		m.beginUpdateTags.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (m *ManagedClustersServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if m.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := m.srv.Get(req.Context(), resourceGroupNameParam, resourceNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ManagedCluster, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (m *ManagedClustersServerTransport) dispatchGetAccessProfile(req *http.Request) (*http.Response, error) {
+	if m.srv.GetAccessProfile == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetAccessProfile not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/accessProfiles/(?P<roleName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listCredential`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
+	if err != nil {
+		return nil, err
+	}
+	roleNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("roleName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := m.srv.GetAccessProfile(req.Context(), resourceGroupNameParam, resourceNameParam, roleNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ManagedClusterAccessProfile, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (m *ManagedClustersServerTransport) dispatchGetCommandResult(req *http.Request) (*http.Response, error) {
+	if m.srv.GetCommandResult == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetCommandResult not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/commandResults/(?P<commandId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
+	if err != nil {
+		return nil, err
+	}
+	commandIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("commandId")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := m.srv.GetCommandResult(req.Context(), resourceGroupNameParam, resourceNameParam, commandIDParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RunCommandResult, req)
+	if err != nil {
+		return nil, err
+	}
+	if val := server.GetResponse(respr).Location; val != nil {
+		resp.Header.Set("Location", *val)
+	}
+	return resp, nil
+}
+
+func (m *ManagedClustersServerTransport) dispatchGetMeshRevisionProfile(req *http.Request) (*http.Response, error) {
+	if m.srv.GetMeshRevisionProfile == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetMeshRevisionProfile not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/meshRevisionProfiles/(?P<mode>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+	if err != nil {
+		return nil, err
+	}
+	modeParam, err := url.PathUnescape(matches[regex.SubexpIndex("mode")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := m.srv.GetMeshRevisionProfile(req.Context(), locationParam, modeParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).MeshRevisionProfile, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (m *ManagedClustersServerTransport) dispatchGetMeshUpgradeProfile(req *http.Request) (*http.Response, error) {
+	if m.srv.GetMeshUpgradeProfile == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetMeshUpgradeProfile not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/meshUpgradeProfiles/(?P<mode>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
+	if err != nil {
+		return nil, err
+	}
+	modeParam, err := url.PathUnescape(matches[regex.SubexpIndex("mode")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := m.srv.GetMeshUpgradeProfile(req.Context(), resourceGroupNameParam, resourceNameParam, modeParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).MeshUpgradeProfile, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (m *ManagedClustersServerTransport) dispatchGetUpgradeProfile(req *http.Request) (*http.Response, error) {
+	if m.srv.GetUpgradeProfile == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetUpgradeProfile not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/upgradeProfiles/default`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := m.srv.GetUpgradeProfile(req.Context(), resourceGroupNameParam, resourceNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ManagedClusterUpgradeProfile, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (m *ManagedClustersServerTransport) dispatchListClusterAdminCredentials(req *http.Request) (*http.Response, error) {
+	if m.srv.ListClusterAdminCredentials == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListClusterAdminCredentials not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listClusterAdminCredential`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	qp := req.URL.Query()
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
+	if err != nil {
+		return nil, err
+	}
+	serverFqdnParam := getOptional(qp.Get("server-fqdn"))
+	var options *armcontainerservice.ManagedClustersClientListClusterAdminCredentialsOptions
+	if serverFqdnParam != nil {
+		options = &armcontainerservice.ManagedClustersClientListClusterAdminCredentialsOptions{
+			ServerFqdn: serverFqdnParam,
+		}
+	}
+	respr, errRespr := m.srv.ListClusterAdminCredentials(req.Context(), resourceGroupNameParam, resourceNameParam, options)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CredentialResults, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (m *ManagedClustersServerTransport) dispatchListClusterMonitoringUserCredentials(req *http.Request) (*http.Response, error) {
+	if m.srv.ListClusterMonitoringUserCredentials == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListClusterMonitoringUserCredentials not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listClusterMonitoringUserCredential`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	qp := req.URL.Query()
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
+	if err != nil {
+		return nil, err
+	}
+	serverFqdnParam := getOptional(qp.Get("server-fqdn"))
+	var options *armcontainerservice.ManagedClustersClientListClusterMonitoringUserCredentialsOptions
+	if serverFqdnParam != nil {
+		options = &armcontainerservice.ManagedClustersClientListClusterMonitoringUserCredentialsOptions{
+			ServerFqdn: serverFqdnParam,
+		}
+	}
+	respr, errRespr := m.srv.ListClusterMonitoringUserCredentials(req.Context(), resourceGroupNameParam, resourceNameParam, options)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CredentialResults, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (m *ManagedClustersServerTransport) dispatchListClusterUserCredentials(req *http.Request) (*http.Response, error) {
+	if m.srv.ListClusterUserCredentials == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListClusterUserCredentials not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listClusterUserCredential`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	qp := req.URL.Query()
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
+	if err != nil {
+		return nil, err
+	}
+	serverFqdnParam := getOptional(qp.Get("server-fqdn"))
+	formatParam := getOptional(armcontainerservice.Format(qp.Get("format")))
+	var options *armcontainerservice.ManagedClustersClientListClusterUserCredentialsOptions
+	if serverFqdnParam != nil || formatParam != nil {
+		options = &armcontainerservice.ManagedClustersClientListClusterUserCredentialsOptions{
+			ServerFqdn: serverFqdnParam,
+			Format:     formatParam,
+		}
+	}
+	respr, errRespr := m.srv.ListClusterUserCredentials(req.Context(), resourceGroupNameParam, resourceNameParam, options)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CredentialResults, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (m *ManagedClustersServerTransport) dispatchListKubernetesVersions(req *http.Request) (*http.Response, error) {
+	if m.srv.ListKubernetesVersions == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListKubernetesVersions not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/kubernetesVersions`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := m.srv.ListKubernetesVersions(req.Context(), locationParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).KubernetesVersionListResult, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (m *ManagedClustersServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
+	if m.srv.NewListByResourceGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
+	}
+	newListByResourceGroupPager := m.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedClusters`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := m.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
+		newListByResourceGroupPager = &resp
+		m.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armcontainerservice.ManagedClustersClientListByResourceGroupResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		m.newListByResourceGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		m.newListByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (m *ManagedClustersServerTransport) dispatchNewListMeshRevisionProfilesPager(req *http.Request) (*http.Response, error) {
+	if m.srv.NewListMeshRevisionProfilesPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListMeshRevisionProfilesPager not implemented")}
+	}
+	newListMeshRevisionProfilesPager := m.newListMeshRevisionProfilesPager.get(req)
+	if newListMeshRevisionProfilesPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/meshRevisionProfiles`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+		if err != nil {
+			return nil, err
+		}
+		resp := m.srv.NewListMeshRevisionProfilesPager(locationParam, nil)
+		newListMeshRevisionProfilesPager = &resp
+		m.newListMeshRevisionProfilesPager.add(req, newListMeshRevisionProfilesPager)
+		server.PagerResponderInjectNextLinks(newListMeshRevisionProfilesPager, req, func(page *armcontainerservice.ManagedClustersClientListMeshRevisionProfilesResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListMeshRevisionProfilesPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		m.newListMeshRevisionProfilesPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListMeshRevisionProfilesPager) {
+		m.newListMeshRevisionProfilesPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (m *ManagedClustersServerTransport) dispatchNewListMeshUpgradeProfilesPager(req *http.Request) (*http.Response, error) {
+	if m.srv.NewListMeshUpgradeProfilesPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListMeshUpgradeProfilesPager not implemented")}
+	}
+	newListMeshUpgradeProfilesPager := m.newListMeshUpgradeProfilesPager.get(req)
+	if newListMeshUpgradeProfilesPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/meshUpgradeProfiles`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := m.srv.NewListMeshUpgradeProfilesPager(resourceGroupNameParam, resourceNameParam, nil)
+		newListMeshUpgradeProfilesPager = &resp
+		m.newListMeshUpgradeProfilesPager.add(req, newListMeshUpgradeProfilesPager)
+		server.PagerResponderInjectNextLinks(newListMeshUpgradeProfilesPager, req, func(page *armcontainerservice.ManagedClustersClientListMeshUpgradeProfilesResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListMeshUpgradeProfilesPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		m.newListMeshUpgradeProfilesPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListMeshUpgradeProfilesPager) {
+		m.newListMeshUpgradeProfilesPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (m *ManagedClustersServerTransport) dispatchNewListOutboundNetworkDependenciesEndpointsPager(req *http.Request) (*http.Response, error) {
+	if m.srv.NewListOutboundNetworkDependenciesEndpointsPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListOutboundNetworkDependenciesEndpointsPager not implemented")}
+	}
+	newListOutboundNetworkDependenciesEndpointsPager := m.newListOutboundNetworkDependenciesEndpointsPager.get(req)
+	if newListOutboundNetworkDependenciesEndpointsPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/outboundNetworkDependenciesEndpoints`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := m.srv.NewListOutboundNetworkDependenciesEndpointsPager(resourceGroupNameParam, resourceNameParam, nil)
+		newListOutboundNetworkDependenciesEndpointsPager = &resp
+		m.newListOutboundNetworkDependenciesEndpointsPager.add(req, newListOutboundNetworkDependenciesEndpointsPager)
+		server.PagerResponderInjectNextLinks(newListOutboundNetworkDependenciesEndpointsPager, req, func(page *armcontainerservice.ManagedClustersClientListOutboundNetworkDependenciesEndpointsResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListOutboundNetworkDependenciesEndpointsPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		m.newListOutboundNetworkDependenciesEndpointsPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListOutboundNetworkDependenciesEndpointsPager) {
+		m.newListOutboundNetworkDependenciesEndpointsPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (m *ManagedClustersServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if m.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := m.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedClusters`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := m.srv.NewListPager(nil)
+		newListPager = &resp
+		m.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcontainerservice.ManagedClustersClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		m.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		m.newListPager.remove(req)
+	}
 	return resp, nil
 }
 

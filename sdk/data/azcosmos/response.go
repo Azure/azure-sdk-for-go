@@ -35,6 +35,7 @@ type Response struct {
 // ItemResponse is the response from an operation on a single item.
 type ItemResponse struct {
 	Response
+	serializer Serializer
 	// PatchTrackingID is the effective client-side patch identity, when tracking was used.
 	PatchTrackingID PatchTrackingID
 
@@ -51,6 +52,21 @@ type ItemResponse struct {
 	// Native binary-to-text conversion can change property order, whitespace, and numeric
 	// formatting; the bytes are not guaranteed to match the submitted JSON.
 	Value []byte
+}
+
+// IntoModel decodes the item using the client's serializer, or encoding/json for a manually
+// constructed response. It performs no I/O and can be called after Client.Close.
+// An absent body or decoding failure returns zero T and CodeSerializationFailed with response
+// metadata. A write has already succeeded at this point; decoding never retries or rolls it back.
+func (r ItemResponse) IntoModel[T any]() (T, error) {
+	model, err := unmarshalModel[T](r.serializer, r.Value)
+	if err != nil {
+		failure := queryResponseError(r.Response, r.SessionToken, err)
+		failure.Message = "decoding item response"
+		failure.ETag = r.ETag
+		return model, failure
+	}
+	return model, nil
 }
 
 // DatabaseResponse is the response from an operation on a database.
@@ -72,12 +88,12 @@ type ContainerResponse struct {
 }
 
 // QueryItemsResponse contains one query page. An empty page does not imply exhaustion.
-type QueryItemsResponse struct {
+type QueryItemsResponse[T any] struct {
 	// Response includes the metadata-validation charge on the first fetch.
 	Response
 
-	// Items contains independently owned JSON values, including scalar SELECT VALUE results.
-	Items [][]byte
+	// Items contains decoded query results, including projections and scalar SELECT VALUE results.
+	Items []T
 
 	// SessionToken is the session token returned for this page.
 	SessionToken SessionToken
@@ -88,3 +104,5 @@ type QueryItemsResponse struct {
 	// QueryMetrics contains the service's query execution metrics, when requested and available.
 	QueryMetrics string
 }
+
+type queryPage = QueryItemsResponse[[]byte]

@@ -57,7 +57,7 @@ func TestEmulatorBinaryNumericValues(t *testing.T) {
 				t.Run(number, func(t *testing.T) {
 					id := uniqueItemID(t)
 					key := NewPartitionKeyString(id)
-					body := []byte(fmt.Sprintf(`{"id":%q,"pk":%q,"number":%s}`, id, id, number))
+					body := json.RawMessage(fmt.Sprintf(`{"id":%q,"pk":%q,"number":%s}`, id, id, number))
 					_, err := container.CreateItem(t.Context(), key, id, body, &CreateItemOptions{Operation: options})
 					require.NoError(t, err)
 					trackEmulatorItem(t, container, key, id)
@@ -163,7 +163,7 @@ func TestEmulatorQueryBinaryWirePreferenceAndTextResults(t *testing.T) {
 			require.NoError(t, err)
 			id := uniqueItemID(t)
 			key := NewPartitionKeyString(id)
-			_, err = container.CreateItem(t.Context(), key, id, []byte(fmt.Sprintf(`{"id":%q,"pk":%q,"value":42}`, id, id)), nil)
+			_, err = container.CreateItem(t.Context(), key, id, json.RawMessage(fmt.Sprintf(`{"id":%q,"pk":%q,"value":42}`, id, id)), nil)
 			require.NoError(t, err)
 			trackEmulatorItem(t, container, key, id)
 			item, err := container.ReadItem(t.Context(), key, id, &ReadItemOptions{Operation: OperationOptions{BinaryEncoding: tt.request}})
@@ -172,10 +172,10 @@ func TestEmulatorQueryBinaryWirePreferenceAndTextResults(t *testing.T) {
 			query, err := NewQuery("SELECT VALUE c.value FROM c WHERE c.id = @id").WithParameter("@id", id)
 			require.NoError(t, err)
 			for _, scope := range []FeedScope{NewFeedScopeForPartitionKey(key), NewFeedScopeForFullContainer()} {
-				pager := container.NewQueryItemsPager(query, scope, &QueryOptions{
+				pager := container.NewQueryItemsPager[json.RawMessage](query, scope, &QueryOptions{
 					Operation: OperationOptions{BinaryEncoding: tt.request}, Feed: FeedOptions{PageSizeHint: 1},
 				})
-				var items [][]byte
+				var items []json.RawMessage
 				for pageCount := 0; pager.More(); pageCount++ {
 					require.Less(t, pageCount, 20)
 					page, err := pager.NextPage(t.Context())
@@ -186,7 +186,7 @@ func TestEmulatorQueryBinaryWirePreferenceAndTextResults(t *testing.T) {
 					items = append(items, page.Items...)
 				}
 				require.NoError(t, pager.Close())
-				require.Equal(t, [][]byte{[]byte("42")}, items)
+				require.Equal(t, []json.RawMessage{[]byte("42")}, items)
 			}
 			mu.Lock()
 			defer mu.Unlock()

@@ -25,7 +25,7 @@ func TestEmulatorCursorConcurrentCorrelation(t *testing.T) {
 			key := NewPartitionKeyString(id)
 			body, err := json.Marshal(map[string]any{"id": id, "pk": id, "run": run, "worker": worker, "value": worker*10 + value})
 			require.NoError(t, err)
-			_, err = container.CreateItem(t.Context(), key, id, body, nil)
+			_, err = container.CreateItem(t.Context(), key, id, json.RawMessage(body), nil)
 			require.NoError(t, err)
 			trackEmulatorItem(t, container, key, id)
 		}
@@ -43,7 +43,7 @@ func TestEmulatorCursorConcurrentCorrelation(t *testing.T) {
 		go func() {
 			defer wg.Done()
 			<-start
-			pager := container.NewQueryItemsPager(queries[worker], NewFeedScopeForFullContainer(),
+			pager := container.NewQueryItemsPager[json.RawMessage](queries[worker], NewFeedScopeForFullContainer(),
 				&QueryOptions{Feed: FeedOptions{PageSizeHint: 1}})
 			defer func() {
 				if err := pager.Close(); err != nil {

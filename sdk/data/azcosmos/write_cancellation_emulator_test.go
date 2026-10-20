@@ -7,6 +7,7 @@ package azcosmos
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"strings"
@@ -24,7 +25,7 @@ func TestEmulatorSubmittedWritesStopWaitingAndDrain(t *testing.T) {
 			var once, startOnce sync.Once
 			id := uniqueItemID(t)
 			pk := NewPartitionKeyString(id)
-			body := []byte(fmt.Sprintf(`{"id":%q,"pk":%q,"value":1}`, id, id))
+			body := json.RawMessage(fmt.Sprintf(`{"id":%q,"pk":%q,"value":1}`, id, id))
 			seed := emulatorContainer(t)
 			_, err := seed.CreateItem(t.Context(), pk, id, body, nil)
 			require.NoError(t, err)

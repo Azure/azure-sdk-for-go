@@ -7,6 +7,7 @@ package azcosmos
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"testing"
 	"time"
@@ -24,7 +25,7 @@ func TestQuerySnapshotTimeoutIncludesLazyInitialization(t *testing.T) {
 	t.Cleanup(func() { client.driver.tokenProvider.cancel(); require.NoError(t, client.Close()) })
 	container, err := client.NewContainer("db", "items")
 	require.NoError(t, err)
-	pager := container.NewQueryItemsPager(NewQuery("SELECT * FROM c"),
+	pager := container.NewQueryItemsPager[json.RawMessage](NewQuery("SELECT * FROM c"),
 		NewFeedScopeForPartitionKey(NewPartitionKeyString("pk")), nil)
 	done := make(chan error, 1)
 	start := time.Now()

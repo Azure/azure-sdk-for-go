@@ -1,6 +1,6 @@
 module github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos/v2
 
-go 1.25.0
+go 1.27.0
 
 require (
 	github.com/Azure/azure-cosmos-driver/darwin/arm64 v0.2.0

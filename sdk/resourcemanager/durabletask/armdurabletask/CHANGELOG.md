@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0-beta.1 (2026-10-15)
+## 1.2.0-beta.1 (2026-10-20)
 ### Features Added
 
 - New enum type `DetectorRenderingType` with values `DetectorRenderingTypeDataSummary`, `DetectorRenderingTypeDynamicInsight`, `DetectorRenderingTypeEmailSnippet`, `DetectorRenderingTypeInsight`, `DetectorRenderingTypeMarkdown`, `DetectorRenderingTypePieChart`, `DetectorRenderingTypeTable`, `DetectorRenderingTypeTimeSeriesGraph`, `DetectorRenderingTypeTimeSeriesPerInstanceGraph`

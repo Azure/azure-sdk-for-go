@@ -210,7 +210,7 @@ func auditRecording(spec *responseSpec, entries []contractEntry) recordingAudit 
 		if op.statusURL != "" && (op.polls == 0 || !strings.EqualFold(op.lastStatus, "Succeeded")) {
 			audit.check(op.entry, fmt.Errorf("%s: recording lacks successful Azure-AsyncOperation completion", op.op.ID))
 		}
-		if op.resultURL != "" && !op.resultSeen && op.op.ID != "EdgeActionVersions_SwapDefault" {
+		if op.resultURL != "" && !op.resultSeen && (op.op.ID != "EdgeActionVersions_SwapDefault" || op.statusURL == "") {
 			audit.check(op.entry, fmt.Errorf("%s: recording lacks a completed final Location response", op.op.ID))
 		}
 	}
@@ -294,6 +294,73 @@ func TestContractRecordingLROAssociation(t *testing.T) {
 			}
 			audit = auditRecording(spec, entries[:1])
 			assert.NotEmpty(t, audit.issues, "missing monitor/final requests must fail the recording audit")
+		})
+	}
+}
+
+func TestContractRecordingSwapLocationCompletion(t *testing.T) {
+	spec, err := loadResponseSpec()
+	require.NoError(t, err)
+	const resultURL = "https://management.azure.com/results/one?api-version=" + apiVersion
+	for _, tc := range []struct {
+		name     string
+		statuses []int
+		complete bool
+	}{
+		{"initial-only", nil, false},
+		{"pending-only", []int{http.StatusAccepted, http.StatusAccepted}, false},
+		{"completed", []int{http.StatusOK}, true},
+		{"pending-then-completed", []int{http.StatusAccepted, http.StatusOK}, true},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			entries := []contractEntry{
+				{RequestMethod: "POST", RequestURI: "https://management.azure.com" + versionPath + "/swapDefault?api-version=" + apiVersion,
+					StatusCode: http.StatusAccepted, ResponseHeaders: map[string]recordedHeader{"Location": {resultURL}}},
+			}
+			for _, status := range tc.statuses {
+				entry := contractEntry{RequestMethod: "GET", RequestURI: resultURL, StatusCode: status}
+				if status == http.StatusOK {
+					entry.ResponseBody = json.RawMessage(versionJSON)
+				}
+				entries = append(entries, entry)
+			}
+			audit := auditRecording(spec, entries)
+			assert.Equal(t, len(entries), audit.checked)
+			if tc.complete {
+				assert.Empty(t, audit.issues)
+				assert.Equal(t, 1, audit.exceptions, "retain the HTTP-200-with-body schema exception")
+			} else {
+				require.Len(t, audit.issues, 1)
+				assert.Equal(t, 1, audit.issues[0].entry)
+				assert.ErrorContains(t, audit.issues[0].err, "lacks a completed final Location response")
+				assert.Zero(t, audit.exceptions)
+			}
+		})
+	}
+}
+
+func TestContractRecordingSwapMonitorWithoutLocationResult(t *testing.T) {
+	spec, err := loadResponseSpec()
+	require.NoError(t, err)
+	const statusURL = "https://management.azure.com/operations/one?api-version=" + apiVersion
+	const resultURL = "https://management.azure.com/results/one?api-version=" + apiVersion
+	for _, status := range []string{"Succeeded", "Running", ""} {
+		t.Run("status="+status, func(t *testing.T) {
+			entries := []contractEntry{
+				{RequestMethod: "POST", RequestURI: "https://management.azure.com" + versionPath + "/swapDefault?api-version=" + apiVersion,
+					StatusCode: http.StatusAccepted, ResponseHeaders: map[string]recordedHeader{"Azure-AsyncOperation": {statusURL}, "Location": {resultURL}}},
+			}
+			if status != "" {
+				entries = append(entries, contractEntry{RequestMethod: "GET", RequestURI: statusURL,
+					StatusCode: http.StatusOK, ResponseBody: json.RawMessage(fmt.Sprintf(`{"status":%q}`, status))})
+			}
+			audit := auditRecording(spec, entries)
+			if status == "Succeeded" {
+				assert.Empty(t, audit.issues, "a successful status monitor proves swap completion")
+			} else {
+				require.Len(t, audit.issues, 1)
+				assert.ErrorContains(t, audit.issues[0].err, "lacks successful Azure-AsyncOperation completion")
+			}
 		})
 	}
 }

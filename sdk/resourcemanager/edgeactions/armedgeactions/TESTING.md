@@ -43,7 +43,7 @@ is examined, including error and cleanup responses.
 Use an authorized subscription enabled for Microsoft.Cdn Edge Actions, with permission
 to create and delete resource groups and Edge Actions. Set `AZURE_SUBSCRIPTION_ID` and
 optionally `LOCATION` (default `eastus`) in the shell or a module-local `.env`.
-If you do not already have `.env`, copy [sample.env](sample.env):
+If you do not already have `.env`, copy [sample.env](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/resourcemanager/edgeactions/armedgeactions/sample.env):
 
 ```powershell
 Copy-Item sample.env .env
@@ -185,3 +185,5 @@ Current exceptions, implemented in the response-validation helpers, leave the sn
   pending the service fix to make the field optional, not nullable.
 - The known `swapDefault` final `Location` HTTP-200-with-body response is excluded pending
   the service fix. Initial responses, polling, and subsequent resource GETs remain checked.
+  A missing final response is allowed only when an Azure-AsyncOperation monitor proves
+  completion; Location-only polling must reach a successful terminal HTTP response.

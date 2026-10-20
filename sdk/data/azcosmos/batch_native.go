@@ -45,7 +45,7 @@ func (c *Client) executeBatch(ctx context.Context, req itemRequest, operationCou
 		return TransactionalBatchResponse{}, batchPartitionKeyError(err, setup)
 	}
 
-	result, err := d.awaitAuthoritativeCompletion(ctx, "submitting transactional batch",
+	result, err := d.awaitCompletion(ctx, "submitting transactional batch",
 		func(queue *C.cosmos_completion_queue_t, cookie C.intptr_t, preError *C.cosmos_status_code_t) *C.cosmos_operation_handle_t {
 			request, release := buildNativeItemRequest(req, container)
 			defer release()

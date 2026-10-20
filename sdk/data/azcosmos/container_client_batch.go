@@ -35,9 +35,13 @@ type TransactionalBatchOptions struct {
 // return the zero response and an error; a decoding or transport error is not proof that writes did
 // not commit. Error metadata includes the native body and status when available.
 //
-// After admission, this method waits for authoritative native completion, even if ctx ends.
-// The released native ABI cannot cancel an admitted operation. [Client.Close] waits for the operation
-// before releasing its resources. ctx must not be nil; options may be nil.
+// Context cancellation stops waiting, not native execution; an admitted batch may still commit.
+// Allow a context and native end-to-end timeout budget appropriate for the complete batch,
+// including setup and retries. A longer budget does not guarantee a known commit outcome.
+// A native completion already available when cancellation is observed is returned unchanged.
+// Otherwise this method returns the zero response and a cancellation error, and native work drains
+// in the background. [Client.Close] waits for that work before releasing its resources.
+// ctx must not be nil; options may be nil.
 // Do not mutate batch while it is executing.
 func (c *ContainerClient) ExecuteTransactionalBatch(ctx context.Context, batch TransactionalBatch, options *TransactionalBatchOptions) (TransactionalBatchResponse, error) {
 	req, err := newTransactionalBatchRequest(batch, options)

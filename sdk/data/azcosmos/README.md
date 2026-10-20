@@ -59,14 +59,13 @@ later request. The v0.2 native ABI does not support on-demand operation cancella
 a Go context returns promptly and releases its Go-side resources, but the native request can
 continue until its own timeout or retry budget ends. Avoid assuming a cancelled write did not
 reach the service.
-If an item operation's native completion is already available when cancellation is observed,
+If an item or batch operation's native completion is already available when cancellation is observed,
 the SDK returns that outcome, including its response body and ETag, rather than a cancellation error.
-When no end-to-end timeout is configured or inherited for an item operation, the remaining context
+When no end-to-end timeout is configured or inherited for an item or batch operation, the remaining context
 deadline supplies its native timeout, subject to its one-second minimum. Explicit and inherited timeouts
 remain unchanged; an earlier context deadline still limits the Go wait.
-Transactional batches instead wait for authoritative native completion after admission, even
-after context cancellation. A cancellation or execution error is not proof that writes did not
-reach the service.
+Transactional batches use the same cancellation behavior as point operations. A cancellation
+or execution error is not proof that writes did not reach the service.
 
 ### Client initialization
 
@@ -188,8 +187,16 @@ HTTP 207 alone does not establish rollback, and mixed results such as `[201, 304
 without inferring whether writes committed. Malformed result envelopes return an explicit
 decoding error with the native body and metadata.
 
-Admitted batches wait for authoritative native completion, including cancellation and shutdown
-races. `Client.Close` waits before freeing native resources. Responses and errors own their
+Context cancellation stops waiting for a batch, not native execution. An admitted batch may still
+commit after the method returns a cancellation error. Allow a context and native end-to-end timeout
+budget appropriate for the complete batch, including metadata setup and retries; short budgets
+can leave the caller without a result for submitted writes. A longer budget reduces avoidable
+timeouts but does not guarantee a known commit outcome. Do not blindly replay a cancelled batch:
+each execution is a new transaction.
+
+An already available native completion is returned unchanged; otherwise the method returns the
+zero response and a cancellation error while native work drains in the background. `Client.Close`
+waits for outstanding native work before freeing resources. Responses and errors own their
 payloads and remain usable after the client closes.
 
 ### Querying items

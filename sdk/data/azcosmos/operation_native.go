@@ -90,7 +90,7 @@ func patchCancellationError(err error, requestedID PatchTrackingID) error {
 }
 
 // awaitCompletion submits one operation and waits for its completion or the caller's context,
-// whichever comes first. Driver creation, container resolution, and item operations use it.
+// whichever comes first. Driver creation, container resolution, and item and batch operations use it.
 //
 // The submit closure receives what the driver needs to answer: the queue to post the completion
 // to, the cookie to round-trip onto it, and somewhere to report a pre-flight rejection. It returns
@@ -102,23 +102,6 @@ func (d *nativeDriver) awaitCompletion(
 	ctx context.Context,
 	doing string,
 	submit func(queue *C.cosmos_completion_queue_t, cookie C.intptr_t, preError *C.cosmos_status_code_t) *C.cosmos_operation_handle_t,
-) (completionResult, error) {
-	return d.awaitOperation(ctx, doing, submit, false)
-}
-
-func (d *nativeDriver) awaitAuthoritativeCompletion(
-	ctx context.Context,
-	doing string,
-	submit func(queue *C.cosmos_completion_queue_t, cookie C.intptr_t, preError *C.cosmos_status_code_t) *C.cosmos_operation_handle_t,
-) (completionResult, error) {
-	return d.awaitOperation(ctx, doing, submit, true)
-}
-
-func (d *nativeDriver) awaitOperation(
-	ctx context.Context,
-	doing string,
-	submit func(queue *C.cosmos_completion_queue_t, cookie C.intptr_t, preError *C.cosmos_status_code_t) *C.cosmos_operation_handle_t,
-	authoritative bool,
 ) (completionResult, error) {
 	if err := ctx.Err(); err != nil {
 		return completionResult{}, err
@@ -160,9 +143,6 @@ func (d *nativeDriver) awaitOperation(
 		}
 	}()
 
-	if authoritative {
-		return awaitAuthoritativeOperationResult(ctx, pending)
-	}
 	return awaitOperationResult(ctx, pending)
 }
 
@@ -177,56 +157,6 @@ func awaitOperationResult(ctx context.Context, pending *pendingOperation) (compl
 		}
 		return completionResult{}, newOperationCancelledError(ctx.Err(), 0, "")
 	}
-}
-
-func awaitAuthoritativeOperationResult(ctx context.Context, pending *pendingOperation) (completionResult, error) {
-	// Once admitted, a batch may commit despite cancellation. Always consume its native result.
-	result := <-pending.result
-	if cause := ctx.Err(); cause != nil && (result.cancelled || isClientOperationTimeout(result.err)) {
-		result.release()
-		return completionResult{}, completionCancellationError(cause, result)
-	}
-	return result, nil
-}
-
-// isClientOperationTimeout reports whether err is the native driver's own end-to-end budget
-// expiring (CodeClientOperationTimeout), as opposed to the COSMOS_COMPLETION_OUTCOME_CANCELLED
-// outcome that result.cancelled already covers.
-//
-// The native driver's end-to-end timeout and the caller's context deadline are set to the same
-// nominal duration but run on independent clocks, so either can fire first. When the native clock
-// wins that race, the completion arrives classified as ClientOperationTimeout rather than
-// cancelled, and an authoritative wait (which always awaits the real completion, since a write may
-// have already committed) would otherwise return that raw error instead of one that satisfies
-// errors.Is(err, context.DeadlineExceeded) as callers expect once the context has ended.
-func isClientOperationTimeout(err error) bool {
-	var completionErr *Error
-	return errors.As(err, &completionErr) && completionErr.Code == CodeClientOperationTimeout
-}
-
-func completionCancellationError(cause error, result completionResult) error {
-	metadata := Error{
-		RequestCharge:   result.response.RequestCharge,
-		ActivityID:      result.response.ActivityID,
-		Diagnostics:     result.response.Diagnostics,
-		AttemptCount:    result.response.AttemptCount,
-		StatusCode:      result.response.StatusCode,
-		SubStatus:       result.response.SubStatus,
-		SessionToken:    result.response.SessionToken,
-		ETag:            result.response.ETag,
-		RetryAfter:      result.retryAfter,
-		FromWire:        result.fromWire,
-		Body:            result.body,
-		PatchTrackingID: result.response.PatchTrackingID,
-	}
-	var completionErr *Error
-	if errors.As(result.err, &completionErr) {
-		metadata = *completionErr
-	}
-	cancelled := newOperationCancelledError(cause, metadata.RequestCharge, metadata.ActivityID)
-	metadata.Code, metadata.Message, metadata.cause = cancelled.Code, cancelled.Message, cancelled.cause
-	metadata.Body = append([]byte(nil), metadata.Body...)
-	return &metadata
 }
 
 // inspectAwaitCompletionSubmission reports whether awaitCompletion invoked its submit closure.

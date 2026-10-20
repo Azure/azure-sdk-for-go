@@ -68,7 +68,7 @@ func TestTransactionalBatchNativeCompletionOwnsEnvelopeAndHeaders(t *testing.T) 
 	require.Equal(t, `{"id":"item"}`, string(response.OperationResults[0].ResourceBody))
 }
 
-func TestTransactionalBatchAuthoritativeCompletionSurvivesCancellation(t *testing.T) {
+func TestTransactionalBatchCancellationPreservesAvailableCompletion(t *testing.T) {
 	for _, test := range []struct {
 		status   int
 		body     string
@@ -83,8 +83,8 @@ func TestTransactionalBatchAuthoritativeCompletionSurvivesCancellation(t *testin
 			cancel()
 			pending := &pendingOperation{result: make(chan completionResult, 1)}
 			pending.result <- syntheticBatchCompletion([]byte(test.body), test.status)
-			result, err := awaitAuthoritativeOperationResult(ctx, pending)
-			require.NoError(t, err, "received native write outcomes outrank context cancellation")
+			result, err := awaitOperationResult(ctx, pending)
+			require.NoError(t, err, "already available native outcomes survive context cancellation")
 			response, err := result.batchResponse(Response{RequestCharge: 2}, 2)
 			require.NoError(t, err)
 			require.Equal(t, test.status, response.StatusCode)
@@ -100,103 +100,45 @@ func TestTransactionalBatchAuthoritativeCompletionSurvivesCancellation(t *testin
 	}
 }
 
-func TestTransactionalBatchCancellationRetainsAllAvailableMetadata(t *testing.T) {
-	for _, original := range []completionResult{
-		{
-			response: ItemResponse{Response: Response{StatusCode: 207, SubStatus: 3, RequestCharge: 5, ActivityID: "response", AttemptCount: 2},
-				SessionToken: "session", ETag: `"etag"`, PatchTrackingID: "response-tracking"},
-			body: []byte("response-body"), retryAfter: time.Second, fromWire: true,
-		},
-		{err: &Error{
-			Code: CodeClientOperationTimeout, StatusCode: 408, SubStatus: 20008, RequestCharge: 6, ActivityID: "error",
-			AttemptCount: 3, SessionToken: "error-session", ETag: `"error-etag"`, RetryAfter: time.Second,
-			FromWire: true, Body: []byte("error-body"), PatchTrackingID: "error-tracking",
-		}},
-	} {
-		err := completionCancellationError(context.DeadlineExceeded, original)
-		require.ErrorIs(t, err, context.DeadlineExceeded)
-		var cancelled *Error
-		require.ErrorAs(t, err, &cancelled)
-		require.Equal(t, CodeOperationCancelled, cancelled.Code)
-		require.True(t, cancelled.FromWire)
-		require.Equal(t, time.Second, cancelled.RetryAfter)
-		if original.err == nil {
-			require.Equal(t, original.response.StatusCode, cancelled.StatusCode)
-			require.Equal(t, original.response.SubStatus, cancelled.SubStatus)
-			require.Equal(t, original.response.RequestCharge, cancelled.RequestCharge)
-			require.Equal(t, original.response.AttemptCount, cancelled.AttemptCount)
-			require.Equal(t, original.response.SessionToken, cancelled.SessionToken)
-			require.Equal(t, original.response.ETag, cancelled.ETag)
-			require.Equal(t, original.response.PatchTrackingID, cancelled.PatchTrackingID)
-			require.Equal(t, original.body, cancelled.Body)
-			original.body[0] = 'x'
-			require.Equal(t, "response-body", string(cancelled.Body))
-		} else {
-			completionErr := original.err.(*Error)
-			require.Equal(t, completionErr.StatusCode, cancelled.StatusCode)
-			require.Equal(t, completionErr.SubStatus, cancelled.SubStatus)
-			require.Equal(t, completionErr.RequestCharge, cancelled.RequestCharge)
-			require.Equal(t, completionErr.AttemptCount, cancelled.AttemptCount)
-			require.Equal(t, completionErr.SessionToken, cancelled.SessionToken)
-			require.Equal(t, completionErr.ETag, cancelled.ETag)
-			require.Equal(t, completionErr.PatchTrackingID, cancelled.PatchTrackingID)
-			require.Equal(t, completionErr.Body, cancelled.Body)
-			completionErr.Body[0] = 'x'
-			require.Equal(t, "error-body", string(cancelled.Body))
-		}
+func TestTransactionalBatchCancellationReleasesLateCompletion(t *testing.T) {
+	for _, cause := range []error{context.Canceled, context.DeadlineExceeded} {
+		t.Run(cause.Error(), func(t *testing.T) {
+			ctx, cancel := context.WithCancel(t.Context())
+			if cause == context.DeadlineExceeded {
+				cancel()
+				ctx, cancel = context.WithDeadline(t.Context(), time.Now().Add(-time.Second))
+			}
+			defer cancel()
+			pending := &pendingOperation{result: make(chan completionResult, 1), delivered: make(chan struct{})}
+			type outcome struct {
+				result completionResult
+				err    error
+			}
+			done := make(chan outcome, 1)
+			go func() {
+				result, err := awaitOperationResult(ctx, pending)
+				done <- outcome{result, err}
+			}()
+			cancel()
+			select {
+			case result := <-done:
+				require.Zero(t, result.result)
+				require.ErrorIs(t, result.err, cause)
+				var cosmosErr *Error
+				require.ErrorAs(t, result.err, &cosmosErr)
+				require.Equal(t, CodeOperationCancelled, cosmosErr.Code)
+			case <-time.After(time.Second):
+				t.Fatal("batch did not stop waiting for an undelivered completion")
+			}
+			pending.deliver(syntheticBatchCompletion([]byte(`[{"statusCode":201},{"statusCode":304}]`), 207))
+			require.Empty(t, pending.result, "late batch results must be released rather than retained")
+			select {
+			case <-pending.delivered:
+			default:
+				t.Fatal("late native completion was not drained")
+			}
+		})
 	}
-}
-
-func TestTransactionalBatchAuthoritativeWaitDoesNotAbandonLateCompletion(t *testing.T) {
-	ctx, cancel := context.WithCancel(t.Context())
-	pending := &pendingOperation{result: make(chan completionResult, 1), delivered: make(chan struct{})}
-	done := make(chan completionResult, 1)
-	failures := make(chan error, 1)
-	go func() {
-		result, err := awaitAuthoritativeOperationResult(ctx, pending)
-		done <- result
-		failures <- err
-	}()
-	cancel()
-	select {
-	case <-done:
-		t.Error("an admitted batch must not return before native completion")
-	case <-time.After(20 * time.Millisecond):
-	}
-	pending.deliver(syntheticBatchCompletion([]byte(`[{"statusCode":201},{"statusCode":304}]`), 207))
-	select {
-	case result := <-done:
-		require.NoError(t, <-failures)
-		response, err := result.batchResponse(Response{}, 2)
-		require.NoError(t, err)
-		require.Equal(t, 207, response.StatusCode)
-		require.Equal(t, 201, response.OperationResults[0].StatusCode)
-		require.Equal(t, 304, response.OperationResults[1].StatusCode)
-	case <-time.After(time.Second):
-		t.Fatal("the authoritative native completion was not returned")
-	}
-}
-
-func TestTransactionalBatchAuthoritativeTimeoutRetainsContextAndMetadata(t *testing.T) {
-	ctx, cancel := context.WithDeadline(t.Context(), time.Now().Add(-time.Second))
-	defer cancel()
-	pending := &pendingOperation{result: make(chan completionResult, 1)}
-	pending.result <- completionResult{err: &Error{
-		Code: CodeClientOperationTimeout, StatusCode: 408, SubStatus: 20008,
-		RequestCharge: 3, ActivityID: "native-timeout", SessionToken: "session",
-		FromWire: true, Body: []byte("native-body"),
-	}}
-	_, err := awaitAuthoritativeOperationResult(ctx, pending)
-	require.ErrorIs(t, err, context.DeadlineExceeded)
-	var cosmosErr *Error
-	require.ErrorAs(t, err, &cosmosErr)
-	require.Equal(t, 408, cosmosErr.StatusCode)
-	require.Equal(t, 20008, cosmosErr.SubStatus)
-	require.Equal(t, 3.0, cosmosErr.RequestCharge)
-	require.Equal(t, "native-timeout", cosmosErr.ActivityID)
-	require.Equal(t, SessionToken("session"), cosmosErr.SessionToken)
-	require.True(t, cosmosErr.FromWire)
-	require.Equal(t, "native-body", string(cosmosErr.Body))
 }
 
 func TestTransactionalBatchMetadataValidationErrorPreservesEvidence(t *testing.T) {

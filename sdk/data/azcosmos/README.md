@@ -1,6 +1,6 @@
 # Azure Cosmos DB SDK for Go
 
-<!-- cSpell:ignore azsdk itemdb libc -->
+<!-- cSpell:ignore azsdk failback itemdb libc PPAF PPCB -->
 
 ## Introduction
 
@@ -81,6 +81,103 @@ containers the application will use. Each operation resolves its container throu
 driver, which owns metadata caching and stale-resource refresh.
 
 One limit applies to the driver-backed build today: v1's WebAssembly support does not carry over.
+
+## Advanced availability
+
+The native driver owns regional retry and per-partition routing. Per-partition automatic failover
+(PPAF) and the per-partition circuit breaker (PPCB) are distinct paths: a request is eligible for
+one or the other, never both.
+
+### Per-partition automatic failover (PPAF)
+
+PPAF applies to writes on single-master accounts. It is enabled automatically when the account's
+server properties advertise the capability; Go has no PPAF enable/disable option.
+
+PPAF uses service-directed, success-time discovery. A failed attempt can move the current write
+through other regions, but the driver does not persist a per-partition routing override from the
+failure alone. It records the override only after a later region definitively processes the write,
+shown by an HTTP 2xx, 409 Conflict, or 412 Precondition Failed response. The confirming response
+causes the driver to apply the deferred failed-region effects and record an override past those
+endpoints. Subsequent writes to that physical partition use the recorded override. PPAF overrides
+are not governed by PPCB's timer-based probe and failback sweep.
+
+### Per-partition circuit breaker (PPCB)
+
+PPCB applies to reads on any account and to writes on multi-master accounts. The native driver owns
+it and enables it by default. Health and failure counts are tracked independently for each physical
+partition and region, so a problem with one partition does not move unrelated partitions away from
+their preferred region.
+
+The circuit trips after the configured read or write failure threshold is reached. Its counters
+reset when the gap since the last recorded failure exceeds the counter-reset window; failures spaced
+closer than that can accumulate toward the threshold over a longer period. After the configured
+unavailability duration and a bounded background sweep, one request probes the original region. A
+successful probe restores preferred routing; a failed probe keeps that partition routed away until
+a later probe is eligible.
+
+### Read hedging
+
+Hedging is enabled by default for eligible reads. The built-in threshold is the lesser of one second
+and half the request timeout, falling back to one second when no request timeout is available. No
+option is needed for this default behavior. Use `OperationOptions.HedgingEnabled` to override the
+master switch, or `OperationOptions.AvailabilityStrategy` with `HedgingAvailability` to change the
+threshold. Set `ClientOptions.Routing` with `PreferredRegions` so the driver has an explicit
+preferred order. For example, this client uses a 500 ms threshold:
+
+```go
+func newHedgedClient(
+	endpoint string,
+	credential azcore.TokenCredential,
+) (*azcosmos.Client, error) {
+	return azcosmos.NewClient(endpoint, credential, &azcosmos.ClientOptions{
+		Routing: azcosmos.PreferredRegions(
+			azcosmos.RegionWestUS,
+			azcosmos.RegionEastUS,
+		),
+		Operation: azcosmos.OperationOptions{
+			AvailabilityStrategy: azcosmos.HedgingAvailability(500 * time.Millisecond),
+		},
+	})
+}
+```
+
+This example requires imports for `time`,
+`github.com/Azure/azure-sdk-for-go/sdk/azcore`, and
+`github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos/v2`.
+
+### PPCB configuration
+
+Go currently supports environment-driven PPCB configuration. It does not expose the Rust driver's
+`PartitionFailoverOptions` programmatically. The native driver captures these values when it is
+constructed by `Client.Initialize` or the first operation. Changing the process environment
+afterward does not reconfigure an existing driver or client.
+
+The pinned native driver v0.2.0 uses these defaults:
+
+| Environment variable | Default | Purpose |
+| --- | --- | --- |
+| `AZURE_COSMOS_PPCB_ENABLED` | `true` | Enables the driver's PPCB setting. |
+| `AZURE_COSMOS_PPCB_ENABLED_OVERRIDE` | unset | Authoritative incident-response kill switch. When set, it overrides both `AZURE_COSMOS_PPCB_ENABLED` and account-property enablement. |
+| `AZURE_COSMOS_PPCB_READ_FAILURE_THRESHOLD` | `10` | Read failures before a partition/region circuit trips. |
+| `AZURE_COSMOS_PPCB_WRITE_FAILURE_THRESHOLD` | `5` | Multi-master write failures before a partition/region circuit trips. |
+| `AZURE_COSMOS_PPCB_COUNTER_RESET_WINDOW_MS` | `300000` | Window after which accumulated failure counters reset. |
+| `AZURE_COSMOS_PPCB_PARTITION_UNAVAILABILITY_DURATION_MS` | `5000` | Minimum time a tripped entry remains unavailable before probing is eligible. |
+| `AZURE_COSMOS_PPCB_FAILBACK_SWEEP_INTERVAL_MS` | `300000` | Interval between background failback sweeps. |
+| `AZURE_COSMOS_PPCB_CONSECUTIVE_HEDGE_WIN_THRESHOLD` | `5` | Consecutive alternate-region hedge wins before PPCB trips the primary partition/region. |
+| `AZURE_COSMOS_PARTITION_TOPOLOGY_CACHE_MODE` | `Eager` | Loads physical partition topology during container resolution; `Lazy` defers it until first use. |
+
+Without `AZURE_COSMOS_PPCB_ENABLED_OVERRIDE`, PPCB is enabled when either the driver setting or the
+account property enables it. The override is the authoritative operational safety valve in either
+direction and should be set before driver construction; changing it for already-created drivers
+requires restarting the process.
+
+### Observing regional behavior
+
+Successful responses and Cosmos errors can include `Diagnostics`. Use
+`Diagnostics.RegionsContacted` for the distinct regions in first-contact order and
+`Diagnostics.Attempts` for retained per-attempt region, endpoint, status/substatus, and latency.
+These fields show the request's observable regional path, but diagnostics do not expose the
+driver's full internal circuit-breaker state.
 
 ### Managing databases and containers
 

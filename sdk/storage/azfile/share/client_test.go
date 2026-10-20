@@ -476,7 +476,18 @@ func (s *ShareRecordedTestsSuite) TestShareCreateNegativeInvalidMetadata() {
 	_require.Error(err)
 }
 
+// skipSMBDirectoryLeaseInLiveMode skips the SMB directory lease tests in live mode, because the service
+// currently doesn't return x-ms-enable-smb-directory-lease on Get Share Properties. Playback still covers
+// the SDK sending and reading the header.
+func skipSMBDirectoryLeaseInLiveMode(t *testing.T) {
+	t.Helper()
+	if recording.GetRecordMode() == recording.LiveMode {
+		t.Skip("the service currently doesn't return x-ms-enable-smb-directory-lease on Get Share Properties")
+	}
+}
+
 func (s *ShareRecordedTestsSuite) TestShareCreateWithSMBDirectoryLeaseDisabled() {
+	skipSMBDirectoryLeaseInLiveMode(s.T())
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -503,10 +514,12 @@ func (s *ShareRecordedTestsSuite) TestShareCreateWithSMBDirectoryLeaseDisabled()
 	_require.NoError(err)
 	_require.NotNil(getResp.ETag)
 	_require.NotNil(getResp.LastModified)
-	_require.Equal(false, *getResp.EnableSMBDirectoryLease)
+	_require.NotNil(getResp.EnableSMBDirectoryLease)
+	_require.False(*getResp.EnableSMBDirectoryLease)
 }
 
 func (s *ShareRecordedTestsSuite) TestShareCreateWithSMBDirectoryLeaseEnabled() {
+	skipSMBDirectoryLeaseInLiveMode(s.T())
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -531,10 +544,12 @@ func (s *ShareRecordedTestsSuite) TestShareCreateWithSMBDirectoryLeaseEnabled() 
 	// Verify with GetProperties
 	getResp, err := shareClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
-	_require.Equal(true, *getResp.EnableSMBDirectoryLease)
+	_require.NotNil(getResp.EnableSMBDirectoryLease)
+	_require.True(*getResp.EnableSMBDirectoryLease)
 }
 
 func (s *ShareRecordedTestsSuite) TestShareCreateWithSMBDirectoryLeaseDefault() {
+	skipSMBDirectoryLeaseInLiveMode(s.T())
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -557,7 +572,8 @@ func (s *ShareRecordedTestsSuite) TestShareCreateWithSMBDirectoryLeaseDefault() 
 	// Verify with GetProperties
 	getResp, err := shareClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
-	_require.Equal(true, *getResp.EnableSMBDirectoryLease)
+	_require.NotNil(getResp.EnableSMBDirectoryLease)
+	_require.True(*getResp.EnableSMBDirectoryLease)
 }
 
 func (s *ShareRecordedTestsSuite) TestShareDeleteNegativeNonExistent() {

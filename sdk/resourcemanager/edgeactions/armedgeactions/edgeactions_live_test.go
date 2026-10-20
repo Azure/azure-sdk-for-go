@@ -17,7 +17,6 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
@@ -80,14 +79,6 @@ func newScenario(t *testing.T, deployments int) (context.Context, *armedgeaction
 	t.Cleanup(cancel)
 	cred, options := testutil.GetCredAndClientOptions(t)
 	options.Retry.TryTimeout = 2 * time.Minute
-	spec, err := loadResponseSpec()
-	require.NoError(t, err)
-	validator := &responseValidator{spec: spec}
-	options.PerCallPolicies = append(options.PerCallPolicies, validator)
-	validationClient, err := arm.NewClient("edgeactions-tests", "v0.0.0", cred, options)
-	require.NoError(t, err)
-	validator.pipeline = validationClient.Pipeline()
-	ctx = context.WithValue(ctx, validatorKey{}, validator)
 	sub := recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", subscriptionID)
 	factory, err := armedgeactions.NewClientFactory(sub, cred, options)
 	require.NoError(t, err)

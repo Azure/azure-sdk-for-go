@@ -12,9 +12,11 @@ import (
 	"fmt"
 	"net/http"
 	"sort"
+	"strings"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/edgeactions/armedgeactions"
@@ -22,6 +24,17 @@ import (
 )
 
 const handlerCode = "function handler(event) { return event; }"
+
+func pollForScenario[T any](ctx context.Context, poller *runtime.Poller[T]) (*T, error) {
+	// Bound each operation without replacing SDK polling or fetching extra responses.
+	ctx, cancel := context.WithTimeout(ctx, 40*time.Minute)
+	defer cancel()
+	return testutil.PollForTest(ctx, poller)
+}
+
+func terminalStatus(state string) bool {
+	return strings.EqualFold(state, "Succeeded") || strings.EqualFold(state, "Failed") || strings.EqualFold(state, "Canceled")
+}
 
 func versionCode(deploymentType armedgeactions.EdgeActionVersionDeploymentType) (string, error) {
 	content := []byte(handlerCode)
@@ -80,8 +93,6 @@ func createOwnedAction(ctx context.Context, factory *armedgeactions.ClientFactor
 }
 
 func cleanupAction(ctx context.Context, factory *armedgeactions.ClientFactory, group, name string) error {
-	// A service contract failure must not prevent deletion of resources we own.
-	ctx = context.WithValue(ctx, skipValidationKey{}, true)
 	client := factory.NewClient()
 	action, err := client.Get(ctx, group, name, nil)
 	if err != nil {

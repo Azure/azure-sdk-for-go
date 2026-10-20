@@ -35,6 +35,9 @@ go test ./... -run '^TestRecordingResponseContracts$' -v -count=1 -timeout 5m
 
 The full suite includes this audit in record/playback modes; live mode skips it
 because live runs do not require a local proxy or stored recordings.
+Commands filtered to `^TestRecordedEdgeActions$` run the scenarios only, not the
+audit. After recording, run full playback or the explicit audit command before
+publishing. The audit reads saved responses; it does not make service requests.
 Avoid `-failfast` when auditing so every recording
 is examined, including error and cleanup responses.
 
@@ -164,28 +167,38 @@ locate/publish assets, and commit the resulting `assets.json` tag with the test 
 
 ## Response-contract maintenance
 
+Live and playback scenarios use the SDK's normal pipeline and polling through
+`testutil.PollForTest`, with bounded operation deadlines and explicit `testify`
+assertions on results. No custom response-validation policy changes their HTTP
+requests or fetches additional polling endpoints.
+
 `testdata/response_spec.json` snapshots response schemas from the commit in
 `tsp-location.yaml`. After updating the spec pin, run `go generate` to refresh the snapshot;
 this command downloads the pinned specification. Tests reject stale snapshots and
 unsupported validation keywords.
 
-The audit checks response contracts, not complete request schemas or operations absent
-from recordings. Final `Location` responses must have a successful terminal HTTP status
-and are validated against the initiating operation. Error bodies are still checked,
-but cannot satisfy successful completion.
+The separate offline audit checks raw recorded response bodies, headers, and
+completion evidence against the snapshot, not complete request schemas or operations
+absent from recordings. Schema failures are reported by the audit rather than
+intercepted during SDK calls. Unrecorded live-mode responses have functional assertions
+but no raw-schema audit. Final `Location` responses must have a successful terminal
+HTTP status and are validated against the initiating operation. Error bodies are
+still checked, but cannot satisfy successful completion.
 Resource-group fixture operations use a separate ARM API and are counted outside the
-Edge Actions audit. Cleanup bypasses pipeline validation to preserve resource removal;
-its recorded responses are still audited.
+Edge Actions audit. Recorded cleanup responses are audited along with scenario responses.
+
+For PUT/PATCH operations using `Azure-AsyncOperation`, the SDK's final GET of the
+original resource can establish completion without an additional `Location` GET.
+An initial resource already reporting `Succeeded` does not require synthetic monitor
+polls. Any monitor or final response actually recorded is still validated.
 
 For DELETE operations that advertise both `Azure-AsyncOperation` and `Location`,
 a successful status monitor is sufficient evidence of completion: the SDK's async
 DELETE poller does not fetch a final `Location`. Any recorded `Location` response
 is still checked for terminal HTTP success and response-schema validity.
 Location-only DELETE recordings must include a successful terminal response.
-The lifecycle validator follows the same rule and does not issue a synthetic
-`Location` GET after successful DELETE monitor completion.
 
-Current exceptions, implemented in the response-validation helpers, leave the snapshot unchanged:
+Current exceptions, implemented in the offline audit helpers, leave the snapshot unchanged:
 
 - AsyncOperation bodies validate only a nonempty string `status`; HTTP 200, URL checks,
   and successful completion remain required.

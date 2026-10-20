@@ -34,20 +34,13 @@ const (
 	filterJSON  = `{"id":"` + filterPath + `","name":"sdkfilter","location":"global","properties":{"versionId":"` + versionPath + `","executionFilterIdentifierHeaderName":"x-sdk-test","executionFilterIdentifierHeaderValue":"initial","provisioningState":"Succeeded"}}`
 )
 
-func newMockFactory(t *testing.T, validation ...*responseValidator) (*armedgeactions.ClientFactory, *mock.Server) {
+func newMockFactory(t *testing.T) (*armedgeactions.ClientFactory, *mock.Server) {
 	t.Helper()
 	server, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
 	t.Cleanup(close)
 	options := &arm.ClientOptions{
 		DisableRPRegistration: true,
 		ClientOptions:         policy.ClientOptions{Transport: server, Retry: policy.RetryOptions{MaxRetries: -1}},
-	}
-	require.LessOrEqual(t, len(validation), 1)
-	if len(validation) == 1 {
-		options.PerCallPolicies = append(options.PerCallPolicies, validation[0])
-		client, err := arm.NewClient("edgeactions-tests", "v0.0.0", &credential.Fake{}, options)
-		require.NoError(t, err)
-		validation[0].pipeline = client.Pipeline()
 	}
 	factory, err := armedgeactions.NewClientFactory(subscriptionID, &credential.Fake{}, options)
 	require.NoError(t, err)
@@ -339,10 +332,7 @@ func TestContractLongRunningOperations(t *testing.T) {
 		for _, status := range statuses {
 			for _, terminal := range []string{"Succeeded", "Failed", "Canceled"} {
 				t.Run(operation.name+"/"+strconv.Itoa(status)+"/"+terminal, func(t *testing.T) {
-					spec, err := loadResponseSpec()
-					require.NoError(t, err)
-					validator := &responseValidator{spec: spec}
-					factory, server := newMockFactory(t, validator)
+					factory, server := newMockFactory(t)
 					pollURL := "https://management.azure.com/operations/one?api-version=2026-10-01"
 					resultURL := "https://management.azure.com/results/one?api-version=2026-10-01"
 					initialBody := ""
@@ -358,12 +348,13 @@ func TestContractLongRunningOperations(t *testing.T) {
 						expectRequest(t, server, "GET", "/operations/one", "", 200, `{"status":"Succeeded"}`)
 						if operation.method != "POST" {
 							expectRequest(t, server, "GET", operation.path, "", 200, operation.result)
+						} else {
+							finalBody := operation.result
+							if operation.name == "swap-default" {
+								finalBody = versionJSON
+							}
+							expectRequest(t, server, "GET", "/results/one", "", 200, finalBody)
 						}
-						finalBody := operation.result
-						if operation.name == "swap-default" {
-							finalBody = versionJSON
-						}
-						expectRequest(t, server, "GET", "/results/one", "", 200, finalBody)
 					}
 					result, err := operation.run(factory)
 					if terminal != "Succeeded" {
@@ -374,15 +365,10 @@ func TestContractLongRunningOperations(t *testing.T) {
 						assert.Equal(t, 3, server.Requests())
 					} else {
 						require.NoError(t, err)
-						require.NoError(t, validator.complete(t.Context()))
 						data, err := json.Marshal(result)
 						require.NoError(t, err)
 						assert.JSONEq(t, operation.result, string(data))
-						expected := 4
-						if operation.method != "POST" {
-							expected++
-						}
-						assert.Equal(t, expected, server.Requests())
+						assert.Equal(t, 4, server.Requests(), "only the SDK's final GET should be sent")
 					}
 				})
 			}
@@ -418,10 +404,7 @@ func TestContractDelete(t *testing.T) {
 			{"MonitorAndLocation", http.StatusAccepted, true, true},
 		} {
 			t.Run(tc.name+"/"+response.name, func(t *testing.T) {
-				spec, err := loadResponseSpec()
-				require.NoError(t, err)
-				validator := &responseValidator{spec: spec}
-				factory, server := newMockFactory(t, validator)
+				factory, server := newMockFactory(t)
 				var headers []mock.ResponseOption
 				if response.location {
 					headers = append(headers, mock.WithHeader("Location", "https://management.azure.com/operations/delete?api-version=2026-10-01"))
@@ -435,16 +418,36 @@ func TestContractDelete(t *testing.T) {
 				} else if response.location {
 					expectRequest(t, server, "GET", "/operations/delete", "", 204, "")
 				}
-				_, err = tc.run(factory)
+				_, err := tc.run(factory)
 				require.NoError(t, err)
-				require.NoError(t, validator.complete(t.Context()))
 				expected := 1
 				if response.status == http.StatusAccepted {
 					expected++
 				}
 				assert.Equal(t, expected, server.Requests(), "monitor completion must not trigger a synthetic Location GET")
-				assert.Nil(t, validator.pending)
 			})
 		}
+	}
+
+}
+
+func TestContractAlreadyCompletedPUT(t *testing.T) {
+	for _, status := range []int{http.StatusOK, http.StatusCreated} {
+		t.Run(http.StatusText(status), func(t *testing.T) {
+			factory, server := newMockFactory(t)
+			statusURL := "https://management.azure.com/operations/one?api-version=" + apiVersion
+			resultURL := "https://management.azure.com/results/one?api-version=" + apiVersion
+			expectRequest(t, server, "PUT", versionPath, "", status, versionJSON,
+				mock.WithHeader("Azure-AsyncOperation", statusURL), mock.WithHeader("Location", resultURL))
+			expectRequest(t, server, "GET", versionPath, "", http.StatusOK, versionJSON)
+			poller, err := factory.NewEdgeActionVersionsClient().BeginCreate(t.Context(), "test-rg", "test-action", "v1",
+				armedgeactions.EdgeActionVersion{Location: to.Ptr("global")}, nil)
+			require.NoError(t, err)
+			result, err := pollForScenario(t.Context(), poller)
+			require.NoError(t, err)
+			assert.True(t, poller.Done())
+			assert.Equal(t, to.Ptr(versionPath), result.ID)
+			assert.Equal(t, 2, server.Requests(), "do not synthesize monitor or Location GETs")
+		})
 	}
 }

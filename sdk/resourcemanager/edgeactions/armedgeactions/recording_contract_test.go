@@ -80,8 +80,21 @@ func (a *recordingAudit) check(entry int, err error) {
 }
 
 type recordedOperation struct {
-	pendingOperation
-	entry int
+	op                   *specOperation
+	method               string
+	statusURL, resultURL string
+	lastStatus           string
+	polls                int
+	resultSeen           bool
+	initialSucceeded     bool
+	originalURL          string
+	resourceSeen         bool
+	entry                int
+}
+
+func (op *recordedOperation) completesWithMonitor() bool {
+	return op.statusURL != "" &&
+		(strings.EqualFold(op.method, http.MethodDelete) || op.op.ID == "EdgeActionVersions_SwapDefault")
 }
 
 // Audit every stored response independently of lifecycle execution, so assertions
@@ -157,6 +170,17 @@ func auditRecording(spec *responseSpec, entries []contractEntry) recordingAudit 
 					}
 					break
 				}
+				if !op.resourceSeen && op.statusURL != "" &&
+					(strings.EqualFold(op.method, http.MethodPut) || strings.EqualFold(op.method, http.MethodPatch)) &&
+					sameRecordedURL(entry.RequestURI, op.originalURL) {
+					matched = true
+					if !op.initialSucceeded && !strings.EqualFold(op.lastStatus, "Succeeded") {
+						audit.check(index, fmt.Errorf("%s: final resource requested before status succeeded", op.op.ID))
+					}
+					audit.check(index, spec.validateFinal(op.op, entry.StatusCode, body, headers))
+					op.resourceSeen = entry.StatusCode >= http.StatusOK && entry.StatusCode < http.StatusMultipleChoices
+					break
+				}
 			}
 		}
 		if matched {
@@ -198,25 +222,37 @@ func auditRecording(spec *responseSpec, entries []contractEntry) recordingAudit 
 		// Schema validation above reports malformed initial bodies.
 		decoded := json.Unmarshal(body, &resource) == nil
 		operations = append(operations, &recordedOperation{
-			entry: index,
-			pendingOperation: pendingOperation{
-				op: op, method: entry.RequestMethod, statusURL: statusURL, resultURL: resultURL,
-				initialSucceeded: decoded && (strings.EqualFold(entry.RequestMethod, "PUT") || strings.EqualFold(entry.RequestMethod, "PATCH")) &&
-					strings.EqualFold(resource.Properties.ProvisioningState, "Succeeded"),
-			},
+			entry: index, originalURL: entry.RequestURI,
+			op: op, method: entry.RequestMethod, statusURL: statusURL, resultURL: resultURL,
+			initialSucceeded: decoded && (strings.EqualFold(entry.RequestMethod, "PUT") || strings.EqualFold(entry.RequestMethod, "PATCH")) &&
+				strings.EqualFold(resource.Properties.ProvisioningState, "Succeeded"),
 		})
 	}
 	for _, op := range operations {
-		if op.statusURL != "" && (op.polls == 0 || !strings.EqualFold(op.lastStatus, "Succeeded")) {
+		if op.statusURL != "" && (!op.initialSucceeded || op.polls != 0) &&
+			(op.polls == 0 || !strings.EqualFold(op.lastStatus, "Succeeded")) {
 			audit.check(op.entry, fmt.Errorf("%s: recording lacks successful Azure-AsyncOperation completion", op.op.ID))
 		}
 		// DELETE pollers do not fetch Location after monitor completion.
 		// Any recorded Location response is still validated above.
-		if op.resultURL != "" && !op.resultSeen && !op.completesWithMonitor() {
+		if op.resultURL != "" && !op.resultSeen && !op.resourceSeen && !op.completesWithMonitor() {
 			audit.check(op.entry, fmt.Errorf("%s: recording lacks a completed final Location response", op.op.ID))
 		}
 	}
 	return audit
+}
+
+func sameURL(left, right string) bool {
+	if left == "" || right == "" {
+		return false
+	}
+	a, err := url.Parse(left)
+	if err != nil {
+		return false
+	}
+	b, err := url.Parse(right)
+	return err == nil && strings.EqualFold(a.Scheme, b.Scheme) && strings.EqualFold(a.Host, b.Host) &&
+		strings.EqualFold(a.Path, b.Path) && a.Query().Encode() == b.Query().Encode()
 }
 
 func sameRecordedURL(requestURL, headerURL string) bool {
@@ -430,6 +466,119 @@ func TestContractRecordingDeleteCompletion(t *testing.T) {
 					}
 				})
 			}
+		})
+	}
+}
+
+func TestContractRecordingOriginalResourceCompletion(t *testing.T) {
+	spec, err := loadResponseSpec()
+	require.NoError(t, err)
+	const resourceURL = "https://management.azure.com" + versionPath + "?api-version=" + apiVersion
+	const statusURL = "https://management.azure.com/operations/one?api-version=" + apiVersion
+	const resultURL = "https://management.azure.com/results/one?api-version=" + apiVersion
+	for _, method := range []string{http.MethodPut, http.MethodPatch} {
+		for _, tc := range []struct {
+			name, state, body, failure string
+			initialSucceeded           bool
+			resourceStatus             int
+			failedLocation             bool
+		}{
+			{name: "monitor-and-resource", state: "Succeeded", resourceStatus: http.StatusOK, body: versionJSON},
+			{name: "already-succeeded", initialSucceeded: true, resourceStatus: http.StatusOK, body: versionJSON},
+			{name: "missing-resource", state: "Succeeded", failure: "lacks a completed final Location"},
+			{name: "missing-monitor", resourceStatus: http.StatusOK, body: versionJSON, failure: "lacks successful Azure-AsyncOperation completion"},
+			{name: "failed-monitor", initialSucceeded: true, state: "Failed", resourceStatus: http.StatusOK, body: versionJSON,
+				failure: "lacks successful Azure-AsyncOperation completion"},
+			{name: "invalid-resource", state: "Succeeded", resourceStatus: http.StatusOK, body: `{"location":false}`, failure: "location"},
+			{name: "failed-resource", state: "Succeeded", resourceStatus: http.StatusNotFound,
+				body: `{"error":{"code":"NotFound","message":"Missing resource"}}`, failure: "non-success HTTP 404"},
+			{name: "recorded-location-still-checked", state: "Succeeded", resourceStatus: http.StatusOK, body: versionJSON,
+				failedLocation: true, failure: "non-success HTTP 404"},
+		} {
+			t.Run(method+"/"+tc.name, func(t *testing.T) {
+				initialBody := versionJSON
+				if !tc.initialSucceeded {
+					initialBody = strings.Replace(initialBody, `"Succeeded"`, `"Provisioning"`, 1)
+				}
+				entries := []contractEntry{
+					{RequestMethod: method, RequestURI: resourceURL, StatusCode: http.StatusOK,
+						ResponseBody:    json.RawMessage(initialBody),
+						ResponseHeaders: map[string]recordedHeader{"Azure-AsyncOperation": {statusURL}, "Location": {resultURL}}},
+				}
+				if tc.state != "" {
+					entries = append(entries, contractEntry{RequestMethod: http.MethodGet, RequestURI: statusURL,
+						StatusCode: http.StatusOK, ResponseBody: json.RawMessage(fmt.Sprintf(`{"status":%q}`, tc.state))})
+				}
+				if tc.resourceStatus != 0 {
+					entries = append(entries, contractEntry{RequestMethod: http.MethodGet, RequestURI: resourceURL,
+						StatusCode: tc.resourceStatus, ResponseBody: json.RawMessage(tc.body)})
+				}
+				if tc.failedLocation {
+					entries = append(entries, contractEntry{RequestMethod: http.MethodGet, RequestURI: resultURL,
+						StatusCode: http.StatusNotFound, ResponseBody: json.RawMessage(`{"error":{"code":"NotFound","message":"Missing result"}}`)})
+				}
+				audit := auditRecording(spec, entries)
+				assert.Equal(t, len(entries), audit.checked)
+				if tc.failure == "" {
+					assert.Empty(t, audit.issues)
+				} else {
+					var messages []string
+					for _, issue := range audit.issues {
+						messages = append(messages, issue.err.Error())
+					}
+					assert.Contains(t, strings.Join(messages, "\n"), tc.failure)
+				}
+			})
+		}
+	}
+}
+
+func TestContractRecordingInvalidLROResponses(t *testing.T) {
+	spec, err := loadResponseSpec()
+	require.NoError(t, err)
+	const monitor = "https://management.azure.com/operations/one?api-version=" + apiVersion
+	const final = "https://management.azure.com/results/one?api-version=" + apiVersion
+	const initiate = "https://management.azure.com" + versionPath + "/deployVersionCode?api-version=" + apiVersion
+	for _, tc := range []struct {
+		name, statusURL, resultURL, pollBody, resultBody, failure string
+		pollStatus, resultStatus                                  int
+	}{
+		{"missing-headers", "", "", "", "", "no polling URL", 0, 0},
+		{"insecure-monitor", "http://example.test/monitor", final, "", "", "HTTPS", 0, 0},
+		{"insecure-result", monitor, "http://example.test/result", "", "", "HTTPS", 0, 0},
+		{"same-urls", monitor, monitor, "", "", "must differ", 0, 0},
+		{"monitor-api-version", strings.Replace(monitor, apiVersion, "old", 1), final, "", "", "API version", 0, 0},
+		{"missing-status", monitor, final, `{}`, "", "nonempty string status", 200, 0},
+		{"null-status", monitor, final, `{"status":null}`, "", "nonempty string status", 200, 0},
+		{"monitor-http202", monitor, final, `{"status":"Succeeded"}`, "", "expected HTTP 200", 202, 0},
+		{"early-result", monitor, final, `{"status":"Running"}`, versionJSON, "before status succeeded", 200, 200},
+		{"final-status-document", monitor, final, `{"status":"Succeeded"}`, `{"status":"Succeeded"}`, "required", 200, 200},
+		{"final-null", monitor, final, `{"status":"Succeeded"}`, "null", "requires a response body", 200, 200},
+		{"final-empty", monitor, final, `{"status":"Succeeded"}`, "", "requires a response body", 200, 200},
+		{"final-http202", monitor, final, `{"status":"Succeeded"}`, "", "still pending", 200, 202},
+		{"final-http204", monitor, final, `{"status":"Succeeded"}`, "", "not a documented response", 200, 204},
+		{"final-http404", monitor, final, `{"status":"Succeeded"}`, `{"error":{"code":"NotFound","message":"Missing result"}}`, "non-success HTTP 404", 200, 404},
+		{"final-http500", monitor, final, `{"status":"Succeeded"}`, `{"error":{"code":"InternalError","message":"Failed result"}}`, "non-success HTTP 500", 200, 500},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			entries := []contractEntry{
+				{RequestMethod: http.MethodPost, RequestURI: initiate, StatusCode: http.StatusAccepted,
+					ResponseHeaders: map[string]recordedHeader{"Azure-AsyncOperation": {tc.statusURL}, "Location": {tc.resultURL}}},
+			}
+			if tc.pollStatus != 0 {
+				entries = append(entries, contractEntry{RequestMethod: http.MethodGet, RequestURI: monitor,
+					StatusCode: tc.pollStatus, ResponseBody: json.RawMessage(tc.pollBody)})
+			}
+			if tc.resultStatus != 0 {
+				entries = append(entries, contractEntry{RequestMethod: http.MethodGet, RequestURI: final,
+					StatusCode: tc.resultStatus, ResponseBody: json.RawMessage(tc.resultBody)})
+			}
+			audit := auditRecording(spec, entries)
+			var messages []string
+			for _, issue := range audit.issues {
+				messages = append(messages, issue.err.Error())
+			}
+			assert.Contains(t, strings.Join(messages, "\n"), tc.failure)
 		})
 	}
 }

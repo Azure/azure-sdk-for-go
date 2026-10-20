@@ -16,6 +16,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
@@ -23,6 +24,58 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
+
+type deadlinePollingHandler struct {
+	ctx context.Context
+}
+
+func (h *deadlinePollingHandler) Done() bool {
+	return h.ctx != nil
+}
+
+func (h *deadlinePollingHandler) Poll(ctx context.Context) (*http.Response, error) {
+	h.ctx = ctx
+	return &http.Response{StatusCode: http.StatusOK}, ctx.Err()
+}
+
+func (h *deadlinePollingHandler) Result(ctx context.Context, _ *struct{}) error {
+	return ctx.Err()
+}
+
+func TestHelperPollingDeadline(t *testing.T) {
+	for _, tc := range []struct {
+		name   string
+		budget time.Duration
+	}{
+		{"triple-deployment", 130 * time.Minute},
+		{"double-deployment", 90 * time.Minute},
+		{"single-deployment", 50 * time.Minute},
+		{"no-deployment", 20 * time.Minute},
+		{"cleanup", 10 * time.Minute},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			ctx, cancel := context.WithTimeout(context.Background(), tc.budget)
+			defer cancel()
+			parentDeadline, ok := ctx.Deadline()
+			require.True(t, ok)
+			handler := &deadlinePollingHandler{}
+			poller, err := runtime.NewPoller[struct{}](nil, runtime.Pipeline{}, &runtime.NewPollerOptions[struct{}]{Handler: handler})
+			require.NoError(t, err)
+			started := time.Now()
+			_, err = pollForScenario(ctx, poller)
+			require.NoError(t, err)
+			require.NotNil(t, handler.ctx)
+			deadline, ok := handler.ctx.Deadline()
+			require.True(t, ok)
+			if tc.budget <= 40*time.Minute {
+				assert.Equal(t, parentDeadline, deadline)
+			} else {
+				assert.WithinRange(t, deadline, started.Add(40*time.Minute), time.Now().Add(40*time.Minute))
+			}
+			assert.ErrorIs(t, handler.ctx.Err(), context.Canceled)
+		})
+	}
+}
 
 func TestHelperDefaultParallelism(t *testing.T) {
 	for _, tc := range []struct {

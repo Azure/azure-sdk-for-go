@@ -1,6 +1,6 @@
-# Azure Privatetrafficmanager Module for Go
+# Azure Private Trafficmanager Module for Go
 
-The `armprivatetrafficmanager` module provides operations for working with Azure Privatetrafficmanager.
+The `armprivatetrafficmanager` module provides operations for working with Azure Private Trafficmanager.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/privatetrafficmanager/armprivatetrafficmanager)
 
@@ -15,7 +15,7 @@ The `armprivatetrafficmanager` module provides operations for working with Azure
 
 This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for versioning and dependency management.
 
-Install the Azure Privatetrafficmanager module:
+Install the Azure Private Trafficmanager module:
 
 ```sh
 go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/privatetrafficmanager/armprivatetrafficmanager
@@ -23,7 +23,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/privatetrafficmanag
 
 ## Authorization
 
-When creating a client, you will need to provide a credential for authenticating with Azure Privatetrafficmanager.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
+When creating a client, you will need to provide a credential for authenticating with Azure Private Trafficmanager.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
 
 ```go
 cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -33,7 +33,7 @@ For more information on authentication, please see the documentation for `aziden
 
 ## Client Factory
 
-Azure Privatetrafficmanager module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
+Azure Private Trafficmanager module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
 
 ```go
 clientFactory, err := armprivatetrafficmanager.NewClientFactory(<subscription ID>, cred, nil)

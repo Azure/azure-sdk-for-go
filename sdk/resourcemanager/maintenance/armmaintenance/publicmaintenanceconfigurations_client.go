@@ -19,7 +19,7 @@ import (
 // PublicMaintenanceConfigurationsClient contains the methods for the PublicMaintenanceConfigurations group.
 // Don't use this type directly, use NewPublicMaintenanceConfigurationsClient() instead.
 //
-// Generated from API version 2023-10-01-preview
+// Generated from API version 2025-10-01-preview
 type PublicMaintenanceConfigurationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -82,7 +82,7 @@ func (client *PublicMaintenanceConfigurationsClient) getCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20231001Preview)
+	reqQP.Set("api-version", version20251001Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -148,7 +148,7 @@ func (client *PublicMaintenanceConfigurationsClient) listCreateRequest(ctx conte
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20231001Preview)
+		reqQP.Set("api-version", version20251001Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

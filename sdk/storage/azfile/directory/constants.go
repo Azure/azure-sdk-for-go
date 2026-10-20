@@ -39,35 +39,16 @@ const (
 	ListFilesIncludeTypeETag          ListFilesIncludeType = generated.ListFilesIncludeTypeEtag
 	ListFilesIncludeTypeAttributes    ListFilesIncludeType = generated.ListFilesIncludeTypeAttributes
 	ListFilesIncludeTypePermissionKey ListFilesIncludeType = generated.ListFilesIncludeTypePermissionKey
-	ListFilesIncludeTypePermissions   ListFilesIncludeType = generated.ListFilesIncludeTypePermissions
-	ListFilesIncludeTypeLinkCount     ListFilesIncludeType = generated.ListFilesIncludeTypeLinkCount
-	ListFilesIncludeTypeNfsAttributes ListFilesIncludeType = generated.ListFilesIncludeTypeNfsAttributes
-	ListFilesIncludeTypeAll           ListFilesIncludeType = generated.ListFilesIncludeTypeAll
 )
 
 // PossibleListFilesIncludeTypeValues returns the possible values for the ListFilesIncludeType const type.
 func PossibleListFilesIncludeTypeValues() []ListFilesIncludeType {
-	return generated.PossibleListFilesIncludeTypeValues()
-}
-
-// FileType is the type of an item returned by Client.NewListFilesAndDirectoriesPager. It is derived from the XML element
-// in which the service returned the item and is intended to be used for NFS shares.
-// Each listed item type has a FileType method, e.g. Directory.FileType, File.FileType and SymLinkItem.FileType.
-type FileType = generated.FileType
-
-const (
-	FileTypeRegular         FileType = generated.FileTypeRegular
-	FileTypeDirectory       FileType = generated.FileTypeDirectory
-	FileTypeSymLink         FileType = generated.FileTypeSymLink
-	FileTypeBlockDevice     FileType = generated.FileTypeBlockDevice
-	FileTypeCharacterDevice FileType = generated.FileTypeCharacterDevice
-	FileTypeSocket          FileType = generated.FileTypeSocket
-	FileTypeFifo            FileType = generated.FileTypeFifo
-)
-
-// PossibleFileTypeValues returns the possible values for the FileType const type.
-func PossibleFileTypeValues() []FileType {
-	return generated.PossibleFileTypeValues()
+	return []ListFilesIncludeType{
+		ListFilesIncludeTypeAttributes,
+		ListFilesIncludeTypeETag,
+		ListFilesIncludeTypePermissionKey,
+		ListFilesIncludeTypeTimestamps,
+	}
 }
 
 // ShareTokenIntent is required if authorization header specifies an OAuth token.

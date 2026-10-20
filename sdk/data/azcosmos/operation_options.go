@@ -48,9 +48,9 @@ type OperationOptions struct {
 	ThroughputControl ThroughputControlOptions
 	// ThrottlingRetry configures each transport invocation's 429 retry budget, not the whole operation.
 	ThrottlingRetry ThrottlingRetryOptions
-	// HedgingEnabled controls the hedging master switch; the driver's environment override wins.
+	// HedgingEnabled controls the read-request hedging master switch; the driver's environment override wins.
 	HedgingEnabled *bool
-	// AvailabilityStrategy selects disabled or threshold-based hedging. Zero inherits.
+	// AvailabilityStrategy selects disabled or threshold-based hedging for eligible reads. Zero inherits.
 	AvailabilityStrategy AvailabilityStrategy
 }
 
@@ -94,7 +94,7 @@ func DisabledAvailability() AvailabilityStrategy {
 	return AvailabilityStrategy{kind: 1}
 }
 
-// HedgingAvailability selects hedging with a strictly positive threshold.
+// HedgingAvailability selects read hedging with a strictly positive threshold.
 // An invalid threshold is rejected when the strategy is used.
 func HedgingAvailability(threshold time.Duration) AvailabilityStrategy {
 	return AvailabilityStrategy{kind: 2, threshold: threshold}

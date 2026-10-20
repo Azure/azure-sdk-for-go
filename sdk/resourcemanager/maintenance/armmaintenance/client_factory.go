@@ -111,9 +111,9 @@ func (c *ClientFactory) NewPublicMaintenanceConfigurationsClient() *PublicMainte
 	}
 }
 
-// NewScheduledEventClient creates a new instance of ScheduledEventClient.
-func (c *ClientFactory) NewScheduledEventClient() *ScheduledEventClient {
-	return &ScheduledEventClient{
+// NewScheduledEventsClient creates a new instance of ScheduledEventsClient.
+func (c *ClientFactory) NewScheduledEventsClient() *ScheduledEventsClient {
+	return &ScheduledEventsClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

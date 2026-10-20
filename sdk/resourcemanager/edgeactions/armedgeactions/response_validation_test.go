@@ -204,9 +204,9 @@ func terminalStatus(state string) bool {
 }
 
 func pollForScenario[T any](ctx context.Context, poller *runtime.Poller[T]) (*T, error) {
-	// Each LRO gets a fresh budget; earlier deployments cannot consume a later
-	// execution filter's timeout. Parent cancellation still bounds the entire test.
-	ctx, cancel := context.WithTimeout(ctx, 20*time.Minute)
+	// Allow deployment-backed operations up to 40 minutes, bounded by the
+	// remaining scenario budget or the independent cleanup deadline.
+	ctx, cancel := context.WithTimeout(ctx, 40*time.Minute)
 	defer cancel()
 	result, err := testutil.PollForTest(ctx, poller)
 	if validator, ok := ctx.Value(validatorKey{}).(*responseValidator); ok {
@@ -217,6 +217,58 @@ func pollForScenario[T any](ctx context.Context, poller *runtime.Poller[T]) (*T,
 		}
 	}
 	return result, err
+}
+
+type deadlinePollingHandler struct {
+	ctx context.Context
+}
+
+func (h *deadlinePollingHandler) Done() bool {
+	return h.ctx != nil
+}
+
+func (h *deadlinePollingHandler) Poll(ctx context.Context) (*http.Response, error) {
+	h.ctx = ctx
+	return &http.Response{StatusCode: http.StatusOK}, ctx.Err()
+}
+
+func (h *deadlinePollingHandler) Result(ctx context.Context, _ *struct{}) error {
+	return ctx.Err()
+}
+
+func TestContractPollingDeadline(t *testing.T) {
+	for _, tc := range []struct {
+		name   string
+		budget time.Duration
+	}{
+		{"triple-deployment", 130 * time.Minute},
+		{"double-deployment", 90 * time.Minute},
+		{"single-deployment", 50 * time.Minute},
+		{"no-deployment", 20 * time.Minute},
+		{"cleanup", 10 * time.Minute},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			ctx, cancel := context.WithTimeout(context.Background(), tc.budget)
+			defer cancel()
+			parentDeadline, ok := ctx.Deadline()
+			require.True(t, ok)
+			handler := &deadlinePollingHandler{}
+			poller, err := runtime.NewPoller[struct{}](nil, runtime.Pipeline{}, &runtime.NewPollerOptions[struct{}]{Handler: handler})
+			require.NoError(t, err)
+			started := time.Now()
+			_, err = pollForScenario(ctx, poller)
+			require.NoError(t, err)
+			require.NotNil(t, handler.ctx)
+			deadline, ok := handler.ctx.Deadline()
+			require.True(t, ok)
+			if tc.budget <= 40*time.Minute {
+				assert.Equal(t, parentDeadline, deadline)
+			} else {
+				assert.WithinRange(t, deadline, started.Add(40*time.Minute), time.Now().Add(40*time.Minute))
+			}
+			assert.ErrorIs(t, handler.ctx.Err(), context.Canceled)
+		})
+	}
 }
 
 func TestContractAlreadyCompletedPUT(t *testing.T) {

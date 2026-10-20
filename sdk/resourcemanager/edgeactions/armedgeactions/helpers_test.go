@@ -8,16 +8,117 @@ import (
 	"bytes"
 	"context"
 	"encoding/base64"
+	"flag"
 	"fmt"
 	"net/http"
+	"os"
+	"strings"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/edgeactions/armedgeactions"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
+
+func TestHelperDefaultParallelism(t *testing.T) {
+	for _, tc := range []struct {
+		name     string
+		args     []string
+		expected int
+	}{
+		{"default", nil, 7},
+		{"sequential", []string{"-test.parallel=1"}, 1},
+		{"bounded", []string{"-test.parallel=2"}, 2},
+		{"higher", []string{"-test.parallel=12"}, 12},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			flags := flag.NewFlagSet(t.Name(), flag.ContinueOnError)
+			parallelism := flags.Int("test.parallel", 1, "")
+			require.NoError(t, flags.Parse(tc.args))
+			require.NoError(t, configureTestParallelism(flags))
+			assert.Equal(t, tc.expected, *parallelism)
+		})
+	}
+}
+
+func TestHelperLoadTestEnv(t *testing.T) {
+	for _, mode := range []string{recording.RecordingMode, recording.LiveMode} {
+		t.Run(mode, func(t *testing.T) {
+			t.Chdir(t.TempDir())
+			t.Setenv("AZURE_SUBSCRIPTION_ID", "shell-subscription")
+			t.Setenv("LOCATION", "")
+			require.NoError(t, os.Unsetenv("LOCATION"))
+			require.NoError(t, os.WriteFile(".env", []byte("AZURE_SUBSCRIPTION_ID=file-subscription\nLOCATION=westus\n"), 0600))
+			require.NoError(t, loadTestEnv(mode))
+			assert.Equal(t, "shell-subscription", os.Getenv("AZURE_SUBSCRIPTION_ID"))
+			assert.Equal(t, "westus", os.Getenv("LOCATION"))
+		})
+	}
+}
+
+func TestHelperLoadTestEnvFiles(t *testing.T) {
+	for _, tc := range []struct {
+		name, mode, contents string
+		wantError            bool
+	}{
+		{"missing", recording.RecordingMode, "", false},
+		{"malformed", recording.RecordingMode, "LOCATION='unterminated", true},
+		{"playback-malformed", recording.PlaybackMode, "LOCATION='unterminated", false},
+		{"playback-valid", recording.PlaybackMode, "LOCATION=westus\n", false},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			t.Chdir(t.TempDir())
+			t.Setenv("LOCATION", "")
+			require.NoError(t, os.Unsetenv("LOCATION"))
+			if tc.contents != "" {
+				require.NoError(t, os.WriteFile(".env", []byte(tc.contents), 0600))
+			}
+			err := loadTestEnv(tc.mode)
+			if tc.wantError {
+				require.Error(t, err)
+			} else {
+				require.NoError(t, err)
+			}
+			_, exists := os.LookupEnv("LOCATION")
+			assert.False(t, exists)
+		})
+	}
+}
+
+func TestHelperResourceGroupName(t *testing.T) {
+	for _, mode := range []string{recording.RecordingMode, recording.LiveMode} {
+		for _, suffix := range []uint64{0, 123456789, ^uint64(0)} {
+			name := scenarioResourceGroupName(mode, suffix)
+			assert.Equal(t, fmt.Sprintf("go-sdk-test-%d", suffix), name)
+			assert.Regexp(t, `^go-sdk-test-\d+$`, name)
+		}
+	}
+	assert.Equal(t, recording.SanitizedValue, scenarioResourceGroupName(recording.PlaybackMode, 123456789))
+}
+
+func TestHelperScenarioTimeout(t *testing.T) {
+	for _, tc := range []struct {
+		deployments int
+		expected    time.Duration
+	}{
+		{0, 20 * time.Minute},
+		{1, 50 * time.Minute},
+		{2, 90 * time.Minute},
+		{3, 130 * time.Minute},
+	} {
+		timeout, err := scenarioTimeout(tc.deployments)
+		require.NoError(t, err)
+		assert.Equal(t, tc.expected, timeout)
+	}
+	for _, deployments := range []int{-1, 4} {
+		_, err := scenarioTimeout(deployments)
+		require.ErrorContains(t, err, "unsupported scenario deployment count")
+	}
+}
 
 func TestHelperVersionCode(t *testing.T) {
 	for _, deploymentType := range []armedgeactions.EdgeActionVersionDeploymentType{
@@ -46,6 +147,55 @@ func TestHelperVersionCode(t *testing.T) {
 	}
 	_, err := versionCode(armedgeactions.EdgeActionVersionDeploymentTypeOthers)
 	require.ErrorContains(t, err, "unsupported deployment type")
+}
+
+func TestHelperDeployScenarioVersion(t *testing.T) {
+	for _, deploymentType := range []armedgeactions.EdgeActionVersionDeploymentType{
+		armedgeactions.EdgeActionVersionDeploymentTypeFile, armedgeactions.EdgeActionVersionDeploymentTypeZip,
+	} {
+		t.Run(string(deploymentType), func(t *testing.T) {
+			factory, server := newMockFactory(t)
+			content, err := versionCode(deploymentType)
+			require.NoError(t, err)
+			response := strings.Replace(versionJSON, `"file"`, fmt.Sprintf("%q", deploymentType), 1)
+			expectRequest(t, server, "PUT", versionPath,
+				fmt.Sprintf(`{"location":"global","properties":{"deploymentType":%q,"isDefaultVersion":"False"}}`, deploymentType),
+				201, response)
+			expectRequest(t, server, "POST", versionPath+"/deployVersionCode",
+				fmt.Sprintf(`{"name":"v1","content":%q}`, content), 202, "",
+				mock.WithHeader("Azure-AsyncOperation", "https://management.azure.com/operations/one?api-version=2026-10-01"),
+				mock.WithHeader("Location", "https://management.azure.com/results/one?api-version=2026-10-01"))
+			expectRequest(t, server, "GET", "/operations/one", "", 200, `{"status":"Succeeded"}`)
+			expectRequest(t, server, "GET", "/results/one", "", 200, response)
+			expectRequest(t, server, "GET", versionPath, "", 200, response)
+			deployed := deployScenarioVersion(t, t.Context(), factory.NewEdgeActionVersionsClient(),
+				"test-rg", "test-action", "v1", deploymentType)
+			assert.Equal(t, to.Ptr(versionPath), deployed.ID)
+			assert.Equal(t, 5, server.Requests(), "create, deploy, poll, fetch the result, and get the deployed version")
+		})
+	}
+}
+
+func TestHelperDeleteScenarioVersions(t *testing.T) {
+	for _, tc := range []struct {
+		name     string
+		versions []string
+	}{
+		{"deployment", []string{"v1"}},
+		{"swap", []string{"v1", "v2"}},
+		{"filters", []string{"v2", "v1"}},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			factory, server := newMockFactory(t)
+			for _, version := range tc.versions {
+				expectRequest(t, server, "DELETE", actionPath+"/versions/"+version, "", 204, "")
+			}
+			expectRequest(t, server, "GET", actionPath+"/versions", "", 200, `{"value":[]}`)
+			deleteScenarioVersions(t, t.Context(), factory.NewEdgeActionVersionsClient(),
+				"test-rg", "test-action", tc.versions...)
+			assert.Equal(t, len(tc.versions)+1, server.Requests(), "delete in scenario order and verify the version list is empty")
+		})
+	}
 }
 
 func TestHelperCleanupOrder(t *testing.T) {

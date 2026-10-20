@@ -4,6 +4,8 @@
 package armedgeactions_test
 
 import (
+	"errors"
+	"flag"
 	"fmt"
 	"os"
 	"regexp"
@@ -11,11 +13,13 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
+	"github.com/joho/godotenv"
 )
 
 const (
-	pathToPackage  = "sdk/resourcemanager/edgeactions/armedgeactions/testdata"
-	subscriptionID = "00000000-0000-0000-0000-000000000000"
+	defaultTestParallelism = 7
+	pathToPackage          = "sdk/resourcemanager/edgeactions/armedgeactions/testdata"
+	subscriptionID         = "00000000-0000-0000-0000-000000000000"
 	// The proxy uses .NET regular expressions. Replace only the named group, not the query key.
 	pollingSecretRegex = `(?i)[?&][tcsh]=(?<secret>[^&\s"\\#]+)`
 )
@@ -26,10 +30,33 @@ var traceHeaders = []string{
 }
 
 func TestMain(m *testing.M) {
+	flag.Parse()
+	if err := configureTestParallelism(flag.CommandLine); err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
 	os.Exit(runTests(m))
 }
 
+func configureTestParallelism(flags *flag.FlagSet) error {
+	explicit := false
+	flags.Visit(func(f *flag.Flag) {
+		if f.Name == "test.parallel" {
+			explicit = true
+		}
+	})
+	if explicit {
+		return nil
+	}
+	return flags.Set("test.parallel", fmt.Sprint(defaultTestParallelism))
+}
+
 func runTests(m *testing.M) int {
+	if err := loadTestEnv(recording.GetRecordMode()); err != nil {
+		// Dotenv parse errors can contain file contents, including credentials.
+		fmt.Fprintln(os.Stderr, "Failed to load Edge Actions .env; check file access and dotenv syntax.")
+		return 1
+	}
 	stop := testutil.StartProxy(pathToPackage)
 	defer stop()
 	if recording.GetRecordMode() != recording.LiveMode {
@@ -38,6 +65,17 @@ func runTests(m *testing.M) int {
 		}
 	}
 	return m.Run()
+}
+
+func loadTestEnv(mode string) error {
+	if mode == recording.PlaybackMode {
+		return nil
+	}
+	err := godotenv.Load()
+	if errors.Is(err, os.ErrNotExist) {
+		return nil
+	}
+	return err
 }
 
 func registerSanitizers(getenv func(string) string, options *recording.RecordingOptions) error {

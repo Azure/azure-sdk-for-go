@@ -141,10 +141,14 @@ func TestSanitizerProxyRoundTrip(t *testing.T) {
 
 func testSanitizerRoundTrip(t *testing.T, query string, recordedURL bool) {
 	t.Helper()
+	group := scenarioResourceGroupName(recording.RecordingMode, 123456789)
+	resourcePath := strings.Replace(actionPath, "test-rg", group, 1)
+	operationPath := "/resourceGroups/" + group + "/operations/one"
+	sanitizedPath := strings.Replace(operationPath, group, recording.SanitizedValue, 1)
 	var calls atomic.Int32
 	upstream := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		calls.Add(1)
-		pollURL := "http://" + r.Host + "/operations/one" + query + "#fragment"
+		pollURL := "http://" + r.Host + operationPath + query + "#fragment"
 		w.Header().Set("Content-Type", "application/json")
 		for _, header := range []string{"Location", "Azure-AsyncOperation", "operation-location"} {
 			w.Header().Set(header, pollURL)
@@ -154,7 +158,7 @@ func testSanitizerRoundTrip(t *testing.T, query string, recordedURL bool) {
 		}
 		w.Header().Set("Set-Cookie", "fake-cookie")
 		body := map[string]any{
-			"id": actionPath, "name": "test-action", "sku": map[string]string{"name": "Standard"},
+			"id": resourcePath, "name": "test-action", "sku": map[string]string{"name": "Standard"},
 			"pollingUrl": pollURL, "access_token": "fake-access", "refresh_token": "fake-refresh",
 			"id_token": "fake-id", "secret": "fake.secret+[regex]",
 			"identity":   map[string]string{"tenantId": "fake-tenant", "clientId": "fake-client", "principalId": "fake-principal", "client_secret": "fake-unconfigured-secret"},
@@ -200,7 +204,11 @@ func testSanitizerRoundTrip(t *testing.T, query string, recordedURL bool) {
 		require.Equal(t, http.StatusOK, response.StatusCode, "%s", data)
 	}
 	send := func(mode, id, query string) {
-		req, err := http.NewRequest("GET", base+"/operations/one"+query, nil)
+		requestPath := operationPath
+		if mode == "playback" {
+			requestPath = sanitizedPath
+		}
+		req, err := http.NewRequest("GET", base+requestPath+query, nil)
 		require.NoError(t, err)
 		req.Header.Set(recording.IDHeader, id)
 		req.Header.Set(recording.ModeHeader, mode)
@@ -233,7 +241,8 @@ func testSanitizerRoundTrip(t *testing.T, query string, recordedURL bool) {
 	require.NoError(t, json.Unmarshal(bytes.TrimPrefix(data, []byte{0xef, 0xbb, 0xbf}), &saved))
 	require.Len(t, saved.Entries, 1)
 	entry := saved.Entries[0]
-	assert.Equal(t, actionPath, entry.ResponseBody.ID)
+	assert.NotContains(t, string(data), group)
+	assert.Equal(t, strings.Replace(resourcePath, group, recording.SanitizedValue, 1), entry.ResponseBody.ID)
 	assert.Equal(t, "test-action", entry.ResponseBody.Name)
 	assert.Equal(t, "Standard", entry.ResponseBody.SKU.Name)
 	assert.Equal(t, "access_token", entry.ResponseBody.AccessToken)
@@ -273,7 +282,7 @@ func testSanitizerRoundTrip(t *testing.T, query string, recordedURL bool) {
 	for _, value := range urls {
 		parsed, err := url.Parse(value)
 		require.NoError(t, err)
-		assert.Equal(t, "/operations/one", parsed.Path)
+		assert.Equal(t, sanitizedPath, parsed.Path)
 		assert.Equal(t, original, parsed.Query(), "preserve query keys, API version, and unrelated values")
 	}
 	assert.True(t, strings.HasSuffix(entry.ResponseBody.PollingURL, "#fragment"))

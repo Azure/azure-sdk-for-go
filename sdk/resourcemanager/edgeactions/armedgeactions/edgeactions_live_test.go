@@ -8,7 +8,9 @@ import (
 	"bytes"
 	"context"
 	"encoding/base64"
+	"fmt"
 	"io"
+	"math/rand/v2"
 	"net/http"
 	"strings"
 	"testing"
@@ -41,15 +43,41 @@ func requireStatus(t *testing.T, err error, status int) {
 	require.Equal(t, status, responseError.StatusCode)
 }
 
-func newScenario(t *testing.T) (context.Context, *armedgeactions.ClientFactory, string, string) {
+func scenarioResourceGroupName(mode string, suffix uint64) string {
+	if mode == recording.PlaybackMode {
+		return recording.SanitizedValue
+	}
+	// Match the shared sanitizer without limiting resource names to 1,000 values.
+	return fmt.Sprintf("go-sdk-test-%d", suffix)
+}
+
+func scenarioTimeout(deployments int) (time.Duration, error) {
+	switch deployments {
+	case 0:
+		return 20 * time.Minute, nil
+	case 1:
+		return 50 * time.Minute, nil
+	case 2:
+		return 90 * time.Minute, nil
+	case 3:
+		return 130 * time.Minute, nil
+	default:
+		return 0, fmt.Errorf("unsupported scenario deployment count %d; expected 0, 1, 2, or 3", deployments)
+	}
+}
+
+func newScenario(t *testing.T, deployments int) (context.Context, *armedgeactions.ClientFactory, string, string) {
 	t.Helper()
+	timeout, err := scenarioTimeout(deployments)
+	require.NoError(t, err)
 	if recording.GetRecordMode() != recording.PlaybackMode {
 		require.NotEmpty(t, recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", ""), "set an authorized test subscription before a live/record run")
 	}
 	stop := testutil.StartRecording(t, pathToPackage)
 	t.Cleanup(stop)
 	require.NoError(t, recording.SetDefaultMatcher(t, &recording.SetDefaultMatcherOptions{}))
-	ctx := t.Context()
+	ctx, cancel := context.WithTimeout(t.Context(), timeout)
+	t.Cleanup(cancel)
 	cred, options := testutil.GetCredAndClientOptions(t)
 	options.Retry.TryTimeout = 2 * time.Minute
 	spec, err := loadResponseSpec()
@@ -65,8 +93,7 @@ func newScenario(t *testing.T) (context.Context, *armedgeactions.ClientFactory, 
 	require.NoError(t, err)
 	groups, err := armresources.NewResourceGroupsClient(sub, cred, options)
 	require.NoError(t, err)
-	group, err := recording.GenerateAlphaNumericID(t, "go-sdk-test-edgeactions-", 40, true)
-	require.NoError(t, err)
+	group := scenarioResourceGroupName(recording.GetRecordMode(), rand.Uint64())
 	name, err := recording.GenerateAlphaNumericID(t, "eago", 24, true)
 	require.NoError(t, err)
 	_, err = groups.Get(ctx, group, nil)
@@ -98,8 +125,26 @@ func newScenario(t *testing.T) (context.Context, *armedgeactions.ClientFactory, 
 	return ctx, factory, group, name
 }
 
-func TestRecordedEdgeActionTags(t *testing.T) {
-	ctx, factory, group, name := newScenario(t)
+func TestRecordedEdgeActions(t *testing.T) {
+	// Keep the parent sequential so later tests cannot audit in-flight recordings.
+	for _, scenario := range []struct {
+		name string
+		run  func(*testing.T)
+	}{
+		{"Tags", recordedEdgeActionTags},
+		{"VersionDeployment", recordedEdgeActionVersionDeployment},
+		{"VersionSwap", recordedEdgeActionVersionSwap},
+		{"ExecutionFilters", recordedEdgeActionExecutionFilters},
+	} {
+		t.Run(scenario.name, func(t *testing.T) {
+			t.Parallel()
+			scenario.run(t)
+		})
+	}
+}
+
+func recordedEdgeActionTags(t *testing.T) {
+	ctx, factory, group, name := newScenario(t, 0)
 	client := factory.NewClient()
 	before, err := client.Get(ctx, group, name, nil)
 	require.NoError(t, err)
@@ -159,46 +204,36 @@ func TestRecordedEdgeActionTags(t *testing.T) {
 	requireStatus(t, err, http.StatusNotFound)
 }
 
-func TestRecordedEdgeActionVersionsAndFilters(t *testing.T) {
+func recordedEdgeActionVersionDeployment(t *testing.T) {
 	for _, deploymentType := range []armedgeactions.EdgeActionVersionDeploymentType{
 		armedgeactions.EdgeActionVersionDeploymentTypeFile, armedgeactions.EdgeActionVersionDeploymentTypeZip,
 	} {
 		t.Run(string(deploymentType), func(t *testing.T) {
-			ctx, factory, group, name := newScenario(t)
+			t.Parallel()
+			ctx, factory, group, name := newScenario(t, 1)
 			versions := factory.NewEdgeActionVersionsClient()
-			content, err := versionCode(deploymentType)
+			deployed := deployScenarioVersion(t, ctx, versions, group, name, "v1", deploymentType)
+			assert.Equal(t, to.Ptr(armedgeactions.EdgeActionIsDefaultVersionTrue), deployed.Properties.IsDefaultVersion)
+			getCode, err := versions.BeginGetVersionCode(ctx, group, name, "v1", nil)
 			require.NoError(t, err)
+			code := await(t, ctx, getCode)
+			require.NotNil(t, code.Content)
+			assertHandler(t, *code.Content)
+			deleteScenarioVersions(t, ctx, versions, group, name, "v1")
+		})
+	}
+}
+
+func recordedEdgeActionVersionSwap(t *testing.T) {
+	for _, deploymentType := range []armedgeactions.EdgeActionVersionDeploymentType{
+		armedgeactions.EdgeActionVersionDeploymentTypeFile, armedgeactions.EdgeActionVersionDeploymentTypeZip,
+	} {
+		t.Run(string(deploymentType), func(t *testing.T) {
+			t.Parallel()
+			ctx, factory, group, name := newScenario(t, 3)
+			versions := factory.NewEdgeActionVersionsClient()
 			for _, version := range []string{"v1", "v2"} {
-				poller, err := versions.BeginCreate(ctx, group, name, version, armedgeactions.EdgeActionVersion{
-					Location: to.Ptr("global"),
-					Properties: &armedgeactions.EdgeActionVersionProperties{
-						DeploymentType:   to.Ptr(deploymentType),
-						IsDefaultVersion: to.Ptr(armedgeactions.EdgeActionIsDefaultVersionFalse),
-					},
-				}, nil)
-				require.NoError(t, err)
-				created := await(t, ctx, poller)
-				require.NotNil(t, created.Properties)
-				require.NotNil(t, created.ID)
-				assert.Equal(t, to.Ptr(version), created.Name)
-				assert.Equal(t, to.Ptr(deploymentType), created.Properties.DeploymentType)
-				assert.Equal(t, to.Ptr(armedgeactions.ProvisioningStateSucceeded), created.Properties.ProvisioningState)
-				deploy, err := versions.BeginDeployVersionCode(ctx, group, name, version, armedgeactions.VersionCode{
-					Name: to.Ptr(version), Content: to.Ptr(content),
-				}, nil)
-				require.NoError(t, err)
-				result := await(t, ctx, deploy)
-				require.NotNil(t, result.Properties, "deployVersionCode must deserialize the full version envelope")
-				assert.Equal(t, created.ID, result.ID)
-				assert.Equal(t, created.Name, result.Name)
-				assert.Equal(t, created.Location, result.Location)
-				assert.Equal(t, to.Ptr(deploymentType), result.Properties.DeploymentType)
-				assert.Equal(t, to.Ptr(armedgeactions.ProvisioningStateSucceeded), result.Properties.ProvisioningState)
-				deployed, err := versions.Get(ctx, group, name, version, nil)
-				require.NoError(t, err)
-				require.NotNil(t, deployed.Properties)
-				assert.Equal(t, to.Ptr(armedgeactions.ProvisioningStateSucceeded), deployed.Properties.ProvisioningState)
-				assert.Equal(t, to.Ptr(deploymentType), deployed.Properties.DeploymentType)
+				deployScenarioVersion(t, ctx, versions, group, name, version, deploymentType)
 			}
 			first, err := versions.Get(ctx, group, name, "v1", nil)
 			require.NoError(t, err)
@@ -220,12 +255,6 @@ func TestRecordedEdgeActionVersionsAndFilters(t *testing.T) {
 				}
 			}
 			assert.ElementsMatch(t, []string{"v1", "v2"}, versionNames)
-			getCode, err := versions.BeginGetVersionCode(ctx, group, name, "v1", nil)
-			require.NoError(t, err)
-			code := await(t, ctx, getCode)
-			require.NotNil(t, code.Content)
-			assertHandler(t, *code.Content)
-
 			update, err := versions.BeginUpdate(ctx, group, name, "v1", armedgeactions.EdgeActionVersionUpdate{
 				Tags: map[string]*string{"purpose": to.Ptr("updated")},
 			}, nil)
@@ -274,7 +303,21 @@ func TestRecordedEdgeActionVersionsAndFilters(t *testing.T) {
 				require.NotNil(t, result.Properties)
 				assert.Equal(t, to.Ptr(version.expected), result.Properties.IsDefaultVersion)
 			}
+			deleteScenarioVersions(t, ctx, versions, group, name, "v1", "v2")
+		})
+	}
+}
 
+func recordedEdgeActionExecutionFilters(t *testing.T) {
+	for _, deploymentType := range []armedgeactions.EdgeActionVersionDeploymentType{
+		armedgeactions.EdgeActionVersionDeploymentTypeFile, armedgeactions.EdgeActionVersionDeploymentTypeZip,
+	} {
+		t.Run(string(deploymentType), func(t *testing.T) {
+			t.Parallel()
+			ctx, factory, group, name := newScenario(t, 2)
+			versions := factory.NewEdgeActionVersionsClient()
+			first := deployScenarioVersion(t, ctx, versions, group, name, "v1", deploymentType)
+			second := deployScenarioVersion(t, ctx, versions, group, name, "v2", deploymentType)
 			filters := factory.NewEdgeActionExecutionFiltersClient()
 			require.NotNil(t, first.ID)
 			require.NotNil(t, second.ID)
@@ -340,18 +383,62 @@ func TestRecordedEdgeActionVersionsAndFilters(t *testing.T) {
 				require.NoError(t, err)
 				assert.Empty(t, page.Value)
 			}
-			for _, version := range []string{"v1", "v2"} {
-				poller, err := versions.BeginDelete(ctx, group, name, version, nil)
-				require.NoError(t, err)
-				await(t, ctx, poller)
-			}
-			pager = versions.NewListByEdgeActionPager(group, name, nil)
-			for pager.More() {
-				page, err := pager.NextPage(ctx)
-				require.NoError(t, err)
-				assert.Empty(t, page.Value)
-			}
+			deleteScenarioVersions(t, ctx, versions, group, name, "v2", "v1")
 		})
+	}
+}
+
+func deployScenarioVersion(t *testing.T, ctx context.Context, versions *armedgeactions.EdgeActionVersionsClient,
+	group, name, version string, deploymentType armedgeactions.EdgeActionVersionDeploymentType) armedgeactions.EdgeActionVersion {
+	t.Helper()
+	content, err := versionCode(deploymentType)
+	require.NoError(t, err)
+	poller, err := versions.BeginCreate(ctx, group, name, version, armedgeactions.EdgeActionVersion{
+		Location: to.Ptr("global"),
+		Properties: &armedgeactions.EdgeActionVersionProperties{
+			DeploymentType:   to.Ptr(deploymentType),
+			IsDefaultVersion: to.Ptr(armedgeactions.EdgeActionIsDefaultVersionFalse),
+		},
+	}, nil)
+	require.NoError(t, err)
+	created := await(t, ctx, poller)
+	require.NotNil(t, created.Properties)
+	require.NotNil(t, created.ID)
+	assert.Equal(t, to.Ptr(version), created.Name)
+	assert.Equal(t, to.Ptr(deploymentType), created.Properties.DeploymentType)
+	assert.Equal(t, to.Ptr(armedgeactions.ProvisioningStateSucceeded), created.Properties.ProvisioningState)
+	deploy, err := versions.BeginDeployVersionCode(ctx, group, name, version, armedgeactions.VersionCode{
+		Name: to.Ptr(version), Content: to.Ptr(content),
+	}, nil)
+	require.NoError(t, err)
+	result := await(t, ctx, deploy)
+	require.NotNil(t, result.Properties, "deployVersionCode must deserialize the full version envelope")
+	assert.Equal(t, created.ID, result.ID)
+	assert.Equal(t, created.Name, result.Name)
+	assert.Equal(t, created.Location, result.Location)
+	assert.Equal(t, to.Ptr(deploymentType), result.Properties.DeploymentType)
+	assert.Equal(t, to.Ptr(armedgeactions.ProvisioningStateSucceeded), result.Properties.ProvisioningState)
+	deployed, err := versions.Get(ctx, group, name, version, nil)
+	require.NoError(t, err)
+	require.NotNil(t, deployed.Properties)
+	assert.Equal(t, to.Ptr(armedgeactions.ProvisioningStateSucceeded), deployed.Properties.ProvisioningState)
+	assert.Equal(t, to.Ptr(deploymentType), deployed.Properties.DeploymentType)
+	return deployed.EdgeActionVersion
+}
+
+func deleteScenarioVersions(t *testing.T, ctx context.Context, versions *armedgeactions.EdgeActionVersionsClient,
+	group, name string, versionNames ...string) {
+	t.Helper()
+	for _, version := range versionNames {
+		poller, err := versions.BeginDelete(ctx, group, name, version, nil)
+		require.NoError(t, err)
+		await(t, ctx, poller)
+	}
+	pager := versions.NewListByEdgeActionPager(group, name, nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		require.NoError(t, err)
+		assert.Empty(t, page.Value)
 	}
 }
 

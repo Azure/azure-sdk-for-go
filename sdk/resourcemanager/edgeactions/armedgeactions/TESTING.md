@@ -177,6 +177,12 @@ Resource-group fixture operations use a separate ARM API and are counted outside
 Edge Actions audit. Cleanup bypasses pipeline validation to preserve resource removal;
 its recorded responses are still audited.
 
+For DELETE operations that advertise both `Azure-AsyncOperation` and `Location`,
+a successful status monitor is sufficient evidence of completion: the SDK's async
+DELETE poller does not fetch a final `Location`. Any recorded `Location` response
+is still checked for terminal HTTP success and response-schema validity.
+Location-only DELETE recordings must include a successful terminal response.
+
 Current exceptions, implemented in the response-validation helpers, leave the snapshot unchanged:
 
 - AsyncOperation bodies validate only a nonempty string `status`; HTTP 200, URL checks,

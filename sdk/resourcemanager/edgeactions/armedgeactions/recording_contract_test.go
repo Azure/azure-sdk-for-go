@@ -81,7 +81,8 @@ func (a *recordingAudit) check(entry int, err error) {
 
 type recordedOperation struct {
 	pendingOperation
-	entry int
+	entry  int
+	method string
 }
 
 // Audit every stored response independently of lifecycle execution, so assertions
@@ -198,7 +199,7 @@ func auditRecording(spec *responseSpec, entries []contractEntry) recordingAudit 
 		// Schema validation above reports malformed initial bodies.
 		decoded := json.Unmarshal(body, &resource) == nil
 		operations = append(operations, &recordedOperation{
-			entry: index,
+			entry: index, method: entry.RequestMethod,
 			pendingOperation: pendingOperation{
 				op: op, statusURL: statusURL, resultURL: resultURL,
 				initialSucceeded: decoded && (strings.EqualFold(entry.RequestMethod, "PUT") || strings.EqualFold(entry.RequestMethod, "PATCH")) &&
@@ -210,7 +211,11 @@ func auditRecording(spec *responseSpec, entries []contractEntry) recordingAudit 
 		if op.statusURL != "" && (op.polls == 0 || !strings.EqualFold(op.lastStatus, "Succeeded")) {
 			audit.check(op.entry, fmt.Errorf("%s: recording lacks successful Azure-AsyncOperation completion", op.op.ID))
 		}
-		if op.resultURL != "" && !op.resultSeen && (op.op.ID != "EdgeActionVersions_SwapDefault" || op.statusURL == "") {
+		// DELETE pollers do not fetch Location after monitor completion.
+		// Any recorded Location response is still validated above.
+		monitorCompletes := op.statusURL != "" &&
+			(strings.EqualFold(op.method, http.MethodDelete) || op.op.ID == "EdgeActionVersions_SwapDefault")
+		if op.resultURL != "" && !op.resultSeen && !monitorCompletes {
 			audit.check(op.entry, fmt.Errorf("%s: recording lacks a completed final Location response", op.op.ID))
 		}
 	}
@@ -360,6 +365,73 @@ func TestContractRecordingSwapMonitorWithoutLocationResult(t *testing.T) {
 			} else {
 				require.Len(t, audit.issues, 1)
 				assert.ErrorContains(t, audit.issues[0].err, "lacks successful Azure-AsyncOperation completion")
+			}
+		})
+	}
+}
+
+func TestContractRecordingDeleteCompletion(t *testing.T) {
+	spec, err := loadResponseSpec()
+	require.NoError(t, err)
+	const statusURL = "https://management.azure.com/operations/one?api-version=" + apiVersion
+	const resultURL = "https://management.azure.com/results/one?api-version=" + apiVersion
+	for _, operation := range []struct{ name, path string }{
+		{"action", actionPath},
+		{"version", versionPath},
+		{"filter", filterPath},
+	} {
+		t.Run(operation.name, func(t *testing.T) {
+			for _, tc := range []struct {
+				name           string
+				monitor        bool
+				state          string
+				locationStatus int
+				locationBody   string
+				failure        string
+			}{
+				{name: "monitor-succeeded", monitor: true, state: "Succeeded"},
+				{name: "monitor-not-polled", monitor: true, failure: "lacks successful Azure-AsyncOperation completion"},
+				{name: "monitor-running", monitor: true, state: "Running", failure: "lacks successful Azure-AsyncOperation completion"},
+				{name: "monitor-failed", monitor: true, state: "Failed", failure: "lacks successful Azure-AsyncOperation completion"},
+				{name: "monitor-canceled", monitor: true, state: "Canceled", failure: "lacks successful Azure-AsyncOperation completion"},
+				{name: "location-only-not-polled", failure: "lacks a completed final Location response"},
+				{name: "location-only-pending", locationStatus: http.StatusAccepted, failure: "lacks a completed final Location response"},
+				{name: "location-only-completed", locationStatus: http.StatusNoContent},
+				{name: "monitor-and-location-completed", monitor: true, state: "Succeeded", locationStatus: http.StatusNoContent},
+				{name: "location-still-pending", monitor: true, state: "Succeeded", locationStatus: http.StatusAccepted, failure: "final Location is still pending"},
+				{name: "location-failed", monitor: true, state: "Succeeded", locationStatus: http.StatusNotFound,
+					locationBody: `{"error":{"code":"NotFound","message":"Missing result"}}`, failure: "non-success HTTP 404"},
+				{name: "location-invalid-error-body", monitor: true, state: "Succeeded", locationStatus: http.StatusNotFound,
+					locationBody: `{"error":{"code":42}}`, failure: "error.code"},
+				{name: "location-invalid-success-body", monitor: true, state: "Succeeded", locationStatus: http.StatusNoContent,
+					locationBody: `{"unexpected":true}`, failure: "does not declare"},
+			} {
+				t.Run(tc.name, func(t *testing.T) {
+					headers := map[string]recordedHeader{"Location": {resultURL}}
+					if tc.monitor {
+						headers["Azure-AsyncOperation"] = recordedHeader{statusURL}
+					}
+					entries := []contractEntry{
+						{RequestMethod: http.MethodDelete, RequestURI: "https://management.azure.com" + operation.path + "?api-version=" + apiVersion,
+							StatusCode: http.StatusAccepted, ResponseHeaders: headers},
+					}
+					if tc.state != "" {
+						entries = append(entries, contractEntry{RequestMethod: http.MethodGet, RequestURI: statusURL,
+							StatusCode: http.StatusOK, ResponseBody: json.RawMessage(fmt.Sprintf(`{"status":%q}`, tc.state))})
+					}
+					if tc.locationStatus != 0 {
+						entries = append(entries, contractEntry{RequestMethod: http.MethodGet, RequestURI: resultURL,
+							StatusCode: tc.locationStatus, ResponseBody: json.RawMessage(tc.locationBody)})
+					}
+					audit := auditRecording(spec, entries)
+					assert.Equal(t, len(entries), audit.checked)
+					if tc.failure == "" {
+						assert.Empty(t, audit.issues)
+					} else {
+						require.Len(t, audit.issues, 1)
+						assert.ErrorContains(t, audit.issues[0].err, tc.failure)
+					}
+				})
 			}
 		})
 	}

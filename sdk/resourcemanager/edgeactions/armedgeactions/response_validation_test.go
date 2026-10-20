@@ -29,11 +29,17 @@ type skipValidationKey struct{}
 
 type pendingOperation struct {
 	op                   *specOperation
+	method               string
 	statusURL, resultURL string
 	lastStatus           string
 	polls                int
 	resultSeen           bool
 	initialSucceeded     bool
+}
+
+func (p *pendingOperation) completesWithMonitor() bool {
+	return p.statusURL != "" &&
+		(strings.EqualFold(p.method, http.MethodDelete) || p.op.ID == "EdgeActionVersions_SwapDefault")
 }
 
 // Scenarios execute one operation at a time. This policy validates the wire
@@ -137,7 +143,7 @@ func (v *responseValidator) Do(req *policy.Request) (*http.Response, error) {
 		}
 	}
 	v.pending = &pendingOperation{
-		op: op, statusURL: statusURL, resultURL: resultURL,
+		op: op, method: method, statusURL: statusURL, resultURL: resultURL,
 		initialSucceeded: (method == http.MethodPut || method == http.MethodPatch) &&
 			strings.EqualFold(resource.Properties.ProvisioningState, "Succeeded"),
 	}
@@ -160,7 +166,7 @@ func (v *responseValidator) complete(ctx context.Context) error {
 	if p.statusURL != "" && (p.polls == 0 || !strings.EqualFold(p.lastStatus, "Succeeded")) {
 		return fmt.Errorf("%s: missing successful Azure-AsyncOperation polling", p.op.ID)
 	}
-	if p.resultURL != "" && !p.resultSeen && p.op.ID != "EdgeActionVersions_SwapDefault" {
+	if p.resultURL != "" && !p.resultSeen && !p.completesWithMonitor() {
 		// PUT/PATCH pollers can GET the original resource instead of Location.
 		// Check the advertised endpoint through the same authenticated, recorded pipeline.
 		if err := v.get(ctx, p.resultURL); err != nil {
@@ -357,8 +363,40 @@ func TestContractInvalidLROResponses(t *testing.T) {
 	}
 }
 
+func TestContractDeleteRequiresSuccessfulMonitor(t *testing.T) {
+	spec, err := loadResponseSpec()
+	require.NoError(t, err)
+	op, err := spec.operation(http.MethodDelete, "https://management.azure.com"+actionPath+"?api-version="+apiVersion)
+	require.NoError(t, err)
+	require.NotNil(t, op)
+	for _, state := range []string{"Succeeded", "Running", "Failed", "Canceled", ""} {
+		t.Run("status="+state, func(t *testing.T) {
+			pending := &pendingOperation{
+				op: op, method: http.MethodDelete,
+				statusURL:  "https://management.azure.com/operations/one?api-version=" + apiVersion,
+				resultURL:  "https://management.azure.com/results/one?api-version=" + apiVersion,
+				lastStatus: state,
+			}
+			if state != "" {
+				pending.polls = 1
+			}
+			validator := &responseValidator{spec: spec, pending: pending}
+			_, server := newMockFactory(t, validator)
+			server.AppendResponse(mock.WithStatusCode(http.StatusInternalServerError))
+			err := validator.complete(t.Context())
+			if state == "Succeeded" {
+				assert.NoError(t, err)
+			} else {
+				assert.ErrorContains(t, err, "missing successful Azure-AsyncOperation polling")
+			}
+			assert.Zero(t, server.Requests())
+			assert.Nil(t, validator.pending)
+		})
+	}
+}
+
 func TestContractCompleteRejectsFailedLocation(t *testing.T) {
-	for _, method := range []string{http.MethodPut, http.MethodPatch} {
+	for _, method := range []string{http.MethodPut, http.MethodPatch, http.MethodDelete} {
 		t.Run(method, func(t *testing.T) {
 			spec, err := loadResponseSpec()
 			require.NoError(t, err)
@@ -366,9 +404,14 @@ func TestContractCompleteRejectsFailedLocation(t *testing.T) {
 			require.NoError(t, err)
 			require.NotNil(t, op)
 			pending := &pendingOperation{
-				op: op, statusURL: "https://management.azure.com/operations/one?api-version=" + apiVersion,
+				op: op, method: method, statusURL: "https://management.azure.com/operations/one?api-version=" + apiVersion,
 				resultURL:  "https://management.azure.com/results/one?api-version=" + apiVersion,
 				lastStatus: "Succeeded", polls: 1,
+			}
+			if method == http.MethodDelete {
+				pending.statusURL = ""
+				pending.lastStatus = ""
+				pending.polls = 0
 			}
 			validator := &responseValidator{spec: spec, pending: pending}
 			_, server := newMockFactory(t, validator)

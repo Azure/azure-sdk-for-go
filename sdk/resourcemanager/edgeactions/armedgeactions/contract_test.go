@@ -406,28 +406,44 @@ func TestContractDelete(t *testing.T) {
 			return finish(f.NewEdgeActionExecutionFiltersClient().BeginDelete(ctx, "test-rg", "test-action", "sdkfilter", nil))
 		}},
 	} {
-		for _, status := range []int{200, 202, 204} {
-			t.Run(tc.name+"/"+http.StatusText(status), func(t *testing.T) {
+		for _, response := range []struct {
+			name              string
+			status            int
+			monitor, location bool
+		}{
+			{"OK", http.StatusOK, false, false},
+			{"NoContent", http.StatusNoContent, false, false},
+			{"LocationOnly", http.StatusAccepted, false, true},
+			{"MonitorOnly", http.StatusAccepted, true, false},
+			{"MonitorAndLocation", http.StatusAccepted, true, true},
+		} {
+			t.Run(tc.name+"/"+response.name, func(t *testing.T) {
 				spec, err := loadResponseSpec()
 				require.NoError(t, err)
 				validator := &responseValidator{spec: spec}
 				factory, server := newMockFactory(t, validator)
 				var headers []mock.ResponseOption
-				if status == 202 {
+				if response.location {
 					headers = append(headers, mock.WithHeader("Location", "https://management.azure.com/operations/delete?api-version=2026-10-01"))
 				}
-				expectRequest(t, server, "DELETE", tc.path, "", status, "", headers...)
-				if status == 202 {
+				if response.monitor {
+					headers = append(headers, mock.WithHeader("Azure-AsyncOperation", "https://management.azure.com/operations/status?api-version=2026-10-01"))
+				}
+				expectRequest(t, server, "DELETE", tc.path, "", response.status, "", headers...)
+				if response.monitor {
+					expectRequest(t, server, "GET", "/operations/status", "", http.StatusOK, `{"status":"Succeeded"}`)
+				} else if response.location {
 					expectRequest(t, server, "GET", "/operations/delete", "", 204, "")
 				}
 				_, err = tc.run(factory)
 				require.NoError(t, err)
 				require.NoError(t, validator.complete(t.Context()))
 				expected := 1
-				if status == 202 {
+				if response.status == http.StatusAccepted {
 					expected++
 				}
-				assert.Equal(t, expected, server.Requests())
+				assert.Equal(t, expected, server.Requests(), "monitor completion must not trigger a synthetic Location GET")
+				assert.Nil(t, validator.pending)
 			})
 		}
 	}

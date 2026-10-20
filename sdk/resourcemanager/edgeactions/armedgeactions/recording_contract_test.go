@@ -81,8 +81,7 @@ func (a *recordingAudit) check(entry int, err error) {
 
 type recordedOperation struct {
 	pendingOperation
-	entry  int
-	method string
+	entry int
 }
 
 // Audit every stored response independently of lifecycle execution, so assertions
@@ -199,9 +198,9 @@ func auditRecording(spec *responseSpec, entries []contractEntry) recordingAudit 
 		// Schema validation above reports malformed initial bodies.
 		decoded := json.Unmarshal(body, &resource) == nil
 		operations = append(operations, &recordedOperation{
-			entry: index, method: entry.RequestMethod,
+			entry: index,
 			pendingOperation: pendingOperation{
-				op: op, statusURL: statusURL, resultURL: resultURL,
+				op: op, method: entry.RequestMethod, statusURL: statusURL, resultURL: resultURL,
 				initialSucceeded: decoded && (strings.EqualFold(entry.RequestMethod, "PUT") || strings.EqualFold(entry.RequestMethod, "PATCH")) &&
 					strings.EqualFold(resource.Properties.ProvisioningState, "Succeeded"),
 			},
@@ -213,9 +212,7 @@ func auditRecording(spec *responseSpec, entries []contractEntry) recordingAudit 
 		}
 		// DELETE pollers do not fetch Location after monitor completion.
 		// Any recorded Location response is still validated above.
-		monitorCompletes := op.statusURL != "" &&
-			(strings.EqualFold(op.method, http.MethodDelete) || op.op.ID == "EdgeActionVersions_SwapDefault")
-		if op.resultURL != "" && !op.resultSeen && !monitorCompletes {
+		if op.resultURL != "" && !op.resultSeen && !op.completesWithMonitor() {
 			audit.check(op.entry, fmt.Errorf("%s: recording lacks a completed final Location response", op.op.ID))
 		}
 	}

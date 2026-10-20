@@ -182,6 +182,8 @@ a successful status monitor is sufficient evidence of completion: the SDK's asyn
 DELETE poller does not fetch a final `Location`. Any recorded `Location` response
 is still checked for terminal HTTP success and response-schema validity.
 Location-only DELETE recordings must include a successful terminal response.
+The lifecycle validator follows the same rule and does not issue a synthetic
+`Location` GET after successful DELETE monitor completion.
 
 Current exceptions, implemented in the response-validation helpers, leave the snapshot unchanged:
 

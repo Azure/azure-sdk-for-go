@@ -19,7 +19,7 @@ import (
 // BackupsUnderBackupVaultClient contains the methods for the BackupsUnderBackupVault group.
 // Don't use this type directly, use NewBackupsUnderBackupVaultClient() instead.
 //
-// Generated from API version 2026-06-15-preview
+// Generated from API version 2026-08-01
 type BackupsUnderBackupVaultClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -70,7 +70,7 @@ func (client *BackupsUnderBackupVaultClient) BeginRestoreFiles(ctx context.Conte
 	}
 }
 
-// RestoreFiles - Restore the specified files from the specified backup to the active filesystem
+// restoreFiles - Restore the specified files from the specified backup to the active filesystem
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *BackupsUnderBackupVaultClient) restoreFiles(ctx context.Context, resourceGroupName string, accountName string, backupVaultName string, backupName string, body BackupRestoreFiles, options *BackupsUnderBackupVaultClientBeginRestoreFilesOptions) (*http.Response, error) {
 	var err error
@@ -92,7 +92,7 @@ func (client *BackupsUnderBackupVaultClient) restoreFiles(ctx context.Context, r
 	return httpResp, nil
 }
 
-// restoreFilesCreateRequest creates the RestoreFiles request.
+// restoreFilesCreateRequest creates the restoreFiles request.
 func (client *BackupsUnderBackupVaultClient) restoreFilesCreateRequest(ctx context.Context, resourceGroupName string, accountName string, backupVaultName string, backupName string, body BackupRestoreFiles, _ *BackupsUnderBackupVaultClientBeginRestoreFilesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/backupVaults/{backupVaultName}/backups/{backupName}/restoreFiles"
 	if client.subscriptionID == "" {
@@ -120,7 +120,7 @@ func (client *BackupsUnderBackupVaultClient) restoreFilesCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260615Preview)
+	reqQP.Set("api-version", version20260801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {

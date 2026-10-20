@@ -4,6 +4,7 @@
 package sas
 
 import (
+	"net/url"
 	"testing"
 	"time"
 
@@ -367,6 +368,36 @@ func TestFormatSignedRequestQueryParameters(t *testing.T) {
 		require.Contains(t, canonicalized, "\nhello:world")
 		require.Contains(t, canonicalized, "\nabra:cadabra")
 	})
+}
+
+// TestDatalakeSignatureValues_SignWithSharedKeyExpiredNonUTCExpiry covers the reported scenario: StartTime is unset and ExpiryTime is an
+// instant that has already passed, given in UTC+09:00. The SAS must expire at that instant, not 9 hours later.
+func TestDatalakeSignatureValues_SignWithSharedKeyExpiredNonUTCExpiry(t *testing.T) {
+	cred, err := exported.NewSharedKeyCredential("fakeaccountname", "AKIAIOSFODNN7EXAMPLE")
+	require.NoError(t, err)
+
+	sign := func(expiry time.Time) QueryParameters {
+		qp, err := DatalakeSignatureValues{
+			Version:        "2020-10-02",
+			Protocol:       ProtocolHTTPS,
+			ExpiryTime:     expiry,
+			Permissions:    "r",
+			FileSystemName: "fakestoragefilesystem",
+			FilePath:       "fakestoragefile",
+		}.SignWithSharedKey(cred)
+		require.NoError(t, err)
+		return qp
+	}
+
+	expiry := time.Date(2024, 1, 1, 0, 0, 0, 0, time.UTC)
+	expected := sign(expiry)
+	actual := sign(expiry.In(time.FixedZone("UTC+09:00", 9*60*60)))
+
+	values, err := url.ParseQuery(actual.Encode())
+	require.NoError(t, err)
+	require.False(t, values.Has("st"))
+	require.Equal(t, "2024-01-01T00:00:00Z", values.Get("se"))
+	require.Equal(t, expected.Signature(), actual.Signature())
 }
 
 func TestDatalakeSignatureValues_SignWithSharedKeyNonUTCTimes(t *testing.T) {

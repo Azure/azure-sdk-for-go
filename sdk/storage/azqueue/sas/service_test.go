@@ -7,6 +7,7 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/v2/internal/exported"
 	"github.com/stretchr/testify/require"
+	"net/url"
 	"testing"
 	"time"
 )
@@ -120,6 +121,35 @@ func TestQueueSignatureValues_SignWithSharedKey(t *testing.T) {
 		require.Equal(t, c.expected, act)
 		require.Equal(t, c.expectedError, err)
 	}
+}
+
+// TestQueueSignatureValues_SignWithSharedKeyExpiredNonUTCExpiry covers the reported scenario: StartTime is unset and ExpiryTime is an
+// instant that has already passed, given in UTC+09:00. The SAS must expire at that instant, not 9 hours later.
+func TestQueueSignatureValues_SignWithSharedKeyExpiredNonUTCExpiry(t *testing.T) {
+	cred, err := exported.NewSharedKeyCredential("fakeaccountname", "AKIAIOSFODNN7EXAMPLE")
+	require.NoError(t, err)
+
+	sign := func(expiry time.Time) QueryParameters {
+		qp, err := QueueSignatureValues{
+			Version:     "2020-10-02",
+			Protocol:    ProtocolHTTPS,
+			ExpiryTime:  expiry,
+			Permissions: "r",
+			QueueName:   "fakestoragequeue",
+		}.SignWithSharedKey(cred)
+		require.NoError(t, err)
+		return qp
+	}
+
+	expiry := time.Date(2024, 1, 1, 0, 0, 0, 0, time.UTC)
+	expected := sign(expiry)
+	actual := sign(expiry.In(time.FixedZone("UTC+09:00", 9*60*60)))
+
+	values, err := url.ParseQuery(actual.Encode())
+	require.NoError(t, err)
+	require.False(t, values.Has("st"))
+	require.Equal(t, "2024-01-01T00:00:00Z", values.Get("se"))
+	require.Equal(t, expected.Signature(), actual.Signature())
 }
 
 func TestQueueSignatureValues_SignWithSharedKeyNonUTCTimes(t *testing.T) {

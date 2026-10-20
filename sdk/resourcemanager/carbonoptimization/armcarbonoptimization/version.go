@@ -6,5 +6,5 @@ package armcarbonoptimization
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/carbonoptimization/armcarbonoptimization"
-	moduleVersion = "v2.0.0-beta.1"
+	moduleVersion = "v1.1.0-beta.1"
 )

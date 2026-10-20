@@ -13,8 +13,8 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2026-05-01-preview/queryCarbonEmissionsByBillingAccountMonthlySummaryReport.json
-func ExampleCarbonServiceClient_NewQueryCarbonEmissionReportsByBillingAccountPager_queryCarbonEmissionByBillingAccountMonthlySummaryReport() {
+// Generated from example definition: 2026-05-01-preview/carbonEmissionsDataAvailableDateRange.json
+func ExampleCarbonServiceClient_QueryCarbonEmissionDataAvailableDateRange() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -24,313 +24,23 @@ func ExampleCarbonServiceClient_NewQueryCarbonEmissionReportsByBillingAccountPag
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewCarbonServiceClient().NewQueryCarbonEmissionReportsByBillingAccountPager("providers/Microsoft.Billing/billingAccounts/12345678", &armcarbonoptimization.BillingAccountMonthlySummaryReportQueryFilter{
-		ReportType: to.Ptr(armcarbonoptimization.ReportTypeEnumMonthlySummaryReport),
-		CarbonScopeList: []*armcarbonoptimization.EmissionScopeEnum{
-			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope1),
-			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope2),
-			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope3),
-		},
-		DateRange: &armcarbonoptimization.DateRange{
-			Start: to.Ptr(time.Date(2024, time.March, 1, 0, 0, 0, 0, time.UTC)),
-			End:   to.Ptr(time.Date(2024, time.May, 1, 0, 0, 0, 0, time.UTC)),
-		},
-	}, nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsByBillingAccountResponse{
-		// 	CarbonEmissionDataListResult: armcarbonoptimization.CarbonEmissionDataListResult{
-		// 		Value: []armcarbonoptimization.CarbonEmissionDataClassification{
-		// 			&armcarbonoptimization.CarbonEmissionMonthlySummaryData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumMonthlySummaryData),
-		// 				LatestMonthEmissions: to.Ptr[float64](5.25),
-		// 				PreviousMonthEmissions: to.Ptr[float64](4.8),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](0.09375),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.45),
-		// 				Date: to.Ptr("2024-05-01"),
-		// 				CarbonIntensity: to.Ptr[float64](22),
-		// 			},
-		// 			&armcarbonoptimization.CarbonEmissionMonthlySummaryData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumMonthlySummaryData),
-		// 				LatestMonthEmissions: to.Ptr[float64](5.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](4.7),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](0.0851),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.4),
-		// 				Date: to.Ptr("2024-04-01"),
-		// 				CarbonIntensity: to.Ptr[float64](21),
-		// 			},
-		// 			&armcarbonoptimization.CarbonEmissionMonthlySummaryData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumMonthlySummaryData),
-		// 				LatestMonthEmissions: to.Ptr[float64](4.95),
-		// 				PreviousMonthEmissions: to.Ptr[float64](4.6),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](0.0761),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.35),
-		// 				Date: to.Ptr("2024-03-01"),
-		// 				CarbonIntensity: to.Ptr[float64](20),
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-05-01-preview/queryCarbonEmissionsByBillingAccountOverallSummaryReport.json
-func ExampleCarbonServiceClient_NewQueryCarbonEmissionReportsByBillingAccountPager_queryCarbonEmissionByBillingAccountOverallSummaryReport() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	res, err := clientFactory.NewCarbonServiceClient().QueryCarbonEmissionDataAvailableDateRange(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	ctx := context.Background()
-	clientFactory, err := armcarbonoptimization.NewClientFactory(cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewCarbonServiceClient().NewQueryCarbonEmissionReportsByBillingAccountPager("providers/Microsoft.Billing/billingAccounts/12345678", &armcarbonoptimization.BillingAccountOverallSummaryReportQueryFilter{
-		ReportType: to.Ptr(armcarbonoptimization.ReportTypeEnumOverallSummaryReport),
-		CarbonScopeList: []*armcarbonoptimization.EmissionScopeEnum{
-			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope1),
-			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope2),
-			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope3),
-		},
-		DateRange: &armcarbonoptimization.DateRange{
-			Start: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
-			End:   to.Ptr(time.Date(2024, time.June, 1, 0, 0, 0, 0, time.UTC)),
-		},
-	}, nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsByBillingAccountResponse{
-		// 	CarbonEmissionDataListResult: armcarbonoptimization.CarbonEmissionDataListResult{
-		// 		Value: []armcarbonoptimization.CarbonEmissionDataClassification{
-		// 			&armcarbonoptimization.CarbonEmissionOverallSummaryData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumOverallSummaryData),
-		// 				LatestMonthEmissions: to.Ptr[float64](5.25),
-		// 				PreviousMonthEmissions: to.Ptr[float64](4.8),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](0.09375),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.45),
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-05-01-preview/queryCarbonEmissionsByBillingAccountSubscriptionItemDetailsReport.json
-func ExampleCarbonServiceClient_NewQueryCarbonEmissionReportsByBillingAccountPager_queryCarbonEmissionByBillingAccountSubscriptionItemDetailsReport() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcarbonoptimization.NewClientFactory(cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewCarbonServiceClient().NewQueryCarbonEmissionReportsByBillingAccountPager("providers/Microsoft.Billing/billingAccounts/12345678", &armcarbonoptimization.BillingAccountItemDetailsReportQueryFilter{
-		ReportType: to.Ptr(armcarbonoptimization.ReportTypeEnumItemDetailsReport),
-		CarbonScopeList: []*armcarbonoptimization.EmissionScopeEnum{
-			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope1),
-			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope3),
-		},
-		DateRange: &armcarbonoptimization.DateRange{
-			Start: to.Ptr(time.Date(2024, time.May, 1, 0, 0, 0, 0, time.UTC)),
-			End:   to.Ptr(time.Date(2024, time.May, 1, 0, 0, 0, 0, time.UTC)),
-		},
-		CategoryType:  to.Ptr(armcarbonoptimization.BillingAccountCategoryTypeEnumSubscription),
-		OrderBy:       to.Ptr(armcarbonoptimization.BillingAccountOrderByColumnEnumLatestMonthEmissions),
-		SortDirection: to.Ptr(armcarbonoptimization.SortDirectionEnumDesc),
-		PageSize:      to.Ptr[int32](100),
-	}, nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsByBillingAccountResponse{
-		// 	CarbonEmissionDataListResult: armcarbonoptimization.CarbonEmissionDataListResult{
-		// 		Value: []armcarbonoptimization.CarbonEmissionDataClassification{
-		// 			&armcarbonoptimization.CarbonEmissionItemDetailData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumItemDetailsData),
-		// 				LatestMonthEmissions: to.Ptr[float64](1.2),
-		// 				PreviousMonthEmissions: to.Ptr[float64](1),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](0.2),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.2),
-		// 				ItemName: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumSubscription),
-		// 			},
-		// 			&armcarbonoptimization.CarbonEmissionItemDetailData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumItemDetailsData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.95),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.9),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](0.0556),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("00000000-0000-0000-0000-000000000001"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumSubscription),
-		// 			},
-		// 		},
-		// 		SkipToken: to.Ptr("dGVzdF9za2lwX3Rva2Vu"),
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-05-01-preview/queryCarbonEmissionsByBillingAccountTopNSubscriptionItemsMonthlyReport.json
-func ExampleCarbonServiceClient_NewQueryCarbonEmissionReportsByBillingAccountPager_queryCarbonEmissionByBillingAccountTopNSubscriptionsMonthlyReport() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcarbonoptimization.NewClientFactory(cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewCarbonServiceClient().NewQueryCarbonEmissionReportsByBillingAccountPager("providers/Microsoft.Billing/billingAccounts/12345678", &armcarbonoptimization.BillingAccountTopItemsMonthlySummaryReportQueryFilter{
-		ReportType: to.Ptr(armcarbonoptimization.ReportTypeEnumTopItemsMonthlySummaryReport),
-		CarbonScopeList: []*armcarbonoptimization.EmissionScopeEnum{
-			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope1),
-			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope3),
-		},
-		DateRange: &armcarbonoptimization.DateRange{
-			Start: to.Ptr(time.Date(2024, time.March, 1, 0, 0, 0, 0, time.UTC)),
-			End:   to.Ptr(time.Date(2024, time.May, 1, 0, 0, 0, 0, time.UTC)),
-		},
-		CategoryType: to.Ptr(armcarbonoptimization.BillingAccountCategoryTypeEnumSubscription),
-		TopItems:     to.Ptr[int32](2),
-	}, nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsByBillingAccountResponse{
-		// 	CarbonEmissionDataListResult: armcarbonoptimization.CarbonEmissionDataListResult{
-		// 		Value: []armcarbonoptimization.CarbonEmissionDataClassification{
-		// 			&armcarbonoptimization.CarbonEmissionTopItemMonthlySummaryData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsMonthlySummaryData),
-		// 				LatestMonthEmissions: to.Ptr[float64](1.2),
-		// 				PreviousMonthEmissions: to.Ptr[float64](1),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](0.2),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.2),
-		// 				ItemName: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumSubscription),
-		// 				Date: to.Ptr("2024-05-01"),
-		// 			},
-		// 			&armcarbonoptimization.CarbonEmissionTopItemMonthlySummaryData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsMonthlySummaryData),
-		// 				LatestMonthEmissions: to.Ptr[float64](1.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.95),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](0.1579),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.15),
-		// 				ItemName: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumSubscription),
-		// 				Date: to.Ptr("2024-04-01"),
-		// 			},
-		// 			&armcarbonoptimization.CarbonEmissionTopItemMonthlySummaryData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsMonthlySummaryData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.95),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.9),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](0.0556),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("00000000-0000-0000-0000-000000000001"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumSubscription),
-		// 				Date: to.Ptr("2024-03-01"),
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-05-01-preview/queryCarbonEmissionsByBillingAccountTopNSubscriptionItemsReport.json
-func ExampleCarbonServiceClient_NewQueryCarbonEmissionReportsByBillingAccountPager_queryCarbonEmissionByBillingAccountTopNSubscriptionsReport() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcarbonoptimization.NewClientFactory(cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewCarbonServiceClient().NewQueryCarbonEmissionReportsByBillingAccountPager("providers/Microsoft.Billing/billingAccounts/12345678", &armcarbonoptimization.BillingAccountTopItemsSummaryReportQueryFilter{
-		ReportType: to.Ptr(armcarbonoptimization.ReportTypeEnumTopItemsSummaryReport),
-		CarbonScopeList: []*armcarbonoptimization.EmissionScopeEnum{
-			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope1),
-			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope3),
-		},
-		DateRange: &armcarbonoptimization.DateRange{
-			Start: to.Ptr(time.Date(2024, time.May, 1, 0, 0, 0, 0, time.UTC)),
-			End:   to.Ptr(time.Date(2024, time.May, 1, 0, 0, 0, 0, time.UTC)),
-		},
-		CategoryType: to.Ptr(armcarbonoptimization.BillingAccountCategoryTypeEnumSubscription),
-		TopItems:     to.Ptr[int32](2),
-	}, nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsByBillingAccountResponse{
-		// 	CarbonEmissionDataListResult: armcarbonoptimization.CarbonEmissionDataListResult{
-		// 		Value: []armcarbonoptimization.CarbonEmissionDataClassification{
-		// 			&armcarbonoptimization.CarbonEmissionTopItemsSummaryData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsSummaryData),
-		// 				LatestMonthEmissions: to.Ptr[float64](1.2),
-		// 				PreviousMonthEmissions: to.Ptr[float64](1),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](0.2),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.2),
-		// 				ItemName: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumSubscription),
-		// 			},
-		// 			&armcarbonoptimization.CarbonEmissionTopItemsSummaryData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsSummaryData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.95),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.9),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](0.0556),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("00000000-0000-0000-0000-000000000001"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumSubscription),
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionDataAvailableDateRangeResponse{
+	// 	CarbonEmissionDataAvailableDateRange: armcarbonoptimization.CarbonEmissionDataAvailableDateRange{
+	// 		StartDate: to.Ptr("2023-01-01"),
+	// 		EndDate: to.Ptr("2023-05-01"),
+	// 	},
+	// }
 }
 
 // Generated from example definition: 2026-05-01-preview/queryCarbonEmissionsLocationItemDetailsReport.json
-func ExampleCarbonServiceClient_NewQueryCarbonEmissionReportsPager_queryCarbonEmissionLocationItemDetailsReport() {
+func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionLocationItemDetailsReport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -340,7 +50,7 @@ func ExampleCarbonServiceClient_NewQueryCarbonEmissionReportsPager_queryCarbonEm
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewCarbonServiceClient().NewQueryCarbonEmissionReportsPager(&armcarbonoptimization.ItemDetailsQueryFilter{
+	res, err := clientFactory.NewCarbonServiceClient().QueryCarbonEmissionReports(ctx, &armcarbonoptimization.ItemDetailsQueryFilter{
 		ReportType: to.Ptr(armcarbonoptimization.ReportTypeEnumItemDetailsReport),
 		SubscriptionList: []*string{
 			to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -366,111 +76,106 @@ func ExampleCarbonServiceClient_NewQueryCarbonEmissionReportsPager_queryCarbonEm
 		SortDirection: to.Ptr(armcarbonoptimization.SortDirectionEnumDesc),
 		PageSize:      to.Ptr[int32](100),
 	}, nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsResponse{
-		// 	CarbonEmissionDataListResult: armcarbonoptimization.CarbonEmissionDataListResult{
-		// 		SubscriptionAccessDecisionList: []*armcarbonoptimization.SubscriptionAccessDecision{
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000001"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000002"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000003"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000004"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000005"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000006"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000007"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000008"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
-		// 				DenialReason: to.Ptr("Carbon Optimization Reader permisison required"),
-		// 			},
-		// 		},
-		// 		Value: []armcarbonoptimization.CarbonEmissionDataClassification{
-		// 			&armcarbonoptimization.CarbonEmissionItemDetailData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumItemDetailsData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("east us"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumLocation),
-		// 			},
-		// 			&armcarbonoptimization.CarbonEmissionItemDetailData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumItemDetailsData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("west us"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumLocation),
-		// 			},
-		// 			&armcarbonoptimization.CarbonEmissionItemDetailData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumItemDetailsData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("west us 2"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumLocation),
-		// 			},
-		// 			&armcarbonoptimization.CarbonEmissionItemDetailData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumItemDetailsData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("west us 3"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumLocation),
-		// 			},
-		// 			&armcarbonoptimization.CarbonEmissionItemDetailData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumItemDetailsData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("east us 2"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumLocation),
-		// 			},
-		// 		},
-		// 	},
-		// }
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
 	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsResponse{
+	// 	CarbonEmissionDataListResult: armcarbonoptimization.CarbonEmissionDataListResult{
+	// 		SubscriptionAccessDecisionList: []*armcarbonoptimization.SubscriptionAccessDecision{
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000001"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000002"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000003"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000004"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000005"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000006"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000007"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000008"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
+	// 				DenialReason: to.Ptr("Carbon Optimization Reader permisison required"),
+	// 			},
+	// 		},
+	// 		Value: []armcarbonoptimization.CarbonEmissionDataClassification{
+	// 			&armcarbonoptimization.CarbonEmissionItemDetailData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumItemDetailsData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("east us"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumLocation),
+	// 			},
+	// 			&armcarbonoptimization.CarbonEmissionItemDetailData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumItemDetailsData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("west us"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumLocation),
+	// 			},
+	// 			&armcarbonoptimization.CarbonEmissionItemDetailData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumItemDetailsData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("west us 2"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumLocation),
+	// 			},
+	// 			&armcarbonoptimization.CarbonEmissionItemDetailData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumItemDetailsData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("west us 3"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumLocation),
+	// 			},
+	// 			&armcarbonoptimization.CarbonEmissionItemDetailData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumItemDetailsData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("east us 2"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumLocation),
+	// 			},
+	// 		},
+	// 	},
+	// }
 }
 
 // Generated from example definition: 2026-05-01-preview/queryCarbonEmissionsMonthlySummaryReport.json
-func ExampleCarbonServiceClient_NewQueryCarbonEmissionReportsPager_queryCarbonEmissionOverallMonthlySummaryReport() {
+func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionOverallMonthlySummaryReport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -480,7 +185,7 @@ func ExampleCarbonServiceClient_NewQueryCarbonEmissionReportsPager_queryCarbonEm
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewCarbonServiceClient().NewQueryCarbonEmissionReportsPager(&armcarbonoptimization.MonthlySummaryReportQueryFilter{
+	res, err := clientFactory.NewCarbonServiceClient().QueryCarbonEmissionReports(ctx, &armcarbonoptimization.MonthlySummaryReportQueryFilter{
 		ReportType: to.Ptr(armcarbonoptimization.ReportTypeEnumMonthlySummaryReport),
 		SubscriptionList: []*string{
 			to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -494,60 +199,55 @@ func ExampleCarbonServiceClient_NewQueryCarbonEmissionReportsPager_queryCarbonEm
 			End:   to.Ptr(time.Date(2024, time.May, 1, 0, 0, 0, 0, time.UTC)),
 		},
 	}, nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsResponse{
-		// 	CarbonEmissionDataListResult: armcarbonoptimization.CarbonEmissionDataListResult{
-		// 		SubscriptionAccessDecisionList: []*armcarbonoptimization.SubscriptionAccessDecision{
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 		},
-		// 		Value: []armcarbonoptimization.CarbonEmissionDataClassification{
-		// 			&armcarbonoptimization.CarbonEmissionMonthlySummaryData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumMonthlySummaryData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				Date: to.Ptr("2024-05-01"),
-		// 				CarbonIntensity: to.Ptr[float64](22),
-		// 			},
-		// 			&armcarbonoptimization.CarbonEmissionMonthlySummaryData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumMonthlySummaryData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				Date: to.Ptr("2024-04-01"),
-		// 				CarbonIntensity: to.Ptr[float64](22),
-		// 			},
-		// 			&armcarbonoptimization.CarbonEmissionMonthlySummaryData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumMonthlySummaryData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				Date: to.Ptr("2024-03-01"),
-		// 				CarbonIntensity: to.Ptr[float64](22),
-		// 			},
-		// 		},
-		// 	},
-		// }
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
 	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsResponse{
+	// 	CarbonEmissionDataListResult: armcarbonoptimization.CarbonEmissionDataListResult{
+	// 		SubscriptionAccessDecisionList: []*armcarbonoptimization.SubscriptionAccessDecision{
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 		},
+	// 		Value: []armcarbonoptimization.CarbonEmissionDataClassification{
+	// 			&armcarbonoptimization.CarbonEmissionMonthlySummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumMonthlySummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				Date: to.Ptr("2024-05-01"),
+	// 				CarbonIntensity: to.Ptr[float64](22),
+	// 			},
+	// 			&armcarbonoptimization.CarbonEmissionMonthlySummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumMonthlySummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				Date: to.Ptr("2024-04-01"),
+	// 				CarbonIntensity: to.Ptr[float64](22),
+	// 			},
+	// 			&armcarbonoptimization.CarbonEmissionMonthlySummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumMonthlySummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				Date: to.Ptr("2024-03-01"),
+	// 				CarbonIntensity: to.Ptr[float64](22),
+	// 			},
+	// 		},
+	// 	},
+	// }
 }
 
 // Generated from example definition: 2026-05-01-preview/queryCarbonEmissionsMonthlySummaryReportWithOtherOptionalFilter.json
-func ExampleCarbonServiceClient_NewQueryCarbonEmissionReportsPager_queryCarbonEmissionMonthlySummaryReportWithOptionalFilterLocationListResourceTypeListResourceGroupUrlList() {
+func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionMonthlySummaryReportWithOptionalFilterLocationListResourceTypeListResourceGroupUrlList() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -557,7 +257,7 @@ func ExampleCarbonServiceClient_NewQueryCarbonEmissionReportsPager_queryCarbonEm
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewCarbonServiceClient().NewQueryCarbonEmissionReportsPager(&armcarbonoptimization.MonthlySummaryReportQueryFilter{
+	res, err := clientFactory.NewCarbonServiceClient().QueryCarbonEmissionReports(ctx, &armcarbonoptimization.MonthlySummaryReportQueryFilter{
 		ReportType: to.Ptr(armcarbonoptimization.ReportTypeEnumMonthlySummaryReport),
 		SubscriptionList: []*string{
 			to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -582,60 +282,55 @@ func ExampleCarbonServiceClient_NewQueryCarbonEmissionReportsPager_queryCarbonEm
 			to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg-name"),
 		},
 	}, nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsResponse{
-		// 	CarbonEmissionDataListResult: armcarbonoptimization.CarbonEmissionDataListResult{
-		// 		SubscriptionAccessDecisionList: []*armcarbonoptimization.SubscriptionAccessDecision{
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 		},
-		// 		Value: []armcarbonoptimization.CarbonEmissionDataClassification{
-		// 			&armcarbonoptimization.CarbonEmissionMonthlySummaryData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumMonthlySummaryData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				Date: to.Ptr("2024-05-01"),
-		// 				CarbonIntensity: to.Ptr[float64](22),
-		// 			},
-		// 			&armcarbonoptimization.CarbonEmissionMonthlySummaryData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumMonthlySummaryData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				Date: to.Ptr("2024-04-01"),
-		// 				CarbonIntensity: to.Ptr[float64](22),
-		// 			},
-		// 			&armcarbonoptimization.CarbonEmissionMonthlySummaryData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumMonthlySummaryData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				Date: to.Ptr("2024-03-01"),
-		// 				CarbonIntensity: to.Ptr[float64](22),
-		// 			},
-		// 		},
-		// 	},
-		// }
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
 	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsResponse{
+	// 	CarbonEmissionDataListResult: armcarbonoptimization.CarbonEmissionDataListResult{
+	// 		SubscriptionAccessDecisionList: []*armcarbonoptimization.SubscriptionAccessDecision{
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 		},
+	// 		Value: []armcarbonoptimization.CarbonEmissionDataClassification{
+	// 			&armcarbonoptimization.CarbonEmissionMonthlySummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumMonthlySummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				Date: to.Ptr("2024-05-01"),
+	// 				CarbonIntensity: to.Ptr[float64](22),
+	// 			},
+	// 			&armcarbonoptimization.CarbonEmissionMonthlySummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumMonthlySummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				Date: to.Ptr("2024-04-01"),
+	// 				CarbonIntensity: to.Ptr[float64](22),
+	// 			},
+	// 			&armcarbonoptimization.CarbonEmissionMonthlySummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumMonthlySummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				Date: to.Ptr("2024-03-01"),
+	// 				CarbonIntensity: to.Ptr[float64](22),
+	// 			},
+	// 		},
+	// 	},
+	// }
 }
 
 // Generated from example definition: 2026-05-01-preview/queryCarbonEmissionsOverallSummaryReport.json
-func ExampleCarbonServiceClient_NewQueryCarbonEmissionReportsPager_queryCarbonEmissionOverallSummaryReport() {
+func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionOverallSummaryReport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -645,7 +340,7 @@ func ExampleCarbonServiceClient_NewQueryCarbonEmissionReportsPager_queryCarbonEm
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewCarbonServiceClient().NewQueryCarbonEmissionReportsPager(&armcarbonoptimization.OverallSummaryReportQueryFilter{
+	res, err := clientFactory.NewCarbonServiceClient().QueryCarbonEmissionReports(ctx, &armcarbonoptimization.OverallSummaryReportQueryFilter{
 		ReportType: to.Ptr(armcarbonoptimization.ReportTypeEnumOverallSummaryReport),
 		SubscriptionList: []*string{
 			to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -659,40 +354,35 @@ func ExampleCarbonServiceClient_NewQueryCarbonEmissionReportsPager_queryCarbonEm
 			End:   to.Ptr(time.Date(2023, time.June, 1, 0, 0, 0, 0, time.UTC)),
 		},
 	}, nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsResponse{
-		// 	CarbonEmissionDataListResult: armcarbonoptimization.CarbonEmissionDataListResult{
-		// 		SubscriptionAccessDecisionList: []*armcarbonoptimization.SubscriptionAccessDecision{
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 		},
-		// 		Value: []armcarbonoptimization.CarbonEmissionDataClassification{
-		// 			&armcarbonoptimization.CarbonEmissionOverallSummaryData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumOverallSummaryData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 			},
-		// 		},
-		// 	},
-		// }
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
 	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsResponse{
+	// 	CarbonEmissionDataListResult: armcarbonoptimization.CarbonEmissionDataListResult{
+	// 		SubscriptionAccessDecisionList: []*armcarbonoptimization.SubscriptionAccessDecision{
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 		},
+	// 		Value: []armcarbonoptimization.CarbonEmissionDataClassification{
+	// 			&armcarbonoptimization.CarbonEmissionOverallSummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumOverallSummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 			},
+	// 		},
+	// 	},
+	// }
 }
 
 // Generated from example definition: 2026-05-01-preview/queryCarbonEmissionsOverallSummaryReportWithOtherOptionalFilter.json
-func ExampleCarbonServiceClient_NewQueryCarbonEmissionReportsPager_queryCarbonEmissionOverallSummaryReportWithOptionalFilterLocationListResourceTypeListResourceGroupUrlList() {
+func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionOverallSummaryReportWithOptionalFilterLocationListResourceTypeListResourceGroupUrlList() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -702,7 +392,7 @@ func ExampleCarbonServiceClient_NewQueryCarbonEmissionReportsPager_queryCarbonEm
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewCarbonServiceClient().NewQueryCarbonEmissionReportsPager(&armcarbonoptimization.OverallSummaryReportQueryFilter{
+	res, err := clientFactory.NewCarbonServiceClient().QueryCarbonEmissionReports(ctx, &armcarbonoptimization.OverallSummaryReportQueryFilter{
 		ReportType: to.Ptr(armcarbonoptimization.ReportTypeEnumOverallSummaryReport),
 		SubscriptionList: []*string{
 			to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -727,40 +417,35 @@ func ExampleCarbonServiceClient_NewQueryCarbonEmissionReportsPager_queryCarbonEm
 			to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg-name"),
 		},
 	}, nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsResponse{
-		// 	CarbonEmissionDataListResult: armcarbonoptimization.CarbonEmissionDataListResult{
-		// 		SubscriptionAccessDecisionList: []*armcarbonoptimization.SubscriptionAccessDecision{
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 		},
-		// 		Value: []armcarbonoptimization.CarbonEmissionDataClassification{
-		// 			&armcarbonoptimization.CarbonEmissionOverallSummaryData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumOverallSummaryData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 			},
-		// 		},
-		// 	},
-		// }
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
 	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsResponse{
+	// 	CarbonEmissionDataListResult: armcarbonoptimization.CarbonEmissionDataListResult{
+	// 		SubscriptionAccessDecisionList: []*armcarbonoptimization.SubscriptionAccessDecision{
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 		},
+	// 		Value: []armcarbonoptimization.CarbonEmissionDataClassification{
+	// 			&armcarbonoptimization.CarbonEmissionOverallSummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumOverallSummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 			},
+	// 		},
+	// 	},
+	// }
 }
 
 // Generated from example definition: 2026-05-01-preview/queryCarbonEmissionsResourceGroupItemDetailsReport.json
-func ExampleCarbonServiceClient_NewQueryCarbonEmissionReportsPager_queryCarbonEmissionResourceGroupItemDetailsReport() {
+func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionResourceGroupItemDetailsReport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -770,7 +455,7 @@ func ExampleCarbonServiceClient_NewQueryCarbonEmissionReportsPager_queryCarbonEm
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewCarbonServiceClient().NewQueryCarbonEmissionReportsPager(&armcarbonoptimization.ItemDetailsQueryFilter{
+	res, err := clientFactory.NewCarbonServiceClient().QueryCarbonEmissionReports(ctx, &armcarbonoptimization.ItemDetailsQueryFilter{
 		ReportType: to.Ptr(armcarbonoptimization.ReportTypeEnumItemDetailsReport),
 		SubscriptionList: []*string{
 			to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -796,121 +481,116 @@ func ExampleCarbonServiceClient_NewQueryCarbonEmissionReportsPager_queryCarbonEm
 		SortDirection: to.Ptr(armcarbonoptimization.SortDirectionEnumDesc),
 		PageSize:      to.Ptr[int32](100),
 	}, nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsResponse{
-		// 	CarbonEmissionDataListResult: armcarbonoptimization.CarbonEmissionDataListResult{
-		// 		SubscriptionAccessDecisionList: []*armcarbonoptimization.SubscriptionAccessDecision{
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000001"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000002"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000003"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000004"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000005"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000006"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000007"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000008"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
-		// 				DenialReason: to.Ptr("Carbon Optimization Reader permisison required"),
-		// 			},
-		// 		},
-		// 		Value: []armcarbonoptimization.CarbonEmissionDataClassification{
-		// 			&armcarbonoptimization.ResourceGroupCarbonEmissionItemDetailData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumResourceGroupItemDetailsData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("rgGroup1"),
-		// 				ResourceGroupURL: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgGroup1"),
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceGroup),
-		// 			},
-		// 			&armcarbonoptimization.ResourceGroupCarbonEmissionItemDetailData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumResourceGroupItemDetailsData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("rgGroup2"),
-		// 				ResourceGroupURL: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgGroup2"),
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceGroup),
-		// 			},
-		// 			&armcarbonoptimization.ResourceGroupCarbonEmissionItemDetailData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumResourceGroupItemDetailsData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("rgGroup3"),
-		// 				ResourceGroupURL: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgGroup3"),
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceGroup),
-		// 			},
-		// 			&armcarbonoptimization.ResourceGroupCarbonEmissionItemDetailData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumResourceGroupItemDetailsData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("rgGroup4"),
-		// 				ResourceGroupURL: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000002/resourceGroups/rgGroup4"),
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000002"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceGroup),
-		// 			},
-		// 			&armcarbonoptimization.ResourceGroupCarbonEmissionItemDetailData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumResourceGroupItemDetailsData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("rgGroup5"),
-		// 				ResourceGroupURL: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000002/resourceGroups/rgGroup5"),
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000002"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceGroup),
-		// 			},
-		// 		},
-		// 	},
-		// }
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
 	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsResponse{
+	// 	CarbonEmissionDataListResult: armcarbonoptimization.CarbonEmissionDataListResult{
+	// 		SubscriptionAccessDecisionList: []*armcarbonoptimization.SubscriptionAccessDecision{
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000001"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000002"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000003"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000004"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000005"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000006"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000007"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000008"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
+	// 				DenialReason: to.Ptr("Carbon Optimization Reader permisison required"),
+	// 			},
+	// 		},
+	// 		Value: []armcarbonoptimization.CarbonEmissionDataClassification{
+	// 			&armcarbonoptimization.ResourceGroupCarbonEmissionItemDetailData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumResourceGroupItemDetailsData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("rgGroup1"),
+	// 				ResourceGroupURL: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgGroup1"),
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceGroup),
+	// 			},
+	// 			&armcarbonoptimization.ResourceGroupCarbonEmissionItemDetailData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumResourceGroupItemDetailsData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("rgGroup2"),
+	// 				ResourceGroupURL: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgGroup2"),
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceGroup),
+	// 			},
+	// 			&armcarbonoptimization.ResourceGroupCarbonEmissionItemDetailData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumResourceGroupItemDetailsData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("rgGroup3"),
+	// 				ResourceGroupURL: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgGroup3"),
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceGroup),
+	// 			},
+	// 			&armcarbonoptimization.ResourceGroupCarbonEmissionItemDetailData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumResourceGroupItemDetailsData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("rgGroup4"),
+	// 				ResourceGroupURL: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000002/resourceGroups/rgGroup4"),
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000002"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceGroup),
+	// 			},
+	// 			&armcarbonoptimization.ResourceGroupCarbonEmissionItemDetailData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumResourceGroupItemDetailsData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("rgGroup5"),
+	// 				ResourceGroupURL: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000002/resourceGroups/rgGroup5"),
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000002"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceGroup),
+	// 			},
+	// 		},
+	// 	},
+	// }
 }
 
 // Generated from example definition: 2026-05-01-preview/queryCarbonEmissionsResourceItemDetailsReport.json
-func ExampleCarbonServiceClient_NewQueryCarbonEmissionReportsPager_queryCarbonEmissionResourceItemDetailsReport() {
+func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionResourceItemDetailsReport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -920,7 +600,7 @@ func ExampleCarbonServiceClient_NewQueryCarbonEmissionReportsPager_queryCarbonEm
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewCarbonServiceClient().NewQueryCarbonEmissionReportsPager(&armcarbonoptimization.ItemDetailsQueryFilter{
+	res, err := clientFactory.NewCarbonServiceClient().QueryCarbonEmissionReports(ctx, &armcarbonoptimization.ItemDetailsQueryFilter{
 		ReportType: to.Ptr(armcarbonoptimization.ReportTypeEnumItemDetailsReport),
 		SubscriptionList: []*string{
 			to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -946,137 +626,132 @@ func ExampleCarbonServiceClient_NewQueryCarbonEmissionReportsPager_queryCarbonEm
 		SortDirection: to.Ptr(armcarbonoptimization.SortDirectionEnumDesc),
 		PageSize:      to.Ptr[int32](100),
 	}, nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsResponse{
-		// 	CarbonEmissionDataListResult: armcarbonoptimization.CarbonEmissionDataListResult{
-		// 		SubscriptionAccessDecisionList: []*armcarbonoptimization.SubscriptionAccessDecision{
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000001"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000002"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000003"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000004"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000005"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000006"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000007"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000008"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
-		// 				DenialReason: to.Ptr("Carbon Optimization Reader permisison required"),
-		// 			},
-		// 		},
-		// 		Value: []armcarbonoptimization.CarbonEmissionDataClassification{
-		// 			&armcarbonoptimization.ResourceCarbonEmissionItemDetailData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumResourceItemDetailsData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("rgName1"),
-		// 				ResourceGroup: to.Ptr("rgGroup"),
-		// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgGroup/providers/microsoft.storage/storageaccounts/rgName1"),
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResource),
-		// 				ResourceType: to.Ptr("microsoft.storage/storageaccounts"),
-		// 				Location: to.Ptr("east us"),
-		// 			},
-		// 			&armcarbonoptimization.ResourceCarbonEmissionItemDetailData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumResourceItemDetailsData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("rgName2"),
-		// 				ResourceGroup: to.Ptr("rgGroup"),
-		// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgGroup/providers/microsoft.storage/storageaccounts/rgName2"),
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResource),
-		// 				ResourceType: to.Ptr("microsoft.storage/storageaccounts"),
-		// 				Location: to.Ptr("east us"),
-		// 			},
-		// 			&armcarbonoptimization.ResourceCarbonEmissionItemDetailData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumResourceItemDetailsData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("rgName3"),
-		// 				ResourceGroup: to.Ptr("rgGroup"),
-		// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgGroup/providers/microsoft.storage/storageaccounts/rgName3"),
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResource),
-		// 				ResourceType: to.Ptr("microsoft.storage/storageaccounts"),
-		// 				Location: to.Ptr("east us"),
-		// 			},
-		// 			&armcarbonoptimization.ResourceCarbonEmissionItemDetailData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumResourceItemDetailsData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("rgName4"),
-		// 				ResourceGroup: to.Ptr("rgGroup"),
-		// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000002/resourceGroups/rgGroup/providers/microsoft.storage/storageaccounts/rgName4"),
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000002"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResource),
-		// 				ResourceType: to.Ptr("microsoft.storage/storageaccounts"),
-		// 				Location: to.Ptr("east us"),
-		// 			},
-		// 			&armcarbonoptimization.ResourceCarbonEmissionItemDetailData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumResourceItemDetailsData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("rgName5"),
-		// 				ResourceGroup: to.Ptr("rgGroup"),
-		// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000002/resourceGroups/rgGroup/providers/microsoft.storage/storageaccounts/rgName5"),
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000002"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResource),
-		// 				ResourceType: to.Ptr("microsoft.storage/storageaccounts"),
-		// 				Location: to.Ptr("east us"),
-		// 			},
-		// 		},
-		// 		SkipToken: to.Ptr("dGVzZGZhZGZzZnNkZg=="),
-		// 	},
-		// }
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
 	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsResponse{
+	// 	CarbonEmissionDataListResult: armcarbonoptimization.CarbonEmissionDataListResult{
+	// 		SubscriptionAccessDecisionList: []*armcarbonoptimization.SubscriptionAccessDecision{
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000001"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000002"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000003"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000004"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000005"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000006"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000007"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000008"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
+	// 				DenialReason: to.Ptr("Carbon Optimization Reader permisison required"),
+	// 			},
+	// 		},
+	// 		Value: []armcarbonoptimization.CarbonEmissionDataClassification{
+	// 			&armcarbonoptimization.ResourceCarbonEmissionItemDetailData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumResourceItemDetailsData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("rgName1"),
+	// 				ResourceGroup: to.Ptr("rgGroup"),
+	// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgGroup/providers/microsoft.storage/storageaccounts/rgName1"),
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResource),
+	// 				ResourceType: to.Ptr("microsoft.storage/storageaccounts"),
+	// 				Location: to.Ptr("east us"),
+	// 			},
+	// 			&armcarbonoptimization.ResourceCarbonEmissionItemDetailData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumResourceItemDetailsData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("rgName2"),
+	// 				ResourceGroup: to.Ptr("rgGroup"),
+	// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgGroup/providers/microsoft.storage/storageaccounts/rgName2"),
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResource),
+	// 				ResourceType: to.Ptr("microsoft.storage/storageaccounts"),
+	// 				Location: to.Ptr("east us"),
+	// 			},
+	// 			&armcarbonoptimization.ResourceCarbonEmissionItemDetailData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumResourceItemDetailsData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("rgName3"),
+	// 				ResourceGroup: to.Ptr("rgGroup"),
+	// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgGroup/providers/microsoft.storage/storageaccounts/rgName3"),
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResource),
+	// 				ResourceType: to.Ptr("microsoft.storage/storageaccounts"),
+	// 				Location: to.Ptr("east us"),
+	// 			},
+	// 			&armcarbonoptimization.ResourceCarbonEmissionItemDetailData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumResourceItemDetailsData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("rgName4"),
+	// 				ResourceGroup: to.Ptr("rgGroup"),
+	// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000002/resourceGroups/rgGroup/providers/microsoft.storage/storageaccounts/rgName4"),
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000002"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResource),
+	// 				ResourceType: to.Ptr("microsoft.storage/storageaccounts"),
+	// 				Location: to.Ptr("east us"),
+	// 			},
+	// 			&armcarbonoptimization.ResourceCarbonEmissionItemDetailData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumResourceItemDetailsData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("rgName5"),
+	// 				ResourceGroup: to.Ptr("rgGroup"),
+	// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000002/resourceGroups/rgGroup/providers/microsoft.storage/storageaccounts/rgName5"),
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000002"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResource),
+	// 				ResourceType: to.Ptr("microsoft.storage/storageaccounts"),
+	// 				Location: to.Ptr("east us"),
+	// 			},
+	// 		},
+	// 		SkipToken: to.Ptr("dGVzZGZhZGZzZnNkZg=="),
+	// 	},
+	// }
 }
 
 // Generated from example definition: 2026-05-01-preview/queryCarbonEmissionsResourceItemDetailsReportWithPaginationToken.json
-func ExampleCarbonServiceClient_NewQueryCarbonEmissionReportsPager_queryCarbonEmissionResourceItemDetailsReportWithPaginationToken() {
+func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionResourceItemDetailsReportWithPaginationToken() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1086,7 +761,7 @@ func ExampleCarbonServiceClient_NewQueryCarbonEmissionReportsPager_queryCarbonEm
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewCarbonServiceClient().NewQueryCarbonEmissionReportsPager(&armcarbonoptimization.ItemDetailsQueryFilter{
+	res, err := clientFactory.NewCarbonServiceClient().QueryCarbonEmissionReports(ctx, &armcarbonoptimization.ItemDetailsQueryFilter{
 		ReportType: to.Ptr(armcarbonoptimization.ReportTypeEnumItemDetailsReport),
 		SubscriptionList: []*string{
 			to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -1113,136 +788,131 @@ func ExampleCarbonServiceClient_NewQueryCarbonEmissionReportsPager_queryCarbonEm
 		PageSize:      to.Ptr[int32](100),
 		SkipToken:     to.Ptr("dGVzZGZhZGZzZnNkZg=="),
 	}, nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsResponse{
-		// 	CarbonEmissionDataListResult: armcarbonoptimization.CarbonEmissionDataListResult{
-		// 		SubscriptionAccessDecisionList: []*armcarbonoptimization.SubscriptionAccessDecision{
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000001"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000002"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000003"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000004"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000005"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000006"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000007"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000008"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
-		// 				DenialReason: to.Ptr("Carbon Optimization Reader permisison required"),
-		// 			},
-		// 		},
-		// 		Value: []armcarbonoptimization.CarbonEmissionDataClassification{
-		// 			&armcarbonoptimization.ResourceCarbonEmissionItemDetailData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumResourceItemDetailsData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("rgName1"),
-		// 				ResourceGroup: to.Ptr("rgGroup"),
-		// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgGroup/providers/microsoft.storage/storageaccounts/rgName1"),
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResource),
-		// 				ResourceType: to.Ptr("microsoft.storage/storageaccounts"),
-		// 				Location: to.Ptr("east us"),
-		// 			},
-		// 			&armcarbonoptimization.ResourceCarbonEmissionItemDetailData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumResourceItemDetailsData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("rgName2"),
-		// 				ResourceGroup: to.Ptr("rgGroup"),
-		// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgGroup/providers/microsoft.storage/storageaccounts/rgName2"),
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResource),
-		// 				ResourceType: to.Ptr("microsoft.storage/storageaccounts"),
-		// 				Location: to.Ptr("east us"),
-		// 			},
-		// 			&armcarbonoptimization.ResourceCarbonEmissionItemDetailData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumResourceItemDetailsData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("rgName3"),
-		// 				ResourceGroup: to.Ptr("rgGroup"),
-		// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgGroup/providers/microsoft.storage/storageaccounts/rgName3"),
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResource),
-		// 				ResourceType: to.Ptr("microsoft.storage/storageaccounts"),
-		// 				Location: to.Ptr("east us"),
-		// 			},
-		// 			&armcarbonoptimization.ResourceCarbonEmissionItemDetailData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumResourceItemDetailsData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("rgName4"),
-		// 				ResourceGroup: to.Ptr("rgGroup"),
-		// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000002/resourceGroups/rgGroup/providers/microsoft.storage/storageaccounts/rgName4"),
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000002"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResource),
-		// 				ResourceType: to.Ptr("microsoft.storage/storageaccounts"),
-		// 				Location: to.Ptr("east us"),
-		// 			},
-		// 			&armcarbonoptimization.ResourceCarbonEmissionItemDetailData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumResourceItemDetailsData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("rgName5"),
-		// 				ResourceGroup: to.Ptr("rgGroup"),
-		// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000002/resourceGroups/rgGroup/providers/microsoft.storage/storageaccounts/rgName5"),
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000002"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResource),
-		// 				ResourceType: to.Ptr("microsoft.storage/storageaccounts"),
-		// 				Location: to.Ptr("east us"),
-		// 			},
-		// 		},
-		// 	},
-		// }
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
 	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsResponse{
+	// 	CarbonEmissionDataListResult: armcarbonoptimization.CarbonEmissionDataListResult{
+	// 		SubscriptionAccessDecisionList: []*armcarbonoptimization.SubscriptionAccessDecision{
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000001"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000002"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000003"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000004"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000005"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000006"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000007"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000008"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
+	// 				DenialReason: to.Ptr("Carbon Optimization Reader permisison required"),
+	// 			},
+	// 		},
+	// 		Value: []armcarbonoptimization.CarbonEmissionDataClassification{
+	// 			&armcarbonoptimization.ResourceCarbonEmissionItemDetailData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumResourceItemDetailsData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("rgName1"),
+	// 				ResourceGroup: to.Ptr("rgGroup"),
+	// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgGroup/providers/microsoft.storage/storageaccounts/rgName1"),
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResource),
+	// 				ResourceType: to.Ptr("microsoft.storage/storageaccounts"),
+	// 				Location: to.Ptr("east us"),
+	// 			},
+	// 			&armcarbonoptimization.ResourceCarbonEmissionItemDetailData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumResourceItemDetailsData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("rgName2"),
+	// 				ResourceGroup: to.Ptr("rgGroup"),
+	// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgGroup/providers/microsoft.storage/storageaccounts/rgName2"),
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResource),
+	// 				ResourceType: to.Ptr("microsoft.storage/storageaccounts"),
+	// 				Location: to.Ptr("east us"),
+	// 			},
+	// 			&armcarbonoptimization.ResourceCarbonEmissionItemDetailData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumResourceItemDetailsData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("rgName3"),
+	// 				ResourceGroup: to.Ptr("rgGroup"),
+	// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgGroup/providers/microsoft.storage/storageaccounts/rgName3"),
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResource),
+	// 				ResourceType: to.Ptr("microsoft.storage/storageaccounts"),
+	// 				Location: to.Ptr("east us"),
+	// 			},
+	// 			&armcarbonoptimization.ResourceCarbonEmissionItemDetailData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumResourceItemDetailsData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("rgName4"),
+	// 				ResourceGroup: to.Ptr("rgGroup"),
+	// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000002/resourceGroups/rgGroup/providers/microsoft.storage/storageaccounts/rgName4"),
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000002"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResource),
+	// 				ResourceType: to.Ptr("microsoft.storage/storageaccounts"),
+	// 				Location: to.Ptr("east us"),
+	// 			},
+	// 			&armcarbonoptimization.ResourceCarbonEmissionItemDetailData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumResourceItemDetailsData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("rgName5"),
+	// 				ResourceGroup: to.Ptr("rgGroup"),
+	// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000002/resourceGroups/rgGroup/providers/microsoft.storage/storageaccounts/rgName5"),
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000002"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResource),
+	// 				ResourceType: to.Ptr("microsoft.storage/storageaccounts"),
+	// 				Location: to.Ptr("east us"),
+	// 			},
+	// 		},
+	// 	},
+	// }
 }
 
 // Generated from example definition: 2026-05-01-preview/queryCarbonEmissionsResourceTypeItemDetailsReport.json
-func ExampleCarbonServiceClient_NewQueryCarbonEmissionReportsPager_queryCarbonEmissionResourceTypeItemDetailsReport() {
+func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionResourceTypeItemDetailsReport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1252,7 +922,7 @@ func ExampleCarbonServiceClient_NewQueryCarbonEmissionReportsPager_queryCarbonEm
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewCarbonServiceClient().NewQueryCarbonEmissionReportsPager(&armcarbonoptimization.ItemDetailsQueryFilter{
+	res, err := clientFactory.NewCarbonServiceClient().QueryCarbonEmissionReports(ctx, &armcarbonoptimization.ItemDetailsQueryFilter{
 		ReportType: to.Ptr(armcarbonoptimization.ReportTypeEnumItemDetailsReport),
 		SubscriptionList: []*string{
 			to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -1278,111 +948,106 @@ func ExampleCarbonServiceClient_NewQueryCarbonEmissionReportsPager_queryCarbonEm
 		SortDirection: to.Ptr(armcarbonoptimization.SortDirectionEnumDesc),
 		PageSize:      to.Ptr[int32](100),
 	}, nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsResponse{
-		// 	CarbonEmissionDataListResult: armcarbonoptimization.CarbonEmissionDataListResult{
-		// 		SubscriptionAccessDecisionList: []*armcarbonoptimization.SubscriptionAccessDecision{
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000001"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000002"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000003"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000004"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000005"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000006"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000007"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000008"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
-		// 				DenialReason: to.Ptr("Carbon Optimization Reader permisison required"),
-		// 			},
-		// 		},
-		// 		Value: []armcarbonoptimization.CarbonEmissionDataClassification{
-		// 			&armcarbonoptimization.CarbonEmissionItemDetailData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumItemDetailsData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("microsoft.storage/storageaccounts"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceType),
-		// 			},
-		// 			&armcarbonoptimization.CarbonEmissionItemDetailData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumItemDetailsData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("microsoft.compute/disks"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceType),
-		// 			},
-		// 			&armcarbonoptimization.CarbonEmissionItemDetailData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumItemDetailsData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("microsoft.sql/servers"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceType),
-		// 			},
-		// 			&armcarbonoptimization.CarbonEmissionItemDetailData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumItemDetailsData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("microsoft.keyvault/vaults"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceType),
-		// 			},
-		// 			&armcarbonoptimization.CarbonEmissionItemDetailData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumItemDetailsData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("microsoft.compute/virtualmachines"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceType),
-		// 			},
-		// 		},
-		// 	},
-		// }
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
 	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsResponse{
+	// 	CarbonEmissionDataListResult: armcarbonoptimization.CarbonEmissionDataListResult{
+	// 		SubscriptionAccessDecisionList: []*armcarbonoptimization.SubscriptionAccessDecision{
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000001"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000002"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000003"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000004"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000005"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000006"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000007"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000008"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
+	// 				DenialReason: to.Ptr("Carbon Optimization Reader permisison required"),
+	// 			},
+	// 		},
+	// 		Value: []armcarbonoptimization.CarbonEmissionDataClassification{
+	// 			&armcarbonoptimization.CarbonEmissionItemDetailData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumItemDetailsData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("microsoft.storage/storageaccounts"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceType),
+	// 			},
+	// 			&armcarbonoptimization.CarbonEmissionItemDetailData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumItemDetailsData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("microsoft.compute/disks"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceType),
+	// 			},
+	// 			&armcarbonoptimization.CarbonEmissionItemDetailData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumItemDetailsData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("microsoft.sql/servers"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceType),
+	// 			},
+	// 			&armcarbonoptimization.CarbonEmissionItemDetailData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumItemDetailsData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("microsoft.keyvault/vaults"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceType),
+	// 			},
+	// 			&armcarbonoptimization.CarbonEmissionItemDetailData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumItemDetailsData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("microsoft.compute/virtualmachines"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceType),
+	// 			},
+	// 		},
+	// 	},
+	// }
 }
 
 // Generated from example definition: 2026-05-01-preview/queryCarbonEmissionsSubscriptionItemDetailsReportReport.json
-func ExampleCarbonServiceClient_NewQueryCarbonEmissionReportsPager_queryCarbonEmissionSubscriptionsItemDetailsReport() {
+func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionSubscriptionsItemDetailsReport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1392,7 +1057,7 @@ func ExampleCarbonServiceClient_NewQueryCarbonEmissionReportsPager_queryCarbonEm
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewCarbonServiceClient().NewQueryCarbonEmissionReportsPager(&armcarbonoptimization.ItemDetailsQueryFilter{
+	res, err := clientFactory.NewCarbonServiceClient().QueryCarbonEmissionReports(ctx, &armcarbonoptimization.ItemDetailsQueryFilter{
 		ReportType: to.Ptr(armcarbonoptimization.ReportTypeEnumItemDetailsReport),
 		SubscriptionList: []*string{
 			to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -1418,1641 +1083,1851 @@ func ExampleCarbonServiceClient_NewQueryCarbonEmissionReportsPager_queryCarbonEm
 		SortDirection: to.Ptr(armcarbonoptimization.SortDirectionEnumDesc),
 		PageSize:      to.Ptr[int32](100),
 	}, nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsResponse{
-		// 	CarbonEmissionDataListResult: armcarbonoptimization.CarbonEmissionDataListResult{
-		// 		SubscriptionAccessDecisionList: []*armcarbonoptimization.SubscriptionAccessDecision{
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000001"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000002"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000003"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000004"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000005"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000006"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000007"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000008"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
-		// 				DenialReason: to.Ptr("Carbon Optimization Reader permisison required"),
-		// 			},
-		// 		},
-		// 		Value: []armcarbonoptimization.CarbonEmissionDataClassification{
-		// 			&armcarbonoptimization.CarbonEmissionItemDetailData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumItemDetailsData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumSubscription),
-		// 			},
-		// 			&armcarbonoptimization.CarbonEmissionItemDetailData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumItemDetailsData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("00000000-0000-0000-0000-000000000001"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumSubscription),
-		// 			},
-		// 			&armcarbonoptimization.CarbonEmissionItemDetailData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumItemDetailsData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("00000000-0000-0000-0000-000000000002"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumSubscription),
-		// 			},
-		// 			&armcarbonoptimization.CarbonEmissionItemDetailData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumItemDetailsData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("00000000-0000-0000-0000-000000000003"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumSubscription),
-		// 			},
-		// 			&armcarbonoptimization.CarbonEmissionItemDetailData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumItemDetailsData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("00000000-0000-0000-0000-000000000004"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumSubscription),
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-05-01-preview/queryCarbonEmissionsTopNLocationItemsMonthlyReport.json
-func ExampleCarbonServiceClient_NewQueryCarbonEmissionReportsPager_queryCarbonEmissionTopNLocationsMonthlyReport() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcarbonoptimization.NewClientFactory(cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewCarbonServiceClient().NewQueryCarbonEmissionReportsPager(&armcarbonoptimization.TopItemsMonthlySummaryReportQueryFilter{
-		ReportType: to.Ptr(armcarbonoptimization.ReportTypeEnumTopItemsMonthlySummaryReport),
-		SubscriptionList: []*string{
-			to.Ptr("00000000-0000-0000-0000-000000000000"),
-			to.Ptr("00000000-0000-0000-0000-000000000001,"),
-			to.Ptr("00000000-0000-0000-0000-000000000002"),
-			to.Ptr("00000000-0000-0000-0000-000000000003"),
-			to.Ptr("00000000-0000-0000-0000-000000000004"),
-			to.Ptr("00000000-0000-0000-0000-000000000005"),
-			to.Ptr("00000000-0000-0000-0000-000000000006"),
-			to.Ptr("00000000-0000-0000-0000-000000000007"),
-			to.Ptr("00000000-0000-0000-0000-000000000008"),
-		},
-		CarbonScopeList: []*armcarbonoptimization.EmissionScopeEnum{
-			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope1),
-			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope3),
-		},
-		DateRange: &armcarbonoptimization.DateRange{
-			Start: to.Ptr(time.Date(2024, time.March, 1, 0, 0, 0, 0, time.UTC)),
-			End:   to.Ptr(time.Date(2024, time.May, 1, 0, 0, 0, 0, time.UTC)),
-		},
-		CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumLocation),
-		TopItems:     to.Ptr[int32](2),
-	}, nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsResponse{
-		// 	CarbonEmissionDataListResult: armcarbonoptimization.CarbonEmissionDataListResult{
-		// 		SubscriptionAccessDecisionList: []*armcarbonoptimization.SubscriptionAccessDecision{
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000001"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000002"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000003"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000004"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000005"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000006"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000007"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000008"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
-		// 				DenialReason: to.Ptr("Carbon Optimization Reader permisison required"),
-		// 			},
-		// 		},
-		// 		Value: []armcarbonoptimization.CarbonEmissionDataClassification{
-		// 			&armcarbonoptimization.CarbonEmissionTopItemMonthlySummaryData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsMonthlySummaryData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("east us"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumLocation),
-		// 				Date: to.Ptr("2024-05-01"),
-		// 			},
-		// 			&armcarbonoptimization.CarbonEmissionTopItemMonthlySummaryData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsMonthlySummaryData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("east us"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumLocation),
-		// 				Date: to.Ptr("2024-04-01"),
-		// 			},
-		// 			&armcarbonoptimization.CarbonEmissionTopItemMonthlySummaryData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsMonthlySummaryData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("east us"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumLocation),
-		// 				Date: to.Ptr("2024-03-01"),
-		// 			},
-		// 			&armcarbonoptimization.CarbonEmissionTopItemMonthlySummaryData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsMonthlySummaryData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("west us"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumLocation),
-		// 				Date: to.Ptr("2024-05-01"),
-		// 			},
-		// 			&armcarbonoptimization.CarbonEmissionTopItemMonthlySummaryData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsMonthlySummaryData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("west us"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumLocation),
-		// 				Date: to.Ptr("2024-04-01"),
-		// 			},
-		// 			&armcarbonoptimization.CarbonEmissionTopItemMonthlySummaryData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsMonthlySummaryData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("west us"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumLocation),
-		// 				Date: to.Ptr("2024-03-01"),
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-05-01-preview/queryCarbonEmissionsTopNLocationItemsReport.json
-func ExampleCarbonServiceClient_NewQueryCarbonEmissionReportsPager_queryCarbonEmissionTopNLocationsReport() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcarbonoptimization.NewClientFactory(cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewCarbonServiceClient().NewQueryCarbonEmissionReportsPager(&armcarbonoptimization.TopItemsSummaryReportQueryFilter{
-		ReportType: to.Ptr(armcarbonoptimization.ReportTypeEnumTopItemsSummaryReport),
-		SubscriptionList: []*string{
-			to.Ptr("00000000-0000-0000-0000-000000000000"),
-			to.Ptr("00000000-0000-0000-0000-000000000001,"),
-			to.Ptr("00000000-0000-0000-0000-000000000002"),
-			to.Ptr("00000000-0000-0000-0000-000000000003"),
-			to.Ptr("00000000-0000-0000-0000-000000000004"),
-			to.Ptr("00000000-0000-0000-0000-000000000005"),
-			to.Ptr("00000000-0000-0000-0000-000000000006"),
-			to.Ptr("00000000-0000-0000-0000-000000000007"),
-			to.Ptr("00000000-0000-0000-0000-000000000008"),
-		},
-		CarbonScopeList: []*armcarbonoptimization.EmissionScopeEnum{
-			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope1),
-			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope3),
-		},
-		DateRange: &armcarbonoptimization.DateRange{
-			Start: to.Ptr(time.Date(2024, time.May, 1, 0, 0, 0, 0, time.UTC)),
-			End:   to.Ptr(time.Date(2024, time.May, 1, 0, 0, 0, 0, time.UTC)),
-		},
-		CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumLocation),
-		TopItems:     to.Ptr[int32](5),
-	}, nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsResponse{
-		// 	CarbonEmissionDataListResult: armcarbonoptimization.CarbonEmissionDataListResult{
-		// 		SubscriptionAccessDecisionList: []*armcarbonoptimization.SubscriptionAccessDecision{
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000001"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000002"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000003"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000004"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000005"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000006"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000007"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000008"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
-		// 				DenialReason: to.Ptr("Carbon Optimization Reader permisison required"),
-		// 			},
-		// 		},
-		// 		Value: []armcarbonoptimization.CarbonEmissionDataClassification{
-		// 			&armcarbonoptimization.CarbonEmissionTopItemsSummaryData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsSummaryData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("east us"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumLocation),
-		// 			},
-		// 			&armcarbonoptimization.CarbonEmissionTopItemsSummaryData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsSummaryData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("west us"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumLocation),
-		// 			},
-		// 			&armcarbonoptimization.CarbonEmissionTopItemsSummaryData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsSummaryData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("west us 2"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumLocation),
-		// 			},
-		// 			&armcarbonoptimization.CarbonEmissionTopItemsSummaryData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsSummaryData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("west us 3"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumLocation),
-		// 			},
-		// 			&armcarbonoptimization.CarbonEmissionTopItemsSummaryData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsSummaryData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("east us 2"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumLocation),
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-05-01-preview/queryCarbonEmissionsTopNResourceGroupItemsMonthlyReport.json
-func ExampleCarbonServiceClient_NewQueryCarbonEmissionReportsPager_queryCarbonEmissionTopNResourceGroupMonthlyReport() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcarbonoptimization.NewClientFactory(cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewCarbonServiceClient().NewQueryCarbonEmissionReportsPager(&armcarbonoptimization.TopItemsMonthlySummaryReportQueryFilter{
-		ReportType: to.Ptr(armcarbonoptimization.ReportTypeEnumTopItemsMonthlySummaryReport),
-		SubscriptionList: []*string{
-			to.Ptr("00000000-0000-0000-0000-000000000000"),
-			to.Ptr("00000000-0000-0000-0000-000000000001,"),
-			to.Ptr("00000000-0000-0000-0000-000000000002"),
-			to.Ptr("00000000-0000-0000-0000-000000000003"),
-			to.Ptr("00000000-0000-0000-0000-000000000004"),
-			to.Ptr("00000000-0000-0000-0000-000000000005"),
-			to.Ptr("00000000-0000-0000-0000-000000000006"),
-			to.Ptr("00000000-0000-0000-0000-000000000007"),
-			to.Ptr("00000000-0000-0000-0000-000000000008"),
-		},
-		CarbonScopeList: []*armcarbonoptimization.EmissionScopeEnum{
-			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope1),
-			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope3),
-		},
-		DateRange: &armcarbonoptimization.DateRange{
-			Start: to.Ptr(time.Date(2024, time.March, 1, 0, 0, 0, 0, time.UTC)),
-			End:   to.Ptr(time.Date(2024, time.May, 1, 0, 0, 0, 0, time.UTC)),
-		},
-		CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceGroup),
-		TopItems:     to.Ptr[int32](2),
-	}, nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsResponse{
-		// 	CarbonEmissionDataListResult: armcarbonoptimization.CarbonEmissionDataListResult{
-		// 		SubscriptionAccessDecisionList: []*armcarbonoptimization.SubscriptionAccessDecision{
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000001"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000002"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000003"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000004"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000005"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000006"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000007"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000008"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
-		// 				DenialReason: to.Ptr("Carbon Optimization Reader permisison required"),
-		// 			},
-		// 		},
-		// 		Value: []armcarbonoptimization.CarbonEmissionDataClassification{
-		// 			&armcarbonoptimization.ResourceGroupCarbonEmissionTopItemMonthlySummaryData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumResourceGroupTopItemsMonthlySummaryData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("rgGroup1"),
-		// 				ResourceGroupURL: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgGroup1"),
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceGroup),
-		// 				Date: to.Ptr("2024-05-01"),
-		// 			},
-		// 			&armcarbonoptimization.ResourceGroupCarbonEmissionTopItemMonthlySummaryData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumResourceGroupTopItemsMonthlySummaryData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("rgGroup1"),
-		// 				ResourceGroupURL: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgGroup1"),
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceGroup),
-		// 				Date: to.Ptr("2024-04-01"),
-		// 			},
-		// 			&armcarbonoptimization.ResourceGroupCarbonEmissionTopItemMonthlySummaryData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumResourceGroupTopItemsMonthlySummaryData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("rgGroup1"),
-		// 				ResourceGroupURL: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgGroup1"),
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceGroup),
-		// 				Date: to.Ptr("2024-03-01"),
-		// 			},
-		// 			&armcarbonoptimization.ResourceGroupCarbonEmissionTopItemMonthlySummaryData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumResourceGroupTopItemsMonthlySummaryData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("rgGroup2"),
-		// 				ResourceGroupURL: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgGroup2"),
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceGroup),
-		// 				Date: to.Ptr("2024-05-01"),
-		// 			},
-		// 			&armcarbonoptimization.ResourceGroupCarbonEmissionTopItemMonthlySummaryData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumResourceGroupTopItemsMonthlySummaryData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("rgGroup2"),
-		// 				ResourceGroupURL: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgGroup2"),
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceGroup),
-		// 				Date: to.Ptr("2024-04-01"),
-		// 			},
-		// 			&armcarbonoptimization.ResourceGroupCarbonEmissionTopItemMonthlySummaryData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumResourceGroupTopItemsMonthlySummaryData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("rgGroup2"),
-		// 				ResourceGroupURL: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgGroup2"),
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceGroup),
-		// 				Date: to.Ptr("2024-03-01"),
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-05-01-preview/queryCarbonEmissionsTopNResourceGroupItemsReport.json
-func ExampleCarbonServiceClient_NewQueryCarbonEmissionReportsPager_queryCarbonEmissionTopNResourceGroupReport() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcarbonoptimization.NewClientFactory(cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewCarbonServiceClient().NewQueryCarbonEmissionReportsPager(&armcarbonoptimization.TopItemsSummaryReportQueryFilter{
-		ReportType: to.Ptr(armcarbonoptimization.ReportTypeEnumTopItemsSummaryReport),
-		SubscriptionList: []*string{
-			to.Ptr("00000000-0000-0000-0000-000000000000"),
-			to.Ptr("00000000-0000-0000-0000-000000000001,"),
-			to.Ptr("00000000-0000-0000-0000-000000000002"),
-			to.Ptr("00000000-0000-0000-0000-000000000003"),
-			to.Ptr("00000000-0000-0000-0000-000000000004"),
-			to.Ptr("00000000-0000-0000-0000-000000000005"),
-			to.Ptr("00000000-0000-0000-0000-000000000006"),
-			to.Ptr("00000000-0000-0000-0000-000000000007"),
-			to.Ptr("00000000-0000-0000-0000-000000000008"),
-		},
-		CarbonScopeList: []*armcarbonoptimization.EmissionScopeEnum{
-			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope1),
-			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope3),
-		},
-		DateRange: &armcarbonoptimization.DateRange{
-			Start: to.Ptr(time.Date(2024, time.May, 1, 0, 0, 0, 0, time.UTC)),
-			End:   to.Ptr(time.Date(2024, time.May, 1, 0, 0, 0, 0, time.UTC)),
-		},
-		CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceGroup),
-		TopItems:     to.Ptr[int32](5),
-	}, nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsResponse{
-		// 	CarbonEmissionDataListResult: armcarbonoptimization.CarbonEmissionDataListResult{
-		// 		SubscriptionAccessDecisionList: []*armcarbonoptimization.SubscriptionAccessDecision{
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000001"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000002"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000003"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000004"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000005"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000006"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000007"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000008"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
-		// 				DenialReason: to.Ptr("Carbon Optimization Reader permisison required"),
-		// 			},
-		// 		},
-		// 		Value: []armcarbonoptimization.CarbonEmissionDataClassification{
-		// 			&armcarbonoptimization.ResourceGroupCarbonEmissionTopItemsSummaryData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumResourceGroupTopItemsSummaryData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("rgGroup1"),
-		// 				ResourceGroupURL: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgGroup1"),
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceGroup),
-		// 			},
-		// 			&armcarbonoptimization.ResourceGroupCarbonEmissionTopItemsSummaryData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumResourceGroupTopItemsSummaryData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("rgGroup2"),
-		// 				ResourceGroupURL: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgGroup2"),
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceGroup),
-		// 			},
-		// 			&armcarbonoptimization.ResourceGroupCarbonEmissionTopItemsSummaryData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumResourceGroupTopItemsSummaryData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("rgGroup3"),
-		// 				ResourceGroupURL: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgGroup3"),
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceGroup),
-		// 			},
-		// 			&armcarbonoptimization.ResourceGroupCarbonEmissionTopItemsSummaryData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumResourceGroupTopItemsSummaryData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("rgGroup4"),
-		// 				ResourceGroupURL: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000002/resourceGroups/rgGroup4"),
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000002"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceGroup),
-		// 			},
-		// 			&armcarbonoptimization.ResourceGroupCarbonEmissionTopItemsSummaryData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumResourceGroupTopItemsSummaryData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("rgGroup5"),
-		// 				ResourceGroupURL: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000002/resourceGroups/rgGroup5"),
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000002"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceGroup),
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-05-01-preview/queryCarbonEmissionsTopNResourceItemsMonthlyReport.json
-func ExampleCarbonServiceClient_NewQueryCarbonEmissionReportsPager_queryCarbonEmissionTopNResourceMonthlyReport() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcarbonoptimization.NewClientFactory(cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewCarbonServiceClient().NewQueryCarbonEmissionReportsPager(&armcarbonoptimization.TopItemsMonthlySummaryReportQueryFilter{
-		ReportType: to.Ptr(armcarbonoptimization.ReportTypeEnumTopItemsMonthlySummaryReport),
-		SubscriptionList: []*string{
-			to.Ptr("00000000-0000-0000-0000-000000000000"),
-			to.Ptr("00000000-0000-0000-0000-000000000001,"),
-			to.Ptr("00000000-0000-0000-0000-000000000002"),
-			to.Ptr("00000000-0000-0000-0000-000000000003"),
-			to.Ptr("00000000-0000-0000-0000-000000000004"),
-			to.Ptr("00000000-0000-0000-0000-000000000005"),
-			to.Ptr("00000000-0000-0000-0000-000000000006"),
-			to.Ptr("00000000-0000-0000-0000-000000000007"),
-			to.Ptr("00000000-0000-0000-0000-000000000008"),
-		},
-		CarbonScopeList: []*armcarbonoptimization.EmissionScopeEnum{
-			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope1),
-			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope3),
-		},
-		DateRange: &armcarbonoptimization.DateRange{
-			Start: to.Ptr(time.Date(2024, time.March, 1, 0, 0, 0, 0, time.UTC)),
-			End:   to.Ptr(time.Date(2024, time.May, 1, 0, 0, 0, 0, time.UTC)),
-		},
-		CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResource),
-		TopItems:     to.Ptr[int32](2),
-	}, nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsResponse{
-		// 	CarbonEmissionDataListResult: armcarbonoptimization.CarbonEmissionDataListResult{
-		// 		SubscriptionAccessDecisionList: []*armcarbonoptimization.SubscriptionAccessDecision{
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000001"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000002"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000003"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000004"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000005"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000006"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000007"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000008"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
-		// 				DenialReason: to.Ptr("Carbon Optimization Reader permisison required"),
-		// 			},
-		// 		},
-		// 		Value: []armcarbonoptimization.CarbonEmissionDataClassification{
-		// 			&armcarbonoptimization.ResourceCarbonEmissionTopItemMonthlySummaryData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumResourceTopItemsMonthlySummaryData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("rgName1"),
-		// 				ResourceGroup: to.Ptr("rgGroup"),
-		// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgGroup/providers/microsoft.storage/storageaccounts/rgName1"),
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResource),
-		// 				Date: to.Ptr("2024-05-01"),
-		// 			},
-		// 			&armcarbonoptimization.ResourceCarbonEmissionTopItemMonthlySummaryData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumResourceTopItemsMonthlySummaryData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("rgName1"),
-		// 				ResourceGroup: to.Ptr("rgGroup"),
-		// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgGroup/providers/microsoft.storage/storageaccounts/rgName1"),
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResource),
-		// 				Date: to.Ptr("2024-04-01"),
-		// 			},
-		// 			&armcarbonoptimization.ResourceCarbonEmissionTopItemMonthlySummaryData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumResourceTopItemsMonthlySummaryData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("rgName1"),
-		// 				ResourceGroup: to.Ptr("rgGroup"),
-		// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgGroup/providers/microsoft.storage/storageaccounts/rgName1"),
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResource),
-		// 				Date: to.Ptr("2024-03-01"),
-		// 			},
-		// 			&armcarbonoptimization.ResourceCarbonEmissionTopItemMonthlySummaryData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumResourceTopItemsMonthlySummaryData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("rgName2"),
-		// 				ResourceGroup: to.Ptr("rgGroup"),
-		// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgGroup/providers/microsoft.storage/storageaccounts/rgName2"),
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResource),
-		// 				Date: to.Ptr("2024-05-01"),
-		// 			},
-		// 			&armcarbonoptimization.ResourceCarbonEmissionTopItemMonthlySummaryData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumResourceTopItemsMonthlySummaryData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("rgName2"),
-		// 				ResourceGroup: to.Ptr("rgGroup"),
-		// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgGroup/providers/microsoft.storage/storageaccounts/rgName2"),
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResource),
-		// 				Date: to.Ptr("2024-04-01"),
-		// 			},
-		// 			&armcarbonoptimization.ResourceCarbonEmissionTopItemMonthlySummaryData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumResourceTopItemsMonthlySummaryData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("rgName2"),
-		// 				ResourceGroup: to.Ptr("rgGroup"),
-		// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgGroup/providers/microsoft.storage/storageaccounts/rgName2"),
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResource),
-		// 				Date: to.Ptr("2024-03-01"),
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-05-01-preview/queryCarbonEmissionsTopNResourceItemsReport.json
-func ExampleCarbonServiceClient_NewQueryCarbonEmissionReportsPager_queryCarbonEmissionTopNResourceReport() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcarbonoptimization.NewClientFactory(cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewCarbonServiceClient().NewQueryCarbonEmissionReportsPager(&armcarbonoptimization.TopItemsSummaryReportQueryFilter{
-		ReportType: to.Ptr(armcarbonoptimization.ReportTypeEnumTopItemsSummaryReport),
-		SubscriptionList: []*string{
-			to.Ptr("00000000-0000-0000-0000-000000000000"),
-			to.Ptr("00000000-0000-0000-0000-000000000001,"),
-			to.Ptr("00000000-0000-0000-0000-000000000002"),
-			to.Ptr("00000000-0000-0000-0000-000000000003"),
-			to.Ptr("00000000-0000-0000-0000-000000000004"),
-			to.Ptr("00000000-0000-0000-0000-000000000005"),
-			to.Ptr("00000000-0000-0000-0000-000000000006"),
-			to.Ptr("00000000-0000-0000-0000-000000000007"),
-			to.Ptr("00000000-0000-0000-0000-000000000008"),
-		},
-		CarbonScopeList: []*armcarbonoptimization.EmissionScopeEnum{
-			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope1),
-			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope3),
-		},
-		DateRange: &armcarbonoptimization.DateRange{
-			Start: to.Ptr(time.Date(2024, time.May, 1, 0, 0, 0, 0, time.UTC)),
-			End:   to.Ptr(time.Date(2024, time.May, 1, 0, 0, 0, 0, time.UTC)),
-		},
-		CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResource),
-		TopItems:     to.Ptr[int32](5),
-	}, nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsResponse{
-		// 	CarbonEmissionDataListResult: armcarbonoptimization.CarbonEmissionDataListResult{
-		// 		SubscriptionAccessDecisionList: []*armcarbonoptimization.SubscriptionAccessDecision{
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000001"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000002"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000003"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000004"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000005"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000006"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000007"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000008"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
-		// 				DenialReason: to.Ptr("Carbon Optimization Reader permisison required"),
-		// 			},
-		// 		},
-		// 		Value: []armcarbonoptimization.CarbonEmissionDataClassification{
-		// 			&armcarbonoptimization.ResourceCarbonEmissionTopItemsSummaryData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumResourceTopItemsSummaryData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("rgName1"),
-		// 				ResourceGroup: to.Ptr("rgGroup"),
-		// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgGroup/providers/microsoft.storage/storageaccounts/rgName1"),
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResource),
-		// 			},
-		// 			&armcarbonoptimization.ResourceCarbonEmissionTopItemsSummaryData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumResourceTopItemsSummaryData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("rgName2"),
-		// 				ResourceGroup: to.Ptr("rgGroup"),
-		// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgGroup/providers/microsoft.storage/storageaccounts/rgName2"),
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResource),
-		// 			},
-		// 			&armcarbonoptimization.ResourceCarbonEmissionTopItemsSummaryData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumResourceTopItemsSummaryData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("rgName3"),
-		// 				ResourceGroup: to.Ptr("rgGroup"),
-		// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgGroup/providers/microsoft.storage/storageaccounts/rgName3"),
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResource),
-		// 			},
-		// 			&armcarbonoptimization.ResourceCarbonEmissionTopItemsSummaryData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumResourceTopItemsSummaryData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("rgName4"),
-		// 				ResourceGroup: to.Ptr("rgGroup"),
-		// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000002/resourceGroups/rgGroup/providers/microsoft.storage/storageaccounts/rgName4"),
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000002"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResource),
-		// 			},
-		// 			&armcarbonoptimization.ResourceCarbonEmissionTopItemsSummaryData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumResourceTopItemsSummaryData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("rgName5"),
-		// 				ResourceGroup: to.Ptr("rgGroup"),
-		// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000002/resourceGroups/rgGroup/providers/microsoft.storage/storageaccounts/rgName5"),
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000002"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResource),
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-05-01-preview/queryCarbonEmissionsTopNResourceTypeItemsMonthlyReport.json
-func ExampleCarbonServiceClient_NewQueryCarbonEmissionReportsPager_queryCarbonEmissionTopNResourceTypeMonthlyReport() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcarbonoptimization.NewClientFactory(cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewCarbonServiceClient().NewQueryCarbonEmissionReportsPager(&armcarbonoptimization.TopItemsMonthlySummaryReportQueryFilter{
-		ReportType: to.Ptr(armcarbonoptimization.ReportTypeEnumTopItemsMonthlySummaryReport),
-		SubscriptionList: []*string{
-			to.Ptr("00000000-0000-0000-0000-000000000000"),
-			to.Ptr("00000000-0000-0000-0000-000000000001,"),
-			to.Ptr("00000000-0000-0000-0000-000000000002"),
-			to.Ptr("00000000-0000-0000-0000-000000000003"),
-			to.Ptr("00000000-0000-0000-0000-000000000004"),
-			to.Ptr("00000000-0000-0000-0000-000000000005"),
-			to.Ptr("00000000-0000-0000-0000-000000000006"),
-			to.Ptr("00000000-0000-0000-0000-000000000007"),
-			to.Ptr("00000000-0000-0000-0000-000000000008"),
-		},
-		CarbonScopeList: []*armcarbonoptimization.EmissionScopeEnum{
-			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope1),
-			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope3),
-		},
-		DateRange: &armcarbonoptimization.DateRange{
-			Start: to.Ptr(time.Date(2024, time.March, 1, 0, 0, 0, 0, time.UTC)),
-			End:   to.Ptr(time.Date(2024, time.May, 1, 0, 0, 0, 0, time.UTC)),
-		},
-		CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceType),
-		TopItems:     to.Ptr[int32](2),
-	}, nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsResponse{
-		// 	CarbonEmissionDataListResult: armcarbonoptimization.CarbonEmissionDataListResult{
-		// 		SubscriptionAccessDecisionList: []*armcarbonoptimization.SubscriptionAccessDecision{
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000001"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000002"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000003"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000004"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000005"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000006"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000007"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000008"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
-		// 				DenialReason: to.Ptr("Carbon Optimization Reader permisison required"),
-		// 			},
-		// 		},
-		// 		Value: []armcarbonoptimization.CarbonEmissionDataClassification{
-		// 			&armcarbonoptimization.CarbonEmissionTopItemMonthlySummaryData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsMonthlySummaryData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("microsoft.storage/storageaccounts"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceType),
-		// 				Date: to.Ptr("2024-05-01"),
-		// 			},
-		// 			&armcarbonoptimization.CarbonEmissionTopItemMonthlySummaryData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsMonthlySummaryData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("microsoft.storage/storageaccounts"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceType),
-		// 				Date: to.Ptr("2024-04-01"),
-		// 			},
-		// 			&armcarbonoptimization.CarbonEmissionTopItemMonthlySummaryData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsMonthlySummaryData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("microsoft.storage/storageaccounts"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceType),
-		// 				Date: to.Ptr("2024-03-01"),
-		// 			},
-		// 			&armcarbonoptimization.CarbonEmissionTopItemMonthlySummaryData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsMonthlySummaryData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("microsoft.compute/disks"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceType),
-		// 				Date: to.Ptr("2024-05-01"),
-		// 			},
-		// 			&armcarbonoptimization.CarbonEmissionTopItemMonthlySummaryData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsMonthlySummaryData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("microsoft.compute/disks"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceType),
-		// 				Date: to.Ptr("2024-04-01"),
-		// 			},
-		// 			&armcarbonoptimization.CarbonEmissionTopItemMonthlySummaryData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsMonthlySummaryData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("microsoft.compute/disks"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceType),
-		// 				Date: to.Ptr("2024-03-01"),
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-05-01-preview/queryCarbonEmissionsTopNResourceTypeItemsReport.json
-func ExampleCarbonServiceClient_NewQueryCarbonEmissionReportsPager_queryCarbonEmissionTopNResourceTypeReport() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcarbonoptimization.NewClientFactory(cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewCarbonServiceClient().NewQueryCarbonEmissionReportsPager(&armcarbonoptimization.TopItemsSummaryReportQueryFilter{
-		ReportType: to.Ptr(armcarbonoptimization.ReportTypeEnumTopItemsSummaryReport),
-		SubscriptionList: []*string{
-			to.Ptr("00000000-0000-0000-0000-000000000000"),
-			to.Ptr("00000000-0000-0000-0000-000000000001,"),
-			to.Ptr("00000000-0000-0000-0000-000000000002"),
-			to.Ptr("00000000-0000-0000-0000-000000000003"),
-			to.Ptr("00000000-0000-0000-0000-000000000004"),
-			to.Ptr("00000000-0000-0000-0000-000000000005"),
-			to.Ptr("00000000-0000-0000-0000-000000000006"),
-			to.Ptr("00000000-0000-0000-0000-000000000007"),
-			to.Ptr("00000000-0000-0000-0000-000000000008"),
-		},
-		CarbonScopeList: []*armcarbonoptimization.EmissionScopeEnum{
-			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope1),
-			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope3),
-		},
-		DateRange: &armcarbonoptimization.DateRange{
-			Start: to.Ptr(time.Date(2024, time.May, 1, 0, 0, 0, 0, time.UTC)),
-			End:   to.Ptr(time.Date(2024, time.May, 1, 0, 0, 0, 0, time.UTC)),
-		},
-		CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceType),
-		TopItems:     to.Ptr[int32](5),
-	}, nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsResponse{
-		// 	CarbonEmissionDataListResult: armcarbonoptimization.CarbonEmissionDataListResult{
-		// 		SubscriptionAccessDecisionList: []*armcarbonoptimization.SubscriptionAccessDecision{
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000001"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000002"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000003"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000004"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000005"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000006"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000007"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000008"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
-		// 				DenialReason: to.Ptr("Carbon Optimization Reader permisison required"),
-		// 			},
-		// 		},
-		// 		Value: []armcarbonoptimization.CarbonEmissionDataClassification{
-		// 			&armcarbonoptimization.CarbonEmissionTopItemsSummaryData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsSummaryData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("microsoft.storage/storageaccounts"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceType),
-		// 			},
-		// 			&armcarbonoptimization.CarbonEmissionTopItemsSummaryData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsSummaryData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("microsoft.compute/disks"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceType),
-		// 			},
-		// 			&armcarbonoptimization.CarbonEmissionTopItemsSummaryData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsSummaryData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("microsoft.sql/servers"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceType),
-		// 			},
-		// 			&armcarbonoptimization.CarbonEmissionTopItemsSummaryData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsSummaryData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("microsoft.keyvault/vaults"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceType),
-		// 			},
-		// 			&armcarbonoptimization.CarbonEmissionTopItemsSummaryData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsSummaryData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("microsoft.compute/virtualmachines"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceType),
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-05-01-preview/queryCarbonEmissionsTopNSubscriptionItemsMonthlyReport.json
-func ExampleCarbonServiceClient_NewQueryCarbonEmissionReportsPager_queryCarbonEmissionTopNSubscriptionsMonthlyReport() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcarbonoptimization.NewClientFactory(cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewCarbonServiceClient().NewQueryCarbonEmissionReportsPager(&armcarbonoptimization.TopItemsMonthlySummaryReportQueryFilter{
-		ReportType: to.Ptr(armcarbonoptimization.ReportTypeEnumTopItemsMonthlySummaryReport),
-		SubscriptionList: []*string{
-			to.Ptr("00000000-0000-0000-0000-000000000000"),
-			to.Ptr("00000000-0000-0000-0000-000000000001,"),
-			to.Ptr("00000000-0000-0000-0000-000000000002"),
-			to.Ptr("00000000-0000-0000-0000-000000000003"),
-			to.Ptr("00000000-0000-0000-0000-000000000004"),
-			to.Ptr("00000000-0000-0000-0000-000000000005"),
-			to.Ptr("00000000-0000-0000-0000-000000000006"),
-			to.Ptr("00000000-0000-0000-0000-000000000007"),
-			to.Ptr("00000000-0000-0000-0000-000000000008"),
-		},
-		CarbonScopeList: []*armcarbonoptimization.EmissionScopeEnum{
-			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope1),
-			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope3),
-		},
-		DateRange: &armcarbonoptimization.DateRange{
-			Start: to.Ptr(time.Date(2024, time.March, 1, 0, 0, 0, 0, time.UTC)),
-			End:   to.Ptr(time.Date(2024, time.May, 1, 0, 0, 0, 0, time.UTC)),
-		},
-		CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumSubscription),
-		TopItems:     to.Ptr[int32](2),
-	}, nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsResponse{
-		// 	CarbonEmissionDataListResult: armcarbonoptimization.CarbonEmissionDataListResult{
-		// 		SubscriptionAccessDecisionList: []*armcarbonoptimization.SubscriptionAccessDecision{
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000001"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000002"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000003"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000004"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000005"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000006"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000007"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000008"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
-		// 				DenialReason: to.Ptr("Carbon Optimization Reader permisison required"),
-		// 			},
-		// 		},
-		// 		Value: []armcarbonoptimization.CarbonEmissionDataClassification{
-		// 			&armcarbonoptimization.CarbonEmissionTopItemMonthlySummaryData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsMonthlySummaryData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumSubscription),
-		// 				Date: to.Ptr("2024-05-01"),
-		// 			},
-		// 			&armcarbonoptimization.CarbonEmissionTopItemMonthlySummaryData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsMonthlySummaryData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumSubscription),
-		// 				Date: to.Ptr("2024-04-01"),
-		// 			},
-		// 			&armcarbonoptimization.CarbonEmissionTopItemMonthlySummaryData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsMonthlySummaryData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumSubscription),
-		// 				Date: to.Ptr("2024-03-01"),
-		// 			},
-		// 			&armcarbonoptimization.CarbonEmissionTopItemMonthlySummaryData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsMonthlySummaryData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("00000000-0000-0000-0000-000000000001"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumSubscription),
-		// 				Date: to.Ptr("2024-05-01"),
-		// 			},
-		// 			&armcarbonoptimization.CarbonEmissionTopItemMonthlySummaryData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsMonthlySummaryData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("00000000-0000-0000-0000-000000000001"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumSubscription),
-		// 				Date: to.Ptr("2024-04-01"),
-		// 			},
-		// 			&armcarbonoptimization.CarbonEmissionTopItemMonthlySummaryData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsMonthlySummaryData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("00000000-0000-0000-0000-000000000001"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumSubscription),
-		// 				Date: to.Ptr("2024-03-01"),
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-05-01-preview/queryCarbonEmissionsTopNSubscriptionItemsReport.json
-func ExampleCarbonServiceClient_NewQueryCarbonEmissionReportsPager_queryCarbonEmissionTopNSubscriptionsReport() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcarbonoptimization.NewClientFactory(cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewCarbonServiceClient().NewQueryCarbonEmissionReportsPager(&armcarbonoptimization.TopItemsSummaryReportQueryFilter{
-		ReportType: to.Ptr(armcarbonoptimization.ReportTypeEnumTopItemsSummaryReport),
-		SubscriptionList: []*string{
-			to.Ptr("00000000-0000-0000-0000-000000000000"),
-			to.Ptr("00000000-0000-0000-0000-000000000001,"),
-			to.Ptr("00000000-0000-0000-0000-000000000002"),
-			to.Ptr("00000000-0000-0000-0000-000000000003"),
-			to.Ptr("00000000-0000-0000-0000-000000000004"),
-			to.Ptr("00000000-0000-0000-0000-000000000005"),
-			to.Ptr("00000000-0000-0000-0000-000000000006"),
-			to.Ptr("00000000-0000-0000-0000-000000000007"),
-			to.Ptr("00000000-0000-0000-0000-000000000008"),
-		},
-		CarbonScopeList: []*armcarbonoptimization.EmissionScopeEnum{
-			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope1),
-			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope3),
-		},
-		DateRange: &armcarbonoptimization.DateRange{
-			Start: to.Ptr(time.Date(2024, time.May, 1, 0, 0, 0, 0, time.UTC)),
-			End:   to.Ptr(time.Date(2024, time.May, 1, 0, 0, 0, 0, time.UTC)),
-		},
-		CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumSubscription),
-		TopItems:     to.Ptr[int32](5),
-	}, nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsResponse{
-		// 	CarbonEmissionDataListResult: armcarbonoptimization.CarbonEmissionDataListResult{
-		// 		SubscriptionAccessDecisionList: []*armcarbonoptimization.SubscriptionAccessDecision{
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000001"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000002"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000003"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000004"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000005"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000006"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000007"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
-		// 			},
-		// 			{
-		// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000008"),
-		// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
-		// 				DenialReason: to.Ptr("Carbon Optimization Reader permisison required"),
-		// 			},
-		// 		},
-		// 		Value: []armcarbonoptimization.CarbonEmissionDataClassification{
-		// 			&armcarbonoptimization.CarbonEmissionTopItemsSummaryData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsSummaryData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumSubscription),
-		// 			},
-		// 			&armcarbonoptimization.CarbonEmissionTopItemsSummaryData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsSummaryData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("00000000-0000-0000-0000-000000000001"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumSubscription),
-		// 			},
-		// 			&armcarbonoptimization.CarbonEmissionTopItemsSummaryData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsSummaryData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("00000000-0000-0000-0000-000000000002"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumSubscription),
-		// 			},
-		// 			&armcarbonoptimization.CarbonEmissionTopItemsSummaryData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsSummaryData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("00000000-0000-0000-0000-000000000003"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumSubscription),
-		// 			},
-		// 			&armcarbonoptimization.CarbonEmissionTopItemsSummaryData{
-		// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsSummaryData),
-		// 				LatestMonthEmissions: to.Ptr[float64](0.1),
-		// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
-		// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
-		// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
-		// 				ItemName: to.Ptr("00000000-0000-0000-0000-000000000004"),
-		// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumSubscription),
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-05-01-preview/carbonEmissionsDataAvailableDateRange.json
-func ExampleCarbonServiceClient_QueryCarbonEmissionDataAvailableDateRange() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcarbonoptimization.NewClientFactory(cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewCarbonServiceClient().QueryCarbonEmissionDataAvailableDateRange(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionDataAvailableDateRangeResponse{
-	// 	CarbonEmissionDataAvailableDateRange: armcarbonoptimization.CarbonEmissionDataAvailableDateRange{
-	// 		StartDate: to.Ptr("2023-01-01"),
-	// 		EndDate: to.Ptr("2023-05-01"),
+	// res = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsResponse{
+	// 	CarbonEmissionDataListResult: armcarbonoptimization.CarbonEmissionDataListResult{
+	// 		SubscriptionAccessDecisionList: []*armcarbonoptimization.SubscriptionAccessDecision{
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000001"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000002"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000003"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000004"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000005"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000006"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000007"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000008"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
+	// 				DenialReason: to.Ptr("Carbon Optimization Reader permisison required"),
+	// 			},
+	// 		},
+	// 		Value: []armcarbonoptimization.CarbonEmissionDataClassification{
+	// 			&armcarbonoptimization.CarbonEmissionItemDetailData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumItemDetailsData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumSubscription),
+	// 			},
+	// 			&armcarbonoptimization.CarbonEmissionItemDetailData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumItemDetailsData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("00000000-0000-0000-0000-000000000001"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumSubscription),
+	// 			},
+	// 			&armcarbonoptimization.CarbonEmissionItemDetailData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumItemDetailsData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("00000000-0000-0000-0000-000000000002"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumSubscription),
+	// 			},
+	// 			&armcarbonoptimization.CarbonEmissionItemDetailData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumItemDetailsData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("00000000-0000-0000-0000-000000000003"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumSubscription),
+	// 			},
+	// 			&armcarbonoptimization.CarbonEmissionItemDetailData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumItemDetailsData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("00000000-0000-0000-0000-000000000004"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumSubscription),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-05-01-preview/queryCarbonEmissionsTopNLocationItemsMonthlyReport.json
+func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionTopNLocationsMonthlyReport() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcarbonoptimization.NewClientFactory(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewCarbonServiceClient().QueryCarbonEmissionReports(ctx, &armcarbonoptimization.TopItemsMonthlySummaryReportQueryFilter{
+		ReportType: to.Ptr(armcarbonoptimization.ReportTypeEnumTopItemsMonthlySummaryReport),
+		SubscriptionList: []*string{
+			to.Ptr("00000000-0000-0000-0000-000000000000"),
+			to.Ptr("00000000-0000-0000-0000-000000000001,"),
+			to.Ptr("00000000-0000-0000-0000-000000000002"),
+			to.Ptr("00000000-0000-0000-0000-000000000003"),
+			to.Ptr("00000000-0000-0000-0000-000000000004"),
+			to.Ptr("00000000-0000-0000-0000-000000000005"),
+			to.Ptr("00000000-0000-0000-0000-000000000006"),
+			to.Ptr("00000000-0000-0000-0000-000000000007"),
+			to.Ptr("00000000-0000-0000-0000-000000000008"),
+		},
+		CarbonScopeList: []*armcarbonoptimization.EmissionScopeEnum{
+			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope1),
+			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope3),
+		},
+		DateRange: &armcarbonoptimization.DateRange{
+			Start: to.Ptr(time.Date(2024, time.March, 1, 0, 0, 0, 0, time.UTC)),
+			End:   to.Ptr(time.Date(2024, time.May, 1, 0, 0, 0, 0, time.UTC)),
+		},
+		CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumLocation),
+		TopItems:     to.Ptr[int32](2),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsResponse{
+	// 	CarbonEmissionDataListResult: armcarbonoptimization.CarbonEmissionDataListResult{
+	// 		SubscriptionAccessDecisionList: []*armcarbonoptimization.SubscriptionAccessDecision{
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000001"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000002"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000003"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000004"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000005"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000006"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000007"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000008"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
+	// 				DenialReason: to.Ptr("Carbon Optimization Reader permisison required"),
+	// 			},
+	// 		},
+	// 		Value: []armcarbonoptimization.CarbonEmissionDataClassification{
+	// 			&armcarbonoptimization.CarbonEmissionTopItemMonthlySummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsMonthlySummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("east us"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumLocation),
+	// 				Date: to.Ptr("2024-05-01"),
+	// 			},
+	// 			&armcarbonoptimization.CarbonEmissionTopItemMonthlySummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsMonthlySummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("east us"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumLocation),
+	// 				Date: to.Ptr("2024-04-01"),
+	// 			},
+	// 			&armcarbonoptimization.CarbonEmissionTopItemMonthlySummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsMonthlySummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("east us"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumLocation),
+	// 				Date: to.Ptr("2024-03-01"),
+	// 			},
+	// 			&armcarbonoptimization.CarbonEmissionTopItemMonthlySummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsMonthlySummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("west us"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumLocation),
+	// 				Date: to.Ptr("2024-05-01"),
+	// 			},
+	// 			&armcarbonoptimization.CarbonEmissionTopItemMonthlySummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsMonthlySummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("west us"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumLocation),
+	// 				Date: to.Ptr("2024-04-01"),
+	// 			},
+	// 			&armcarbonoptimization.CarbonEmissionTopItemMonthlySummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsMonthlySummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("west us"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumLocation),
+	// 				Date: to.Ptr("2024-03-01"),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-05-01-preview/queryCarbonEmissionsTopNLocationItemsReport.json
+func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionTopNLocationsReport() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcarbonoptimization.NewClientFactory(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewCarbonServiceClient().QueryCarbonEmissionReports(ctx, &armcarbonoptimization.TopItemsSummaryReportQueryFilter{
+		ReportType: to.Ptr(armcarbonoptimization.ReportTypeEnumTopItemsSummaryReport),
+		SubscriptionList: []*string{
+			to.Ptr("00000000-0000-0000-0000-000000000000"),
+			to.Ptr("00000000-0000-0000-0000-000000000001,"),
+			to.Ptr("00000000-0000-0000-0000-000000000002"),
+			to.Ptr("00000000-0000-0000-0000-000000000003"),
+			to.Ptr("00000000-0000-0000-0000-000000000004"),
+			to.Ptr("00000000-0000-0000-0000-000000000005"),
+			to.Ptr("00000000-0000-0000-0000-000000000006"),
+			to.Ptr("00000000-0000-0000-0000-000000000007"),
+			to.Ptr("00000000-0000-0000-0000-000000000008"),
+		},
+		CarbonScopeList: []*armcarbonoptimization.EmissionScopeEnum{
+			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope1),
+			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope3),
+		},
+		DateRange: &armcarbonoptimization.DateRange{
+			Start: to.Ptr(time.Date(2024, time.May, 1, 0, 0, 0, 0, time.UTC)),
+			End:   to.Ptr(time.Date(2024, time.May, 1, 0, 0, 0, 0, time.UTC)),
+		},
+		CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumLocation),
+		TopItems:     to.Ptr[int32](5),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsResponse{
+	// 	CarbonEmissionDataListResult: armcarbonoptimization.CarbonEmissionDataListResult{
+	// 		SubscriptionAccessDecisionList: []*armcarbonoptimization.SubscriptionAccessDecision{
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000001"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000002"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000003"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000004"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000005"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000006"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000007"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000008"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
+	// 				DenialReason: to.Ptr("Carbon Optimization Reader permisison required"),
+	// 			},
+	// 		},
+	// 		Value: []armcarbonoptimization.CarbonEmissionDataClassification{
+	// 			&armcarbonoptimization.CarbonEmissionTopItemsSummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsSummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("east us"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumLocation),
+	// 			},
+	// 			&armcarbonoptimization.CarbonEmissionTopItemsSummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsSummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("west us"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumLocation),
+	// 			},
+	// 			&armcarbonoptimization.CarbonEmissionTopItemsSummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsSummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("west us 2"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumLocation),
+	// 			},
+	// 			&armcarbonoptimization.CarbonEmissionTopItemsSummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsSummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("west us 3"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumLocation),
+	// 			},
+	// 			&armcarbonoptimization.CarbonEmissionTopItemsSummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsSummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("east us 2"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumLocation),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-05-01-preview/queryCarbonEmissionsTopNResourceGroupItemsMonthlyReport.json
+func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionTopNResourceGroupMonthlyReport() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcarbonoptimization.NewClientFactory(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewCarbonServiceClient().QueryCarbonEmissionReports(ctx, &armcarbonoptimization.TopItemsMonthlySummaryReportQueryFilter{
+		ReportType: to.Ptr(armcarbonoptimization.ReportTypeEnumTopItemsMonthlySummaryReport),
+		SubscriptionList: []*string{
+			to.Ptr("00000000-0000-0000-0000-000000000000"),
+			to.Ptr("00000000-0000-0000-0000-000000000001,"),
+			to.Ptr("00000000-0000-0000-0000-000000000002"),
+			to.Ptr("00000000-0000-0000-0000-000000000003"),
+			to.Ptr("00000000-0000-0000-0000-000000000004"),
+			to.Ptr("00000000-0000-0000-0000-000000000005"),
+			to.Ptr("00000000-0000-0000-0000-000000000006"),
+			to.Ptr("00000000-0000-0000-0000-000000000007"),
+			to.Ptr("00000000-0000-0000-0000-000000000008"),
+		},
+		CarbonScopeList: []*armcarbonoptimization.EmissionScopeEnum{
+			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope1),
+			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope3),
+		},
+		DateRange: &armcarbonoptimization.DateRange{
+			Start: to.Ptr(time.Date(2024, time.March, 1, 0, 0, 0, 0, time.UTC)),
+			End:   to.Ptr(time.Date(2024, time.May, 1, 0, 0, 0, 0, time.UTC)),
+		},
+		CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceGroup),
+		TopItems:     to.Ptr[int32](2),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsResponse{
+	// 	CarbonEmissionDataListResult: armcarbonoptimization.CarbonEmissionDataListResult{
+	// 		SubscriptionAccessDecisionList: []*armcarbonoptimization.SubscriptionAccessDecision{
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000001"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000002"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000003"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000004"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000005"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000006"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000007"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000008"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
+	// 				DenialReason: to.Ptr("Carbon Optimization Reader permisison required"),
+	// 			},
+	// 		},
+	// 		Value: []armcarbonoptimization.CarbonEmissionDataClassification{
+	// 			&armcarbonoptimization.ResourceGroupCarbonEmissionTopItemMonthlySummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumResourceGroupTopItemsMonthlySummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("rgGroup1"),
+	// 				ResourceGroupURL: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgGroup1"),
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceGroup),
+	// 				Date: to.Ptr("2024-05-01"),
+	// 			},
+	// 			&armcarbonoptimization.ResourceGroupCarbonEmissionTopItemMonthlySummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumResourceGroupTopItemsMonthlySummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("rgGroup1"),
+	// 				ResourceGroupURL: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgGroup1"),
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceGroup),
+	// 				Date: to.Ptr("2024-04-01"),
+	// 			},
+	// 			&armcarbonoptimization.ResourceGroupCarbonEmissionTopItemMonthlySummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumResourceGroupTopItemsMonthlySummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("rgGroup1"),
+	// 				ResourceGroupURL: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgGroup1"),
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceGroup),
+	// 				Date: to.Ptr("2024-03-01"),
+	// 			},
+	// 			&armcarbonoptimization.ResourceGroupCarbonEmissionTopItemMonthlySummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumResourceGroupTopItemsMonthlySummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("rgGroup2"),
+	// 				ResourceGroupURL: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgGroup2"),
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceGroup),
+	// 				Date: to.Ptr("2024-05-01"),
+	// 			},
+	// 			&armcarbonoptimization.ResourceGroupCarbonEmissionTopItemMonthlySummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumResourceGroupTopItemsMonthlySummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("rgGroup2"),
+	// 				ResourceGroupURL: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgGroup2"),
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceGroup),
+	// 				Date: to.Ptr("2024-04-01"),
+	// 			},
+	// 			&armcarbonoptimization.ResourceGroupCarbonEmissionTopItemMonthlySummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumResourceGroupTopItemsMonthlySummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("rgGroup2"),
+	// 				ResourceGroupURL: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgGroup2"),
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceGroup),
+	// 				Date: to.Ptr("2024-03-01"),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-05-01-preview/queryCarbonEmissionsTopNResourceGroupItemsReport.json
+func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionTopNResourceGroupReport() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcarbonoptimization.NewClientFactory(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewCarbonServiceClient().QueryCarbonEmissionReports(ctx, &armcarbonoptimization.TopItemsSummaryReportQueryFilter{
+		ReportType: to.Ptr(armcarbonoptimization.ReportTypeEnumTopItemsSummaryReport),
+		SubscriptionList: []*string{
+			to.Ptr("00000000-0000-0000-0000-000000000000"),
+			to.Ptr("00000000-0000-0000-0000-000000000001,"),
+			to.Ptr("00000000-0000-0000-0000-000000000002"),
+			to.Ptr("00000000-0000-0000-0000-000000000003"),
+			to.Ptr("00000000-0000-0000-0000-000000000004"),
+			to.Ptr("00000000-0000-0000-0000-000000000005"),
+			to.Ptr("00000000-0000-0000-0000-000000000006"),
+			to.Ptr("00000000-0000-0000-0000-000000000007"),
+			to.Ptr("00000000-0000-0000-0000-000000000008"),
+		},
+		CarbonScopeList: []*armcarbonoptimization.EmissionScopeEnum{
+			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope1),
+			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope3),
+		},
+		DateRange: &armcarbonoptimization.DateRange{
+			Start: to.Ptr(time.Date(2024, time.May, 1, 0, 0, 0, 0, time.UTC)),
+			End:   to.Ptr(time.Date(2024, time.May, 1, 0, 0, 0, 0, time.UTC)),
+		},
+		CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceGroup),
+		TopItems:     to.Ptr[int32](5),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsResponse{
+	// 	CarbonEmissionDataListResult: armcarbonoptimization.CarbonEmissionDataListResult{
+	// 		SubscriptionAccessDecisionList: []*armcarbonoptimization.SubscriptionAccessDecision{
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000001"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000002"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000003"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000004"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000005"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000006"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000007"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000008"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
+	// 				DenialReason: to.Ptr("Carbon Optimization Reader permisison required"),
+	// 			},
+	// 		},
+	// 		Value: []armcarbonoptimization.CarbonEmissionDataClassification{
+	// 			&armcarbonoptimization.ResourceGroupCarbonEmissionTopItemsSummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumResourceGroupTopItemsSummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("rgGroup1"),
+	// 				ResourceGroupURL: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgGroup1"),
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceGroup),
+	// 			},
+	// 			&armcarbonoptimization.ResourceGroupCarbonEmissionTopItemsSummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumResourceGroupTopItemsSummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("rgGroup2"),
+	// 				ResourceGroupURL: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgGroup2"),
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceGroup),
+	// 			},
+	// 			&armcarbonoptimization.ResourceGroupCarbonEmissionTopItemsSummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumResourceGroupTopItemsSummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("rgGroup3"),
+	// 				ResourceGroupURL: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgGroup3"),
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceGroup),
+	// 			},
+	// 			&armcarbonoptimization.ResourceGroupCarbonEmissionTopItemsSummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumResourceGroupTopItemsSummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("rgGroup4"),
+	// 				ResourceGroupURL: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000002/resourceGroups/rgGroup4"),
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000002"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceGroup),
+	// 			},
+	// 			&armcarbonoptimization.ResourceGroupCarbonEmissionTopItemsSummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumResourceGroupTopItemsSummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("rgGroup5"),
+	// 				ResourceGroupURL: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000002/resourceGroups/rgGroup5"),
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000002"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceGroup),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-05-01-preview/queryCarbonEmissionsTopNResourceItemsMonthlyReport.json
+func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionTopNResourceMonthlyReport() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcarbonoptimization.NewClientFactory(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewCarbonServiceClient().QueryCarbonEmissionReports(ctx, &armcarbonoptimization.TopItemsMonthlySummaryReportQueryFilter{
+		ReportType: to.Ptr(armcarbonoptimization.ReportTypeEnumTopItemsMonthlySummaryReport),
+		SubscriptionList: []*string{
+			to.Ptr("00000000-0000-0000-0000-000000000000"),
+			to.Ptr("00000000-0000-0000-0000-000000000001,"),
+			to.Ptr("00000000-0000-0000-0000-000000000002"),
+			to.Ptr("00000000-0000-0000-0000-000000000003"),
+			to.Ptr("00000000-0000-0000-0000-000000000004"),
+			to.Ptr("00000000-0000-0000-0000-000000000005"),
+			to.Ptr("00000000-0000-0000-0000-000000000006"),
+			to.Ptr("00000000-0000-0000-0000-000000000007"),
+			to.Ptr("00000000-0000-0000-0000-000000000008"),
+		},
+		CarbonScopeList: []*armcarbonoptimization.EmissionScopeEnum{
+			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope1),
+			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope3),
+		},
+		DateRange: &armcarbonoptimization.DateRange{
+			Start: to.Ptr(time.Date(2024, time.March, 1, 0, 0, 0, 0, time.UTC)),
+			End:   to.Ptr(time.Date(2024, time.May, 1, 0, 0, 0, 0, time.UTC)),
+		},
+		CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResource),
+		TopItems:     to.Ptr[int32](2),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsResponse{
+	// 	CarbonEmissionDataListResult: armcarbonoptimization.CarbonEmissionDataListResult{
+	// 		SubscriptionAccessDecisionList: []*armcarbonoptimization.SubscriptionAccessDecision{
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000001"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000002"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000003"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000004"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000005"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000006"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000007"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000008"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
+	// 				DenialReason: to.Ptr("Carbon Optimization Reader permisison required"),
+	// 			},
+	// 		},
+	// 		Value: []armcarbonoptimization.CarbonEmissionDataClassification{
+	// 			&armcarbonoptimization.ResourceCarbonEmissionTopItemMonthlySummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumResourceTopItemsMonthlySummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("rgName1"),
+	// 				ResourceGroup: to.Ptr("rgGroup"),
+	// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgGroup/providers/microsoft.storage/storageaccounts/rgName1"),
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResource),
+	// 				Date: to.Ptr("2024-05-01"),
+	// 			},
+	// 			&armcarbonoptimization.ResourceCarbonEmissionTopItemMonthlySummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumResourceTopItemsMonthlySummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("rgName1"),
+	// 				ResourceGroup: to.Ptr("rgGroup"),
+	// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgGroup/providers/microsoft.storage/storageaccounts/rgName1"),
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResource),
+	// 				Date: to.Ptr("2024-04-01"),
+	// 			},
+	// 			&armcarbonoptimization.ResourceCarbonEmissionTopItemMonthlySummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumResourceTopItemsMonthlySummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("rgName1"),
+	// 				ResourceGroup: to.Ptr("rgGroup"),
+	// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgGroup/providers/microsoft.storage/storageaccounts/rgName1"),
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResource),
+	// 				Date: to.Ptr("2024-03-01"),
+	// 			},
+	// 			&armcarbonoptimization.ResourceCarbonEmissionTopItemMonthlySummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumResourceTopItemsMonthlySummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("rgName2"),
+	// 				ResourceGroup: to.Ptr("rgGroup"),
+	// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgGroup/providers/microsoft.storage/storageaccounts/rgName2"),
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResource),
+	// 				Date: to.Ptr("2024-05-01"),
+	// 			},
+	// 			&armcarbonoptimization.ResourceCarbonEmissionTopItemMonthlySummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumResourceTopItemsMonthlySummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("rgName2"),
+	// 				ResourceGroup: to.Ptr("rgGroup"),
+	// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgGroup/providers/microsoft.storage/storageaccounts/rgName2"),
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResource),
+	// 				Date: to.Ptr("2024-04-01"),
+	// 			},
+	// 			&armcarbonoptimization.ResourceCarbonEmissionTopItemMonthlySummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumResourceTopItemsMonthlySummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("rgName2"),
+	// 				ResourceGroup: to.Ptr("rgGroup"),
+	// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgGroup/providers/microsoft.storage/storageaccounts/rgName2"),
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResource),
+	// 				Date: to.Ptr("2024-03-01"),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-05-01-preview/queryCarbonEmissionsTopNResourceItemsReport.json
+func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionTopNResourceReport() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcarbonoptimization.NewClientFactory(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewCarbonServiceClient().QueryCarbonEmissionReports(ctx, &armcarbonoptimization.TopItemsSummaryReportQueryFilter{
+		ReportType: to.Ptr(armcarbonoptimization.ReportTypeEnumTopItemsSummaryReport),
+		SubscriptionList: []*string{
+			to.Ptr("00000000-0000-0000-0000-000000000000"),
+			to.Ptr("00000000-0000-0000-0000-000000000001,"),
+			to.Ptr("00000000-0000-0000-0000-000000000002"),
+			to.Ptr("00000000-0000-0000-0000-000000000003"),
+			to.Ptr("00000000-0000-0000-0000-000000000004"),
+			to.Ptr("00000000-0000-0000-0000-000000000005"),
+			to.Ptr("00000000-0000-0000-0000-000000000006"),
+			to.Ptr("00000000-0000-0000-0000-000000000007"),
+			to.Ptr("00000000-0000-0000-0000-000000000008"),
+		},
+		CarbonScopeList: []*armcarbonoptimization.EmissionScopeEnum{
+			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope1),
+			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope3),
+		},
+		DateRange: &armcarbonoptimization.DateRange{
+			Start: to.Ptr(time.Date(2024, time.May, 1, 0, 0, 0, 0, time.UTC)),
+			End:   to.Ptr(time.Date(2024, time.May, 1, 0, 0, 0, 0, time.UTC)),
+		},
+		CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResource),
+		TopItems:     to.Ptr[int32](5),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsResponse{
+	// 	CarbonEmissionDataListResult: armcarbonoptimization.CarbonEmissionDataListResult{
+	// 		SubscriptionAccessDecisionList: []*armcarbonoptimization.SubscriptionAccessDecision{
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000001"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000002"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000003"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000004"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000005"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000006"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000007"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000008"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
+	// 				DenialReason: to.Ptr("Carbon Optimization Reader permisison required"),
+	// 			},
+	// 		},
+	// 		Value: []armcarbonoptimization.CarbonEmissionDataClassification{
+	// 			&armcarbonoptimization.ResourceCarbonEmissionTopItemsSummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumResourceTopItemsSummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("rgName1"),
+	// 				ResourceGroup: to.Ptr("rgGroup"),
+	// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgGroup/providers/microsoft.storage/storageaccounts/rgName1"),
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResource),
+	// 			},
+	// 			&armcarbonoptimization.ResourceCarbonEmissionTopItemsSummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumResourceTopItemsSummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("rgName2"),
+	// 				ResourceGroup: to.Ptr("rgGroup"),
+	// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgGroup/providers/microsoft.storage/storageaccounts/rgName2"),
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResource),
+	// 			},
+	// 			&armcarbonoptimization.ResourceCarbonEmissionTopItemsSummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumResourceTopItemsSummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("rgName3"),
+	// 				ResourceGroup: to.Ptr("rgGroup"),
+	// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgGroup/providers/microsoft.storage/storageaccounts/rgName3"),
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResource),
+	// 			},
+	// 			&armcarbonoptimization.ResourceCarbonEmissionTopItemsSummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumResourceTopItemsSummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("rgName4"),
+	// 				ResourceGroup: to.Ptr("rgGroup"),
+	// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000002/resourceGroups/rgGroup/providers/microsoft.storage/storageaccounts/rgName4"),
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000002"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResource),
+	// 			},
+	// 			&armcarbonoptimization.ResourceCarbonEmissionTopItemsSummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumResourceTopItemsSummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("rgName5"),
+	// 				ResourceGroup: to.Ptr("rgGroup"),
+	// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000002/resourceGroups/rgGroup/providers/microsoft.storage/storageaccounts/rgName5"),
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000002"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResource),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-05-01-preview/queryCarbonEmissionsTopNResourceTypeItemsMonthlyReport.json
+func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionTopNResourceTypeMonthlyReport() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcarbonoptimization.NewClientFactory(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewCarbonServiceClient().QueryCarbonEmissionReports(ctx, &armcarbonoptimization.TopItemsMonthlySummaryReportQueryFilter{
+		ReportType: to.Ptr(armcarbonoptimization.ReportTypeEnumTopItemsMonthlySummaryReport),
+		SubscriptionList: []*string{
+			to.Ptr("00000000-0000-0000-0000-000000000000"),
+			to.Ptr("00000000-0000-0000-0000-000000000001,"),
+			to.Ptr("00000000-0000-0000-0000-000000000002"),
+			to.Ptr("00000000-0000-0000-0000-000000000003"),
+			to.Ptr("00000000-0000-0000-0000-000000000004"),
+			to.Ptr("00000000-0000-0000-0000-000000000005"),
+			to.Ptr("00000000-0000-0000-0000-000000000006"),
+			to.Ptr("00000000-0000-0000-0000-000000000007"),
+			to.Ptr("00000000-0000-0000-0000-000000000008"),
+		},
+		CarbonScopeList: []*armcarbonoptimization.EmissionScopeEnum{
+			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope1),
+			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope3),
+		},
+		DateRange: &armcarbonoptimization.DateRange{
+			Start: to.Ptr(time.Date(2024, time.March, 1, 0, 0, 0, 0, time.UTC)),
+			End:   to.Ptr(time.Date(2024, time.May, 1, 0, 0, 0, 0, time.UTC)),
+		},
+		CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceType),
+		TopItems:     to.Ptr[int32](2),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsResponse{
+	// 	CarbonEmissionDataListResult: armcarbonoptimization.CarbonEmissionDataListResult{
+	// 		SubscriptionAccessDecisionList: []*armcarbonoptimization.SubscriptionAccessDecision{
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000001"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000002"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000003"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000004"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000005"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000006"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000007"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000008"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
+	// 				DenialReason: to.Ptr("Carbon Optimization Reader permisison required"),
+	// 			},
+	// 		},
+	// 		Value: []armcarbonoptimization.CarbonEmissionDataClassification{
+	// 			&armcarbonoptimization.CarbonEmissionTopItemMonthlySummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsMonthlySummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("microsoft.storage/storageaccounts"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceType),
+	// 				Date: to.Ptr("2024-05-01"),
+	// 			},
+	// 			&armcarbonoptimization.CarbonEmissionTopItemMonthlySummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsMonthlySummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("microsoft.storage/storageaccounts"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceType),
+	// 				Date: to.Ptr("2024-04-01"),
+	// 			},
+	// 			&armcarbonoptimization.CarbonEmissionTopItemMonthlySummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsMonthlySummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("microsoft.storage/storageaccounts"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceType),
+	// 				Date: to.Ptr("2024-03-01"),
+	// 			},
+	// 			&armcarbonoptimization.CarbonEmissionTopItemMonthlySummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsMonthlySummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("microsoft.compute/disks"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceType),
+	// 				Date: to.Ptr("2024-05-01"),
+	// 			},
+	// 			&armcarbonoptimization.CarbonEmissionTopItemMonthlySummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsMonthlySummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("microsoft.compute/disks"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceType),
+	// 				Date: to.Ptr("2024-04-01"),
+	// 			},
+	// 			&armcarbonoptimization.CarbonEmissionTopItemMonthlySummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsMonthlySummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("microsoft.compute/disks"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceType),
+	// 				Date: to.Ptr("2024-03-01"),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-05-01-preview/queryCarbonEmissionsTopNResourceTypeItemsReport.json
+func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionTopNResourceTypeReport() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcarbonoptimization.NewClientFactory(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewCarbonServiceClient().QueryCarbonEmissionReports(ctx, &armcarbonoptimization.TopItemsSummaryReportQueryFilter{
+		ReportType: to.Ptr(armcarbonoptimization.ReportTypeEnumTopItemsSummaryReport),
+		SubscriptionList: []*string{
+			to.Ptr("00000000-0000-0000-0000-000000000000"),
+			to.Ptr("00000000-0000-0000-0000-000000000001,"),
+			to.Ptr("00000000-0000-0000-0000-000000000002"),
+			to.Ptr("00000000-0000-0000-0000-000000000003"),
+			to.Ptr("00000000-0000-0000-0000-000000000004"),
+			to.Ptr("00000000-0000-0000-0000-000000000005"),
+			to.Ptr("00000000-0000-0000-0000-000000000006"),
+			to.Ptr("00000000-0000-0000-0000-000000000007"),
+			to.Ptr("00000000-0000-0000-0000-000000000008"),
+		},
+		CarbonScopeList: []*armcarbonoptimization.EmissionScopeEnum{
+			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope1),
+			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope3),
+		},
+		DateRange: &armcarbonoptimization.DateRange{
+			Start: to.Ptr(time.Date(2024, time.May, 1, 0, 0, 0, 0, time.UTC)),
+			End:   to.Ptr(time.Date(2024, time.May, 1, 0, 0, 0, 0, time.UTC)),
+		},
+		CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceType),
+		TopItems:     to.Ptr[int32](5),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsResponse{
+	// 	CarbonEmissionDataListResult: armcarbonoptimization.CarbonEmissionDataListResult{
+	// 		SubscriptionAccessDecisionList: []*armcarbonoptimization.SubscriptionAccessDecision{
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000001"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000002"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000003"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000004"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000005"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000006"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000007"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000008"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
+	// 				DenialReason: to.Ptr("Carbon Optimization Reader permisison required"),
+	// 			},
+	// 		},
+	// 		Value: []armcarbonoptimization.CarbonEmissionDataClassification{
+	// 			&armcarbonoptimization.CarbonEmissionTopItemsSummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsSummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("microsoft.storage/storageaccounts"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceType),
+	// 			},
+	// 			&armcarbonoptimization.CarbonEmissionTopItemsSummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsSummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("microsoft.compute/disks"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceType),
+	// 			},
+	// 			&armcarbonoptimization.CarbonEmissionTopItemsSummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsSummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("microsoft.sql/servers"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceType),
+	// 			},
+	// 			&armcarbonoptimization.CarbonEmissionTopItemsSummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsSummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("microsoft.keyvault/vaults"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceType),
+	// 			},
+	// 			&armcarbonoptimization.CarbonEmissionTopItemsSummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsSummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("microsoft.compute/virtualmachines"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceType),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-05-01-preview/queryCarbonEmissionsTopNSubscriptionItemsMonthlyReport.json
+func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionTopNSubscriptionsMonthlyReport() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcarbonoptimization.NewClientFactory(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewCarbonServiceClient().QueryCarbonEmissionReports(ctx, &armcarbonoptimization.TopItemsMonthlySummaryReportQueryFilter{
+		ReportType: to.Ptr(armcarbonoptimization.ReportTypeEnumTopItemsMonthlySummaryReport),
+		SubscriptionList: []*string{
+			to.Ptr("00000000-0000-0000-0000-000000000000"),
+			to.Ptr("00000000-0000-0000-0000-000000000001,"),
+			to.Ptr("00000000-0000-0000-0000-000000000002"),
+			to.Ptr("00000000-0000-0000-0000-000000000003"),
+			to.Ptr("00000000-0000-0000-0000-000000000004"),
+			to.Ptr("00000000-0000-0000-0000-000000000005"),
+			to.Ptr("00000000-0000-0000-0000-000000000006"),
+			to.Ptr("00000000-0000-0000-0000-000000000007"),
+			to.Ptr("00000000-0000-0000-0000-000000000008"),
+		},
+		CarbonScopeList: []*armcarbonoptimization.EmissionScopeEnum{
+			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope1),
+			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope3),
+		},
+		DateRange: &armcarbonoptimization.DateRange{
+			Start: to.Ptr(time.Date(2024, time.March, 1, 0, 0, 0, 0, time.UTC)),
+			End:   to.Ptr(time.Date(2024, time.May, 1, 0, 0, 0, 0, time.UTC)),
+		},
+		CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumSubscription),
+		TopItems:     to.Ptr[int32](2),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsResponse{
+	// 	CarbonEmissionDataListResult: armcarbonoptimization.CarbonEmissionDataListResult{
+	// 		SubscriptionAccessDecisionList: []*armcarbonoptimization.SubscriptionAccessDecision{
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000001"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000002"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000003"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000004"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000005"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000006"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000007"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000008"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
+	// 				DenialReason: to.Ptr("Carbon Optimization Reader permisison required"),
+	// 			},
+	// 		},
+	// 		Value: []armcarbonoptimization.CarbonEmissionDataClassification{
+	// 			&armcarbonoptimization.CarbonEmissionTopItemMonthlySummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsMonthlySummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumSubscription),
+	// 				Date: to.Ptr("2024-05-01"),
+	// 			},
+	// 			&armcarbonoptimization.CarbonEmissionTopItemMonthlySummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsMonthlySummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumSubscription),
+	// 				Date: to.Ptr("2024-04-01"),
+	// 			},
+	// 			&armcarbonoptimization.CarbonEmissionTopItemMonthlySummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsMonthlySummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumSubscription),
+	// 				Date: to.Ptr("2024-03-01"),
+	// 			},
+	// 			&armcarbonoptimization.CarbonEmissionTopItemMonthlySummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsMonthlySummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("00000000-0000-0000-0000-000000000001"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumSubscription),
+	// 				Date: to.Ptr("2024-05-01"),
+	// 			},
+	// 			&armcarbonoptimization.CarbonEmissionTopItemMonthlySummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsMonthlySummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("00000000-0000-0000-0000-000000000001"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumSubscription),
+	// 				Date: to.Ptr("2024-04-01"),
+	// 			},
+	// 			&armcarbonoptimization.CarbonEmissionTopItemMonthlySummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsMonthlySummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("00000000-0000-0000-0000-000000000001"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumSubscription),
+	// 				Date: to.Ptr("2024-03-01"),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-05-01-preview/queryCarbonEmissionsTopNSubscriptionItemsReport.json
+func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionTopNSubscriptionsReport() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcarbonoptimization.NewClientFactory(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewCarbonServiceClient().QueryCarbonEmissionReports(ctx, &armcarbonoptimization.TopItemsSummaryReportQueryFilter{
+		ReportType: to.Ptr(armcarbonoptimization.ReportTypeEnumTopItemsSummaryReport),
+		SubscriptionList: []*string{
+			to.Ptr("00000000-0000-0000-0000-000000000000"),
+			to.Ptr("00000000-0000-0000-0000-000000000001,"),
+			to.Ptr("00000000-0000-0000-0000-000000000002"),
+			to.Ptr("00000000-0000-0000-0000-000000000003"),
+			to.Ptr("00000000-0000-0000-0000-000000000004"),
+			to.Ptr("00000000-0000-0000-0000-000000000005"),
+			to.Ptr("00000000-0000-0000-0000-000000000006"),
+			to.Ptr("00000000-0000-0000-0000-000000000007"),
+			to.Ptr("00000000-0000-0000-0000-000000000008"),
+		},
+		CarbonScopeList: []*armcarbonoptimization.EmissionScopeEnum{
+			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope1),
+			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope3),
+		},
+		DateRange: &armcarbonoptimization.DateRange{
+			Start: to.Ptr(time.Date(2024, time.May, 1, 0, 0, 0, 0, time.UTC)),
+			End:   to.Ptr(time.Date(2024, time.May, 1, 0, 0, 0, 0, time.UTC)),
+		},
+		CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumSubscription),
+		TopItems:     to.Ptr[int32](5),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsResponse{
+	// 	CarbonEmissionDataListResult: armcarbonoptimization.CarbonEmissionDataListResult{
+	// 		SubscriptionAccessDecisionList: []*armcarbonoptimization.SubscriptionAccessDecision{
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000001"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000002"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000003"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000004"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000005"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumAllowed),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000006"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000007"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
+	// 			},
+	// 			{
+	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000008"),
+	// 				Decision: to.Ptr(armcarbonoptimization.AccessDecisionEnumDenied),
+	// 				DenialReason: to.Ptr("Carbon Optimization Reader permisison required"),
+	// 			},
+	// 		},
+	// 		Value: []armcarbonoptimization.CarbonEmissionDataClassification{
+	// 			&armcarbonoptimization.CarbonEmissionTopItemsSummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsSummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumSubscription),
+	// 			},
+	// 			&armcarbonoptimization.CarbonEmissionTopItemsSummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsSummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("00000000-0000-0000-0000-000000000001"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumSubscription),
+	// 			},
+	// 			&armcarbonoptimization.CarbonEmissionTopItemsSummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsSummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("00000000-0000-0000-0000-000000000002"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumSubscription),
+	// 			},
+	// 			&armcarbonoptimization.CarbonEmissionTopItemsSummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsSummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("00000000-0000-0000-0000-000000000003"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumSubscription),
+	// 			},
+	// 			&armcarbonoptimization.CarbonEmissionTopItemsSummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsSummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.05),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](1),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("00000000-0000-0000-0000-000000000004"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumSubscription),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-05-01-preview/queryCarbonEmissionsByBillingAccountMonthlySummaryReport.json
+func ExampleCarbonServiceClient_QueryCarbonEmissionReportsByBillingAccount_queryCarbonEmissionByBillingAccountMonthlySummaryReport() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcarbonoptimization.NewClientFactory(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewCarbonServiceClient().QueryCarbonEmissionReportsByBillingAccount(ctx, "providers/Microsoft.Billing/billingAccounts/12345678", &armcarbonoptimization.BillingAccountMonthlySummaryReportQueryFilter{
+		ReportType: to.Ptr(armcarbonoptimization.ReportTypeEnumMonthlySummaryReport),
+		CarbonScopeList: []*armcarbonoptimization.EmissionScopeEnum{
+			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope1),
+			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope2),
+			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope3),
+		},
+		DateRange: &armcarbonoptimization.DateRange{
+			Start: to.Ptr(time.Date(2024, time.March, 1, 0, 0, 0, 0, time.UTC)),
+			End:   to.Ptr(time.Date(2024, time.May, 1, 0, 0, 0, 0, time.UTC)),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsByBillingAccountResponse{
+	// 	CarbonEmissionDataListResult: armcarbonoptimization.CarbonEmissionDataListResult{
+	// 		Value: []armcarbonoptimization.CarbonEmissionDataClassification{
+	// 			&armcarbonoptimization.CarbonEmissionMonthlySummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumMonthlySummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](5.25),
+	// 				PreviousMonthEmissions: to.Ptr[float64](4.8),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](0.09375),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.45),
+	// 				Date: to.Ptr("2024-05-01"),
+	// 				CarbonIntensity: to.Ptr[float64](22),
+	// 			},
+	// 			&armcarbonoptimization.CarbonEmissionMonthlySummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumMonthlySummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](5.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](4.7),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](0.0851),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.4),
+	// 				Date: to.Ptr("2024-04-01"),
+	// 				CarbonIntensity: to.Ptr[float64](21),
+	// 			},
+	// 			&armcarbonoptimization.CarbonEmissionMonthlySummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumMonthlySummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](4.95),
+	// 				PreviousMonthEmissions: to.Ptr[float64](4.6),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](0.0761),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.35),
+	// 				Date: to.Ptr("2024-03-01"),
+	// 				CarbonIntensity: to.Ptr[float64](20),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-05-01-preview/queryCarbonEmissionsByBillingAccountOverallSummaryReport.json
+func ExampleCarbonServiceClient_QueryCarbonEmissionReportsByBillingAccount_queryCarbonEmissionByBillingAccountOverallSummaryReport() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcarbonoptimization.NewClientFactory(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewCarbonServiceClient().QueryCarbonEmissionReportsByBillingAccount(ctx, "providers/Microsoft.Billing/billingAccounts/12345678", &armcarbonoptimization.BillingAccountOverallSummaryReportQueryFilter{
+		ReportType: to.Ptr(armcarbonoptimization.ReportTypeEnumOverallSummaryReport),
+		CarbonScopeList: []*armcarbonoptimization.EmissionScopeEnum{
+			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope1),
+			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope2),
+			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope3),
+		},
+		DateRange: &armcarbonoptimization.DateRange{
+			Start: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
+			End:   to.Ptr(time.Date(2024, time.June, 1, 0, 0, 0, 0, time.UTC)),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsByBillingAccountResponse{
+	// 	CarbonEmissionDataListResult: armcarbonoptimization.CarbonEmissionDataListResult{
+	// 		Value: []armcarbonoptimization.CarbonEmissionDataClassification{
+	// 			&armcarbonoptimization.CarbonEmissionOverallSummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumOverallSummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](5.25),
+	// 				PreviousMonthEmissions: to.Ptr[float64](4.8),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](0.09375),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.45),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-05-01-preview/queryCarbonEmissionsByBillingAccountSubscriptionItemDetailsReport.json
+func ExampleCarbonServiceClient_QueryCarbonEmissionReportsByBillingAccount_queryCarbonEmissionByBillingAccountSubscriptionItemDetailsReport() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcarbonoptimization.NewClientFactory(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewCarbonServiceClient().QueryCarbonEmissionReportsByBillingAccount(ctx, "providers/Microsoft.Billing/billingAccounts/12345678", &armcarbonoptimization.BillingAccountItemDetailsReportQueryFilter{
+		ReportType: to.Ptr(armcarbonoptimization.ReportTypeEnumItemDetailsReport),
+		CarbonScopeList: []*armcarbonoptimization.EmissionScopeEnum{
+			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope1),
+			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope3),
+		},
+		DateRange: &armcarbonoptimization.DateRange{
+			Start: to.Ptr(time.Date(2024, time.May, 1, 0, 0, 0, 0, time.UTC)),
+			End:   to.Ptr(time.Date(2024, time.May, 1, 0, 0, 0, 0, time.UTC)),
+		},
+		CategoryType:  to.Ptr(armcarbonoptimization.BillingAccountCategoryTypeEnumSubscription),
+		OrderBy:       to.Ptr(armcarbonoptimization.BillingAccountOrderByColumnEnumLatestMonthEmissions),
+		SortDirection: to.Ptr(armcarbonoptimization.SortDirectionEnumDesc),
+		PageSize:      to.Ptr[int32](100),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsByBillingAccountResponse{
+	// 	CarbonEmissionDataListResult: armcarbonoptimization.CarbonEmissionDataListResult{
+	// 		Value: []armcarbonoptimization.CarbonEmissionDataClassification{
+	// 			&armcarbonoptimization.CarbonEmissionItemDetailData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumItemDetailsData),
+	// 				LatestMonthEmissions: to.Ptr[float64](1.2),
+	// 				PreviousMonthEmissions: to.Ptr[float64](1),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](0.2),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.2),
+	// 				ItemName: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumSubscription),
+	// 			},
+	// 			&armcarbonoptimization.CarbonEmissionItemDetailData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumItemDetailsData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.95),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.9),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](0.0556),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("00000000-0000-0000-0000-000000000001"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumSubscription),
+	// 			},
+	// 		},
+	// 		SkipToken: to.Ptr("dGVzdF9za2lwX3Rva2Vu"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-05-01-preview/queryCarbonEmissionsByBillingAccountTopNSubscriptionItemsMonthlyReport.json
+func ExampleCarbonServiceClient_QueryCarbonEmissionReportsByBillingAccount_queryCarbonEmissionByBillingAccountTopNSubscriptionsMonthlyReport() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcarbonoptimization.NewClientFactory(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewCarbonServiceClient().QueryCarbonEmissionReportsByBillingAccount(ctx, "providers/Microsoft.Billing/billingAccounts/12345678", &armcarbonoptimization.BillingAccountTopItemsMonthlySummaryReportQueryFilter{
+		ReportType: to.Ptr(armcarbonoptimization.ReportTypeEnumTopItemsMonthlySummaryReport),
+		CarbonScopeList: []*armcarbonoptimization.EmissionScopeEnum{
+			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope1),
+			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope3),
+		},
+		DateRange: &armcarbonoptimization.DateRange{
+			Start: to.Ptr(time.Date(2024, time.March, 1, 0, 0, 0, 0, time.UTC)),
+			End:   to.Ptr(time.Date(2024, time.May, 1, 0, 0, 0, 0, time.UTC)),
+		},
+		CategoryType: to.Ptr(armcarbonoptimization.BillingAccountCategoryTypeEnumSubscription),
+		TopItems:     to.Ptr[int32](2),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsByBillingAccountResponse{
+	// 	CarbonEmissionDataListResult: armcarbonoptimization.CarbonEmissionDataListResult{
+	// 		Value: []armcarbonoptimization.CarbonEmissionDataClassification{
+	// 			&armcarbonoptimization.CarbonEmissionTopItemMonthlySummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsMonthlySummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](1.2),
+	// 				PreviousMonthEmissions: to.Ptr[float64](1),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](0.2),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.2),
+	// 				ItemName: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumSubscription),
+	// 				Date: to.Ptr("2024-05-01"),
+	// 			},
+	// 			&armcarbonoptimization.CarbonEmissionTopItemMonthlySummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsMonthlySummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](1.1),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.95),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](0.1579),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.15),
+	// 				ItemName: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumSubscription),
+	// 				Date: to.Ptr("2024-04-01"),
+	// 			},
+	// 			&armcarbonoptimization.CarbonEmissionTopItemMonthlySummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsMonthlySummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.95),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.9),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](0.0556),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("00000000-0000-0000-0000-000000000001"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumSubscription),
+	// 				Date: to.Ptr("2024-03-01"),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-05-01-preview/queryCarbonEmissionsByBillingAccountTopNSubscriptionItemsReport.json
+func ExampleCarbonServiceClient_QueryCarbonEmissionReportsByBillingAccount_queryCarbonEmissionByBillingAccountTopNSubscriptionsReport() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcarbonoptimization.NewClientFactory(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewCarbonServiceClient().QueryCarbonEmissionReportsByBillingAccount(ctx, "providers/Microsoft.Billing/billingAccounts/12345678", &armcarbonoptimization.BillingAccountTopItemsSummaryReportQueryFilter{
+		ReportType: to.Ptr(armcarbonoptimization.ReportTypeEnumTopItemsSummaryReport),
+		CarbonScopeList: []*armcarbonoptimization.EmissionScopeEnum{
+			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope1),
+			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope3),
+		},
+		DateRange: &armcarbonoptimization.DateRange{
+			Start: to.Ptr(time.Date(2024, time.May, 1, 0, 0, 0, 0, time.UTC)),
+			End:   to.Ptr(time.Date(2024, time.May, 1, 0, 0, 0, 0, time.UTC)),
+		},
+		CategoryType: to.Ptr(armcarbonoptimization.BillingAccountCategoryTypeEnumSubscription),
+		TopItems:     to.Ptr[int32](2),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsByBillingAccountResponse{
+	// 	CarbonEmissionDataListResult: armcarbonoptimization.CarbonEmissionDataListResult{
+	// 		Value: []armcarbonoptimization.CarbonEmissionDataClassification{
+	// 			&armcarbonoptimization.CarbonEmissionTopItemsSummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsSummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](1.2),
+	// 				PreviousMonthEmissions: to.Ptr[float64](1),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](0.2),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.2),
+	// 				ItemName: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumSubscription),
+	// 			},
+	// 			&armcarbonoptimization.CarbonEmissionTopItemsSummaryData{
+	// 				DataType: to.Ptr(armcarbonoptimization.ResponseDataTypeEnumTopItemsSummaryData),
+	// 				LatestMonthEmissions: to.Ptr[float64](0.95),
+	// 				PreviousMonthEmissions: to.Ptr[float64](0.9),
+	// 				MonthOverMonthEmissionsChangeRatio: to.Ptr[float64](0.0556),
+	// 				MonthlyEmissionsChangeValue: to.Ptr[float64](0.05),
+	// 				ItemName: to.Ptr("00000000-0000-0000-0000-000000000001"),
+	// 				CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumSubscription),
+	// 			},
+	// 		},
 	// 	},
 	// }
 }

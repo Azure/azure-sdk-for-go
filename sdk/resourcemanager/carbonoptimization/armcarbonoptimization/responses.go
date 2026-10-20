@@ -10,13 +10,13 @@ type CarbonServiceClientQueryCarbonEmissionDataAvailableDateRangeResponse struct
 	CarbonEmissionDataAvailableDateRange
 }
 
-// CarbonServiceClientQueryCarbonEmissionReportsByBillingAccountResponse contains the response from method CarbonServiceClient.NewQueryCarbonEmissionReportsByBillingAccountPager.
+// CarbonServiceClientQueryCarbonEmissionReportsByBillingAccountResponse contains the response from method CarbonServiceClient.QueryCarbonEmissionReportsByBillingAccount.
 type CarbonServiceClientQueryCarbonEmissionReportsByBillingAccountResponse struct {
 	// List of carbon emission results
 	CarbonEmissionDataListResult
 }
 
-// CarbonServiceClientQueryCarbonEmissionReportsResponse contains the response from method CarbonServiceClient.NewQueryCarbonEmissionReportsPager.
+// CarbonServiceClientQueryCarbonEmissionReportsResponse contains the response from method CarbonServiceClient.QueryCarbonEmissionReports.
 type CarbonServiceClientQueryCarbonEmissionReportsResponse struct {
 	// List of carbon emission results
 	CarbonEmissionDataListResult

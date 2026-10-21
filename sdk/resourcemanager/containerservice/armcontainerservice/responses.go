@@ -4,8 +4,38 @@
 
 package armcontainerservice
 
+// AgentFabricMembershipsClientCreateOrUpdateResponse contains the response from method AgentFabricMembershipsClient.BeginCreateOrUpdate.
+type AgentFabricMembershipsClientCreateOrUpdateResponse struct {
+	// The AgentFabric membership of a managed cluster. A cluster may belong to at most one AgentFabric, so this resource always
+	// has the name 'default'. See https://aka.ms/aks/agentfabric-membership.
+	AgentFabricMembership
+}
+
+// AgentFabricMembershipsClientDeleteResponse contains the response from method AgentFabricMembershipsClient.BeginDelete.
+type AgentFabricMembershipsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// AgentFabricMembershipsClientGetResponse contains the response from method AgentFabricMembershipsClient.Get.
+type AgentFabricMembershipsClientGetResponse struct {
+	// The AgentFabric membership of a managed cluster. A cluster may belong to at most one AgentFabric, so this resource always
+	// has the name 'default'. See https://aka.ms/aks/agentfabric-membership.
+	AgentFabricMembership
+}
+
+// AgentFabricMembershipsClientListByManagedClusterResponse contains the response from method AgentFabricMembershipsClient.NewListByManagedClusterPager.
+type AgentFabricMembershipsClientListByManagedClusterResponse struct {
+	// The result of a request to list the AgentFabric memberships of a managed cluster.
+	AgentFabricMembershipsListResult
+}
+
 // AgentPoolsClientAbortLatestOperationResponse contains the response from method AgentPoolsClient.BeginAbortLatestOperation.
 type AgentPoolsClientAbortLatestOperationResponse struct {
+	// placeholder for future response values
+}
+
+// AgentPoolsClientCompleteUpgradeResponse contains the response from method AgentPoolsClient.BeginCompleteUpgrade.
+type AgentPoolsClientCompleteUpgradeResponse struct {
 	// placeholder for future response values
 }
 
@@ -43,15 +73,58 @@ type AgentPoolsClientGetUpgradeProfileResponse struct {
 	AgentPoolUpgradeProfile
 }
 
+// AgentPoolsClientListBootstrapDataResponse contains the response from method AgentPoolsClient.ListBootstrapData.
+type AgentPoolsClientListBootstrapDataResponse struct {
+	// Bootstrap configuration for a FlexNode pool.
+	PoolBootstrapData
+}
+
 // AgentPoolsClientListResponse contains the response from method AgentPoolsClient.NewListPager.
 type AgentPoolsClientListResponse struct {
 	// The response of a AgentPool list operation.
 	AgentPoolListResult
 }
 
+// AgentPoolsClientUpdateResponse contains the response from method AgentPoolsClient.BeginUpdate.
+type AgentPoolsClientUpdateResponse struct {
+	// Agent Pool.
+	AgentPool
+}
+
 // AgentPoolsClientUpgradeNodeImageVersionResponse contains the response from method AgentPoolsClient.BeginUpgradeNodeImageVersion.
 type AgentPoolsClientUpgradeNodeImageVersionResponse struct {
 	// placeholder for future response values
+}
+
+// AlertConfigurationsClientCreateOrUpdateResponse contains the response from method AlertConfigurationsClient.BeginCreateOrUpdate.
+type AlertConfigurationsClientCreateOrUpdateResponse struct {
+	// Alert configuration for a managed cluster. Allows configuring AKS-managed alerts
+	// that notify users of important cluster events and conditions.
+	AlertConfiguration
+}
+
+// AlertConfigurationsClientDeleteResponse contains the response from method AlertConfigurationsClient.BeginDelete.
+type AlertConfigurationsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// AlertConfigurationsClientGetResponse contains the response from method AlertConfigurationsClient.Get.
+type AlertConfigurationsClientGetResponse struct {
+	// Alert configuration for a managed cluster. Allows configuring AKS-managed alerts
+	// that notify users of important cluster events and conditions.
+	AlertConfiguration
+}
+
+// AlertConfigurationsClientListByManagedClusterResponse contains the response from method AlertConfigurationsClient.NewListByManagedClusterPager.
+type AlertConfigurationsClientListByManagedClusterResponse struct {
+	// The response of a AlertConfiguration list operation.
+	AlertConfigurationListResult
+}
+
+// ClientListNodeImageVersionsResponse contains the response from method Client.NewListNodeImageVersionsPager.
+type ClientListNodeImageVersionsResponse struct {
+	// Holds an array NodeImageVersions
+	NodeImageVersionsListResult
 }
 
 // IdentityBindingsClientCreateOrUpdateResponse contains the response from method IdentityBindingsClient.BeginCreateOrUpdate.
@@ -75,6 +148,67 @@ type IdentityBindingsClientGetResponse struct {
 type IdentityBindingsClientListByManagedClusterResponse struct {
 	// The response of a IdentityBinding list operation.
 	IdentityBindingListResult
+}
+
+// JWTAuthenticatorsClientCreateOrUpdateResponse contains the response from method JWTAuthenticatorsClient.BeginCreateOrUpdate.
+type JWTAuthenticatorsClientCreateOrUpdateResponse struct {
+	// Configuration for JWT authenticator in the managed cluster.
+	JWTAuthenticator
+}
+
+// JWTAuthenticatorsClientDeleteResponse contains the response from method JWTAuthenticatorsClient.BeginDelete.
+type JWTAuthenticatorsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// JWTAuthenticatorsClientGetResponse contains the response from method JWTAuthenticatorsClient.Get.
+type JWTAuthenticatorsClientGetResponse struct {
+	// Configuration for JWT authenticator in the managed cluster.
+	JWTAuthenticator
+}
+
+// JWTAuthenticatorsClientListByManagedClusterResponse contains the response from method JWTAuthenticatorsClient.NewListByManagedClusterPager.
+type JWTAuthenticatorsClientListByManagedClusterResponse struct {
+	// The response of a JWTAuthenticator list operation.
+	JWTAuthenticatorListResult
+}
+
+// LoadBalancersClientCreateOrUpdateResponse contains the response from method LoadBalancersClient.CreateOrUpdate.
+type LoadBalancersClientCreateOrUpdateResponse struct {
+	// The configurations regarding multiple standard load balancers. If not supplied, single load balancer mode will be used.
+	// Multiple standard load balancers mode will be used if at lease one configuration is supplied. There has to be a configuration
+	// named `kubernetes`. The name field will be the name of the corresponding public load balancer. There will be an internal
+	// load balancer created if needed, and the name will be `<name>-internal`. The internal lb shares the same configurations
+	// as the external one. The internal lbs are not needed to be included in LoadBalancer list.
+	LoadBalancer
+}
+
+// LoadBalancersClientDeleteResponse contains the response from method LoadBalancersClient.BeginDelete.
+type LoadBalancersClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// LoadBalancersClientGetResponse contains the response from method LoadBalancersClient.Get.
+type LoadBalancersClientGetResponse struct {
+	// The configurations regarding multiple standard load balancers. If not supplied, single load balancer mode will be used.
+	// Multiple standard load balancers mode will be used if at lease one configuration is supplied. There has to be a configuration
+	// named `kubernetes`. The name field will be the name of the corresponding public load balancer. There will be an internal
+	// load balancer created if needed, and the name will be `<name>-internal`. The internal lb shares the same configurations
+	// as the external one. The internal lbs are not needed to be included in LoadBalancer list.
+	LoadBalancer
+}
+
+// LoadBalancersClientListByManagedClusterResponse contains the response from method LoadBalancersClient.NewListByManagedClusterPager.
+type LoadBalancersClientListByManagedClusterResponse struct {
+	// The response of a LoadBalancer list operation.
+	LoadBalancerListResult
+}
+
+// MachinesClientCreateOrUpdateResponse contains the response from method MachinesClient.BeginCreateOrUpdate.
+type MachinesClientCreateOrUpdateResponse struct {
+	// A machine. Contains details about the underlying virtual machine. A machine may be visible here but not in kubectl get
+	// nodes; if so it may be because the machine has not been registered with the Kubernetes API Server yet.
+	Machine
 }
 
 // MachinesClientGetResponse contains the response from method MachinesClient.Get.
@@ -115,6 +249,79 @@ type MaintenanceConfigurationsClientListByManagedClusterResponse struct {
 	MaintenanceConfigurationListResult
 }
 
+// MaintenanceWindowsClientCreateOrUpdateResponse contains the response from method MaintenanceWindowsClient.BeginCreateOrUpdate.
+type MaintenanceWindowsClientCreateOrUpdateResponse struct {
+	// A maintenance window is a resource-group-scoped resource that defines a reusable maintenance schedule which can be linked
+	// to maintenance configurations on one or more managed clusters. For more information, see https://aka.ms/aks/maintenance-windows.
+	MaintenanceWindowResource
+}
+
+// MaintenanceWindowsClientDeleteResponse contains the response from method MaintenanceWindowsClient.BeginDelete.
+type MaintenanceWindowsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// MaintenanceWindowsClientGetResponse contains the response from method MaintenanceWindowsClient.Get.
+type MaintenanceWindowsClientGetResponse struct {
+	// A maintenance window is a resource-group-scoped resource that defines a reusable maintenance schedule which can be linked
+	// to maintenance configurations on one or more managed clusters. For more information, see https://aka.ms/aks/maintenance-windows.
+	MaintenanceWindowResource
+}
+
+// MaintenanceWindowsClientListBySubscriptionResponse contains the response from method MaintenanceWindowsClient.NewListBySubscriptionPager.
+type MaintenanceWindowsClientListBySubscriptionResponse struct {
+	// The response of a MaintenanceWindowResource list operation.
+	MaintenanceWindowResourceListResult
+}
+
+// MaintenanceWindowsClientListResponse contains the response from method MaintenanceWindowsClient.NewListPager.
+type MaintenanceWindowsClientListResponse struct {
+	// The response of a MaintenanceWindowResource list operation.
+	MaintenanceWindowResourceListResult
+}
+
+// MaintenanceWindowsClientUpdateTagsResponse contains the response from method MaintenanceWindowsClient.UpdateTags.
+type MaintenanceWindowsClientUpdateTagsResponse struct {
+	// A maintenance window is a resource-group-scoped resource that defines a reusable maintenance schedule which can be linked
+	// to maintenance configurations on one or more managed clusters. For more information, see https://aka.ms/aks/maintenance-windows.
+	MaintenanceWindowResource
+}
+
+// ManagedClusterSnapshotsClientCreateOrUpdateResponse contains the response from method ManagedClusterSnapshotsClient.CreateOrUpdate.
+type ManagedClusterSnapshotsClientCreateOrUpdateResponse struct {
+	// A managed cluster snapshot resource.
+	ManagedClusterSnapshot
+}
+
+// ManagedClusterSnapshotsClientDeleteResponse contains the response from method ManagedClusterSnapshotsClient.Delete.
+type ManagedClusterSnapshotsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ManagedClusterSnapshotsClientGetResponse contains the response from method ManagedClusterSnapshotsClient.Get.
+type ManagedClusterSnapshotsClientGetResponse struct {
+	// A managed cluster snapshot resource.
+	ManagedClusterSnapshot
+}
+
+// ManagedClusterSnapshotsClientListByResourceGroupResponse contains the response from method ManagedClusterSnapshotsClient.NewListByResourceGroupPager.
+type ManagedClusterSnapshotsClientListByResourceGroupResponse struct {
+	// The response of a ManagedClusterSnapshot list operation.
+	ManagedClusterSnapshotListResult
+}
+
+// ManagedClusterSnapshotsClientListResponse contains the response from method ManagedClusterSnapshotsClient.NewListPager.
+type ManagedClusterSnapshotsClientListResponse struct {
+	// The response of a ManagedClusterSnapshot list operation.
+	ManagedClusterSnapshotListResult
+}
+
+// ManagedClusterSnapshotsClientUpdateTagsResponse contains the response from method ManagedClusterSnapshotsClient.UpdateTags.
+type ManagedClusterSnapshotsClientUpdateTagsResponse struct {
+	// A managed cluster snapshot resource.
+	ManagedClusterSnapshot
+}
+
 // ManagedClustersClientAbortLatestOperationResponse contains the response from method ManagedClustersClient.BeginAbortLatestOperation.
 type ManagedClustersClientAbortLatestOperationResponse struct {
 	// placeholder for future response values
@@ -146,6 +353,12 @@ type ManagedClustersClientGetCommandResultResponse struct {
 	Location *string
 }
 
+// ManagedClustersClientGetGuardrailsVersionsResponse contains the response from method ManagedClustersClient.GetGuardrailsVersions.
+type ManagedClustersClientGetGuardrailsVersionsResponse struct {
+	// Available Guardrails Version
+	GuardrailsAvailableVersion
+}
+
 // ManagedClustersClientGetMeshRevisionProfileResponse contains the response from method ManagedClustersClient.GetMeshRevisionProfile.
 type ManagedClustersClientGetMeshRevisionProfileResponse struct {
 	// Mesh revision profile for a mesh.
@@ -162,6 +375,12 @@ type ManagedClustersClientGetMeshUpgradeProfileResponse struct {
 type ManagedClustersClientGetResponse struct {
 	// Managed cluster.
 	ManagedCluster
+}
+
+// ManagedClustersClientGetSafeguardsVersionsResponse contains the response from method ManagedClustersClient.GetSafeguardsVersions.
+type ManagedClustersClientGetSafeguardsVersionsResponse struct {
+	// Available Safeguards Version
+	SafeguardsAvailableVersion
 }
 
 // ManagedClustersClientGetUpgradeProfileResponse contains the response from method ManagedClustersClient.GetUpgradeProfile.
@@ -194,6 +413,12 @@ type ManagedClustersClientListClusterUserCredentialsResponse struct {
 	CredentialResults
 }
 
+// ManagedClustersClientListGuardrailsVersionsResponse contains the response from method ManagedClustersClient.NewListGuardrailsVersionsPager.
+type ManagedClustersClientListGuardrailsVersionsResponse struct {
+	// Hold values properties, which is array of GuardrailsVersions
+	GuardrailsAvailableVersionsList
+}
+
 // ManagedClustersClientListKubernetesVersionsResponse contains the response from method ManagedClustersClient.ListKubernetesVersions.
 type ManagedClustersClientListKubernetesVersionsResponse struct {
 	// Hold values properties, which is array of KubernetesVersion
@@ -222,6 +447,17 @@ type ManagedClustersClientListOutboundNetworkDependenciesEndpointsResponse struc
 type ManagedClustersClientListResponse struct {
 	// The response of a ManagedCluster list operation.
 	ManagedClusterListResult
+}
+
+// ManagedClustersClientListSafeguardsVersionsResponse contains the response from method ManagedClustersClient.NewListSafeguardsVersionsPager.
+type ManagedClustersClientListSafeguardsVersionsResponse struct {
+	// Hold values properties, which is array of SafeguardsVersions
+	SafeguardsAvailableVersionsList
+}
+
+// ManagedClustersClientRebalanceLoadBalancersResponse contains the response from method ManagedClustersClient.BeginRebalanceLoadBalancers.
+type ManagedClustersClientRebalanceLoadBalancersResponse struct {
+	// placeholder for future response values
 }
 
 // ManagedClustersClientResetAADProfileResponse contains the response from method ManagedClustersClient.BeginResetAADProfile.
@@ -299,6 +535,53 @@ type ManagedNamespacesClientListCredentialResponse struct {
 type ManagedNamespacesClientUpdateResponse struct {
 	// Namespace managed by ARM.
 	ManagedNamespace
+}
+
+// MeshMembershipsClientCreateOrUpdateResponse contains the response from method MeshMembershipsClient.BeginCreateOrUpdate.
+type MeshMembershipsClientCreateOrUpdateResponse struct {
+	// Mesh membership of a managed cluster.
+	MeshMembership
+}
+
+// MeshMembershipsClientDeleteResponse contains the response from method MeshMembershipsClient.BeginDelete.
+type MeshMembershipsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// MeshMembershipsClientGetResponse contains the response from method MeshMembershipsClient.Get.
+type MeshMembershipsClientGetResponse struct {
+	// Mesh membership of a managed cluster.
+	MeshMembership
+}
+
+// MeshMembershipsClientListByManagedClusterResponse contains the response from method MeshMembershipsClient.NewListByManagedClusterPager.
+type MeshMembershipsClientListByManagedClusterResponse struct {
+	// The result of a request to list mesh memberships in a managed cluster.
+	MeshMembershipsListResult
+}
+
+// OperationStatusResultClientGetByAgentPoolResponse contains the response from method OperationStatusResultClient.GetByAgentPool.
+type OperationStatusResultClientGetByAgentPoolResponse struct {
+	// The current status of an async operation.
+	OperationStatusResult
+}
+
+// OperationStatusResultClientGetResponse contains the response from method OperationStatusResultClient.Get.
+type OperationStatusResultClientGetResponse struct {
+	// The current status of an async operation.
+	OperationStatusResult
+}
+
+// OperationStatusResultClientListByAgentPoolResponse contains the response from method OperationStatusResultClient.NewListByAgentPoolPager.
+type OperationStatusResultClientListByAgentPoolResponse struct {
+	// The operations list. It contains an URL link to get the next set of results.
+	OperationStatusResultList
+}
+
+// OperationStatusResultClientListResponse contains the response from method OperationStatusResultClient.NewListPager.
+type OperationStatusResultClientListResponse struct {
+	// The operations list. It contains an URL link to get the next set of results.
+	OperationStatusResultList
 }
 
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
@@ -404,4 +687,58 @@ type TrustedAccessRoleBindingsClientListResponse struct {
 type TrustedAccessRolesClientListResponse struct {
 	// List of trusted access roles
 	TrustedAccessRoleListResult
+}
+
+// UpgradeInsightsClientGenerateResponse contains the response from method UpgradeInsightsClient.Generate.
+type UpgradeInsightsClientGenerateResponse struct {
+	// An upgrade insight for a managed cluster: an on-demand readiness evaluation for an
+	// upgrade scope, produced by the generateUpgradeInsights action on the managed cluster
+	// and addressable by a server-generated name. The name identifies
+	// the scope and evaluated target —
+	// `controlPlane-<targetKubernetesVersion>` (for example `controlPlane-1.33.5`),
+	// `controlPlaneAndAgentPools-<targetKubernetesVersion>`,
+	// `agentPool-<agentPoolName>-<targetKubernetesVersion>` (for example
+	// `agentPool-nodepool1-1.33.5`), or
+	// `nodeImage-<agentPoolName>-<nodeImageVersion>` (for example
+	// `nodeImage-nodepool1-202607.01.0`). The node image segment contains only the numeric
+	// image version, while `properties.targetNodeImageVersion` returns the full image name.
+	// The resource itself
+	// is read-only: GET returns the stored evaluation and LIST returns the stored
+	// evaluations for the cluster. Evaluations are (re)generated via the managed cluster's
+	// generateUpgradeInsights action, whose response body is the same UpgradeInsight
+	// representation returned by GET.
+	UpgradeInsight
+}
+
+// UpgradeInsightsClientGetResponse contains the response from method UpgradeInsightsClient.Get.
+type UpgradeInsightsClientGetResponse struct {
+	// An upgrade insight for a managed cluster: an on-demand readiness evaluation for an
+	// upgrade scope, produced by the generateUpgradeInsights action on the managed cluster
+	// and addressable by a server-generated name. The name identifies
+	// the scope and evaluated target —
+	// `controlPlane-<targetKubernetesVersion>` (for example `controlPlane-1.33.5`),
+	// `controlPlaneAndAgentPools-<targetKubernetesVersion>`,
+	// `agentPool-<agentPoolName>-<targetKubernetesVersion>` (for example
+	// `agentPool-nodepool1-1.33.5`), or
+	// `nodeImage-<agentPoolName>-<nodeImageVersion>` (for example
+	// `nodeImage-nodepool1-202607.01.0`). The node image segment contains only the numeric
+	// image version, while `properties.targetNodeImageVersion` returns the full image name.
+	// The resource itself
+	// is read-only: GET returns the stored evaluation and LIST returns the stored
+	// evaluations for the cluster. Evaluations are (re)generated via the managed cluster's
+	// generateUpgradeInsights action, whose response body is the same UpgradeInsight
+	// representation returned by GET.
+	UpgradeInsight
+}
+
+// UpgradeInsightsClientListResponse contains the response from method UpgradeInsightsClient.NewListPager.
+type UpgradeInsightsClientListResponse struct {
+	// The response of a UpgradeInsight list operation.
+	UpgradeInsightListResult
+}
+
+// VMSKUsClientListResponse contains the response from method VMSKUsClient.NewListPager.
+type VMSKUsClientListResponse struct {
+	// The List Resource Skus operation response.
+	VMSKUsListResult
 }

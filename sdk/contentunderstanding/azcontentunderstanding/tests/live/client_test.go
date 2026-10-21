@@ -3,7 +3,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package azcontentunderstanding
+package azcontentunderstanding_test
 
 import (
 	"bytes"
@@ -21,19 +21,20 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	sdk "github.com/Azure/azure-sdk-for-go/sdk/contentunderstanding/azcontentunderstanding"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
 const liveSampleURL = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/document/invoice.pdf"
 
-func liveClient(t *testing.T, apiVersion string) *Client {
+func liveClient(t *testing.T, apiVersion string) *sdk.Client {
 	t.Helper()
 	endpoint := os.Getenv("CONTENTUNDERSTANDING_ENDPOINT")
 	require.NotEmpty(t, endpoint, "live tests require CONTENTUNDERSTANDING_ENDPOINT")
 	credential, err := azidentity.NewAzureCLICredential(nil)
 	require.NoError(t, err)
-	client, err := NewClient(endpoint, credential, &ClientOptions{APIVersion: apiVersion})
+	client, err := sdk.NewClient(endpoint, credential, &sdk.ClientOptions{APIVersion: apiVersion})
 	require.NoError(t, err)
 	return client
 }
@@ -45,7 +46,7 @@ func liveContext(t *testing.T) context.Context {
 	return ctx
 }
 
-func assertLiveAnalysis(t *testing.T, result AnalyzeResponse) {
+func assertLiveAnalysis(t *testing.T, result sdk.AnalyzeResponse) {
 	t.Helper()
 	assert.Equal(t, "Succeeded", result.Status)
 	require.NotEmpty(t, result.RawJSON)
@@ -74,7 +75,7 @@ func TestLiveAnalyze(t *testing.T) {
 	data, err := io.ReadAll(response.Body)
 	require.NoError(t, err)
 	require.NotEmpty(t, data)
-	for _, apiVersion := range []string{APIVersionGA, APIVersionPreview} {
+	for _, apiVersion := range []string{sdk.APIVersionGA, sdk.APIVersionPreview} {
 		t.Run(apiVersion, func(t *testing.T) {
 			client := liveClient(t, apiVersion)
 			defaults, err := client.GetDefaults(ctx)
@@ -88,25 +89,25 @@ func TestLiveAnalyze(t *testing.T) {
 				assertLiveAnalysis(t, result)
 			})
 			t.Run("url", func(t *testing.T) {
-				poller, err := client.BeginAnalyze(ctx, "prebuilt-layout", AnalyzeRequest{Inputs: []AnalysisInput{{URL: liveSampleURL}}})
+				poller, err := client.BeginAnalyze(ctx, "prebuilt-layout", sdk.AnalyzeRequest{Inputs: []sdk.AnalysisInput{{URL: liveSampleURL}}})
 				require.NoError(t, err)
 				result, err := poller.PollUntilDone(ctx, &runtime.PollUntilDoneOptions{Frequency: time.Second})
 				require.NoError(t, err)
 				assertLiveAnalysis(t, result)
 			})
 			t.Run("base64", func(t *testing.T) {
-				poller, err := client.BeginAnalyze(ctx, "prebuilt-layout", AnalyzeRequest{
-					Inputs: []AnalysisInput{{Data: data, Name: "invoice.pdf", MIMEType: "application/pdf"}},
+				poller, err := client.BeginAnalyze(ctx, "prebuilt-layout", sdk.AnalyzeRequest{
+					Inputs: []sdk.AnalysisInput{{Data: data, Name: "invoice.pdf", MIMEType: "application/pdf"}},
 				})
 				require.NoError(t, err)
 				result, err := poller.PollUntilDone(ctx, &runtime.PollUntilDoneOptions{Frequency: time.Second})
 				require.NoError(t, err)
 				assertLiveAnalysis(t, result)
 			})
-			if apiVersion == APIVersionGA {
+			if apiVersion == sdk.APIVersionGA {
 				t.Run("schema-suggestion", func(t *testing.T) {
-					poller, err := client.BeginAnalyze(ctx, "prebuilt-documentFieldSchema", AnalyzeRequest{
-						Inputs: []AnalysisInput{{Data: data, Name: "invoice.pdf", MIMEType: "application/pdf"}},
+					poller, err := client.BeginAnalyze(ctx, "prebuilt-documentFieldSchema", sdk.AnalyzeRequest{
+						Inputs: []sdk.AnalysisInput{{Data: data, Name: "invoice.pdf", MIMEType: "application/pdf"}},
 					})
 					require.NoError(t, err)
 					result, err := poller.PollUntilDone(ctx, &runtime.PollUntilDoneOptions{Frequency: time.Second})
@@ -124,20 +125,20 @@ func TestLiveAnalyze(t *testing.T) {
 					assert.NotEmpty(t, projected.Contents[0].Fields["schema"].ValueJSON)
 				})
 			}
-			if apiVersion == APIVersionPreview {
+			if apiVersion == sdk.APIVersionPreview {
 				t.Run("inline-binary", func(t *testing.T) {
 					result, err := client.AnalyzeBinaryInline(ctx, "prebuilt-layout", streaming.NopCloser(bytes.NewReader(data)), "application/pdf")
 					require.NoError(t, err)
 					assertLiveAnalysis(t, result)
 				})
 				t.Run("inline-url", func(t *testing.T) {
-					result, err := client.AnalyzeInline(ctx, "prebuilt-layout", AnalyzeRequest{Inputs: []AnalysisInput{{URL: liveSampleURL}}})
+					result, err := client.AnalyzeInline(ctx, "prebuilt-layout", sdk.AnalyzeRequest{Inputs: []sdk.AnalysisInput{{URL: liveSampleURL}}})
 					require.NoError(t, err)
 					assertLiveAnalysis(t, result)
 				})
 				t.Run("invalid-inline-input", func(t *testing.T) {
-					_, err := client.AnalyzeInline(ctx, "prebuilt-layout", AnalyzeRequest{
-						Inputs: []AnalysisInput{{URL: "https://example.invalid/no-input.pdf"}},
+					_, err := client.AnalyzeInline(ctx, "prebuilt-layout", sdk.AnalyzeRequest{
+						Inputs: []sdk.AnalysisInput{{URL: "https://example.invalid/no-input.pdf"}},
 					})
 					require.Error(t, err)
 					var responseErr *azcore.ResponseError
@@ -150,7 +151,7 @@ func TestLiveAnalyze(t *testing.T) {
 
 func TestLiveAnalyzerLifecycle(t *testing.T) {
 	ctx := liveContext(t)
-	client := liveClient(t, APIVersionGA)
+	client := liveClient(t, sdk.APIVersionGA)
 	id := fmt.Sprintf("go_prototype_%d", time.Now().UnixNano())
 	copyID := id + "_copy"
 	definition := json.RawMessage(`{"baseAnalyzerId":"prebuilt-document","description":"Go SDK prototype live test","models":{"completion":"gpt-5.2"},"config":{"enableLayout":true},"fieldSchema":{"fields":{"Vendor":{"type":"string","method":"extract","description":"Vendor name on the invoice"}}}}`)
@@ -179,7 +180,7 @@ func TestLiveAnalyzerLifecycle(t *testing.T) {
 		require.NotEmpty(t, resourceID, "authorization test requires the test resource ARM ID")
 		region := os.Getenv("CONTENTUNDERSTANDING_REGION")
 		require.NotEmpty(t, region, "authorization test requires the test resource region")
-		_, err := client.GrantCopyAuthorization(ctx, id, GrantCopyAuthorizationRequest{
+		_, err := client.GrantCopyAuthorization(ctx, id, sdk.GrantCopyAuthorizationRequest{
 			TargetAzureResourceID: resourceID, TargetRegion: region,
 		})
 		var responseErr *azcore.ResponseError
@@ -205,7 +206,7 @@ func TestLiveAnalyzerLifecycle(t *testing.T) {
 	var conflict *azcore.ResponseError
 	require.ErrorAs(t, err, &conflict)
 	assert.Equal(t, 409, conflict.StatusCode)
-	analysis, err := client.BeginAnalyze(ctx, id, AnalyzeRequest{Inputs: []AnalysisInput{{URL: liveSampleURL}}})
+	analysis, err := client.BeginAnalyze(ctx, id, sdk.AnalyzeRequest{Inputs: []sdk.AnalysisInput{{URL: liveSampleURL}}})
 	require.NoError(t, err)
 	result, err := analysis.PollUntilDone(ctx, &runtime.PollUntilDoneOptions{Frequency: time.Second})
 	require.NoError(t, err)
@@ -218,7 +219,7 @@ func TestLiveAnalyzerLifecycle(t *testing.T) {
 	require.NoError(t, json.Unmarshal(result.Result, &projected))
 	require.NotEmpty(t, projected.Contents)
 	assert.Contains(t, projected.Contents[0].Fields, "Vendor")
-	copier, err := client.BeginCopyAnalyzer(ctx, copyID, CopyAnalyzerRequest{SourceAnalyzerID: id})
+	copier, err := client.BeginCopyAnalyzer(ctx, copyID, sdk.CopyAnalyzerRequest{SourceAnalyzerID: id})
 	require.NoError(t, err)
 	copied, err := copier.PollUntilDone(ctx, &runtime.PollUntilDoneOptions{Frequency: time.Second})
 	require.NoError(t, err)

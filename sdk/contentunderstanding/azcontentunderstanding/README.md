@@ -68,11 +68,30 @@ HTTP 200 responses with failed operation status return an error.
 
 ## Validation
 
+### Source layout
+
+The module root contains the reusable client and models with no test-only source.
+Tests live in separate subdirectories and consume only the public SDK API:
+
+```text
+azcontentunderstanding/
+  *.go                  # reusable client, operations and models
+  go.mod
+  go.sum
+  tests/
+    unit/               # offline HTTP contract tests
+    live/               # opt-in service tests, guarded by the live build tag
+```
+
+The SDK import path is unchanged. Reusing runtime source does not require copying
+the tests directory. All directories share one Go module; there are no nested
+test modules or additional runtime dependencies.
+
 Offline:
 
 ```sh
-go test -race ./...
-go vet ./...
+go test -race -coverpkg=. ./tests/unit/...
+go vet -tags live ./...
 go build ./...
 ```
 
@@ -81,7 +100,7 @@ same resource's `CONTENTUNDERSTANDING_RESOURCE_ID` and
 `CONTENTUNDERSTANDING_REGION` for authorization verification:
 
 ```sh
-go test -tags live -run TestLive -count=1 -timeout 30m -v ./...
+go test -tags live -run TestLive -count=1 -timeout 30m -v ./tests/live/...
 ```
 
 These tests incur service charges, submit a public sample invoice, and create,

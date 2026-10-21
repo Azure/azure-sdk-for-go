@@ -290,7 +290,7 @@ func TestRequestValidFail(t *testing.T) {
 		t.Fatal(err)
 	}
 	req.Raw().Header.Add("inval d", "header")
-	p := exported.NewPipeline(nil)
+	p := exported.NewPipeline(nil, nil)
 	resp, err := p.Do(req)
 	if err == nil {
 		t.Fatal("unexpected nil error")

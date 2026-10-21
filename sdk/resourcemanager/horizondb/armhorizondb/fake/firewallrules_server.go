@@ -21,9 +21,9 @@ import (
 
 // FirewallRulesServer is a fake server for instances of the armhorizondb.FirewallRulesClient type.
 type FirewallRulesServer struct {
-	// BeginCreateOrUpdate is the fake for method FirewallRulesClient.BeginCreateOrUpdate
+	// BeginCreateOrReplace is the fake for method FirewallRulesClient.BeginCreateOrReplace
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, clusterName string, poolName string, firewallRuleName string, resource armhorizondb.FirewallRule, options *armhorizondb.FirewallRulesClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armhorizondb.FirewallRulesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	BeginCreateOrReplace func(ctx context.Context, resourceGroupName string, clusterName string, poolName string, firewallRuleName string, resource armhorizondb.FirewallRule, options *armhorizondb.FirewallRulesClientBeginCreateOrReplaceOptions) (resp azfake.PollerResponder[armhorizondb.FirewallRulesClientCreateOrReplaceResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method FirewallRulesClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
@@ -43,20 +43,20 @@ type FirewallRulesServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewFirewallRulesServerTransport(srv *FirewallRulesServer) *FirewallRulesServerTransport {
 	return &FirewallRulesServerTransport{
-		srv:                 srv,
-		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armhorizondb.FirewallRulesClientCreateOrUpdateResponse]](),
-		beginDelete:         newTracker[azfake.PollerResponder[armhorizondb.FirewallRulesClientDeleteResponse]](),
-		newListPager:        newTracker[azfake.PagerResponder[armhorizondb.FirewallRulesClientListResponse]](),
+		srv:                  srv,
+		beginCreateOrReplace: newTracker[azfake.PollerResponder[armhorizondb.FirewallRulesClientCreateOrReplaceResponse]](),
+		beginDelete:          newTracker[azfake.PollerResponder[armhorizondb.FirewallRulesClientDeleteResponse]](),
+		newListPager:         newTracker[azfake.PagerResponder[armhorizondb.FirewallRulesClientListResponse]](),
 	}
 }
 
 // FirewallRulesServerTransport connects instances of armhorizondb.FirewallRulesClient to instances of FirewallRulesServer.
 // Don't use this type directly, use NewFirewallRulesServerTransport instead.
 type FirewallRulesServerTransport struct {
-	srv                 *FirewallRulesServer
-	beginCreateOrUpdate *tracker[azfake.PollerResponder[armhorizondb.FirewallRulesClientCreateOrUpdateResponse]]
-	beginDelete         *tracker[azfake.PollerResponder[armhorizondb.FirewallRulesClientDeleteResponse]]
-	newListPager        *tracker[azfake.PagerResponder[armhorizondb.FirewallRulesClientListResponse]]
+	srv                  *FirewallRulesServer
+	beginCreateOrReplace *tracker[azfake.PollerResponder[armhorizondb.FirewallRulesClientCreateOrReplaceResponse]]
+	beginDelete          *tracker[azfake.PollerResponder[armhorizondb.FirewallRulesClientDeleteResponse]]
+	newListPager         *tracker[azfake.PagerResponder[armhorizondb.FirewallRulesClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for FirewallRulesServerTransport.
@@ -80,8 +80,8 @@ func (f *FirewallRulesServerTransport) dispatchToMethodFake(req *http.Request, m
 		}
 		if !intercepted {
 			switch method {
-			case "FirewallRulesClient.BeginCreateOrUpdate":
-				res.resp, res.err = f.dispatchBeginCreateOrUpdate(req)
+			case "FirewallRulesClient.BeginCreateOrReplace":
+				res.resp, res.err = f.dispatchBeginCreateOrReplace(req)
 			case "FirewallRulesClient.BeginDelete":
 				res.resp, res.err = f.dispatchBeginDelete(req)
 			case "FirewallRulesClient.Get":
@@ -104,12 +104,12 @@ func (f *FirewallRulesServerTransport) dispatchToMethodFake(req *http.Request, m
 	}
 }
 
-func (f *FirewallRulesServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
-	if f.srv.BeginCreateOrUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
+func (f *FirewallRulesServerTransport) dispatchBeginCreateOrReplace(req *http.Request) (*http.Response, error) {
+	if f.srv.BeginCreateOrReplace == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrReplace not implemented")}
 	}
-	beginCreateOrUpdate := f.beginCreateOrUpdate.get(req)
-	if beginCreateOrUpdate == nil {
+	beginCreateOrReplace := f.beginCreateOrReplace.get(req)
+	if beginCreateOrReplace == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.HorizonDb/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/pools/(?P<poolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/firewallRules/(?P<firewallRuleName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -136,25 +136,25 @@ func (f *FirewallRulesServerTransport) dispatchBeginCreateOrUpdate(req *http.Req
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := f.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, clusterNameParam, poolNameParam, firewallRuleNameParam, body, nil)
+		respr, errRespr := f.srv.BeginCreateOrReplace(req.Context(), resourceGroupNameParam, clusterNameParam, poolNameParam, firewallRuleNameParam, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		beginCreateOrUpdate = &respr
-		f.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
+		beginCreateOrReplace = &respr
+		f.beginCreateOrReplace.add(req, beginCreateOrReplace)
 	}
 
-	resp, err := server.PollerResponderNext(beginCreateOrUpdate, req)
+	resp, err := server.PollerResponderNext(beginCreateOrReplace, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
-		f.beginCreateOrUpdate.remove(req)
+		f.beginCreateOrReplace.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(beginCreateOrUpdate) {
-		f.beginCreateOrUpdate.remove(req)
+	if !server.PollerResponderMore(beginCreateOrReplace) {
+		f.beginCreateOrReplace.remove(req)
 	}
 
 	return resp, nil

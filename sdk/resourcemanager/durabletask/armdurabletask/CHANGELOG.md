@@ -1,5 +1,68 @@
 # Release History
 
+## 1.2.0-beta.1 (2026-10-20)
+### Features Added
+
+- New enum type `DetectorRenderingType` with values `DetectorRenderingTypeDataSummary`, `DetectorRenderingTypeDynamicInsight`, `DetectorRenderingTypeEmailSnippet`, `DetectorRenderingTypeInsight`, `DetectorRenderingTypeMarkdown`, `DetectorRenderingTypePieChart`, `DetectorRenderingTypeTable`, `DetectorRenderingTypeTimeSeriesGraph`, `DetectorRenderingTypeTimeSeriesPerInstanceGraph`
+- New enum type `DetectorStatusID` with values `DetectorStatusIDCritical`, `DetectorStatusIDInfo`, `DetectorStatusIDNone`, `DetectorStatusIDSuccess`, `DetectorStatusIDWarning`
+- New enum type `DetectorType` with values `DetectorTypeAnalysis`, `DetectorTypeCategoryOverview`, `DetectorTypeDetector`
+- New enum type `FailoverState` with values `FailoverStateFailed`, `FailoverStateInProgress`, `FailoverStateNone`, `FailoverStateSucceeded`
+- New enum type `ManagedServiceIdentityType` with values `ManagedServiceIdentityTypeNone`, `ManagedServiceIdentityTypeSystemAssigned`, `ManagedServiceIdentityTypeSystemAssignedUserAssigned`, `ManagedServiceIdentityTypeUserAssigned`
+- New enum type `ReplicationRole` with values `ReplicationRolePrimary`, `ReplicationRoleSecondary`
+- New enum type `TransparentDataEncryptionKeySource` with values `TransparentDataEncryptionKeySourceCustomerManaged`, `TransparentDataEncryptionKeySourceMicrosoftManaged`
+- New function `*ClientFactory.NewDetectorsClient() *DetectorsClient`
+- New function `*ClientFactory.NewFailoverInstancesClient() *FailoverInstancesClient`
+- New function `*ClientFactory.NewTaskQueuesClient() *TaskQueuesClient`
+- New function `*ClientFactory.NewTransparentDataEncryptionsClient() *TransparentDataEncryptionsClient`
+- New function `NewDetectorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DetectorsClient, error)`
+- New function `*DetectorsClient.Get(ctx context.Context, resourceGroupName string, schedulerName string, detectorID string, options *DetectorsClientGetOptions) (DetectorsClientGetResponse, error)`
+- New function `*DetectorsClient.NewListBySchedulerPager(resourceGroupName string, schedulerName string, options *DetectorsClientListBySchedulerOptions) *runtime.Pager[DetectorsClientListBySchedulerResponse]`
+- New function `NewFailoverInstancesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FailoverInstancesClient, error)`
+- New function `*FailoverInstancesClient.BeginCreateOrReplace(ctx context.Context, resourceGroupName string, schedulerName string, resource FailoverInstance, options *FailoverInstancesClientBeginCreateOrReplaceOptions) (*runtime.Poller[FailoverInstancesClientCreateOrReplaceResponse], error)`
+- New function `*FailoverInstancesClient.BeginDelete(ctx context.Context, resourceGroupName string, schedulerName string, options *FailoverInstancesClientBeginDeleteOptions) (*runtime.Poller[FailoverInstancesClientDeleteResponse], error)`
+- New function `*FailoverInstancesClient.BeginFailover(ctx context.Context, resourceGroupName string, schedulerName string, options *FailoverInstancesClientBeginFailoverOptions) (*runtime.Poller[FailoverInstancesClientFailoverResponse], error)`
+- New function `*FailoverInstancesClient.BeginForceFailoverAllowDataLoss(ctx context.Context, resourceGroupName string, schedulerName string, options *FailoverInstancesClientBeginForceFailoverAllowDataLossOptions) (*runtime.Poller[FailoverInstancesClientForceFailoverAllowDataLossResponse], error)`
+- New function `*FailoverInstancesClient.Get(ctx context.Context, resourceGroupName string, schedulerName string, options *FailoverInstancesClientGetOptions) (FailoverInstancesClientGetResponse, error)`
+- New function `*FailoverInstancesClient.NewListBySchedulerPager(resourceGroupName string, schedulerName string, options *FailoverInstancesClientListBySchedulerOptions) *runtime.Pager[FailoverInstancesClientListBySchedulerResponse]`
+- New function `*SchedulersClient.Restart(ctx context.Context, resourceGroupName string, schedulerName string, options *SchedulersClientRestartOptions) (SchedulersClientRestartResponse, error)`
+- New function `NewTaskQueuesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TaskQueuesClient, error)`
+- New function `*TaskQueuesClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, schedulerName string, taskHubName string, taskQueueName string, resource TaskQueue, options *TaskQueuesClientBeginCreateOrUpdateOptions) (*runtime.Poller[TaskQueuesClientCreateOrUpdateResponse], error)`
+- New function `*TaskQueuesClient.BeginDelete(ctx context.Context, resourceGroupName string, schedulerName string, taskHubName string, taskQueueName string, options *TaskQueuesClientBeginDeleteOptions) (*runtime.Poller[TaskQueuesClientDeleteResponse], error)`
+- New function `*TaskQueuesClient.Get(ctx context.Context, resourceGroupName string, schedulerName string, taskHubName string, taskQueueName string, options *TaskQueuesClientGetOptions) (TaskQueuesClientGetResponse, error)`
+- New function `*TaskQueuesClient.NewListByTaskHubPager(resourceGroupName string, schedulerName string, taskHubName string, options *TaskQueuesClientListByTaskHubOptions) *runtime.Pager[TaskQueuesClientListByTaskHubResponse]`
+- New function `*TaskQueuesClient.BeginUpdate(ctx context.Context, resourceGroupName string, schedulerName string, taskHubName string, taskQueueName string, properties TaskQueueUpdate, options *TaskQueuesClientBeginUpdateOptions) (*runtime.Poller[TaskQueuesClientUpdateResponse], error)`
+- New function `NewTransparentDataEncryptionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TransparentDataEncryptionsClient, error)`
+- New function `*TransparentDataEncryptionsClient.BeginCreateOrReplace(ctx context.Context, resourceGroupName string, schedulerName string, resource TransparentDataEncryption, options *TransparentDataEncryptionsClientBeginCreateOrReplaceOptions) (*runtime.Poller[TransparentDataEncryptionsClientCreateOrReplaceResponse], error)`
+- New function `*TransparentDataEncryptionsClient.BeginDelete(ctx context.Context, resourceGroupName string, schedulerName string, options *TransparentDataEncryptionsClientBeginDeleteOptions) (*runtime.Poller[TransparentDataEncryptionsClientDeleteResponse], error)`
+- New function `*TransparentDataEncryptionsClient.Get(ctx context.Context, resourceGroupName string, schedulerName string, options *TransparentDataEncryptionsClientGetOptions) (TransparentDataEncryptionsClientGetResponse, error)`
+- New function `*TransparentDataEncryptionsClient.NewListBySchedulerPager(resourceGroupName string, schedulerName string, options *TransparentDataEncryptionsClientListBySchedulerOptions) *runtime.Pager[TransparentDataEncryptionsClientListBySchedulerResponse]`
+- New struct `Detector`
+- New struct `DetectorDataset`
+- New struct `DetectorListResult`
+- New struct `DetectorMetadata`
+- New struct `DetectorProperties`
+- New struct `DetectorRenderingProperties`
+- New struct `DetectorStatus`
+- New struct `DetectorTable`
+- New struct `DetectorTableColumn`
+- New struct `FailoverInstance`
+- New struct `FailoverInstanceListResult`
+- New struct `FailoverInstanceProperties`
+- New struct `ManagedServiceIdentity`
+- New struct `TaskQueue`
+- New struct `TaskQueueListResult`
+- New struct `TaskQueueProperties`
+- New struct `TaskQueueThroughput`
+- New struct `TaskQueueUpdate`
+- New struct `TransparentDataEncryption`
+- New struct `TransparentDataEncryptionListResult`
+- New struct `TransparentDataEncryptionProperties`
+- New struct `UserAssignedIdentity`
+- New field `Identity` in struct `Scheduler`
+- New field `Identity` in struct `SchedulerUpdate`
+- New field `Capabilities` in struct `TaskHubProperties`
+
+
 ## 1.1.0 (2026-03-09)
 ### Features Added
 

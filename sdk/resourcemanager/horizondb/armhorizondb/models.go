@@ -6,10 +6,33 @@ package armhorizondb
 
 import "time"
 
-// Administrator - Represents an Entra ID administrator configured on a HorizonDB cluster.
-type Administrator struct {
+// ActivateChangeDataCaptureIdentityRequest - The request to activate an identity assignment for a change data capture destination.
+type ActivateChangeDataCaptureIdentityRequest struct {
+	// REQUIRED; The resource ID of an inactive, successfully validated identity assignment under the destination receiving the
+	// action.
+	IdentityAssignmentResourceID *string
+
+	// Whether existing destination sessions should drain before the identity cutover. The default is false.
+	DrainExistingSessions *bool
+}
+
+// ActivateChangeDataCaptureIdentityResult - The completed result of activating a change data capture destination identity.
+type ActivateChangeDataCaptureIdentityResult struct {
+	// READ-ONLY; The completed activation status.
+	Status *string
+
+	// READ-ONLY; The resource ID of the newly active identity assignment.
+	TargetIdentityAssignmentResourceID *string
+
+	// READ-ONLY; The resource ID of the previously active identity assignment, when one existed.
+	PreviousIdentityAssignmentResourceID *string
+}
+
+// Authentication - A service-created authentication configuration returned by the authentications collection. The resource
+// name is passwordMethod or microsoftEntra.
+type Authentication struct {
 	// The resource-specific properties for this resource.
-	Properties *AdministratorProperties
+	Properties *AuthenticationProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
@@ -24,52 +47,421 @@ type Administrator struct {
 	Type *string
 }
 
-// AdministratorAdd - The request body for adding a HorizonDB administrator.
-type AdministratorAdd struct {
-	// REQUIRED; The properties for adding a HorizonDB administrator.
-	Properties *AdministratorPropertiesForAdd
-}
-
-// AdministratorListResult - The response of a HorizonDbAdministrator list operation.
-type AdministratorListResult struct {
-	// REQUIRED; The HorizonDbAdministrator items on this page
-	Value []*Administrator
+// AuthenticationListResult - The response of a Authentication list operation.
+type AuthenticationListResult struct {
+	// REQUIRED; The Authentication items on this page
+	Value []*Authentication
 
 	// The link to the next page of items
 	NextLink *string
 }
 
-// AdministratorProperties - Properties of a HorizonDB administrator.
-type AdministratorProperties struct {
-	// REQUIRED; The display name or UPN of the Entra ID principal. For users, typically the User Principal Name (e.g., admin@contoso.com).
-	// For groups, the group display name. For service principals, the application display name.
-	PrincipalName *string
+// AuthenticationProperties - Common read-only properties of a service-created authentication configuration.
+type AuthenticationProperties struct {
+	// READ-ONLY; The state of the authentication configuration.
+	State *AuthenticationState
 
-	// REQUIRED; The type of the Entra ID principal.
-	PrincipalType *PrincipalTypes
-
-	// The Entra ID tenant identifier (an RFC 4122 GUID). If omitted, defaults to the tenant of the subscription.
-	TenantID *string
-
-	// READ-ONLY; The Entra ID object identifier of the principal (an RFC 4122 GUID). On PUT requests, this value comes from the
-	// URI path parameter.
-	ObjectID *string
-
-	// READ-ONLY; The provisioning state of the administrator.
+	// READ-ONLY; The provisioning state of the authentication configuration.
 	ProvisioningState *ProvisioningState
 }
 
-// AdministratorPropertiesForAdd - The properties for adding a HorizonDB administrator.
-type AdministratorPropertiesForAdd struct {
-	// REQUIRED; The display name or UPN of the Entra ID principal. For users, typically the User Principal Name (e.g., admin@contoso.com).
-	// For groups, the group display name. For service principals, the application display name.
-	PrincipalName *string
+// BackupProperties - Backup configuration properties for a HorizonDB cluster.
+type BackupProperties struct {
+	// REQUIRED; The geo-redundancy state. Geo-redundant backup is not supported when dataEncryption.type is AzureKeyVault.
+	GeoRedundancy *GeoRedundancyState
 
-	// REQUIRED; The type of the Entra ID principal.
-	PrincipalType *PrincipalTypes
+	// The number of days that automatic backups are retained. The service defaults to 7 days when this property is omitted.
+	RetentionDays *int32
 
-	// The Entra ID tenant identifier (an RFC 4122 GUID). If omitted, defaults to the tenant of the subscription.
+	// READ-ONLY; The earliest point in time, in UTC, to which the cluster can currently be restored.
+	EarliestRestorePointUTC *time.Time
+}
+
+// BackupPropertiesForPatchUpdate - Backup configuration properties for updating a HorizonDB cluster.
+type BackupPropertiesForPatchUpdate struct {
+	// The number of days that automatic backups are retained.
+	RetentionDays *int32
+}
+
+// Capability - The singleton HorizonDB capability catalog entry available to a subscription in a location.
+type Capability struct {
+	// The resource-specific properties for this resource.
+	Properties *CapabilityProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// CapabilityListResult - The response of a Capability list operation.
+type CapabilityListResult struct {
+	// REQUIRED; The Capability items on this page
+	Value []*Capability
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// CapabilityProperties - Properties of the HorizonDB capabilities available to a subscription in a location.
+type CapabilityProperties struct {
+	// READ-ONLY; The Cluster capabilities available in the region.
+	ClusterCapabilities *ClusterCapability
+
+	// READ-ONLY; The Pool capabilities available in the region, including processor, generation, and compute-model details.
+	PoolCapabilities *PoolCapability
+
+	// READ-ONLY; The provisioning state of the capability catalog entry.
+	ProvisioningState *ProvisioningState
+}
+
+// ChangeDataCaptureCapability - The singleton change data capture capability for a HorizonDB cluster.
+type ChangeDataCaptureCapability struct {
+	// The resource-specific properties for this resource.
+	Properties *ChangeDataCaptureCapabilityProperties
+
+	// READ-ONLY; If eTag is provided in the response body, it may also be provided as a header per the normal etag convention.
+	// Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in
+	// the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header
+	// fields.
+	ETag *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ChangeDataCaptureCapabilityForPatchUpdate - A sparse update request for the singleton change data capture capability.
+type ChangeDataCaptureCapabilityForPatchUpdate struct {
+	// The capability properties to update.
+	Properties *ChangeDataCaptureCapabilityPropertiesForPatchUpdate
+}
+
+// ChangeDataCaptureCapabilityListResult - The response of a ChangeDataCaptureCapability list operation.
+type ChangeDataCaptureCapabilityListResult struct {
+	// REQUIRED; The ChangeDataCaptureCapability items on this page
+	Value []*ChangeDataCaptureCapability
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// ChangeDataCaptureCapabilityProperties - The properties of the singleton change data capture capability.
+type ChangeDataCaptureCapabilityProperties struct {
+	// REQUIRED; The requested capability state.
+	DesiredState *ChangeDataCaptureDesiredState
+
+	// READ-ONLY; The number of change data capture configurations under this cluster.
+	ConfigurationCount *int32
+
+	// READ-ONLY; The number of change data capture destinations under this cluster.
+	DestinationCount *int32
+
+	// READ-ONLY; The current effective capability state.
+	EffectiveState *ChangeDataCaptureEffectiveState
+
+	// READ-ONLY; The installed change data capture extension and its current lifecycle state.
+	Extension *ChangeDataCaptureExtensionStatus
+
+	// READ-ONLY; The current readiness of change data capture engine and read-write endpoint prerequisites.
+	Prerequisites *ChangeDataCapturePrerequisiteStatus
+
+	// READ-ONLY; The implementation architecture currently used for change capture.
+	ReplicationArchitecture *ChangeDataCaptureReplicationArchitecture
+
+	// READ-ONLY; Customer-safe health information for the capability.
+	Status *ChangeDataCaptureStatus
+
+	// Whether HorizonDB may automatically upgrade the service-owned change data capture extension within the supported compatibility
+	// policy.
+	AutoUpgradeExtension *bool
+
+	// READ-ONLY; The provisioning state of the latest capability mutation.
+	ProvisioningState *ProvisioningState
+}
+
+// ChangeDataCaptureCapabilityPropertiesForPatchUpdate - Properties for updating the singleton change data capture capability.
+// Omitted properties preserve their current values.
+type ChangeDataCaptureCapabilityPropertiesForPatchUpdate struct {
+	// Whether HorizonDB may automatically upgrade the service-owned change data capture extension within the supported compatibility
+	// policy.
+	AutoUpgradeExtension *bool
+
+	// The requested capability state.
+	DesiredState *ChangeDataCaptureDesiredState
+}
+
+// ChangeDataCaptureConfiguration - A HorizonDB database enrollment for Microsoft Fabric Mirroring.
+type ChangeDataCaptureConfiguration struct {
+	// The resource-specific properties for this resource.
+	Properties *ChangeDataCaptureConfigurationProperties
+
+	// READ-ONLY; If eTag is provided in the response body, it may also be provided as a header per the normal etag convention.
+	// Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in
+	// the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header
+	// fields.
+	ETag *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ChangeDataCaptureConfigurationForPatchUpdate - A sparse update request for a change data capture configuration.
+type ChangeDataCaptureConfigurationForPatchUpdate struct {
+	// The configuration properties to update.
+	Properties *ChangeDataCaptureConfigurationPropertiesForPatchUpdate
+}
+
+// ChangeDataCaptureConfigurationListResult - The response of a ChangeDataCaptureConfiguration list operation.
+type ChangeDataCaptureConfigurationListResult struct {
+	// REQUIRED; The ChangeDataCaptureConfiguration items on this page
+	Value []*ChangeDataCaptureConfiguration
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// ChangeDataCaptureConfigurationProperties - The properties of a Microsoft Fabric Mirroring configuration.
+type ChangeDataCaptureConfigurationProperties struct {
+	// REQUIRED; The exact PostgreSQL database name enrolled in this logical stream. This value is immutable.
+	DatabaseName *string
+
+	// REQUIRED; The requested configuration state.
+	DesiredState *ChangeDataCaptureDesiredState
+
+	// REQUIRED; The immutable resource ID of an enabled change data capture destination under the same cluster.
+	DestinationResourceID *string
+
+	// REQUIRED; The immutable usage profile. API version 2026-10-01-preview accepts Mirroring only.
+	UsageProfile *ChangeDataCaptureUsageProfile
+
+	// READ-ONLY; The current effective configuration state.
+	EffectiveState *ChangeDataCaptureEffectiveState
+
+	// READ-ONLY; The change data capture extension state for the enrolled database.
+	Extension *ChangeDataCaptureExtensionStatus
+
+	// READ-ONLY; A service-generated identifier for the logical stream, represented as an RFC 4122 GUID. This value remains stable
+	// when a writer role moves and the service materializes a replacement ARM resource under the new writer cluster.
+	LogicalStreamID *string
+
+	// READ-ONLY; The known status of the destination-owned replication session.
+	Replication *ChangeDataCaptureReplicationStatus
+
+	// READ-ONLY; Customer-safe health information for the configuration.
+	Status *ChangeDataCaptureStatus
+
+	// READ-ONLY; The current writer-topology binding for this logical stream.
+	Topology *ChangeDataCaptureTopologyBindingStatus
+
+	// READ-ONLY; The provisioning state of the latest configuration mutation.
+	ProvisioningState *ProvisioningState
+}
+
+// ChangeDataCaptureConfigurationPropertiesForPatchUpdate - Properties for updating a change data capture configuration. Omitted
+// properties preserve their current values.
+type ChangeDataCaptureConfigurationPropertiesForPatchUpdate struct {
+	// The requested configuration state.
+	DesiredState *ChangeDataCaptureDesiredState
+}
+
+// ChangeDataCaptureDestination - A reusable Microsoft Fabric destination for HorizonDB change data capture configurations.
+type ChangeDataCaptureDestination struct {
+	// The resource-specific properties for this resource.
+	Properties *ChangeDataCaptureDestinationProperties
+
+	// READ-ONLY; If eTag is provided in the response body, it may also be provided as a header per the normal etag convention.
+	// Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in
+	// the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header
+	// fields.
+	ETag *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ChangeDataCaptureDestinationDetails - Destination-specific settings discriminated by destinationType.
+type ChangeDataCaptureDestinationDetails struct {
+	// REQUIRED; The destination family.
+	DestinationType *ChangeDataCaptureDestinationType
+
+	// REQUIRED; The protocol used to communicate with the destination.
+	Protocol *ChangeDataCaptureProtocol
+}
+
+// GetChangeDataCaptureDestinationDetails implements the ChangeDataCaptureDestinationDetailsClassification interface for type
+// ChangeDataCaptureDestinationDetails.
+func (c *ChangeDataCaptureDestinationDetails) GetChangeDataCaptureDestinationDetails() *ChangeDataCaptureDestinationDetails {
+	return c
+}
+
+// ChangeDataCaptureDestinationForPatchUpdate - A sparse update request for a change data capture destination.
+type ChangeDataCaptureDestinationForPatchUpdate struct {
+	// The destination properties to update.
+	Properties *ChangeDataCaptureDestinationPropertiesForPatchUpdate
+}
+
+// ChangeDataCaptureDestinationListResult - The response of a ChangeDataCaptureDestination list operation.
+type ChangeDataCaptureDestinationListResult struct {
+	// REQUIRED; The ChangeDataCaptureDestination items on this page
+	Value []*ChangeDataCaptureDestination
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// ChangeDataCaptureDestinationProperties - The properties of a Microsoft Fabric change data capture destination.
+type ChangeDataCaptureDestinationProperties struct {
+	// REQUIRED; The requested destination state.
+	DesiredState *ChangeDataCaptureDesiredState
+
+	// REQUIRED; The immutable Microsoft Fabric destination settings. Resubmitting the same values is accepted; changing them
+	// requires deleting and recreating the destination.
+	Destination ChangeDataCaptureDestinationDetailsClassification
+
+	// READ-ONLY; The number of change data capture configurations that reference this destination.
+	ConfigurationCount *int32
+
+	// READ-ONLY; The current effective destination state.
+	EffectiveState *ChangeDataCaptureDestinationEffectiveState
+
+	// READ-ONLY; Customer-safe health information for the destination.
+	Status *ChangeDataCaptureStatus
+
+	// READ-ONLY; The resource ID of the currently active identity assignment, if one is active.
+	ActiveIdentityAssignmentResourceID *string
+
+	// READ-ONLY; The provisioning state of the latest destination mutation.
+	ProvisioningState *ProvisioningState
+}
+
+// ChangeDataCaptureDestinationPropertiesForPatchUpdate - Properties for updating a change data capture destination. Omitted
+// properties preserve their current values.
+type ChangeDataCaptureDestinationPropertiesForPatchUpdate struct {
+	// The requested destination state.
+	DesiredState *ChangeDataCaptureDesiredState
+}
+
+// ChangeDataCaptureExtensionStatus - The installed HorizonDB change data capture extension and its current state.
+type ChangeDataCaptureExtensionStatus struct {
+	// READ-ONLY; The extension name.
+	Name *string
+
+	// READ-ONLY; The current extension lifecycle state.
+	State *ChangeDataCaptureExtensionState
+
+	// READ-ONLY; The installed extension version.
+	Version *string
+}
+
+// ChangeDataCaptureIdentityAssignmentProperties - The properties of a change data capture identity assignment.
+type ChangeDataCaptureIdentityAssignmentProperties struct {
+	// REQUIRED; The immutable resource ID of the user-assigned managed identity selected for this destination. The ID must exactly
+	// match a key in the parent cluster's top-level identity.userAssignedIdentities dictionary; otherwise creation is rejected.
+	// Attaching the identity to the cluster does not grant destination access, so required role assignments must be configured
+	// separately. Resubmitting the same value is accepted; changing it requires deleting and recreating the assignment.
+	IdentityResourceID *string
+
+	// READ-ONLY; The current activation state within the parent destination.
+	ActivationState *ChangeDataCaptureIdentityActivationState
+
+	// READ-ONLY; The current assignment lifecycle state.
+	EffectiveState *ChangeDataCaptureIdentityAssignmentState
+
+	// READ-ONLY; The Microsoft Entra principal ID resolved from the user-assigned managed identity, represented as an RFC 4122
+	// GUID.
+	PrincipalID *string
+
+	// READ-ONLY; Customer-safe health information for the identity assignment.
+	Status *ChangeDataCaptureStatus
+
+	// READ-ONLY; The Microsoft Entra tenant ID resolved from the user-assigned managed identity, represented as an RFC 4122 GUID.
 	TenantID *string
+
+	// READ-ONLY; The latest validation result for this identity assignment.
+	Validation *IdentityValidationStatus
+
+	// READ-ONLY; The provisioning state of the latest identity-assignment mutation.
+	ProvisioningState *ProvisioningState
+}
+
+// ChangeDataCapturePrerequisiteStatus - The current readiness of prerequisites shared by change data capture configurations.
+type ChangeDataCapturePrerequisiteStatus struct {
+	// READ-ONLY; The readiness of the required engine configuration.
+	EngineConfigurationState *ChangeDataCaptureEngineConfigurationState
+
+	// READ-ONLY; The availability of the read-write endpoint required for engine mutations.
+	ReadWriteEndpointState *ChangeDataCaptureReadWriteEndpointState
+}
+
+// ChangeDataCaptureReplicationStatus - The destination-owned replication-session status known to HorizonDB.
+type ChangeDataCaptureReplicationStatus struct {
+	// READ-ONLY; The current replication-session state.
+	State *ChangeDataCaptureReplicationState
+
+	// READ-ONLY; An opaque identifier of a destination-owned artifact, such as a Microsoft Fabric mirrored-database item. HorizonDB
+	// does not create, update, or delete the identified artifact.
+	ExternalArtifactID *string
+
+	// READ-ONLY; The date and time, in UTC, when a destination session most recently connected.
+	LastConnectedAtUTC *time.Time
+}
+
+// ChangeDataCaptureStatus - Customer-safe health information for a HorizonDB change data capture resource.
+type ChangeDataCaptureStatus struct {
+	// READ-ONLY; A stable machine-readable status code.
+	Code *string
+
+	// READ-ONLY; A localized customer-safe description of the current status.
+	Message *string
+}
+
+// ChangeDataCaptureTopologyBindingStatus - The current writer-topology binding of a change data capture configuration.
+type ChangeDataCaptureTopologyBindingStatus struct {
+	// READ-ONLY; The Azure resource ID of the cluster that currently owns the active configuration projection.
+	ActiveClusterResourceID *string
+
+	// READ-ONLY; A monotonically increasing topology generation for this logical stream.
+	Generation *int64
+
+	// READ-ONLY; The configuration's relationship to the current writer topology.
+	State *ChangeDataCaptureTopologyBindingState
+
+	// READ-ONLY; The replacement configuration resource ID when this projection has been superseded or requires rebinding.
+	ReplacementConfigurationResourceID *string
 }
 
 // Cluster - Represents the HorizonDB cluster.
@@ -77,8 +469,10 @@ type Cluster struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
-	// The managed service identities assigned to this resource.
-	Identity *ManagedServiceIdentity
+	// The managed service identities assigned to this resource. Omitting the entire identity property from PUT or PATCH preserves
+	// all current assignments. When provided, PUT replaces the user-assigned identity set and PATCH merges it; null PATCH dictionary
+	// entries remove individual identities. Setting type to None clears all assignments.
+	Identity *ClusterManagedServiceIdentity
 
 	// The resource-specific properties for this resource.
 	Properties *ClusterProperties
@@ -99,22 +493,90 @@ type Cluster struct {
 	Type *string
 }
 
-// ClusterAuthConfig - Authentication configuration for a HorizonDB cluster.
-type ClusterAuthConfig struct {
-	// Indicates whether Microsoft Entra ID authentication is enabled or disabled.
-	EntraIDAuth *AuthenticationState
+// ClusterCapability - The HorizonDB Cluster capabilities available in a location.
+type ClusterCapability struct {
+	// READ-ONLY; The PostgreSQL major version recommended for clients to select for HorizonDB Clusters in the region. This recommendation
+	// does not describe backend behavior when the PostgreSQL version is omitted from a request.
+	RecommendedPostgreSQLVersion *PostgreSQLCapabilityVersion
 
-	// Indicates whether password authentication is enabled or disabled.
-	PasswordAuth *AuthenticationState
+	// READ-ONLY; Additional Cluster features supported in the region.
+	SupportedFeatures []*ClusterFeatureCapability
 
-	// The Microsoft Entra tenant ID.
-	TenantID *string
+	// READ-ONLY; The PostgreSQL major versions supported by Clusters in the region.
+	SupportedPostgreSQLVersions []*PostgreSQLVersionCapability
+}
+
+// ClusterDataEncryption - The Cluster-level data encryption configuration. The encryption type is selected at cluster creation;
+// switching between SystemManaged and AzureKeyVault after creation is not supported. For AzureKeyVault encryption, primaryKeyUri
+// and primaryUserAssignedIdentityId are required, and backup.geoRedundancy must be Disabled. Both primaryKeyUri and primaryUserAssignedIdentityId
+// can be provided during initial cluster creation. For updates to an existing cluster through PUT or PATCH, only one of these
+// properties can change per request, and that update must complete before submitting a separate update to change the other
+// property. Customer-managed key identities must also be assigned to the Cluster through its top-level identity property.
+// Only versionless Azure Key Vault key URIs are supported; key version paths are rejected. For SystemManaged encryption,
+// key and identity properties must be omitted.
+type ClusterDataEncryption struct {
+	// The versionless Azure Key Vault key URI used to encrypt the cluster's primary storage. Key version paths are not supported.
+	// During initial cluster creation, this property can be provided together with primaryUserAssignedIdentityId. For updates
+	// to an existing cluster through PUT or PATCH, this property and primaryUserAssignedIdentityId cannot both change in the
+	// same request; the first update must complete before submitting a separate update for the other property.
+	PrimaryKeyURI *string
+
+	// The Azure resource ID of the user-assigned managed identity used to access the primary encryption key. The identity must
+	// also be assigned to the Cluster through its top-level identity property. During initial cluster creation, this property
+	// can be provided together with primaryKeyUri. For updates to an existing cluster through PUT or PATCH, this property and
+	// primaryKeyUri cannot both change in the same request; the first update must complete before submitting a separate update
+	// for the other property.
+	PrimaryUserAssignedIdentityID *string
+
+	// The type of data encryption used by the cluster. When the data encryption configuration is supplied during initial cluster
+	// creation, this property is required. For PUT updates of an existing cluster, this property may be omitted; if provided,
+	// it must match the existing encryption type. This value is selected at cluster creation and cannot later be changed from
+	// SystemManaged to AzureKeyVault or from AzureKeyVault to SystemManaged.
+	Type *ClusterDataEncryptionType
+
+	// READ-ONLY; The current version of the primary encryption key used by the cluster. This property is returned for AzureKeyVault
+	// encryption and is absent for SystemManaged encryption.
+	PrimaryEncryptionKeyCurrentVersion *string
+
+	// READ-ONLY; The validation status of the primary encryption key. This property is returned for AzureKeyVault encryption
+	// and is absent for SystemManaged encryption.
+	PrimaryEncryptionKeyStatus *ClusterEncryptionKeyStatus
+}
+
+// ClusterDataEncryptionForPatchUpdate - Properties for sparsely updating Cluster-level data encryption. Omitted properties
+// preserve their current values. Updates can modify settings within the existing encryption type, such as the primary Azure
+// Key Vault key URI, but switching between SystemManaged and AzureKeyVault after cluster creation is not supported. AzureKeyVault
+// encryption is not supported when backup.geoRedundancy is Enabled. An update can change only one of primaryKeyUri or primaryUserAssignedIdentityId;
+// that update must complete before submitting a separate update to change the other property.
+type ClusterDataEncryptionForPatchUpdate struct {
+	// The versionless Azure Key Vault key URI used to encrypt the cluster's primary storage. Key version paths are not supported.
+	// This property and primaryUserAssignedIdentityId cannot both change in the same update; the first update must complete before
+	// submitting a separate update for the other property.
+	PrimaryKeyURI *string
+
+	// The Azure resource ID of the user-assigned managed identity used to access the primary encryption key. The identity must
+	// also be assigned to the Cluster through its top-level identity property. This property and primaryKeyUri cannot both change
+	// in the same update; the first update must complete before submitting a separate update for the other property.
+	PrimaryUserAssignedIdentityID *string
+
+	// The existing data encryption type used by the cluster. PATCH is a sparse update, so this property may be omitted. If provided,
+	// it must match the existing encryption type. This value cannot be changed from SystemManaged to AzureKeyVault or from AzureKeyVault
+	// to SystemManaged after cluster creation.
+	Type *ClusterDataEncryptionType
+}
+
+// ClusterFeatureCapability - A HorizonDB Cluster feature supported in a location.
+type ClusterFeatureCapability struct {
+	// READ-ONLY; The name of the Cluster feature.
+	Name *string
 }
 
 // ClusterForPatchUpdate - HorizonDB cluster for update operations.
 type ClusterForPatchUpdate struct {
-	// The managed service identities assigned to this resource.
-	Identity *ManagedServiceIdentity
+	// The managed service identities assigned to this resource. Omitting the entire identity property from PUT or PATCH preserves
+	// all current assignments. When provided, PUT replaces the user-assigned identity set and PATCH merges it; null PATCH dictionary
+	// entries remove individual identities. Setting type to None clears all assignments.
+	Identity *ClusterManagedServiceIdentity
 
 	// The properties that can be updated for a HorizonDB cluster.
 	Properties *ClusterPropertiesForPatchUpdate
@@ -123,136 +585,296 @@ type ClusterForPatchUpdate struct {
 	Tags map[string]*string
 }
 
-// ClusterListResult - The response of a HorizonDbCluster list operation.
+// ClusterListResult - The response of a Cluster list operation.
 type ClusterListResult struct {
-	// REQUIRED; The HorizonDbCluster items on this page
+	// REQUIRED; The Cluster items on this page
 	Value []*Cluster
 
 	// The link to the next page of items
 	NextLink *string
 }
 
-// ClusterMirroring - Mirroring configuration for a HorizonDB cluster.
-type ClusterMirroring struct {
-	// The names of the databases to mirror.
-	DatabaseNames []*string
+// ClusterManagedServiceIdentity - The user-assigned managed identities assigned to a HorizonDB cluster. Omitting the entire
+// top-level identity property from PUT or PATCH preserves all current assignments. When userAssignedIdentities is supplied,
+// PUT replaces the complete set and PATCH merges the supplied entries with the existing set; a null PATCH entry removes that
+// individual identity. Setting type to None clears all assignments. Removing an identity referenced by a change data capture
+// identity assignment is rejected until the referencing assignment is deleted.
+type ClusterManagedServiceIdentity struct {
+	// REQUIRED; The managed identity type assigned to the cluster. Setting this property to None clears all managed identity
+	// assignments.
+	Type *ClusterIdentityType
 
-	// The resource ID of the user-assigned managed identity used for mirroring.
-	UserAssignedIdentityID *string
-}
-
-// ClusterParameterGroupConnectionProperties - Connection information for HorizonDB parameter group.
-type ClusterParameterGroupConnectionProperties struct {
-	// Indicates whether the parameters should be applied immediately.
-	ApplyImmediately *bool
-
-	// The resource ID of the connected parameter group.
-	ID *string
-
-	// READ-ONLY; Indication of if parameter group is applied on HorizonDB resource.
-	SyncStatus *string
+	// The user-assigned managed identities associated with the cluster. When supplied on PUT, this dictionary replaces the complete
+	// set of assignments. When supplied on PATCH, entries are merged with the existing set and a null value removes the corresponding
+	// identity. Each dictionary key must be the full Azure resource ID of a Microsoft.ManagedIdentity/userAssignedIdentities
+	// resource. Non-null request values can be empty objects; response values contain the service-populated clientId and principalId.
+	// Assigning an identity does not grant it access to destination resources; required role assignments must be configured separately.
+	UserAssignedIdentities map[string]*UserAssignedIdentity
 }
 
 // ClusterProperties - Properties of a HorizonDB cluster.
 type ClusterProperties struct {
-	// REQUIRED; The administrator login name.
-	AdministratorLogin *string
-
-	// The administrator login password.
-	AdministratorLoginPassword *string
-
-	// Authentication configuration for the HorizonDB cluster.
-	AuthConfig *ClusterAuthConfig
-
-	// The compute model for the cluster.
-	ComputeModel *ComputeModel
-
-	// The mode to create a new HorizonDB cluster.
-	CreateMode *CreateModeCluster
-
-	// Mirroring configuration for the HorizonDB cluster.
-	Mirroring *ClusterMirroring
-
-	// The network related info.
-	Network *Network
-
-	// Defines connection to a parameter group.
-	ParameterGroup *ClusterParameterGroupConnectionProperties
-
-	// Restore point creation time specifying the time to restore from.
-	PointInTimeUTC *time.Time
-
-	// The pool name for restore or replica operations.
-	PoolName *string
-
-	// The processor type for the HorizonDB cluster.
-	ProcessorType *string
-
-	// Number of replicas.
-	ReplicaCount *int32
-
-	// The source cluster resource ID for restore or replica creation.
-	SourceClusterResourceID *string
-
-	// Number of vCores.
-	VCores *int32
-
-	// The version of the HorizonDB cluster.
-	Version *string
-
-	// Defines how replicas are placed across availability zones.
-	ZonePlacementPolicy *ZonePlacementPolicy
-
-	// READ-ONLY; The fully qualified domain name of the cluster.
-	FullyQualifiedDomainName *string
-
 	// READ-ONLY; The provisioning state of the cluster.
 	ProvisioningState *ProvisioningState
 
-	// READ-ONLY; The fully qualified domain name used for readonly endpoint for the cluster.
-	ReadonlyEndpoint *string
+	// READ-ONLY; The pool currently designated to host the cluster's read-write node.
+	ReadWritePool *ReadWritePoolProperties
 
 	// READ-ONLY; Current state of the cluster.
-	State *State
+	State *ClusterState
+
+	// Specifies whether AI Model Management is enabled for the cluster.
+	AiModelManagement *AiModelManagementStatus
+
+	// The backup configuration for the cluster.
+	Backup *BackupProperties
+
+	// The mode used to create the cluster. When this property is omitted while creating a new cluster, the service records Create.
+	// PointInTimeRestore creates a new cluster from an available backup; pointInTimeUtc and creationSourceClusterResourceId are
+	// then required, postgreSqlVersion must be omitted because it is obtained from the backup metadata, and creationSourceClusterLocation
+	// is required when the source and target cluster locations differ. This property is immutable and is returned as creation
+	// provenance. On replacement, omission preserves the recorded value, resubmitting the same value is accepted, and changing
+	// it is rejected.
+	CreationMode *ClusterCreateMode
+
+	// The Azure location of the source HorizonDB cluster used for point-in-time restore. This property is optional when the source
+	// and target cluster locations are the same. It is required when the source cluster location differs from the target cluster
+	// location and must identify the source cluster's location. This property must be absent for creation modes other than PointInTimeRestore
+	// or when creationMode is omitted. This immutable creation-provenance value does not change after creation.
+	CreationSourceClusterLocation *string
+
+	// The Azure resource ID of the source HorizonDB cluster used by the selected creation mode. This property is required for
+	// PointInTimeRestore and other source-based creation modes, and must be absent when creationMode is Create or omitted. A
+	// source cluster does not need to have a pool to be restored, provided an available backup exists. This immutable creation-provenance
+	// value does not change after creation.
+	CreationSourceClusterResourceID *string
+
+	// The data encryption configuration for the cluster. When omitted during initial cluster creation, the service uses SystemManaged
+	// encryption. When supplied during initial cluster creation, type is required. For PUT updates of an existing cluster, type
+	// may be omitted; if provided, it must match the existing encryption type. The encryption type is selected at cluster creation;
+	// switching between SystemManaged and AzureKeyVault after creation is not supported.
+	DataEncryption *ClusterDataEncryption
+
+	// The network configuration for the cluster. When this object is omitted, the service defaults it to publicAccess Disabled.
+	Network *Network
+
+	// The requested point in time, in UTC. This property is required in every PointInTimeRestore request. For a same-location
+	// restore, the service restores the latest backup available at or before this value. For a cross-location restore, the service
+	// requires but ignores this value and restores the latest available backup; cross-location responses omit this property.
+	// This property must be absent for other creation modes or when creationMode is omitted and can only be specified during
+	// resource creation.
+	PointInTimeUTC *time.Time
+
+	// The PostgreSQL major version used by the HorizonDB cluster. API version 2026-10-01-preview supports versions 17 and 18.
+	// For ordinary cluster creation, the version is supplied in the request and is immutable after creation. For point-in-time
+	// restore, the service obtains the version from the source backup metadata and the request must omit this property. This
+	// API version does not support in-place PostgreSQL major-version upgrades.
+	PostgreSQLVersion *PostgreSQLVersion
 }
 
 // ClusterPropertiesForPatchUpdate - Properties of a HorizonDB cluster for update operations.
 type ClusterPropertiesForPatchUpdate struct {
-	// The administrator login password.
-	AdministratorLoginPassword *string
+	// Specifies whether AI Model Management is enabled for the cluster.
+	AiModelManagement *AiModelManagementStatus
 
-	// Authentication configuration for the HorizonDB cluster.
-	AuthConfig *ClusterAuthConfig
+	// The backup configuration for the cluster.
+	Backup *BackupPropertiesForPatchUpdate
 
-	// The compute model for the cluster.
-	ComputeModel *ComputeModel
+	// The data encryption configuration to update for the cluster. Omitted properties preserve their current values. Updates
+	// can modify settings within the existing encryption type, but switching between SystemManaged and AzureKeyVault after cluster
+	// creation is not supported.
+	DataEncryption *ClusterDataEncryptionForPatchUpdate
 
-	// Mirroring configuration for the HorizonDB cluster.
-	Mirroring *ClusterMirroring
+	// The network configuration to update for the cluster.
+	Network *NetworkForPatchUpdate
+}
 
-	// Defines connection to a parameter group.
-	ParameterGroup *ClusterParameterGroupConnectionProperties
+// ComputeGenerationCapability - The capabilities of a HorizonDB compute generation.
+type ComputeGenerationCapability struct {
+	// READ-ONLY; The numeric compute generation used when configuring a HorizonDB pool.
+	ComputeGeneration *int32
 
-	// Number of vCores.
+	// READ-ONLY; The compute model type recommended for clients to select for this compute generation. This recommendation does
+	// not describe backend behavior when the compute model type is omitted from a request.
+	RecommendedComputeModelType *PoolComputeModelType
+
+	// READ-ONLY; The compute models supported by the compute generation.
+	SupportedComputeModels []ComputeModelCapabilityClassification
+}
+
+// ComputeModelCapability - The capabilities of a HorizonDB compute model.
+type ComputeModelCapability struct {
+	// READ-ONLY; The compute model represented by these capabilities.
+	Type *PoolComputeModelType
+}
+
+// GetComputeModelCapability implements the ComputeModelCapabilityClassification interface for type ComputeModelCapability.
+func (c *ComputeModelCapability) GetComputeModelCapability() *ComputeModelCapability { return c }
+
+// ComputeProcessorCapability - The capabilities of a processor family supported by HorizonDB.
+type ComputeProcessorCapability struct {
+	// READ-ONLY; The name of the processor family.
+	Name *ComputeProcessorType
+
+	// READ-ONLY; The compute generations supported by the processor family.
+	SupportedGenerations []*ComputeGenerationCapability
+}
+
+// ComputeSizeCapability - A vCore configuration supported by a HorizonDB processor generation.
+type ComputeSizeCapability struct {
+	// READ-ONLY; The memory in megabytes available for each vCore.
+	MemoryPerVCoreInMb *int64
+
+	// READ-ONLY; The number of vCores in the configuration.
 	VCores *int32
 }
 
-// ComputeModel - The compute model for a HorizonDB cluster.
-type ComputeModel struct {
-	// The maximum vCores for Serverless compute. Defines the upper autoscaling bound.
-	MaxvCores *float64
+// DefaultParameterGroup - A default parameter group available in a specific region. It contains engine-defined parameters
+// and excludes service and other non-engine entries. For each PostgreSQL version, the DefaultParameterGroups APIs return
+// at most one default parameter group in a location.
+type DefaultParameterGroup struct {
+	// The resource-specific properties for this resource.
+	Properties *DefaultParameterGroupProperties
 
-	// The minimum vCores for Serverless compute. Defines the lower autoscaling bound.
-	MinvCores *float64
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
 
-	// The compute model type. Supported values: 'Provisioned', 'Serverless'.
-	Type *ComputeModelType
+	// READ-ONLY; The name of the resource
+	Name *string
 
-	// The fixed vCore count for Provisioned compute.
-	VCores *int32
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
 }
 
-// FirewallRule - Represents the HorizonDB firewall rule.
+// DefaultParameterGroupListResult - The response of a DefaultParameterGroup list operation.
+type DefaultParameterGroupListResult struct {
+	// REQUIRED; The DefaultParameterGroup items on this page
+	Value []*DefaultParameterGroup
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// DefaultParameterGroupProperties - Properties of a default parameter group.
+type DefaultParameterGroupProperties struct {
+	// REQUIRED; Engine-defined parameters in the default parameter group. Service and other non-engine entries are excluded.
+	Parameters []*ParameterProperties
+
+	// REQUIRED; PostgreSQL version for which this default parameter group is valid.
+	PostgreSQLVersion *PostgreSQLVersion
+
+	// Description of the default parameter group.
+	Description *string
+
+	// READ-ONLY; The provisioning state of the default parameter group.
+	ProvisioningState *ProvisioningState
+}
+
+// Endpoint - Represents a service-generated, service-managed HorizonDB endpoint. The Cluster-scoped Endpoint is created and
+// deleted with its parent Cluster. A Pool-scoped Endpoint is created and deleted with the Pool identified by associatedResourceId.
+// Endpoints cannot be created or deleted independently from their lifecycle owner.
+type Endpoint struct {
+	// The resource-specific properties for this resource.
+	Properties *EndpointProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// EndpointListResult - The response of a Endpoint list operation.
+type EndpointListResult struct {
+	// REQUIRED; The Endpoint items on this page
+	Value []*Endpoint
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// EndpointProperties - Properties of a service-generated HorizonDB endpoint.
+type EndpointProperties struct {
+	// READ-ONLY; The Azure resource ID of the Endpoint's lifecycle owner. For Cluster scope, this identifies the parent Cluster
+	// with which the Endpoint is created and deleted. For Pool scope, this identifies the Pool with which the Endpoint is created
+	// and deleted; the Pool must be a child of the Endpoint's parent Cluster.
+	AssociatedResourceID *string
+
+	// READ-ONLY; The service-generated fully qualified domain name of the endpoint. A Cluster-scoped Endpoint uses <cluster>.<clusterid>.<region>.horizondb.azure.com.
+	// A Pool-scoped Endpoint uses <poolid>.<cluster>.<clusterid>.<region>.horizondb.azure.com.
+	FullyQualifiedDomainName *string
+
+	// READ-ONLY; The routing role of the endpoint. A Cluster-scoped Endpoint normally has the ReadWrite role. Pool-scoped Endpoints
+	// have the ReadOnly role and route only to allocated nodes in the associated Pool that are not currently playing the read-write
+	// role. A Pool-scoped ReadOnly Endpoint has no routing destination unless at least one such node exists, including when the
+	// Pool is Stopped, has zero allocated nodes, or has only one allocated node and that node is playing the read-write role.
+	Role *EndpointRole
+
+	// READ-ONLY; The scope of the endpoint. Cluster-scoped Endpoints provide the cluster connection, and Pool-scoped Endpoints
+	// provide read-only connections to eligible nodes in one pool.
+	Scope *EndpointScope
+}
+
+// ErrorAdditionalInfo - The resource management error additional info.
+type ErrorAdditionalInfo struct {
+	// READ-ONLY; The additional info.
+	Info any
+
+	// READ-ONLY; The additional info type.
+	Type *string
+}
+
+// ErrorDetail - The error detail.
+type ErrorDetail struct {
+	// READ-ONLY; The error additional info.
+	AdditionalInfo []*ErrorAdditionalInfo
+
+	// READ-ONLY; The error code.
+	Code *string
+
+	// READ-ONLY; The error details.
+	Details []*ErrorDetail
+
+	// READ-ONLY; The error message.
+	Message *string
+
+	// READ-ONLY; The error target.
+	Target *string
+}
+
+// FabricDestinationDetails - Settings for a Microsoft Fabric destination.
+type FabricDestinationDetails struct {
+	// CONSTANT; Specifies a Microsoft Fabric destination.
+	// Field has constant value ChangeDataCaptureDestinationTypeFabric, any specified value is ignored.
+	DestinationType *ChangeDataCaptureDestinationType
+
+	// CONSTANT; Specifies the Microsoft Fabric native destination protocol.
+	// Field has constant value ChangeDataCaptureProtocolNative, any specified value is ignored.
+	Protocol *ChangeDataCaptureProtocol
+
+	// REQUIRED; The opaque identifier of the Microsoft Fabric workspace that owns the destination artifact.
+	WorkspaceID *string
+}
+
+// GetChangeDataCaptureDestinationDetails implements the ChangeDataCaptureDestinationDetailsClassification interface for type
+// FabricDestinationDetails.
+func (f *FabricDestinationDetails) GetChangeDataCaptureDestinationDetails() *ChangeDataCaptureDestinationDetails {
+	return &ChangeDataCaptureDestinationDetails{
+		DestinationType: f.DestinationType,
+		Protocol:        f.Protocol,
+	}
+}
+
+// FirewallRule - Represents a customer-managed firewall rule for a HorizonDB pool.
 type FirewallRule struct {
 	// The resource-specific properties for this resource.
 	Properties *FirewallRuleProperties
@@ -270,9 +892,9 @@ type FirewallRule struct {
 	Type *string
 }
 
-// FirewallRuleListResult - The response of a HorizonDbFirewallRule list operation.
+// FirewallRuleListResult - The response of a FirewallRule list operation.
 type FirewallRuleListResult struct {
-	// REQUIRED; The HorizonDbFirewallRule items on this page
+	// REQUIRED; The FirewallRule items on this page
 	Value []*FirewallRule
 
 	// The link to the next page of items
@@ -281,39 +903,451 @@ type FirewallRuleListResult struct {
 
 // FirewallRuleProperties - Properties of a HorizonDB firewall rule.
 type FirewallRuleProperties struct {
-	// REQUIRED; The end IP address of the firewall rule (IPv4).
+	// REQUIRED; The end IPv4 address of the firewall rule in dotted-decimal notation. This address must be numerically greater
+	// than or equal to startIpAddress.
 	EndIPAddress *string
 
-	// REQUIRED; The start IP address of the firewall rule (IPv4).
+	// REQUIRED; The start IPv4 address of the firewall rule in dotted-decimal notation.
 	StartIPAddress *string
 
-	// The description of the HorizonDB firewall rule.
+	// The description of the HorizonDB firewall rule. The maximum length is 1024 characters.
 	Description *string
 
 	// READ-ONLY; The provisioning state of the firewall rule.
 	ProvisioningState *ProvisioningState
 }
 
-// ManagedServiceIdentity - Managed service identity (system assigned and/or user assigned identities)
-type ManagedServiceIdentity struct {
-	// REQUIRED; The type of managed identity assigned to this resource.
-	Type *ManagedServiceIdentityType
+// IdentityAssignment - A user-assigned managed identity authorized for a HorizonDB change data capture destination.
+type IdentityAssignment struct {
+	// The resource-specific properties for this resource.
+	Properties *ChangeDataCaptureIdentityAssignmentProperties
 
-	// The identities assigned to this resource by the user.
-	UserAssignedIdentities map[string]*UserAssignedIdentity
+	// READ-ONLY; If eTag is provided in the response body, it may also be provided as a header per the normal etag convention.
+	// Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in
+	// the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header
+	// fields.
+	ETag *string
 
-	// READ-ONLY; The service principal ID of the system assigned identity. This property will only be provided for a system assigned
-	// identity.
-	PrincipalID *string
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
 
-	// READ-ONLY; The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity.
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// IdentityAssignmentListResult - The response of a IdentityAssignment list operation.
+type IdentityAssignmentListResult struct {
+	// REQUIRED; The IdentityAssignment items on this page
+	Value []*IdentityAssignment
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// IdentityValidationStatus - The current validation result for a change data capture identity assignment.
+type IdentityValidationStatus struct {
+	// READ-ONLY; The current validation state.
+	State *ChangeDataCaptureIdentityValidationState
+
+	// READ-ONLY; The customer-safe validation error when validation failed.
+	Error *ErrorDetail
+
+	// READ-ONLY; The date and time, in UTC, when validation most recently completed.
+	ValidatedAtUTC *time.Time
+}
+
+// LogCaptureConfiguration - A predefined log capture configuration created by the service for a HorizonDB cluster.
+type LogCaptureConfiguration struct {
+	// The resource-specific properties for this resource.
+	Properties *LogCaptureConfigurationProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// LogCaptureConfigurationForPatchUpdate - A sparse update request for a log capture configuration.
+type LogCaptureConfigurationForPatchUpdate struct {
+	// The log capture properties to update.
+	Properties *LogCaptureConfigurationPropertiesForPatchUpdate
+}
+
+// LogCaptureConfigurationListResult - The response of a LogCaptureConfiguration list operation.
+type LogCaptureConfigurationListResult struct {
+	// REQUIRED; The LogCaptureConfiguration items on this page
+	Value []*LogCaptureConfiguration
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// LogCaptureConfigurationProperties - The settings for capturing a specific type of HorizonDB log.
+type LogCaptureConfigurationProperties struct {
+	// REQUIRED; The number of days captured log files are retained.
+	RetentionDays *int32
+
+	// REQUIRED; Specifies whether HorizonDB captures this type of log. Disabling capture stops the production of new log files;
+	// existing files remain available until their retention period expires.
+	State *LogCaptureState
+
+	// READ-ONLY; The provisioning state of the log capture configuration.
+	ProvisioningState *ProvisioningState
+}
+
+// LogCaptureConfigurationPropertiesForPatchUpdate - Properties for updating the log capture configuration. Omitted properties
+// preserve their current values.
+type LogCaptureConfigurationPropertiesForPatchUpdate struct {
+	// The number of days captured log files are retained.
+	RetentionDays *int32
+
+	// Specifies whether HorizonDB captures this type of log. Disabling capture stops the production of new log files; existing
+	// files remain available until their retention period expires.
+	State *LogCaptureState
+}
+
+// LogFile - A service-generated log file captured for a HorizonDB cluster.
+type LogFile struct {
+	// The resource-specific properties for this resource.
+	Properties *LogFileProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// LogFileDownloadURL - A short-lived signed URL for downloading a captured log file.
+type LogFileDownloadURL struct {
+	// REQUIRED; A short-lived signed URL from which the original log file can be downloaded.
+	DownloadURI *string
+
+	// REQUIRED; The date and time when the signed download URL expires, in UTC.
+	ExpiresAtUTC *time.Time
+}
+
+// LogFileListResult - The response of a LogFile list operation.
+type LogFileListResult struct {
+	// REQUIRED; The LogFile items on this page
+	Value []*LogFile
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// LogFileProperties - Metadata for a service-generated HorizonDB log file.
+type LogFileProperties struct {
+	// READ-ONLY; The date and time when the log file was created, in UTC.
+	CreatedAtUTC *time.Time
+
+	// READ-ONLY; Whether the platform can still append to or otherwise modify the log file.
+	IsMutable *bool
+
+	// READ-ONLY; The date and time when the log file was last modified, in UTC.
+	LastModifiedAtUTC *time.Time
+
+	// READ-ONLY; The type of the captured log file.
+	LogType *LogFileType
+
+	// READ-ONLY; The node that generated the log file in the HorizonDB cluster.
+	Node *string
+
+	// READ-ONLY; The name of the HorizonDB pool that the node generating the log file belongs to.
+	Pool *string
+
+	// READ-ONLY; The date and time when the log file expires according to its retention period, in UTC.
+	RetentionExpiresAtUTC *time.Time
+
+	// READ-ONLY; The role performed by the node that generated the log file.
+	Role *NodeRole
+
+	// READ-ONLY; The size of the log file in kilobytes, where one kilobyte is 1024 bytes.
+	SizeInKilobytes *int64
+}
+
+// MaintenanceEvent - Represents a maintenance event for a HorizonDB pool.
+type MaintenanceEvent struct {
+	// The resource-specific properties for this resource.
+	Properties *MaintenanceEventProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// MaintenanceEventActionResponse - The response from a maintenance event reschedule or apply-now action.
+type MaintenanceEventActionResponse struct {
+	// Indicates whether the maintenance event was requested to be applied immediately. The value is true for apply-now and false
+	// for reschedule.
+	AppliedNow *bool
+
+	// The time when this maintenance event record was last updated, in UTC.
+	LastUpdatedTimeUTC *time.Time
+
+	// The maintenance event identifier.
+	MaintenanceEventID *string
+
+	// The planned end time of the maintenance event in UTC.
+	PlannedEndTimeUTC *time.Time
+
+	// The planned start time of the maintenance event in UTC.
+	PlannedStartTimeUTC *time.Time
+
+	// The full Azure resource ID of the HorizonDB pool.
+	PoolResourceID *string
+
+	// The status of the maintenance event.
+	Status *MaintenanceEventStatus
+}
+
+// MaintenanceEventListResult - The response of a MaintenanceEvent list operation.
+type MaintenanceEventListResult struct {
+	// REQUIRED; The MaintenanceEvent items on this page
+	Value []*MaintenanceEvent
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// MaintenanceEventProperties - Properties of a maintenance event resource.
+type MaintenanceEventProperties struct {
+	// READ-ONLY; Indicates whether the customer can reschedule this maintenance event.
+	Deferrable *bool
+
+	// READ-ONLY; The scheduled end time of the maintenance event in UTC.
+	EndTimeUTC *time.Time
+
+	// READ-ONLY; The maintenance type.
+	MaintenanceType *MaintenanceType
+
+	// READ-ONLY; The initially scheduled start time before any reschedule, in UTC. This value equals startTimeUtc when the event
+	// has never been rescheduled.
+	OriginalStartTimeUTC *time.Time
+
+	// READ-ONLY; The scheduled start time of the maintenance event in UTC.
+	StartTimeUTC *time.Time
+
+	// READ-ONLY; The customer-facing status of the maintenance event.
+	Status *MaintenanceEventStatus
+
+	// READ-ONLY; The latest date and time to which this maintenance event can be postponed, in UTC. This property is present
+	// only when deferrable is true.
+	DeferralDeadlineUTC *time.Time
+
+	// READ-ONLY; The human-readable description of the maintenance event.
+	Description *string
+
+	// READ-ONLY; The estimated downtime as an ISO 8601 duration string, for example, 'PT60S' for 60 seconds.
+	EstimatedDowntime *string
+
+	// READ-ONLY; The time when this maintenance event record was last updated, in UTC.
+	LastUpdatedTimeUTC *time.Time
+
+	// READ-ONLY; A service-generated identifier for this maintenance event, assigned by the platform. The format is not contractual,
+	// and clients should not attempt to parse or construct this value.
+	MaintenanceEventID *string
+
+	// READ-ONLY; The scheduled start time before the most recent reschedule, in UTC. This property is absent if the event has
+	// never been rescheduled.
+	RescheduledFromUTC *time.Time
+}
+
+// MaintenanceEventRescheduleRequest - Parameters for rescheduling a maintenance event.
+type MaintenanceEventRescheduleRequest struct {
+	// REQUIRED; The new start time in RFC 3339 format.
+	PostponeToDateTimeUTC *time.Time
+}
+
+// MicrosoftEntraAdministrator - Represents a PostgreSQL role that is a member of the azure_pg_admin role and is mapped to
+// a Microsoft Entra principal.
+type MicrosoftEntraAdministrator struct {
+	// The resource-specific properties for this resource.
+	Properties *MicrosoftEntraAdministratorProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// MicrosoftEntraAdministratorAdd - The request body for creating or updating a PostgreSQL role that is a member of azure_pg_admin
+// and mapped to a Microsoft Entra principal.
+type MicrosoftEntraAdministratorAdd struct {
+	// REQUIRED; The PostgreSQL role and Microsoft Entra principal mapping properties.
+	Properties *MicrosoftEntraAdministratorPropertiesForAdd
+}
+
+// MicrosoftEntraAdministratorListResult - The response of a MicrosoftEntraAdministrator list operation.
+type MicrosoftEntraAdministratorListResult struct {
+	// REQUIRED; The MicrosoftEntraAdministrator items on this page
+	Value []*MicrosoftEntraAdministrator
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// MicrosoftEntraAdministratorProperties - Properties of a PostgreSQL role that is a member of azure_pg_admin and mapped to
+// a Microsoft Entra principal.
+type MicrosoftEntraAdministratorProperties struct {
+	// REQUIRED; The display name or user principal name of the Microsoft Entra principal mapped to the PostgreSQL role. For users,
+	// this is typically the user principal name, such as admin@contoso.com. For groups, this is the group display name. For service
+	// principals, this is the application display name.
+	PrincipalName *string
+
+	// REQUIRED; The type of Microsoft Entra principal mapped to the PostgreSQL role.
+	PrincipalType *PrincipalTypes
+
+	// The identifier of the Microsoft Entra tenant containing the mapped principal, represented as an RFC 4122 GUID. If omitted,
+	// this value defaults to the tenant of the subscription.
 	TenantID *string
+
+	// READ-ONLY; The Microsoft Entra object identifier of the principal mapped to the PostgreSQL role, represented as an RFC
+	// 4122 GUID. On PUT requests, this value comes from the URI path parameter.
+	ObjectID *string
+
+	// READ-ONLY; The provisioning state of the PostgreSQL role and Microsoft Entra principal mapping.
+	ProvisioningState *ProvisioningState
+}
+
+// MicrosoftEntraAdministratorPropertiesForAdd - Properties for creating or updating a PostgreSQL role that is a member of
+// azure_pg_admin and mapped to a Microsoft Entra principal.
+type MicrosoftEntraAdministratorPropertiesForAdd struct {
+	// REQUIRED; The display name or user principal name of the Microsoft Entra principal to map to the PostgreSQL role. For users,
+	// this is typically the user principal name, such as admin@contoso.com. For groups, this is the group display name. For service
+	// principals, this is the application display name.
+	PrincipalName *string
+
+	// REQUIRED; The type of Microsoft Entra principal to map to the PostgreSQL role.
+	PrincipalType *PrincipalTypes
+
+	// The identifier of the Microsoft Entra tenant containing the principal to map, represented as an RFC 4122 GUID. If omitted,
+	// this value defaults to the tenant of the subscription.
+	TenantID *string
+}
+
+// MicrosoftEntraAuthentication - The service-created Microsoft Entra authentication method for a HorizonDB cluster.
+type MicrosoftEntraAuthentication struct {
+	// The resource-specific properties for this resource.
+	Properties *MicrosoftEntraAuthenticationProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// MicrosoftEntraAuthenticationForPatchUpdate - A sparse update request for Microsoft Entra authentication.
+type MicrosoftEntraAuthenticationForPatchUpdate struct {
+	// The Microsoft Entra authentication properties to update.
+	Properties *MicrosoftEntraAuthenticationPropertiesForPatchUpdate
+}
+
+// MicrosoftEntraAuthenticationProperties - Properties of the service-created Microsoft Entra authentication method.
+type MicrosoftEntraAuthenticationProperties struct {
+	// REQUIRED; The state of Microsoft Entra authentication.
+	State *AuthenticationState
+
+	// READ-ONLY; The provisioning state of the Microsoft Entra authentication method.
+	ProvisioningState *ProvisioningState
+}
+
+// MicrosoftEntraAuthenticationPropertiesForPatchUpdate - Properties for updating Microsoft Entra authentication. State Enabled
+// enables the feature and State Disabled disables it. Disabling Microsoft Entra authentication does not remove or modify
+// database roles or users previously created through the MicrosoftEntraAdministrators control-plane API or directly through
+// pgaadauth extension functions.
+type MicrosoftEntraAuthenticationPropertiesForPatchUpdate struct {
+	// The target Microsoft Entra authentication state. Omission preserves the current state.
+	State *AuthenticationState
 }
 
 // Network properties.
 type Network struct {
-	// READ-ONLY; The flag indicating whether public ip is requested.
-	PublicNetworkAccess *PublicNetworkAccessState
+	// Specifies whether public access is enabled for the cluster. The service defaults to Disabled when this property is omitted.
+	PublicAccess *PublicNetworkAccessState
+}
+
+// NetworkForPatchUpdate - Network properties for updating a HorizonDB cluster.
+type NetworkForPatchUpdate struct {
+	// Specifies whether public access is enabled for the cluster. Omission preserves the current value.
+	PublicAccess *PublicNetworkAccessState
+}
+
+// Node - A service-managed node allocated to a HorizonDB pool.
+type Node struct {
+	// The resource-specific properties for this resource.
+	Properties *NodeProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// NodeListResult - The response of a Node list operation.
+type NodeListResult struct {
+	// REQUIRED; The Node items on this page
+	Value []*Node
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// NodeProperties - Properties of a service-managed HorizonDB node.
+type NodeProperties struct {
+	// READ-ONLY; The availability zone in which the node is deployed.
+	AvailabilityZone *string
+
+	// READ-ONLY; The current role performed by the node within its pool.
+	Role *NodeRole
 }
 
 // Operation - REST API Operation
@@ -367,6 +1401,15 @@ type OperationListResult struct {
 	NextLink *string
 }
 
+// PagedParameterGroupConnectionProperties - A page of HorizonDB parameter group connections.
+type PagedParameterGroupConnectionProperties struct {
+	// REQUIRED; The parameter group connection items on this page.
+	Value []*ParameterGroupConnectionProperties
+
+	// The link to the next page of items.
+	NextLink *string
+}
+
 // ParameterGroup - Represents the HorizonDB parameter group.
 type ParameterGroup struct {
 	// REQUIRED; The geo-location where the resource lives
@@ -393,23 +1436,8 @@ type ParameterGroup struct {
 
 // ParameterGroupConnectionProperties - Connection information for HorizonDB parameter group.
 type ParameterGroupConnectionProperties struct {
-	// READ-ONLY; The resource ID of the connected resource.
-	ID *string
-
-	// READ-ONLY; The name of the connected resource.
-	Name *string
-
-	// READ-ONLY; The type of the resource.
-	Type *string
-}
-
-// ParameterGroupConnectionPropertiesListResult - The response of a HorizonDbParameterGroupConnectionProperties list operation.
-type ParameterGroupConnectionPropertiesListResult struct {
-	// REQUIRED; The HorizonDbParameterGroupConnectionProperties items on this page
-	Value []*ParameterGroupConnectionProperties
-
-	// The link to the next page of items
-	NextLink *string
+	// READ-ONLY; The Azure resource ID of the connected HorizonDB pool.
+	PoolResourceID *string
 }
 
 // ParameterGroupForPatchUpdate - HorizonDB parameter group for update operations.
@@ -421,9 +1449,9 @@ type ParameterGroupForPatchUpdate struct {
 	Tags map[string]*string
 }
 
-// ParameterGroupListResult - The response of a HorizonDbParameterGroup list operation.
+// ParameterGroupListResult - The response of a ParameterGroup list operation.
 type ParameterGroupListResult struct {
-	// REQUIRED; The HorizonDbParameterGroup items on this page
+	// REQUIRED; The ParameterGroup items on this page
 	Value []*ParameterGroup
 
 	// The link to the next page of items
@@ -432,38 +1460,32 @@ type ParameterGroupListResult struct {
 
 // ParameterGroupProperties - Properties of a HorizonDB parameter group.
 type ParameterGroupProperties struct {
-	// Indicates whether the parameters should be applied immediately.
-	ApplyImmediately *bool
+	// REQUIRED; The PostgreSQL major version for the parameter group. This property is required during creation and is immutable
+	// thereafter. The service selects the unique location-scoped default parameter group for this version in the resource location.
+	// The DefaultParameterGroups APIs return at most one default parameter group for each PostgreSQL version in a location, so
+	// this selection is unambiguous.
+	PostgreSQLVersion *PostgreSQLVersion
 
-	// Description of the parameter group.
+	// Description of the parameter group. The maximum length is 1024 characters.
 	Description *string
 
 	// Parameters in the parameter group.
 	Parameters []*ParameterProperties
 
-	// PostgreSQL version for the parameter group.
-	PgVersion *int32
-
 	// READ-ONLY; The provisioning state of the parameter group.
 	ProvisioningState *ProvisioningState
-
-	// READ-ONLY; Current version of the parameter group.
-	Version *int32
 }
 
 // ParameterGroupPropertiesForPatchUpdate - Properties of a HorizonDB parameter group for update operations.
 type ParameterGroupPropertiesForPatchUpdate struct {
-	// Indicates whether the parameters should be applied immediately.
-	ApplyImmediately *bool
-
-	// Description of the parameter group.
+	// Description of the parameter group. The maximum length is 1024 characters.
 	Description *string
 
 	// Parameters in the parameter group.
 	Parameters []*ParameterProperties
 }
 
-// ParameterProperties - Properties of a HorizonDB parameters.
+// ParameterProperties - Properties of a HorizonDB parameter.
 type ParameterProperties struct {
 	// The name of the parameter.
 	Name *string
@@ -477,6 +1499,9 @@ type ParameterProperties struct {
 	// READ-ONLY; The data type of the parameter.
 	DataType *string
 
+	// READ-ONLY; The system-defined default value of the parameter, independent of the effective value.
+	DefaultValue *string
+
 	// READ-ONLY; The description of the parameter.
 	Description *string
 
@@ -486,11 +1511,73 @@ type ParameterProperties struct {
 	// READ-ONLY; Whether the parameter can be changed dynamically.
 	IsDynamic *bool
 
-	// READ-ONLY; Whether the parameter is a read-only parameter.
+	// READ-ONLY; Whether the parameter is read-only. Read-only parameters cannot be overridden.
 	IsReadOnly *bool
 
 	// READ-ONLY; The unit of measurement for the parameter.
 	Unit *string
+
+	// READ-ONLY; The source of the effective parameter value. UserOverride means that the value was explicitly supplied by the
+	// user, even when it equals defaultValue.
+	ValueSource *ParameterValueSource
+}
+
+// PasswordAuthentication - The service-created PostgreSQL username-and-password authentication method for a HorizonDB cluster.
+// This resource configures the authentication mechanism, including its enabled state and administrator login credentials;
+// it is not a password-only resource.
+type PasswordAuthentication struct {
+	// The resource-specific properties for this resource.
+	Properties *PasswordAuthenticationProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// PasswordAuthenticationForPatchUpdate - A sparse update request for PostgreSQL username-and-password authentication.
+type PasswordAuthenticationForPatchUpdate struct {
+	// The PostgreSQL username-and-password authentication properties to update.
+	Properties *PasswordAuthenticationPropertiesForPatchUpdate
+}
+
+// PasswordAuthenticationProperties - Properties of the service-created PostgreSQL username-and-password authentication method.
+type PasswordAuthenticationProperties struct {
+	// REQUIRED; The state of PostgreSQL username-and-password authentication.
+	State *AuthenticationState
+
+	// The PostgreSQL administrator login name. This value is not returned in responses. After it is set, renaming is not supported.
+	// Setting the login requires password authentication state to be Enabled in the same request.
+	AdministratorLogin *string
+
+	// The PostgreSQL administrator password. Setting the password requires password authentication state to be Enabled in the
+	// same request.
+	AdministratorLoginPassword *string
+
+	// READ-ONLY; The provisioning state of the PostgreSQL username-and-password authentication method.
+	ProvisioningState *ProvisioningState
+}
+
+// PasswordAuthenticationPropertiesForPatchUpdate - Properties for updating PostgreSQL username-and-password authentication.
+// Omitted properties preserve their current values. This API version supports enabling or disabling the authentication method,
+// and resetting its password. Supported changes can be combined.
+type PasswordAuthenticationPropertiesForPatchUpdate struct {
+	// The PostgreSQL administrator password. Supplying this property resets the configured administrator's password. When password
+	// authentication is currently disabled for a cluster that already has an administrator, this property can be combined with
+	// state Enabled to re-enable password authentication and reset the password.
+	AdministratorLoginPassword *string
+
+	// The target password-authentication state. Enabled can be combined with administratorLoginPassword to re-enable password
+	// authentication and reset the password for a cluster that already has an administrator. Disabling password authentication
+	// does not remove or modify existing database users or roles. Disabled cannot be combined with administratorLoginPassword.
+	State *AuthenticationState
 }
 
 // Pool - Represents the HorizonDB pool.
@@ -514,34 +1601,187 @@ type Pool struct {
 	Type *string
 }
 
-// PoolListResult - The response of a HorizonDbPool list operation.
+// PoolCapability - The HorizonDB Pool capabilities available in a location.
+type PoolCapability struct {
+	// READ-ONLY; The compute processor recommended for clients to select for HorizonDB Pools in the region. This recommendation
+	// does not describe backend behavior when the compute processor is omitted from a request.
+	RecommendedComputeProcessor *ComputeProcessorType
+
+	// READ-ONLY; Additional Pool features supported in the region independently of a processor, generation, or compute model.
+	SupportedFeatures []*PoolFeatureCapability
+
+	// READ-ONLY; The processor families and their compute capabilities supported by Pools in the region.
+	SupportedProcessors []*ComputeProcessorCapability
+}
+
+// PoolComputeModel - The compute model for a HorizonDB pool.
+type PoolComputeModel struct {
+	// REQUIRED; The compute generation for the compute model.
+	ComputeGeneration *int32
+
+	// REQUIRED; The processor type for the compute model.
+	ComputeProcessor *ComputeProcessorType
+
+	// REQUIRED; The type of compute model.
+	Type *PoolComputeModelType
+
+	// REQUIRED; The number of vCores. Allowed values are 1 through 192.
+	VCores *int32
+}
+
+// PoolComputeModelForPatchUpdate - The compute model properties of a HorizonDB pool that can be updated. The object is recursively
+// mergeable: omitted properties preserve their current values. Properties that do not apply to the current or target compute
+// model type are rejected. When type changes, the request must include the complete target compute model. Subtype-specific
+// constraints are validated against the effective merged configuration; invalid requests are rejected without changing the
+// resource.
+type PoolComputeModelForPatchUpdate struct {
+	// The compute generation for the compute model. Omission preserves the current compute generation.
+	ComputeGeneration *int32
+
+	// The processor type for the compute model. Omission preserves the current processor type.
+	ComputeProcessor *ComputeProcessorType
+
+	// The compute model type. Omit this property to retain the current type. Resubmitting the current type succeeds as an idempotent
+	// no-op. To change the type, supply all common properties and all properties required by the target type.
+	Type *PoolComputeModelType
+
+	// The number of provisioned vCores. Allowed values are 1 through 192. This property applies only to a Provisioned compute
+	// model. Omission preserves the current value.
+	VCores *int32
+}
+
+// PoolFeatureCapability - A HorizonDB Pool feature supported in a location.
+type PoolFeatureCapability struct {
+	// READ-ONLY; The name of the Pool feature.
+	Name *string
+}
+
+// PoolForPatchUpdate - HorizonDB pool for update operations.
+type PoolForPatchUpdate struct {
+	// The properties that can be updated for a HorizonDB pool.
+	Properties *PoolPropertiesForPatchUpdate
+
+	// Resource tags.
+	Tags map[string]*string
+}
+
+// PoolHighAvailability - The high-availability configuration for a HorizonDB pool.
+type PoolHighAvailability struct {
+	// REQUIRED; The high-availability mode. Disabled is required when nodeCount is 1. AnyZone or ZoneRedundant is required when
+	// nodeCount is 2 through 16.
+	Mode *PoolHighAvailabilityMode
+}
+
+// PoolHighAvailabilityPatch - The high-availability configuration for a HorizonDB pool update.
+type PoolHighAvailabilityPatch struct {
+	// The high-availability mode. Omission preserves the current mode before the service validates it with the effective nodeCount.
+	Mode *PoolHighAvailabilityMode
+}
+
+// PoolListResult - The response of a Pool list operation.
 type PoolListResult struct {
-	// REQUIRED; The HorizonDbPool items on this page
+	// REQUIRED; The Pool items on this page
 	Value []*Pool
 
 	// The link to the next page of items
 	NextLink *string
 }
 
+// PoolParameterGroupReference - A reference to the parameter group associated with a HorizonDB pool. The schema represents
+// both default and customer-created parameter groups for create and update compatibility. In this API version, initial pool
+// creation accepts only the corresponding default parameter group; PUT updates to an existing pool can associate either group
+// type.
+type PoolParameterGroupReference struct {
+	// REQUIRED; Determines when dynamic parameter changes from the associated parameter group become effective. Static parameter
+	// changes always require a customer-initiated pool Restart, regardless of this value. Stop followed by Start and scheduled
+	// maintenance do not apply pending parameter changes.
+	ApplyMethod *ParameterApplyMethod
+
+	// REQUIRED; The Azure resource ID of the associated parameter group. Initial pool creation in this API version requires the
+	// corresponding Microsoft.HorizonDb/locations/parameterGroups resource. For an existing pool, PUT can specify either the
+	// corresponding default group or a customer-created Microsoft.HorizonDb/parameterGroups resource.
+	ParameterGroupResourceID *string
+
+	// READ-ONLY; The synchronization status between the pool and its parameter group. PendingReboot changes remain pending across
+	// Stop, Start, and scheduled maintenance and become effective only after a customer-initiated Restart.
+	SyncStatus *ParameterGroupSyncStatus
+}
+
+// PoolParameterGroupReferenceForPatchUpdate - A parameter group reference for updating an existing HorizonDB pool. The pool
+// can switch in either direction between its corresponding default parameter group and a customer-created parameter group.
+type PoolParameterGroupReferenceForPatchUpdate struct {
+	// Determines when dynamic parameter changes from the associated parameter group become effective. Static parameter changes
+	// always require a customer-initiated pool Restart, regardless of this value. Stop followed by Start and scheduled maintenance
+	// do not apply pending parameter changes.
+	ApplyMethod *ParameterApplyMethod
+
+	// The Azure resource ID of the corresponding default or customer-created parameter group to associate with the existing pool.
+	ParameterGroupResourceID *string
+}
+
 // PoolProperties - Properties of a HorizonDB pool.
 type PoolProperties struct {
-	// The location of the HorizonDB pool.
-	Location *string
+	// REQUIRED; The required compute model for the HorizonDB pool.
+	ComputeModel *PoolComputeModel
 
-	// READ-ONLY; The create mode for the pool.
-	CreateMode *CreateModePool
+	// REQUIRED; The required high-availability configuration for the pool. mode must be Disabled when nodeCount is 1, and must
+	// be AnyZone or ZoneRedundant when nodeCount is 2 through 16.
+	HighAvailability *PoolHighAvailability
+
+	// REQUIRED; The required number of nodes to allocate and assign to the pool. Allowed values are 1 through 16. To deallocate
+	// runtime compute without changing the configured node count, stop the pool.
+	NodeCount *int32
+
+	// REQUIRED; The required parameter group associated with the pool. When creating a new pool in this API version, the caller
+	// must supply the corresponding default parameter group; customer-created parameter groups are not accepted during creation.
+	// For an existing pool, PUT or PATCH can associate either the corresponding default parameter group or a customer-created
+	// parameter group. The create-visible shape intentionally supports both resource ID forms so a future API version can allow
+	// customer-created parameter groups during creation without a breaking schema change.
+	ParameterGroup *PoolParameterGroupReference
+
+	// The scheduled maintenance configuration for the pool. The properties available depend on the selected maintenance management
+	// type.
+	ScheduledMaintenance ScheduledMaintenancePropertiesClassification
 
 	// READ-ONLY; The provisioning state of the pool.
 	ProvisioningState *ProvisioningState
 
-	// READ-ONLY; Number of replicas in the pool.
-	ReplicaCount *int32
-
 	// READ-ONLY; Current state of the pool.
-	State *State
+	State *PoolState
+}
 
-	// READ-ONLY; The version of the HorizonDB pool.
-	Version *string
+// PoolPropertiesForPatchUpdate - Properties of a HorizonDB pool for update operations.
+type PoolPropertiesForPatchUpdate struct {
+	// The compute model properties to update. Omitted properties preserve their current values. To change the compute model type,
+	// supply the complete target compute model, including type, computeProcessor, computeGeneration, and all properties required
+	// by the target type.
+	ComputeModel *PoolComputeModelForPatchUpdate
+
+	// The high-availability configuration to update. Omission preserves the current mode. The service recursively merges omitted
+	// PATCH properties with the existing resource before validating the effective nodeCount and mode together.
+	HighAvailability *PoolHighAvailabilityPatch
+
+	// The number of nodes to allocate and assign to the pool. Allowed values are 1 through 16. Omission preserves the current
+	// configured value. To deallocate runtime compute without changing the configured node count, stop the pool.
+	NodeCount *int32
+
+	// The corresponding default or a customer-created parameter group to associate with the existing pool. Customers can switch
+	// in either direction between these group types. Omission preserves the current association.
+	ParameterGroup *PoolParameterGroupReferenceForPatchUpdate
+
+	// The scheduled maintenance configuration to update for the pool. When supplied, the complete configuration for the selected
+	// maintenance management type is required. Omission preserves the current configuration.
+	ScheduledMaintenance *ScheduledMaintenancePropertiesForPatchUpdate
+}
+
+// PostgreSQLVersionCapability - The capabilities of a PostgreSQL major version supported by HorizonDB.
+type PostgreSQLVersionCapability struct {
+	// READ-ONLY; The PostgreSQL major version.
+	Name *PostgreSQLCapabilityVersion
+
+	// READ-ONLY; The PostgreSQL major versions to which this version can be upgraded in place. API version 2026-10-01-preview
+	// does not support in-place PostgreSQL major-version upgrades, so this array is always empty.
+	SupportedVersionsToUpgrade []*PostgreSQLCapabilityVersion
 }
 
 // PrivateEndpoint - The private endpoint resource.
@@ -610,9 +1850,9 @@ type PrivateLinkResource struct {
 	Type *string
 }
 
-// PrivateLinkResourceListResult - The response of a HorizonDbPrivateLinkResource list operation.
+// PrivateLinkResourceListResult - The response of a PrivateLinkResource list operation.
 type PrivateLinkResourceListResult struct {
-	// REQUIRED; The HorizonDbPrivateLinkResource items on this page
+	// REQUIRED; The PrivateLinkResource items on this page
 	Value []*PrivateLinkResource
 
 	// The link to the next page of items
@@ -644,61 +1884,53 @@ type PrivateLinkServiceConnectionState struct {
 	Status *PrivateEndpointServiceConnectionStatus
 }
 
-// Replica - Represents the HorizonDB replica.
-type Replica struct {
-	// The resource-specific properties for this resource.
-	Properties *ReplicaProperties
+// ProvisionedComputeModelCapability - The capabilities of the Provisioned compute model.
+type ProvisionedComputeModelCapability struct {
+	// REQUIRED; The compute model represented by these capabilities.
+	Type *PoolComputeModelType
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
+	// READ-ONLY; The provisioned vCore count recommended for clients to select. This recommendation does not describe backend
+	// behavior when vCores is omitted from a request.
+	RecommendedVCoreCount *int32
 
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
+	// READ-ONLY; The supported provisioned compute sizes.
+	SupportedComputeSizes []*ComputeSizeCapability
 }
 
-// ReplicaForPatchUpdate - HorizonDB replica for update operations.
-type ReplicaForPatchUpdate struct {
-	// Properties of a HorizonDB replica for update operations.
-	Properties *ReplicaPropertiesForPatchUpdate
+// GetComputeModelCapability implements the ComputeModelCapabilityClassification interface for type ProvisionedComputeModelCapability.
+func (p *ProvisionedComputeModelCapability) GetComputeModelCapability() *ComputeModelCapability {
+	return &ComputeModelCapability{
+		Type: p.Type,
+	}
 }
 
-// ReplicaListResult - The response of a HorizonDbReplica list operation.
-type ReplicaListResult struct {
-	// REQUIRED; The HorizonDbReplica items on this page
-	Value []*Replica
-
-	// The link to the next page of items
-	NextLink *string
+// ReadWritePoolProperties - The pool currently designated to host a HorizonDB cluster's read-write node. When a pool is created
+// while the cluster currently has no pools, the service automatically designates the new pool as the read-write pool. This
+// behavior also applies after all pools that existed earlier in the cluster's lifetime have been deleted.
+type ReadWritePoolProperties struct {
+	// READ-ONLY; The Azure resource ID of the pool designated to host the cluster's read-write node. The pool is a child resource
+	// of this cluster. When a pool is created while the cluster currently has no pools, the service automatically sets this property
+	// to the new pool's resource ID, including when all pools that existed earlier in the cluster's lifetime were deleted. This
+	// property is absent when no pool is designated, such as after clearReadWritePool succeeds.
+	DesignatedPoolResourceID *string
 }
 
-// ReplicaProperties - Properties of a HorizonDB replica.
-type ReplicaProperties struct {
-	// The availability zone of the replica.
-	AvailabilityZone *string
-
-	// Role of the replica.
-	Role *ReplicaRole
-
-	// READ-ONLY; The fully qualified domain name of the replica.
-	FullyQualifiedDomainName *string
-
-	// READ-ONLY; The provisioning state of the replica.
-	ProvisioningState *ProvisioningState
-
-	// READ-ONLY; Current status of the replica.
-	Status *State
+// ScheduledMaintenanceProperties - The scheduled maintenance configuration for a HorizonDB pool.
+type ScheduledMaintenanceProperties struct {
+	// REQUIRED; Specifies whether scheduled maintenance is managed by the system or by the user.
+	MaintenanceManagementType *ScheduledMaintenanceManagementType
 }
 
-// ReplicaPropertiesForPatchUpdate - Properties of a HorizonDB replica for update operations.
-type ReplicaPropertiesForPatchUpdate struct {
-	// Role of the replica.
-	Role *ReplicaRole
+// GetScheduledMaintenanceProperties implements the ScheduledMaintenancePropertiesClassification interface for type ScheduledMaintenanceProperties.
+func (s *ScheduledMaintenanceProperties) GetScheduledMaintenanceProperties() *ScheduledMaintenanceProperties {
+	return s
+}
+
+// ScheduledMaintenancePropertiesForPatchUpdate - The scheduled maintenance configuration for a pool update operation.
+type ScheduledMaintenancePropertiesForPatchUpdate struct {
+	// Specifies whether scheduled maintenance is managed by the system or by the user. When scheduledMaintenance is supplied,
+	// this property is required by the service.
+	MaintenanceManagementType *ScheduledMaintenanceManagementType
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
@@ -720,6 +1952,21 @@ type SystemData struct {
 
 	// The type of identity that last modified the resource.
 	LastModifiedByType *CreatedByType
+}
+
+// SystemScheduledMaintenanceProperties - The system-managed scheduled maintenance configuration for a HorizonDB pool. User-managed
+// schedule properties must be absent.
+type SystemScheduledMaintenanceProperties struct {
+	// CONSTANT; Specifies that scheduled maintenance is managed by the system.
+	// Field has constant value ScheduledMaintenanceManagementTypeSystem, any specified value is ignored.
+	MaintenanceManagementType *ScheduledMaintenanceManagementType
+}
+
+// GetScheduledMaintenanceProperties implements the ScheduledMaintenancePropertiesClassification interface for type SystemScheduledMaintenanceProperties.
+func (s *SystemScheduledMaintenanceProperties) GetScheduledMaintenanceProperties() *ScheduledMaintenanceProperties {
+	return &ScheduledMaintenanceProperties{
+		MaintenanceManagementType: s.MaintenanceManagementType,
+	}
 }
 
 // UserAssignedIdentity - User assigned identity properties

@@ -647,7 +647,7 @@
 # ServiceOwners:                                                   @armleads-azure
 
 # PRLabel: %Mgmt
-/sdk/resourcemanager/                                              @lirenhe @tadelesh @JiaqiZhang-Dev
+/sdk/resourcemanager/                                              @lirenhe @tadelesh @JiaqiZhang-Dev @Azure/azure-arm-sdk-reviewers
 
 # ServiceLabel: %Mgmt
 # AzureSdkOwners:                                                  @lirenhe

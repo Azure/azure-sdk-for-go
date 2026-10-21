@@ -1,6 +1,6 @@
-# Azure Koreaiartemis Module for Go
+# Azure Kore Agent Platform Module for Go
 
-The `armkoreaiartemis` module provides operations for working with Azure Koreaiartemis.
+The `armkoreaiartemis` module provides operations for working with Azure Kore Agent Platform.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/koreaiartemis/armkoreaiartemis)
 
@@ -15,7 +15,7 @@ The `armkoreaiartemis` module provides operations for working with Azure Koreaia
 
 This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for versioning and dependency management.
 
-Install the Azure Koreaiartemis module:
+Install the Azure Kore Agent Platform module:
 
 ```sh
 go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/koreaiartemis/armkoreaiartemis
@@ -23,7 +23,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/koreaiartemis/armko
 
 ## Authorization
 
-When creating a client, you will need to provide a credential for authenticating with Azure Koreaiartemis.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
+When creating a client, you will need to provide a credential for authenticating with Azure Kore Agent Platform.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
 
 ```go
 cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -33,7 +33,7 @@ For more information on authentication, please see the documentation for `aziden
 
 ## Client Factory
 
-Azure Koreaiartemis module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
+Azure Kore Agent Platform module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
 
 ```go
 clientFactory, err := armkoreaiartemis.NewClientFactory(<subscription ID>, cred, nil)
@@ -68,7 +68,7 @@ Please see https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/samples/fakes
 ## Provide Feedback
 
 If you encounter bugs or have suggestions, please
-[open an issue](https://github.com/Azure/azure-sdk-for-go/issues) and assign the `Koreaiartemis` label.
+[open an issue](https://github.com/Azure/azure-sdk-for-go/issues) and assign the `Kore Agent Platform` label.
 
 # Contributing
 

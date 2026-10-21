@@ -354,6 +354,16 @@ test("management review workflows do not subscribe to the legacy PR target event
   }
 });
 
+test("reviewer preserves pending requests in the workflow-level concurrency queue", () => {
+  for (const file of ["mgmt-review.md", "mgmt-review.lock.yml"]) {
+    const concurrency = text(file).match(/^concurrency:\n((?:[ \t]+[^\n]*\n)+)/m)?.[1];
+    assert.ok(concurrency, `${file} has workflow-level concurrency`);
+    assert.match(concurrency, /^  group: "?gh-aw-\$\{\{ github.workflow \}\}-\$\{\{ github.event.inputs.item_number \}\}"?$/m);
+    assert.match(concurrency, /^  cancel-in-progress: false$/m);
+    assert.match(concurrency, /^  queue: max$/m);
+  }
+});
+
 test("compiled reviewer retains validated targets in both agent and publisher configs", () => {
   const source = text("mgmt-review.md");
   const compiled = text("mgmt-review.lock.yml");

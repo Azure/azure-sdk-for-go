@@ -144,6 +144,7 @@ safe-outputs:
 concurrency:
   group: "gh-aw-${{ github.workflow }}-${{ github.event.inputs.item_number }}"
   cancel-in-progress: false
+  queue: max
   job-discriminator: "${{ github.run_id }}"
 timeout-minutes: 35
 ---

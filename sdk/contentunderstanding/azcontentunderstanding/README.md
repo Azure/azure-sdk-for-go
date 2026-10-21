@@ -1,115 +1,117 @@
-# Azure AI Content Understanding client prototype for Go
+# Content Understanding Go emitter iteration
 
-**Prototype. Not ready for review or production use.** This module has not been
-released. Its API is intentionally small and may change without compatibility
-guarantees.
+Local prototype generated with `@azure-tools/typespec-go` **0.17.6** using the
+repository's pinned emitter manifest/lockfile and `tsp-client` **0.30.0**.
+This is not a published SDK or a drop-in replacement for the handwritten
+prototype. The original prototype branch is unchanged.
 
-This handwritten client explores Content Understanding analysis, analyzer
-creation/listing/deletion/copy, and model deployment defaults. Wire contracts
-are based on `Azure/azure-rest-api-specs` commit
-`ca6afc6f24a2ef9ed210a164504718507b2e3659`, under
-`specification/ai/ContentUnderstanding`. It is not a complete service SDK and
-does not include a formatter, resource provisioning, or command-line policy.
+## Source and regeneration
 
-## Authentication and analysis
+The service source is `Azure/azure-rest-api-specs` commit
+`ca6afc6f24a2ef9ed210a164504718507b2e3659`, directory
+`specification/ai/ContentUnderstanding`, recorded in `tsp-location.yaml`.
+The local `generation/spec-go.patch` contains the complete generation input
+changes:
 
-Supply a resource endpoint such as `https://<resource>.services.ai.azure.com`
-and an `azcore.TokenCredential`. Applications can use `azidentity`; the client
-does not discover credentials or read application configuration.
+- Add Go emitter output/module options, raw-JSON bytes and an explicit working
+  azcore version.
+- Align the base `ContentField.type` Go client name with the existing derived
+  `fieldType` names. Without this Go-scoped customization, the emitter fails
+  with `unsupported type kind enum for discriminator property type`.
 
-```go
-credential, err := azidentity.NewDefaultAzureCredential(nil)
-if err != nil {
-    return err
-}
-client, err := azcontentunderstanding.NewClient(endpoint, credential, nil)
-if err != nil {
-    return err
-}
-poller, err := client.BeginAnalyze(ctx, "prebuilt-layout",
-    azcontentunderstanding.AnalyzeRequest{
-        Inputs: []azcontentunderstanding.AnalysisInput{{URL: documentURL}},
-    })
-if err != nil {
-    return err
-}
-response, err := poller.PollUntilDone(ctx,
-    &runtime.PollUntilDoneOptions{Frequency: time.Second})
-if err != nil {
-    return err
-}
-// response.Result is the analysis JSON; response.Usage is the usage subtree.
-// response.RawJSON is the complete service envelope, including unknown fields.
-```
-
-Resource keys are supported through `NewClientWithKeyCredential`.
-`ClientOptions.APIVersion` defaults to `2025-11-01`. Select
-`2026-06-01-preview` for `AnalyzeInline` and `AnalyzeBinaryInline`, which do
-not poll. Analysis requests use `codePoint` span offsets: Go callers must
-use rune-aware rather than byte slicing.
-
-Binary methods require an `io.ReadSeekCloser` for retryable streaming; callers
-can use `streaming.NopCloser` from `azcore/streaming` with an in-memory reader. Do not close the stream
-until the submission returns. No input files are opened by the client.
-Pollers use azcore's default interval unless the caller sets `Frequency`.
-One second is suitable for interactive use; service retry instructions and
-context deadlines take precedence.
-
-`Analyzer.RawJSON` preserves the complete definition. Supply a JSON object to
-`BeginCreateAnalyzer`; create/copy do not replace existing analyzers. The
-application owns sorting, dependency preflight and other lifecycle policy.
-Cross-resource copies require a source-side authorization grant followed by
-a destination-side copy request.
-
-`UpdateDefaults` accepts a map of string pointers: nil removes a mapping.
-It does not populate aliases or merge application settings automatically.
-Service errors retain `*azcore.ResponseError` status/code information. Inline
-HTTP 200 responses with failed operation status return an error.
-
-## Validation
-
-### Source layout
-
-The module root contains the reusable client and models with no test-only source.
-Tests live in separate subdirectories and consume only the public SDK API:
-
-```text
-azcontentunderstanding/
-  *.go                  # reusable client, operations and models
-  go.mod
-  go.sum
-  tests/
-    unit/               # offline HTTP contract tests
-    live/               # opt-in service tests, guarded by the live build tag
-```
-
-The SDK import path is unchanged. Reusing runtime source does not require copying
-the tests directory. All directories share one Go module; there are no nested
-test modules or additional runtime dependencies.
-
-Offline:
+To reproduce, start with a clean disposable checkout of the spec commit, apply
+the patch at its repository root, and run from this SDK module:
 
 ```sh
+git -C "$SPEC_REPO" apply --unidiff-zero "$SDK_MODULE/generation/spec-go.patch"
+tsp-client update \
+  --local-spec-repo "$SPEC_REPO/specification/ai/ContentUnderstanding" \
+  --no-prompt
+```
+
+`SPEC_REPO` and `SDK_MODULE` are absolute paths to those local directories.
+For tsp-client 0.30.0, the local-spec argument must name the CU project directory,
+not the specification repository root. Use Node 24 and Go on PATH. The SDK repo
+must retain its pinned `eng/emitter-package.json` and lockfile.
+No generated Go file is manually patched.
+
+## Generated surface and compatibility
+
+Ten generated runtime files provide clients, typed/polymorphic models,
+serialization, responses, options and constants. All twelve service operations
+required by the earlier prototype are present; generation also includes
+analyzer update and result deletion/download operations.
+
+Important differences from the handwritten prototype:
+
+- The emitted client defaults to `2026-06-01-preview`. Select GA through
+  `ClientOptions{ClientOptions: azcore.ClientOptions{APIVersion: "2025-11-01"}}`.
+- String encoding is an explicit argument. Tests use `codePoint`; Go consumers
+  must use rune-aware slicing for these offsets.
+- The generated constructor currently accepts an Entra `TokenCredential`; it
+  does not generate the earlier key-credential constructor. The emitter reports
+  `UnsupportedAuthenticationScheme: unsupported authentication scheme apiKey
+  will be omitted`.
+- Requests/responses use generated typed structs rather than raw definitions.
+  Unknown properties are not retained by typed reserialization.
+- The completed LRO result projects `AnalysisResult` and does not expose its
+  top-level usage. Use `policy.WithCaptureResponse` for the begin and polling
+  context, then `runtime.Payload` on the captured response to retain the original
+  envelope, unknown fields and usage. Offline and live tests verify this path.
+- Inline response models include status/result/usage, but the generated method
+  does not convert HTTP-200 failed operation statuses into Go errors. Consumers
+  must inspect status; this is tested explicitly, not treated as parity.
+- The emitter currently generates `application/json` for defaults PATCH even
+  though the pinned REST contract specifies `application/merge-patch+json`.
+  The offline test uses the supported `policy.WithHTTPHeader` override to
+  restore the required content type. This still needs a durable generator or
+  TypeSpec-level fix before treating the generated API as a direct replacement.
+- Omitted JSON model-deployment overrides currently serialize as
+  `"modelDeployments": null`; the live analysis paths accept this shape.
+- Despite an initial `azcore-version: "1.20.0"` attempt, the emitter imports
+  `azcore/runtime/datetime`, which that version does not provide. Dependency
+  resolution upgraded azcore. This iteration explicitly pins the verified
+  **azcore v1.23.3**; it does not establish compatibility with v1.20.0.
+
+Applications own credentials, input/output planning, command policy and result
+formatting. This iteration adds no replacement business-logic module or
+handwritten wrapper client.
+
+## Layout and validation
+
+Generated runtime files are in the module root. Public-boundary tests remain
+separate under `tests/unit` and `tests/live`; generation inputs are under
+`generation`.
+
+```sh
+go build .
 go test -race -coverpkg=. ./tests/unit/...
 go vet -tags live ./...
-go build ./...
 ```
 
-Live tests require Azure CLI login, `CONTENTUNDERSTANDING_ENDPOINT`, and the
-same resource's `CONTENTUNDERSTANDING_RESOURCE_ID` and
-`CONTENTUNDERSTANDING_REGION` for authorization verification:
+Offline coverage is intentionally focused on consumed operations, not all
+generated document/media models. It is not comparable to coverage of the much
+smaller handwritten client.
+
+Live tests use Azure CLI authentication and require
+`CONTENTUNDERSTANDING_ENDPOINT`:
 
 ```sh
-go test -tags live -run TestLive -count=1 -timeout 30m -v ./tests/live/...
+go test -tags live -run TestLiveGenerated -count=1 -timeout 30m -v ./tests/live/...
 ```
 
-These tests incur service charges, submit a public sample invoice, and create,
-copy and delete uniquely named analyzers, and verify that the service rejects
-a same-resource authorization request for a test-owned analyzer. The resource must already have the
-`gpt-5.2` completion mapping configured. They do not modify resource defaults.
-Credentials and endpoint values are not recorded in this repository.
+They submit a public sample invoice and create/copy/delete uniquely named test
+analyzers, requiring existing `gpt-5.2` defaults. They exercise GA/preview binary,
+URL and base64 analysis, preview inline calls, raw-envelope/usage capture,
+sample schema suggestion, field extraction, analyzer paging/conflict/copy and
+deletion. Cleanup failures fail the tests.
 
-Successful cross-resource authorization/copy and defaults mutation have offline contract
-coverage; the default live suite does not mutate shared defaults or assume
-access to a second resource. Passing it alone does not establish those live
-contracts. There is no promise of complete API or SDK feature parity.
+Defaults mutations and successful cross-resource authorization/copy are not
+live-verified. Shared defaults are not modified. The generated defaults PATCH
+header issue and inline failure semantics remain explicit integration gaps.
+
+The local validation run passed build, vet, race tests, module verification,
+and the live scenarios above. Focused offline runtime coverage was 20.4%.
+Repeated generation produced byte-identical output for all ten generated Go
+files. Compilation also reports the existing C# `Response` suffix naming
+warning from the shared spec; it does not prevent Go generation.

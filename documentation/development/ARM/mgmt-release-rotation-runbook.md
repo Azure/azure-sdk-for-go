@@ -10,7 +10,7 @@ Open **Azure SDK for Go management release PR check - YYYY-MM-DD**. Release owne
 
 | Mail section | Next action |
 | --- | --- |
-| `ON HOLD - HoldOn label` | Leave the PR on hold; ask the service team to confirm the release window with the Go owner. |
+| `ON HOLD - HoldOn label` | Leave the PR on hold until the on hold problem is resolved. |
 | `CI INCOMPLETE - go - pullrequest not completed` | Wait for the top-level PR pipeline to finish, then manually add `mgmt-review-needed` to trigger review analysis. Wait for the final workflow result, then continue with Step 2. If the pipeline is stuck or absent, ask the Go owner. |
 | `READY - needs SDK team review` | Open the PR and continue with Step 2. Human review is still required. |
 | `ACTION REQUIRED - breaking-change review` | Open the linked workflow comment and send its affected-module/status summary to the Go owner for a decision. Do not approve around it. |
@@ -39,9 +39,9 @@ Use the [Management Release Assistant](https://github.com/Azure/azure-sdk-for-go
 | --- | --- |
 | Pipeline Checks Still Running | Wait for CI, then request fresh analysis. |
 | Next Steps to Merge | Ask the service team to apply the listed fixes; send pipeline infrastructure or generator failures to the Go owner. Refresh analysis after fixes; do not redo CI diagnosis. |
-| Manual Edits to Auto-Generated Files Detected | Ask the PR author to revert the listed manual edits. The service team fixes source-spec issues and regenerates; the Go owner handles generator issues. Do not patch generated output. |
+| Manual Edits to Auto-Generated Files Detected | Ask the manual edit author to revert the listed manual edits. The service team fixes source-spec issues and regenerates; the Go owner handles generator issues. Do not patch generated output. |
 | Breaking-Change Review | Use the reported statuses. Escalate **Unapproved**, **Unverifiable**, or verification failures to the Go owner; do not repeat suppression matching or grant exceptions. All-approved items alone are not a ready verdict. |
-| First On-Board Service - Action Required | Ask the service team to complete the listed namespace approval and README service-name actions; ask the Go owner to resolve pipeline-setup or verification failures. Refresh analysis after fixes. |
+| First On-Board Service - Action Required | Ask the service team to complete all listed namespace, pipeline, and README service-name requirements and resolve any verification failures. Refresh analysis after fixes. |
 | PR is ready to merge | Continue with Step 4; this is advisory, not human approval. |
 
 Do not approve while any reported blocker remains. Ask the Go owner to resolve incomplete or contradictory results. Keep the next action on the existing PR thread.

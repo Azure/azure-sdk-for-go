@@ -181,9 +181,7 @@ func TestGeneratedDefaults(t *testing.T) {
 	defaults, err := client.GetDefaults(t.Context(), nil)
 	require.NoError(t, err)
 	assert.Equal(t, "deployment", *defaults.ModelDeployments["gpt-5.2"])
-	// The emitter currently sets application/json; the REST contract requires merge-patch.
-	ctx := policy.WithHTTPHeader(t.Context(), http.Header{"Content-Type": {"application/merge-patch+json"}})
-	_, err = client.UpdateDefaults(ctx, &sdk.ClientUpdateDefaultsOptions{
+	_, err = client.UpdateDefaults(t.Context(), &sdk.ClientUpdateDefaultsOptions{
 		ModelDeployments: &sdk.RecordMergePatchUpdate{
 			AdditionalProperties: map[string]*string{"gpt-5.2": to.Ptr("deployment"), "old": nil},
 		},
@@ -257,15 +255,18 @@ func TestGeneratedCopyRequestContracts(t *testing.T) {
 	assert.Equal(t, 409, responseErr.StatusCode)
 }
 
-func TestGeneratedInlineFailedEnvelopeRequiresCallerCheck(t *testing.T) {
+func TestInlineFailedEnvelopeReturnsError(t *testing.T) {
+	calls := 0
 	client, _ := testClient(t, "", func(w http.ResponseWriter, r *http.Request) {
+		calls++
 		_, _ = io.WriteString(w, `{"status":"Failed","error":{"code":"InvalidContent"}}`)
 	})
-	response, err := client.AnalyzeInline(t.Context(), "a", []sdk.AnalysisInput{{URL: to.Ptr("https://example.test/in.pdf")}}, "codePoint", nil)
-	require.NoError(t, err, "bare generated API exposes operation status; it does not implement convenience-level failure checking")
-	require.NotNil(t, response.Status)
-	assert.Equal(t, sdk.OperationStateFailed, *response.Status)
-	assert.Nil(t, response.Result)
+	_, err := client.AnalyzeInline(t.Context(), "a", []sdk.AnalysisInput{{URL: to.Ptr("https://example.test/in.pdf")}}, "codePoint", nil)
+	var responseErr *azcore.ResponseError
+	require.ErrorAs(t, err, &responseErr)
+	assert.Equal(t, "InvalidContent", responseErr.ErrorCode)
+	assert.Equal(t, 200, responseErr.StatusCode)
+	assert.Equal(t, 1, calls)
 }
 
 func TestGeneratedLROFailure(t *testing.T) {

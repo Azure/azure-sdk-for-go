@@ -5,14 +5,15 @@ index 0a9b8651c7c..99f5c6881a7 100644
 @@ -74,0 +75 @@ interface ContentUnderstandingClient {
 +@@clientName(ContentField.type, "fieldType", "go");
 diff --git a/specification/ai/ContentUnderstanding/tspconfig.yaml b/specification/ai/ContentUnderstanding/tspconfig.yaml
-index 9d61e462186..c031b08f128 100644
+index 9d61e462186..62b7215d2cf 100644
 --- a/specification/ai/ContentUnderstanding/tspconfig.yaml
 +++ b/specification/ai/ContentUnderstanding/tspconfig.yaml
-@@ -17,0 +18,7 @@ options:
+@@ -17,0 +18,8 @@ options:
 +  "@azure-tools/typespec-go":
 +    module: "github.com/Azure/azure-sdk-for-go/sdk/contentunderstanding/azcontentunderstanding"
 +    service-dir: "sdk/contentunderstanding"
 +    emitter-output-dir: "{output-dir}/{service-dir}/azcontentunderstanding"
 +    generate-fakes: false
++    omit-constructors: true
 +    azcore-version: "1.23.3"
 +    rawjson-as-bytes: true

@@ -7,70 +7,23 @@ package azcontentunderstanding
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"io"
 	"net/http"
 	"net/url"
-	"reflect"
 	"strconv"
 	"strings"
 )
 
 // Client contains the methods for the service.
-// Don't use this type directly, use NewClient() instead.
+// Don't use this type directly, use a constructor function instead.
 //
 // Generated from API version 2026-06-01-preview
 type Client struct {
 	internal *azcore.Client
 	endpoint string
-}
-
-// ClientOptions contains the optional values for creating a [Client].
-type ClientOptions struct {
-	azcore.ClientOptions
-}
-
-// NewClient creates a new instance of Client with the specified values.
-//   - endpoint - Service host
-//   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - Contains optional client configuration. Pass nil to accept the default values.
-func NewClient(endpoint string, credential azcore.TokenCredential, options *ClientOptions) (*Client, error) {
-	if options == nil {
-		options = &ClientOptions{}
-	}
-	if reflect.ValueOf(options.Cloud).IsZero() {
-		options.Cloud = cloud.AzurePublic
-	}
-	c, ok := options.Cloud.Services[ServiceName]
-	if !ok {
-		return nil, fmt.Errorf("provided Cloud field is missing configuration for %s", ServiceName)
-	} else if c.Audience == "" {
-		return nil, fmt.Errorf("provided Cloud field is missing Audience for %s", ServiceName)
-	}
-	cl, err := azcore.NewClient(moduleName, moduleVersion, runtime.PipelineOptions{
-		APIVersion: runtime.APIVersionOptions{
-			Name:     "api-version",
-			Location: runtime.APIVersionLocationQueryParam,
-		},
-		PerCall: []policy.Policy{
-			runtime.NewBearerTokenPolicy(credential, []string{c.Audience + "/.default"}, &policy.BearerTokenOptions{
-				InsecureAllowCredentialWithHTTP: options.InsecureAllowCredentialWithHTTP,
-			}),
-		},
-	}, &options.ClientOptions)
-	if err != nil {
-		return nil, err
-	}
-	endpoint = runtime.JoinPaths(endpoint, "contentunderstanding")
-	client := &Client{
-		endpoint: endpoint,
-		internal: cl,
-	}
-	return client, nil
 }
 
 // AnalyzeBinaryInline - Extract content and fields from binary input. The analysis result is embedded inline in the JSON

@@ -4,10 +4,14 @@
 
 ### Features Added
 
-- Local TypeSpec Go emitter iteration with typed CU clients and polymorphic models.
-- Public-boundary tests for generated operation contracts and explicit raw-envelope capture.
+- TypeSpec-generated CU service operations and polymorphic models, including
+  analyzer updates, result files and deletion, and preview workflows.
+- Token/key constructors, checked inline responses and corrected merge-patch requests.
+- Raw JSON request variants, operation IDs, usage and media-compatible result decoding.
+- Page/time ranges, grounding sources, media durations and LLM-input formatting.
 
 ### Other Changes
 
-- This local iteration changes public signatures and runtime dependencies from
-  the handwritten prototype. See README for generation inputs and known gaps.
+- APIs follow Go conventions and are not source-compatible with the earlier
+  handwritten prototype. See README for regeneration, reference differences and
+  remaining resource-dependent live-validation gaps.

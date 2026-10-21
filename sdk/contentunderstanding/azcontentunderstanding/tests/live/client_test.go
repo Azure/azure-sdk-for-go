@@ -77,7 +77,7 @@ func TestLiveGeneratedAnalyze(t *testing.T) {
 					var raw *http.Response
 					capture := policy.WithCaptureResponse(ctx, &raw)
 					if mode == "binary" {
-						poller, err := client.BeginAnalyzeBinary(capture, "prebuilt-layout", streaming.NopCloser(bytes.NewReader(data)), "codePoint", "application/pdf", nil)
+						poller, err := client.BeginAnalyzeBinary(capture, "prebuilt-layout", streaming.NopCloser(bytes.NewReader(data)), "codePoint", "", nil)
 						require.NoError(t, err)
 						result, err := poller.PollUntilDone(capture, &runtime.PollUntilDoneOptions{Frequency: time.Second})
 						require.NoError(t, err)

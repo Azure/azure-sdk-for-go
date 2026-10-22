@@ -117,12 +117,13 @@ Fetch the PR details. If the PR is in **draft** state, use the `update_pull_requ
 
 1. Fetch PR details and changed files using GitHub MCP tools.
 2. Identify every affected module path from the changed files (e.g., `sdk/resourcemanager/<service>/arm<package>/`). Evaluate onboarding and breaking-change approvals independently for each module.
-3. Determine if this is a **first on-board service** (first beta version): check whether the PR adds a new `ci.yml` file under the module path (i.e., `ci.yml` appears in the changed files with status `added`). If so, this PR has two extra onboarding requirements to verify (record the results for the Step 6 checklist):
+3. Determine if this is a **first on-board service** (first beta version): check whether the PR adds a new `ci.yml` file under the module path (i.e., `ci.yml` appears in the changed files with status `added`). If so, this PR has three extra onboarding requirements to verify for each new module (record the results for the Step 6 checklist):
    - **Release pipelines** — created via `/azp run prepare-pipelines`.
    - **Namespace approval** — a new module namespace must be approved before its first release. Determine approval using the following namespace review process:
      1. Derive the service token from the module path `sdk/resourcemanager/<mid>/arm<suffix>`: normalize each of `<mid>` and `<suffix>` (drop the `arm` prefix and any separators, lowercased); when the two normalized components are identical use just one, otherwise concatenate them — so `compute/armbulkactions` → `computebulkactions`, but `network/armnetwork` → `network` (not `networknetwork`).
     2. **Check the Azure DevOps Release Plan first.** Extract the numeric `releaseplan` value from the `azsdk-releaseplan-dashboard-*.azurewebsites.net/?releaseplan=<id>` link in the PR body. If the link is present and an authenticated Azure DevOps token is available, use `bash` to obtain the token with `az account get-access-token --resource 499b84ac-1321-427f-aa17-267ca6975798`, then query `https://dev.azure.com/azure-sdk/Release/_apis/wit/wiql?api-version=7.1` for a `Release Plan` whose `Custom.ReleasePlanID` exactly equals that value. Read the returned work item and inspect `Custom.NamespaceApprovalIssue`. A non-empty namespace approval issue means approval is **satisfied**. The dashboard value is not necessarily the work-item id: always resolve it through `Custom.ReleasePlanID`, never fetch that number directly as a work-item id. If the PR has no Release Plan link, authentication is unavailable, the query fails, no matching plan exists, or the field is empty, continue to the manual signal rather than reporting approval from this signal.
     3. If the Release Plan does not establish approval, fall back to the manual signal: fetch PR comments, ignore comments containing the workflow marker `<!-- gh-aw-workflow-id: mgmt-review -->`, and confirm any other comment mentions `namespace` and includes a GitHub issue or pull request URL (`https://github.com/.../issues/<number>` or `https://github.com/.../pull/<number>`). Pull requests are valid signals because namespace review can happen during the specification PR review. Treat namespace approval as **missing** only if neither signal is present.
+   - **README service name** — read the new module's `README.md` at the PR head and check its title and introduction against the official service name in the release plan, namespace review, service documentation, or service-team confirmation. If missing, unclear, or inconsistent, ask the service team to confirm/refine it. Ignore module/import identifiers and standard template wording. Report access errors as verification failures, not naming issues.
 
 ### Step 2 — Check pipeline status
 
@@ -211,12 +212,12 @@ The `go - pullrequest` pipeline checks have not completed yet. Analysis cannot p
 **If all checks completed and nothing blocks** (no manual edits to generated files, unapproved breaking changes, or approval verification failures):
 
 - If this is **not** a first on-board service → post `## PR is ready to merge`.
-- If this **is** a first on-board service and **both** onboarding requirements are satisfied (release pipelines created **and** namespace approval satisfied) → post `## PR is ready to merge`.
-- If this **is** a first on-board service and **either** onboarding requirement is outstanding → do **not** post `## PR is ready to merge`. Instead post the **First On-Board Service Checklist** below with the outstanding items.
+- If this **is** a first on-board service and **all three** onboarding requirements are satisfied for every new module (release pipelines created, namespace approval satisfied, **and README service name verified**) → post `## PR is ready to merge`.
+- If this **is** a first on-board service and **any** onboarding requirement for any new module is outstanding or unverifiable → do **not** post `## PR is ready to merge`. Instead post the **First On-Board Service Checklist** below with the outstanding items.
 
 #### First On-Board Service Checklist
 
-List only the items that are still outstanding. Omit an item once its requirement is satisfied.
+List only the items that are still outstanding, identifying the affected module when multiple modules are being reviewed. Omit an item once its requirement is satisfied.
 
 ```markdown
 ## ⚠️ First On-Board Service — Action Required
@@ -225,6 +226,7 @@ This PR cannot be merged until the following onboarding requirements are complet
 
 - **Pipeline setup** (release pipelines not created yet): comment `/azp run prepare-pipelines` on this PR to create the release pipelines.
 - **Namespace approval** (not yet approved — the Release Plan has no namespace approval issue and no namespace-related GitHub issue or pull request link was found): get the module namespace approved via the namespace review process, then comment a namespace review link, for example `Namespace review issue: https://github.com/Azure/azure-sdk/issues/12345` or `Namespace review PR: https://github.com/Azure/azure-rest-api-specs/pull/12345`.
+- **README service name** (`<module path>/README.md`): <naming issue or verification error and required action>.
 ```
 
 **If there are CI failures** → use this template, then append the **First On-Board Service Checklist** above (with only the outstanding items) when this is a first on-board service:
@@ -280,7 +282,7 @@ Rules:
 - Omit breaking-change review output entirely for skipped versions and releases without breaking changes.
 - For every CI failure, include a concrete **Fix** line with the exact command or step the PR author should run locally.
 - For ADO checks, always link the real `target_url` from the check API. Never fabricate URLs.
-- For first on-board services, append the **First On-Board Service Checklist** with only the outstanding items (pipeline setup and/or namespace approval).
+- For first on-board services, append the **First On-Board Service Checklist** with only the outstanding items (pipeline setup, namespace approval, and/or README service name, including verification failures).
 - Be direct and actionable.
 
 ### Final Step — Update Labels

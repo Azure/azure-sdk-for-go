@@ -207,6 +207,8 @@ func unmarshalProtectedItemClassification(rawMsg json.RawMessage) (ProtectedItem
 		b = &AzureVMWorkloadSAPHanaDatabaseProtectedItem{}
 	case "AzureVmWorkloadSQLDatabase":
 		b = &AzureVMWorkloadSQLDatabaseProtectedItem{}
+	case "AzureVmWorkloadSQLInstance":
+		b = &AzureVMWorkloadSQLInstanceProtectedItem{}
 	case "DPMProtectedItem":
 		b = &DPMProtectedItem{}
 	case "GenericProtectedItem":
@@ -324,6 +326,27 @@ func unmarshalProtectionPolicyClassification(rawMsg json.RawMessage) (Protection
 		b = &MabProtectionPolicy{}
 	default:
 		b = &ProtectionPolicy{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
+func unmarshalRPExtendedInfoClassification(rawMsg json.RawMessage) (RPExtendedInfoClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b RPExtendedInfoClassification
+	switch m["objectType"] {
+	case "IaasVMRPExtendedInfo":
+		b = &IaasVMRPExtendedInfo{}
+	default:
+		b = &RPExtendedInfo{}
 	}
 	if err := json.Unmarshal(rawMsg, b); err != nil {
 		return nil, err
@@ -504,6 +527,8 @@ func unmarshalValidateOperationRequestClassification(rawMsg json.RawMessage) (Va
 	}
 	var b ValidateOperationRequestClassification
 	switch m["objectType"] {
+	case "ValidateAzureWorkloadRestoreOperationRequest":
+		b = &ValidateAzureWorkloadRestoreOperationRequest{}
 	case "ValidateIaasVMRestoreOperationRequest":
 		b = &ValidateIaasVMRestoreOperationRequest{}
 	case "ValidateRestoreOperationRequest":

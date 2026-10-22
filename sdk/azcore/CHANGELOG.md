@@ -4,9 +4,14 @@
 
 ### Features Added
 
+* Added `tracing.WrapTracer` to decorate a tracer while preserving attribute override ordering.
+
 ### Breaking Changes
 
 ### Bugs Fixed
+
+* Client tracing spans now redact the request URL in error descriptions using the pipeline's query parameter allow list.
+* Retry logging now uses the pipeline's query parameter allow list and redacts request URLs in errors.
 
 ### Other Changes
 

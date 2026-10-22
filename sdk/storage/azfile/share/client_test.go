@@ -503,6 +503,9 @@ func (s *ShareRecordedTestsSuite) TestShareCreateWithSMBDirectoryLeaseDisabled()
 	_require.NoError(err)
 	_require.NotNil(getResp.ETag)
 	_require.NotNil(getResp.LastModified)
+	if getResp.EnableSMBDirectoryLease == nil {
+		s.T().Skip("service did not return EnableSMBDirectoryLease; SMB directory lease is not supported on this account or service version")
+	}
 	_require.Equal(false, *getResp.EnableSMBDirectoryLease)
 }
 
@@ -531,6 +534,9 @@ func (s *ShareRecordedTestsSuite) TestShareCreateWithSMBDirectoryLeaseEnabled() 
 	// Verify with GetProperties
 	getResp, err := shareClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
+	if getResp.EnableSMBDirectoryLease == nil {
+		s.T().Skip("service did not return EnableSMBDirectoryLease; SMB directory lease is not supported on this account or service version")
+	}
 	_require.Equal(true, *getResp.EnableSMBDirectoryLease)
 }
 
@@ -557,6 +563,9 @@ func (s *ShareRecordedTestsSuite) TestShareCreateWithSMBDirectoryLeaseDefault() 
 	// Verify with GetProperties
 	getResp, err := shareClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
+	if getResp.EnableSMBDirectoryLease == nil {
+		s.T().Skip("service did not return EnableSMBDirectoryLease; SMB directory lease is not supported on this account or service version")
+	}
 	_require.Equal(true, *getResp.EnableSMBDirectoryLease)
 }
 

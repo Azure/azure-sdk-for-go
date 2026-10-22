@@ -637,7 +637,7 @@ func PossibleServerStateValues() []ServerState {
 type ServerVersion string
 
 const (
-	ServerVersionEight021 ServerVersion = "8.0.21"
+	ServerVersionEight021 ServerVersion = "v8.0.21"
 	ServerVersionFive7    ServerVersion = "5.7"
 )
 

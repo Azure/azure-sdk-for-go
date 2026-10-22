@@ -5,6 +5,7 @@ package server
 
 import (
 	"bytes"
+	"context"
 	"encoding/xml"
 	"errors"
 	"io"
@@ -15,6 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/errorinfo"
 	"github.com/stretchr/testify/require"
@@ -280,4 +282,51 @@ func (r *readFailer) Close() error {
 
 func (r *readFailer) Read(p []byte) (int, error) {
 	return 0, errors.New("mock read failure")
+}
+
+type sseTestValue struct {
+	eventType string
+	data      string
+}
+
+func encodeSSETestValue(v sseTestValue) (streaming.SSEFrame, error) {
+	return streaming.SSEFrame{Type: v.eventType, Data: []byte(v.data)}, nil
+}
+
+func TestMarshalSSEResponder(t *testing.T) {
+	var responder fake.SSEResponder[sseTestValue]
+	responder.AddEvent(sseTestValue{eventType: "responseCreated", data: `{"id":"resp_1"}`})
+	responder.AddEvent(sseTestValue{eventType: "responseDelta", data: `{"delta":"Hello"}`})
+	responder.AddFrame(streaming.SSEFrame{ID: "event-1", Type: "message", Retry: 1000, Data: []byte(`{"message":"hello"}`)})
+
+	body, err := MarshalSSEResponder(&responder, encodeSSETestValue)
+	require.NoError(t, err)
+
+	reader, err := streaming.NewSSEReader(context.Background(), func(context.Context, string) (io.ReadCloser, error) {
+		return body, nil
+	}, streaming.SSEHandler[streaming.SSEFrame]{
+		Decode: func(f streaming.SSEFrame) (streaming.SSEFrame, bool, error) {
+			return f, false, nil
+		},
+	}, nil)
+	require.NoError(t, err)
+	defer func() {
+		_ = reader.Close()
+	}()
+	var got []streaming.SSEFrame
+	for {
+		f, err := reader.Next()
+		if errors.Is(err, io.EOF) {
+			break
+		}
+		require.NoError(t, err)
+		got = append(got, f)
+	}
+	require.Len(t, got, 3)
+	require.Equal(t, "responseCreated", got[0].Type)
+	require.JSONEq(t, `{"id":"resp_1"}`, string(got[0].Data))
+	require.Equal(t, "responseDelta", got[1].Type)
+	require.Equal(t, "message", got[2].Type)
+	require.Equal(t, "event-1", got[2].ID)
+	require.Equal(t, 1000, got[2].Retry)
 }

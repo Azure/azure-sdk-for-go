@@ -12,6 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/errorinfo"
 )
 
@@ -134,3 +135,23 @@ type AddNonTerminalResponseOptions = exported.AddNonTerminalResponseOptions
 
 // SetTerminalResponseOptions contains the optional values for PollerResponder[T].SetTerminalResponse.
 type SetTerminalResponseOptions = exported.SetTerminalResponseOptions
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// SSEResponder represents a stream of Server-Sent Events (SSE).
+// Events are replayed in the order in which they were added.
+type SSEResponder[T any] exported.SSEResponder[T]
+
+// AddEvent adds a typed event to the stream. It is encoded to an SSE frame when
+// the fake server serializes the response.
+func (s *SSEResponder[T]) AddEvent(event T) {
+	(*exported.SSEResponder[T])(s).AddEvent(event)
+}
+
+// AddFrame adds a raw SSE frame to the stream, giving full control over the SSE
+// envelope (id, event type, retry, data).
+func (s *SSEResponder[T]) AddFrame(frame streaming.SSEFrame) {
+	(*exported.SSEResponder[T])(s).AddFrame(frame)
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -32,13 +32,14 @@ type SSEFrame struct {
 	// for @data/text events it is the raw text payload.
 	Data []byte
 
-	// ID is the value of the SSE "id" field. It carries over to subsequent
-	// events until changed, per the SSE specification.
-	ID string
+	// ID is the explicitly supplied SSE "id" field, or nil when absent.
+	// An empty value resets the reader's resumption cursor. Use LastEventID on
+	// the reader to get the current cursor, including inherited IDs.
+	ID *string
 
 	// Retry is the reconnection delay in milliseconds from the SSE "retry"
-	// field, or -1 when unset or invalid.
-	Retry int
+	// field, or nil when absent. Zero requests immediate reconnection.
+	Retry *int
 }
 
 // SSEReader provides typed, forward-only iteration over a Server-Sent Events
@@ -394,8 +395,6 @@ func (e *sseScanner) next() (SSEFrame, error) {
 		dataBuf  bytes.Buffer
 		haveData bool
 	)
-	frame.Retry = -1
-	frame.ID = e.lastID
 	for e.scanner.Scan() {
 		line := e.scanner.Text()
 		if e.firstLine {
@@ -403,7 +402,9 @@ func (e *sseScanner) next() (SSEFrame, error) {
 			e.firstLine = false
 		}
 		if line == "" {
-			e.lastID = frame.ID
+			if frame.ID != nil {
+				e.lastID = *frame.ID
+			}
 			return finishFrame(&frame, &dataBuf, haveData), nil
 		}
 		if strings.HasPrefix(line, ":") {
@@ -419,12 +420,12 @@ func (e *sseScanner) next() (SSEFrame, error) {
 			haveData = true
 		case "id":
 			if !strings.ContainsRune(value, 0) { // ignore ids containing U+0000 NULL
-				frame.ID = value
+				frame.ID = &value
 			}
 		case "retry":
 			if isASCIIDigits(value) {
 				if n, err := strconv.Atoi(value); err == nil {
-					frame.Retry = n
+					frame.Retry = &n
 					e.retry = n
 				}
 			}

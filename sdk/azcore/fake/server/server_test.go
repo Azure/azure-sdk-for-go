@@ -297,7 +297,7 @@ func TestMarshalSSEResponder(t *testing.T) {
 	var responder fake.SSEResponder[sseTestValue]
 	responder.AddEvent(sseTestValue{eventType: "responseCreated", data: `{"id":"resp_1"}`})
 	responder.AddEvent(sseTestValue{eventType: "responseDelta", data: `{"delta":"Hello"}`})
-	responder.AddFrame(streaming.SSEFrame{ID: "event-1", Type: "message", Retry: 1000, Data: []byte(`{"message":"hello"}`)})
+	responder.AddFrame(streaming.SSEFrame{ID: to.Ptr("event-1"), Type: "message", Retry: to.Ptr(1000), Data: []byte(`{"message":"hello"}`)})
 
 	body, err := MarshalSSEResponder(&responder, encodeSSETestValue)
 	require.NoError(t, err)
@@ -327,6 +327,111 @@ func TestMarshalSSEResponder(t *testing.T) {
 	require.JSONEq(t, `{"id":"resp_1"}`, string(got[0].Data))
 	require.Equal(t, "responseDelta", got[1].Type)
 	require.Equal(t, "message", got[2].Type)
-	require.Equal(t, "event-1", got[2].ID)
-	require.Equal(t, 1000, got[2].Retry)
+	require.Equal(t, to.Ptr("event-1"), got[2].ID)
+	require.Equal(t, to.Ptr(1000), got[2].Retry)
+}
+
+func TestMarshalSSEResponderMetadata(t *testing.T) {
+	var responder fake.SSEResponder[sseTestValue]
+	responder.AddFrame(streaming.SSEFrame{ID: to.Ptr("checkpoint"), Retry: to.Ptr(1000)})
+	responder.AddFrame(streaming.SSEFrame{Retry: to.Ptr(0)})
+	responder.AddFrame(streaming.SSEFrame{Data: []byte{}})
+	responder.AddEvent(sseTestValue{data: "hello\nworld"})
+
+	body, err := MarshalSSEResponder(&responder, encodeSSETestValue)
+	require.NoError(t, err)
+	wire, err := io.ReadAll(body)
+	require.NoError(t, err)
+	require.NoError(t, body.Close())
+	require.Equal(t, "id: checkpoint\nretry: 1000\n\nretry: 0\n\ndata: \n\ndata: hello\ndata: world\n\n", string(wire))
+
+	body, err = MarshalSSEResponder(&responder, encodeSSETestValue)
+	require.NoError(t, err)
+	var decoded []streaming.SSEFrame
+	reader, err := streaming.NewSSEReader(context.Background(), func(context.Context, string) (io.ReadCloser, error) {
+		return body, nil
+	}, streaming.SSEHandler[streaming.SSEFrame]{
+		Decode: func(frame streaming.SSEFrame) (streaming.SSEFrame, bool, error) {
+			decoded = append(decoded, frame)
+			return frame, false, nil
+		},
+	}, nil)
+	require.NoError(t, err)
+	defer func() {
+		_ = reader.Close()
+	}()
+
+	frame, err := reader.Next()
+	require.NoError(t, err)
+	require.NotNil(t, frame.Data)
+	require.Empty(t, frame.Data)
+	require.Nil(t, frame.ID)
+	require.Nil(t, frame.Retry)
+	frame, err = reader.Next()
+	require.NoError(t, err)
+	require.Equal(t, "hello\nworld", string(frame.Data))
+	_, err = reader.Next()
+	require.ErrorIs(t, err, io.EOF)
+	require.Len(t, decoded, 2, "metadata-only frames must not invoke the decoder")
+	require.Equal(t, "checkpoint", reader.LastEventID())
+}
+
+func TestMarshalSSEResponderZeroRetry(t *testing.T) {
+	var responder fake.SSEResponder[sseTestValue]
+	responder.AddFrame(streaming.SSEFrame{Retry: to.Ptr(1000), Data: []byte("first")})
+	responder.AddFrame(streaming.SSEFrame{Retry: to.Ptr(0), Data: []byte("second")})
+	responder.AddEvent(sseTestValue{data: "third"})
+	body, err := MarshalSSEResponder(&responder, encodeSSETestValue)
+	require.NoError(t, err)
+	reader, err := streaming.NewSSEReader(context.Background(), func(context.Context, string) (io.ReadCloser, error) {
+		return body, nil
+	}, streaming.SSEHandler[streaming.SSEFrame]{
+		Decode: func(frame streaming.SSEFrame) (streaming.SSEFrame, bool, error) {
+			return frame, false, nil
+		},
+	}, nil)
+	require.NoError(t, err)
+	defer func() {
+		_ = reader.Close()
+	}()
+	for _, retry := range []*int{to.Ptr(1000), to.Ptr(0), nil} {
+		frame, err := reader.Next()
+		require.NoError(t, err)
+		require.Equal(t, retry, frame.Retry)
+	}
+}
+
+func TestMarshalSSEResponderIDReset(t *testing.T) {
+	var responder fake.SSEResponder[sseTestValue]
+	responder.AddFrame(streaming.SSEFrame{ID: to.Ptr("checkpoint"), Data: []byte("set")})
+	responder.AddEvent(sseTestValue{data: "inherit"})
+	responder.AddFrame(streaming.SSEFrame{ID: to.Ptr("")})
+	responder.AddEvent(sseTestValue{data: "reset"})
+	responder.AddEvent(sseTestValue{data: "after reset"})
+	body, err := MarshalSSEResponder(&responder, encodeSSETestValue)
+	require.NoError(t, err)
+	wire, err := io.ReadAll(body)
+	require.NoError(t, err)
+	require.NoError(t, body.Close())
+	require.Equal(t, "id: checkpoint\ndata: set\n\ndata: inherit\n\nid: \n\ndata: reset\n\ndata: after reset\n\n", string(wire))
+	body, err = MarshalSSEResponder(&responder, encodeSSETestValue)
+	require.NoError(t, err)
+	reader, err := streaming.NewSSEReader(context.Background(), func(context.Context, string) (io.ReadCloser, error) {
+		return body, nil
+	}, streaming.SSEHandler[streaming.SSEFrame]{
+		Decode: func(frame streaming.SSEFrame) (streaming.SSEFrame, bool, error) {
+			return frame, false, nil
+		},
+	}, nil)
+	require.NoError(t, err)
+	defer func() {
+		_ = reader.Close()
+	}()
+	for _, cursor := range []string{"checkpoint", "checkpoint", "", ""} {
+		_, err := reader.Next()
+		require.NoError(t, err)
+		require.Equal(t, cursor, reader.LastEventID())
+	}
+	_, err = reader.Next()
+	require.ErrorIs(t, err, io.EOF)
 }

@@ -340,6 +340,9 @@ func (s *SSEResponder[T]) AddEvent(event T) {
 
 // AddFrame adds a raw SSE frame to the stream, giving full control over the SSE
 // envelope (id, event type, retry, data). Use this to exercise envelope metadata.
+// Nil ID and Retry omit their fields. An empty ID resets the cursor; zero Retry
+// requests immediate reconnection.
+// Nil Data omits data fields; a non-nil empty slice emits an empty data event.
 func (s *SSEResponder[T]) AddFrame(frame streaming.SSEFrame) {
 	s.entries = append(s.entries, sseEntry[T]{frame: frame})
 }
@@ -370,9 +373,9 @@ type sseEntry[T any] struct {
 }
 
 func writeSSEFrame(buf *bytes.Buffer, f streaming.SSEFrame) {
-	if f.ID != "" {
+	if f.ID != nil {
 		buf.WriteString("id: ")
-		buf.WriteString(f.ID)
+		buf.WriteString(*f.ID)
 		buf.WriteByte('\n')
 	}
 	if f.Type != "" {
@@ -380,16 +383,18 @@ func writeSSEFrame(buf *bytes.Buffer, f streaming.SSEFrame) {
 		buf.WriteString(f.Type)
 		buf.WriteByte('\n')
 	}
-	if f.Retry > 0 {
+	if f.Retry != nil {
 		buf.WriteString("retry: ")
-		buf.WriteString(strconv.Itoa(f.Retry))
+		buf.WriteString(strconv.Itoa(*f.Retry))
 		buf.WriteByte('\n')
 	}
 	// each line of data is emitted as its own "data:" field
-	for _, line := range strings.Split(string(f.Data), "\n") {
-		buf.WriteString("data: ")
-		buf.WriteString(line)
-		buf.WriteByte('\n')
+	if f.Data != nil {
+		for line := range strings.SplitSeq(string(f.Data), "\n") {
+			buf.WriteString("data: ")
+			buf.WriteString(line)
+			buf.WriteByte('\n')
+		}
 	}
 	buf.WriteByte('\n')
 }

@@ -78,6 +78,12 @@
 // may need to tolerate duplicate events. An empty checkpoint lets the service
 // determine the starting position, which need not be the beginning of history.
 //
+// SSEFrame.ID and SSEFrame.Retry describe only valid metadata explicitly
+// supplied in that frame. Nil means no update; a pointer to an empty ID resets
+// the cursor, and a pointer to zero Retry requests immediate reconnection.
+// The reader retains inherited state separately. Use LastEventID to retrieve
+// the current resumption cursor rather than a frame's optional ID.
+//
 // # Implementing SDK streaming operations
 //
 // [NewSSEReader] eagerly opens an SSE connection through an [SSEConnector].

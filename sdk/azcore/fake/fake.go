@@ -150,6 +150,9 @@ func (s *SSEResponder[T]) AddEvent(event T) {
 
 // AddFrame adds a raw SSE frame to the stream, giving full control over the SSE
 // envelope (id, event type, retry, data).
+// Nil ID and Retry omit their fields. An empty ID resets the cursor; zero Retry
+// requests immediate reconnection.
+// Nil Data omits data fields; a non-nil empty slice emits an empty data event.
 func (s *SSEResponder[T]) AddFrame(frame streaming.SSEFrame) {
 	(*exported.SSEResponder[T])(s).AddFrame(frame)
 }

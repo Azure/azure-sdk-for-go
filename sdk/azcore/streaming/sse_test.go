@@ -13,6 +13,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/stretchr/testify/require"
 )
 
@@ -30,7 +31,10 @@ type frameView struct {
 // fields, the "[DONE]" sentinel is treated as terminal, and everything else is
 // surfaced as raw text.
 func decodeView(f streaming.SSEFrame) (frameView, bool, error) {
-	v := frameView{eventType: f.Type, data: string(f.Data), retry: f.Retry}
+	v := frameView{eventType: f.Type, data: string(f.Data), retry: -1}
+	if f.Retry != nil {
+		v.retry = *f.Retry
+	}
 	if v.data == "[DONE]" {
 		return frameView{}, false, io.EOF
 	}
@@ -79,11 +83,57 @@ func TestUnnamedEvents(t *testing.T) {
 	if len(got) != len(want) {
 		t.Fatalf("got %d events, want %d", len(got), len(want))
 	}
+
 	for i, w := range want {
 		if got[i].fields["desc"] != w {
 			t.Fatalf("event %d = %+v, want desc %q", i, got[i], w)
 		}
 	}
+}
+
+func TestExplicitFrameMetadata(t *testing.T) {
+	body := "data: initial\n\n" +
+		"id: first\nretry: 1000\ndata: set\n\n" +
+		"data: inherited\n\n" +
+		"id: ignored\x00\nretry: invalid\ndata: invalid\n\n" +
+		"id:\nretry: 0\ndata: reset\n\n" +
+		"data: after reset\n\n" +
+		"id: old\nid: last\nid: ignored\x00\nretry: 7\nretry: 9\nretry: invalid\ndata: last valid\n\n"
+	connect := bodyConnect(body)
+	reader, err := streaming.NewSSEReader(context.Background(), connect, streaming.SSEHandler[streaming.SSEFrame]{
+		Decode: func(frame streaming.SSEFrame) (streaming.SSEFrame, bool, error) {
+			return frame, false, nil
+		},
+	}, &streaming.SSEReaderOptions{LastEventID: "seed"})
+	require.NoError(t, err)
+	defer func() {
+		_ = reader.Close()
+	}()
+	var frames []streaming.SSEFrame
+	for _, tc := range []struct {
+		id     *string
+		retry  *int
+		cursor string
+	}{
+		{cursor: "seed"},
+		{id: to.Ptr("first"), retry: to.Ptr(1000), cursor: "first"},
+		{cursor: "first"},
+		{cursor: "first"},
+		{id: to.Ptr(""), retry: to.Ptr(0)},
+		{},
+		{id: to.Ptr("last"), retry: to.Ptr(9), cursor: "last"},
+	} {
+		frame, err := reader.Next()
+		require.NoError(t, err)
+		require.Equal(t, tc.id, frame.ID)
+		require.Equal(t, tc.retry, frame.Retry)
+		require.Equal(t, tc.cursor, reader.LastEventID())
+		frames = append(frames, frame)
+	}
+	_, err = reader.Next()
+	require.ErrorIs(t, err, io.EOF)
+	require.Equal(t, "first", *frames[1].ID, "later frames must not mutate earlier metadata")
+	require.Equal(t, 1000, *frames[1].Retry)
 }
 
 func TestNamedEventsWithTerminal(t *testing.T) {

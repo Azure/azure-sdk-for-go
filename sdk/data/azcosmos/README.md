@@ -68,7 +68,39 @@ The following section provides several code snippets covering some of the most c
 * [Create Database](#create-database "Create Database")
 * [Create Container](#create-container "Create Container")
 * [CRUD operation on Items](#crud-operation-on-items "CRUD operation on Items")
+* [Replay-safe item writes](#replay-safe-item-writes "Replay-safe item writes")
 * [Request diagnostics](#request-diagnostics "Request diagnostics")
+
+### Replay-safe item writes
+
+Set `ItemOptions.ReplaySafe` to `true` only when your application can safely repeat
+the entire item write, including triggers. The default is `false`; reads are unchanged.
+This applies to `CreateItem`, `UpsertItem`, `ReplaceItem`, `DeleteItem`, and `PatchItem`,
+not transactional batches.
+
+```go
+// Repeating this fixed-value patch must be safe for the application's concurrency model.
+patch := azcosmos.PatchOperations{}
+patch.AppendSet("/state", "complete")
+response, err := container.PatchItem(ctx, pk, id, patch, &azcosmos.ItemOptions{
+    ReplaySafe: true,
+})
+handle(err)
+```
+
+The flag enables the existing retry paths for ambiguous connection failures,
+attempt timeouts, and HTTP 408/500/502/504 responses. It does not add a retry loop,
+change write endpoint routing, or enable writes to read-only regions. Single-write-region
+accounts can replay against their write endpoint, but cannot fail over to a read region.
+Existing retry budgets, backoff, cross-region settings, and caller cancellation still apply;
+per-attempt timeouts return to azcore's existing `RetryOptions` policy for a fresh attempt.
+`MaxRetries` bounds azcore attempts, not the Cosmos policy's existing internal retries.
+
+Replay safety is an application assertion, not exactly-once execution. A lost response
+may mean the first write committed. Replaying a create, delete, or ETag-conditional write
+can return 409, 404, or 412; these remain errors. Increment patches and side-effecting
+triggers generally must not opt in. Even a fixed-value write can overwrite concurrent
+updates, so assess the complete operation rather than its HTTP method.
 
 ### Create Cosmos DB Client
 
@@ -241,4 +273,3 @@ do this once across all repos using our CLA.
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
 contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
-

@@ -12,6 +12,13 @@ import (
 
 // ItemOptions includes options for operations on items.
 type ItemOptions struct {
+	// ReplaySafe allows the existing retry policies to replay this item write after
+	// an ambiguous transport failure, an attempt timeout, or an HTTP 408/500/502/504.
+	// The default is false. It has no effect on reads.
+	// Set this only when repeating the entire write, including any triggers, is safe.
+	// A previous attempt may already have committed; this does not provide exactly-once
+	// execution or turn a replay's conflict, not-found, or precondition failure into success.
+	ReplaySafe bool
 	// Triggers to be invoked before the operation.
 	PreTriggers []string
 	// Triggers to be invoked after the operation.

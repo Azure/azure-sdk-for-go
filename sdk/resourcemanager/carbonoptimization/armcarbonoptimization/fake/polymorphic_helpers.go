@@ -6,7 +6,8 @@ package fake
 
 import (
 	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/carbonoptimization/armcarbonoptimization/v2"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/carbonoptimization/armcarbonoptimization"
 )
 
 func unmarshalBillingAccountQueryFilterClassification(rawMsg json.RawMessage) (armcarbonoptimization.BillingAccountQueryFilterClassification, error) {

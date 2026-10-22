@@ -55,6 +55,10 @@ func (c *Client) openQuery(context.Context, *queryRequest) (queryCursor, Respons
 	return nil, Response{}, newDriverUnavailableError()
 }
 
+func (c *Client) executeBatch(context.Context, itemRequest, int) (TransactionalBatchResponse, error) {
+	return TransactionalBatchResponse{}, newDriverUnavailableError()
+}
+
 // executeManagement reports that this build cannot reach the driver. The driver-backed build in
 // operation_native.go runs the operation instead.
 func (c *Client) executeManagement(context.Context, operationKind, string, string, []byte, OperationOptions) (ItemResponse, []byte, error) {

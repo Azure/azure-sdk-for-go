@@ -334,20 +334,16 @@ func (e *SSEReader[T]) open() error {
 	}
 	e.mu.Lock()
 	e.body = nextBody
-	closed := e.done
-	if !closed {
+	if !e.done {
 		e.scanner = newSSEScanner(nextBody, e.lastID)
 	}
 	e.mu.Unlock()
-	if closed || e.ctx.Err() != nil {
+	if stateErr := e.stateError(); stateErr != nil {
 		closeErr := e.Close()
 		if closeErr != nil {
 			return closeErr
 		}
-		if closed {
-			return io.EOF
-		}
-		return e.ctx.Err()
+		return stateErr
 	}
 	return nil
 }

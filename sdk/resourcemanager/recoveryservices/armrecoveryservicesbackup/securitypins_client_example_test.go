@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-08-01/Common/BackupSecurityPin_Get.json
+// Generated from example definition: 2026-10-01/Common/BackupSecurityPin_Get.json
 func ExampleSecurityPINsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -32,8 +32,8 @@ func ExampleSecurityPINsClient_Get() {
 	// res = armrecoveryservicesbackup.SecurityPINsClientGetResponse{
 	// 	TokenInformation: armrecoveryservicesbackup.TokenInformation{
 	// 		ExpiryTimeInUTCTicks: to.Ptr[int64](636495150137443100),
-	// 		SecurityPIN: to.Ptr("200432"),
-	// 		Token: to.Ptr("200432"),
+	// 		SecurityPIN: to.Ptr("******"),
+	// 		Token: to.Ptr("{token}"),
 	// 	},
 	// }
 }

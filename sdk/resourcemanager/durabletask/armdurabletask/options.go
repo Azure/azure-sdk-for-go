@@ -4,6 +4,56 @@
 
 package armdurabletask
 
+// DetectorsClientGetOptions contains the optional parameters for the DetectorsClient.Get method.
+type DetectorsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DetectorsClientListBySchedulerOptions contains the optional parameters for the DetectorsClient.NewListBySchedulerPager
+// method.
+type DetectorsClientListBySchedulerOptions struct {
+	// placeholder for future optional parameters
+}
+
+// FailoverInstancesClientBeginCreateOrReplaceOptions contains the optional parameters for the FailoverInstancesClient.BeginCreateOrReplace
+// method.
+type FailoverInstancesClientBeginCreateOrReplaceOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// FailoverInstancesClientBeginDeleteOptions contains the optional parameters for the FailoverInstancesClient.BeginDelete
+// method.
+type FailoverInstancesClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// FailoverInstancesClientBeginFailoverOptions contains the optional parameters for the FailoverInstancesClient.BeginFailover
+// method.
+type FailoverInstancesClientBeginFailoverOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// FailoverInstancesClientBeginForceFailoverAllowDataLossOptions contains the optional parameters for the FailoverInstancesClient.BeginForceFailoverAllowDataLoss
+// method.
+type FailoverInstancesClientBeginForceFailoverAllowDataLossOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// FailoverInstancesClientGetOptions contains the optional parameters for the FailoverInstancesClient.Get method.
+type FailoverInstancesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// FailoverInstancesClientListBySchedulerOptions contains the optional parameters for the FailoverInstancesClient.NewListBySchedulerPager
+// method.
+type FailoverInstancesClientListBySchedulerOptions struct {
+	// placeholder for future optional parameters
+}
+
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -121,6 +171,11 @@ type SchedulersClientListPrivateLinksOptions struct {
 	// placeholder for future optional parameters
 }
 
+// SchedulersClientRestartOptions contains the optional parameters for the SchedulersClient.Restart method.
+type SchedulersClientRestartOptions struct {
+	// placeholder for future optional parameters
+}
+
 // TaskHubsClientBeginCreateOrUpdateOptions contains the optional parameters for the TaskHubsClient.BeginCreateOrUpdate method.
 type TaskHubsClientBeginCreateOrUpdateOptions struct {
 	// Resumes the long-running operation from the provided token.
@@ -140,5 +195,60 @@ type TaskHubsClientGetOptions struct {
 
 // TaskHubsClientListBySchedulerOptions contains the optional parameters for the TaskHubsClient.NewListBySchedulerPager method.
 type TaskHubsClientListBySchedulerOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TaskQueuesClientBeginCreateOrUpdateOptions contains the optional parameters for the TaskQueuesClient.BeginCreateOrUpdate
+// method.
+type TaskQueuesClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// TaskQueuesClientBeginDeleteOptions contains the optional parameters for the TaskQueuesClient.BeginDelete method.
+type TaskQueuesClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// TaskQueuesClientBeginUpdateOptions contains the optional parameters for the TaskQueuesClient.BeginUpdate method.
+type TaskQueuesClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// TaskQueuesClientGetOptions contains the optional parameters for the TaskQueuesClient.Get method.
+type TaskQueuesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TaskQueuesClientListByTaskHubOptions contains the optional parameters for the TaskQueuesClient.NewListByTaskHubPager method.
+type TaskQueuesClientListByTaskHubOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TransparentDataEncryptionsClientBeginCreateOrReplaceOptions contains the optional parameters for the TransparentDataEncryptionsClient.BeginCreateOrReplace
+// method.
+type TransparentDataEncryptionsClientBeginCreateOrReplaceOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// TransparentDataEncryptionsClientBeginDeleteOptions contains the optional parameters for the TransparentDataEncryptionsClient.BeginDelete
+// method.
+type TransparentDataEncryptionsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// TransparentDataEncryptionsClientGetOptions contains the optional parameters for the TransparentDataEncryptionsClient.Get
+// method.
+type TransparentDataEncryptionsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TransparentDataEncryptionsClientListBySchedulerOptions contains the optional parameters for the TransparentDataEncryptionsClient.NewListBySchedulerPager
+// method.
+type TransparentDataEncryptionsClientListBySchedulerOptions struct {
 	// placeholder for future optional parameters
 }

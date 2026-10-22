@@ -44,18 +44,11 @@ func (c *Client) openQuery(ctx context.Context, req *queryRequest) (queryCursor,
 	options := req.options.Operation
 	var setup Response
 	if !req.fullContainer {
-		metadata, err := d.awaitCompletion(ctx, "reading query scope metadata",
-			func(queue *C.cosmos_completion_queue_t, cookie C.intptr_t, preError *C.cosmos_status_code_t) *C.cosmos_operation_handle_t {
-				request := newOperationRequest(operationKind(C.COSMOS_OPERATION_KIND_READ_CONTAINER), container)
-				nativeOptions, freeOptions := options.toNative()
-				defer freeOptions()
-				request.options = nativeOptions
-				request.options_snapshot = snapshot
-				return C.cosmos_submit_singleton_operation(driver, &request, queue, cookie, preError) //nolint:gocritic // dupSubExpr targets cgo-generated code.
-			})
+		metadata, err := d.readContainerMetadata(ctx, driver, container, options, snapshot)
 		if err != nil {
 			return nil, Response{}, err
 		}
+		defer metadata.release()
 		if metadata.err != nil {
 			return nil, Response{}, metadata.err
 		}

@@ -86,7 +86,7 @@ extends:
         - name: EmulatorBinDir
           value: $(Agent.TempDirectory)/cosmos-emulator-target/release
         - name: EmulatorSourceRevision
-          value: a05f024d22cd0a70f6ccac5e310cbbbaf40bf20e
+          value: 13b9707cf9a73d274c6e2309321d4b0e92b52375
         - name: EmulatorRustVersion
           value: '1.95.0'
         - name: EmulatorCargoHome

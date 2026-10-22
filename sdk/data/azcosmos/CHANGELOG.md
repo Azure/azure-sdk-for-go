@@ -6,6 +6,13 @@
 
 ### Features Added
 
+* Added transactional batches for create, read, upsert, replace, and delete with complete
+  hierarchical partition keys, owned builders, Rust-compatible conditional options,
+  ordered raw result metadata, and cancellation behavior consistent with point operations.
+  Submitted batches may still commit after cancellation. Results preserve HTTP 304 and
+  207 without inferring transaction commitment or rollback. Prefix batches and transactional PATCH
+  are not exposed.
+  See [PR 27708](https://github.com/Azure/azure-sdk-for-go/pull/27708).
 * Added database/container management: `Client.CreateDatabase`;
   `DatabaseClient.Read`, `DatabaseClient.Delete`, `DatabaseClient.CreateContainer`;
   `ContainerClient.Read`, `ContainerClient.Delete`; and the

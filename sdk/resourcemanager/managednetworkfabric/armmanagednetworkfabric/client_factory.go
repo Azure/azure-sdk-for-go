@@ -40,9 +40,25 @@ func (c *ClientFactory) NewAccessControlListsClient() *AccessControlListsClient 
 	}
 }
 
+// NewEdgeConnectorsClient creates a new instance of EdgeConnectorsClient.
+func (c *ClientFactory) NewEdgeConnectorsClient() *EdgeConnectorsClient {
+	return &EdgeConnectorsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewExternalNetworksClient creates a new instance of ExternalNetworksClient.
 func (c *ClientFactory) NewExternalNetworksClient() *ExternalNetworksClient {
 	return &ExternalNetworksClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewFabricsClient creates a new instance of FabricsClient.
+func (c *ClientFactory) NewFabricsClient() *FabricsClient {
+	return &FabricsClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

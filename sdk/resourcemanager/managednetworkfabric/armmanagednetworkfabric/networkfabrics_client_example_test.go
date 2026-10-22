@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric/v3"
 	"log"
 )
 
-// Generated from example definition: 2025-07-15/NetworkFabrics_ArmConfigurationDiff.json
+// Generated from example definition: 2026-01-15-preview/NetworkFabrics_ArmConfigurationDiff.json
 func ExampleNetworkFabricsClient_BeginArmConfigurationDiff() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -55,7 +55,7 @@ func ExampleNetworkFabricsClient_BeginArmConfigurationDiff() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/NetworkFabrics_CommitBatchStatus.json
+// Generated from example definition: 2026-01-15-preview/NetworkFabrics_CommitBatchStatus.json
 func ExampleNetworkFabricsClient_BeginCommitBatchStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -100,7 +100,7 @@ func ExampleNetworkFabricsClient_BeginCommitBatchStatus() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/NetworkFabrics_CommitConfiguration.json
+// Generated from example definition: 2026-01-15-preview/NetworkFabrics_CommitConfiguration.json
 func ExampleNetworkFabricsClient_BeginCommitConfiguration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -143,7 +143,7 @@ func ExampleNetworkFabricsClient_BeginCommitConfiguration() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/NetworkFabrics_Create.json
+// Generated from example definition: 2026-01-15-preview/NetworkFabrics_Create.json
 func ExampleNetworkFabricsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -277,6 +277,24 @@ func ExampleNetworkFabricsClient_BeginCreate() {
 				Vendor: to.Ptr("vendorX"),
 				Key:    to.Ptr("example"),
 			},
+			SecretArchiveSettings: &armmanagednetworkfabric.SecretArchiveSettings{
+				AssociatedIdentity: &armmanagednetworkfabric.IdentitySelector{
+					IdentityType:                   to.Ptr(armmanagednetworkfabric.ManagedServiceIdentitySelectorTypeUserAssignedIdentity),
+					UserAssignedIdentityResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/example-identity"),
+				},
+				VaultURI: to.Ptr("https://myvault.vault.azure.net/"),
+			},
+			UpgradeProfile: []*armmanagednetworkfabric.UpgradeProfileProperties{
+				{
+					PreUpgradeProfile: &armmanagednetworkfabric.PreUpgradeProfileProperties{
+						MaxEnteringMaintenanceTimeoutInSeconds: to.Ptr[int32](300),
+					},
+					PostUpgradeProfile: &armmanagednetworkfabric.PostUpgradeProfileProperties{
+						MaxExitingMaintenanceTimeoutInSeconds: to.Ptr[int32](3000),
+						MlagReloadDelayTimeoutInSeconds:       to.Ptr[int32](900),
+					},
+				},
+			},
 		},
 		Identity: &armmanagednetworkfabric.ManagedServiceIdentity{
 			Type: to.Ptr(armmanagednetworkfabric.ManagedServiceIdentityTypeNone),
@@ -328,6 +346,7 @@ func ExampleNetworkFabricsClient_BeginCreate() {
 	// 			IPv4Prefix: to.Ptr("10.18.0.0/19"),
 	// 			IPv6Prefix: to.Ptr("3FFE:FFFF:0:CD40::/59"),
 	// 			FabricASN: to.Ptr[int64](29249),
+	// 			NetworkBootstrapDeviceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkBootstrapDevices/example-bootstrapDevice"),
 	// 			TerminalServerConfiguration: &armmanagednetworkfabric.TerminalServerConfiguration{
 	// 				Username: to.Ptr("username"),
 	// 				SerialNumber: to.Ptr("123456"),
@@ -460,6 +479,18 @@ func ExampleNetworkFabricsClient_BeginCreate() {
 	// 			ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
 	// 			ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateAccepted),
 	// 			AdministrativeState: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnabled),
+	// 			OperationalState: to.Ptr(armmanagednetworkfabric.OperationalStateUp),
+	// 			UpgradeProfile: []*armmanagednetworkfabric.UpgradeProfileProperties{
+	// 				{
+	// 					PreUpgradeProfile: &armmanagednetworkfabric.PreUpgradeProfileProperties{
+	// 						MaxEnteringMaintenanceTimeoutInSeconds: to.Ptr[int32](300),
+	// 					},
+	// 					PostUpgradeProfile: &armmanagednetworkfabric.PostUpgradeProfileProperties{
+	// 						MaxExitingMaintenanceTimeoutInSeconds: to.Ptr[int32](3000),
+	// 						MlagReloadDelayTimeoutInSeconds: to.Ptr[int32](900),
+	// 					},
+	// 				},
+	// 			},
 	// 		},
 	// 		Identity: &armmanagednetworkfabric.ManagedServiceIdentity{
 	// 			PrincipalID: to.Ptr("0000ABCD-0A0B-0000-0000-000000ABCDEF"),
@@ -491,7 +522,7 @@ func ExampleNetworkFabricsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/NetworkFabrics_Delete.json
+// Generated from example definition: 2026-01-15-preview/NetworkFabrics_Delete.json
 func ExampleNetworkFabricsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -512,7 +543,7 @@ func ExampleNetworkFabricsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-07-15/NetworkFabrics_Deprovision.json
+// Generated from example definition: 2026-01-15-preview/NetworkFabrics_Deprovision.json
 func ExampleNetworkFabricsClient_BeginDeprovision() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -555,7 +586,7 @@ func ExampleNetworkFabricsClient_BeginDeprovision() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/NetworkFabrics_DiscardCommitBatch.json
+// Generated from example definition: 2026-01-15-preview/NetworkFabrics_DiscardCommitBatch.json
 func ExampleNetworkFabricsClient_BeginDiscardCommitBatch() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -600,7 +631,1651 @@ func ExampleNetworkFabricsClient_BeginDiscardCommitBatch() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/NetworkFabrics_Get.json
+// Generated from example definition: 2026-01-15-preview/NetworkFabrics_GetTopology.json
+func ExampleNetworkFabricsClient_BeginGetTopology() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmanagednetworkfabric.NewClientFactory("0000ABCD-0A0B-0000-0000-000000ABCDEF", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewNetworkFabricsClient().BeginGetTopology(ctx, "example-rg", "example-fabric", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armmanagednetworkfabric.NetworkFabricsClientGetTopologyResponse{
+	// 	GetTopologyResponse: armmanagednetworkfabric.GetTopologyResponse{
+	// 		Status: to.Ptr("Failed"),
+	// 		Error: &armmanagednetworkfabric.ErrorDetail{
+	// 			Code: to.Ptr(""),
+	// 			Message: to.Ptr(""),
+	// 			Target: to.Ptr(""),
+	// 			Details: []*armmanagednetworkfabric.ErrorDetail{
+	// 			},
+	// 			AdditionalInfo: []*armmanagednetworkfabric.ErrorAdditionalInfo{
+	// 				{
+	// 					Type: to.Ptr(""),
+	// 					Info: map[string]any{
+	// 					},
+	// 				},
+	// 			},
+	// 		},
+	// 		Properties: &armmanagednetworkfabric.GetTopologyResponseProperties{
+	// 			URL: to.Ptr("https://ActionDetails"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-01-15-preview/NetworkFabrics_LockFabric.json
+func ExampleNetworkFabricsClient_BeginLockFabric() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmanagednetworkfabric.NewClientFactory("0000ABCD-0A0B-0000-0000-000000ABCDEF", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewNetworkFabricsClient().BeginLockFabric(ctx, "example-rg", "example-networkFabric", armmanagednetworkfabric.NetworkFabricLockRequest{
+		LockType: to.Ptr(armmanagednetworkfabric.NetworkFabricLockTypeAdministrative),
+		Action:   to.Ptr(armmanagednetworkfabric.NetworkFabricLockActionLock),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armmanagednetworkfabric.NetworkFabricsClientLockFabricResponse{
+	// 	OperationStatusResult: armmanagednetworkfabric.OperationStatusResult{
+	// 		Status: to.Ptr("Failed"),
+	// 		Error: &armmanagednetworkfabric.ErrorDetail{
+	// 			Code: to.Ptr(""),
+	// 			Message: to.Ptr(""),
+	// 			Target: to.Ptr(""),
+	// 			Details: []*armmanagednetworkfabric.ErrorDetail{
+	// 			},
+	// 			AdditionalInfo: []*armmanagednetworkfabric.ErrorAdditionalInfo{
+	// 				{
+	// 					Type: to.Ptr(""),
+	// 					Info: map[string]any{
+	// 					},
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-01-15-preview/NetworkFabrics_Provision.json
+func ExampleNetworkFabricsClient_BeginProvision() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmanagednetworkfabric.NewClientFactory("0000ABCD-0A0B-0000-0000-000000ABCDEF", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewNetworkFabricsClient().BeginProvision(ctx, "example-rg", "example-fabric", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armmanagednetworkfabric.NetworkFabricsClientProvisionResponse{
+	// 	OperationStatusResult: armmanagednetworkfabric.OperationStatusResult{
+	// 		Status: to.Ptr("Failed"),
+	// 		Error: &armmanagednetworkfabric.ErrorDetail{
+	// 			Code: to.Ptr(""),
+	// 			Message: to.Ptr(""),
+	// 			Target: to.Ptr(""),
+	// 			Details: []*armmanagednetworkfabric.ErrorDetail{
+	// 			},
+	// 			AdditionalInfo: []*armmanagednetworkfabric.ErrorAdditionalInfo{
+	// 				{
+	// 					Type: to.Ptr(""),
+	// 					Info: map[string]any{
+	// 					},
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-01-15-preview/NetworkFabrics_RefreshConfiguration.json
+func ExampleNetworkFabricsClient_BeginRefreshConfiguration() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmanagednetworkfabric.NewClientFactory("0000ABCD-0A0B-0000-0000-000000ABCDEF", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewNetworkFabricsClient().BeginRefreshConfiguration(ctx, "example-rg", "example-fabric", &armmanagednetworkfabric.NetworkFabricsClientBeginRefreshConfigurationOptions{
+		Body: &armmanagednetworkfabric.RefreshConfigurationRequestProperties{
+			GenerateBaseConfiguration:     to.Ptr(armmanagednetworkfabric.GenerateBaseConfigurationDisabled),
+			ConfigurationRegenerationType: to.Ptr(armmanagednetworkfabric.ConfigurationRegenerationType("Full")),
+			DeviceTypes: []*armmanagednetworkfabric.NetworkFabricRefreshDeviceTypes{
+				to.Ptr(armmanagednetworkfabric.NetworkFabricRefreshDeviceTypesCE),
+				to.Ptr(armmanagednetworkfabric.NetworkFabricRefreshDeviceTypesToR),
+			},
+		}})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armmanagednetworkfabric.NetworkFabricsClientRefreshConfigurationResponse{
+	// 	OperationStatusResult: armmanagednetworkfabric.OperationStatusResult{
+	// 		Status: to.Ptr("Failed"),
+	// 		Error: &armmanagednetworkfabric.ErrorDetail{
+	// 			Code: to.Ptr(""),
+	// 			Message: to.Ptr(""),
+	// 			Target: to.Ptr(""),
+	// 			Details: []*armmanagednetworkfabric.ErrorDetail{
+	// 			},
+	// 			AdditionalInfo: []*armmanagednetworkfabric.ErrorAdditionalInfo{
+	// 				{
+	// 					Type: to.Ptr(""),
+	// 					Info: map[string]any{
+	// 					},
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-01-15-preview/NetworkFabrics_ResyncCertificates.json
+func ExampleNetworkFabricsClient_BeginResyncCertificates_successfulCertificateResyncForAllNetworkDevices() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmanagednetworkfabric.NewClientFactory("1234ABCD-0A1B-1234-5678-123456ABCDEF", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewNetworkFabricsClient().BeginResyncCertificates(ctx, "example-rg", "example-fabric", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armmanagednetworkfabric.NetworkFabricsClientResyncCertificatesResponse{
+	// 	NetworkFabricResyncCertificatesResponse: armmanagednetworkfabric.NetworkFabricResyncCertificatesResponse{
+	// 		ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/providers/Microsoft.ManagedNetworkFabric/locations/UKSOUTH/operationStatuses/b7c3d8f2-56e4-4a9b-8c7d-123456789ABC*1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF"),
+	// 		ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric"),
+	// 		StartTime: to.Ptr(time.Date(2025, time.September, 25, 8, 6, 0, 912000000, time.UTC)),
+	// 		EndTime: to.Ptr(time.Date(2025, time.September, 25, 9, 10, 0, 912000000, time.UTC)),
+	// 		Status: to.Ptr("Succeeded"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-01-15-preview/NetworkFabrics_ResyncCertificates_Error.json
+func ExampleNetworkFabricsClient_BeginResyncCertificates_totalFailureToResyncCertificates() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmanagednetworkfabric.NewClientFactory("1234ABCD-0A1B-1234-5678-123456ABCDEF", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewNetworkFabricsClient().BeginResyncCertificates(ctx, "example-rg", "example-fabric", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armmanagednetworkfabric.NetworkFabricsClientResyncCertificatesResponse{
+	// 	NetworkFabricResyncCertificatesResponse: armmanagednetworkfabric.NetworkFabricResyncCertificatesResponse{
+	// 		ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/providers/Microsoft.ManagedNetworkFabric/locations/UKSOUTH/operationStatuses/b7c3d8f2-56e4-4a9b-8c7d-123456789ABC*1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF"),
+	// 		ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric"),
+	// 		StartTime: to.Ptr(time.Date(2025, time.September, 25, 8, 6, 0, 912000000, time.UTC)),
+	// 		EndTime: to.Ptr(time.Date(2025, time.September, 25, 9, 10, 0, 743000000, time.UTC)),
+	// 		Status: to.Ptr("Failed"),
+	// 		Error: &armmanagednetworkfabric.ErrorDetail{
+	// 			Code: to.Ptr("RotationFailed"),
+	// 			Message: to.Ptr("Rotation failed for all devices. Please address any issues and perform resync operations for the affected devices."),
+	// 		},
+	// 		Operations: []*armmanagednetworkfabric.OperationStatusResult{
+	// 			{
+	// 				ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device-1"),
+	// 				Status: to.Ptr("Failed"),
+	// 				Error: &armmanagednetworkfabric.ErrorDetail{
+	// 					Code: to.Ptr("CouldNotConnect"),
+	// 					Message: to.Ptr("Could not connect to the Network Device to configure new certificates."),
+	// 				},
+	// 			},
+	// 			{
+	// 				ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device-2"),
+	// 				Status: to.Ptr("Failed"),
+	// 				Error: &armmanagednetworkfabric.ErrorDetail{
+	// 					Code: to.Ptr("CouldNotConnect"),
+	// 					Message: to.Ptr("Could not connect to the Network Device to configure new certificates."),
+	// 				},
+	// 			},
+	// 			{
+	// 				ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device-3"),
+	// 				Status: to.Ptr("Failed"),
+	// 				Error: &armmanagednetworkfabric.ErrorDetail{
+	// 					Code: to.Ptr("CouldNotConnect"),
+	// 					Message: to.Ptr("Could not connect to the Network Device to configure new certificates."),
+	// 				},
+	// 			},
+	// 			{
+	// 				ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device-4"),
+	// 				Status: to.Ptr("Failed"),
+	// 				Error: &armmanagednetworkfabric.ErrorDetail{
+	// 					Code: to.Ptr("CouldNotConnect"),
+	// 					Message: to.Ptr("Could not connect to the Network Device to configure new certificates."),
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-01-15-preview/NetworkFabrics_ResyncCertificates_PartialSuccess.json
+func ExampleNetworkFabricsClient_BeginResyncCertificates_partialFailureToResyncCertificatesForSomeDevices() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmanagednetworkfabric.NewClientFactory("1234ABCD-0A1B-1234-5678-123456ABCDEF", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewNetworkFabricsClient().BeginResyncCertificates(ctx, "example-rg", "example-fabric", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armmanagednetworkfabric.NetworkFabricsClientResyncCertificatesResponse{
+	// 	NetworkFabricResyncCertificatesResponse: armmanagednetworkfabric.NetworkFabricResyncCertificatesResponse{
+	// 		ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/providers/Microsoft.ManagedNetworkFabric/locations/UKSOUTH/operationStatuses/b7c3d8f2-56e4-4a9b-8c7d-123456789ABC*1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF"),
+	// 		ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric"),
+	// 		StartTime: to.Ptr(time.Date(2025, time.September, 25, 8, 6, 0, 912000000, time.UTC)),
+	// 		EndTime: to.Ptr(time.Date(2025, time.September, 25, 9, 10, 0, 743000000, time.UTC)),
+	// 		Status: to.Ptr("Failed"),
+	// 		Error: &armmanagednetworkfabric.ErrorDetail{
+	// 			Code: to.Ptr("PartialSuccess"),
+	// 			Message: to.Ptr("Resync succeeded for only some devices. Please address any issues and perform resync operations for the affected devices."),
+	// 		},
+	// 		Operations: []*armmanagednetworkfabric.OperationStatusResult{
+	// 			{
+	// 				ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device-1"),
+	// 				Status: to.Ptr("Succeeded"),
+	// 			},
+	// 			{
+	// 				ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device-2"),
+	// 				Status: to.Ptr("Succeeded"),
+	// 			},
+	// 			{
+	// 				ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device-3"),
+	// 				Status: to.Ptr("Failed"),
+	// 				Error: &armmanagednetworkfabric.ErrorDetail{
+	// 					Code: to.Ptr("DeviceDisabled"),
+	// 					Message: to.Ptr("The Network Device is in disabled administrative state. Please perform a resync operation once it is enabled."),
+	// 				},
+	// 			},
+	// 			{
+	// 				ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device-4"),
+	// 				Status: to.Ptr("Succeeded"),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-01-15-preview/NetworkFabrics_ResyncPasswords.json
+func ExampleNetworkFabricsClient_BeginResyncPasswords_successfulPasswordResyncForTheTerminalServerAndAllNetworkDevices() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmanagednetworkfabric.NewClientFactory("1234ABCD-0A1B-1234-5678-123456ABCDEF", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewNetworkFabricsClient().BeginResyncPasswords(ctx, "example-rg", "example-fabric", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armmanagednetworkfabric.NetworkFabricsClientResyncPasswordsResponse{
+	// 	NetworkFabricResyncPasswordsResponse: armmanagednetworkfabric.NetworkFabricResyncPasswordsResponse{
+	// 		ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/providers/Microsoft.ManagedNetworkFabric/locations/UKSOUTH/operationStatuses/b7c3d8f2-56e4-4a9b-8c7d-123456789ABC*1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF"),
+	// 		ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric"),
+	// 		StartTime: to.Ptr(time.Date(2025, time.September, 25, 8, 6, 0, 912000000, time.UTC)),
+	// 		EndTime: to.Ptr(time.Date(2025, time.September, 25, 9, 10, 0, 912000000, time.UTC)),
+	// 		Status: to.Ptr("Succeeded"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-01-15-preview/NetworkFabrics_ResyncPasswords_Error.json
+func ExampleNetworkFabricsClient_BeginResyncPasswords_totalFailureToResyncPasswords() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmanagednetworkfabric.NewClientFactory("1234ABCD-0A1B-1234-5678-123456ABCDEF", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewNetworkFabricsClient().BeginResyncPasswords(ctx, "example-rg", "example-fabric", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armmanagednetworkfabric.NetworkFabricsClientResyncPasswordsResponse{
+	// 	NetworkFabricResyncPasswordsResponse: armmanagednetworkfabric.NetworkFabricResyncPasswordsResponse{
+	// 		ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/providers/Microsoft.ManagedNetworkFabric/locations/UKSOUTH/operationStatuses/b7c3d8f2-56e4-4a9b-8c7d-123456789ABC*1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF"),
+	// 		ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric"),
+	// 		StartTime: to.Ptr(time.Date(2025, time.September, 25, 8, 6, 0, 912000000, time.UTC)),
+	// 		EndTime: to.Ptr(time.Date(2025, time.September, 25, 9, 10, 0, 743000000, time.UTC)),
+	// 		Status: to.Ptr("Failed"),
+	// 		Error: &armmanagednetworkfabric.ErrorDetail{
+	// 			Code: to.Ptr("ResyncFailed"),
+	// 			Message: to.Ptr("Resync failed for all devices. Please address any issues and perform resync operations for the affected devices."),
+	// 		},
+	// 		Operations: []*armmanagednetworkfabric.OperationStatusResult{
+	// 			{
+	// 				ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric"),
+	// 				Status: to.Ptr("Failed"),
+	// 				Error: &armmanagednetworkfabric.ErrorDetail{
+	// 					Code: to.Ptr("CouldNotConnect"),
+	// 					Message: to.Ptr("Could not connect to the Terminal Server to configure new passwords."),
+	// 				},
+	// 			},
+	// 			{
+	// 				ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device-1"),
+	// 				Status: to.Ptr("Failed"),
+	// 				Error: &armmanagednetworkfabric.ErrorDetail{
+	// 					Code: to.Ptr("CouldNotConnect"),
+	// 					Message: to.Ptr("Could not connect to the Network Device to configure new passwords."),
+	// 				},
+	// 			},
+	// 			{
+	// 				ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device-2"),
+	// 				Status: to.Ptr("Failed"),
+	// 				Error: &armmanagednetworkfabric.ErrorDetail{
+	// 					Code: to.Ptr("CouldNotConnect"),
+	// 					Message: to.Ptr("Could not connect to the Network Device to configure new passwords."),
+	// 				},
+	// 			},
+	// 			{
+	// 				ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device-3"),
+	// 				Status: to.Ptr("Failed"),
+	// 				Error: &armmanagednetworkfabric.ErrorDetail{
+	// 					Code: to.Ptr("CouldNotConnect"),
+	// 					Message: to.Ptr("Could not connect to the Network Device to configure new passwords."),
+	// 				},
+	// 			},
+	// 			{
+	// 				ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device-4"),
+	// 				Status: to.Ptr("Failed"),
+	// 				Error: &armmanagednetworkfabric.ErrorDetail{
+	// 					Code: to.Ptr("CouldNotConnect"),
+	// 					Message: to.Ptr("Could not connect to the Network Device to configure new passwords."),
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-01-15-preview/NetworkFabrics_ResyncPasswords_PartialSuccess.json
+func ExampleNetworkFabricsClient_BeginResyncPasswords_partialFailureToResyncPasswordsForSomeDevices() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmanagednetworkfabric.NewClientFactory("1234ABCD-0A1B-1234-5678-123456ABCDEF", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewNetworkFabricsClient().BeginResyncPasswords(ctx, "example-rg", "example-fabric", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armmanagednetworkfabric.NetworkFabricsClientResyncPasswordsResponse{
+	// 	NetworkFabricResyncPasswordsResponse: armmanagednetworkfabric.NetworkFabricResyncPasswordsResponse{
+	// 		ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/providers/Microsoft.ManagedNetworkFabric/locations/UKSOUTH/operationStatuses/b7c3d8f2-56e4-4a9b-8c7d-123456789ABC*1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF"),
+	// 		ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric"),
+	// 		StartTime: to.Ptr(time.Date(2025, time.September, 25, 8, 6, 0, 912000000, time.UTC)),
+	// 		EndTime: to.Ptr(time.Date(2025, time.September, 25, 9, 10, 0, 743000000, time.UTC)),
+	// 		Status: to.Ptr("Failed"),
+	// 		Error: &armmanagednetworkfabric.ErrorDetail{
+	// 			Code: to.Ptr("PartialSuccess"),
+	// 			Message: to.Ptr("Resync succeeded for only some devices. Please address any issues and perform resync operations for the affected devices."),
+	// 		},
+	// 		Operations: []*armmanagednetworkfabric.OperationStatusResult{
+	// 			{
+	// 				ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric"),
+	// 				Status: to.Ptr("Failed"),
+	// 				Error: &armmanagednetworkfabric.ErrorDetail{
+	// 					Code: to.Ptr("CouldNotConnect"),
+	// 					Message: to.Ptr("Could not connect to the Terminal Server to configure new passwords."),
+	// 				},
+	// 			},
+	// 			{
+	// 				ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device-1"),
+	// 				Status: to.Ptr("Succeeded"),
+	// 			},
+	// 			{
+	// 				ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device-2"),
+	// 				Status: to.Ptr("Succeeded"),
+	// 			},
+	// 			{
+	// 				ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device-3"),
+	// 				Status: to.Ptr("Failed"),
+	// 				Error: &armmanagednetworkfabric.ErrorDetail{
+	// 					Code: to.Ptr("DeviceDisabled"),
+	// 					Message: to.Ptr("The Network Device is in disabled administrative state. Please perform a resync operation once it is enabled."),
+	// 				},
+	// 			},
+	// 			{
+	// 				ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device-4"),
+	// 				Status: to.Ptr("Succeeded"),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-01-15-preview/NetworkFabrics_RotateCertificates.json
+func ExampleNetworkFabricsClient_BeginRotateCertificates_successfulCertificateRotationForAllNetworkDevices() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmanagednetworkfabric.NewClientFactory("1234ABCD-0A1B-1234-5678-123456ABCDEF", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewNetworkFabricsClient().BeginRotateCertificates(ctx, "example-rg", "example-fabric", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armmanagednetworkfabric.NetworkFabricsClientRotateCertificatesResponse{
+	// 	NetworkFabricRotateCertificatesResponse: armmanagednetworkfabric.NetworkFabricRotateCertificatesResponse{
+	// 		ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/providers/Microsoft.ManagedNetworkFabric/locations/UKSOUTH/operationStatuses/b7c3d8f2-56e4-4a9b-8c7d-123456789ABC*1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF"),
+	// 		ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric"),
+	// 		StartTime: to.Ptr(time.Date(2025, time.September, 25, 8, 6, 0, 912000000, time.UTC)),
+	// 		EndTime: to.Ptr(time.Date(2025, time.September, 25, 9, 10, 0, 912000000, time.UTC)),
+	// 		Status: to.Ptr("Succeeded"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-01-15-preview/NetworkFabrics_RotateCertificates_Error.json
+func ExampleNetworkFabricsClient_BeginRotateCertificates_totalFailureToRotateCertificates() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmanagednetworkfabric.NewClientFactory("1234ABCD-0A1B-1234-5678-123456ABCDEF", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewNetworkFabricsClient().BeginRotateCertificates(ctx, "example-rg", "example-fabric", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armmanagednetworkfabric.NetworkFabricsClientRotateCertificatesResponse{
+	// 	NetworkFabricRotateCertificatesResponse: armmanagednetworkfabric.NetworkFabricRotateCertificatesResponse{
+	// 		ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/providers/Microsoft.ManagedNetworkFabric/locations/UKSOUTH/operationStatuses/b7c3d8f2-56e4-4a9b-8c7d-123456789ABC*1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF"),
+	// 		ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric"),
+	// 		StartTime: to.Ptr(time.Date(2025, time.September, 25, 8, 6, 0, 912000000, time.UTC)),
+	// 		EndTime: to.Ptr(time.Date(2025, time.September, 25, 9, 10, 0, 743000000, time.UTC)),
+	// 		Status: to.Ptr("Failed"),
+	// 		Error: &armmanagednetworkfabric.ErrorDetail{
+	// 			Code: to.Ptr("RotationFailed"),
+	// 			Message: to.Ptr("Rotation failed for all devices. Please address any issues and perform resync operations for the affected devices."),
+	// 		},
+	// 		Operations: []*armmanagednetworkfabric.OperationStatusResult{
+	// 			{
+	// 				ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device-1"),
+	// 				Status: to.Ptr("Failed"),
+	// 				Error: &armmanagednetworkfabric.ErrorDetail{
+	// 					Code: to.Ptr("CouldNotConnect"),
+	// 					Message: to.Ptr("Could not connect to the Network Device to configure new certificates."),
+	// 				},
+	// 			},
+	// 			{
+	// 				ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device-2"),
+	// 				Status: to.Ptr("Failed"),
+	// 				Error: &armmanagednetworkfabric.ErrorDetail{
+	// 					Code: to.Ptr("CouldNotConnect"),
+	// 					Message: to.Ptr("Could not connect to the Network Device to configure new certificates."),
+	// 				},
+	// 			},
+	// 			{
+	// 				ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device-3"),
+	// 				Status: to.Ptr("Failed"),
+	// 				Error: &armmanagednetworkfabric.ErrorDetail{
+	// 					Code: to.Ptr("CouldNotConnect"),
+	// 					Message: to.Ptr("Could not connect to the Network Device to configure new certificates."),
+	// 				},
+	// 			},
+	// 			{
+	// 				ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device-4"),
+	// 				Status: to.Ptr("Failed"),
+	// 				Error: &armmanagednetworkfabric.ErrorDetail{
+	// 					Code: to.Ptr("CouldNotConnect"),
+	// 					Message: to.Ptr("Could not connect to the Network Device to configure new certificates."),
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-01-15-preview/NetworkFabrics_RotateCertificates_PartialSuccess.json
+func ExampleNetworkFabricsClient_BeginRotateCertificates_partialFailureToRotateCertificatesForSomeDevices() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmanagednetworkfabric.NewClientFactory("1234ABCD-0A1B-1234-5678-123456ABCDEF", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewNetworkFabricsClient().BeginRotateCertificates(ctx, "example-rg", "example-fabric", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armmanagednetworkfabric.NetworkFabricsClientRotateCertificatesResponse{
+	// 	NetworkFabricRotateCertificatesResponse: armmanagednetworkfabric.NetworkFabricRotateCertificatesResponse{
+	// 		ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/providers/Microsoft.ManagedNetworkFabric/locations/UKSOUTH/operationStatuses/b7c3d8f2-56e4-4a9b-8c7d-123456789ABC*1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF"),
+	// 		ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric"),
+	// 		StartTime: to.Ptr(time.Date(2025, time.September, 25, 8, 6, 0, 912000000, time.UTC)),
+	// 		EndTime: to.Ptr(time.Date(2025, time.September, 25, 9, 10, 0, 743000000, time.UTC)),
+	// 		Status: to.Ptr("Failed"),
+	// 		Error: &armmanagednetworkfabric.ErrorDetail{
+	// 			Code: to.Ptr("PartialSuccess"),
+	// 			Message: to.Ptr("Rotation succeeded for only some devices. Please address any issues and perform resync operations for the affected devices."),
+	// 		},
+	// 		Operations: []*armmanagednetworkfabric.OperationStatusResult{
+	// 			{
+	// 				ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device-1"),
+	// 				Status: to.Ptr("Succeeded"),
+	// 			},
+	// 			{
+	// 				ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device-2"),
+	// 				Status: to.Ptr("Succeeded"),
+	// 			},
+	// 			{
+	// 				ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device-3"),
+	// 				Status: to.Ptr("Failed"),
+	// 				Error: &armmanagednetworkfabric.ErrorDetail{
+	// 					Code: to.Ptr("DeviceDisabled"),
+	// 					Message: to.Ptr("The Network Device is in disabled administrative state. Please perform a resync operation once it is enabled."),
+	// 				},
+	// 			},
+	// 			{
+	// 				ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device-4"),
+	// 				Status: to.Ptr("Succeeded"),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-01-15-preview/NetworkFabrics_RotatePasswords.json
+func ExampleNetworkFabricsClient_BeginRotatePasswords_successfulPasswordRotationForTheTerminalServerAndAllNetworkDevices() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmanagednetworkfabric.NewClientFactory("1234ABCD-0A1B-1234-5678-123456ABCDEF", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewNetworkFabricsClient().BeginRotatePasswords(ctx, "example-rg", "example-fabric", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armmanagednetworkfabric.NetworkFabricsClientRotatePasswordsResponse{
+	// 	NetworkFabricRotatePasswordsResponse: armmanagednetworkfabric.NetworkFabricRotatePasswordsResponse{
+	// 		ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/providers/Microsoft.ManagedNetworkFabric/locations/UKSOUTH/operationStatuses/b7c3d8f2-56e4-4a9b-8c7d-123456789ABC*1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF"),
+	// 		ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric"),
+	// 		StartTime: to.Ptr(time.Date(2025, time.September, 25, 8, 6, 0, 912000000, time.UTC)),
+	// 		EndTime: to.Ptr(time.Date(2025, time.September, 25, 9, 10, 0, 912000000, time.UTC)),
+	// 		Status: to.Ptr("Succeeded"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-01-15-preview/NetworkFabrics_RotatePasswords_Error.json
+func ExampleNetworkFabricsClient_BeginRotatePasswords_totalFailureToRotatePasswords() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmanagednetworkfabric.NewClientFactory("1234ABCD-0A1B-1234-5678-123456ABCDEF", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewNetworkFabricsClient().BeginRotatePasswords(ctx, "example-rg", "example-fabric", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armmanagednetworkfabric.NetworkFabricsClientRotatePasswordsResponse{
+	// 	NetworkFabricRotatePasswordsResponse: armmanagednetworkfabric.NetworkFabricRotatePasswordsResponse{
+	// 		ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/providers/Microsoft.ManagedNetworkFabric/locations/UKSOUTH/operationStatuses/b7c3d8f2-56e4-4a9b-8c7d-123456789ABC*1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF"),
+	// 		ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric"),
+	// 		StartTime: to.Ptr(time.Date(2025, time.September, 25, 8, 6, 0, 912000000, time.UTC)),
+	// 		EndTime: to.Ptr(time.Date(2025, time.September, 25, 9, 10, 0, 743000000, time.UTC)),
+	// 		Status: to.Ptr("Failed"),
+	// 		Error: &armmanagednetworkfabric.ErrorDetail{
+	// 			Code: to.Ptr("RotationFailed"),
+	// 			Message: to.Ptr("Rotation failed for all devices. Please address any issues and perform resync operations for the affected devices."),
+	// 		},
+	// 		Operations: []*armmanagednetworkfabric.OperationStatusResult{
+	// 			{
+	// 				ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric"),
+	// 				Status: to.Ptr("Failed"),
+	// 				Error: &armmanagednetworkfabric.ErrorDetail{
+	// 					Code: to.Ptr("CouldNotConnect"),
+	// 					Message: to.Ptr("Could not connect to the Terminal Server to configure new passwords."),
+	// 				},
+	// 			},
+	// 			{
+	// 				ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device-1"),
+	// 				Status: to.Ptr("Failed"),
+	// 				Error: &armmanagednetworkfabric.ErrorDetail{
+	// 					Code: to.Ptr("CouldNotConnect"),
+	// 					Message: to.Ptr("Could not connect to the Network Device to configure new passwords."),
+	// 				},
+	// 			},
+	// 			{
+	// 				ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device-2"),
+	// 				Status: to.Ptr("Failed"),
+	// 				Error: &armmanagednetworkfabric.ErrorDetail{
+	// 					Code: to.Ptr("CouldNotConnect"),
+	// 					Message: to.Ptr("Could not connect to the Network Device to configure new passwords."),
+	// 				},
+	// 			},
+	// 			{
+	// 				ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device-3"),
+	// 				Status: to.Ptr("Failed"),
+	// 				Error: &armmanagednetworkfabric.ErrorDetail{
+	// 					Code: to.Ptr("CouldNotConnect"),
+	// 					Message: to.Ptr("Could not connect to the Network Device to configure new passwords."),
+	// 				},
+	// 			},
+	// 			{
+	// 				ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device-4"),
+	// 				Status: to.Ptr("Failed"),
+	// 				Error: &armmanagednetworkfabric.ErrorDetail{
+	// 					Code: to.Ptr("CouldNotConnect"),
+	// 					Message: to.Ptr("Could not connect to the Network Device to configure new passwords."),
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-01-15-preview/NetworkFabrics_RotatePasswords_PartialSuccess.json
+func ExampleNetworkFabricsClient_BeginRotatePasswords_partialFailureToRotatePasswordsForSomeDevices() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmanagednetworkfabric.NewClientFactory("1234ABCD-0A1B-1234-5678-123456ABCDEF", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewNetworkFabricsClient().BeginRotatePasswords(ctx, "example-rg", "example-fabric", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armmanagednetworkfabric.NetworkFabricsClientRotatePasswordsResponse{
+	// 	NetworkFabricRotatePasswordsResponse: armmanagednetworkfabric.NetworkFabricRotatePasswordsResponse{
+	// 		ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/providers/Microsoft.ManagedNetworkFabric/locations/UKSOUTH/operationStatuses/b7c3d8f2-56e4-4a9b-8c7d-123456789ABC*1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF"),
+	// 		ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric"),
+	// 		StartTime: to.Ptr(time.Date(2025, time.September, 25, 8, 6, 0, 912000000, time.UTC)),
+	// 		EndTime: to.Ptr(time.Date(2025, time.September, 25, 9, 10, 0, 743000000, time.UTC)),
+	// 		Status: to.Ptr("Failed"),
+	// 		Error: &armmanagednetworkfabric.ErrorDetail{
+	// 			Code: to.Ptr("PartialSuccess"),
+	// 			Message: to.Ptr("Rotation succeeded for only some devices. Please address any issues and perform resync operations for the affected devices."),
+	// 		},
+	// 		Operations: []*armmanagednetworkfabric.OperationStatusResult{
+	// 			{
+	// 				ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric"),
+	// 				Status: to.Ptr("Failed"),
+	// 				Error: &armmanagednetworkfabric.ErrorDetail{
+	// 					Code: to.Ptr("CouldNotConnect"),
+	// 					Message: to.Ptr("Could not connect to the Terminal Server to configure new passwords."),
+	// 				},
+	// 			},
+	// 			{
+	// 				ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device-1"),
+	// 				Status: to.Ptr("Succeeded"),
+	// 			},
+	// 			{
+	// 				ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device-2"),
+	// 				Status: to.Ptr("Succeeded"),
+	// 			},
+	// 			{
+	// 				ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device-3"),
+	// 				Status: to.Ptr("Failed"),
+	// 				Error: &armmanagednetworkfabric.ErrorDetail{
+	// 					Code: to.Ptr("DeviceDisabled"),
+	// 					Message: to.Ptr("The Network Device is in disabled administrative state. Please perform a resync operation once it is enabled."),
+	// 				},
+	// 			},
+	// 			{
+	// 				ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device-4"),
+	// 				Status: to.Ptr("Succeeded"),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-01-15-preview/NetworkFabrics_Update.json
+func ExampleNetworkFabricsClient_BeginUpdate_networkFabricsUpdateMaximumSetGen() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmanagednetworkfabric.NewClientFactory("0000ABCD-0A0B-0000-0000-000000ABCDEF", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewNetworkFabricsClient().BeginUpdate(ctx, "example-rg", "example-fabric", armmanagednetworkfabric.NetworkFabricPatch{
+		Tags: map[string]*string{
+			"keyId": to.Ptr("keyValue"),
+		},
+		Identity: &armmanagednetworkfabric.ManagedServiceIdentityPatch{
+			Type: to.Ptr(armmanagednetworkfabric.ManagedServiceIdentityTypeNone),
+			UserAssignedIdentities: map[string]*armmanagednetworkfabric.UserAssignedIdentity{
+				"key872": {},
+			},
+		},
+		Properties: &armmanagednetworkfabric.NetworkFabricPatchProperties{
+			Annotation:         to.Ptr("annotation1"),
+			RackCount:          to.Ptr[int32](6),
+			ServerCountPerRack: to.Ptr[int32](10),
+			IPv4Prefix:         to.Ptr("10.18.0.0/17"),
+			IPv6Prefix:         to.Ptr("3FFE:FFFF:0:CD40::/60"),
+			FabricASN:          to.Ptr[int64](12345),
+			StorageAccountConfiguration: &armmanagednetworkfabric.StorageAccountPatchConfiguration{
+				StorageAccountID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.Storage/storageAccounts/nfStorage"),
+				StorageAccountIdentity: &armmanagednetworkfabric.IdentitySelectorPatch{
+					IdentityType:                   to.Ptr(armmanagednetworkfabric.ManagedServiceIdentitySelectorTypeUserAssignedIdentity),
+					UserAssignedIdentityResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789abc/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/my-id"),
+				},
+			},
+			FeatureFlags: []*armmanagednetworkfabric.FeatureFlagProperties{
+				{
+					FeatureFlagName:  to.Ptr("uniqueRdConfiguration"),
+					FeatureFlagValue: to.Ptr("Enabled"),
+				},
+			},
+			TerminalServerConfiguration: &armmanagednetworkfabric.TerminalServerPatchConfiguration{
+				Username:            to.Ptr("username1"),
+				Password:            to.Ptr("xxxxxxxx"),
+				SerialNumber:        to.Ptr("1234567"),
+				PrimaryIPv4Prefix:   to.Ptr("10.0.0.12/30"),
+				PrimaryIPv6Prefix:   to.Ptr("4FFE:FFFF:0:CD30::a8/127"),
+				SecondaryIPv4Prefix: to.Ptr("40.0.0.14/30"),
+				SecondaryIPv6Prefix: to.Ptr("6FFE:FFFF:0:CD30::ac/127"),
+			},
+			ManagementNetworkConfiguration: &armmanagednetworkfabric.ManagementNetworkPatchConfiguration{
+				InfrastructureVPNConfiguration: &armmanagednetworkfabric.VPNConfigurationPatchableProperties{
+					NetworkToNetworkInterconnectID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric/networkToNetworkInterconnects/example-nni"),
+					PeeringOption:                  to.Ptr(armmanagednetworkfabric.PeeringOptionOptionA),
+					OptionBProperties: &armmanagednetworkfabric.VPNOptionBPatchProperties{
+						ImportRouteTargets: []*string{
+							to.Ptr("65046:10050"),
+						},
+						ExportRouteTargets: []*string{
+							to.Ptr("65046:10050"),
+						},
+						RouteTargets: &armmanagednetworkfabric.RouteTargetPatchInformation{
+							ImportIPv4RouteTargets: []*string{
+								to.Ptr("65046:10050"),
+							},
+							ImportIPv6RouteTargets: []*string{
+								to.Ptr("65046:10050"),
+							},
+							ExportIPv4RouteTargets: []*string{
+								to.Ptr("65046:10050"),
+							},
+							ExportIPv6RouteTargets: []*string{
+								to.Ptr("65046:10050"),
+							},
+						},
+					},
+					OptionAProperties: &armmanagednetworkfabric.VPNOptionAPatchProperties{
+						Mtu:     to.Ptr[int32](1501),
+						VlanID:  to.Ptr[int32](3001),
+						PeerASN: to.Ptr[int64](1235),
+						BfdConfiguration: &armmanagednetworkfabric.BfdPatchConfiguration{
+							IntervalInMilliSeconds: to.Ptr[int32](300),
+							Multiplier:             to.Ptr[int32](10),
+						},
+						PrimaryIPv4Prefix:   to.Ptr("10.0.0.12/30"),
+						PrimaryIPv6Prefix:   to.Ptr("4FFE:FFFF:0:CD30::a8/127"),
+						SecondaryIPv4Prefix: to.Ptr("20.0.0.13/30"),
+						SecondaryIPv6Prefix: to.Ptr("6FFE:FFFF:0:CD30::ac/127"),
+					},
+				},
+				WorkloadVPNConfiguration: &armmanagednetworkfabric.VPNConfigurationPatchableProperties{
+					NetworkToNetworkInterconnectID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric/networkToNetworkInterconnects/example-nni"),
+					PeeringOption:                  to.Ptr(armmanagednetworkfabric.PeeringOptionOptionA),
+					OptionBProperties: &armmanagednetworkfabric.VPNOptionBPatchProperties{
+						ImportRouteTargets: []*string{
+							to.Ptr("65046:10050"),
+						},
+						ExportRouteTargets: []*string{
+							to.Ptr("65046:10050"),
+						},
+						RouteTargets: &armmanagednetworkfabric.RouteTargetPatchInformation{
+							ImportIPv4RouteTargets: []*string{
+								to.Ptr("65046:10050"),
+							},
+							ImportIPv6RouteTargets: []*string{
+								to.Ptr("65046:10050"),
+							},
+							ExportIPv4RouteTargets: []*string{
+								to.Ptr("65046:10050"),
+							},
+							ExportIPv6RouteTargets: []*string{
+								to.Ptr("65046:10050"),
+							},
+						},
+					},
+					OptionAProperties: &armmanagednetworkfabric.VPNOptionAPatchProperties{
+						Mtu:     to.Ptr[int32](1500),
+						VlanID:  to.Ptr[int32](3000),
+						PeerASN: to.Ptr[int64](61234),
+						BfdConfiguration: &armmanagednetworkfabric.BfdPatchConfiguration{
+							IntervalInMilliSeconds: to.Ptr[int32](300),
+							Multiplier:             to.Ptr[int32](10),
+						},
+						PrimaryIPv4Prefix:   to.Ptr("10.0.0.14/30"),
+						PrimaryIPv6Prefix:   to.Ptr("2FFE:FFFF:0:CD30::a7/126"),
+						SecondaryIPv4Prefix: to.Ptr("10.0.0.15/30"),
+						SecondaryIPv6Prefix: to.Ptr("2FFE:FFFF:0:CD30::ac/126"),
+					},
+				},
+			},
+			UpgradeProfile: []*armmanagednetworkfabric.UpgradeProfilePropertiesPatchProperties{
+				{
+					PreUpgradeProfile: &armmanagednetworkfabric.PreUpgradeProfilePatchProperties{
+						MaxEnteringMaintenanceTimeoutInSeconds: to.Ptr[int32](300),
+					},
+					PostUpgradeProfile: &armmanagednetworkfabric.PostUpgradeProfilePatchProperties{
+						MaxExitingMaintenanceTimeoutInSeconds: to.Ptr[int32](3000),
+						MlagReloadDelayTimeoutInSeconds:       to.Ptr[int32](900),
+					},
+				},
+			},
+			HardwareAlertThreshold: to.Ptr[int32](43),
+			ControlPlaneACLs: []*string{
+				to.Ptr("/subscriptions/xxxxxx/resourceGroups/resourcegroupname/providers/Microsoft.ManagedNetworkFabric/accessControlLists/example-acl"),
+			},
+			TrustedIPPrefixes: []*string{
+				to.Ptr("/subscriptions/xxxxxx/resourceGroups/resourcegroupname/providers/Microsoft.ManagedNetworkFabric/ipPrefixes/example-prefix"),
+			},
+			UniqueRdConfiguration: &armmanagednetworkfabric.UniqueRouteDistinguisherPatchProperties{
+				UniqueRdConfigurationState:           to.Ptr(armmanagednetworkfabric.UniqueRouteDistinguisherConfigurationStateEnabled),
+				NniDerivedUniqueRdConfigurationState: to.Ptr(armmanagednetworkfabric.NNIDerivedUniqueRouteDistinguisherConfigurationStateEnabled),
+			},
+			QosConfiguration: &armmanagednetworkfabric.QosPatchProperties{
+				QosConfigurationState: to.Ptr(armmanagednetworkfabric.QosConfigurationStateEnabled),
+			},
+			SecretArchiveSettings: &armmanagednetworkfabric.SecretArchivePatchSettings{
+				AssociatedIdentity: &armmanagednetworkfabric.IdentitySelectorPatch{
+					IdentityType:                   to.Ptr(armmanagednetworkfabric.ManagedServiceIdentitySelectorTypeUserAssignedIdentity),
+					UserAssignedIdentityResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/example-identity"),
+				},
+				VaultURI: to.Ptr("https://myvault.vault.azure.net/"),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armmanagednetworkfabric.NetworkFabricsClientUpdateResponse{
+	// 	NetworkFabric: armmanagednetworkfabric.NetworkFabric{
+	// 		Properties: &armmanagednetworkfabric.NetworkFabricProperties{
+	// 			Annotation: to.Ptr("annotation"),
+	// 			NetworkFabricSKU: to.Ptr("M4-A400-A100-C16-aa"),
+	// 			FabricVersion: to.Ptr("version1"),
+	// 			RouterIDs: []*string{
+	// 				to.Ptr("routerId"),
+	// 			},
+	// 			StorageAccountConfiguration: &armmanagednetworkfabric.StorageAccountConfiguration{
+	// 				StorageAccountID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.Storage/storageAccounts/nfStorage"),
+	// 				StorageAccountIdentity: &armmanagednetworkfabric.IdentitySelector{
+	// 					IdentityType: to.Ptr(armmanagednetworkfabric.ManagedServiceIdentitySelectorTypeUserAssignedIdentity),
+	// 					UserAssignedIdentityResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789abc/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/my-id"),
+	// 				},
+	// 			},
+	// 			FabricLocks: []*armmanagednetworkfabric.FabricLockProperties{
+	// 				{
+	// 					LockState: to.Ptr(armmanagednetworkfabric.LockConfigurationStateEnabled),
+	// 					LockType: to.Ptr(armmanagednetworkfabric.NetworkFabricLockTypeConfiguration),
+	// 				},
+	// 			},
+	// 			FeatureFlags: []*armmanagednetworkfabric.FeatureFlagProperties{
+	// 				{
+	// 					FeatureFlagName: to.Ptr("uniqueRdConfiguration"),
+	// 					FeatureFlagValue: to.Ptr("Enabled"),
+	// 				},
+	// 			},
+	// 			NetworkFabricControllerID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabricControllers/example-fabricController"),
+	// 			RackCount: to.Ptr[int32](4),
+	// 			ServerCountPerRack: to.Ptr[int32](8),
+	// 			StorageArrayCount: to.Ptr[int32](1),
+	// 			IPv4Prefix: to.Ptr("10.18.0.0/19"),
+	// 			IPv6Prefix: to.Ptr("3FFE:FFFF:0:CD40::/59"),
+	// 			FabricASN: to.Ptr[int64](29249),
+	// 			NetworkBootstrapDeviceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkBootstrapDevices/example-bootstrapDevice"),
+	// 			TerminalServerConfiguration: &armmanagednetworkfabric.TerminalServerConfiguration{
+	// 				Username: to.Ptr("username"),
+	// 				SerialNumber: to.Ptr("123456"),
+	// 				PrimaryIPv4Prefix: to.Ptr("10.0.0.12/30"),
+	// 				PrimaryIPv6Prefix: to.Ptr("4FFE:FFFF:0:CD30::a8/127"),
+	// 				SecondaryIPv4Prefix: to.Ptr("40.0.0.14/30"),
+	// 				SecondaryIPv6Prefix: to.Ptr("6FFE:FFFF:0:CD30::ac/127"),
+	// 				NetworkDeviceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-networkDevice"),
+	// 			},
+	// 			ManagementNetworkConfiguration: &armmanagednetworkfabric.ManagementNetworkConfigurationProperties{
+	// 				InfrastructureVPNConfiguration: &armmanagednetworkfabric.VPNConfigurationProperties{
+	// 					NetworkToNetworkInterconnectID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric/networkToNetworkInterconnects/example-nni"),
+	// 					AdministrativeState: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnabled),
+	// 					PeeringOption: to.Ptr(armmanagednetworkfabric.PeeringOptionOptionA),
+	// 					OptionBProperties: &armmanagednetworkfabric.VPNOptionBProperties{
+	// 						ImportRouteTargets: []*string{
+	// 							to.Ptr("65046:10050"),
+	// 						},
+	// 						ExportRouteTargets: []*string{
+	// 							to.Ptr("65046:10050"),
+	// 						},
+	// 						RouteTargets: &armmanagednetworkfabric.RouteTargetInformation{
+	// 							ImportIPv4RouteTargets: []*string{
+	// 								to.Ptr("65046:10050"),
+	// 							},
+	// 							ImportIPv6RouteTargets: []*string{
+	// 								to.Ptr("65046:10050"),
+	// 							},
+	// 							ExportIPv4RouteTargets: []*string{
+	// 								to.Ptr("65046:10050"),
+	// 							},
+	// 							ExportIPv6RouteTargets: []*string{
+	// 								to.Ptr("65046:10050"),
+	// 							},
+	// 						},
+	// 					},
+	// 					OptionAProperties: &armmanagednetworkfabric.VPNOptionAProperties{
+	// 						Mtu: to.Ptr[int32](1501),
+	// 						VlanID: to.Ptr[int32](3001),
+	// 						PeerASN: to.Ptr[int64](1235),
+	// 						BfdConfiguration: &armmanagednetworkfabric.BfdConfiguration{
+	// 							AdministrativeState: to.Ptr(armmanagednetworkfabric.BfdAdministrativeStateEnabled),
+	// 							IntervalInMilliSeconds: to.Ptr[int32](300),
+	// 							Multiplier: to.Ptr[int32](10),
+	// 						},
+	// 						PrimaryIPv4Prefix: to.Ptr("10.0.0.12/30"),
+	// 						PrimaryIPv6Prefix: to.Ptr("4FFE:FFFF:0:CD30::a8/127"),
+	// 						SecondaryIPv4Prefix: to.Ptr("20.0.0.13/30"),
+	// 						SecondaryIPv6Prefix: to.Ptr("6FFE:FFFF:0:CD30::ac/127"),
+	// 					},
+	// 				},
+	// 				WorkloadVPNConfiguration: &armmanagednetworkfabric.VPNConfigurationProperties{
+	// 					NetworkToNetworkInterconnectID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric/networkToNetworkInterconnects/example-nni"),
+	// 					AdministrativeState: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnabled),
+	// 					PeeringOption: to.Ptr(armmanagednetworkfabric.PeeringOptionOptionA),
+	// 					OptionBProperties: &armmanagednetworkfabric.VPNOptionBProperties{
+	// 						ImportRouteTargets: []*string{
+	// 							to.Ptr("65046:10050"),
+	// 						},
+	// 						ExportRouteTargets: []*string{
+	// 							to.Ptr("65046:10050"),
+	// 						},
+	// 						RouteTargets: &armmanagednetworkfabric.RouteTargetInformation{
+	// 							ImportIPv4RouteTargets: []*string{
+	// 								to.Ptr("65046:10050"),
+	// 							},
+	// 							ImportIPv6RouteTargets: []*string{
+	// 								to.Ptr("65046:10050"),
+	// 							},
+	// 							ExportIPv4RouteTargets: []*string{
+	// 								to.Ptr("65046:10050"),
+	// 							},
+	// 							ExportIPv6RouteTargets: []*string{
+	// 								to.Ptr("65046:10050"),
+	// 							},
+	// 						},
+	// 					},
+	// 					OptionAProperties: &armmanagednetworkfabric.VPNOptionAProperties{
+	// 						Mtu: to.Ptr[int32](1500),
+	// 						VlanID: to.Ptr[int32](3000),
+	// 						PeerASN: to.Ptr[int64](61234),
+	// 						BfdConfiguration: &armmanagednetworkfabric.BfdConfiguration{
+	// 							AdministrativeState: to.Ptr(armmanagednetworkfabric.BfdAdministrativeStateEnabled),
+	// 							IntervalInMilliSeconds: to.Ptr[int32](300),
+	// 							Multiplier: to.Ptr[int32](5),
+	// 						},
+	// 						PrimaryIPv4Prefix: to.Ptr("10.0.0.14/30"),
+	// 						PrimaryIPv6Prefix: to.Ptr("2FFE:FFFF:0:CD30::a7/126"),
+	// 						SecondaryIPv4Prefix: to.Ptr("10.0.0.15/30"),
+	// 						SecondaryIPv6Prefix: to.Ptr("2FFE:FFFF:0:CD30::ac/126"),
+	// 					},
+	// 				},
+	// 			},
+	// 			Racks: []*string{
+	// 				to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkRacks/example-networkRack"),
+	// 			},
+	// 			L2IsolationDomains: []*string{
+	// 				to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/l2IsolationDomains/example-l2Domain"),
+	// 			},
+	// 			L3IsolationDomains: []*string{
+	// 				to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/example-l3Domain"),
+	// 			},
+	// 			HardwareAlertThreshold: to.Ptr[int32](74),
+	// 			ControlPlaneACLs: []*string{
+	// 				to.Ptr("/subscriptions/xxxxxx/resourceGroups/resourcegroupname/providers/Microsoft.ManagedNetworkFabric/accessControlLists/example-acl"),
+	// 			},
+	// 			TrustedIPPrefixes: []*string{
+	// 				to.Ptr("/subscriptions/xxxxxx/resourceGroups/resourcegroupname/providers/Microsoft.ManagedNetworkFabric/ipPrefixes/example-prefix"),
+	// 			},
+	// 			UniqueRdConfiguration: &armmanagednetworkfabric.UniqueRouteDistinguisherProperties{
+	// 				UniqueRdConfigurationState: to.Ptr(armmanagednetworkfabric.UniqueRouteDistinguisherConfigurationStateEnabled),
+	// 				UniqueRds: []*string{
+	// 					to.Ptr("apogd"),
+	// 				},
+	// 				NniDerivedUniqueRdConfigurationState: to.Ptr(armmanagednetworkfabric.NNIDerivedUniqueRouteDistinguisherConfigurationStateEnabled),
+	// 			},
+	// 			ActiveCommitBatches: []*string{
+	// 				to.Ptr("izc"),
+	// 			},
+	// 			AuthorizedTransceiver: &armmanagednetworkfabric.AuthorizedTransceiverProperties{
+	// 				Vendor: to.Ptr("vendorX"),
+	// 				Key: to.Ptr("example"),
+	// 			},
+	// 			ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
+	// 			ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateAccepted),
+	// 			AdministrativeState: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnabled),
+	// 			OperationalState: to.Ptr(armmanagednetworkfabric.OperationalStateUp),
+	// 			QosConfiguration: &armmanagednetworkfabric.QosProperties{
+	// 				QosConfigurationState: to.Ptr(armmanagednetworkfabric.QosConfigurationStateEnabled),
+	// 			},
+	// 			UpgradeProfile: []*armmanagednetworkfabric.UpgradeProfileProperties{
+	// 				{
+	// 					PreUpgradeProfile: &armmanagednetworkfabric.PreUpgradeProfileProperties{
+	// 						MaxEnteringMaintenanceTimeoutInSeconds: to.Ptr[int32](300),
+	// 					},
+	// 					PostUpgradeProfile: &armmanagednetworkfabric.PostUpgradeProfileProperties{
+	// 						MaxExitingMaintenanceTimeoutInSeconds: to.Ptr[int32](3000),
+	// 						MlagReloadDelayTimeoutInSeconds: to.Ptr[int32](900),
+	// 					},
+	// 				},
+	// 			},
+	// 		},
+	// 		Identity: &armmanagednetworkfabric.ManagedServiceIdentity{
+	// 			PrincipalID: to.Ptr("0000ABCD-0A0B-0000-0000-000000ABCDEF"),
+	// 			TenantID: to.Ptr("0000ABCD-0A0B-0000-0000-000000ABCDEF"),
+	// 			Type: to.Ptr(armmanagednetworkfabric.ManagedServiceIdentityTypeNone),
+	// 			UserAssignedIdentities: map[string]*armmanagednetworkfabric.UserAssignedIdentity{
+	// 				"key872": &armmanagednetworkfabric.UserAssignedIdentity{
+	// 					PrincipalID: to.Ptr("0000ABCD-0A0B-0000-0000-000000ABCDEF"),
+	// 					ClientID: to.Ptr("0000ABCD-0A0B-0000-0000-000000ABCDEF"),
+	// 				},
+	// 			},
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"keyId": to.Ptr("keyValue"),
+	// 		},
+	// 		Location: to.Ptr("eastuseuap"),
+	// 		ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric"),
+	// 		Name: to.Ptr("example-fabric"),
+	// 		Type: to.Ptr("Microsoft.ManagedNetworkFabric/networkFabrics"),
+	// 		SystemData: &armmanagednetworkfabric.SystemData{
+	// 			CreatedBy: to.Ptr("email@address.com"),
+	// 			CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("UserId"),
+	// 			LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-01-15-preview/NetworkFabrics_Update_QoS.json
+func ExampleNetworkFabricsClient_BeginUpdate_networkFabricsUpdateQoSEnable() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmanagednetworkfabric.NewClientFactory("0000ABCD-0A0B-0000-0000-000000ABCDEF", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewNetworkFabricsClient().BeginUpdate(ctx, "example-rg", "example-fabric", armmanagednetworkfabric.NetworkFabricPatch{
+		Properties: &armmanagednetworkfabric.NetworkFabricPatchProperties{
+			QosConfiguration: &armmanagednetworkfabric.QosPatchProperties{
+				QosConfigurationState: to.Ptr(armmanagednetworkfabric.QosConfigurationStateEnabled),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armmanagednetworkfabric.NetworkFabricsClientUpdateResponse{
+	// 	NetworkFabric: armmanagednetworkfabric.NetworkFabric{
+	// 		Properties: &armmanagednetworkfabric.NetworkFabricProperties{
+	// 			Annotation: to.Ptr("annotation"),
+	// 			NetworkFabricSKU: to.Ptr("M4-A400-A100-C16-aa"),
+	// 			FabricVersion: to.Ptr("version1"),
+	// 			RouterIDs: []*string{
+	// 				to.Ptr("routerId"),
+	// 			},
+	// 			NetworkFabricControllerID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabricControllers/example-fabricController"),
+	// 			RackCount: to.Ptr[int32](4),
+	// 			ServerCountPerRack: to.Ptr[int32](8),
+	// 			IPv4Prefix: to.Ptr("10.18.0.0/19"),
+	// 			IPv6Prefix: to.Ptr("3FFE:FFFF:0:CD40::/59"),
+	// 			FabricASN: to.Ptr[int64](29249),
+	// 			NetworkBootstrapDeviceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkBootstrapDevices/example-bootstrapDevice"),
+	// 			TerminalServerConfiguration: &armmanagednetworkfabric.TerminalServerConfiguration{
+	// 				Username: to.Ptr("username"),
+	// 				SerialNumber: to.Ptr("123456"),
+	// 				PrimaryIPv4Prefix: to.Ptr("10.0.0.12/30"),
+	// 				PrimaryIPv6Prefix: to.Ptr("4FFE:FFFF:0:CD30::a8/127"),
+	// 				SecondaryIPv4Prefix: to.Ptr("40.0.0.14/30"),
+	// 				SecondaryIPv6Prefix: to.Ptr("6FFE:FFFF:0:CD30::ac/127"),
+	// 				NetworkDeviceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-networkDevice"),
+	// 			},
+	// 			ManagementNetworkConfiguration: &armmanagednetworkfabric.ManagementNetworkConfigurationProperties{
+	// 				InfrastructureVPNConfiguration: &armmanagednetworkfabric.VPNConfigurationProperties{
+	// 					NetworkToNetworkInterconnectID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric/networkToNetworkInterconnects/example-nni"),
+	// 					AdministrativeState: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnabled),
+	// 					PeeringOption: to.Ptr(armmanagednetworkfabric.PeeringOptionOptionA),
+	// 					OptionAProperties: &armmanagednetworkfabric.VPNOptionAProperties{
+	// 						Mtu: to.Ptr[int32](1501),
+	// 						VlanID: to.Ptr[int32](3001),
+	// 						PeerASN: to.Ptr[int64](1235),
+	// 						BfdConfiguration: &armmanagednetworkfabric.BfdConfiguration{
+	// 							AdministrativeState: to.Ptr(armmanagednetworkfabric.BfdAdministrativeStateEnabled),
+	// 							IntervalInMilliSeconds: to.Ptr[int32](300),
+	// 							Multiplier: to.Ptr[int32](10),
+	// 						},
+	// 						PrimaryIPv4Prefix: to.Ptr("10.0.0.12/30"),
+	// 						PrimaryIPv6Prefix: to.Ptr("4FFE:FFFF:0:CD30::a8/127"),
+	// 						SecondaryIPv4Prefix: to.Ptr("20.0.0.13/30"),
+	// 						SecondaryIPv6Prefix: to.Ptr("6FFE:FFFF:0:CD30::ac/127"),
+	// 					},
+	// 				},
+	// 				WorkloadVPNConfiguration: &armmanagednetworkfabric.VPNConfigurationProperties{
+	// 					NetworkToNetworkInterconnectID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric/networkToNetworkInterconnects/example-nni"),
+	// 					AdministrativeState: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnabled),
+	// 					PeeringOption: to.Ptr(armmanagednetworkfabric.PeeringOptionOptionA),
+	// 					OptionAProperties: &armmanagednetworkfabric.VPNOptionAProperties{
+	// 						Mtu: to.Ptr[int32](1500),
+	// 						VlanID: to.Ptr[int32](3000),
+	// 						PeerASN: to.Ptr[int64](61234),
+	// 						BfdConfiguration: &armmanagednetworkfabric.BfdConfiguration{
+	// 							AdministrativeState: to.Ptr(armmanagednetworkfabric.BfdAdministrativeStateEnabled),
+	// 							IntervalInMilliSeconds: to.Ptr[int32](300),
+	// 							Multiplier: to.Ptr[int32](5),
+	// 						},
+	// 						PrimaryIPv4Prefix: to.Ptr("10.0.0.14/30"),
+	// 						PrimaryIPv6Prefix: to.Ptr("2FFE:FFFF:0:CD30::a7/126"),
+	// 						SecondaryIPv4Prefix: to.Ptr("10.0.0.15/30"),
+	// 						SecondaryIPv6Prefix: to.Ptr("2FFE:FFFF:0:CD30::ac/126"),
+	// 					},
+	// 				},
+	// 			},
+	// 			Racks: []*string{
+	// 				to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkRacks/example-networkRack"),
+	// 			},
+	// 			L2IsolationDomains: []*string{
+	// 				to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/l2IsolationDomains/example-l2Domain"),
+	// 			},
+	// 			L3IsolationDomains: []*string{
+	// 				to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/example-l3Domain"),
+	// 			},
+	// 			ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
+	// 			ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateAccepted),
+	// 			AdministrativeState: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnabled),
+	// 			UpgradeProfile: []*armmanagednetworkfabric.UpgradeProfileProperties{
+	// 				{
+	// 					PreUpgradeProfile: &armmanagednetworkfabric.PreUpgradeProfileProperties{
+	// 						MaxEnteringMaintenanceTimeoutInSeconds: to.Ptr[int32](300),
+	// 					},
+	// 					PostUpgradeProfile: &armmanagednetworkfabric.PostUpgradeProfileProperties{
+	// 						MaxExitingMaintenanceTimeoutInSeconds: to.Ptr[int32](3000),
+	// 						MlagReloadDelayTimeoutInSeconds: to.Ptr[int32](900),
+	// 					},
+	// 				},
+	// 			},
+	// 			QosConfiguration: &armmanagednetworkfabric.QosProperties{
+	// 				QosConfigurationState: to.Ptr(armmanagednetworkfabric.QosConfigurationStateEnabled),
+	// 			},
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"environment": to.Ptr("production"),
+	// 		},
+	// 		Location: to.Ptr("eastuseuap"),
+	// 		ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric"),
+	// 		Name: to.Ptr("example-fabric"),
+	// 		Type: to.Ptr("Microsoft.ManagedNetworkFabric/networkFabrics"),
+	// 		SystemData: &armmanagednetworkfabric.SystemData{
+	// 			CreatedBy: to.Ptr("email@address.com"),
+	// 			CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("UserId"),
+	// 			LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-01-15-preview/NetworkFabrics_UpdateInfraManagementBfdConfiguration.json
+func ExampleNetworkFabricsClient_BeginUpdateInfraManagementBfdConfiguration() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmanagednetworkfabric.NewClientFactory("0000ABCD-0A0B-0000-0000-000000ABCDEF", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewNetworkFabricsClient().BeginUpdateInfraManagementBfdConfiguration(ctx, "example-rg", "example-fabric", armmanagednetworkfabric.UpdateAdministrativeState{
+		ResourceIDs: []*string{
+			to.Ptr(""),
+		},
+		State: to.Ptr(armmanagednetworkfabric.EnableDisableStateEnable),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armmanagednetworkfabric.NetworkFabricsClientUpdateInfraManagementBfdConfigurationResponse{
+	// 	UpdateAdministrativeStateResponse: armmanagednetworkfabric.UpdateAdministrativeStateResponse{
+	// 		Status: to.Ptr("Failed"),
+	// 		Error: &armmanagednetworkfabric.ErrorDetail{
+	// 			Code: to.Ptr(""),
+	// 			Message: to.Ptr(""),
+	// 			Target: to.Ptr(""),
+	// 			Details: []*armmanagednetworkfabric.ErrorDetail{
+	// 			},
+	// 			AdditionalInfo: []*armmanagednetworkfabric.ErrorAdditionalInfo{
+	// 				{
+	// 					Type: to.Ptr(""),
+	// 					Info: map[string]any{
+	// 					},
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-01-15-preview/NetworkFabrics_UpdateWorkloadManagementBfdConfiguration.json
+func ExampleNetworkFabricsClient_BeginUpdateWorkloadManagementBfdConfiguration() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmanagednetworkfabric.NewClientFactory("0000ABCD-0A0B-0000-0000-000000ABCDEF", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewNetworkFabricsClient().BeginUpdateWorkloadManagementBfdConfiguration(ctx, "example-rg", "example-fabric", armmanagednetworkfabric.UpdateAdministrativeState{
+		ResourceIDs: []*string{
+			to.Ptr(""),
+		},
+		State: to.Ptr(armmanagednetworkfabric.EnableDisableStateEnable),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armmanagednetworkfabric.NetworkFabricsClientUpdateWorkloadManagementBfdConfigurationResponse{
+	// 	UpdateAdministrativeStateResponse: armmanagednetworkfabric.UpdateAdministrativeStateResponse{
+	// 		Status: to.Ptr("Failed"),
+	// 		Error: &armmanagednetworkfabric.ErrorDetail{
+	// 			Code: to.Ptr(""),
+	// 			Message: to.Ptr(""),
+	// 			Target: to.Ptr(""),
+	// 			Details: []*armmanagednetworkfabric.ErrorDetail{
+	// 			},
+	// 			AdditionalInfo: []*armmanagednetworkfabric.ErrorAdditionalInfo{
+	// 				{
+	// 					Type: to.Ptr(""),
+	// 					Info: map[string]any{
+	// 					},
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-01-15-preview/NetworkFabrics_Upgrade.json
+func ExampleNetworkFabricsClient_BeginUpgrade() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmanagednetworkfabric.NewClientFactory("0000ABCD-0A0B-0000-0000-000000ABCDEF", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewNetworkFabricsClient().BeginUpgrade(ctx, "example-rg", "example-fabric", armmanagednetworkfabric.UpgradeNetworkFabricProperties{
+		Version: to.Ptr("3.x.x"),
+		Action:  to.Ptr(armmanagednetworkfabric.NetworkFabricUpgradeActionStart),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armmanagednetworkfabric.NetworkFabricsClientUpgradeResponse{
+	// 	OperationStatusResult: armmanagednetworkfabric.OperationStatusResult{
+	// 		Status: to.Ptr("Failed"),
+	// 		Error: &armmanagednetworkfabric.ErrorDetail{
+	// 			Code: to.Ptr(""),
+	// 			Message: to.Ptr(""),
+	// 			Target: to.Ptr(""),
+	// 			Details: []*armmanagednetworkfabric.ErrorDetail{
+	// 			},
+	// 			AdditionalInfo: []*armmanagednetworkfabric.ErrorAdditionalInfo{
+	// 				{
+	// 					Type: to.Ptr(""),
+	// 					Info: map[string]any{
+	// 					},
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-01-15-preview/NetworkFabrics_ValidateConfiguration.json
+func ExampleNetworkFabricsClient_BeginValidateConfiguration() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmanagednetworkfabric.NewClientFactory("0000ABCD-0A0B-0000-0000-000000ABCDEF", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewNetworkFabricsClient().BeginValidateConfiguration(ctx, "example-rg", "example-fabric", armmanagednetworkfabric.ValidateConfigurationProperties{
+		ValidateAction: to.Ptr(armmanagednetworkfabric.ValidateActionCabling),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armmanagednetworkfabric.NetworkFabricsClientValidateConfigurationResponse{
+	// 	ValidateConfigurationResponseV2: armmanagednetworkfabric.ValidateConfigurationResponseV2{
+	// 		ID: to.Ptr("/subscriptions/0000ABCD-0A0B-0000-0000-000000ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric"),
+	// 		Name: to.Ptr("example-fabric"),
+	// 		Status: to.Ptr("Succeeded"),
+	// 		PercentComplete: to.Ptr[float64](97),
+	// 		StartTime: to.Ptr(time.Date(2026, time.January, 20, 9, 23, 44, 156000000, time.UTC)),
+	// 		EndTime: to.Ptr(time.Date(2026, time.January, 20, 9, 23, 44, 156000000, time.UTC)),
+	// 		Operations: []*armmanagednetworkfabric.OperationStatusResult{
+	// 			{
+	// 				ID: to.Ptr("/subscriptions/0000ABCD-0A0B-0000-0000-000000ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric"),
+	// 				ResourceID: to.Ptr("/subscriptions/0000ABCD-0A0B-0000-0000-000000ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric"),
+	// 				Name: to.Ptr("example-fabric"),
+	// 				Status: to.Ptr("Failed"),
+	// 				PercentComplete: to.Ptr[float64](69),
+	// 				StartTime: to.Ptr(time.Date(2025, time.June, 30, 12, 4, 42, 871000000, time.UTC)),
+	// 				EndTime: to.Ptr(time.Date(2025, time.June, 30, 12, 4, 42, 871000000, time.UTC)),
+	// 				Operations: []*armmanagednetworkfabric.OperationStatusResult{
+	// 				},
+	// 				Error: &armmanagednetworkfabric.ErrorDetail{
+	// 					Code: to.Ptr("400"),
+	// 					Message: to.Ptr("Invalid request"),
+	// 					Target: to.Ptr("example-target"),
+	// 					Details: []*armmanagednetworkfabric.ErrorDetail{
+	// 					},
+	// 					AdditionalInfo: []*armmanagednetworkfabric.ErrorAdditionalInfo{
+	// 						{
+	// 							Type: to.Ptr("example-type"),
+	// 							Info: map[string]any{
+	// 							},
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 		},
+	// 		ResourceID: to.Ptr("/subscriptions/0000ABCD-0A0B-0000-0000-000000ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric"),
+	// 		Properties: &armmanagednetworkfabric.ValidateConfigurationResponseProperties{
+	// 			ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
+	// 			URL: to.Ptr("https://ActionDetails"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-01-15-preview/NetworkFabrics_ViewDeviceConfiguration.json
+func ExampleNetworkFabricsClient_BeginViewDeviceConfiguration() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmanagednetworkfabric.NewClientFactory("0000ABCD-0A0B-0000-0000-000000ABCDEF", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewNetworkFabricsClient().BeginViewDeviceConfiguration(ctx, "example-rg", "example-fabric", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armmanagednetworkfabric.NetworkFabricsClientViewDeviceConfigurationResponse{
+	// 	ViewDeviceConfigurationOperationResponse: armmanagednetworkfabric.ViewDeviceConfigurationOperationResponse{
+	// 		Status: to.Ptr("Failed"),
+	// 		Error: &armmanagednetworkfabric.ErrorDetail{
+	// 			Code: to.Ptr(""),
+	// 			Message: to.Ptr(""),
+	// 			Target: to.Ptr(""),
+	// 			Details: []*armmanagednetworkfabric.ErrorDetail{
+	// 			},
+	// 			AdditionalInfo: []*armmanagednetworkfabric.ErrorAdditionalInfo{
+	// 				{
+	// 					Type: to.Ptr(""),
+	// 					Info: map[string]any{
+	// 					},
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-01-15-preview/NetworkFabrics_Get.json
 func ExampleNetworkFabricsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -647,6 +2322,7 @@ func ExampleNetworkFabricsClient_Get() {
 	// 			IPv4Prefix: to.Ptr("10.18.0.0/19"),
 	// 			IPv6Prefix: to.Ptr("3FFE:FFFF:0:CD40::/59"),
 	// 			FabricASN: to.Ptr[int64](29249),
+	// 			NetworkBootstrapDeviceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkBootstrapDevices/example-bootstrapDevice"),
 	// 			TerminalServerConfiguration: &armmanagednetworkfabric.TerminalServerConfiguration{
 	// 				Username: to.Ptr("username"),
 	// 				SerialNumber: to.Ptr("123456"),
@@ -798,6 +2474,17 @@ func ExampleNetworkFabricsClient_Get() {
 	// 			ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
 	// 			ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateAccepted),
 	// 			AdministrativeState: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnabled),
+	// 			UpgradeProfile: []*armmanagednetworkfabric.UpgradeProfileProperties{
+	// 				{
+	// 					PreUpgradeProfile: &armmanagednetworkfabric.PreUpgradeProfileProperties{
+	// 						MaxEnteringMaintenanceTimeoutInSeconds: to.Ptr[int32](300),
+	// 					},
+	// 					PostUpgradeProfile: &armmanagednetworkfabric.PostUpgradeProfileProperties{
+	// 						MaxExitingMaintenanceTimeoutInSeconds: to.Ptr[int32](3000),
+	// 						MlagReloadDelayTimeoutInSeconds: to.Ptr[int32](900),
+	// 					},
+	// 				},
+	// 			},
 	// 		},
 	// 		Identity: &armmanagednetworkfabric.ManagedServiceIdentity{
 	// 			PrincipalID: to.Ptr("0000ABCD-0A0B-0000-0000-000000ABCDEF"),
@@ -829,53 +2516,7 @@ func ExampleNetworkFabricsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/NetworkFabrics_GetTopology.json
-func ExampleNetworkFabricsClient_BeginGetTopology() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmanagednetworkfabric.NewClientFactory("0000ABCD-0A0B-0000-0000-000000ABCDEF", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewNetworkFabricsClient().BeginGetTopology(ctx, "example-rg", "example-fabric", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armmanagednetworkfabric.NetworkFabricsClientGetTopologyResponse{
-	// 	GetTopologyResponse: armmanagednetworkfabric.GetTopologyResponse{
-	// 		Status: to.Ptr("Failed"),
-	// 		Error: &armmanagednetworkfabric.ErrorDetail{
-	// 			Code: to.Ptr(""),
-	// 			Message: to.Ptr(""),
-	// 			Target: to.Ptr(""),
-	// 			Details: []*armmanagednetworkfabric.ErrorDetail{
-	// 			},
-	// 			AdditionalInfo: []*armmanagednetworkfabric.ErrorAdditionalInfo{
-	// 				{
-	// 					Type: to.Ptr(""),
-	// 					Info: map[string]any{
-	// 					},
-	// 				},
-	// 			},
-	// 		},
-	// 		Properties: &armmanagednetworkfabric.GetTopologyResponseProperties{
-	// 			URL: to.Ptr("https://ActionDetails"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-07-15/NetworkFabrics_ListByResourceGroup.json
+// Generated from example definition: 2026-01-15-preview/NetworkFabrics_ListByResourceGroup.json
 func ExampleNetworkFabricsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -928,6 +2569,7 @@ func ExampleNetworkFabricsClient_NewListByResourceGroupPager() {
 		// 					IPv4Prefix: to.Ptr("10.18.0.0/19"),
 		// 					IPv6Prefix: to.Ptr("3FFE:FFFF:0:CD40::/59"),
 		// 					FabricASN: to.Ptr[int64](29249),
+		// 					NetworkBootstrapDeviceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkBootstrapDevices/example-bootstrapDevice"),
 		// 					TerminalServerConfiguration: &armmanagednetworkfabric.TerminalServerConfiguration{
 		// 						Username: to.Ptr("username"),
 		// 						SerialNumber: to.Ptr("123456"),
@@ -1063,6 +2705,18 @@ func ExampleNetworkFabricsClient_NewListByResourceGroupPager() {
 		// 					ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
 		// 					ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateAccepted),
 		// 					AdministrativeState: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnabled),
+		// 					OperationalState: to.Ptr(armmanagednetworkfabric.OperationalStateUp),
+		// 					UpgradeProfile: []*armmanagednetworkfabric.UpgradeProfileProperties{
+		// 						{
+		// 							PreUpgradeProfile: &armmanagednetworkfabric.PreUpgradeProfileProperties{
+		// 								MaxEnteringMaintenanceTimeoutInSeconds: to.Ptr[int32](300),
+		// 							},
+		// 							PostUpgradeProfile: &armmanagednetworkfabric.PostUpgradeProfileProperties{
+		// 								MaxExitingMaintenanceTimeoutInSeconds: to.Ptr[int32](3000),
+		// 								MlagReloadDelayTimeoutInSeconds: to.Ptr[int32](900),
+		// 							},
+		// 						},
+		// 					},
 		// 				},
 		// 				Identity: &armmanagednetworkfabric.ManagedServiceIdentity{
 		// 					PrincipalID: to.Ptr("0000ABCD-0A0B-0000-0000-000000ABCDEF"),
@@ -1098,7 +2752,7 @@ func ExampleNetworkFabricsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-15/NetworkFabrics_ListBySubscription.json
+// Generated from example definition: 2026-01-15-preview/NetworkFabrics_ListBySubscription.json
 func ExampleNetworkFabricsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1151,6 +2805,7 @@ func ExampleNetworkFabricsClient_NewListBySubscriptionPager() {
 		// 					IPv4Prefix: to.Ptr("10.18.0.0/19"),
 		// 					IPv6Prefix: to.Ptr("3FFE:FFFF:0:CD40::/59"),
 		// 					FabricASN: to.Ptr[int64](29249),
+		// 					NetworkBootstrapDeviceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkBootstrapDevices/example-bootstrapDevice"),
 		// 					TerminalServerConfiguration: &armmanagednetworkfabric.TerminalServerConfiguration{
 		// 						Username: to.Ptr("username"),
 		// 						SerialNumber: to.Ptr("123456"),
@@ -1286,6 +2941,18 @@ func ExampleNetworkFabricsClient_NewListBySubscriptionPager() {
 		// 					ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
 		// 					ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateAccepted),
 		// 					AdministrativeState: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnabled),
+		// 					OperationalState: to.Ptr(armmanagednetworkfabric.OperationalStateUp),
+		// 					UpgradeProfile: []*armmanagednetworkfabric.UpgradeProfileProperties{
+		// 						{
+		// 							PreUpgradeProfile: &armmanagednetworkfabric.PreUpgradeProfileProperties{
+		// 								MaxEnteringMaintenanceTimeoutInSeconds: to.Ptr[int32](300),
+		// 							},
+		// 							PostUpgradeProfile: &armmanagednetworkfabric.PostUpgradeProfileProperties{
+		// 								MaxExitingMaintenanceTimeoutInSeconds: to.Ptr[int32](3000),
+		// 								MlagReloadDelayTimeoutInSeconds: to.Ptr[int32](900),
+		// 							},
+		// 						},
+		// 					},
 		// 				},
 		// 				Identity: &armmanagednetworkfabric.ManagedServiceIdentity{
 		// 					PrincipalID: to.Ptr("0000ABCD-0A0B-0000-0000-000000ABCDEF"),
@@ -1319,1436 +2986,4 @@ func ExampleNetworkFabricsClient_NewListBySubscriptionPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2025-07-15/NetworkFabrics_LockFabric.json
-func ExampleNetworkFabricsClient_BeginLockFabric() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmanagednetworkfabric.NewClientFactory("0000ABCD-0A0B-0000-0000-000000ABCDEF", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewNetworkFabricsClient().BeginLockFabric(ctx, "example-rg", "example-networkFabric", armmanagednetworkfabric.NetworkFabricLockRequest{
-		LockType: to.Ptr(armmanagednetworkfabric.NetworkFabricLockTypeAdministrative),
-		Action:   to.Ptr(armmanagednetworkfabric.NetworkFabricLockActionLock),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armmanagednetworkfabric.NetworkFabricsClientLockFabricResponse{
-	// 	OperationStatusResult: armmanagednetworkfabric.OperationStatusResult{
-	// 		Status: to.Ptr("Failed"),
-	// 		Error: &armmanagednetworkfabric.ErrorDetail{
-	// 			Code: to.Ptr(""),
-	// 			Message: to.Ptr(""),
-	// 			Target: to.Ptr(""),
-	// 			Details: []*armmanagednetworkfabric.ErrorDetail{
-	// 			},
-	// 			AdditionalInfo: []*armmanagednetworkfabric.ErrorAdditionalInfo{
-	// 				{
-	// 					Type: to.Ptr(""),
-	// 					Info: map[string]any{
-	// 					},
-	// 				},
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-07-15/NetworkFabrics_Provision.json
-func ExampleNetworkFabricsClient_BeginProvision() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmanagednetworkfabric.NewClientFactory("0000ABCD-0A0B-0000-0000-000000ABCDEF", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewNetworkFabricsClient().BeginProvision(ctx, "example-rg", "example-fabric", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armmanagednetworkfabric.NetworkFabricsClientProvisionResponse{
-	// 	OperationStatusResult: armmanagednetworkfabric.OperationStatusResult{
-	// 		Status: to.Ptr("Failed"),
-	// 		Error: &armmanagednetworkfabric.ErrorDetail{
-	// 			Code: to.Ptr(""),
-	// 			Message: to.Ptr(""),
-	// 			Target: to.Ptr(""),
-	// 			Details: []*armmanagednetworkfabric.ErrorDetail{
-	// 			},
-	// 			AdditionalInfo: []*armmanagednetworkfabric.ErrorAdditionalInfo{
-	// 				{
-	// 					Type: to.Ptr(""),
-	// 					Info: map[string]any{
-	// 					},
-	// 				},
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-07-15/NetworkFabrics_RefreshConfiguration.json
-func ExampleNetworkFabricsClient_BeginRefreshConfiguration() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmanagednetworkfabric.NewClientFactory("0000ABCD-0A0B-0000-0000-000000ABCDEF", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewNetworkFabricsClient().BeginRefreshConfiguration(ctx, "example-rg", "example-fabric", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armmanagednetworkfabric.NetworkFabricsClientRefreshConfigurationResponse{
-	// 	OperationStatusResult: armmanagednetworkfabric.OperationStatusResult{
-	// 		Status: to.Ptr("Failed"),
-	// 		Error: &armmanagednetworkfabric.ErrorDetail{
-	// 			Code: to.Ptr(""),
-	// 			Message: to.Ptr(""),
-	// 			Target: to.Ptr(""),
-	// 			Details: []*armmanagednetworkfabric.ErrorDetail{
-	// 			},
-	// 			AdditionalInfo: []*armmanagednetworkfabric.ErrorAdditionalInfo{
-	// 				{
-	// 					Type: to.Ptr(""),
-	// 					Info: map[string]any{
-	// 					},
-	// 				},
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-07-15/NetworkFabrics_ResyncCertificates.json
-func ExampleNetworkFabricsClient_BeginResyncCertificates_successfulCertificateResyncForAllNetworkDevices() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmanagednetworkfabric.NewClientFactory("1234ABCD-0A1B-1234-5678-123456ABCDEF", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewNetworkFabricsClient().BeginResyncCertificates(ctx, "example-rg", "example-fabric", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armmanagednetworkfabric.NetworkFabricsClientResyncCertificatesResponse{
-	// 	NetworkFabricResyncCertificatesResponse: armmanagednetworkfabric.NetworkFabricResyncCertificatesResponse{
-	// 		ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/providers/Microsoft.ManagedNetworkFabric/locations/UKSOUTH/operationStatuses/b7c3d8f2-56e4-4a9b-8c7d-123456789ABC*1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF"),
-	// 		ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric"),
-	// 		StartTime: to.Ptr(time.Date(2025, time.September, 25, 8, 6, 0, 912000000, time.UTC)),
-	// 		EndTime: to.Ptr(time.Date(2025, time.September, 25, 9, 10, 0, 912000000, time.UTC)),
-	// 		Status: to.Ptr("Succeeded"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-07-15/NetworkFabrics_ResyncCertificates_Error.json
-func ExampleNetworkFabricsClient_BeginResyncCertificates_totalFailureToResyncCertificates() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmanagednetworkfabric.NewClientFactory("1234ABCD-0A1B-1234-5678-123456ABCDEF", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewNetworkFabricsClient().BeginResyncCertificates(ctx, "example-rg", "example-fabric", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armmanagednetworkfabric.NetworkFabricsClientResyncCertificatesResponse{
-	// 	NetworkFabricResyncCertificatesResponse: armmanagednetworkfabric.NetworkFabricResyncCertificatesResponse{
-	// 		ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/providers/Microsoft.ManagedNetworkFabric/locations/UKSOUTH/operationStatuses/b7c3d8f2-56e4-4a9b-8c7d-123456789ABC*1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF"),
-	// 		ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric"),
-	// 		StartTime: to.Ptr(time.Date(2025, time.September, 25, 8, 6, 0, 912000000, time.UTC)),
-	// 		EndTime: to.Ptr(time.Date(2025, time.September, 25, 9, 10, 0, 743000000, time.UTC)),
-	// 		Status: to.Ptr("Failed"),
-	// 		Error: &armmanagednetworkfabric.ErrorDetail{
-	// 			Code: to.Ptr("RotationFailed"),
-	// 			Message: to.Ptr("Rotation failed for all devices. Please address any issues and perform resync operations for the affected devices."),
-	// 			Details: []*armmanagednetworkfabric.ErrorDetail{
-	// 				{
-	// 					Code: to.Ptr("CouldNotConnect"),
-	// 					Message: to.Ptr("Could not connect to the device to configure new certificates."),
-	// 					Target: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device-1"),
-	// 				},
-	// 				{
-	// 					Code: to.Ptr("CouldNotConnect"),
-	// 					Message: to.Ptr("Could not connect to the device to configure new certificates."),
-	// 					Target: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device-2"),
-	// 				},
-	// 				{
-	// 					Code: to.Ptr("CouldNotConnect"),
-	// 					Message: to.Ptr("Could not connect to the device to configure new certificates."),
-	// 					Target: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device-3"),
-	// 				},
-	// 				{
-	// 					Code: to.Ptr("CouldNotConnect"),
-	// 					Message: to.Ptr("Could not connect to the device to configure new certificates."),
-	// 					Target: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device-4"),
-	// 				},
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-07-15/NetworkFabrics_ResyncCertificates_PartialSuccess.json
-func ExampleNetworkFabricsClient_BeginResyncCertificates_partialFailureToResyncCertificatesForSomeDevices() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmanagednetworkfabric.NewClientFactory("1234ABCD-0A1B-1234-5678-123456ABCDEF", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewNetworkFabricsClient().BeginResyncCertificates(ctx, "example-rg", "example-fabric", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armmanagednetworkfabric.NetworkFabricsClientResyncCertificatesResponse{
-	// 	NetworkFabricResyncCertificatesResponse: armmanagednetworkfabric.NetworkFabricResyncCertificatesResponse{
-	// 		ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/providers/Microsoft.ManagedNetworkFabric/locations/UKSOUTH/operationStatuses/b7c3d8f2-56e4-4a9b-8c7d-123456789ABC*1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF"),
-	// 		ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric"),
-	// 		StartTime: to.Ptr(time.Date(2025, time.September, 25, 8, 6, 0, 912000000, time.UTC)),
-	// 		EndTime: to.Ptr(time.Date(2025, time.September, 25, 9, 10, 0, 743000000, time.UTC)),
-	// 		Status: to.Ptr("Failed"),
-	// 		Error: &armmanagednetworkfabric.ErrorDetail{
-	// 			Code: to.Ptr("PartialSuccess"),
-	// 			Message: to.Ptr("Resync succeeded for only some devices. Please address any issues and perform resync operations for the affected devices."),
-	// 			Details: []*armmanagednetworkfabric.ErrorDetail{
-	// 				{
-	// 					Code: to.Ptr("CouldNotConnect"),
-	// 					Message: to.Ptr("Could not connect to the device to configure new certificates."),
-	// 					Target: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device-3"),
-	// 				},
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-07-15/NetworkFabrics_ResyncPasswords.json
-func ExampleNetworkFabricsClient_BeginResyncPasswords_successfulPasswordResyncForTheTerminalServerAndAllNetworkDevices() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmanagednetworkfabric.NewClientFactory("1234ABCD-0A1B-1234-5678-123456ABCDEF", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewNetworkFabricsClient().BeginResyncPasswords(ctx, "example-rg", "example-fabric", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armmanagednetworkfabric.NetworkFabricsClientResyncPasswordsResponse{
-	// 	NetworkFabricResyncPasswordsResponse: armmanagednetworkfabric.NetworkFabricResyncPasswordsResponse{
-	// 		ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/providers/Microsoft.ManagedNetworkFabric/locations/UKSOUTH/operationStatuses/b7c3d8f2-56e4-4a9b-8c7d-123456789ABC*1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF"),
-	// 		ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric"),
-	// 		StartTime: to.Ptr(time.Date(2025, time.September, 25, 8, 6, 0, 912000000, time.UTC)),
-	// 		EndTime: to.Ptr(time.Date(2025, time.September, 25, 9, 10, 0, 912000000, time.UTC)),
-	// 		Status: to.Ptr("Succeeded"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-07-15/NetworkFabrics_ResyncPasswords_Error.json
-func ExampleNetworkFabricsClient_BeginResyncPasswords_totalFailureToResyncPasswords() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmanagednetworkfabric.NewClientFactory("1234ABCD-0A1B-1234-5678-123456ABCDEF", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewNetworkFabricsClient().BeginResyncPasswords(ctx, "example-rg", "example-fabric", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armmanagednetworkfabric.NetworkFabricsClientResyncPasswordsResponse{
-	// 	NetworkFabricResyncPasswordsResponse: armmanagednetworkfabric.NetworkFabricResyncPasswordsResponse{
-	// 		ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/providers/Microsoft.ManagedNetworkFabric/locations/UKSOUTH/operationStatuses/b7c3d8f2-56e4-4a9b-8c7d-123456789ABC*1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF"),
-	// 		ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric"),
-	// 		StartTime: to.Ptr(time.Date(2025, time.September, 25, 8, 6, 0, 912000000, time.UTC)),
-	// 		EndTime: to.Ptr(time.Date(2025, time.September, 25, 9, 10, 0, 743000000, time.UTC)),
-	// 		Status: to.Ptr("Failed"),
-	// 		Error: &armmanagednetworkfabric.ErrorDetail{
-	// 			Code: to.Ptr("ResyncFailed"),
-	// 			Message: to.Ptr("Resync failed for all devices. Please address any issues and perform resync operations for the affected devices."),
-	// 			Details: []*armmanagednetworkfabric.ErrorDetail{
-	// 				{
-	// 					Code: to.Ptr("CouldNotConnect"),
-	// 					Message: to.Ptr("Could not connect to the Terminal Server to configure new passwords."),
-	// 					Target: to.Ptr("TerminalServer"),
-	// 				},
-	// 				{
-	// 					Code: to.Ptr("CouldNotConnect"),
-	// 					Message: to.Ptr("Could not connect to the device to configure new passwords."),
-	// 					Target: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device-1"),
-	// 				},
-	// 				{
-	// 					Code: to.Ptr("CouldNotConnect"),
-	// 					Message: to.Ptr("Could not connect to the device to configure new passwords."),
-	// 					Target: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device-2"),
-	// 				},
-	// 				{
-	// 					Code: to.Ptr("CouldNotConnect"),
-	// 					Message: to.Ptr("Could not connect to the device to configure new passwords."),
-	// 					Target: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device-3"),
-	// 				},
-	// 				{
-	// 					Code: to.Ptr("CouldNotConnect"),
-	// 					Message: to.Ptr("Could not connect to the device to configure new passwords."),
-	// 					Target: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device-4"),
-	// 				},
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-07-15/NetworkFabrics_ResyncPasswords_PartialSuccess.json
-func ExampleNetworkFabricsClient_BeginResyncPasswords_partialFailureToResyncPasswordsForSomeDevices() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmanagednetworkfabric.NewClientFactory("1234ABCD-0A1B-1234-5678-123456ABCDEF", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewNetworkFabricsClient().BeginResyncPasswords(ctx, "example-rg", "example-fabric", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armmanagednetworkfabric.NetworkFabricsClientResyncPasswordsResponse{
-	// 	NetworkFabricResyncPasswordsResponse: armmanagednetworkfabric.NetworkFabricResyncPasswordsResponse{
-	// 		ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/providers/Microsoft.ManagedNetworkFabric/locations/UKSOUTH/operationStatuses/b7c3d8f2-56e4-4a9b-8c7d-123456789ABC*1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF"),
-	// 		ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric"),
-	// 		StartTime: to.Ptr(time.Date(2025, time.September, 25, 8, 6, 0, 912000000, time.UTC)),
-	// 		EndTime: to.Ptr(time.Date(2025, time.September, 25, 9, 10, 0, 743000000, time.UTC)),
-	// 		Status: to.Ptr("Failed"),
-	// 		Error: &armmanagednetworkfabric.ErrorDetail{
-	// 			Code: to.Ptr("PartialSuccess"),
-	// 			Message: to.Ptr("Resync succeeded for only some devices. Please address any issues and perform resync operations for the affected devices."),
-	// 			Details: []*armmanagednetworkfabric.ErrorDetail{
-	// 				{
-	// 					Code: to.Ptr("CouldNotConnect"),
-	// 					Message: to.Ptr("Could not connect to the Terminal Server to configure new passwords."),
-	// 					Target: to.Ptr("TerminalServer"),
-	// 				},
-	// 				{
-	// 					Code: to.Ptr("CouldNotConnect"),
-	// 					Message: to.Ptr("Could not connect to the device to configure new passwords."),
-	// 					Target: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device-3"),
-	// 				},
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-07-15/NetworkFabrics_RotateCertificates.json
-func ExampleNetworkFabricsClient_BeginRotateCertificates_successfulCertificateRotationForAllNetworkDevices() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmanagednetworkfabric.NewClientFactory("1234ABCD-0A1B-1234-5678-123456ABCDEF", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewNetworkFabricsClient().BeginRotateCertificates(ctx, "example-rg", "example-fabric", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armmanagednetworkfabric.NetworkFabricsClientRotateCertificatesResponse{
-	// 	NetworkFabricRotateCertificatesResponse: armmanagednetworkfabric.NetworkFabricRotateCertificatesResponse{
-	// 		ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/providers/Microsoft.ManagedNetworkFabric/locations/UKSOUTH/operationStatuses/b7c3d8f2-56e4-4a9b-8c7d-123456789ABC*1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF"),
-	// 		ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric"),
-	// 		StartTime: to.Ptr(time.Date(2025, time.September, 25, 8, 6, 0, 912000000, time.UTC)),
-	// 		EndTime: to.Ptr(time.Date(2025, time.September, 25, 9, 10, 0, 912000000, time.UTC)),
-	// 		Status: to.Ptr("Succeeded"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-07-15/NetworkFabrics_RotateCertificates_Error.json
-func ExampleNetworkFabricsClient_BeginRotateCertificates_totalFailureToRotateCertificates() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmanagednetworkfabric.NewClientFactory("1234ABCD-0A1B-1234-5678-123456ABCDEF", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewNetworkFabricsClient().BeginRotateCertificates(ctx, "example-rg", "example-fabric", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armmanagednetworkfabric.NetworkFabricsClientRotateCertificatesResponse{
-	// 	NetworkFabricRotateCertificatesResponse: armmanagednetworkfabric.NetworkFabricRotateCertificatesResponse{
-	// 		ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/providers/Microsoft.ManagedNetworkFabric/locations/UKSOUTH/operationStatuses/b7c3d8f2-56e4-4a9b-8c7d-123456789ABC*1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF"),
-	// 		ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric"),
-	// 		StartTime: to.Ptr(time.Date(2025, time.September, 25, 8, 6, 0, 912000000, time.UTC)),
-	// 		EndTime: to.Ptr(time.Date(2025, time.September, 25, 9, 10, 0, 743000000, time.UTC)),
-	// 		Status: to.Ptr("Failed"),
-	// 		Error: &armmanagednetworkfabric.ErrorDetail{
-	// 			Code: to.Ptr("RotationFailed"),
-	// 			Message: to.Ptr("Rotation failed for all devices. Please address any issues and perform resync operations for the affected devices."),
-	// 		},
-	// 		Operations: []*armmanagednetworkfabric.OperationStatusResult{
-	// 			{
-	// 				ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device-1"),
-	// 				Status: to.Ptr("Failed"),
-	// 				Error: &armmanagednetworkfabric.ErrorDetail{
-	// 					Code: to.Ptr("CouldNotConnect"),
-	// 					Message: to.Ptr("Could not connect to the Network Device to configure new certificates."),
-	// 				},
-	// 			},
-	// 			{
-	// 				ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device-2"),
-	// 				Status: to.Ptr("Failed"),
-	// 				Error: &armmanagednetworkfabric.ErrorDetail{
-	// 					Code: to.Ptr("CouldNotConnect"),
-	// 					Message: to.Ptr("Could not connect to the Network Device to configure new certificates."),
-	// 				},
-	// 			},
-	// 			{
-	// 				ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device-3"),
-	// 				Status: to.Ptr("Failed"),
-	// 				Error: &armmanagednetworkfabric.ErrorDetail{
-	// 					Code: to.Ptr("CouldNotConnect"),
-	// 					Message: to.Ptr("Could not connect to the Network Device to configure new certificates."),
-	// 				},
-	// 			},
-	// 			{
-	// 				ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device-4"),
-	// 				Status: to.Ptr("Failed"),
-	// 				Error: &armmanagednetworkfabric.ErrorDetail{
-	// 					Code: to.Ptr("CouldNotConnect"),
-	// 					Message: to.Ptr("Could not connect to the Network Device to configure new certificates."),
-	// 				},
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-07-15/NetworkFabrics_RotateCertificates_PartialSuccess.json
-func ExampleNetworkFabricsClient_BeginRotateCertificates_partialFailureToRotateCertificatesForSomeDevices() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmanagednetworkfabric.NewClientFactory("1234ABCD-0A1B-1234-5678-123456ABCDEF", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewNetworkFabricsClient().BeginRotateCertificates(ctx, "example-rg", "example-fabric", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armmanagednetworkfabric.NetworkFabricsClientRotateCertificatesResponse{
-	// 	NetworkFabricRotateCertificatesResponse: armmanagednetworkfabric.NetworkFabricRotateCertificatesResponse{
-	// 		ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/providers/Microsoft.ManagedNetworkFabric/locations/UKSOUTH/operationStatuses/b7c3d8f2-56e4-4a9b-8c7d-123456789ABC*1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF"),
-	// 		ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric"),
-	// 		StartTime: to.Ptr(time.Date(2025, time.September, 25, 8, 6, 0, 912000000, time.UTC)),
-	// 		EndTime: to.Ptr(time.Date(2025, time.September, 25, 9, 10, 0, 743000000, time.UTC)),
-	// 		Status: to.Ptr("Failed"),
-	// 		Error: &armmanagednetworkfabric.ErrorDetail{
-	// 			Code: to.Ptr("PartialSuccess"),
-	// 			Message: to.Ptr("Rotation succeeded for only some devices. Please address any issues and perform resync operations for the affected devices."),
-	// 		},
-	// 		Operations: []*armmanagednetworkfabric.OperationStatusResult{
-	// 			{
-	// 				ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device-1"),
-	// 				Status: to.Ptr("Succeeded"),
-	// 			},
-	// 			{
-	// 				ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device-2"),
-	// 				Status: to.Ptr("Succeeded"),
-	// 			},
-	// 			{
-	// 				ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device-3"),
-	// 				Status: to.Ptr("Failed"),
-	// 				Error: &armmanagednetworkfabric.ErrorDetail{
-	// 					Code: to.Ptr("DeviceDisabled"),
-	// 					Message: to.Ptr("The Network Device is in disabled administrative state. Please perform a resync operation once it is enabled."),
-	// 				},
-	// 			},
-	// 			{
-	// 				ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device-4"),
-	// 				Status: to.Ptr("Succeeded"),
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-07-15/NetworkFabrics_RotatePasswords.json
-func ExampleNetworkFabricsClient_BeginRotatePasswords_successfulPasswordRotationForTheTerminalServerAndAllNetworkDevices() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmanagednetworkfabric.NewClientFactory("1234ABCD-0A1B-1234-5678-123456ABCDEF", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewNetworkFabricsClient().BeginRotatePasswords(ctx, "example-rg", "example-fabric", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armmanagednetworkfabric.NetworkFabricsClientRotatePasswordsResponse{
-	// 	NetworkFabricRotatePasswordsResponse: armmanagednetworkfabric.NetworkFabricRotatePasswordsResponse{
-	// 		ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/providers/Microsoft.ManagedNetworkFabric/locations/UKSOUTH/operationStatuses/b7c3d8f2-56e4-4a9b-8c7d-123456789ABC*1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF"),
-	// 		ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric"),
-	// 		StartTime: to.Ptr(time.Date(2025, time.September, 25, 8, 6, 0, 912000000, time.UTC)),
-	// 		EndTime: to.Ptr(time.Date(2025, time.September, 25, 9, 10, 0, 912000000, time.UTC)),
-	// 		Status: to.Ptr("Succeeded"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-07-15/NetworkFabrics_RotatePasswords_Error.json
-func ExampleNetworkFabricsClient_BeginRotatePasswords_totalFailureToRotatePasswords() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmanagednetworkfabric.NewClientFactory("1234ABCD-0A1B-1234-5678-123456ABCDEF", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewNetworkFabricsClient().BeginRotatePasswords(ctx, "example-rg", "example-fabric", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armmanagednetworkfabric.NetworkFabricsClientRotatePasswordsResponse{
-	// 	NetworkFabricRotatePasswordsResponse: armmanagednetworkfabric.NetworkFabricRotatePasswordsResponse{
-	// 		ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/providers/Microsoft.ManagedNetworkFabric/locations/UKSOUTH/operationStatuses/b7c3d8f2-56e4-4a9b-8c7d-123456789ABC*1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF"),
-	// 		ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric"),
-	// 		StartTime: to.Ptr(time.Date(2025, time.September, 25, 8, 6, 0, 912000000, time.UTC)),
-	// 		EndTime: to.Ptr(time.Date(2025, time.September, 25, 9, 10, 0, 743000000, time.UTC)),
-	// 		Status: to.Ptr("Failed"),
-	// 		Error: &armmanagednetworkfabric.ErrorDetail{
-	// 			Code: to.Ptr("RotationFailed"),
-	// 			Message: to.Ptr("Rotation failed for all devices. Please address any issues and perform resync operations for the affected devices."),
-	// 			Details: []*armmanagednetworkfabric.ErrorDetail{
-	// 				{
-	// 					Code: to.Ptr("CouldNotConnect"),
-	// 					Message: to.Ptr("Could not connect to the Terminal Server to configure new passwords."),
-	// 					Target: to.Ptr("TerminalServer"),
-	// 				},
-	// 				{
-	// 					Code: to.Ptr("CouldNotConnect"),
-	// 					Message: to.Ptr("Could not connect to the device to configure new passwords."),
-	// 					Target: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device-1"),
-	// 				},
-	// 				{
-	// 					Code: to.Ptr("CouldNotConnect"),
-	// 					Message: to.Ptr("Could not connect to the device to configure new passwords."),
-	// 					Target: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device-2"),
-	// 				},
-	// 				{
-	// 					Code: to.Ptr("CouldNotConnect"),
-	// 					Message: to.Ptr("Could not connect to the device to configure new passwords."),
-	// 					Target: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device-3"),
-	// 				},
-	// 				{
-	// 					Code: to.Ptr("CouldNotConnect"),
-	// 					Message: to.Ptr("Could not connect to the device to configure new passwords."),
-	// 					Target: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device-4"),
-	// 				},
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-07-15/NetworkFabrics_RotatePasswords_PartialSuccess.json
-func ExampleNetworkFabricsClient_BeginRotatePasswords_partialFailureToRotatePasswordsForSomeDevices() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmanagednetworkfabric.NewClientFactory("1234ABCD-0A1B-1234-5678-123456ABCDEF", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewNetworkFabricsClient().BeginRotatePasswords(ctx, "example-rg", "example-fabric", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armmanagednetworkfabric.NetworkFabricsClientRotatePasswordsResponse{
-	// 	NetworkFabricRotatePasswordsResponse: armmanagednetworkfabric.NetworkFabricRotatePasswordsResponse{
-	// 		ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/providers/Microsoft.ManagedNetworkFabric/locations/UKSOUTH/operationStatuses/b7c3d8f2-56e4-4a9b-8c7d-123456789ABC*1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF"),
-	// 		ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric"),
-	// 		StartTime: to.Ptr(time.Date(2025, time.September, 25, 8, 6, 0, 912000000, time.UTC)),
-	// 		EndTime: to.Ptr(time.Date(2025, time.September, 25, 9, 10, 0, 743000000, time.UTC)),
-	// 		Status: to.Ptr("Failed"),
-	// 		Error: &armmanagednetworkfabric.ErrorDetail{
-	// 			Code: to.Ptr("PartialSuccess"),
-	// 			Message: to.Ptr("Rotation succeeded for only some devices. Please address any issues and perform resync operations for the affected devices."),
-	// 			Details: []*armmanagednetworkfabric.ErrorDetail{
-	// 				{
-	// 					Code: to.Ptr("CouldNotConnect"),
-	// 					Message: to.Ptr("Could not connect to the Terminal Server to configure new passwords."),
-	// 					Target: to.Ptr("TerminalServer"),
-	// 				},
-	// 				{
-	// 					Code: to.Ptr("CouldNotConnect"),
-	// 					Message: to.Ptr("Could not connect to the device to configure new passwords."),
-	// 					Target: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device-3"),
-	// 				},
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-07-15/NetworkFabrics_Update.json
-func ExampleNetworkFabricsClient_BeginUpdate_networkFabricsUpdateMaximumSetGen() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmanagednetworkfabric.NewClientFactory("0000ABCD-0A0B-0000-0000-000000ABCDEF", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewNetworkFabricsClient().BeginUpdate(ctx, "example-rg", "example-fabric", armmanagednetworkfabric.NetworkFabricPatch{
-		Tags: map[string]*string{
-			"keyId": to.Ptr("keyValue"),
-		},
-		Identity: &armmanagednetworkfabric.ManagedServiceIdentityPatch{
-			Type: to.Ptr(armmanagednetworkfabric.ManagedServiceIdentityTypeNone),
-			UserAssignedIdentities: map[string]*armmanagednetworkfabric.UserAssignedIdentity{
-				"key872": {},
-			},
-		},
-		Properties: &armmanagednetworkfabric.NetworkFabricPatchProperties{
-			Annotation:         to.Ptr("annotation1"),
-			RackCount:          to.Ptr[int32](6),
-			ServerCountPerRack: to.Ptr[int32](10),
-			IPv4Prefix:         to.Ptr("10.18.0.0/17"),
-			IPv6Prefix:         to.Ptr("3FFE:FFFF:0:CD40::/60"),
-			FabricASN:          to.Ptr[int64](12345),
-			StorageAccountConfiguration: &armmanagednetworkfabric.StorageAccountPatchConfiguration{
-				StorageAccountID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.Storage/storageAccounts/nfStorage"),
-				StorageAccountIdentity: &armmanagednetworkfabric.IdentitySelectorPatch{
-					IdentityType:                   to.Ptr(armmanagednetworkfabric.ManagedServiceIdentitySelectorTypeUserAssignedIdentity),
-					UserAssignedIdentityResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789abc/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/my-id"),
-				},
-			},
-			FeatureFlags: []*armmanagednetworkfabric.FeatureFlagProperties{
-				{
-					FeatureFlagName:  to.Ptr("uniqueRdConfiguration"),
-					FeatureFlagValue: to.Ptr("Enabled"),
-				},
-			},
-			TerminalServerConfiguration: &armmanagednetworkfabric.TerminalServerPatchConfiguration{
-				Username:            to.Ptr("username1"),
-				Password:            to.Ptr("xxxxxxxx"),
-				SerialNumber:        to.Ptr("1234567"),
-				PrimaryIPv4Prefix:   to.Ptr("10.0.0.12/30"),
-				PrimaryIPv6Prefix:   to.Ptr("4FFE:FFFF:0:CD30::a8/127"),
-				SecondaryIPv4Prefix: to.Ptr("40.0.0.14/30"),
-				SecondaryIPv6Prefix: to.Ptr("6FFE:FFFF:0:CD30::ac/127"),
-			},
-			ManagementNetworkConfiguration: &armmanagednetworkfabric.ManagementNetworkPatchConfiguration{
-				InfrastructureVPNConfiguration: &armmanagednetworkfabric.VPNConfigurationPatchableProperties{
-					NetworkToNetworkInterconnectID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric/networkToNetworkInterconnects/example-nni"),
-					PeeringOption:                  to.Ptr(armmanagednetworkfabric.PeeringOptionOptionA),
-					OptionBProperties: &armmanagednetworkfabric.VPNOptionBPatchProperties{
-						ImportRouteTargets: []*string{
-							to.Ptr("65046:10050"),
-						},
-						ExportRouteTargets: []*string{
-							to.Ptr("65046:10050"),
-						},
-						RouteTargets: &armmanagednetworkfabric.RouteTargetPatchInformation{
-							ImportIPv4RouteTargets: []*string{
-								to.Ptr("65046:10050"),
-							},
-							ImportIPv6RouteTargets: []*string{
-								to.Ptr("65046:10050"),
-							},
-							ExportIPv4RouteTargets: []*string{
-								to.Ptr("65046:10050"),
-							},
-							ExportIPv6RouteTargets: []*string{
-								to.Ptr("65046:10050"),
-							},
-						},
-					},
-					OptionAProperties: &armmanagednetworkfabric.VPNOptionAPatchProperties{
-						Mtu:     to.Ptr[int32](1501),
-						VlanID:  to.Ptr[int32](3001),
-						PeerASN: to.Ptr[int64](1235),
-						BfdConfiguration: &armmanagednetworkfabric.BfdPatchConfiguration{
-							IntervalInMilliSeconds: to.Ptr[int32](300),
-							Multiplier:             to.Ptr[int32](10),
-						},
-						PrimaryIPv4Prefix:   to.Ptr("10.0.0.12/30"),
-						PrimaryIPv6Prefix:   to.Ptr("4FFE:FFFF:0:CD30::a8/127"),
-						SecondaryIPv4Prefix: to.Ptr("20.0.0.13/30"),
-						SecondaryIPv6Prefix: to.Ptr("6FFE:FFFF:0:CD30::ac/127"),
-					},
-				},
-				WorkloadVPNConfiguration: &armmanagednetworkfabric.VPNConfigurationPatchableProperties{
-					NetworkToNetworkInterconnectID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric/networkToNetworkInterconnects/example-nni"),
-					PeeringOption:                  to.Ptr(armmanagednetworkfabric.PeeringOptionOptionA),
-					OptionBProperties: &armmanagednetworkfabric.VPNOptionBPatchProperties{
-						ImportRouteTargets: []*string{
-							to.Ptr("65046:10050"),
-						},
-						ExportRouteTargets: []*string{
-							to.Ptr("65046:10050"),
-						},
-						RouteTargets: &armmanagednetworkfabric.RouteTargetPatchInformation{
-							ImportIPv4RouteTargets: []*string{
-								to.Ptr("65046:10050"),
-							},
-							ImportIPv6RouteTargets: []*string{
-								to.Ptr("65046:10050"),
-							},
-							ExportIPv4RouteTargets: []*string{
-								to.Ptr("65046:10050"),
-							},
-							ExportIPv6RouteTargets: []*string{
-								to.Ptr("65046:10050"),
-							},
-						},
-					},
-					OptionAProperties: &armmanagednetworkfabric.VPNOptionAPatchProperties{
-						Mtu:     to.Ptr[int32](1500),
-						VlanID:  to.Ptr[int32](3000),
-						PeerASN: to.Ptr[int64](61234),
-						BfdConfiguration: &armmanagednetworkfabric.BfdPatchConfiguration{
-							IntervalInMilliSeconds: to.Ptr[int32](300),
-							Multiplier:             to.Ptr[int32](10),
-						},
-						PrimaryIPv4Prefix:   to.Ptr("10.0.0.14/30"),
-						PrimaryIPv6Prefix:   to.Ptr("2FFE:FFFF:0:CD30::a7/126"),
-						SecondaryIPv4Prefix: to.Ptr("10.0.0.15/30"),
-						SecondaryIPv6Prefix: to.Ptr("2FFE:FFFF:0:CD30::ac/126"),
-					},
-				},
-			},
-			HardwareAlertThreshold: to.Ptr[int32](43),
-			ControlPlaneACLs: []*string{
-				to.Ptr("/subscriptions/xxxxxx/resourceGroups/resourcegroupname/providers/Microsoft.ManagedNetworkFabric/accessControlLists/example-acl"),
-			},
-			TrustedIPPrefixes: []*string{
-				to.Ptr("/subscriptions/xxxxxx/resourceGroups/resourcegroupname/providers/Microsoft.ManagedNetworkFabric/ipPrefixes/example-prefix"),
-			},
-			UniqueRdConfiguration: &armmanagednetworkfabric.UniqueRouteDistinguisherPatchProperties{
-				UniqueRdConfigurationState:           to.Ptr(armmanagednetworkfabric.UniqueRouteDistinguisherConfigurationStateEnabled),
-				NniDerivedUniqueRdConfigurationState: to.Ptr(armmanagednetworkfabric.NNIDerivedUniqueRouteDistinguisherConfigurationStateEnabled),
-			},
-			QosConfiguration: &armmanagednetworkfabric.QosPatchProperties{
-				QosConfigurationState: to.Ptr(armmanagednetworkfabric.QosConfigurationStateEnabled),
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armmanagednetworkfabric.NetworkFabricsClientUpdateResponse{
-	// 	NetworkFabric: armmanagednetworkfabric.NetworkFabric{
-	// 		Properties: &armmanagednetworkfabric.NetworkFabricProperties{
-	// 			Annotation: to.Ptr("annotation"),
-	// 			NetworkFabricSKU: to.Ptr("M4-A400-A100-C16-aa"),
-	// 			FabricVersion: to.Ptr("version1"),
-	// 			RouterIDs: []*string{
-	// 				to.Ptr("routerId"),
-	// 			},
-	// 			StorageAccountConfiguration: &armmanagednetworkfabric.StorageAccountConfiguration{
-	// 				StorageAccountID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.Storage/storageAccounts/nfStorage"),
-	// 				StorageAccountIdentity: &armmanagednetworkfabric.IdentitySelector{
-	// 					IdentityType: to.Ptr(armmanagednetworkfabric.ManagedServiceIdentitySelectorTypeUserAssignedIdentity),
-	// 					UserAssignedIdentityResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789abc/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/my-id"),
-	// 				},
-	// 			},
-	// 			FabricLocks: []*armmanagednetworkfabric.FabricLockProperties{
-	// 				{
-	// 					LockState: to.Ptr(armmanagednetworkfabric.LockConfigurationStateEnabled),
-	// 					LockType: to.Ptr(armmanagednetworkfabric.NetworkFabricLockTypeConfiguration),
-	// 				},
-	// 			},
-	// 			FeatureFlags: []*armmanagednetworkfabric.FeatureFlagProperties{
-	// 				{
-	// 					FeatureFlagName: to.Ptr("uniqueRdConfiguration"),
-	// 					FeatureFlagValue: to.Ptr("Enabled"),
-	// 				},
-	// 			},
-	// 			NetworkFabricControllerID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabricControllers/example-fabricController"),
-	// 			RackCount: to.Ptr[int32](4),
-	// 			ServerCountPerRack: to.Ptr[int32](8),
-	// 			StorageArrayCount: to.Ptr[int32](1),
-	// 			IPv4Prefix: to.Ptr("10.18.0.0/19"),
-	// 			IPv6Prefix: to.Ptr("3FFE:FFFF:0:CD40::/59"),
-	// 			FabricASN: to.Ptr[int64](29249),
-	// 			TerminalServerConfiguration: &armmanagednetworkfabric.TerminalServerConfiguration{
-	// 				Username: to.Ptr("username"),
-	// 				SerialNumber: to.Ptr("123456"),
-	// 				PrimaryIPv4Prefix: to.Ptr("10.0.0.12/30"),
-	// 				PrimaryIPv6Prefix: to.Ptr("4FFE:FFFF:0:CD30::a8/127"),
-	// 				SecondaryIPv4Prefix: to.Ptr("40.0.0.14/30"),
-	// 				SecondaryIPv6Prefix: to.Ptr("6FFE:FFFF:0:CD30::ac/127"),
-	// 				NetworkDeviceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-networkDevice"),
-	// 			},
-	// 			ManagementNetworkConfiguration: &armmanagednetworkfabric.ManagementNetworkConfigurationProperties{
-	// 				InfrastructureVPNConfiguration: &armmanagednetworkfabric.VPNConfigurationProperties{
-	// 					NetworkToNetworkInterconnectID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric/networkToNetworkInterconnects/example-nni"),
-	// 					AdministrativeState: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnabled),
-	// 					PeeringOption: to.Ptr(armmanagednetworkfabric.PeeringOptionOptionA),
-	// 					OptionBProperties: &armmanagednetworkfabric.VPNOptionBProperties{
-	// 						ImportRouteTargets: []*string{
-	// 							to.Ptr("65046:10050"),
-	// 						},
-	// 						ExportRouteTargets: []*string{
-	// 							to.Ptr("65046:10050"),
-	// 						},
-	// 						RouteTargets: &armmanagednetworkfabric.RouteTargetInformation{
-	// 							ImportIPv4RouteTargets: []*string{
-	// 								to.Ptr("65046:10050"),
-	// 							},
-	// 							ImportIPv6RouteTargets: []*string{
-	// 								to.Ptr("65046:10050"),
-	// 							},
-	// 							ExportIPv4RouteTargets: []*string{
-	// 								to.Ptr("65046:10050"),
-	// 							},
-	// 							ExportIPv6RouteTargets: []*string{
-	// 								to.Ptr("65046:10050"),
-	// 							},
-	// 						},
-	// 					},
-	// 					OptionAProperties: &armmanagednetworkfabric.VPNOptionAProperties{
-	// 						Mtu: to.Ptr[int32](1501),
-	// 						VlanID: to.Ptr[int32](3001),
-	// 						PeerASN: to.Ptr[int64](1235),
-	// 						BfdConfiguration: &armmanagednetworkfabric.BfdConfiguration{
-	// 							AdministrativeState: to.Ptr(armmanagednetworkfabric.BfdAdministrativeStateEnabled),
-	// 							IntervalInMilliSeconds: to.Ptr[int32](300),
-	// 							Multiplier: to.Ptr[int32](10),
-	// 						},
-	// 						PrimaryIPv4Prefix: to.Ptr("10.0.0.12/30"),
-	// 						PrimaryIPv6Prefix: to.Ptr("4FFE:FFFF:0:CD30::a8/127"),
-	// 						SecondaryIPv4Prefix: to.Ptr("20.0.0.13/30"),
-	// 						SecondaryIPv6Prefix: to.Ptr("6FFE:FFFF:0:CD30::ac/127"),
-	// 					},
-	// 				},
-	// 				WorkloadVPNConfiguration: &armmanagednetworkfabric.VPNConfigurationProperties{
-	// 					NetworkToNetworkInterconnectID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric/networkToNetworkInterconnects/example-nni"),
-	// 					AdministrativeState: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnabled),
-	// 					PeeringOption: to.Ptr(armmanagednetworkfabric.PeeringOptionOptionA),
-	// 					OptionBProperties: &armmanagednetworkfabric.VPNOptionBProperties{
-	// 						ImportRouteTargets: []*string{
-	// 							to.Ptr("65046:10050"),
-	// 						},
-	// 						ExportRouteTargets: []*string{
-	// 							to.Ptr("65046:10050"),
-	// 						},
-	// 						RouteTargets: &armmanagednetworkfabric.RouteTargetInformation{
-	// 							ImportIPv4RouteTargets: []*string{
-	// 								to.Ptr("65046:10050"),
-	// 							},
-	// 							ImportIPv6RouteTargets: []*string{
-	// 								to.Ptr("65046:10050"),
-	// 							},
-	// 							ExportIPv4RouteTargets: []*string{
-	// 								to.Ptr("65046:10050"),
-	// 							},
-	// 							ExportIPv6RouteTargets: []*string{
-	// 								to.Ptr("65046:10050"),
-	// 							},
-	// 						},
-	// 					},
-	// 					OptionAProperties: &armmanagednetworkfabric.VPNOptionAProperties{
-	// 						Mtu: to.Ptr[int32](1500),
-	// 						VlanID: to.Ptr[int32](3000),
-	// 						PeerASN: to.Ptr[int64](61234),
-	// 						BfdConfiguration: &armmanagednetworkfabric.BfdConfiguration{
-	// 							AdministrativeState: to.Ptr(armmanagednetworkfabric.BfdAdministrativeStateEnabled),
-	// 							IntervalInMilliSeconds: to.Ptr[int32](300),
-	// 							Multiplier: to.Ptr[int32](5),
-	// 						},
-	// 						PrimaryIPv4Prefix: to.Ptr("10.0.0.14/30"),
-	// 						PrimaryIPv6Prefix: to.Ptr("2FFE:FFFF:0:CD30::a7/126"),
-	// 						SecondaryIPv4Prefix: to.Ptr("10.0.0.15/30"),
-	// 						SecondaryIPv6Prefix: to.Ptr("2FFE:FFFF:0:CD30::ac/126"),
-	// 					},
-	// 				},
-	// 			},
-	// 			Racks: []*string{
-	// 				to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkRacks/example-networkRack"),
-	// 			},
-	// 			L2IsolationDomains: []*string{
-	// 				to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/l2IsolationDomains/example-l2Domain"),
-	// 			},
-	// 			L3IsolationDomains: []*string{
-	// 				to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/example-l3Domain"),
-	// 			},
-	// 			HardwareAlertThreshold: to.Ptr[int32](74),
-	// 			ControlPlaneACLs: []*string{
-	// 				to.Ptr("/subscriptions/xxxxxx/resourceGroups/resourcegroupname/providers/Microsoft.ManagedNetworkFabric/accessControlLists/example-acl"),
-	// 			},
-	// 			TrustedIPPrefixes: []*string{
-	// 				to.Ptr("/subscriptions/xxxxxx/resourceGroups/resourcegroupname/providers/Microsoft.ManagedNetworkFabric/ipPrefixes/example-prefix"),
-	// 			},
-	// 			UniqueRdConfiguration: &armmanagednetworkfabric.UniqueRouteDistinguisherProperties{
-	// 				UniqueRdConfigurationState: to.Ptr(armmanagednetworkfabric.UniqueRouteDistinguisherConfigurationStateEnabled),
-	// 				UniqueRds: []*string{
-	// 					to.Ptr("apogd"),
-	// 				},
-	// 				NniDerivedUniqueRdConfigurationState: to.Ptr(armmanagednetworkfabric.NNIDerivedUniqueRouteDistinguisherConfigurationStateEnabled),
-	// 			},
-	// 			ActiveCommitBatches: []*string{
-	// 				to.Ptr("izc"),
-	// 			},
-	// 			AuthorizedTransceiver: &armmanagednetworkfabric.AuthorizedTransceiverProperties{
-	// 				Vendor: to.Ptr("vendorX"),
-	// 				Key: to.Ptr("example"),
-	// 			},
-	// 			ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
-	// 			ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateAccepted),
-	// 			AdministrativeState: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnabled),
-	// 			QosConfiguration: &armmanagednetworkfabric.QosProperties{
-	// 				QosConfigurationState: to.Ptr(armmanagednetworkfabric.QosConfigurationStateEnabled),
-	// 			},
-	// 		},
-	// 		Identity: &armmanagednetworkfabric.ManagedServiceIdentity{
-	// 			PrincipalID: to.Ptr("0000ABCD-0A0B-0000-0000-000000ABCDEF"),
-	// 			TenantID: to.Ptr("0000ABCD-0A0B-0000-0000-000000ABCDEF"),
-	// 			Type: to.Ptr(armmanagednetworkfabric.ManagedServiceIdentityTypeNone),
-	// 			UserAssignedIdentities: map[string]*armmanagednetworkfabric.UserAssignedIdentity{
-	// 				"key872": &armmanagednetworkfabric.UserAssignedIdentity{
-	// 					PrincipalID: to.Ptr("0000ABCD-0A0B-0000-0000-000000ABCDEF"),
-	// 					ClientID: to.Ptr("0000ABCD-0A0B-0000-0000-000000ABCDEF"),
-	// 				},
-	// 			},
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"keyId": to.Ptr("keyValue"),
-	// 		},
-	// 		Location: to.Ptr("eastuseuap"),
-	// 		ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric"),
-	// 		Name: to.Ptr("example-fabric"),
-	// 		Type: to.Ptr("Microsoft.ManagedNetworkFabric/networkFabrics"),
-	// 		SystemData: &armmanagednetworkfabric.SystemData{
-	// 			CreatedBy: to.Ptr("email@address.com"),
-	// 			CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("UserId"),
-	// 			LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-07-15/NetworkFabrics_Update_QoS.json
-func ExampleNetworkFabricsClient_BeginUpdate_networkFabricsUpdateQoSEnable() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmanagednetworkfabric.NewClientFactory("0000ABCD-0A0B-0000-0000-000000ABCDEF", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewNetworkFabricsClient().BeginUpdate(ctx, "example-rg", "example-fabric", armmanagednetworkfabric.NetworkFabricPatch{
-		Properties: &armmanagednetworkfabric.NetworkFabricPatchProperties{
-			QosConfiguration: &armmanagednetworkfabric.QosPatchProperties{
-				QosConfigurationState: to.Ptr(armmanagednetworkfabric.QosConfigurationStateEnabled),
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armmanagednetworkfabric.NetworkFabricsClientUpdateResponse{
-	// 	NetworkFabric: armmanagednetworkfabric.NetworkFabric{
-	// 		Properties: &armmanagednetworkfabric.NetworkFabricProperties{
-	// 			Annotation: to.Ptr("annotation"),
-	// 			NetworkFabricSKU: to.Ptr("M4-A400-A100-C16-aa"),
-	// 			FabricVersion: to.Ptr("version1"),
-	// 			RouterIDs: []*string{
-	// 				to.Ptr("routerId"),
-	// 			},
-	// 			NetworkFabricControllerID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabricControllers/example-fabricController"),
-	// 			RackCount: to.Ptr[int32](4),
-	// 			ServerCountPerRack: to.Ptr[int32](8),
-	// 			IPv4Prefix: to.Ptr("10.18.0.0/19"),
-	// 			IPv6Prefix: to.Ptr("3FFE:FFFF:0:CD40::/59"),
-	// 			FabricASN: to.Ptr[int64](29249),
-	// 			TerminalServerConfiguration: &armmanagednetworkfabric.TerminalServerConfiguration{
-	// 				Username: to.Ptr("username"),
-	// 				SerialNumber: to.Ptr("123456"),
-	// 				PrimaryIPv4Prefix: to.Ptr("10.0.0.12/30"),
-	// 				PrimaryIPv6Prefix: to.Ptr("4FFE:FFFF:0:CD30::a8/127"),
-	// 				SecondaryIPv4Prefix: to.Ptr("40.0.0.14/30"),
-	// 				SecondaryIPv6Prefix: to.Ptr("6FFE:FFFF:0:CD30::ac/127"),
-	// 				NetworkDeviceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-networkDevice"),
-	// 			},
-	// 			ManagementNetworkConfiguration: &armmanagednetworkfabric.ManagementNetworkConfigurationProperties{
-	// 				InfrastructureVPNConfiguration: &armmanagednetworkfabric.VPNConfigurationProperties{
-	// 					NetworkToNetworkInterconnectID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric/networkToNetworkInterconnects/example-nni"),
-	// 					AdministrativeState: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnabled),
-	// 					PeeringOption: to.Ptr(armmanagednetworkfabric.PeeringOptionOptionA),
-	// 					OptionAProperties: &armmanagednetworkfabric.VPNOptionAProperties{
-	// 						Mtu: to.Ptr[int32](1501),
-	// 						VlanID: to.Ptr[int32](3001),
-	// 						PeerASN: to.Ptr[int64](1235),
-	// 						BfdConfiguration: &armmanagednetworkfabric.BfdConfiguration{
-	// 							AdministrativeState: to.Ptr(armmanagednetworkfabric.BfdAdministrativeStateEnabled),
-	// 							IntervalInMilliSeconds: to.Ptr[int32](300),
-	// 							Multiplier: to.Ptr[int32](10),
-	// 						},
-	// 						PrimaryIPv4Prefix: to.Ptr("10.0.0.12/30"),
-	// 						PrimaryIPv6Prefix: to.Ptr("4FFE:FFFF:0:CD30::a8/127"),
-	// 						SecondaryIPv4Prefix: to.Ptr("20.0.0.13/30"),
-	// 						SecondaryIPv6Prefix: to.Ptr("6FFE:FFFF:0:CD30::ac/127"),
-	// 					},
-	// 				},
-	// 				WorkloadVPNConfiguration: &armmanagednetworkfabric.VPNConfigurationProperties{
-	// 					NetworkToNetworkInterconnectID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric/networkToNetworkInterconnects/example-nni"),
-	// 					AdministrativeState: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnabled),
-	// 					PeeringOption: to.Ptr(armmanagednetworkfabric.PeeringOptionOptionA),
-	// 					OptionAProperties: &armmanagednetworkfabric.VPNOptionAProperties{
-	// 						Mtu: to.Ptr[int32](1500),
-	// 						VlanID: to.Ptr[int32](3000),
-	// 						PeerASN: to.Ptr[int64](61234),
-	// 						BfdConfiguration: &armmanagednetworkfabric.BfdConfiguration{
-	// 							AdministrativeState: to.Ptr(armmanagednetworkfabric.BfdAdministrativeStateEnabled),
-	// 							IntervalInMilliSeconds: to.Ptr[int32](300),
-	// 							Multiplier: to.Ptr[int32](5),
-	// 						},
-	// 						PrimaryIPv4Prefix: to.Ptr("10.0.0.14/30"),
-	// 						PrimaryIPv6Prefix: to.Ptr("2FFE:FFFF:0:CD30::a7/126"),
-	// 						SecondaryIPv4Prefix: to.Ptr("10.0.0.15/30"),
-	// 						SecondaryIPv6Prefix: to.Ptr("2FFE:FFFF:0:CD30::ac/126"),
-	// 					},
-	// 				},
-	// 			},
-	// 			Racks: []*string{
-	// 				to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkRacks/example-networkRack"),
-	// 			},
-	// 			L2IsolationDomains: []*string{
-	// 				to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/l2IsolationDomains/example-l2Domain"),
-	// 			},
-	// 			L3IsolationDomains: []*string{
-	// 				to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/example-l3Domain"),
-	// 			},
-	// 			ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
-	// 			ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateAccepted),
-	// 			AdministrativeState: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnabled),
-	// 			QosConfiguration: &armmanagednetworkfabric.QosProperties{
-	// 				QosConfigurationState: to.Ptr(armmanagednetworkfabric.QosConfigurationStateEnabled),
-	// 			},
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"environment": to.Ptr("production"),
-	// 		},
-	// 		Location: to.Ptr("eastuseuap"),
-	// 		ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric"),
-	// 		Name: to.Ptr("example-fabric"),
-	// 		Type: to.Ptr("Microsoft.ManagedNetworkFabric/networkFabrics"),
-	// 		SystemData: &armmanagednetworkfabric.SystemData{
-	// 			CreatedBy: to.Ptr("email@address.com"),
-	// 			CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("UserId"),
-	// 			LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-07-15/NetworkFabrics_UpdateInfraManagementBfdConfiguration.json
-func ExampleNetworkFabricsClient_BeginUpdateInfraManagementBfdConfiguration() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmanagednetworkfabric.NewClientFactory("0000ABCD-0A0B-0000-0000-000000ABCDEF", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewNetworkFabricsClient().BeginUpdateInfraManagementBfdConfiguration(ctx, "example-rg", "example-fabric", armmanagednetworkfabric.UpdateAdministrativeState{
-		ResourceIDs: []*string{
-			to.Ptr(""),
-		},
-		State: to.Ptr(armmanagednetworkfabric.EnableDisableStateEnable),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armmanagednetworkfabric.NetworkFabricsClientUpdateInfraManagementBfdConfigurationResponse{
-	// 	UpdateAdministrativeStateResponse: armmanagednetworkfabric.UpdateAdministrativeStateResponse{
-	// 		Status: to.Ptr("Failed"),
-	// 		Error: &armmanagednetworkfabric.ErrorDetail{
-	// 			Code: to.Ptr(""),
-	// 			Message: to.Ptr(""),
-	// 			Target: to.Ptr(""),
-	// 			Details: []*armmanagednetworkfabric.ErrorDetail{
-	// 			},
-	// 			AdditionalInfo: []*armmanagednetworkfabric.ErrorAdditionalInfo{
-	// 				{
-	// 					Type: to.Ptr(""),
-	// 					Info: map[string]any{
-	// 					},
-	// 				},
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-07-15/NetworkFabrics_UpdateWorkloadManagementBfdConfiguration.json
-func ExampleNetworkFabricsClient_BeginUpdateWorkloadManagementBfdConfiguration() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmanagednetworkfabric.NewClientFactory("0000ABCD-0A0B-0000-0000-000000ABCDEF", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewNetworkFabricsClient().BeginUpdateWorkloadManagementBfdConfiguration(ctx, "example-rg", "example-fabric", armmanagednetworkfabric.UpdateAdministrativeState{
-		ResourceIDs: []*string{
-			to.Ptr(""),
-		},
-		State: to.Ptr(armmanagednetworkfabric.EnableDisableStateEnable),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armmanagednetworkfabric.NetworkFabricsClientUpdateWorkloadManagementBfdConfigurationResponse{
-	// 	UpdateAdministrativeStateResponse: armmanagednetworkfabric.UpdateAdministrativeStateResponse{
-	// 		Status: to.Ptr("Failed"),
-	// 		Error: &armmanagednetworkfabric.ErrorDetail{
-	// 			Code: to.Ptr(""),
-	// 			Message: to.Ptr(""),
-	// 			Target: to.Ptr(""),
-	// 			Details: []*armmanagednetworkfabric.ErrorDetail{
-	// 			},
-	// 			AdditionalInfo: []*armmanagednetworkfabric.ErrorAdditionalInfo{
-	// 				{
-	// 					Type: to.Ptr(""),
-	// 					Info: map[string]any{
-	// 					},
-	// 				},
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-07-15/NetworkFabrics_Upgrade.json
-func ExampleNetworkFabricsClient_BeginUpgrade() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmanagednetworkfabric.NewClientFactory("0000ABCD-0A0B-0000-0000-000000ABCDEF", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewNetworkFabricsClient().BeginUpgrade(ctx, "example-rg", "example-fabric", armmanagednetworkfabric.UpgradeNetworkFabricProperties{
-		Version: to.Ptr("3.x.x"),
-		Action:  to.Ptr(armmanagednetworkfabric.NetworkFabricUpgradeActionStart),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armmanagednetworkfabric.NetworkFabricsClientUpgradeResponse{
-	// 	OperationStatusResult: armmanagednetworkfabric.OperationStatusResult{
-	// 		Status: to.Ptr("Failed"),
-	// 		Error: &armmanagednetworkfabric.ErrorDetail{
-	// 			Code: to.Ptr(""),
-	// 			Message: to.Ptr(""),
-	// 			Target: to.Ptr(""),
-	// 			Details: []*armmanagednetworkfabric.ErrorDetail{
-	// 			},
-	// 			AdditionalInfo: []*armmanagednetworkfabric.ErrorAdditionalInfo{
-	// 				{
-	// 					Type: to.Ptr(""),
-	// 					Info: map[string]any{
-	// 					},
-	// 				},
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-07-15/NetworkFabrics_ValidateConfiguration.json
-func ExampleNetworkFabricsClient_BeginValidateConfiguration() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmanagednetworkfabric.NewClientFactory("0000ABCD-0A0B-0000-0000-000000ABCDEF", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewNetworkFabricsClient().BeginValidateConfiguration(ctx, "example-rg", "example-fabric", armmanagednetworkfabric.ValidateConfigurationProperties{
-		ValidateAction: to.Ptr(armmanagednetworkfabric.ValidateActionCabling),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armmanagednetworkfabric.NetworkFabricsClientValidateConfigurationResponse{
-	// 	ValidateConfigurationResponse: armmanagednetworkfabric.ValidateConfigurationResponse{
-	// 		Error: &armmanagednetworkfabric.ErrorDetail{
-	// 			Code: to.Ptr(""),
-	// 			Message: to.Ptr(""),
-	// 			Target: to.Ptr(""),
-	// 			Details: []*armmanagednetworkfabric.ErrorDetail{
-	// 			},
-	// 			AdditionalInfo: []*armmanagednetworkfabric.ErrorAdditionalInfo{
-	// 				{
-	// 					Type: to.Ptr(""),
-	// 					Info: map[string]any{
-	// 					},
-	// 				},
-	// 			},
-	// 		},
-	// 		ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
-	// 		URL: to.Ptr("https://ActionDetails"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-07-15/NetworkFabrics_ViewDeviceConfiguration.json
-func ExampleNetworkFabricsClient_BeginViewDeviceConfiguration() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmanagednetworkfabric.NewClientFactory("0000ABCD-0A0B-0000-0000-000000ABCDEF", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewNetworkFabricsClient().BeginViewDeviceConfiguration(ctx, "example-rg", "example-fabric", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armmanagednetworkfabric.NetworkFabricsClientViewDeviceConfigurationResponse{
-	// 	ViewDeviceConfigurationOperationResponse: armmanagednetworkfabric.ViewDeviceConfigurationOperationResponse{
-	// 		Status: to.Ptr("Failed"),
-	// 		Error: &armmanagednetworkfabric.ErrorDetail{
-	// 			Code: to.Ptr(""),
-	// 			Message: to.Ptr(""),
-	// 			Target: to.Ptr(""),
-	// 			Details: []*armmanagednetworkfabric.ErrorDetail{
-	// 			},
-	// 			AdditionalInfo: []*armmanagednetworkfabric.ErrorAdditionalInfo{
-	// 				{
-	// 					Type: to.Ptr(""),
-	// 					Info: map[string]any{
-	// 					},
-	// 				},
-	// 			},
-	// 		},
-	// 	},
-	// }
 }

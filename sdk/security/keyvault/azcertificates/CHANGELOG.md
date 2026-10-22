@@ -1,6 +1,9 @@
 # Release History
 
-## 1.5.1-beta.1 (2026-10-22)`r`n`r`n### Other Changes`r`n* Regenerated with Key Vault `2026-03-01-preview` TypeSpec configuration.
+## 1.5.1-beta.1 (2026-10-22)
+
+### Other Changes
+* Regenerated with Key Vault `2026-03-01-preview` TypeSpec configuration.
 
 ### Features Added
 * Added an experimental PlatformManaged property on CertificatePolicy for Azure Key Vault internal usage. Any calls using this property will fail and it is not recommended to be used at this point. [#26922](https://github.com/Azure/azure-sdk-for-go/pull/26922)

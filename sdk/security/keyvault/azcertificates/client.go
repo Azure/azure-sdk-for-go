@@ -46,12 +46,7 @@ func (client *Client) BackupCertificate(ctx context.Context, name string, option
 	if err != nil {
 		return BackupCertificateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return BackupCertificateResponse{}, err
-	}
-	resp, err := client.backupCertificateHandleResponse(httpResp)
-	return resp, err
+	return client.backupCertificateHandleResponse(httpResp, http.StatusOK)
 }
 
 // backupCertificateCreateRequest creates the BackupCertificate request.
@@ -73,8 +68,11 @@ func (client *Client) backupCertificateCreateRequest(ctx context.Context, name s
 }
 
 // backupCertificateHandleResponse handles the BackupCertificate response.
-func (client *Client) backupCertificateHandleResponse(resp *http.Response) (BackupCertificateResponse, error) {
+func (client *Client) backupCertificateHandleResponse(resp *http.Response, successCodes ...int) (BackupCertificateResponse, error) {
 	result := BackupCertificateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BackupCertificateResult); err != nil {
 		return BackupCertificateResponse{}, err
 	}
@@ -103,12 +101,7 @@ func (client *Client) CreateCertificate(ctx context.Context, name string, parame
 	if err != nil {
 		return CreateCertificateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return CreateCertificateResponse{}, err
-	}
-	resp, err := client.createCertificateHandleResponse(httpResp)
-	return resp, err
+	return client.createCertificateHandleResponse(httpResp, http.StatusAccepted)
 }
 
 // createCertificateCreateRequest creates the CreateCertificate request.
@@ -134,8 +127,11 @@ func (client *Client) createCertificateCreateRequest(ctx context.Context, name s
 }
 
 // createCertificateHandleResponse handles the CreateCertificate response.
-func (client *Client) createCertificateHandleResponse(resp *http.Response) (CreateCertificateResponse, error) {
+func (client *Client) createCertificateHandleResponse(resp *http.Response, successCodes ...int) (CreateCertificateResponse, error) {
 	result := CreateCertificateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CertificateOperation); err != nil {
 		return CreateCertificateResponse{}, err
 	}
@@ -163,12 +159,7 @@ func (client *Client) DeleteCertificate(ctx context.Context, name string, option
 	if err != nil {
 		return DeleteCertificateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DeleteCertificateResponse{}, err
-	}
-	resp, err := client.deleteCertificateHandleResponse(httpResp)
-	return resp, err
+	return client.deleteCertificateHandleResponse(httpResp, http.StatusOK)
 }
 
 // deleteCertificateCreateRequest creates the DeleteCertificate request.
@@ -190,8 +181,11 @@ func (client *Client) deleteCertificateCreateRequest(ctx context.Context, name s
 }
 
 // deleteCertificateHandleResponse handles the DeleteCertificate response.
-func (client *Client) deleteCertificateHandleResponse(resp *http.Response) (DeleteCertificateResponse, error) {
+func (client *Client) deleteCertificateHandleResponse(resp *http.Response, successCodes ...int) (DeleteCertificateResponse, error) {
 	result := DeleteCertificateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeletedCertificate); err != nil {
 		return DeleteCertificateResponse{}, err
 	}
@@ -220,12 +214,7 @@ func (client *Client) DeleteCertificateOperation(ctx context.Context, name strin
 	if err != nil {
 		return DeleteCertificateOperationResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DeleteCertificateOperationResponse{}, err
-	}
-	resp, err := client.deleteCertificateOperationHandleResponse(httpResp)
-	return resp, err
+	return client.deleteCertificateOperationHandleResponse(httpResp, http.StatusOK)
 }
 
 // deleteCertificateOperationCreateRequest creates the DeleteCertificateOperation request.
@@ -247,8 +236,11 @@ func (client *Client) deleteCertificateOperationCreateRequest(ctx context.Contex
 }
 
 // deleteCertificateOperationHandleResponse handles the DeleteCertificateOperation response.
-func (client *Client) deleteCertificateOperationHandleResponse(resp *http.Response) (DeleteCertificateOperationResponse, error) {
+func (client *Client) deleteCertificateOperationHandleResponse(resp *http.Response, successCodes ...int) (DeleteCertificateOperationResponse, error) {
 	result := DeleteCertificateOperationResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CertificateOperation); err != nil {
 		return DeleteCertificateOperationResponse{}, err
 	}
@@ -275,12 +267,7 @@ func (client *Client) DeleteContacts(ctx context.Context, options *DeleteContact
 	if err != nil {
 		return DeleteContactsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DeleteContactsResponse{}, err
-	}
-	resp, err := client.deleteContactsHandleResponse(httpResp)
-	return resp, err
+	return client.deleteContactsHandleResponse(httpResp, http.StatusOK)
 }
 
 // deleteContactsCreateRequest creates the DeleteContacts request.
@@ -298,8 +285,11 @@ func (client *Client) deleteContactsCreateRequest(ctx context.Context, _ *Delete
 }
 
 // deleteContactsHandleResponse handles the DeleteContacts response.
-func (client *Client) deleteContactsHandleResponse(resp *http.Response) (DeleteContactsResponse, error) {
+func (client *Client) deleteContactsHandleResponse(resp *http.Response, successCodes ...int) (DeleteContactsResponse, error) {
 	result := DeleteContactsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Contacts); err != nil {
 		return DeleteContactsResponse{}, err
 	}
@@ -327,12 +317,7 @@ func (client *Client) DeleteIssuer(ctx context.Context, name string, options *De
 	if err != nil {
 		return DeleteIssuerResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DeleteIssuerResponse{}, err
-	}
-	resp, err := client.deleteIssuerHandleResponse(httpResp)
-	return resp, err
+	return client.deleteIssuerHandleResponse(httpResp, http.StatusOK)
 }
 
 // deleteIssuerCreateRequest creates the DeleteIssuer request.
@@ -354,8 +339,11 @@ func (client *Client) deleteIssuerCreateRequest(ctx context.Context, name string
 }
 
 // deleteIssuerHandleResponse handles the DeleteIssuer response.
-func (client *Client) deleteIssuerHandleResponse(resp *http.Response) (DeleteIssuerResponse, error) {
+func (client *Client) deleteIssuerHandleResponse(resp *http.Response, successCodes ...int) (DeleteIssuerResponse, error) {
 	result := DeleteIssuerResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Issuer); err != nil {
 		return DeleteIssuerResponse{}, err
 	}
@@ -384,12 +372,7 @@ func (client *Client) GetCertificate(ctx context.Context, name string, version s
 	if err != nil {
 		return GetCertificateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GetCertificateResponse{}, err
-	}
-	resp, err := client.getCertificateHandleResponse(httpResp)
-	return resp, err
+	return client.getCertificateHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCertificateCreateRequest creates the GetCertificate request.
@@ -412,8 +395,11 @@ func (client *Client) getCertificateCreateRequest(ctx context.Context, name stri
 }
 
 // getCertificateHandleResponse handles the GetCertificate response.
-func (client *Client) getCertificateHandleResponse(resp *http.Response) (GetCertificateResponse, error) {
+func (client *Client) getCertificateHandleResponse(resp *http.Response, successCodes ...int) (GetCertificateResponse, error) {
 	result := GetCertificateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Certificate); err != nil {
 		return GetCertificateResponse{}, err
 	}
@@ -440,12 +426,7 @@ func (client *Client) GetCertificateOperation(ctx context.Context, name string, 
 	if err != nil {
 		return GetCertificateOperationResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GetCertificateOperationResponse{}, err
-	}
-	resp, err := client.getCertificateOperationHandleResponse(httpResp)
-	return resp, err
+	return client.getCertificateOperationHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCertificateOperationCreateRequest creates the GetCertificateOperation request.
@@ -467,8 +448,11 @@ func (client *Client) getCertificateOperationCreateRequest(ctx context.Context, 
 }
 
 // getCertificateOperationHandleResponse handles the GetCertificateOperation response.
-func (client *Client) getCertificateOperationHandleResponse(resp *http.Response) (GetCertificateOperationResponse, error) {
+func (client *Client) getCertificateOperationHandleResponse(resp *http.Response, successCodes ...int) (GetCertificateOperationResponse, error) {
 	result := GetCertificateOperationResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CertificateOperation); err != nil {
 		return GetCertificateOperationResponse{}, err
 	}
@@ -496,12 +480,7 @@ func (client *Client) GetCertificatePolicy(ctx context.Context, name string, opt
 	if err != nil {
 		return GetCertificatePolicyResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GetCertificatePolicyResponse{}, err
-	}
-	resp, err := client.getCertificatePolicyHandleResponse(httpResp)
-	return resp, err
+	return client.getCertificatePolicyHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCertificatePolicyCreateRequest creates the GetCertificatePolicy request.
@@ -523,8 +502,11 @@ func (client *Client) getCertificatePolicyCreateRequest(ctx context.Context, nam
 }
 
 // getCertificatePolicyHandleResponse handles the GetCertificatePolicy response.
-func (client *Client) getCertificatePolicyHandleResponse(resp *http.Response) (GetCertificatePolicyResponse, error) {
+func (client *Client) getCertificatePolicyHandleResponse(resp *http.Response, successCodes ...int) (GetCertificatePolicyResponse, error) {
 	result := GetCertificatePolicyResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CertificatePolicy); err != nil {
 		return GetCertificatePolicyResponse{}, err
 	}
@@ -551,12 +533,7 @@ func (client *Client) GetContacts(ctx context.Context, options *GetContactsOptio
 	if err != nil {
 		return GetContactsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GetContactsResponse{}, err
-	}
-	resp, err := client.getContactsHandleResponse(httpResp)
-	return resp, err
+	return client.getContactsHandleResponse(httpResp, http.StatusOK)
 }
 
 // getContactsCreateRequest creates the GetContacts request.
@@ -574,8 +551,11 @@ func (client *Client) getContactsCreateRequest(ctx context.Context, _ *GetContac
 }
 
 // getContactsHandleResponse handles the GetContacts response.
-func (client *Client) getContactsHandleResponse(resp *http.Response) (GetContactsResponse, error) {
+func (client *Client) getContactsHandleResponse(resp *http.Response, successCodes ...int) (GetContactsResponse, error) {
 	result := GetContactsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Contacts); err != nil {
 		return GetContactsResponse{}, err
 	}
@@ -604,12 +584,7 @@ func (client *Client) GetDeletedCertificate(ctx context.Context, name string, op
 	if err != nil {
 		return GetDeletedCertificateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GetDeletedCertificateResponse{}, err
-	}
-	resp, err := client.getDeletedCertificateHandleResponse(httpResp)
-	return resp, err
+	return client.getDeletedCertificateHandleResponse(httpResp, http.StatusOK)
 }
 
 // getDeletedCertificateCreateRequest creates the GetDeletedCertificate request.
@@ -631,8 +606,11 @@ func (client *Client) getDeletedCertificateCreateRequest(ctx context.Context, na
 }
 
 // getDeletedCertificateHandleResponse handles the GetDeletedCertificate response.
-func (client *Client) getDeletedCertificateHandleResponse(resp *http.Response) (GetDeletedCertificateResponse, error) {
+func (client *Client) getDeletedCertificateHandleResponse(resp *http.Response, successCodes ...int) (GetDeletedCertificateResponse, error) {
 	result := GetDeletedCertificateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeletedCertificate); err != nil {
 		return GetDeletedCertificateResponse{}, err
 	}
@@ -660,12 +638,7 @@ func (client *Client) GetIssuer(ctx context.Context, name string, options *GetIs
 	if err != nil {
 		return GetIssuerResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GetIssuerResponse{}, err
-	}
-	resp, err := client.getIssuerHandleResponse(httpResp)
-	return resp, err
+	return client.getIssuerHandleResponse(httpResp, http.StatusOK)
 }
 
 // getIssuerCreateRequest creates the GetIssuer request.
@@ -687,8 +660,11 @@ func (client *Client) getIssuerCreateRequest(ctx context.Context, name string, _
 }
 
 // getIssuerHandleResponse handles the GetIssuer response.
-func (client *Client) getIssuerHandleResponse(resp *http.Response) (GetIssuerResponse, error) {
+func (client *Client) getIssuerHandleResponse(resp *http.Response, successCodes ...int) (GetIssuerResponse, error) {
 	result := GetIssuerResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Issuer); err != nil {
 		return GetIssuerResponse{}, err
 	}
@@ -719,12 +695,7 @@ func (client *Client) ImportCertificate(ctx context.Context, name string, parame
 	if err != nil {
 		return ImportCertificateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ImportCertificateResponse{}, err
-	}
-	resp, err := client.importCertificateHandleResponse(httpResp)
-	return resp, err
+	return client.importCertificateHandleResponse(httpResp, http.StatusOK)
 }
 
 // importCertificateCreateRequest creates the ImportCertificate request.
@@ -750,230 +721,13 @@ func (client *Client) importCertificateCreateRequest(ctx context.Context, name s
 }
 
 // importCertificateHandleResponse handles the ImportCertificate response.
-func (client *Client) importCertificateHandleResponse(resp *http.Response) (ImportCertificateResponse, error) {
+func (client *Client) importCertificateHandleResponse(resp *http.Response, successCodes ...int) (ImportCertificateResponse, error) {
 	result := ImportCertificateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Certificate); err != nil {
 		return ImportCertificateResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListCertificatePropertiesPager - List certificates in a specified key vault
-//
-// The GetCertificates operation returns the set of certificates resources in the specified key vault. This operation requires
-// the certificates/list permission.
-//   - options - ListCertificatePropertiesOptions contains the optional parameters for the Client.NewListCertificatePropertiesPager
-//     method.
-func (client *Client) NewListCertificatePropertiesPager(options *ListCertificatePropertiesOptions) *runtime.Pager[ListCertificatePropertiesResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ListCertificatePropertiesResponse]{
-		More: func(page ListCertificatePropertiesResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *ListCertificatePropertiesResponse) (ListCertificatePropertiesResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "Client.NewListCertificatePropertiesPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCertificatePropertiesCreateRequest(ctx, options)
-			}, nil)
-			if err != nil {
-				return ListCertificatePropertiesResponse{}, err
-			}
-			return client.listCertificatePropertiesHandleResponse(resp)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCertificatePropertiesCreateRequest creates the ListCertificateProperties request.
-func (client *Client) listCertificatePropertiesCreateRequest(ctx context.Context, options *ListCertificatePropertiesOptions) (*policy.Request, error) {
-	urlPath := "/certificates"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
-	if options != nil && options.IncludePending != nil {
-		reqQP.Set("includePending", strconv.FormatBool(*options.IncludePending))
-	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listCertificatePropertiesHandleResponse handles the ListCertificateProperties response.
-func (client *Client) listCertificatePropertiesHandleResponse(resp *http.Response) (ListCertificatePropertiesResponse, error) {
-	result := ListCertificatePropertiesResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.CertificatePropertiesListResult); err != nil {
-		return ListCertificatePropertiesResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListCertificatePropertiesVersionsPager - List the versions of a certificate.
-//
-// The GetCertificateVersions operation returns the versions of a certificate in the specified key vault. This operation requires
-// the certificates/list permission.
-//   - name - The name of the certificate.
-//   - options - ListCertificatePropertiesVersionsOptions contains the optional parameters for the Client.NewListCertificatePropertiesVersionsPager
-//     method.
-func (client *Client) NewListCertificatePropertiesVersionsPager(name string, options *ListCertificatePropertiesVersionsOptions) *runtime.Pager[ListCertificatePropertiesVersionsResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ListCertificatePropertiesVersionsResponse]{
-		More: func(page ListCertificatePropertiesVersionsResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *ListCertificatePropertiesVersionsResponse) (ListCertificatePropertiesVersionsResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "Client.NewListCertificatePropertiesVersionsPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCertificatePropertiesVersionsCreateRequest(ctx, name, options)
-			}, nil)
-			if err != nil {
-				return ListCertificatePropertiesVersionsResponse{}, err
-			}
-			return client.listCertificatePropertiesVersionsHandleResponse(resp)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCertificatePropertiesVersionsCreateRequest creates the ListCertificatePropertiesVersions request.
-func (client *Client) listCertificatePropertiesVersionsCreateRequest(ctx context.Context, name string, _ *ListCertificatePropertiesVersionsOptions) (*policy.Request, error) {
-	urlPath := "/certificates/{certificate-name}/versions"
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{certificate-name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listCertificatePropertiesVersionsHandleResponse handles the ListCertificatePropertiesVersions response.
-func (client *Client) listCertificatePropertiesVersionsHandleResponse(resp *http.Response) (ListCertificatePropertiesVersionsResponse, error) {
-	result := ListCertificatePropertiesVersionsResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.CertificatePropertiesListResult); err != nil {
-		return ListCertificatePropertiesVersionsResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListDeletedCertificatePropertiesPager - Lists the deleted certificates in the specified vault currently available for
-// recovery.
-//
-// The GetDeletedCertificates operation retrieves the certificates in the current vault which are in a deleted state and ready
-// for recovery or purging. This operation includes deletion-specific information. This operation requires the certificates/get/list
-// permission. This operation can only be enabled on soft-delete enabled vaults.
-//   - options - ListDeletedCertificatePropertiesOptions contains the optional parameters for the Client.NewListDeletedCertificatePropertiesPager
-//     method.
-func (client *Client) NewListDeletedCertificatePropertiesPager(options *ListDeletedCertificatePropertiesOptions) *runtime.Pager[ListDeletedCertificatePropertiesResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ListDeletedCertificatePropertiesResponse]{
-		More: func(page ListDeletedCertificatePropertiesResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *ListDeletedCertificatePropertiesResponse) (ListDeletedCertificatePropertiesResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "Client.NewListDeletedCertificatePropertiesPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listDeletedCertificatePropertiesCreateRequest(ctx, options)
-			}, nil)
-			if err != nil {
-				return ListDeletedCertificatePropertiesResponse{}, err
-			}
-			return client.listDeletedCertificatePropertiesHandleResponse(resp)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listDeletedCertificatePropertiesCreateRequest creates the ListDeletedCertificateProperties request.
-func (client *Client) listDeletedCertificatePropertiesCreateRequest(ctx context.Context, options *ListDeletedCertificatePropertiesOptions) (*policy.Request, error) {
-	urlPath := "/deletedcertificates"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
-	if options != nil && options.IncludePending != nil {
-		reqQP.Set("includePending", strconv.FormatBool(*options.IncludePending))
-	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listDeletedCertificatePropertiesHandleResponse handles the ListDeletedCertificateProperties response.
-func (client *Client) listDeletedCertificatePropertiesHandleResponse(resp *http.Response) (ListDeletedCertificatePropertiesResponse, error) {
-	result := ListDeletedCertificatePropertiesResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.DeletedCertificatePropertiesListResult); err != nil {
-		return ListDeletedCertificatePropertiesResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListIssuerPropertiesPager - List certificate issuers for a specified key vault.
-//
-// The GetCertificateIssuers operation returns the set of certificate issuer resources in the specified key vault. This operation
-// requires the certificates/manageissuers/getissuers permission.
-//   - options - ListIssuerPropertiesOptions contains the optional parameters for the Client.NewListIssuerPropertiesPager method.
-func (client *Client) NewListIssuerPropertiesPager(options *ListIssuerPropertiesOptions) *runtime.Pager[ListIssuerPropertiesResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ListIssuerPropertiesResponse]{
-		More: func(page ListIssuerPropertiesResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *ListIssuerPropertiesResponse) (ListIssuerPropertiesResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "Client.NewListIssuerPropertiesPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listIssuerPropertiesCreateRequest(ctx, options)
-			}, nil)
-			if err != nil {
-				return ListIssuerPropertiesResponse{}, err
-			}
-			return client.listIssuerPropertiesHandleResponse(resp)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listIssuerPropertiesCreateRequest creates the ListIssuerProperties request.
-func (client *Client) listIssuerPropertiesCreateRequest(ctx context.Context, _ *ListIssuerPropertiesOptions) (*policy.Request, error) {
-	urlPath := "/certificates/issuers"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listIssuerPropertiesHandleResponse handles the ListIssuerProperties response.
-func (client *Client) listIssuerPropertiesHandleResponse(resp *http.Response) (ListIssuerPropertiesResponse, error) {
-	result := ListIssuerPropertiesResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.IssuerPropertiesListResult); err != nil {
-		return ListIssuerPropertiesResponse{}, err
 	}
 	return result, nil
 }
@@ -1000,12 +754,7 @@ func (client *Client) MergeCertificate(ctx context.Context, name string, paramet
 	if err != nil {
 		return MergeCertificateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return MergeCertificateResponse{}, err
-	}
-	resp, err := client.mergeCertificateHandleResponse(httpResp)
-	return resp, err
+	return client.mergeCertificateHandleResponse(httpResp, http.StatusCreated)
 }
 
 // mergeCertificateCreateRequest creates the MergeCertificate request.
@@ -1031,10 +780,289 @@ func (client *Client) mergeCertificateCreateRequest(ctx context.Context, name st
 }
 
 // mergeCertificateHandleResponse handles the MergeCertificate response.
-func (client *Client) mergeCertificateHandleResponse(resp *http.Response) (MergeCertificateResponse, error) {
+func (client *Client) mergeCertificateHandleResponse(resp *http.Response, successCodes ...int) (MergeCertificateResponse, error) {
 	result := MergeCertificateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Certificate); err != nil {
 		return MergeCertificateResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListCertificatePropertiesPager - List certificates in a specified key vault
+//
+// The GetCertificates operation returns the set of certificates resources in the specified key vault. This operation requires
+// the certificates/list permission.
+//   - options - ListCertificatePropertiesOptions contains the optional parameters for the Client.NewListCertificatePropertiesPager
+//     method.
+func (client *Client) NewListCertificatePropertiesPager(options *ListCertificatePropertiesOptions) *runtime.Pager[ListCertificatePropertiesResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ListCertificatePropertiesResponse]{
+		More: func(page ListCertificatePropertiesResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *ListCertificatePropertiesResponse) (ListCertificatePropertiesResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "Client.NewListCertificatePropertiesPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCertificatePropertiesCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return ListCertificatePropertiesResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ListCertificatePropertiesResponse{}, err
+			}
+			return client.listCertificatePropertiesHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listCertificatePropertiesCreateRequest creates the ListCertificateProperties request.
+func (client *Client) listCertificatePropertiesCreateRequest(ctx context.Context, nextLink string, options *ListCertificatePropertiesOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/certificates"
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.vaultBaseUrl, nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260301Preview)
+		if options != nil && options.IncludePending != nil {
+			reqQP.Set("includePending", strconv.FormatBool(*options.IncludePending))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listCertificatePropertiesHandleResponse handles the ListCertificateProperties response.
+func (client *Client) listCertificatePropertiesHandleResponse(resp *http.Response, successCodes ...int) (ListCertificatePropertiesResponse, error) {
+	result := ListCertificatePropertiesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.CertificatePropertiesListResult); err != nil {
+		return ListCertificatePropertiesResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListCertificatePropertiesVersionsPager - List the versions of a certificate.
+//
+// The GetCertificateVersions operation returns the versions of a certificate in the specified key vault. This operation requires
+// the certificates/list permission.
+//   - name - The name of the certificate.
+//   - options - ListCertificatePropertiesVersionsOptions contains the optional parameters for the Client.NewListCertificatePropertiesVersionsPager
+//     method.
+func (client *Client) NewListCertificatePropertiesVersionsPager(name string, options *ListCertificatePropertiesVersionsOptions) *runtime.Pager[ListCertificatePropertiesVersionsResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ListCertificatePropertiesVersionsResponse]{
+		More: func(page ListCertificatePropertiesVersionsResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *ListCertificatePropertiesVersionsResponse) (ListCertificatePropertiesVersionsResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "Client.NewListCertificatePropertiesVersionsPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCertificatePropertiesVersionsCreateRequest(ctx, name, nextLink, options)
+			if err != nil {
+				return ListCertificatePropertiesVersionsResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ListCertificatePropertiesVersionsResponse{}, err
+			}
+			return client.listCertificatePropertiesVersionsHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listCertificatePropertiesVersionsCreateRequest creates the ListCertificatePropertiesVersions request.
+func (client *Client) listCertificatePropertiesVersionsCreateRequest(ctx context.Context, name string, nextLink string, _ *ListCertificatePropertiesVersionsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/certificates/{certificate-name}/versions"
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{certificate-name}", url.PathEscape(name))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.vaultBaseUrl, nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260301Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listCertificatePropertiesVersionsHandleResponse handles the ListCertificatePropertiesVersions response.
+func (client *Client) listCertificatePropertiesVersionsHandleResponse(resp *http.Response, successCodes ...int) (ListCertificatePropertiesVersionsResponse, error) {
+	result := ListCertificatePropertiesVersionsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.CertificatePropertiesListResult); err != nil {
+		return ListCertificatePropertiesVersionsResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListDeletedCertificatePropertiesPager - Lists the deleted certificates in the specified vault currently available for
+// recovery.
+//
+// The GetDeletedCertificates operation retrieves the certificates in the current vault which are in a deleted state and ready
+// for recovery or purging. This operation includes deletion-specific information. This operation requires the certificates/get/list
+// permission. This operation can only be enabled on soft-delete enabled vaults.
+//   - options - ListDeletedCertificatePropertiesOptions contains the optional parameters for the Client.NewListDeletedCertificatePropertiesPager
+//     method.
+func (client *Client) NewListDeletedCertificatePropertiesPager(options *ListDeletedCertificatePropertiesOptions) *runtime.Pager[ListDeletedCertificatePropertiesResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ListDeletedCertificatePropertiesResponse]{
+		More: func(page ListDeletedCertificatePropertiesResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *ListDeletedCertificatePropertiesResponse) (ListDeletedCertificatePropertiesResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "Client.NewListDeletedCertificatePropertiesPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listDeletedCertificatePropertiesCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return ListDeletedCertificatePropertiesResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ListDeletedCertificatePropertiesResponse{}, err
+			}
+			return client.listDeletedCertificatePropertiesHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listDeletedCertificatePropertiesCreateRequest creates the ListDeletedCertificateProperties request.
+func (client *Client) listDeletedCertificatePropertiesCreateRequest(ctx context.Context, nextLink string, options *ListDeletedCertificatePropertiesOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/deletedcertificates"
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.vaultBaseUrl, nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260301Preview)
+		if options != nil && options.IncludePending != nil {
+			reqQP.Set("includePending", strconv.FormatBool(*options.IncludePending))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listDeletedCertificatePropertiesHandleResponse handles the ListDeletedCertificateProperties response.
+func (client *Client) listDeletedCertificatePropertiesHandleResponse(resp *http.Response, successCodes ...int) (ListDeletedCertificatePropertiesResponse, error) {
+	result := ListDeletedCertificatePropertiesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DeletedCertificatePropertiesListResult); err != nil {
+		return ListDeletedCertificatePropertiesResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListIssuerPropertiesPager - List certificate issuers for a specified key vault.
+//
+// The GetCertificateIssuers operation returns the set of certificate issuer resources in the specified key vault. This operation
+// requires the certificates/manageissuers/getissuers permission.
+//   - options - ListIssuerPropertiesOptions contains the optional parameters for the Client.NewListIssuerPropertiesPager method.
+func (client *Client) NewListIssuerPropertiesPager(options *ListIssuerPropertiesOptions) *runtime.Pager[ListIssuerPropertiesResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ListIssuerPropertiesResponse]{
+		More: func(page ListIssuerPropertiesResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *ListIssuerPropertiesResponse) (ListIssuerPropertiesResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "Client.NewListIssuerPropertiesPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listIssuerPropertiesCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return ListIssuerPropertiesResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ListIssuerPropertiesResponse{}, err
+			}
+			return client.listIssuerPropertiesHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listIssuerPropertiesCreateRequest creates the ListIssuerProperties request.
+func (client *Client) listIssuerPropertiesCreateRequest(ctx context.Context, nextLink string, _ *ListIssuerPropertiesOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/certificates/issuers"
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.vaultBaseUrl, nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260301Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listIssuerPropertiesHandleResponse handles the ListIssuerProperties response.
+func (client *Client) listIssuerPropertiesHandleResponse(resp *http.Response, successCodes ...int) (ListIssuerPropertiesResponse, error) {
+	result := ListIssuerPropertiesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.IssuerPropertiesListResult); err != nil {
+		return ListIssuerPropertiesResponse{}, err
 	}
 	return result, nil
 }
@@ -1062,8 +1090,7 @@ func (client *Client) PurgeDeletedCertificate(ctx context.Context, name string, 
 		return PurgeDeletedCertificateResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return PurgeDeletedCertificateResponse{}, err
+		return PurgeDeletedCertificateResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return PurgeDeletedCertificateResponse{}, nil
 }
@@ -1107,12 +1134,7 @@ func (client *Client) RecoverDeletedCertificate(ctx context.Context, name string
 	if err != nil {
 		return RecoverDeletedCertificateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return RecoverDeletedCertificateResponse{}, err
-	}
-	resp, err := client.recoverDeletedCertificateHandleResponse(httpResp)
-	return resp, err
+	return client.recoverDeletedCertificateHandleResponse(httpResp, http.StatusOK)
 }
 
 // recoverDeletedCertificateCreateRequest creates the RecoverDeletedCertificate request.
@@ -1134,8 +1156,11 @@ func (client *Client) recoverDeletedCertificateCreateRequest(ctx context.Context
 }
 
 // recoverDeletedCertificateHandleResponse handles the RecoverDeletedCertificate response.
-func (client *Client) recoverDeletedCertificateHandleResponse(resp *http.Response) (RecoverDeletedCertificateResponse, error) {
+func (client *Client) recoverDeletedCertificateHandleResponse(resp *http.Response, successCodes ...int) (RecoverDeletedCertificateResponse, error) {
 	result := RecoverDeletedCertificateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Certificate); err != nil {
 		return RecoverDeletedCertificateResponse{}, err
 	}
@@ -1162,12 +1187,7 @@ func (client *Client) RestoreCertificate(ctx context.Context, parameters Restore
 	if err != nil {
 		return RestoreCertificateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return RestoreCertificateResponse{}, err
-	}
-	resp, err := client.restoreCertificateHandleResponse(httpResp)
-	return resp, err
+	return client.restoreCertificateHandleResponse(httpResp, http.StatusOK)
 }
 
 // restoreCertificateCreateRequest creates the RestoreCertificate request.
@@ -1189,8 +1209,11 @@ func (client *Client) restoreCertificateCreateRequest(ctx context.Context, param
 }
 
 // restoreCertificateHandleResponse handles the RestoreCertificate response.
-func (client *Client) restoreCertificateHandleResponse(resp *http.Response) (RestoreCertificateResponse, error) {
+func (client *Client) restoreCertificateHandleResponse(resp *http.Response, successCodes ...int) (RestoreCertificateResponse, error) {
 	result := RestoreCertificateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Certificate); err != nil {
 		return RestoreCertificateResponse{}, err
 	}
@@ -1217,12 +1240,7 @@ func (client *Client) SetContacts(ctx context.Context, contacts Contacts, option
 	if err != nil {
 		return SetContactsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SetContactsResponse{}, err
-	}
-	resp, err := client.setContactsHandleResponse(httpResp)
-	return resp, err
+	return client.setContactsHandleResponse(httpResp, http.StatusOK)
 }
 
 // setContactsCreateRequest creates the SetContacts request.
@@ -1244,8 +1262,11 @@ func (client *Client) setContactsCreateRequest(ctx context.Context, contacts Con
 }
 
 // setContactsHandleResponse handles the SetContacts response.
-func (client *Client) setContactsHandleResponse(resp *http.Response) (SetContactsResponse, error) {
+func (client *Client) setContactsHandleResponse(resp *http.Response, successCodes ...int) (SetContactsResponse, error) {
 	result := SetContactsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Contacts); err != nil {
 		return SetContactsResponse{}, err
 	}
@@ -1275,12 +1296,7 @@ func (client *Client) SetIssuer(ctx context.Context, name string, parameter SetI
 	if err != nil {
 		return SetIssuerResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SetIssuerResponse{}, err
-	}
-	resp, err := client.setIssuerHandleResponse(httpResp)
-	return resp, err
+	return client.setIssuerHandleResponse(httpResp, http.StatusOK)
 }
 
 // setIssuerCreateRequest creates the SetIssuer request.
@@ -1306,8 +1322,11 @@ func (client *Client) setIssuerCreateRequest(ctx context.Context, name string, p
 }
 
 // setIssuerHandleResponse handles the SetIssuer response.
-func (client *Client) setIssuerHandleResponse(resp *http.Response) (SetIssuerResponse, error) {
+func (client *Client) setIssuerHandleResponse(resp *http.Response, successCodes ...int) (SetIssuerResponse, error) {
 	result := SetIssuerResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Issuer); err != nil {
 		return SetIssuerResponse{}, err
 	}
@@ -1337,12 +1356,7 @@ func (client *Client) UpdateCertificate(ctx context.Context, name string, versio
 	if err != nil {
 		return UpdateCertificateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return UpdateCertificateResponse{}, err
-	}
-	resp, err := client.updateCertificateHandleResponse(httpResp)
-	return resp, err
+	return client.updateCertificateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCertificateCreateRequest creates the UpdateCertificate request.
@@ -1369,8 +1383,11 @@ func (client *Client) updateCertificateCreateRequest(ctx context.Context, name s
 }
 
 // updateCertificateHandleResponse handles the UpdateCertificate response.
-func (client *Client) updateCertificateHandleResponse(resp *http.Response) (UpdateCertificateResponse, error) {
+func (client *Client) updateCertificateHandleResponse(resp *http.Response, successCodes ...int) (UpdateCertificateResponse, error) {
 	result := UpdateCertificateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Certificate); err != nil {
 		return UpdateCertificateResponse{}, err
 	}
@@ -1399,12 +1416,7 @@ func (client *Client) UpdateCertificateOperation(ctx context.Context, name strin
 	if err != nil {
 		return UpdateCertificateOperationResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return UpdateCertificateOperationResponse{}, err
-	}
-	resp, err := client.updateCertificateOperationHandleResponse(httpResp)
-	return resp, err
+	return client.updateCertificateOperationHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCertificateOperationCreateRequest creates the UpdateCertificateOperation request.
@@ -1430,8 +1442,11 @@ func (client *Client) updateCertificateOperationCreateRequest(ctx context.Contex
 }
 
 // updateCertificateOperationHandleResponse handles the UpdateCertificateOperation response.
-func (client *Client) updateCertificateOperationHandleResponse(resp *http.Response) (UpdateCertificateOperationResponse, error) {
+func (client *Client) updateCertificateOperationHandleResponse(resp *http.Response, successCodes ...int) (UpdateCertificateOperationResponse, error) {
 	result := UpdateCertificateOperationResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CertificateOperation); err != nil {
 		return UpdateCertificateOperationResponse{}, err
 	}
@@ -1460,12 +1475,7 @@ func (client *Client) UpdateCertificatePolicy(ctx context.Context, name string, 
 	if err != nil {
 		return UpdateCertificatePolicyResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return UpdateCertificatePolicyResponse{}, err
-	}
-	resp, err := client.updateCertificatePolicyHandleResponse(httpResp)
-	return resp, err
+	return client.updateCertificatePolicyHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCertificatePolicyCreateRequest creates the UpdateCertificatePolicy request.
@@ -1491,8 +1501,11 @@ func (client *Client) updateCertificatePolicyCreateRequest(ctx context.Context, 
 }
 
 // updateCertificatePolicyHandleResponse handles the UpdateCertificatePolicy response.
-func (client *Client) updateCertificatePolicyHandleResponse(resp *http.Response) (UpdateCertificatePolicyResponse, error) {
+func (client *Client) updateCertificatePolicyHandleResponse(resp *http.Response, successCodes ...int) (UpdateCertificatePolicyResponse, error) {
 	result := UpdateCertificatePolicyResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CertificatePolicy); err != nil {
 		return UpdateCertificatePolicyResponse{}, err
 	}
@@ -1521,12 +1534,7 @@ func (client *Client) UpdateIssuer(ctx context.Context, name string, parameter U
 	if err != nil {
 		return UpdateIssuerResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return UpdateIssuerResponse{}, err
-	}
-	resp, err := client.updateIssuerHandleResponse(httpResp)
-	return resp, err
+	return client.updateIssuerHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateIssuerCreateRequest creates the UpdateIssuer request.
@@ -1552,8 +1560,11 @@ func (client *Client) updateIssuerCreateRequest(ctx context.Context, name string
 }
 
 // updateIssuerHandleResponse handles the UpdateIssuer response.
-func (client *Client) updateIssuerHandleResponse(resp *http.Response) (UpdateIssuerResponse, error) {
+func (client *Client) updateIssuerHandleResponse(resp *http.Response, successCodes ...int) (UpdateIssuerResponse, error) {
 	result := UpdateIssuerResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Issuer); err != nil {
 		return UpdateIssuerResponse{}, err
 	}

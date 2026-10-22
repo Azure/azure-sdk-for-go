@@ -5,7 +5,7 @@
 package azkeys
 
 const (
-	version20260101Preview string = "2026-01-01-preview"
+	version20260301Preview string = "2026-03-01-preview"
 )
 
 // CurveName - Elliptic curve name.

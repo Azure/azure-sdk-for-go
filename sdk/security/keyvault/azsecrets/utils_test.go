@@ -23,6 +23,7 @@ import (
 )
 
 const recordingDirectory = "sdk/security/keyvault/azsecrets/testdata"
+const playbackAPIVersion = "2025-07-01"
 
 var (
 	secretsToPurge = struct {
@@ -114,7 +115,12 @@ func startTest(t *testing.T) *azsecrets.Client {
 	})
 	transport, err := recording.NewRecordingHTTPClient(t, nil)
 	require.NoError(t, err)
-	opts := &azsecrets.ClientOptions{ClientOptions: azcore.ClientOptions{Transport: transport}}
+	opts := &azsecrets.ClientOptions{
+		ClientOptions: azcore.ClientOptions{
+			Transport:  transport,
+			APIVersion: playbackAPIVersion,
+		},
+	}
 	client, err := azsecrets.NewClient(vaultURL, credential, opts)
 	require.NoError(t, err)
 	return client

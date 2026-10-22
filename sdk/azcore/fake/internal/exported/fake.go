@@ -343,12 +343,13 @@ func (s *SSEResponder[T]) AddEvent(event T) {
 // Nil ID and Retry omit their fields. An empty ID resets the cursor; zero Retry
 // requests immediate reconnection.
 // Nil Data omits data fields; a non-nil empty slice emits an empty data event.
+// CRLF and lone CR line endings in Data are normalized to LF.
 func (s *SSEResponder[T]) AddFrame(frame streaming.SSEFrame) {
 	s.entries = append(s.entries, sseEntry[T]{frame: frame})
 }
 
 // MarshalEvents renders the added events to the SSE wire format. Typed events
-// are encoded with encode; raw frames are written as-is.
+// are encoded with encode; raw frames are serialized directly.
 // This function is called by the fake server internals.
 func (s *SSEResponder[T]) MarshalEvents(encode func(T) (streaming.SSEFrame, error)) (io.ReadCloser, error) {
 	var buf bytes.Buffer
@@ -390,7 +391,9 @@ func writeSSEFrame(buf *bytes.Buffer, f streaming.SSEFrame) {
 	}
 	// each line of data is emitted as its own "data:" field
 	if f.Data != nil {
-		for line := range strings.SplitSeq(string(f.Data), "\n") {
+		data := strings.ReplaceAll(string(f.Data), "\r\n", "\n")
+		data = strings.ReplaceAll(data, "\r", "\n")
+		for line := range strings.SplitSeq(data, "\n") {
 			buf.WriteString("data: ")
 			buf.WriteString(line)
 			buf.WriteByte('\n')

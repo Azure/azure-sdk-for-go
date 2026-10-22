@@ -153,6 +153,7 @@ func (s *SSEResponder[T]) AddEvent(event T) {
 // Nil ID and Retry omit their fields. An empty ID resets the cursor; zero Retry
 // requests immediate reconnection.
 // Nil Data omits data fields; a non-nil empty slice emits an empty data event.
+// CRLF and lone CR line endings in Data are normalized to LF.
 func (s *SSEResponder[T]) AddFrame(frame streaming.SSEFrame) {
 	(*exported.SSEResponder[T])(s).AddFrame(frame)
 }

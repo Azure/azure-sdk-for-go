@@ -401,6 +401,74 @@ func TestMarshalSSEResponderZeroRetry(t *testing.T) {
 	}
 }
 
+func TestMarshalSSEResponderDataLineEndings(t *testing.T) {
+	for _, tc := range []struct {
+		name string
+		data string
+		want string
+	}{
+		{"empty", "", ""},
+		{"LF", "hello\nworld", "hello\nworld"},
+		{"CRLF", "hello\r\nworld", "hello\nworld"},
+		{"CR", "hello\rworld", "hello\nworld"},
+		{"mixed", "one\r\ntwo\rthree\nfour", "one\ntwo\nthree\nfour"},
+		{"leading CR", "\rhello", "\nhello"},
+		{"trailing CR", "hello\r", "hello\n"},
+		{"trailing CRLF", "hello\r\n", "hello\n"},
+		{"trailing LF", "hello\n", "hello\n"},
+		{"consecutive CR", "hello\r\rworld", "hello\n\nworld"},
+		{"consecutive CRLF", "hello\r\n\r\nworld", "hello\n\nworld"},
+		{"only CR", "\r", "\n"},
+		{"only CRLF", "\r\n", "\n"},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			for _, typed := range []bool{false, true} {
+				name := "raw"
+				if typed {
+					name = "typed"
+				}
+				t.Run(name, func(t *testing.T) {
+					var responder fake.SSEResponder[sseTestValue]
+					if typed {
+						responder.AddEvent(sseTestValue{data: tc.data})
+					} else {
+						responder.AddFrame(streaming.SSEFrame{Data: []byte(tc.data)})
+					}
+					responder.AddEvent(sseTestValue{data: "next event"})
+					body, err := MarshalSSEResponder(&responder, encodeSSETestValue)
+					require.NoError(t, err)
+					wire, err := io.ReadAll(body)
+					require.NoError(t, err)
+					require.NoError(t, body.Close())
+					require.Equal(t, "data: "+strings.ReplaceAll(tc.want, "\n", "\ndata: ")+"\n\ndata: next event\n\n", string(wire))
+
+					body, err = MarshalSSEResponder(&responder, encodeSSETestValue)
+					require.NoError(t, err)
+					reader, err := streaming.NewSSEReader(context.Background(), func(context.Context, string) (io.ReadCloser, error) {
+						return body, nil
+					}, streaming.SSEHandler[streaming.SSEFrame]{
+						Decode: func(frame streaming.SSEFrame) (streaming.SSEFrame, bool, error) {
+							return frame, false, nil
+						},
+					}, nil)
+					require.NoError(t, err)
+					defer func() {
+						_ = reader.Close()
+					}()
+					for _, want := range []string{tc.want, "next event"} {
+						frame, err := reader.Next()
+						require.NoError(t, err)
+						require.NotNil(t, frame.Data)
+						require.Equal(t, want, string(frame.Data))
+					}
+					_, err = reader.Next()
+					require.ErrorIs(t, err, io.EOF)
+				})
+			}
+		})
+	}
+}
+
 func TestMarshalSSEResponderIDReset(t *testing.T) {
 	var responder fake.SSEResponder[sseTestValue]
 	responder.AddFrame(streaming.SSEFrame{ID: to.Ptr("checkpoint"), Data: []byte("set")})

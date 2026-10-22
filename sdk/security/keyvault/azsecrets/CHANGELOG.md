@@ -3,7 +3,9 @@
 ## 1.5.1-beta.1 (2026-10-22)
 ### Other Changes
 
-* Regenerated with Key Vault `2026-03-01-preview` TypeSpec configuration.`r`n`r`n## 1.5.0 (2026-05-26)
+* Regenerated with Key Vault `2026-03-01-preview` TypeSpec configuration.
+
+## 1.5.0 (2026-05-26)
 
 ### Features Added
 * Includes all changes from 1.5.0-beta.1.

@@ -6,6 +6,7 @@ package streaming_test
 import (
 	"context"
 	"errors"
+	"fmt"
 	"io"
 	"testing"
 	"testing/synctest"
@@ -90,6 +91,7 @@ func TestInitialConnectionCompletionAndFailures(t *testing.T) {
 		{name: "failure with body", withBody: true, connectErr: connectErr},
 		{name: "failure with close failure", withBody: true, connectErr: connectErr, closeErr: closeErr},
 		{name: "failure with EOF close failure", withBody: true, connectErr: connectErr, closeErr: io.EOF},
+		{name: "failure with wrapped EOF close failure", withBody: true, connectErr: connectErr, closeErr: fmt.Errorf("closing body: %w", io.EOF)},
 		{name: "nil body"},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
@@ -119,14 +121,15 @@ func TestInitialConnectionCompletionAndFailures(t *testing.T) {
 			} else {
 				require.Error(t, err)
 				assert.Nil(t, reader)
-				if tc.closeErr != nil {
+				if tc.closeErr != nil && (tc.connectErr == io.EOF || !errors.Is(tc.closeErr, io.EOF)) {
 					assert.ErrorIs(t, err, tc.closeErr)
-					if tc.closeErr != io.EOF {
+					if !errors.Is(tc.closeErr, io.EOF) {
 						assert.NotErrorIs(t, err, io.EOF)
 					}
 				}
 				if tc.connectErr != nil && tc.connectErr != io.EOF {
 					assert.ErrorIs(t, err, tc.connectErr)
+					assert.NotErrorIs(t, err, io.EOF)
 				}
 				if tc.connectErr == nil {
 					assert.ErrorContains(t, err, "nil body")

@@ -317,7 +317,10 @@ func (e *SSEReader[T]) open() error {
 				if complete {
 					return closeErr
 				}
-				err = errors.Join(err, closeErr)
+				// A cleanup EOF must not make a connection failure look like completion.
+				if !errors.Is(closeErr, io.EOF) {
+					err = errors.Join(err, closeErr)
+				}
 			}
 		}
 		if stateErr := e.stateError(); stateErr != nil {

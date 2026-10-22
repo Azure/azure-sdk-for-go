@@ -6,6 +6,7 @@ package streaming_test
 import (
 	"context"
 	"errors"
+	"fmt"
 	"io"
 	"math"
 	"net"
@@ -527,6 +528,8 @@ func TestConnectCompletionAndErrorBodyCleanup(t *testing.T) {
 		{name: "completion with close failure", withBody: true, connectErr: io.EOF, closeErr: closeErr},
 		{name: "failure with body", withBody: true, connectErr: connectErr},
 		{name: "failure with close failure", withBody: true, connectErr: connectErr, closeErr: closeErr},
+		{name: "failure with EOF close failure", withBody: true, connectErr: connectErr, closeErr: io.EOF},
+		{name: "failure with wrapped EOF close failure", withBody: true, connectErr: connectErr, closeErr: fmt.Errorf("closing body: %w", io.EOF)},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
 			calls := 0
@@ -541,12 +544,15 @@ func TestConnectCompletionAndErrorBodyCleanup(t *testing.T) {
 				}),
 				streaming.SSEHandler[frameView]{Reconnect: true}, nil)
 			_, err := reader.Next()
-			if tc.closeErr != nil {
+			if tc.closeErr != nil && !errors.Is(tc.closeErr, io.EOF) {
 				require.ErrorIs(t, err, tc.closeErr)
 				assert.NotErrorIs(t, err, io.EOF)
 			}
 			if tc.connectErr != io.EOF || tc.closeErr == nil {
 				require.ErrorIs(t, err, tc.connectErr)
+			}
+			if tc.connectErr != io.EOF {
+				assert.NotErrorIs(t, err, io.EOF)
 			}
 			if tc.withBody {
 				assert.EqualValues(t, 1, body.closed.Load())

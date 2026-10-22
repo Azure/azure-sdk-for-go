@@ -440,7 +440,7 @@ func (s *ServerTransport) dispatchGetKey(req *http.Request) (*http.Response, err
 	if s.srv.GetKey == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetKey not implemented")}
 	}
-	const regexStr = `^/keys/(?P<key_name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)(?:/(?P<key_version>[a-zA-Z0-9._~%!$&'()?*+,;=:@-]+))?$`
+	const regexStr = `^/keys/(?P<key_name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)(?:/(?P<key_version>[a-zA-Z0-9._~%!$&'()?*+,;=:@-]+))?/?$`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -977,7 +977,7 @@ func (s *ServerTransport) dispatchUpdateKey(req *http.Request) (*http.Response, 
 	if s.srv.UpdateKey == nil {
 		return nil, &nonRetriableError{errors.New("fake for method UpdateKey not implemented")}
 	}
-	const regexStr = `^/keys/(?P<key_name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)(?:/(?P<key_version>[a-zA-Z0-9._~%!$&'()?*+,;=:@-]+))?$`
+	const regexStr = `^/keys/(?P<key_name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)(?:/(?P<key_version>[a-zA-Z0-9._~%!$&'()?*+,;=:@-]+))?/?$`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {

@@ -278,7 +278,7 @@ func (e *SSEReader[T]) reopen() error {
 	e.body = nil
 	e.mu.Unlock()
 	if body != nil {
-		if err := body.Close(); err != nil {
+		if err := body.Close(); err != nil && !errors.Is(err, io.EOF) {
 			return err
 		}
 	}
@@ -343,7 +343,7 @@ func (e *SSEReader[T]) open() error {
 	e.mu.Unlock()
 	if stateErr := e.stateError(); stateErr != nil {
 		closeErr := e.Close()
-		if closeErr != nil {
+		if closeErr != nil && !errors.Is(closeErr, io.EOF) {
 			return closeErr
 		}
 		return stateErr

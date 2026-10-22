@@ -350,6 +350,75 @@ func TestCancellationAndCloseInterruptReconnectDelay(t *testing.T) {
 	}
 }
 
+func TestReconnectDisconnectedBodyCleanup(t *testing.T) {
+	for _, closeErr := range []error{nil, io.EOF, fmt.Errorf("closing body: %w", io.EOF), errors.New("close failed")} {
+		t.Run(fmt.Sprint(closeErr), func(t *testing.T) {
+			body := &observedSSEBody{ReadCloser: eventBody("retry: 0\n\n"), closeErr: closeErr}
+			calls := 0
+			reader := newSSEReaderWithContext(t, context.Background(), initialBodyConnector(body,
+				func(context.Context, string) (io.ReadCloser, error) {
+					calls++
+					return eventBody("data: reconnected\n\n"), nil
+				}),
+				streaming.SSEHandler[frameView]{Reconnect: true}, nil)
+			event, err := reader.Next()
+			if closeErr != nil && !errors.Is(closeErr, io.EOF) {
+				require.ErrorIs(t, err, closeErr)
+				require.NotErrorIs(t, err, io.EOF)
+				require.Zero(t, calls)
+			} else {
+				require.NoError(t, err)
+				require.Equal(t, "reconnected", event.data)
+				require.Equal(t, 1, calls)
+			}
+			require.EqualValues(t, 1, body.closed.Load())
+			require.NoError(t, reader.Close())
+			_, err = reader.Next()
+			require.ErrorIs(t, err, io.EOF)
+		})
+	}
+}
+
+func TestReconnectLateBodyCancellation(t *testing.T) {
+	for _, deadline := range []bool{false, true} {
+		for _, closeErr := range []error{nil, io.EOF, fmt.Errorf("closing body: %w", io.EOF), errors.New("close failed")} {
+			t.Run(fmt.Sprintf("deadline=%t/close=%v", deadline, closeErr), func(t *testing.T) {
+				synctest.Test(t, func(t *testing.T) {
+					ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+					defer cancel()
+					body := &observedSSEBody{ReadCloser: eventBody("data: late\n\n"), closeErr: closeErr}
+					calls := 0
+					reader := newSSEReaderWithContext(t, ctx, initialBodyConnector(eventBody("retry: 0\n\n"),
+						func(connectCtx context.Context, _ string) (io.ReadCloser, error) {
+							calls++
+							if !deadline {
+								cancel()
+							}
+							<-connectCtx.Done()
+							return body, nil
+						}),
+						streaming.SSEHandler[frameView]{Reconnect: true}, nil)
+					_, err := reader.Next()
+					if closeErr != nil && !errors.Is(closeErr, io.EOF) {
+						require.ErrorIs(t, err, closeErr)
+					} else {
+						wantErr := context.Canceled
+						if deadline {
+							wantErr = context.DeadlineExceeded
+						}
+						require.ErrorIs(t, err, wantErr)
+					}
+					require.NotErrorIs(t, err, io.EOF)
+					require.Equal(t, 1, calls)
+					require.EqualValues(t, 1, body.closed.Load())
+					_, err = reader.Next()
+					require.ErrorIs(t, err, io.EOF)
+				})
+			})
+		}
+	}
+}
+
 func TestCloseCancelsPendingConnect(t *testing.T) {
 	started := make(chan struct{})
 	reader := newSSEReaderWithContext(t, context.Background(), initialBodyConnector(eventBody("retry: 0\n\n"),

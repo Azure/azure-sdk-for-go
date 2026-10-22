@@ -159,29 +159,40 @@ func TestInitialConnectionWithCanceledContext(t *testing.T) {
 }
 
 func TestInitialConnectionDeadline(t *testing.T) {
-	for _, lateBody := range []bool{false, true} {
-		name := "connector honors deadline"
-		if lateBody {
-			name = "connector returns late body"
-		}
-		t.Run(name, func(t *testing.T) {
+	for _, tc := range []struct {
+		name     string
+		lateBody bool
+		closeErr error
+	}{
+		{name: "connector honors deadline"},
+		{name: "connector returns late body", lateBody: true},
+		{name: "late body cleanup EOF", lateBody: true, closeErr: io.EOF},
+		{name: "late body cleanup wrapped EOF", lateBody: true, closeErr: fmt.Errorf("closing body: %w", io.EOF)},
+		{name: "late body cleanup failure", lateBody: true, closeErr: errors.New("close failed")},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
 			synctest.Test(t, func(t *testing.T) {
 				ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 				defer cancel()
 				calls := 0
-				body := &observedSSEBody{ReadCloser: eventBody("data: late\n\n")}
+				body := &observedSSEBody{ReadCloser: eventBody("data: late\n\n"), closeErr: tc.closeErr}
 				reader, err := streaming.NewSSEReader(ctx, func(connectCtx context.Context, _ string) (io.ReadCloser, error) {
 					calls++
 					<-connectCtx.Done()
-					if lateBody {
+					if tc.lateBody {
 						return body, nil
 					}
 					return nil, connectCtx.Err()
 				}, streaming.SSEHandler[frameView]{Decode: decodeView}, nil)
-				require.ErrorIs(t, err, context.DeadlineExceeded)
+				if tc.closeErr != nil && !errors.Is(tc.closeErr, io.EOF) {
+					require.ErrorIs(t, err, tc.closeErr)
+				} else {
+					require.ErrorIs(t, err, context.DeadlineExceeded)
+				}
+				require.NotErrorIs(t, err, io.EOF)
 				assert.Nil(t, reader)
 				assert.Equal(t, 1, calls)
-				if lateBody {
+				if tc.lateBody {
 					assert.EqualValues(t, 1, body.closed.Load())
 				} else {
 					require.NoError(t, body.Close())

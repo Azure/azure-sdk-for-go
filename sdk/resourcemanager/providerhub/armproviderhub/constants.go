@@ -5,7 +5,7 @@
 package armproviderhub
 
 const (
-	version20251001 string = "2025-10-01"
+	version20261001 string = "2026-10-01"
 )
 
 // AdditionalOptions - The additional options.
@@ -446,6 +446,24 @@ func PossibleIntentValues() []Intent {
 	}
 }
 
+// IsolationType - The isolation type.
+type IsolationType string
+
+const (
+	// IsolationTypePrivate - Private isolation type.
+	IsolationTypePrivate IsolationType = "Private"
+	// IsolationTypePublic - Public isolation type.
+	IsolationTypePublic IsolationType = "Public"
+)
+
+// PossibleIsolationTypeValues returns the possible values for the IsolationType const type.
+func PossibleIsolationTypeValues() []IsolationType {
+	return []IsolationType{
+		IsolationTypePrivate,
+		IsolationTypePublic,
+	}
+}
+
 type LegacyOperation string
 
 const (
@@ -474,6 +492,33 @@ func PossibleLegacyOperationValues() []LegacyOperation {
 		LegacyOperationRead,
 		LegacyOperationResourceCacheWaiting,
 		LegacyOperationWaiting,
+	}
+}
+
+// LifecycleStage - The lifecycle stage.
+type LifecycleStage string
+
+const (
+	// LifecycleStageGA - General Availability lifecycle stage.
+	LifecycleStageGA LifecycleStage = "GA"
+	// LifecycleStageInDevelopment - In Development lifecycle stage.
+	LifecycleStageInDevelopment LifecycleStage = "InDevelopment"
+	// LifecycleStagePrivatePreview - Private Preview lifecycle stage.
+	LifecycleStagePrivatePreview LifecycleStage = "PrivatePreview"
+	// LifecycleStagePublicPreview - Public Preview lifecycle stage.
+	LifecycleStagePublicPreview LifecycleStage = "PublicPreview"
+	// LifecycleStageRetired - Retired lifecycle stage.
+	LifecycleStageRetired LifecycleStage = "Retired"
+)
+
+// PossibleLifecycleStageValues returns the possible values for the LifecycleStage const type.
+func PossibleLifecycleStageValues() []LifecycleStage {
+	return []LifecycleStage{
+		LifecycleStageGA,
+		LifecycleStageInDevelopment,
+		LifecycleStagePrivatePreview,
+		LifecycleStagePublicPreview,
+		LifecycleStageRetired,
 	}
 }
 
@@ -730,6 +775,8 @@ func PossibleOperationOriginsValues() []OperationOrigins {
 type OptInHeaderType string
 
 const (
+	// OptInHeaderTypeAuxiliaryUserContext - Includes user context information from incoming auxiliary tokens.
+	OptInHeaderTypeAuxiliaryUserContext            OptInHeaderType = "AuxiliaryUserContext"
 	OptInHeaderTypeClientGroupMembership           OptInHeaderType = "ClientGroupMembership"
 	OptInHeaderTypeClientPrincipalNameEncoded      OptInHeaderType = "ClientPrincipalNameEncoded"
 	OptInHeaderTypeMSIResourceIDEncoded            OptInHeaderType = "MSIResourceIdEncoded"
@@ -742,11 +789,14 @@ const (
 	OptInHeaderTypeSignedAuxiliaryTokens           OptInHeaderType = "SignedAuxiliaryTokens"
 	OptInHeaderTypeSignedUserToken                 OptInHeaderType = "SignedUserToken"
 	OptInHeaderTypeUnboundedClientGroupMembership  OptInHeaderType = "UnboundedClientGroupMembership"
+	// OptInHeaderTypeUserContext - Includes user context information from the incoming token.
+	OptInHeaderTypeUserContext OptInHeaderType = "UserContext"
 )
 
 // PossibleOptInHeaderTypeValues returns the possible values for the OptInHeaderType const type.
 func PossibleOptInHeaderTypeValues() []OptInHeaderType {
 	return []OptInHeaderType{
+		OptInHeaderTypeAuxiliaryUserContext,
 		OptInHeaderTypeClientGroupMembership,
 		OptInHeaderTypeClientPrincipalNameEncoded,
 		OptInHeaderTypeMSIResourceIDEncoded,
@@ -759,6 +809,7 @@ func PossibleOptInHeaderTypeValues() []OptInHeaderType {
 		OptInHeaderTypeSignedAuxiliaryTokens,
 		OptInHeaderTypeSignedUserToken,
 		OptInHeaderTypeUnboundedClientGroupMembership,
+		OptInHeaderTypeUserContext,
 	}
 }
 
@@ -775,6 +826,24 @@ func PossibleOptOutHeaderTypeValues() []OptOutHeaderType {
 	return []OptOutHeaderType{
 		OptOutHeaderTypeNotSpecified,
 		OptOutHeaderTypeSystemDataCreatedByLastModifiedBy,
+	}
+}
+
+// PartnerCategory - The partner category.
+type PartnerCategory string
+
+const (
+	// PartnerCategoryFirstParty - First party partner category.
+	PartnerCategoryFirstParty PartnerCategory = "FirstParty"
+	// PartnerCategoryThirdParty - Third party partner category.
+	PartnerCategoryThirdParty PartnerCategory = "ThirdParty"
+)
+
+// PossiblePartnerCategoryValues returns the possible values for the PartnerCategory const type.
+func PossiblePartnerCategoryValues() []PartnerCategory {
+	return []PartnerCategory{
+		PartnerCategoryFirstParty,
+		PartnerCategoryThirdParty,
 	}
 }
 

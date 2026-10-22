@@ -93,6 +93,101 @@ type DefaultRolloutsClientStopResponse struct {
 	// placeholder for future response values
 }
 
+// EndpointRegistrationsClientCreateOrUpdateNestedResourceTypeFirstResponse contains the response from method EndpointRegistrationsClient.CreateOrUpdateNestedResourceTypeFirst.
+type EndpointRegistrationsClientCreateOrUpdateNestedResourceTypeFirstResponse struct {
+	// An independently managed endpoint definition for a Resource Type Registration.
+	EndpointRegistration
+}
+
+// EndpointRegistrationsClientCreateOrUpdateNestedResourceTypeSecondResponse contains the response from method EndpointRegistrationsClient.CreateOrUpdateNestedResourceTypeSecond.
+type EndpointRegistrationsClientCreateOrUpdateNestedResourceTypeSecondResponse struct {
+	// An independently managed endpoint definition for a Resource Type Registration.
+	EndpointRegistration
+}
+
+// EndpointRegistrationsClientCreateOrUpdateNestedResourceTypeThirdResponse contains the response from method EndpointRegistrationsClient.CreateOrUpdateNestedResourceTypeThird.
+type EndpointRegistrationsClientCreateOrUpdateNestedResourceTypeThirdResponse struct {
+	// An independently managed endpoint definition for a Resource Type Registration.
+	EndpointRegistration
+}
+
+// EndpointRegistrationsClientCreateOrUpdateResponse contains the response from method EndpointRegistrationsClient.CreateOrUpdate.
+type EndpointRegistrationsClientCreateOrUpdateResponse struct {
+	// An independently managed endpoint definition for a Resource Type Registration.
+	EndpointRegistration
+}
+
+// EndpointRegistrationsClientDeleteNestedResourceTypeFirstResponse contains the response from method EndpointRegistrationsClient.DeleteNestedResourceTypeFirst.
+type EndpointRegistrationsClientDeleteNestedResourceTypeFirstResponse struct {
+	// placeholder for future response values
+}
+
+// EndpointRegistrationsClientDeleteNestedResourceTypeSecondResponse contains the response from method EndpointRegistrationsClient.DeleteNestedResourceTypeSecond.
+type EndpointRegistrationsClientDeleteNestedResourceTypeSecondResponse struct {
+	// placeholder for future response values
+}
+
+// EndpointRegistrationsClientDeleteNestedResourceTypeThirdResponse contains the response from method EndpointRegistrationsClient.DeleteNestedResourceTypeThird.
+type EndpointRegistrationsClientDeleteNestedResourceTypeThirdResponse struct {
+	// placeholder for future response values
+}
+
+// EndpointRegistrationsClientDeleteResponse contains the response from method EndpointRegistrationsClient.Delete.
+type EndpointRegistrationsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// EndpointRegistrationsClientGetNestedResourceTypeFirstResponse contains the response from method EndpointRegistrationsClient.GetNestedResourceTypeFirst.
+type EndpointRegistrationsClientGetNestedResourceTypeFirstResponse struct {
+	// An independently managed endpoint definition for a Resource Type Registration.
+	EndpointRegistration
+}
+
+// EndpointRegistrationsClientGetNestedResourceTypeSecondResponse contains the response from method EndpointRegistrationsClient.GetNestedResourceTypeSecond.
+type EndpointRegistrationsClientGetNestedResourceTypeSecondResponse struct {
+	// An independently managed endpoint definition for a Resource Type Registration.
+	EndpointRegistration
+}
+
+// EndpointRegistrationsClientGetNestedResourceTypeThirdResponse contains the response from method EndpointRegistrationsClient.GetNestedResourceTypeThird.
+type EndpointRegistrationsClientGetNestedResourceTypeThirdResponse struct {
+	// An independently managed endpoint definition for a Resource Type Registration.
+	EndpointRegistration
+}
+
+// EndpointRegistrationsClientGetResponse contains the response from method EndpointRegistrationsClient.Get.
+type EndpointRegistrationsClientGetResponse struct {
+	// An independently managed endpoint definition for a Resource Type Registration.
+	EndpointRegistration
+}
+
+// EndpointRegistrationsClientListByResourceTypeRegistrationNestedResourceTypeFirstResponse contains the response from method
+// EndpointRegistrationsClient.NewListByResourceTypeRegistrationNestedResourceTypeFirstPager.
+type EndpointRegistrationsClientListByResourceTypeRegistrationNestedResourceTypeFirstResponse struct {
+	// A page of endpoint registrations.
+	EndpointRegistrationArrayResponseWithContinuation
+}
+
+// EndpointRegistrationsClientListByResourceTypeRegistrationNestedResourceTypeSecondResponse contains the response from method
+// EndpointRegistrationsClient.NewListByResourceTypeRegistrationNestedResourceTypeSecondPager.
+type EndpointRegistrationsClientListByResourceTypeRegistrationNestedResourceTypeSecondResponse struct {
+	// A page of endpoint registrations.
+	EndpointRegistrationArrayResponseWithContinuation
+}
+
+// EndpointRegistrationsClientListByResourceTypeRegistrationNestedResourceTypeThirdResponse contains the response from method
+// EndpointRegistrationsClient.NewListByResourceTypeRegistrationNestedResourceTypeThirdPager.
+type EndpointRegistrationsClientListByResourceTypeRegistrationNestedResourceTypeThirdResponse struct {
+	// A page of endpoint registrations.
+	EndpointRegistrationArrayResponseWithContinuation
+}
+
+// EndpointRegistrationsClientListByResourceTypeRegistrationResponse contains the response from method EndpointRegistrationsClient.NewListByResourceTypeRegistrationPager.
+type EndpointRegistrationsClientListByResourceTypeRegistrationResponse struct {
+	// A page of endpoint registrations.
+	EndpointRegistrationArrayResponseWithContinuation
+}
+
 // ManifestsClientCreateOrUpdateResponse contains the response from method ManifestsClient.CreateOrUpdate.
 type ManifestsClientCreateOrUpdateResponse struct {
 	// Concrete proxy resource types can be created by aliasing this type using a specific property type.
@@ -218,15 +313,32 @@ type ResourceActionsClientDeleteResourcesResponse struct {
 	// placeholder for future response values
 }
 
+// ResourceTypeRegistrationsClientCreateOrUpdateNestedResourceTypeFirstResponse contains the response from method ResourceTypeRegistrationsClient.BeginCreateOrUpdateNestedResourceTypeFirst.
+type ResourceTypeRegistrationsClientCreateOrUpdateNestedResourceTypeFirstResponse struct {
+	// Concrete proxy resource types can be created by aliasing this type using a specific property type.
+	ResourceTypeRegistration
+}
+
 // ResourceTypeRegistrationsClientCreateOrUpdateResponse contains the response from method ResourceTypeRegistrationsClient.BeginCreateOrUpdate.
 type ResourceTypeRegistrationsClientCreateOrUpdateResponse struct {
 	// Concrete proxy resource types can be created by aliasing this type using a specific property type.
 	ResourceTypeRegistration
 }
 
+// ResourceTypeRegistrationsClientDeleteNestedResourceTypeFirstResponse contains the response from method ResourceTypeRegistrationsClient.BeginDeleteNestedResourceTypeFirst.
+type ResourceTypeRegistrationsClientDeleteNestedResourceTypeFirstResponse struct {
+	// placeholder for future response values
+}
+
 // ResourceTypeRegistrationsClientDeleteResponse contains the response from method ResourceTypeRegistrationsClient.BeginDelete.
 type ResourceTypeRegistrationsClientDeleteResponse struct {
 	// placeholder for future response values
+}
+
+// ResourceTypeRegistrationsClientGetNestedResourceTypeFirstResponse contains the response from method ResourceTypeRegistrationsClient.GetNestedResourceTypeFirst.
+type ResourceTypeRegistrationsClientGetNestedResourceTypeFirstResponse struct {
+	// Concrete proxy resource types can be created by aliasing this type using a specific property type.
+	ResourceTypeRegistration
 }
 
 // ResourceTypeRegistrationsClientGetResponse contains the response from method ResourceTypeRegistrationsClient.Get.

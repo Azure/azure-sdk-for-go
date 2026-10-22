@@ -714,6 +714,55 @@ func TestDecodeTruncatedSegmentFooter(t *testing.T) {
 	require.Contains(t, err.Error(), "insufficient data")
 }
 
+// TestDecoderRejectsMissingCRC64Flag verifies that clearing the CRC64 flag can't be used to skip
+// validation of a modified payload in either the one-shot or streaming decoder.
+func TestDecoderRejectsMissingCRC64Flag(t *testing.T) {
+	data := []byte("structured message body that should be validated")
+	noFlag := makeCorruptedSM(data, func(d []byte) {
+		d[9] = 0
+		d[10] = 0
+		d[SMHeaderSize+SMSegmentHeaderSize] ^= 0xFF
+	})
+
+	t.Run("SMDecode", func(t *testing.T) {
+		_, err := SMDecode(noFlag)
+		require.Error(t, err)
+		require.Contains(t, err.Error(), "missing the required CRC64 flag")
+	})
+
+	t.Run("SMDecoder", func(t *testing.T) {
+		dec := NewSMDecoder(io.NopCloser(bytes.NewReader(noFlag)))
+		_, err := io.ReadAll(dec)
+		require.Error(t, err)
+		require.Contains(t, err.Error(), "missing the required CRC64 flag")
+	})
+}
+
+// TestDecodeRejectsTrailingBytes verifies that bytes after the parsed message are rejected even when
+// the header's declared message length includes them.
+func TestDecodeRejectsTrailingBytes(t *testing.T) {
+	data := []byte("payload that will be followed by junk")
+	encoded := SMEncode(data, 0).EncodedData
+	junk := []byte{0xDE, 0xAD, 0xBE, 0xEF}
+	tampered := make([]byte, 0, len(encoded)+len(junk))
+	tampered = append(tampered, encoded...)
+	tampered = append(tampered, junk...)
+	binary.LittleEndian.PutUint64(tampered[1:9], uint64(len(tampered)))
+
+	t.Run("SMDecode", func(t *testing.T) {
+		_, err := SMDecode(tampered)
+		require.Error(t, err)
+		require.Contains(t, err.Error(), "unexpected trailing bytes")
+	})
+
+	t.Run("SMDecoder", func(t *testing.T) {
+		dec := NewSMDecoder(io.NopCloser(bytes.NewReader(tampered)))
+		_, err := io.ReadAll(dec)
+		require.Error(t, err)
+		require.Contains(t, err.Error(), "length mismatch")
+	})
+}
+
 func TestDecodeVariousReadSizes(t *testing.T) {
 	testCases := []struct {
 		name    string

@@ -3,7 +3,9 @@
 ## 1.6.0-beta.2 (2026-10-22)
 ### Other Changes
 
-* Regenerated with Key Vault `2026-03-01-preview` TypeSpec configuration.`r`n`r`n## 1.6.0-beta.1 (2026-06-09)
+* Regenerated with Key Vault `2026-03-01-preview` TypeSpec configuration.
+
+## 1.6.0-beta.1 (2026-06-09)
 
 ### Features Added
 * Added the `SecureWrapKey` and `SecureUnwrapKey` operations

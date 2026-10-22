@@ -318,6 +318,7 @@ func TestSSEHTTPRejectedResponseEOFIsNotCompletion(t *testing.T) {
 	readErr := fmt.Errorf("reading response: %w", io.EOF)
 	body := &observedSSEHTTPBody{
 		ReadCloser: io.NopCloser(iotest.ErrReader(readErr)),
+		reading:    make(chan struct{}),
 		closed:     make(chan struct{}),
 	}
 	var requests atomic.Int32
@@ -334,9 +335,16 @@ func TestSSEHTTPRejectedResponseEOFIsNotCompletion(t *testing.T) {
 		}),
 	})
 	reader, err := streaming.NewSSEReader(context.Background(), connect, streaming.SSEHandler[frameView]{Decode: decodeView}, nil)
-	require.ErrorIs(t, err, io.ErrUnexpectedEOF)
+	var responseErr *azcore.ResponseError
+	require.ErrorAs(t, err, &responseErr)
+	require.Equal(t, http.StatusCreated, responseErr.StatusCode)
 	require.NotErrorIs(t, err, io.EOF)
-	require.ErrorContains(t, err, readErr.Error())
+	require.Contains(t, responseErr.Error(), "RESPONSE 201:")
+	select {
+	case <-body.reading:
+		t.Fatal("rejected streaming response body must not be read")
+	default:
+	}
 	require.Nil(t, reader)
 	require.EqualValues(t, 1, requests.Load())
 	waitForSSEHTTPSignal(t, body.closed)

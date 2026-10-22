@@ -4,15 +4,19 @@
 package runtime_test
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"io"
 	"net/http"
+	"net/http/httptest"
 	"strings"
 	"testing"
 	"testing/iotest"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/stretchr/testify/require"
 )
@@ -148,7 +152,7 @@ func TestSSEResponseRejectedBodyEOF(t *testing.T) {
 	readErr := fmt.Errorf("reading response: %w", io.EOF)
 	body := &sseResponseTestBody{Reader: iotest.ErrReader(readErr)}
 	got, err := runtime.SSEResponse(&http.Response{
-		StatusCode: http.StatusCreated,
+		StatusCode: http.StatusBadRequest,
 		Header:     make(http.Header),
 		Body:       body,
 	}, nil, http.StatusOK)
@@ -157,6 +161,81 @@ func TestSSEResponseRejectedBodyEOF(t *testing.T) {
 	require.NotErrorIs(t, err, io.EOF)
 	require.ErrorContains(t, err, readErr.Error())
 	require.Equal(t, 1, body.closes)
+}
+
+func TestSSEResponseRejectedUnbufferedBody(t *testing.T) {
+	for _, status := range []int{http.StatusOK, http.StatusCreated, http.StatusFound} {
+		for _, closeErr := range []error{nil, io.EOF, errors.New("close failed")} {
+			t.Run(fmt.Sprintf("%d/close=%v", status, closeErr), func(t *testing.T) {
+				body := &sseResponseTestBody{Reader: iotest.ErrReader(io.EOF), closeErr: closeErr}
+				resp := &http.Response{
+					StatusCode: status,
+					Header:     http.Header{"X-Ms-Error-Code": []string{"UnexpectedStatus"}},
+					Body:       body,
+				}
+				got, err := runtime.SSEResponse(resp, nil, http.StatusAccepted)
+				require.Nil(t, got)
+				var responseErr *azcore.ResponseError
+				require.ErrorAs(t, err, &responseErr)
+				require.Equal(t, status, responseErr.StatusCode)
+				require.Equal(t, "UnexpectedStatus", responseErr.ErrorCode)
+				require.Same(t, resp, responseErr.RawResponse)
+				require.NotErrorIs(t, err, io.EOF)
+				require.Contains(t, responseErr.Error(), fmt.Sprintf("RESPONSE %d:", status))
+				require.Zero(t, body.reads)
+				require.Equal(t, 1, body.closes)
+			})
+		}
+	}
+}
+
+func TestSSEResponseRejectedDownloadedBody(t *testing.T) {
+	for _, status := range []int{http.StatusCreated, http.StatusBadRequest} {
+		t.Run(fmt.Sprint(status), func(t *testing.T) {
+			body := &sseResponseTestBody{Reader: strings.NewReader(`{"error":{"code":"DownloadedError"}}`)}
+			resp := &http.Response{StatusCode: status, Header: make(http.Header), Body: body}
+			_, err := runtime.Payload(resp)
+			require.NoError(t, err)
+			reads := body.reads
+			got, err := runtime.SSEResponse(resp, nil, http.StatusOK)
+			require.Nil(t, got)
+			var responseErr *azcore.ResponseError
+			require.ErrorAs(t, err, &responseErr)
+			require.Equal(t, status, responseErr.StatusCode)
+			require.Equal(t, "DownloadedError", responseErr.ErrorCode)
+			require.Contains(t, responseErr.Error(), "DownloadedError")
+			require.Equal(t, reads, body.reads)
+			require.Equal(t, 1, body.closes)
+		})
+	}
+}
+
+func TestSSEResponseRejectedOpenStream(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
+		w.Header().Set("Content-Type", "text/event-stream")
+		w.WriteHeader(http.StatusCreated)
+		_, _ = fmt.Fprint(w, "data: hello\n\n")
+		w.(http.Flusher).Flush()
+		<-req.Context().Done()
+	}))
+	defer server.Close()
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	pipeline := runtime.NewPipeline("sse-test", "v0.0.0", runtime.PipelineOptions{}, &policy.ClientOptions{
+		Retry: policy.RetryOptions{MaxRetries: -1},
+	})
+	request, err := runtime.NewRequest(ctx, http.MethodGet, server.URL)
+	require.NoError(t, err)
+	runtime.SkipBodyDownload(request)
+	response, err := pipeline.Do(request)
+	require.NoError(t, err)
+	body, err := runtime.SSEResponse(response, nil, http.StatusOK)
+	require.Nil(t, body)
+	var responseErr *azcore.ResponseError
+	require.ErrorAs(t, err, &responseErr)
+	require.Equal(t, http.StatusCreated, responseErr.StatusCode)
+	require.Contains(t, responseErr.Error(), "RESPONSE 201:")
+	require.NoError(t, ctx.Err(), "validation must return without waiting for the server to end its response")
 }
 
 func TestSSEResponseStatusCodes(t *testing.T) {

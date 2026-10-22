@@ -114,6 +114,7 @@ func DecodeByteArray(s string, v *[]byte, format Base64Encoding) error {
 // HTTP 204 closes the body and returns io.EOF to signal completion, regardless of statusCodes.
 // Other responses must match one of statusCodes and have a text/event-stream Content-Type.
 // On success, the caller owns the returned body. Rejected response bodies are closed.
+// Rejected responses below HTTP 400 discard unbuffered bodies without reading them.
 // If err is non-nil, resp is ignored. Failure errors matching io.EOF are converted to
 // io.ErrUnexpectedEOF so they aren't mistaken for completion.
 func SSEResponse(resp *http.Response, err error, statusCodes ...int) (io.ReadCloser, error) {
@@ -125,6 +126,12 @@ func SSEResponse(resp *http.Response, err error, statusCodes ...int) (io.ReadClo
 		return nil, io.EOF
 	}
 	if !HasStatusCode(resp, statusCodes...) {
+		// Avoid draining a live stream, but preserve HTTP error bodies and any
+		// already-downloaded payload for normal response error parsing.
+		if resp.StatusCode < http.StatusBadRequest && !exported.PayloadDownloaded(resp) {
+			_ = resp.Body.Close()
+			resp.Body = http.NoBody
+		}
 		return nil, sseResponseError(NewResponseError(resp))
 	}
 	contentType := resp.Header.Get("Content-Type")

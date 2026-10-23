@@ -10,6 +10,8 @@
 
 ### Other Changes
 
+* Corrected doc comments on `ListBlobsFlatOptions`, `ListBlobsHierarchyOptions`, `FilterBlobsOptions` and the page blob `GetPageRanges*Options` that incorrectly referred to "containers".
+
 ## 1.8.2 (2026-10-01)
 
 ### Bugs Fixed

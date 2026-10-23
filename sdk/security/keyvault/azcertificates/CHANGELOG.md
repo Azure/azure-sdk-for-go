@@ -1,5 +1,13 @@
 # Release History
 
+## 1.6.0 (2026-10-23)
+### Features Added
+
+- New function `NewPlatformManaged(certificateUsage string, metadata map[string]any) *PlatformManaged`
+- New struct `PlatformManaged`
+- New field `PlatformManaged` in struct `CertificatePolicy`
+
+
 ## 1.5.1-beta.1 (2026-06-04)
 
 ### Features Added

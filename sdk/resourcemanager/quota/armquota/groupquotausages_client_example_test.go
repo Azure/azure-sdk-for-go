@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-09-01/GroupQuotaUsages/GetGroupQuotaUsages.json
+// Generated from example definition: 2026-09-01-preview/GroupQuotaUsages/GetGroupQuotaUsages.json
 func ExampleGroupQuotaUsagesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

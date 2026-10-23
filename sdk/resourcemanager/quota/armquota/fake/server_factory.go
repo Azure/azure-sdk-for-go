@@ -45,11 +45,17 @@ type ServerFactory struct {
 	// GroupQuotasServer contains the fakes for client GroupQuotasClient
 	GroupQuotasServer GroupQuotasServer
 
+	// IncomingQuotaTransfersServer contains the fakes for client IncomingQuotaTransfersClient
+	IncomingQuotaTransfersServer IncomingQuotaTransfersServer
+
 	// OperationServer contains the fakes for client OperationClient
 	OperationServer OperationServer
 
 	// RequestStatusServer contains the fakes for client RequestStatusClient
 	RequestStatusServer RequestStatusServer
+
+	// TransfersServer contains the fakes for client TransfersClient
+	TransfersServer TransfersServer
 
 	// UsagesServer contains the fakes for client UsagesClient
 	UsagesServer UsagesServer
@@ -79,8 +85,10 @@ type ServerFactoryTransport struct {
 	trGroupQuotaSubscriptionsServer                 *GroupQuotaSubscriptionsServerTransport
 	trGroupQuotaUsagesServer                        *GroupQuotaUsagesServerTransport
 	trGroupQuotasServer                             *GroupQuotasServerTransport
+	trIncomingQuotaTransfersServer                  *IncomingQuotaTransfersServerTransport
 	trOperationServer                               *OperationServerTransport
 	trRequestStatusServer                           *RequestStatusServerTransport
+	trTransfersServer                               *TransfersServerTransport
 	trUsagesServer                                  *UsagesServerTransport
 }
 
@@ -98,61 +106,69 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 
 	switch client {
 	case "Client":
-		initServer(s, &s.trServer, func() *ServerTransport { return NewServerTransport(&s.srv.Server) })
+		initServer(&s.trMu, &s.trServer, func() *ServerTransport { return NewServerTransport(&s.srv.Server) })
 		resp, err = s.trServer.Do(req)
 	case "GroupQuotaLimitsClient":
-		initServer(s, &s.trGroupQuotaLimitsServer, func() *GroupQuotaLimitsServerTransport {
+		initServer(&s.trMu, &s.trGroupQuotaLimitsServer, func() *GroupQuotaLimitsServerTransport {
 			return NewGroupQuotaLimitsServerTransport(&s.srv.GroupQuotaLimitsServer)
 		})
 		resp, err = s.trGroupQuotaLimitsServer.Do(req)
 	case "GroupQuotaLimitsRequestClient":
-		initServer(s, &s.trGroupQuotaLimitsRequestServer, func() *GroupQuotaLimitsRequestServerTransport {
+		initServer(&s.trMu, &s.trGroupQuotaLimitsRequestServer, func() *GroupQuotaLimitsRequestServerTransport {
 			return NewGroupQuotaLimitsRequestServerTransport(&s.srv.GroupQuotaLimitsRequestServer)
 		})
 		resp, err = s.trGroupQuotaLimitsRequestServer.Do(req)
 	case "GroupQuotaLocationSettingsClient":
-		initServer(s, &s.trGroupQuotaLocationSettingsServer, func() *GroupQuotaLocationSettingsServerTransport {
+		initServer(&s.trMu, &s.trGroupQuotaLocationSettingsServer, func() *GroupQuotaLocationSettingsServerTransport {
 			return NewGroupQuotaLocationSettingsServerTransport(&s.srv.GroupQuotaLocationSettingsServer)
 		})
 		resp, err = s.trGroupQuotaLocationSettingsServer.Do(req)
 	case "GroupQuotaSubscriptionAllocationClient":
-		initServer(s, &s.trGroupQuotaSubscriptionAllocationServer, func() *GroupQuotaSubscriptionAllocationServerTransport {
+		initServer(&s.trMu, &s.trGroupQuotaSubscriptionAllocationServer, func() *GroupQuotaSubscriptionAllocationServerTransport {
 			return NewGroupQuotaSubscriptionAllocationServerTransport(&s.srv.GroupQuotaSubscriptionAllocationServer)
 		})
 		resp, err = s.trGroupQuotaSubscriptionAllocationServer.Do(req)
 	case "GroupQuotaSubscriptionAllocationRequestClient":
-		initServer(s, &s.trGroupQuotaSubscriptionAllocationRequestServer, func() *GroupQuotaSubscriptionAllocationRequestServerTransport {
+		initServer(&s.trMu, &s.trGroupQuotaSubscriptionAllocationRequestServer, func() *GroupQuotaSubscriptionAllocationRequestServerTransport {
 			return NewGroupQuotaSubscriptionAllocationRequestServerTransport(&s.srv.GroupQuotaSubscriptionAllocationRequestServer)
 		})
 		resp, err = s.trGroupQuotaSubscriptionAllocationRequestServer.Do(req)
 	case "GroupQuotaSubscriptionRequestsClient":
-		initServer(s, &s.trGroupQuotaSubscriptionRequestsServer, func() *GroupQuotaSubscriptionRequestsServerTransport {
+		initServer(&s.trMu, &s.trGroupQuotaSubscriptionRequestsServer, func() *GroupQuotaSubscriptionRequestsServerTransport {
 			return NewGroupQuotaSubscriptionRequestsServerTransport(&s.srv.GroupQuotaSubscriptionRequestsServer)
 		})
 		resp, err = s.trGroupQuotaSubscriptionRequestsServer.Do(req)
 	case "GroupQuotaSubscriptionsClient":
-		initServer(s, &s.trGroupQuotaSubscriptionsServer, func() *GroupQuotaSubscriptionsServerTransport {
+		initServer(&s.trMu, &s.trGroupQuotaSubscriptionsServer, func() *GroupQuotaSubscriptionsServerTransport {
 			return NewGroupQuotaSubscriptionsServerTransport(&s.srv.GroupQuotaSubscriptionsServer)
 		})
 		resp, err = s.trGroupQuotaSubscriptionsServer.Do(req)
 	case "GroupQuotaUsagesClient":
-		initServer(s, &s.trGroupQuotaUsagesServer, func() *GroupQuotaUsagesServerTransport {
+		initServer(&s.trMu, &s.trGroupQuotaUsagesServer, func() *GroupQuotaUsagesServerTransport {
 			return NewGroupQuotaUsagesServerTransport(&s.srv.GroupQuotaUsagesServer)
 		})
 		resp, err = s.trGroupQuotaUsagesServer.Do(req)
 	case "GroupQuotasClient":
-		initServer(s, &s.trGroupQuotasServer, func() *GroupQuotasServerTransport { return NewGroupQuotasServerTransport(&s.srv.GroupQuotasServer) })
+		initServer(&s.trMu, &s.trGroupQuotasServer, func() *GroupQuotasServerTransport { return NewGroupQuotasServerTransport(&s.srv.GroupQuotasServer) })
 		resp, err = s.trGroupQuotasServer.Do(req)
+	case "IncomingQuotaTransfersClient":
+		initServer(&s.trMu, &s.trIncomingQuotaTransfersServer, func() *IncomingQuotaTransfersServerTransport {
+			return NewIncomingQuotaTransfersServerTransport(&s.srv.IncomingQuotaTransfersServer)
+		})
+		resp, err = s.trIncomingQuotaTransfersServer.Do(req)
 	case "OperationClient":
-		initServer(s, &s.trOperationServer, func() *OperationServerTransport { return NewOperationServerTransport(&s.srv.OperationServer) })
+		initServer(&s.trMu, &s.trOperationServer, func() *OperationServerTransport { return NewOperationServerTransport(&s.srv.OperationServer) })
 		resp, err = s.trOperationServer.Do(req)
 	case "RequestStatusClient":
-		initServer(s, &s.trRequestStatusServer, func() *RequestStatusServerTransport {
+		initServer(&s.trMu, &s.trRequestStatusServer, func() *RequestStatusServerTransport {
 			return NewRequestStatusServerTransport(&s.srv.RequestStatusServer)
 		})
 		resp, err = s.trRequestStatusServer.Do(req)
+	case "TransfersClient":
+		initServer(&s.trMu, &s.trTransfersServer, func() *TransfersServerTransport { return NewTransfersServerTransport(&s.srv.TransfersServer) })
+		resp, err = s.trTransfersServer.Do(req)
 	case "UsagesClient":
-		initServer(s, &s.trUsagesServer, func() *UsagesServerTransport { return NewUsagesServerTransport(&s.srv.UsagesServer) })
+		initServer(&s.trMu, &s.trUsagesServer, func() *UsagesServerTransport { return NewUsagesServerTransport(&s.srv.UsagesServer) })
 		resp, err = s.trUsagesServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
@@ -163,12 +179,4 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	}
 
 	return resp, nil
-}
-
-func initServer[T any](s *ServerFactoryTransport, dst **T, src func() *T) {
-	s.trMu.Lock()
-	if *dst == nil {
-		*dst = src()
-	}
-	s.trMu.Unlock()
 }

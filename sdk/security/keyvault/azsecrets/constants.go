@@ -4,6 +4,10 @@
 
 package azsecrets
 
+const (
+	version20260401 string = "2026-04-01"
+)
+
 // ContentType - The media type (MIME type).
 type ContentType string
 

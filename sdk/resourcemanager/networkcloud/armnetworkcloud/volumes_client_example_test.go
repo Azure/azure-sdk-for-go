@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-01/Volumes_Create.json
+// Generated from example definition: 2026-08-01-preview/Volumes_Create.json
 func ExampleVolumesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -87,7 +87,7 @@ func ExampleVolumesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-07-01/Volumes_Delete.json
+// Generated from example definition: 2026-08-01-preview/Volumes_Delete.json
 func ExampleVolumesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -108,7 +108,7 @@ func ExampleVolumesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-07-01/Volumes_Get.json
+// Generated from example definition: 2026-08-01-preview/Volumes_Get.json
 func ExampleVolumesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -165,7 +165,7 @@ func ExampleVolumesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-07-01/Volumes_ListByResourceGroup.json
+// Generated from example definition: 2026-08-01-preview/Volumes_ListByResourceGroup.json
 func ExampleVolumesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -232,7 +232,7 @@ func ExampleVolumesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-07-01/Volumes_ListBySubscription.json
+// Generated from example definition: 2026-08-01-preview/Volumes_ListBySubscription.json
 func ExampleVolumesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -299,7 +299,7 @@ func ExampleVolumesClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-07-01/Volumes_Patch.json
+// Generated from example definition: 2026-08-01-preview/Volumes_Patch.json
 func ExampleVolumesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

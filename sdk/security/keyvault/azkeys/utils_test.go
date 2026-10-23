@@ -177,6 +177,10 @@ func startTest(t *testing.T, mhsmTest bool) *azkeys.Client {
 		URL = mhsmURL
 	}
 	opts := &azkeys.ClientOptions{ClientOptions: azcore.ClientOptions{Transport: transport}}
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		// Existing recordings were captured against the previous stable API version.
+		opts.APIVersion = "2025-07-01"
+	}
 	client, err := azkeys.NewClient(URL, credential, opts)
 	require.NoError(t, err)
 	return client

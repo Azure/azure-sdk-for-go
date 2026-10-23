@@ -8,7 +8,7 @@
 - Regenerated the library for stable Key Vault API version `2026-04-01`.
 
 ### Other Changes
-
+- Updated generated files and metadata for the `2026-04-01` stable release.
 
 ## 1.5.0 (2026-05-26)
 

@@ -6,7 +6,7 @@
 
 ### Features Added
 
-* Added `ItemOptions.ReplaySafe` to opt individual item writes into the existing retries for ambiguous transport failures, attempt timeouts, and HTTP 408/500/502/504 responses. The default remains false.
+* Added `ItemOptions.ReplaySafe` to pass ambiguous transport failures, attempt timeouts, and HTTP 408/500/502/504 responses from individual item writes to the existing outer azcore retry policy. The default remains false; Cosmos regional retry logic is unchanged.
 
 ### Breaking Changes
 

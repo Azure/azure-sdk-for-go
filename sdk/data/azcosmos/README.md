@@ -88,13 +88,14 @@ response, err := container.PatchItem(ctx, pk, id, patch, &azcosmos.ItemOptions{
 handle(err)
 ```
 
-The flag enables the existing retry paths for ambiguous connection failures,
-attempt timeouts, and HTTP 408/500/502/504 responses. It does not add a retry loop,
-change write endpoint routing, or enable writes to read-only regions. Single-write-region
-accounts can replay against their write endpoint, but cannot fail over to a read region.
-Existing retry budgets, backoff, cross-region settings, and caller cancellation still apply;
-per-attempt timeouts return to azcore's existing `RetryOptions` policy for a fresh attempt.
-`MaxRetries` bounds azcore attempts, not the Cosmos policy's existing internal retries.
+The flag passes ambiguous connection failures, attempt timeouts, and HTTP
+408/500/502/504 responses to the existing outer azcore retry policy. Its
+`RetryOptions` control whether to retry, `MaxRetries`, delays, status codes,
+`Retry-After`, and attempt timeouts; caller cancellation still stops retries.
+There is no new policy or loop, and Cosmos regional retry logic and write
+endpoint routing are unchanged. Disabling cross-region retries does not disable
+these outer retries. Existing Cosmos recovery for other failures, including
+requests known not to have been sent, remains unchanged.
 
 Replay safety is an application assertion, not exactly-once execution. A lost response
 may mean the first write committed. Replaying a create, delete, or ETag-conditional write

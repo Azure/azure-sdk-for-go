@@ -306,17 +306,14 @@ func (lc *locationCache) sessionRetrySnapshot() (multiWrite bool, readN, writeN 
 		len(lc.locationInfo.availWriteLocations)
 }
 
-// retryEndpointCount returns the number of resolved endpoints eligible for
-// cross-region retries, taking a coherent snapshot with multi-write capability.
-func (lc *locationCache) retryEndpointCount(isWriteOperation bool) int {
+// readEndpointCount returns the number of resolved preferred read endpoints
+// under RLock. The server-error retry path uses it to decide whether a
+// cross-region failover would actually target a different endpoint. Reading
+// the slice length under the lock prevents a torn read against a concurrent
+// locationCache.update (e.g. from an async GEM refresh).
+func (lc *locationCache) readEndpointCount() int {
 	lc.mapMutex.RLock()
 	defer lc.mapMutex.RUnlock()
-	if isWriteOperation {
-		if !lc.enableMultipleWriteLocations {
-			return 0
-		}
-		return len(lc.locationInfo.writeEndpoints)
-	}
 	return len(lc.locationInfo.readEndpoints)
 }
 

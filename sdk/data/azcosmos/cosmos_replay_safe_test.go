@@ -8,6 +8,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"net"
 	"net/http"
 	"testing"
 	"time"
@@ -134,24 +135,20 @@ func TestReplaySafeWriteExhaustion(t *testing.T) {
 				})
 				retry := policy.RetryOptions{
 					MaxRetries: 2, RetryDelay: time.Millisecond,
-					ShouldRetry: func(*http.Response, error) bool {
+					ShouldRetry: func(resp *http.Response, err error) bool {
 						callbacks++
+						if failure == "EOF" {
+							assert.ErrorIs(t, err, io.EOF)
+						} else if failure != "attempt timeout" {
+							require.NotNil(t, resp)
+							assert.NoError(t, err, "HTTP responses must reach azcore without error wrappers")
+						}
 						return true
 					},
 				}
-				want := []string{"write-a.test", "write-a.test"}
-				if failure == "EOF" {
-					want = []string{"write-a.test", "write-a.test", "write-a.test", "write-a.test"}
-				}
+				want := []string{"write-a.test", "write-a.test", "write-a.test"}
 				if failure == "attempt timeout" {
 					retry.TryTimeout = 10 * time.Millisecond
-					want = []string{"write-a.test", "write-a.test", "write-a.test"}
-				} else if multiWrite {
-					if failure == "408" {
-						want[1] = "write-b.test"
-					} else {
-						want = append(want, "write-b.test")
-					}
 				}
 				container, lc := newReplaySafeTestContainer(t, transport, retry, multiWrite, true)
 				_, err := container.UpsertItem(context.Background(), NewPartitionKeyString("pk"), []byte(`{"id":"item"}`), &ItemOptions{ReplaySafe: true})
@@ -159,12 +156,10 @@ func TestReplaySafeWriteExhaustion(t *testing.T) {
 				assert.Equal(t, want, hosts, "write retries must never target the preferred read-only region")
 				if failure == "attempt timeout" {
 					assert.ErrorIs(t, err, context.DeadlineExceeded)
-					assert.Equal(t, 3, callbacks)
-				} else {
-					var nonRetriable errorinfo.NonRetriable
-					assert.ErrorAs(t, err, &nonRetriable)
-					assert.Zero(t, callbacks, "azcore must not reset an exhausted Cosmos retry budget")
 				}
+				assert.Equal(t, 3, callbacks)
+				var nonRetriable errorinfo.NonRetriable
+				assert.False(t, errors.As(err, &nonRetriable), "eligible failures must reach outer retries unwrapped")
 				assert.Empty(t, lc.locationUnavailabilityInfoMap)
 			})
 		}
@@ -177,11 +172,19 @@ func TestReplaySafeWriteRetrySettings(t *testing.T) {
 		failure     string
 		crossRegion bool
 		maxRetries  int32
+		statusCodes []int
+		reject      bool
 		wantSends   int
 	}{
-		{name: "network cross-region disabled", failure: "EOF", maxRetries: 2, wantSends: 1},
-		{name: "408 cross-region disabled", failure: "408", maxRetries: 2, wantSends: 1},
-		{name: "500 retains in-region retry", failure: "500", maxRetries: 2, wantSends: 2},
+		{name: "network cross-region disabled", failure: "EOF", maxRetries: 2, wantSends: 3},
+		{name: "408 cross-region disabled", failure: "408", maxRetries: 2, wantSends: 3},
+		{name: "500 uses outer budget", failure: "500", maxRetries: 2, wantSends: 3},
+		{name: "network retries disabled", failure: "EOF", crossRegion: true, maxRetries: -1, wantSends: 1},
+		{name: "HTTP retries disabled", failure: "500", crossRegion: true, maxRetries: -1, wantSends: 1},
+		{name: "empty status list", failure: "408", crossRegion: true, maxRetries: 2, statusCodes: []int{}, wantSends: 1},
+		{name: "excluded status", failure: "500", crossRegion: true, maxRetries: 2, statusCodes: []int{502}, wantSends: 1},
+		{name: "included status", failure: "502", crossRegion: true, maxRetries: 2, statusCodes: []int{502}, wantSends: 3},
+		{name: "ShouldRetry veto", failure: "EOF", crossRegion: true, maxRetries: 2, reject: true, wantSends: 1},
 		{name: "attempt retries disabled", failure: "attempt timeout", crossRegion: true, maxRetries: -1, wantSends: 1},
 		{name: "attempt retries bounded", failure: "attempt timeout", crossRegion: true, maxRetries: 1, wantSends: 2},
 	} {
@@ -192,9 +195,13 @@ func TestReplaySafeWriteRetrySettings(t *testing.T) {
 				sends++
 				return replaySafeTestFailure(req, tt.failure)
 			})
-			container, _ := newReplaySafeTestContainer(t, transport, policy.RetryOptions{
-				MaxRetries: tt.maxRetries, RetryDelay: time.Millisecond, TryTimeout: 20 * time.Millisecond,
-			}, true, tt.crossRegion)
+			retry := policy.RetryOptions{
+				MaxRetries: tt.maxRetries, RetryDelay: time.Millisecond, TryTimeout: 20 * time.Millisecond, StatusCodes: tt.statusCodes,
+			}
+			if tt.reject {
+				retry.ShouldRetry = func(*http.Response, error) bool { return false }
+			}
+			container, _ := newReplaySafeTestContainer(t, transport, retry, true, tt.crossRegion)
 			_, err := container.UpsertItem(context.Background(), NewPartitionKeyString("pk"), []byte(`{"id":"item"}`), &ItemOptions{ReplaySafe: true})
 			require.Error(t, err)
 			assert.Equal(t, tt.wantSends, sends)
@@ -202,7 +209,7 @@ func TestReplaySafeWriteRetrySettings(t *testing.T) {
 	}
 }
 
-func TestReplaySafeWriteAttemptTimeoutDuringBackoff(t *testing.T) {
+func TestReplaySafeWriteOuterDelay(t *testing.T) {
 	for _, failure := range []string{"EOF", "408"} {
 		t.Run(failure, func(t *testing.T) {
 			t.Parallel()
@@ -215,13 +222,120 @@ func TestReplaySafeWriteAttemptTimeoutDuringBackoff(t *testing.T) {
 				return readAttemptTimeoutResponse(req, http.StatusOK), nil
 			})
 			container, lc := newReplaySafeTestContainer(t, transport, policy.RetryOptions{
-				MaxRetries: 1, RetryDelay: time.Millisecond, TryTimeout: 20 * time.Millisecond,
+				MaxRetries: 1, RetryDelay: 40 * time.Millisecond, TryTimeout: 10 * time.Millisecond,
 			}, false, true)
+			start := time.Now()
 			_, err := container.UpsertItem(context.Background(), NewPartitionKeyString("pk"), []byte(`{"id":"item"}`), &ItemOptions{ReplaySafe: true})
 			require.NoError(t, err)
+			assert.GreaterOrEqual(t, time.Since(start), 30*time.Millisecond, "outer backoff must be used, outside TryTimeout")
 			assert.Equal(t, []string{"write-a.test", "write-a.test"}, hosts)
 			assert.Empty(t, lc.locationUnavailabilityInfoMap)
 		})
+	}
+}
+
+func TestReplaySafeWriteHTTPResponseHandoff(t *testing.T) {
+	for _, capped := range []bool{false, true} {
+		t.Run(fmt.Sprintf("RetryAfterCapped=%t", capped), func(t *testing.T) {
+			t.Parallel()
+			var first *http.Response
+			sends, callbacks := 0, 0
+			transport := retryPolicyTransportFunc(func(req *http.Request) (*http.Response, error) {
+				sends++
+				if sends == 1 {
+					first = readAttemptTimeoutResponse(req, http.StatusBadGateway)
+					first.Header.Set("Retry-After", "1")
+					first.Header.Set("x-ms-activity-id", "original-response")
+					return first, nil
+				}
+				return readAttemptTimeoutResponse(req, http.StatusOK), nil
+			})
+			retry := policy.RetryOptions{
+				MaxRetries: 1, RetryDelay: time.Millisecond, MaxRetryDelay: 2 * time.Second,
+				ShouldRetry: func(resp *http.Response, err error) bool {
+					callbacks++
+					require.NoError(t, err)
+					if callbacks == 1 {
+						assert.Same(t, first, resp)
+						assert.Equal(t, "original-response", resp.Header.Get("x-ms-activity-id"))
+					}
+					return resp.StatusCode == http.StatusBadGateway
+				},
+			}
+			if capped {
+				retry.MaxRetryDelay = 10 * time.Millisecond
+			}
+			container, _ := newReplaySafeTestContainer(t, transport, retry, true, true)
+			start := time.Now()
+			_, err := container.UpsertItem(context.Background(), NewPartitionKeyString("pk"), []byte(`{"id":"item"}`), &ItemOptions{ReplaySafe: true})
+			if capped {
+				require.Error(t, err)
+				assert.Equal(t, 1, sends, "Retry-After above the configured cap must not retry")
+			} else {
+				require.NoError(t, err)
+				assert.Equal(t, 2, sends)
+				assert.GreaterOrEqual(t, time.Since(start), time.Second, "Retry-After must control the outer delay")
+			}
+		})
+	}
+}
+
+func TestReplaySafeWritePerCallRetryOverride(t *testing.T) {
+	sends := 0
+	transport := retryPolicyTransportFunc(func(req *http.Request) (*http.Response, error) {
+		sends++
+		return nil, io.EOF
+	})
+	container, _ := newReplaySafeTestContainer(t, transport, policy.RetryOptions{MaxRetries: -1}, false, false)
+	ctx := policy.WithRetryOptions(context.Background(), policy.RetryOptions{MaxRetries: 2, RetryDelay: time.Millisecond})
+	_, err := container.UpsertItem(ctx, NewPartitionKeyString("pk"), []byte(`{"id":"item"}`), &ItemOptions{ReplaySafe: true})
+	assert.ErrorIs(t, err, io.EOF)
+	assert.Equal(t, 3, sends)
+}
+
+func TestReplaySafeWriteExistingRecovery(t *testing.T) {
+	for _, optIn := range []bool{false, true} {
+		for _, failure := range []string{"not sent", "session unavailable", "503"} {
+			t.Run(fmt.Sprintf("%s/ReplaySafe=%t", failure, optIn), func(t *testing.T) {
+				t.Parallel()
+				var hosts []string
+				transport := retryPolicyTransportFunc(func(req *http.Request) (*http.Response, error) {
+					hosts = append(hosts, req.URL.Host)
+					if failure == "not sent" && len(hosts) <= maxSameRegionConnectionRetries+1 {
+						return nil, &net.DNSError{Err: "unreachable"}
+					}
+					if len(hosts) == 1 {
+						status := http.StatusServiceUnavailable
+						if failure == "session unavailable" {
+							status = http.StatusNotFound
+						}
+						resp := readAttemptTimeoutResponse(req, status)
+						if failure == "session unavailable" {
+							resp.Header.Set(cosmosHeaderSubstatus, subStatusReadSessionNotAvailable)
+						}
+						return resp, nil
+					}
+					return readAttemptTimeoutResponse(req, http.StatusOK), nil
+				})
+				container, lc := newReplaySafeTestContainer(t, transport, policy.RetryOptions{
+					MaxRetries: -1,
+					ShouldRetry: func(*http.Response, error) bool {
+						// Only the final success should leave the internal Cosmos recovery.
+						return false
+					},
+				}, true, true)
+				_, err := container.UpsertItem(context.Background(), NewPartitionKeyString("pk"), []byte(`{"id":"item"}`), &ItemOptions{ReplaySafe: optIn})
+				require.NoError(t, err)
+				want := []string{"write-a.test", "write-b.test"}
+				if failure == "not sent" {
+					want = []string{"write-a.test", "write-a.test", "write-a.test", "write-a.test", "write-b.test"}
+					assert.NotEmpty(t, lc.locationUnavailabilityInfoMap)
+				} else {
+					assert.Empty(t, lc.locationUnavailabilityInfoMap)
+				}
+				assert.Equal(t, want, hosts, "ReplaySafe must not bypass existing recovery or alter its write routing")
+			})
+		}
 	}
 }
 
@@ -248,7 +362,7 @@ func TestReplaySafeWriteCallerContext(t *testing.T) {
 					return replaySafeTestFailure(req, failure)
 				})
 				container, lc := newReplaySafeTestContainer(t, transport, policy.RetryOptions{
-					MaxRetries: 3, RetryDelay: time.Millisecond, TryTimeout: time.Second,
+					MaxRetries: 3, RetryDelay: time.Second, TryTimeout: time.Second,
 				}, true, true)
 				_, err := container.UpsertItem(ctx, NewPartitionKeyString("pk"), []byte(`{"id":"item"}`), &ItemOptions{ReplaySafe: true})
 				assert.ErrorIs(t, err, wantErr)

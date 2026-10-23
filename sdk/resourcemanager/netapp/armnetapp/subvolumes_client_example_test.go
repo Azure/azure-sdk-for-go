@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-06-15-preview/Subvolumes_Create.json
+// Generated from example definition: 2026-08-01/Subvolumes_Create.json
 func ExampleSubvolumesClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -52,7 +52,7 @@ func ExampleSubvolumesClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2026-06-15-preview/Subvolumes_Delete.json
+// Generated from example definition: 2026-08-01/Subvolumes_Delete.json
 func ExampleSubvolumesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -78,38 +78,7 @@ func ExampleSubvolumesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-06-15-preview/Subvolumes_Get.json
-func ExampleSubvolumesClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetapp.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewSubvolumesClient().Get(ctx, "myRG", "account1", "pool1", "volume1", "subvolume1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetapp.SubvolumesClientGetResponse{
-	// 	SubvolumeInfo: armnetapp.SubvolumeInfo{
-	// 		Name: to.Ptr("account1/pool1/volume1/subvolume1"),
-	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes/subvolumes"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/volume1/subvolumes/subvolume1"),
-	// 		Properties: &armnetapp.SubvolumeProperties{
-	// 			Path: to.Ptr("/pathToSubvol"),
-	// 			Size: to.Ptr[int64](0),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-06-15-preview/Subvolumes_Metadata.json
+// Generated from example definition: 2026-08-01/Subvolumes_Metadata.json
 func ExampleSubvolumesClient_BeginGetMetadata() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -150,7 +119,77 @@ func ExampleSubvolumesClient_BeginGetMetadata() {
 	// }
 }
 
-// Generated from example definition: 2026-06-15-preview/Subvolumes_List.json
+// Generated from example definition: 2026-08-01/Subvolumes_Update.json
+func ExampleSubvolumesClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetapp.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewSubvolumesClient().BeginUpdate(ctx, "myRG", "account1", "pool1", "volume1", "subvolume1", armnetapp.SubvolumePatchRequest{
+		Properties: &armnetapp.SubvolumePatchParams{
+			Path: to.Ptr("/subvolumePath"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetapp.SubvolumesClientUpdateResponse{
+	// 	SubvolumeInfo: armnetapp.SubvolumeInfo{
+	// 		Name: to.Ptr("account1/pool1/volume1/subvolume1"),
+	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes/subvolume1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/volume1/subvolumes/subvolume1"),
+	// 		Properties: &armnetapp.SubvolumeProperties{
+	// 			Path: to.Ptr("/subvolumePath"),
+	// 			Size: to.Ptr[int64](0),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-08-01/Subvolumes_Get.json
+func ExampleSubvolumesClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetapp.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewSubvolumesClient().Get(ctx, "myRG", "account1", "pool1", "volume1", "subvolume1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetapp.SubvolumesClientGetResponse{
+	// 	SubvolumeInfo: armnetapp.SubvolumeInfo{
+	// 		Name: to.Ptr("account1/pool1/volume1/subvolume1"),
+	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes/subvolumes"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/volume1/subvolumes/subvolume1"),
+	// 		Properties: &armnetapp.SubvolumeProperties{
+	// 			Path: to.Ptr("/pathToSubvol"),
+	// 			Size: to.Ptr[int64](0),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-08-01/Subvolumes_List.json
 func ExampleSubvolumesClient_NewListByVolumePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -188,43 +227,4 @@ func ExampleSubvolumesClient_NewListByVolumePager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-06-15-preview/Subvolumes_Update.json
-func ExampleSubvolumesClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetapp.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewSubvolumesClient().BeginUpdate(ctx, "myRG", "account1", "pool1", "volume1", "subvolume1", armnetapp.SubvolumePatchRequest{
-		Properties: &armnetapp.SubvolumePatchParams{
-			Path: to.Ptr("/subvolumePath"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetapp.SubvolumesClientUpdateResponse{
-	// 	SubvolumeInfo: armnetapp.SubvolumeInfo{
-	// 		Name: to.Ptr("account1/pool1/volume1/subvolume1"),
-	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes/subvolume1"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/volume1/subvolumes/subvolume1"),
-	// 		Properties: &armnetapp.SubvolumeProperties{
-	// 			Path: to.Ptr("/subvolumePath"),
-	// 			Size: to.Ptr[int64](0),
-	// 		},
-	// 	},
-	// }
 }

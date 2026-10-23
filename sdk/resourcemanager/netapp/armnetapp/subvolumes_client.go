@@ -19,7 +19,7 @@ import (
 // SubvolumesClient contains the methods for the Subvolumes group.
 // Don't use this type directly, use NewSubvolumesClient() instead.
 //
-// Generated from API version 2026-06-15-preview
+// Generated from API version 2026-08-01
 type SubvolumesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -72,7 +72,7 @@ func (client *SubvolumesClient) BeginCreate(ctx context.Context, resourceGroupNa
 	}
 }
 
-// Create - Creates a subvolume in the path or clones the subvolume mentioned in the parentPath
+// create - Creates a subvolume in the path or clones the subvolume mentioned in the parentPath
 // Deprecated. This operation will be removed in a future API version.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *SubvolumesClient) create(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, subvolumeName string, body SubvolumeInfo, options *SubvolumesClientBeginCreateOptions) (*http.Response, error) {
@@ -95,7 +95,7 @@ func (client *SubvolumesClient) create(ctx context.Context, resourceGroupName st
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *SubvolumesClient) createCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, subvolumeName string, body SubvolumeInfo, _ *SubvolumesClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/subvolumes/{subvolumeName}"
 	if client.subscriptionID == "" {
@@ -127,7 +127,7 @@ func (client *SubvolumesClient) createCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260615Preview)
+	reqQP.Set("api-version", version20260801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -162,7 +162,7 @@ func (client *SubvolumesClient) BeginDelete(ctx context.Context, resourceGroupNa
 	}
 }
 
-// Delete - Delete subvolume
+// deleteOperation - Delete subvolume
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *SubvolumesClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, subvolumeName string, options *SubvolumesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -184,7 +184,7 @@ func (client *SubvolumesClient) deleteOperation(ctx context.Context, resourceGro
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *SubvolumesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, subvolumeName string, _ *SubvolumesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/subvolumes/{subvolumeName}"
 	if client.subscriptionID == "" {
@@ -216,8 +216,184 @@ func (client *SubvolumesClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260615Preview)
+	reqQP.Set("api-version", version20260801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginGetMetadata - Get details of the specified subvolume
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of the NetApp account
+//   - poolName - The name of the capacity pool
+//   - volumeName - The name of the volume
+//   - subvolumeName - The name of the subvolume.
+//   - options - SubvolumesClientBeginGetMetadataOptions contains the optional parameters for the SubvolumesClient.BeginGetMetadata
+//     method.
+func (client *SubvolumesClient) BeginGetMetadata(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, subvolumeName string, options *SubvolumesClientBeginGetMetadataOptions) (*runtime.Poller[SubvolumesClientGetMetadataResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.getMetadata(ctx, resourceGroupName, accountName, poolName, volumeName, subvolumeName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SubvolumesClientGetMetadataResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SubvolumesClientGetMetadataResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// getMetadata - Get details of the specified subvolume
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *SubvolumesClient) getMetadata(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, subvolumeName string, options *SubvolumesClientBeginGetMetadataOptions) (*http.Response, error) {
+	var err error
+	const operationName = "SubvolumesClient.BeginGetMetadata"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getMetadataCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, subvolumeName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// getMetadataCreateRequest creates the getMetadata request.
+func (client *SubvolumesClient) getMetadataCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, subvolumeName string, _ *SubvolumesClientBeginGetMetadataOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/subvolumes/{subvolumeName}/getMetadata"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if poolName == "" {
+		return nil, errors.New("parameter poolName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
+	if volumeName == "" {
+		return nil, errors.New("parameter volumeName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{volumeName}", url.PathEscape(volumeName))
+	if subvolumeName == "" {
+		return nil, errors.New("parameter subvolumeName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subvolumeName}", url.PathEscape(subvolumeName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// BeginUpdate - Patch a subvolume
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of the NetApp account
+//   - poolName - The name of the capacity pool
+//   - volumeName - The name of the volume
+//   - subvolumeName - The name of the subvolume.
+//   - body - Subvolume object supplied in the body of the operation.
+//   - options - SubvolumesClientBeginUpdateOptions contains the optional parameters for the SubvolumesClient.BeginUpdate method.
+func (client *SubvolumesClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, subvolumeName string, body SubvolumePatchRequest, options *SubvolumesClientBeginUpdateOptions) (*runtime.Poller[SubvolumesClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, accountName, poolName, volumeName, subvolumeName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SubvolumesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SubvolumesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Patch a subvolume
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *SubvolumesClient) update(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, subvolumeName string, body SubvolumePatchRequest, options *SubvolumesClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "SubvolumesClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, subvolumeName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *SubvolumesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, subvolumeName string, body SubvolumePatchRequest, _ *SubvolumesClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/subvolumes/{subvolumeName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if poolName == "" {
+		return nil, errors.New("parameter poolName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
+	if volumeName == "" {
+		return nil, errors.New("parameter volumeName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{volumeName}", url.PathEscape(volumeName))
+	if subvolumeName == "" {
+		return nil, errors.New("parameter subvolumeName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subvolumeName}", url.PathEscape(subvolumeName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -278,7 +454,7 @@ func (client *SubvolumesClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260615Preview)
+	reqQP.Set("api-version", version20260801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -294,92 +470,6 @@ func (client *SubvolumesClient) getHandleResponse(resp *http.Response, successCo
 		return SubvolumesClientGetResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginGetMetadata - Get details of the specified subvolume
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - accountName - The name of the NetApp account
-//   - poolName - The name of the capacity pool
-//   - volumeName - The name of the volume
-//   - subvolumeName - The name of the subvolume.
-//   - options - SubvolumesClientBeginGetMetadataOptions contains the optional parameters for the SubvolumesClient.BeginGetMetadata
-//     method.
-func (client *SubvolumesClient) BeginGetMetadata(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, subvolumeName string, options *SubvolumesClientBeginGetMetadataOptions) (*runtime.Poller[SubvolumesClientGetMetadataResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.getMetadata(ctx, resourceGroupName, accountName, poolName, volumeName, subvolumeName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SubvolumesClientGetMetadataResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SubvolumesClientGetMetadataResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// GetMetadata - Get details of the specified subvolume
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *SubvolumesClient) getMetadata(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, subvolumeName string, options *SubvolumesClientBeginGetMetadataOptions) (*http.Response, error) {
-	var err error
-	const operationName = "SubvolumesClient.BeginGetMetadata"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.getMetadataCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, subvolumeName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// getMetadataCreateRequest creates the GetMetadata request.
-func (client *SubvolumesClient) getMetadataCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, subvolumeName string, _ *SubvolumesClientBeginGetMetadataOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/subvolumes/{subvolumeName}/getMetadata"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if poolName == "" {
-		return nil, errors.New("parameter poolName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
-	if volumeName == "" {
-		return nil, errors.New("parameter volumeName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{volumeName}", url.PathEscape(volumeName))
-	if subvolumeName == "" {
-		return nil, errors.New("parameter subvolumeName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subvolumeName}", url.PathEscape(subvolumeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260615Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
 }
 
 // NewListByVolumePager - Returns a list of the subvolumes in the volume
@@ -450,7 +540,7 @@ func (client *SubvolumesClient) listByVolumeCreateRequest(ctx context.Context, r
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260615Preview)
+		reqQP.Set("api-version", version20260801)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -467,94 +557,4 @@ func (client *SubvolumesClient) listByVolumeHandleResponse(resp *http.Response, 
 		return SubvolumesClientListByVolumeResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Patch a subvolume
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - accountName - The name of the NetApp account
-//   - poolName - The name of the capacity pool
-//   - volumeName - The name of the volume
-//   - subvolumeName - The name of the subvolume.
-//   - body - Subvolume object supplied in the body of the operation.
-//   - options - SubvolumesClientBeginUpdateOptions contains the optional parameters for the SubvolumesClient.BeginUpdate method.
-func (client *SubvolumesClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, subvolumeName string, body SubvolumePatchRequest, options *SubvolumesClientBeginUpdateOptions) (*runtime.Poller[SubvolumesClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, accountName, poolName, volumeName, subvolumeName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SubvolumesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SubvolumesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Patch a subvolume
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *SubvolumesClient) update(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, subvolumeName string, body SubvolumePatchRequest, options *SubvolumesClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "SubvolumesClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, subvolumeName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *SubvolumesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, subvolumeName string, body SubvolumePatchRequest, _ *SubvolumesClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/subvolumes/{subvolumeName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if poolName == "" {
-		return nil, errors.New("parameter poolName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
-	if volumeName == "" {
-		return nil, errors.New("parameter volumeName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{volumeName}", url.PathEscape(volumeName))
-	if subvolumeName == "" {
-		return nil, errors.New("parameter subvolumeName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subvolumeName}", url.PathEscape(subvolumeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260615Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

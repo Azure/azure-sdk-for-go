@@ -19,7 +19,7 @@ import (
 // NetworkSecurityGroupsClient contains the methods for the NetworkSecurityGroups group.
 // Don't use this type directly, use NewNetworkSecurityGroupsClient() instead.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2026-07-01-preview
 type NetworkSecurityGroupsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type NetworkSecurityGroupsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewNetworkSecurityGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*NetworkSecurityGroupsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -66,7 +69,7 @@ func (client *NetworkSecurityGroupsClient) BeginCreateOrUpdate(ctx context.Conte
 	}
 }
 
-// CreateOrUpdate - Creates or updates a network security group in the specified resource group.
+// createOrUpdate - Creates or updates a network security group in the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *NetworkSecurityGroupsClient) createOrUpdate(ctx context.Context, resourceGroupName string, networkSecurityGroupName string, resource NetworkSecurityGroup, options *NetworkSecurityGroupsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -83,17 +86,16 @@ func (client *NetworkSecurityGroupsClient) createOrUpdate(ctx context.Context, r
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *NetworkSecurityGroupsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, networkSecurityGroupName string, resource NetworkSecurityGroup, _ *NetworkSecurityGroupsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/networkSecurityGroups/{networkSecurityGroupName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -109,7 +111,7 @@ func (client *NetworkSecurityGroupsClient) createOrUpdateCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601Preview)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -142,7 +144,7 @@ func (client *NetworkSecurityGroupsClient) BeginDelete(ctx context.Context, reso
 	}
 }
 
-// Delete - Deletes the specified network security group.
+// deleteOperation - Deletes the specified network security group.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *NetworkSecurityGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, networkSecurityGroupName string, options *NetworkSecurityGroupsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -159,17 +161,16 @@ func (client *NetworkSecurityGroupsClient) deleteOperation(ctx context.Context, 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *NetworkSecurityGroupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, networkSecurityGroupName string, _ *NetworkSecurityGroupsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/networkSecurityGroups/{networkSecurityGroupName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -185,183 +186,9 @@ func (client *NetworkSecurityGroupsClient) deleteCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601Preview)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
-}
-
-// Get - Gets the specified network security group.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - networkSecurityGroupName - Name of the network security group
-//   - options - NetworkSecurityGroupsClientGetOptions contains the optional parameters for the NetworkSecurityGroupsClient.Get
-//     method.
-func (client *NetworkSecurityGroupsClient) Get(ctx context.Context, resourceGroupName string, networkSecurityGroupName string, options *NetworkSecurityGroupsClientGetOptions) (NetworkSecurityGroupsClientGetResponse, error) {
-	var err error
-	const operationName = "NetworkSecurityGroupsClient.Get"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, resourceGroupName, networkSecurityGroupName, options)
-	if err != nil {
-		return NetworkSecurityGroupsClientGetResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return NetworkSecurityGroupsClientGetResponse{}, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return NetworkSecurityGroupsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
-}
-
-// getCreateRequest creates the Get request.
-func (client *NetworkSecurityGroupsClient) getCreateRequest(ctx context.Context, resourceGroupName string, networkSecurityGroupName string, _ *NetworkSecurityGroupsClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/networkSecurityGroups/{networkSecurityGroupName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if networkSecurityGroupName == "" {
-		return nil, errors.New("parameter networkSecurityGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{networkSecurityGroupName}", url.PathEscape(networkSecurityGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// getHandleResponse handles the Get response.
-func (client *NetworkSecurityGroupsClient) getHandleResponse(resp *http.Response) (NetworkSecurityGroupsClientGetResponse, error) {
-	result := NetworkSecurityGroupsClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkSecurityGroup); err != nil {
-		return NetworkSecurityGroupsClientGetResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListAllPager - Gets all network security groups in a subscription.
-//   - options - NetworkSecurityGroupsClientListAllOptions contains the optional parameters for the NetworkSecurityGroupsClient.NewListAllPager
-//     method.
-func (client *NetworkSecurityGroupsClient) NewListAllPager(options *NetworkSecurityGroupsClientListAllOptions) *runtime.Pager[NetworkSecurityGroupsClientListAllResponse] {
-	return runtime.NewPager(runtime.PagingHandler[NetworkSecurityGroupsClientListAllResponse]{
-		More: func(page NetworkSecurityGroupsClientListAllResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *NetworkSecurityGroupsClientListAllResponse) (NetworkSecurityGroupsClientListAllResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "NetworkSecurityGroupsClient.NewListAllPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listAllCreateRequest(ctx, options)
-			}, nil)
-			if err != nil {
-				return NetworkSecurityGroupsClientListAllResponse{}, err
-			}
-			return client.listAllHandleResponse(resp)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listAllCreateRequest creates the ListAll request.
-func (client *NetworkSecurityGroupsClient) listAllCreateRequest(ctx context.Context, _ *NetworkSecurityGroupsClientListAllOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.AzureStackHCI/networkSecurityGroups"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listAllHandleResponse handles the ListAll response.
-func (client *NetworkSecurityGroupsClient) listAllHandleResponse(resp *http.Response) (NetworkSecurityGroupsClientListAllResponse, error) {
-	result := NetworkSecurityGroupsClientListAllResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkSecurityGroupListResult); err != nil {
-		return NetworkSecurityGroupsClientListAllResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListByResourceGroupPager - Gets all network security groups in a resource group.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - options - NetworkSecurityGroupsClientListByResourceGroupOptions contains the optional parameters for the NetworkSecurityGroupsClient.NewListByResourceGroupPager
-//     method.
-func (client *NetworkSecurityGroupsClient) NewListByResourceGroupPager(resourceGroupName string, options *NetworkSecurityGroupsClientListByResourceGroupOptions) *runtime.Pager[NetworkSecurityGroupsClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PagingHandler[NetworkSecurityGroupsClientListByResourceGroupResponse]{
-		More: func(page NetworkSecurityGroupsClientListByResourceGroupResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *NetworkSecurityGroupsClientListByResourceGroupResponse) (NetworkSecurityGroupsClientListByResourceGroupResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "NetworkSecurityGroupsClient.NewListByResourceGroupPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
-			if err != nil {
-				return NetworkSecurityGroupsClientListByResourceGroupResponse{}, err
-			}
-			return client.listByResourceGroupHandleResponse(resp)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *NetworkSecurityGroupsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *NetworkSecurityGroupsClientListByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/networkSecurityGroups"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *NetworkSecurityGroupsClient) listByResourceGroupHandleResponse(resp *http.Response) (NetworkSecurityGroupsClientListByResourceGroupResponse, error) {
-	result := NetworkSecurityGroupsClientListByResourceGroupResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkSecurityGroupListResult); err != nil {
-		return NetworkSecurityGroupsClientListByResourceGroupResponse{}, err
-	}
-	return result, nil
 }
 
 // BeginUpdateTags - Updates a network security group tags.
@@ -388,7 +215,7 @@ func (client *NetworkSecurityGroupsClient) BeginUpdateTags(ctx context.Context, 
 	}
 }
 
-// UpdateTags - Updates a network security group tags.
+// updateTags - Updates a network security group tags.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *NetworkSecurityGroupsClient) updateTags(ctx context.Context, resourceGroupName string, networkSecurityGroupName string, properties NetworkSecurityGroupTagsUpdate, options *NetworkSecurityGroupsClientBeginUpdateTagsOptions) (*http.Response, error) {
 	var err error
@@ -405,17 +232,16 @@ func (client *NetworkSecurityGroupsClient) updateTags(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
 
-// updateTagsCreateRequest creates the UpdateTags request.
+// updateTagsCreateRequest creates the updateTags request.
 func (client *NetworkSecurityGroupsClient) updateTagsCreateRequest(ctx context.Context, resourceGroupName string, networkSecurityGroupName string, properties NetworkSecurityGroupTagsUpdate, _ *NetworkSecurityGroupsClientBeginUpdateTagsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/networkSecurityGroups/{networkSecurityGroupName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -431,7 +257,7 @@ func (client *NetworkSecurityGroupsClient) updateTagsCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601Preview)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -439,4 +265,204 @@ func (client *NetworkSecurityGroupsClient) updateTagsCreateRequest(ctx context.C
 		return nil, err
 	}
 	return req, nil
+}
+
+// Get - Gets the specified network security group.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - networkSecurityGroupName - Name of the network security group
+//   - options - NetworkSecurityGroupsClientGetOptions contains the optional parameters for the NetworkSecurityGroupsClient.Get
+//     method.
+func (client *NetworkSecurityGroupsClient) Get(ctx context.Context, resourceGroupName string, networkSecurityGroupName string, options *NetworkSecurityGroupsClientGetOptions) (NetworkSecurityGroupsClientGetResponse, error) {
+	var err error
+	const operationName = "NetworkSecurityGroupsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getCreateRequest(ctx, resourceGroupName, networkSecurityGroupName, options)
+	if err != nil {
+		return NetworkSecurityGroupsClientGetResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return NetworkSecurityGroupsClientGetResponse{}, err
+	}
+	return client.getHandleResponse(httpResp, http.StatusOK)
+}
+
+// getCreateRequest creates the Get request.
+func (client *NetworkSecurityGroupsClient) getCreateRequest(ctx context.Context, resourceGroupName string, networkSecurityGroupName string, _ *NetworkSecurityGroupsClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/networkSecurityGroups/{networkSecurityGroupName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if networkSecurityGroupName == "" {
+		return nil, errors.New("parameter networkSecurityGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{networkSecurityGroupName}", url.PathEscape(networkSecurityGroupName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260701Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getHandleResponse handles the Get response.
+func (client *NetworkSecurityGroupsClient) getHandleResponse(resp *http.Response, successCodes ...int) (NetworkSecurityGroupsClientGetResponse, error) {
+	result := NetworkSecurityGroupsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkSecurityGroup); err != nil {
+		return NetworkSecurityGroupsClientGetResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListAllPager - Gets all network security groups in a subscription.
+//   - options - NetworkSecurityGroupsClientListAllOptions contains the optional parameters for the NetworkSecurityGroupsClient.NewListAllPager
+//     method.
+func (client *NetworkSecurityGroupsClient) NewListAllPager(options *NetworkSecurityGroupsClientListAllOptions) *runtime.Pager[NetworkSecurityGroupsClientListAllResponse] {
+	return runtime.NewPager(runtime.PagingHandler[NetworkSecurityGroupsClientListAllResponse]{
+		More: func(page NetworkSecurityGroupsClientListAllResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *NetworkSecurityGroupsClientListAllResponse) (NetworkSecurityGroupsClientListAllResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "NetworkSecurityGroupsClient.NewListAllPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listAllCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return NetworkSecurityGroupsClientListAllResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return NetworkSecurityGroupsClientListAllResponse{}, err
+			}
+			return client.listAllHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listAllCreateRequest creates the ListAll request.
+func (client *NetworkSecurityGroupsClient) listAllCreateRequest(ctx context.Context, nextLink string, _ *NetworkSecurityGroupsClientListAllOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.AzureStackHCI/networkSecurityGroups"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260701Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listAllHandleResponse handles the ListAll response.
+func (client *NetworkSecurityGroupsClient) listAllHandleResponse(resp *http.Response, successCodes ...int) (NetworkSecurityGroupsClientListAllResponse, error) {
+	result := NetworkSecurityGroupsClientListAllResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkSecurityGroupListResult); err != nil {
+		return NetworkSecurityGroupsClientListAllResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListByResourceGroupPager - Gets all network security groups in a resource group.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - options - NetworkSecurityGroupsClientListByResourceGroupOptions contains the optional parameters for the NetworkSecurityGroupsClient.NewListByResourceGroupPager
+//     method.
+func (client *NetworkSecurityGroupsClient) NewListByResourceGroupPager(resourceGroupName string, options *NetworkSecurityGroupsClientListByResourceGroupOptions) *runtime.Pager[NetworkSecurityGroupsClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PagingHandler[NetworkSecurityGroupsClientListByResourceGroupResponse]{
+		More: func(page NetworkSecurityGroupsClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *NetworkSecurityGroupsClientListByResourceGroupResponse) (NetworkSecurityGroupsClientListByResourceGroupResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "NetworkSecurityGroupsClient.NewListByResourceGroupPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
+			if err != nil {
+				return NetworkSecurityGroupsClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return NetworkSecurityGroupsClientListByResourceGroupResponse{}, err
+			}
+			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listByResourceGroupCreateRequest creates the ListByResourceGroup request.
+func (client *NetworkSecurityGroupsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *NetworkSecurityGroupsClientListByResourceGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/networkSecurityGroups"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260701Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listByResourceGroupHandleResponse handles the ListByResourceGroup response.
+func (client *NetworkSecurityGroupsClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (NetworkSecurityGroupsClientListByResourceGroupResponse, error) {
+	result := NetworkSecurityGroupsClientListByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkSecurityGroupListResult); err != nil {
+		return NetworkSecurityGroupsClientListByResourceGroupResponse{}, err
+	}
+	return result, nil
 }

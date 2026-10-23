@@ -90,13 +90,15 @@ handle(err)
 
 The flag bypasses guards whose reason is write replay safety, leaving the existing
 outer azcore policy to decide whether to retry. This includes transport failures,
-attempt timeouts, HTTP 408/500/502/504, and the single-write-region HTTP 503 guard
-when Cosmos's independent cross-region settings and retry budget permit recovery.
+attempt timeouts, and HTTP 408/500/502/503/504. After native transport or HTTP 503
+recovery declines another attempt, outer replay does not require regional failover:
+it remains eligible when cross-region retries are disabled, preferred regions are
+absent or exhausted, or the account has only one write region.
 Responses and transport errors are passed through, not converted to success.
 `RetryOptions` control `MaxRetries`, delays, status checks, `ShouldRetry`,
 `Retry-After`, and attempt timeouts; parent cancellation still stops retries.
 Independent vetoes, including downstream non-retriable errors and exhausted
-Cosmos recovery budgets, still apply. Terminal statuses are not automatically retried.
+endpoint/session recovery budgets, still apply. Terminal statuses are not automatically retried.
 
 There is no new policy, loop, or regional retry logic. Requests retain their write
 classification and never gain permission to target read-only regions. Existing

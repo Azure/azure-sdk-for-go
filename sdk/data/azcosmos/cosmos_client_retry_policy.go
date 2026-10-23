@@ -241,6 +241,10 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 					return nil, errorinfo.NonRetriableError(errRetry)
 				}
 				if !shouldRetry {
+					if o.isWriteOperation && o.replaySafe {
+						// Regional recovery refusal does not veto same-endpoint replay.
+						return nil, err
+					}
 					return nil, errorinfo.NonRetriableError(err)
 				}
 				err = req.RewindBody()
@@ -276,12 +280,10 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 					return nil, errorinfo.NonRetriableError(azruntime.NewResponseErrorWithErrorCode(response, response.Status))
 				}
 			case http.StatusServiceUnavailable:
-				if o.isWriteOperation && o.replaySafe && !p.gem.CanUseMultipleWriteLocations() &&
-					p.gem.locationCache.enableCrossRegionRetries && retryContext.preferredLocationIndex < len(p.gem.preferredLocations) {
-					// Replay permission does not grant cross-region write capability.
-					return response, nil
-				}
 				if !p.attemptRetryOnServiceUnavailable(o.isWriteOperation, &retryContext) {
+					if o.isWriteOperation && o.replaySafe {
+						return response, nil
+					}
 					return nil, errorinfo.NonRetriableError(azruntime.NewResponseErrorWithErrorCode(response, response.Status))
 				}
 			case http.StatusRequestTimeout:

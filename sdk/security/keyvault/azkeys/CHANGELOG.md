@@ -1,17 +1,12 @@
 # Release History
 
-## 1.6.0 (2026-10-23)
+<!-- cspell:ignore azkeys KWPAD CKMAESKEYWRAP CKMAESKEYWRAPPAD RSAOAEP -->
+
+## 1.6.0-beta.2 (2026-10-23)
 ### Features Added
 
-- New value `KeyOperationSecureUnwrapKey`, `KeyOperationSecureWrapKey` added to enum type `KeyOperation`
-- New enum type `JSONWebKeyWrapAlgorithm` with values `JSONWebKeyWrapAlgorithmA128KW`, `JSONWebKeyWrapAlgorithmA128KWPAD`, `JSONWebKeyWrapAlgorithmA192KW`, `JSONWebKeyWrapAlgorithmA192KWPAD`, `JSONWebKeyWrapAlgorithmA256KW`, `JSONWebKeyWrapAlgorithmA256KWPAD`, `JSONWebKeyWrapAlgorithmCKMAESKEYWRAP`, `JSONWebKeyWrapAlgorithmCKMAESKEYWRAPPAD`, `JSONWebKeyWrapAlgorithmRSAOAEP256`
-- New function `*Client.SecureUnwrapKey(ctx context.Context, name string, version string, parameters SecureKeyUnWrapOperationParameters, options *SecureUnwrapKeyOptions) (SecureUnwrapKeyResponse, error)`
-- New function `*Client.SecureWrapKey(ctx context.Context, name string, version string, parameters SecureKeyWrapOperationParameters, options *SecureWrapKeyOptions) (SecureWrapKeyResponse, error)`
-- New struct `ExternalKey`
-- New struct `SecureKeyOperationResult`
-- New struct `SecureKeyUnWrapOperationParameters`
-- New struct `SecureKeyWrapOperationParameters`
-- New field `ExternalKey`, `KeySize` in struct `KeyAttributes`
+- Regenerated the library for stable Key Vault API version `2026-04-01`.
+- Added secure wrap/unwrap operations and related key model updates.
 
 
 ## 1.5.0 (2026-05-25)
@@ -45,7 +40,7 @@
 ## 1.3.0 (2024-11-06)
 
 ### Features Added
-* Added API Version support. Users can now change the default API Version by setting ClientOptions.APIVersioncd 
+* Added API Version support. Users can now change the default API Version by setting ClientOptions.APIVersion
 
 ## 1.2.0 (2024-10-21)
 

@@ -13,6 +13,324 @@ import (
 	"time"
 )
 
+// MarshalJSON implements the json.Marshaller interface for type BillingAccountItemDetailsReportQueryFilter.
+func (b BillingAccountItemDetailsReportQueryFilter) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "carbonScopeList", b.CarbonScopeList)
+	populate(objectMap, "categoryType", b.CategoryType)
+	populate(objectMap, "dateRange", b.DateRange)
+	populate(objectMap, "locationList", b.LocationList)
+	populate(objectMap, "orderBy", b.OrderBy)
+	populate(objectMap, "pageSize", b.PageSize)
+	objectMap["reportType"] = ReportTypeEnumItemDetailsReport
+	populate(objectMap, "resourceTypeList", b.ResourceTypeList)
+	populate(objectMap, "skipToken", b.SkipToken)
+	populate(objectMap, "sortDirection", b.SortDirection)
+	populate(objectMap, "subscriptionList", b.SubscriptionList)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type BillingAccountItemDetailsReportQueryFilter.
+func (b *BillingAccountItemDetailsReportQueryFilter) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", b, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "carbonScopeList":
+			err = unpopulate(val, "CarbonScopeList", &b.CarbonScopeList)
+			delete(rawMsg, key)
+		case "categoryType":
+			err = unpopulate(val, "CategoryType", &b.CategoryType)
+			delete(rawMsg, key)
+		case "dateRange":
+			err = unpopulate(val, "DateRange", &b.DateRange)
+			delete(rawMsg, key)
+		case "locationList":
+			err = unpopulate(val, "LocationList", &b.LocationList)
+			delete(rawMsg, key)
+		case "orderBy":
+			err = unpopulate(val, "OrderBy", &b.OrderBy)
+			delete(rawMsg, key)
+		case "pageSize":
+			err = unpopulate(val, "PageSize", &b.PageSize)
+			delete(rawMsg, key)
+		case "reportType":
+			err = unpopulate(val, "ReportType", &b.ReportType)
+			delete(rawMsg, key)
+		case "resourceTypeList":
+			err = unpopulate(val, "ResourceTypeList", &b.ResourceTypeList)
+			delete(rawMsg, key)
+		case "skipToken":
+			err = unpopulate(val, "SkipToken", &b.SkipToken)
+			delete(rawMsg, key)
+		case "sortDirection":
+			err = unpopulate(val, "SortDirection", &b.SortDirection)
+			delete(rawMsg, key)
+		case "subscriptionList":
+			err = unpopulate(val, "SubscriptionList", &b.SubscriptionList)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", b, err.Error())
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type BillingAccountMonthlySummaryReportQueryFilter.
+func (b BillingAccountMonthlySummaryReportQueryFilter) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "carbonScopeList", b.CarbonScopeList)
+	populate(objectMap, "dateRange", b.DateRange)
+	populate(objectMap, "locationList", b.LocationList)
+	objectMap["reportType"] = ReportTypeEnumMonthlySummaryReport
+	populate(objectMap, "resourceTypeList", b.ResourceTypeList)
+	populate(objectMap, "subscriptionList", b.SubscriptionList)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type BillingAccountMonthlySummaryReportQueryFilter.
+func (b *BillingAccountMonthlySummaryReportQueryFilter) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", b, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "carbonScopeList":
+			err = unpopulate(val, "CarbonScopeList", &b.CarbonScopeList)
+			delete(rawMsg, key)
+		case "dateRange":
+			err = unpopulate(val, "DateRange", &b.DateRange)
+			delete(rawMsg, key)
+		case "locationList":
+			err = unpopulate(val, "LocationList", &b.LocationList)
+			delete(rawMsg, key)
+		case "reportType":
+			err = unpopulate(val, "ReportType", &b.ReportType)
+			delete(rawMsg, key)
+		case "resourceTypeList":
+			err = unpopulate(val, "ResourceTypeList", &b.ResourceTypeList)
+			delete(rawMsg, key)
+		case "subscriptionList":
+			err = unpopulate(val, "SubscriptionList", &b.SubscriptionList)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", b, err.Error())
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type BillingAccountOverallSummaryReportQueryFilter.
+func (b BillingAccountOverallSummaryReportQueryFilter) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "carbonScopeList", b.CarbonScopeList)
+	populate(objectMap, "dateRange", b.DateRange)
+	populate(objectMap, "locationList", b.LocationList)
+	objectMap["reportType"] = ReportTypeEnumOverallSummaryReport
+	populate(objectMap, "resourceTypeList", b.ResourceTypeList)
+	populate(objectMap, "subscriptionList", b.SubscriptionList)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type BillingAccountOverallSummaryReportQueryFilter.
+func (b *BillingAccountOverallSummaryReportQueryFilter) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", b, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "carbonScopeList":
+			err = unpopulate(val, "CarbonScopeList", &b.CarbonScopeList)
+			delete(rawMsg, key)
+		case "dateRange":
+			err = unpopulate(val, "DateRange", &b.DateRange)
+			delete(rawMsg, key)
+		case "locationList":
+			err = unpopulate(val, "LocationList", &b.LocationList)
+			delete(rawMsg, key)
+		case "reportType":
+			err = unpopulate(val, "ReportType", &b.ReportType)
+			delete(rawMsg, key)
+		case "resourceTypeList":
+			err = unpopulate(val, "ResourceTypeList", &b.ResourceTypeList)
+			delete(rawMsg, key)
+		case "subscriptionList":
+			err = unpopulate(val, "SubscriptionList", &b.SubscriptionList)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", b, err.Error())
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type BillingAccountQueryFilter.
+func (b BillingAccountQueryFilter) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "carbonScopeList", b.CarbonScopeList)
+	populate(objectMap, "dateRange", b.DateRange)
+	populate(objectMap, "locationList", b.LocationList)
+	populate(objectMap, "reportType", b.ReportType)
+	populate(objectMap, "resourceTypeList", b.ResourceTypeList)
+	populate(objectMap, "subscriptionList", b.SubscriptionList)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type BillingAccountQueryFilter.
+func (b *BillingAccountQueryFilter) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", b, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "carbonScopeList":
+			err = unpopulate(val, "CarbonScopeList", &b.CarbonScopeList)
+			delete(rawMsg, key)
+		case "dateRange":
+			err = unpopulate(val, "DateRange", &b.DateRange)
+			delete(rawMsg, key)
+		case "locationList":
+			err = unpopulate(val, "LocationList", &b.LocationList)
+			delete(rawMsg, key)
+		case "reportType":
+			err = unpopulate(val, "ReportType", &b.ReportType)
+			delete(rawMsg, key)
+		case "resourceTypeList":
+			err = unpopulate(val, "ResourceTypeList", &b.ResourceTypeList)
+			delete(rawMsg, key)
+		case "subscriptionList":
+			err = unpopulate(val, "SubscriptionList", &b.SubscriptionList)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", b, err.Error())
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type BillingAccountTopItemsMonthlySummaryReportQueryFilter.
+func (b BillingAccountTopItemsMonthlySummaryReportQueryFilter) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "carbonScopeList", b.CarbonScopeList)
+	populate(objectMap, "categoryType", b.CategoryType)
+	populate(objectMap, "dateRange", b.DateRange)
+	populate(objectMap, "locationList", b.LocationList)
+	objectMap["reportType"] = ReportTypeEnumTopItemsMonthlySummaryReport
+	populate(objectMap, "resourceTypeList", b.ResourceTypeList)
+	populate(objectMap, "subscriptionList", b.SubscriptionList)
+	populate(objectMap, "topItems", b.TopItems)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type BillingAccountTopItemsMonthlySummaryReportQueryFilter.
+func (b *BillingAccountTopItemsMonthlySummaryReportQueryFilter) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", b, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "carbonScopeList":
+			err = unpopulate(val, "CarbonScopeList", &b.CarbonScopeList)
+			delete(rawMsg, key)
+		case "categoryType":
+			err = unpopulate(val, "CategoryType", &b.CategoryType)
+			delete(rawMsg, key)
+		case "dateRange":
+			err = unpopulate(val, "DateRange", &b.DateRange)
+			delete(rawMsg, key)
+		case "locationList":
+			err = unpopulate(val, "LocationList", &b.LocationList)
+			delete(rawMsg, key)
+		case "reportType":
+			err = unpopulate(val, "ReportType", &b.ReportType)
+			delete(rawMsg, key)
+		case "resourceTypeList":
+			err = unpopulate(val, "ResourceTypeList", &b.ResourceTypeList)
+			delete(rawMsg, key)
+		case "subscriptionList":
+			err = unpopulate(val, "SubscriptionList", &b.SubscriptionList)
+			delete(rawMsg, key)
+		case "topItems":
+			err = unpopulate(val, "TopItems", &b.TopItems)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", b, err.Error())
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type BillingAccountTopItemsSummaryReportQueryFilter.
+func (b BillingAccountTopItemsSummaryReportQueryFilter) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "carbonScopeList", b.CarbonScopeList)
+	populate(objectMap, "categoryType", b.CategoryType)
+	populate(objectMap, "dateRange", b.DateRange)
+	populate(objectMap, "locationList", b.LocationList)
+	objectMap["reportType"] = ReportTypeEnumTopItemsSummaryReport
+	populate(objectMap, "resourceTypeList", b.ResourceTypeList)
+	populate(objectMap, "subscriptionList", b.SubscriptionList)
+	populate(objectMap, "topItems", b.TopItems)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type BillingAccountTopItemsSummaryReportQueryFilter.
+func (b *BillingAccountTopItemsSummaryReportQueryFilter) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", b, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "carbonScopeList":
+			err = unpopulate(val, "CarbonScopeList", &b.CarbonScopeList)
+			delete(rawMsg, key)
+		case "categoryType":
+			err = unpopulate(val, "CategoryType", &b.CategoryType)
+			delete(rawMsg, key)
+		case "dateRange":
+			err = unpopulate(val, "DateRange", &b.DateRange)
+			delete(rawMsg, key)
+		case "locationList":
+			err = unpopulate(val, "LocationList", &b.LocationList)
+			delete(rawMsg, key)
+		case "reportType":
+			err = unpopulate(val, "ReportType", &b.ReportType)
+			delete(rawMsg, key)
+		case "resourceTypeList":
+			err = unpopulate(val, "ResourceTypeList", &b.ResourceTypeList)
+			delete(rawMsg, key)
+		case "subscriptionList":
+			err = unpopulate(val, "SubscriptionList", &b.SubscriptionList)
+			delete(rawMsg, key)
+		case "topItems":
+			err = unpopulate(val, "TopItems", &b.TopItems)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", b, err.Error())
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type CarbonEmissionData.
 func (c CarbonEmissionData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)

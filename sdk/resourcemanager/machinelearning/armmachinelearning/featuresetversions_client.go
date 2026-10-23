@@ -20,7 +20,7 @@ import (
 // FeaturesetVersionsClient contains the methods for the FeaturesetVersions group.
 // Don't use this type directly, use NewFeaturesetVersionsClient() instead.
 //
-// Generated from API version 2026-03-15-preview
+// Generated from API version 2026-09-01
 type FeaturesetVersionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -73,7 +73,7 @@ func (client *FeaturesetVersionsClient) BeginBackfill(ctx context.Context, resou
 	}
 }
 
-// Backfill - Backfill.
+// backfill - Backfill.
 //
 // Backfill.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -97,7 +97,7 @@ func (client *FeaturesetVersionsClient) backfill(ctx context.Context, resourceGr
 	return httpResp, nil
 }
 
-// backfillCreateRequest creates the Backfill request.
+// backfillCreateRequest creates the backfill request.
 func (client *FeaturesetVersionsClient) backfillCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, name string, version string, body FeaturesetVersionBackfillRequest, _ *FeaturesetVersionsClientBeginBackfillOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/featuresets/{name}/versions/{version}/backfill"
 	if client.subscriptionID == "" {
@@ -125,7 +125,7 @@ func (client *FeaturesetVersionsClient) backfillCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -164,7 +164,7 @@ func (client *FeaturesetVersionsClient) BeginCreateOrUpdate(ctx context.Context,
 	}
 }
 
-// CreateOrUpdate - Create or update version.
+// createOrUpdate - Create or update version.
 //
 // Create or update version.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -188,7 +188,7 @@ func (client *FeaturesetVersionsClient) createOrUpdate(ctx context.Context, reso
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *FeaturesetVersionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, name string, version string, body FeaturesetVersion, _ *FeaturesetVersionsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/featuresets/{name}/versions/{version}"
 	if client.subscriptionID == "" {
@@ -216,7 +216,7 @@ func (client *FeaturesetVersionsClient) createOrUpdateCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -238,7 +238,7 @@ func (client *FeaturesetVersionsClient) createOrUpdateCreateRequest(ctx context.
 //     method.
 func (client *FeaturesetVersionsClient) BeginDelete(ctx context.Context, resourceGroupName string, workspaceName string, name string, version string, options *FeaturesetVersionsClientBeginDeleteOptions) (*runtime.Poller[FeaturesetVersionsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, workspaceName, name, version, options)
+		resp, err := client.delete(ctx, resourceGroupName, workspaceName, name, version, options)
 		if err != nil {
 			return nil, err
 		}
@@ -253,11 +253,11 @@ func (client *FeaturesetVersionsClient) BeginDelete(ctx context.Context, resourc
 	}
 }
 
-// Delete - Delete version.
+// delete - Delete version.
 //
 // Delete version.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *FeaturesetVersionsClient) deleteOperation(ctx context.Context, resourceGroupName string, workspaceName string, name string, version string, options *FeaturesetVersionsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *FeaturesetVersionsClient) delete(ctx context.Context, resourceGroupName string, workspaceName string, name string, version string, options *FeaturesetVersionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "FeaturesetVersionsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -277,7 +277,7 @@ func (client *FeaturesetVersionsClient) deleteOperation(ctx context.Context, res
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *FeaturesetVersionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, name string, version string, _ *FeaturesetVersionsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/featuresets/{name}/versions/{version}"
 	if client.subscriptionID == "" {
@@ -305,7 +305,7 @@ func (client *FeaturesetVersionsClient) deleteCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -364,7 +364,7 @@ func (client *FeaturesetVersionsClient) getCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -450,7 +450,7 @@ func (client *FeaturesetVersionsClient) listCreateRequest(ctx context.Context, r
 		if options != nil && options.Skip != nil {
 			reqQP.Set("$skip", *options.Skip)
 		}
-		reqQP.Set("api-version", version20260315Preview)
+		reqQP.Set("api-version", version20260901)
 		if options != nil && options.CreatedBy != nil {
 			reqQP.Set("createdBy", *options.CreatedBy)
 		}

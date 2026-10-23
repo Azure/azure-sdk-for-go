@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/CapabilityHost/createOrUpdate.json
+// Generated from example definition: 2026-09-01/CapabilityHost/createOrUpdate.json
 func ExampleCapabilityHostsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -57,7 +57,7 @@ func ExampleCapabilityHostsClient_BeginCreateOrUpdate() {
 	// 	CapabilityHost: armmachinelearning.CapabilityHost{
 	// 		Name: to.Ptr("capabilityHostName"),
 	// 		Type: to.Ptr("Microsoft.MachineLearningServices/workspaces/capabilityHosts"),
-	// 		ID: to.Ptr("subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/test-rg/providers/Microsoft.MachineLearningServices/workspaces/my-aml-workspace/capabilityHosts/capabilityHostName"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/test-rg/providers/Microsoft.MachineLearningServices/workspaces/my-aml-workspace/capabilityHosts/capabilityHostName"),
 	// 		Properties: &armmachinelearning.CapabilityHostProperties{
 	// 			Description: to.Ptr("string"),
 	// 			AcaEnvironmentConnections: []*string{
@@ -66,7 +66,7 @@ func ExampleCapabilityHostsClient_BeginCreateOrUpdate() {
 	// 			AiServicesConnections: []*string{
 	// 				to.Ptr("sampleAIServiceConnection"),
 	// 			},
-	// 			CustomerSubnet: to.Ptr("subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroups/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/mySubne"),
+	// 			CustomerSubnet: to.Ptr("subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroups/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/mySubnet"),
 	// 			ProvisioningState: to.Ptr(armmachinelearning.CapabilityHostProvisioningStateSucceeded),
 	// 			StorageConnections: []*string{
 	// 				to.Ptr("sampleStorageConnection"),
@@ -78,7 +78,7 @@ func ExampleCapabilityHostsClient_BeginCreateOrUpdate() {
 	// 				to.Ptr("sampleThreadStorageConnection"),
 	// 			},
 	// 			VectorStoreConnections: []*string{
-	// 				to.Ptr("sampleVectoStoreConnection"),
+	// 				to.Ptr("sampleVectorStoreConnection"),
 	// 			},
 	// 		},
 	// 		SystemData: &armmachinelearning.SystemData{
@@ -93,7 +93,7 @@ func ExampleCapabilityHostsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/CapabilityHost/delete.json
+// Generated from example definition: 2026-09-01/CapabilityHost/delete.json
 func ExampleCapabilityHostsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -114,7 +114,7 @@ func ExampleCapabilityHostsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/CapabilityHost/get.json
+// Generated from example definition: 2026-09-01/CapabilityHost/get.json
 func ExampleCapabilityHostsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -136,7 +136,7 @@ func ExampleCapabilityHostsClient_Get() {
 	// 	CapabilityHost: armmachinelearning.CapabilityHost{
 	// 		Name: to.Ptr("capabilityHostName"),
 	// 		Type: to.Ptr("Microsoft.MachineLearningServices/workspaces/capabilityHosts"),
-	// 		ID: to.Ptr("subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/test-rg/providers/Microsoft.MachineLearningServices/workspaces/my-aml-workspace/capabilityHosts/capabilityHostName"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/test-rg/providers/Microsoft.MachineLearningServices/workspaces/my-aml-workspace/capabilityHosts/capabilityHostName"),
 	// 		Properties: &armmachinelearning.CapabilityHostProperties{
 	// 			Description: to.Ptr("string"),
 	// 			AcaEnvironmentConnections: []*string{
@@ -145,7 +145,7 @@ func ExampleCapabilityHostsClient_Get() {
 	// 			AiServicesConnections: []*string{
 	// 				to.Ptr("sampleAIServiceConnection"),
 	// 			},
-	// 			CustomerSubnet: to.Ptr("subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroups/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/mySubne"),
+	// 			CustomerSubnet: to.Ptr("subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroups/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/mySubnet"),
 	// 			Messages: []*string{
 	// 				to.Ptr("string"),
 	// 			},
@@ -160,7 +160,7 @@ func ExampleCapabilityHostsClient_Get() {
 	// 				to.Ptr("sampleThreadStorageConnection"),
 	// 			},
 	// 			VectorStoreConnections: []*string{
-	// 				to.Ptr("sampleVectoStoreConnection"),
+	// 				to.Ptr("sampleVectorStoreConnection"),
 	// 			},
 	// 		},
 	// 		SystemData: &armmachinelearning.SystemData{

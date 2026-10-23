@@ -1,27 +1,18 @@
 # Release History
 
-## 1.6.0-beta.2 (Unreleased)
-
+## 1.6.0 (2026-10-23)
 ### Features Added
 
-### Breaking Changes
+- New value `KeyOperationSecureUnwrapKey`, `KeyOperationSecureWrapKey` added to enum type `KeyOperation`
+- New enum type `JSONWebKeyWrapAlgorithm` with values `JSONWebKeyWrapAlgorithmA128KW`, `JSONWebKeyWrapAlgorithmA128KWPAD`, `JSONWebKeyWrapAlgorithmA192KW`, `JSONWebKeyWrapAlgorithmA192KWPAD`, `JSONWebKeyWrapAlgorithmA256KW`, `JSONWebKeyWrapAlgorithmA256KWPAD`, `JSONWebKeyWrapAlgorithmCKMAESKEYWRAP`, `JSONWebKeyWrapAlgorithmCKMAESKEYWRAPPAD`, `JSONWebKeyWrapAlgorithmRSAOAEP256`
+- New function `*Client.SecureUnwrapKey(ctx context.Context, name string, version string, parameters SecureKeyUnWrapOperationParameters, options *SecureUnwrapKeyOptions) (SecureUnwrapKeyResponse, error)`
+- New function `*Client.SecureWrapKey(ctx context.Context, name string, version string, parameters SecureKeyWrapOperationParameters, options *SecureWrapKeyOptions) (SecureWrapKeyResponse, error)`
+- New struct `ExternalKey`
+- New struct `SecureKeyOperationResult`
+- New struct `SecureKeyUnWrapOperationParameters`
+- New struct `SecureKeyWrapOperationParameters`
+- New field `ExternalKey`, `KeySize` in struct `KeyAttributes`
 
-### Bugs Fixed
-
-### Other Changes
-
-## 1.6.0-beta.1 (2026-06-09)
-
-### Features Added
-* Added the `SecureWrapKey` and `SecureUnwrapKey` operations
-* Added the `JSONWebKeyWrapAlgorithm` type and the `ExternalKey`, `SecureKeyOperationResult`,
-  `SecureKeyUnWrapOperationParameters`, and `SecureKeyWrapOperationParameters` models
-* Added the `ExternalKey` and `KeySize` fields to `KeyAttributes`
-
-### Other Changes
-* Upgraded to API service version `2026-01-01-preview`
-* Upgraded dependencies
-* The tests now require a new environment variable when recording: `EKM_EXTERNAL_ID` (name of an external key exposed by the EKM proxy)
 
 ## 1.5.0 (2026-05-25)
 

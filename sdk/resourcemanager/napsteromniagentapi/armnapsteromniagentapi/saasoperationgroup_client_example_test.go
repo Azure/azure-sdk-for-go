@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-12-24-preview/SaaSOperationGroup_ActivateResource_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-11/SaaSOperationGroup_ActivateResource_MaximumSet_Gen.json
 func ExampleSaaSOperationGroupClient_BeginActivateResource_saaSOperationGroupActivateResourceMaximumSetGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -55,7 +55,7 @@ func ExampleSaaSOperationGroupClient_BeginActivateResource_saaSOperationGroupAct
 	// }
 }
 
-// Generated from example definition: 2025-12-24-preview/SaaSOperationGroup_ActivateResource_MinimumSet_Gen.json
+// Generated from example definition: 2026-08-11/SaaSOperationGroup_ActivateResource_MinimumSet_Gen.json
 func ExampleSaaSOperationGroupClient_BeginActivateResource_saaSOperationGroupActivateResourceMinimumSetGeneratedByMinimumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

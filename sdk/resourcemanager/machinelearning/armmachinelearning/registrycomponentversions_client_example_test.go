@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/Registry/ComponentVersion/createOrUpdate.json
+// Generated from example definition: 2026-05-15-preview/Registry/ComponentVersion/createOrUpdate.json
 func ExampleRegistryComponentVersionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -78,7 +78,7 @@ func ExampleRegistryComponentVersionsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Registry/ComponentVersion/delete.json
+// Generated from example definition: 2026-05-15-preview/Registry/ComponentVersion/delete.json
 func ExampleRegistryComponentVersionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -104,7 +104,7 @@ func ExampleRegistryComponentVersionsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Registry/ComponentVersion/get.json
+// Generated from example definition: 2026-05-15-preview/Registry/ComponentVersion/get.json
 func ExampleRegistryComponentVersionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -152,7 +152,7 @@ func ExampleRegistryComponentVersionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Registry/ComponentVersion/list.json
+// Generated from example definition: 2026-05-15-preview/Registry/ComponentVersion/list.json
 func ExampleRegistryComponentVersionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

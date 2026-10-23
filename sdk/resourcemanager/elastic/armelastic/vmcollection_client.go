@@ -19,7 +19,7 @@ import (
 // VMCollectionClient contains the methods for the VMCollection group.
 // Don't use this type directly, use NewVMCollectionClient() instead.
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2026-03-15-preview
 type VMCollectionClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -90,7 +90,7 @@ func (client *VMCollectionClient) updateCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
+	reqQP.Set("api-version", version20260315Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.Body != nil {
 		req.Raw().Header["Content-Type"] = []string{"application/json"}

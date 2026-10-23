@@ -1,5 +1,11 @@
 # Release History
 
+## 3.1.0-beta.1 (2026-09-08)
+### Features Added
+
+- New field `SoftDelete` in struct `MonitorsClientBeginDeleteOptions`
+
+
 ## 3.0.0 (2026-06-24)
 ### Breaking Changes
 

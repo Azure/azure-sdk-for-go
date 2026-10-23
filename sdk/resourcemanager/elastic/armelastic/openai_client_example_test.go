@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-06-01/OpenAI_CreateOrUpdate.json
+// Generated from example definition: 2026-03-15-preview/OpenAI_CreateOrUpdate.json
 func ExampleOpenAIClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -44,7 +44,7 @@ func ExampleOpenAIClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/OpenAI_Delete.json
+// Generated from example definition: 2026-03-15-preview/OpenAI_Delete.json
 func ExampleOpenAIClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -66,7 +66,7 @@ func ExampleOpenAIClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/OpenAI_Get.json
+// Generated from example definition: 2026-03-15-preview/OpenAI_Get.json
 func ExampleOpenAIClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -99,7 +99,7 @@ func ExampleOpenAIClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/OpenAI_GetStatus.json
+// Generated from example definition: 2026-03-15-preview/OpenAI_GetStatus.json
 func ExampleOpenAIClient_GetStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -126,7 +126,7 @@ func ExampleOpenAIClient_GetStatus() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/OpenAI_List.json
+// Generated from example definition: 2026-03-15-preview/OpenAI_List.json
 func ExampleOpenAIClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

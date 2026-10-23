@@ -17,6 +17,7 @@ import (
 	"net/url"
 	"regexp"
 	"slices"
+	"strconv"
 )
 
 // MonitorsServer is a fake server for instances of the armelastic.MonitorsClient type.
@@ -180,6 +181,7 @@ func (m *MonitorsServerTransport) dispatchBeginDelete(req *http.Request) (*http.
 		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
+		qp := req.URL.Query()
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
@@ -188,7 +190,17 @@ func (m *MonitorsServerTransport) dispatchBeginDelete(req *http.Request) (*http.
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := m.srv.BeginDelete(req.Context(), resourceGroupNameParam, monitorNameParam, nil)
+		softDeleteParam, err := parseOptional(qp.Get("softDelete"), strconv.ParseBool)
+		if err != nil {
+			return nil, err
+		}
+		var options *armelastic.MonitorsClientBeginDeleteOptions
+		if softDeleteParam != nil {
+			options = &armelastic.MonitorsClientBeginDeleteOptions{
+				SoftDelete: softDeleteParam,
+			}
+		}
+		respr, errRespr := m.srv.BeginDelete(req.Context(), resourceGroupNameParam, monitorNameParam, options)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}

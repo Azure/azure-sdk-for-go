@@ -19,7 +19,7 @@ import (
 // MetricsObjectFirewallClient contains the methods for the MetricsObjectFirewall group.
 // Don't use this type directly, use NewMetricsObjectFirewallClient() instead.
 //
-// Generated from API version 2025-10-08
+// Generated from API version 2026-07-29-preview
 type MetricsObjectFirewallClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -110,7 +110,7 @@ func (client *MetricsObjectFirewallClient) createOrUpdateCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251008)
+	reqQP.Set("api-version", version20260729Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -186,7 +186,7 @@ func (client *MetricsObjectFirewallClient) deleteCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251008)
+	reqQP.Set("api-version", version20260729Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -234,7 +234,7 @@ func (client *MetricsObjectFirewallClient) getCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251008)
+	reqQP.Set("api-version", version20260729Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -310,7 +310,7 @@ func (client *MetricsObjectFirewallClient) listByFirewallsCreateRequest(ctx cont
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20251008)
+		reqQP.Set("api-version", version20260729Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

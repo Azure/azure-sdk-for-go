@@ -30,6 +30,9 @@ type GenerateGcpTemplateClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewGenerateGcpTemplateClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GenerateGcpTemplateClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -67,7 +70,7 @@ func (client *GenerateGcpTemplateClient) Post(ctx context.Context, generateGcpTe
 func (client *GenerateGcpTemplateClient) postCreateRequest(ctx context.Context, generateGcpTemplateRequest GenerateGcpTemplateRequest, _ *GenerateGcpTemplateClientPostOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.HybridConnectivity/generateGcpTemplate"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))

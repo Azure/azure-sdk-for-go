@@ -8,20 +8,23 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"regexp"
-	"slices"
-
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridconnectivity/armhybridconnectivity"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridconnectivity/armhybridconnectivity/v2"
+	"net/http"
+	"net/url"
+	"regexp"
+	"slices"
 )
 
 // SolutionConfigurationsServer is a fake server for instances of the armhybridconnectivity.SolutionConfigurationsClient type.
 type SolutionConfigurationsServer struct {
+	// BeginSyncNow is the fake for method SolutionConfigurationsClient.BeginSyncNow
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginSyncNow func(ctx context.Context, resourceURI string, solutionConfiguration string, options *armhybridconnectivity.SolutionConfigurationsClientBeginSyncNowOptions) (resp azfake.PollerResponder[armhybridconnectivity.SolutionConfigurationsClientSyncNowResponse], errResp azfake.ErrorResponder)
+
 	// CreateOrUpdate is the fake for method SolutionConfigurationsClient.CreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	CreateOrUpdate func(ctx context.Context, resourceURI string, solutionConfiguration string, resource armhybridconnectivity.SolutionConfiguration, options *armhybridconnectivity.SolutionConfigurationsClientCreateOrUpdateOptions) (resp azfake.Responder[armhybridconnectivity.SolutionConfigurationsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -38,10 +41,6 @@ type SolutionConfigurationsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(resourceURI string, options *armhybridconnectivity.SolutionConfigurationsClientListOptions) (resp azfake.PagerResponder[armhybridconnectivity.SolutionConfigurationsClientListResponse])
 
-	// BeginSyncNow is the fake for method SolutionConfigurationsClient.BeginSyncNow
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginSyncNow func(ctx context.Context, resourceURI string, solutionConfiguration string, options *armhybridconnectivity.SolutionConfigurationsClientBeginSyncNowOptions) (resp azfake.PollerResponder[armhybridconnectivity.SolutionConfigurationsClientSyncNowResponse], errResp azfake.ErrorResponder)
-
 	// Update is the fake for method SolutionConfigurationsClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
 	Update func(ctx context.Context, resourceURI string, solutionConfiguration string, properties armhybridconnectivity.SolutionConfigurationUpdate, options *armhybridconnectivity.SolutionConfigurationsClientUpdateOptions) (resp azfake.Responder[armhybridconnectivity.SolutionConfigurationsClientUpdateResponse], errResp azfake.ErrorResponder)
@@ -53,8 +52,8 @@ type SolutionConfigurationsServer struct {
 func NewSolutionConfigurationsServerTransport(srv *SolutionConfigurationsServer) *SolutionConfigurationsServerTransport {
 	return &SolutionConfigurationsServerTransport{
 		srv:          srv,
-		newListPager: newTracker[azfake.PagerResponder[armhybridconnectivity.SolutionConfigurationsClientListResponse]](),
 		beginSyncNow: newTracker[azfake.PollerResponder[armhybridconnectivity.SolutionConfigurationsClientSyncNowResponse]](),
+		newListPager: newTracker[azfake.PagerResponder[armhybridconnectivity.SolutionConfigurationsClientListResponse]](),
 	}
 }
 
@@ -62,8 +61,8 @@ func NewSolutionConfigurationsServerTransport(srv *SolutionConfigurationsServer)
 // Don't use this type directly, use NewSolutionConfigurationsServerTransport instead.
 type SolutionConfigurationsServerTransport struct {
 	srv          *SolutionConfigurationsServer
-	newListPager *tracker[azfake.PagerResponder[armhybridconnectivity.SolutionConfigurationsClientListResponse]]
 	beginSyncNow *tracker[azfake.PollerResponder[armhybridconnectivity.SolutionConfigurationsClientSyncNowResponse]]
+	newListPager *tracker[azfake.PagerResponder[armhybridconnectivity.SolutionConfigurationsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for SolutionConfigurationsServerTransport.
@@ -87,6 +86,8 @@ func (s *SolutionConfigurationsServerTransport) dispatchToMethodFake(req *http.R
 		}
 		if !intercepted {
 			switch method {
+			case "SolutionConfigurationsClient.BeginSyncNow":
+				res.resp, res.err = s.dispatchBeginSyncNow(req)
 			case "SolutionConfigurationsClient.CreateOrUpdate":
 				res.resp, res.err = s.dispatchCreateOrUpdate(req)
 			case "SolutionConfigurationsClient.Delete":
@@ -95,8 +96,6 @@ func (s *SolutionConfigurationsServerTransport) dispatchToMethodFake(req *http.R
 				res.resp, res.err = s.dispatchGet(req)
 			case "SolutionConfigurationsClient.NewListPager":
 				res.resp, res.err = s.dispatchNewListPager(req)
-			case "SolutionConfigurationsClient.BeginSyncNow":
-				res.resp, res.err = s.dispatchBeginSyncNow(req)
 			case "SolutionConfigurationsClient.Update":
 				res.resp, res.err = s.dispatchUpdate(req)
 			default:
@@ -113,6 +112,47 @@ func (s *SolutionConfigurationsServerTransport) dispatchToMethodFake(req *http.R
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
+}
+
+func (s *SolutionConfigurationsServerTransport) dispatchBeginSyncNow(req *http.Request) (*http.Response, error) {
+	if s.srv.BeginSyncNow == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginSyncNow not implemented")}
+	}
+	beginSyncNow := s.beginSyncNow.get(req)
+	if beginSyncNow == nil {
+		const regexStr = `/(?P<resourceUri>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.HybridConnectivity/solutionConfigurations/(?P<solutionConfiguration>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/syncNow`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
+		solutionConfigurationParam, err := url.PathUnescape(matches[regex.SubexpIndex("solutionConfiguration")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := s.srv.BeginSyncNow(req.Context(), resourceURIParam, solutionConfigurationParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginSyncNow = &respr
+		s.beginSyncNow.add(req, beginSyncNow)
+	}
+
+	resp, err := server.PollerResponderNext(beginSyncNow, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		s.beginSyncNow.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginSyncNow) {
+		s.beginSyncNow.remove(req)
+	}
+
+	return resp, nil
 }
 
 func (s *SolutionConfigurationsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -240,47 +280,6 @@ func (s *SolutionConfigurationsServerTransport) dispatchNewListPager(req *http.R
 	if !server.PagerResponderMore(newListPager) {
 		s.newListPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (s *SolutionConfigurationsServerTransport) dispatchBeginSyncNow(req *http.Request) (*http.Response, error) {
-	if s.srv.BeginSyncNow == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginSyncNow not implemented")}
-	}
-	beginSyncNow := s.beginSyncNow.get(req)
-	if beginSyncNow == nil {
-		const regexStr = `/(?P<resourceUri>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.HybridConnectivity/solutionConfigurations/(?P<solutionConfiguration>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/syncNow`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
-		solutionConfigurationParam, err := url.PathUnescape(matches[regex.SubexpIndex("solutionConfiguration")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := s.srv.BeginSyncNow(req.Context(), resourceURIParam, solutionConfigurationParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginSyncNow = &respr
-		s.beginSyncNow.add(req, beginSyncNow)
-	}
-
-	resp, err := server.PollerResponderNext(beginSyncNow, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		s.beginSyncNow.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginSyncNow) {
-		s.beginSyncNow.remove(req)
-	}
-
 	return resp, nil
 }
 

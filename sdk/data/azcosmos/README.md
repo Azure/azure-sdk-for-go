@@ -101,9 +101,6 @@ Cosmos recovery budgets, still apply. Terminal statuses are not automatically re
 There is no new policy, loop, or regional retry logic. Requests retain their write
 classification and never gain permission to target read-only regions. Existing
 safe-before-send, endpoint, and session recovery remain in place.
-Separately, proven pre-send failures can use outer retries when their attempt
-expires, including during Cosmos backoff, without requiring `ReplaySafe`.
-An expired context alone is not evidence that a write was never sent.
 
 Replay safety is an application assertion, not exactly-once execution. A lost response
 may mean the first write committed. Replaying a create, delete, or ETag-conditional write

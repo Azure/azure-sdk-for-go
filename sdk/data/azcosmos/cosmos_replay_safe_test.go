@@ -413,111 +413,28 @@ func TestReplaySafeWriteTerminalResponse(t *testing.T) {
 
 }
 
-func TestNotSentWriteAttemptTimeout(t *testing.T) {
-	for _, optIn := range []string{"nil", "false", "true"} {
-		for _, failure := range []string{"transport timeout", "dial timeout", "backoff timeout", "bounded exhaustion", "ambiguous next attempt"} {
-			t.Run(optIn+"/"+failure, func(t *testing.T) {
-				t.Parallel()
-				var bodies, hosts []string
-				var notSent error = &net.DNSError{Err: "unreachable"}
-				if failure == "dial timeout" {
-					notSent = &net.OpError{Op: "dial", Err: syscall.ETIMEDOUT}
-				}
-				transport := retryPolicyTransportFunc(func(req *http.Request) (*http.Response, error) {
-					hosts = append(hosts, req.URL.Host)
-					body, err := io.ReadAll(req.Body)
-					require.NoError(t, err)
-					bodies = append(bodies, string(body))
-					if len(hosts) == 1 || failure == "bounded exhaustion" {
-						if failure == "transport timeout" || failure == "dial timeout" {
-							<-req.Context().Done()
-						}
-						return nil, notSent
-					}
-					if failure == "ambiguous next attempt" {
-						return nil, io.EOF
-					}
-					return readAttemptTimeoutResponse(req, http.StatusOK), nil
-				})
-				container, lc := newReplaySafeTestContainer(t, transport, policy.RetryOptions{
-					MaxRetries: 1, RetryDelay: time.Millisecond, TryTimeout: 20 * time.Millisecond,
-				}, false, true)
-				var options *ItemOptions
-				if optIn != "nil" {
-					options = &ItemOptions{ReplaySafe: optIn == "true"}
-				}
-				_, err := container.UpsertItem(context.Background(), NewPartitionKeyString("pk"), []byte(`{"id":"item"}`), options)
-				switch failure {
-				case "bounded exhaustion":
-					require.Error(t, err)
-					assert.ErrorIs(t, err, context.DeadlineExceeded)
-				case "ambiguous next attempt":
-					require.ErrorIs(t, err, io.EOF)
-					var nonRetriable errorinfo.NonRetriable
-					assert.Equal(t, optIn != "true", errors.As(err, &nonRetriable), "a prior NotSent must not make a later ambiguous send safe")
-				default:
-					require.NoError(t, err, "proven pre-send failures must retry without ReplaySafe")
-				}
-				assert.Equal(t, []string{"write-a.test", "write-a.test"}, hosts)
-				require.Len(t, bodies, 2)
-				assert.Equal(t, bodies[0], bodies[1])
-				assert.Empty(t, lc.locationUnavailabilityInfoMap)
-			})
-		}
-	}
-}
-
-func TestNotSentWriteCallerCancellation(t *testing.T) {
+func TestReplaySafeWriteBackoffTimeout(t *testing.T) {
 	for _, optIn := range []bool{false, true} {
 		t.Run(fmt.Sprintf("ReplaySafe=%t", optIn), func(t *testing.T) {
-			ctx, cancel := context.WithCancel(context.Background())
-			defer cancel()
 			sends := 0
 			transport := retryPolicyTransportFunc(func(req *http.Request) (*http.Response, error) {
 				sends++
-				cancel()
-				return nil, &net.DNSError{Err: "unreachable"}
-			})
-			container, _ := newReplaySafeTestContainer(t, transport, policy.RetryOptions{
-				MaxRetries: 3, RetryDelay: time.Millisecond, TryTimeout: time.Second,
-			}, false, true)
-			_, err := container.UpsertItem(ctx, NewPartitionKeyString("pk"), []byte(`{"id":"item"}`), &ItemOptions{ReplaySafe: optIn})
-			assert.ErrorIs(t, err, context.Canceled)
-			assert.Equal(t, 1, sends)
-		})
-	}
-
-}
-
-func TestNotSentWriteAfterResponseRemainsAmbiguous(t *testing.T) {
-	for _, optIn := range []bool{false, true} {
-		t.Run(fmt.Sprintf("ReplaySafe=%t", optIn), func(t *testing.T) {
-			var hosts []string
-			transport := retryPolicyTransportFunc(func(req *http.Request) (*http.Response, error) {
-				hosts = append(hosts, req.URL.Host)
-				switch len(hosts) {
-				case 1:
-					return readAttemptTimeoutResponse(req, http.StatusServiceUnavailable), nil
-				case 2:
+				if sends == 1 {
 					return nil, &net.DNSError{Err: "unreachable"}
-				default:
-					return readAttemptTimeoutResponse(req, http.StatusOK), nil
 				}
+				return readAttemptTimeoutResponse(req, http.StatusOK), nil
 			})
 			container, _ := newReplaySafeTestContainer(t, transport, policy.RetryOptions{
 				MaxRetries: 1, RetryDelay: time.Millisecond, TryTimeout: 20 * time.Millisecond,
-			}, true, true)
+			}, false, true)
 			_, err := container.UpsertItem(context.Background(), NewPartitionKeyString("pk"), []byte(`{"id":"item"}`), &ItemOptions{ReplaySafe: optIn})
-			want := []string{"write-a.test", "write-b.test"}
 			if optIn {
 				require.NoError(t, err)
-				want = append(want, "write-a.test")
+				assert.Equal(t, 2, sends)
 			} else {
 				require.ErrorIs(t, err, context.DeadlineExceeded)
-				var nonRetriable errorinfo.NonRetriable
-				assert.ErrorAs(t, err, &nonRetriable, "last NotSent does not prove earlier attempts were unsent")
+				assert.Equal(t, 1, sends, "existing unflagged behavior is outside this feature")
 			}
-			assert.Equal(t, want, hosts)
 		})
 	}
 }
@@ -547,7 +464,7 @@ func TestReplaySafeWriteAmbiguousTimeouts(t *testing.T) {
 				if optIn {
 					wantSends = 2
 				}
-				assert.Equal(t, wantSends, sends, "only dial-phase evidence permits unflagged timeout replays")
+				assert.Equal(t, wantSends, sends, "ReplaySafe is required to bypass the expired-write guard")
 			})
 		}
 	}

@@ -12,9 +12,6 @@
 
 ### Bugs Fixed
 
-* Fixed proven pre-send write failures being blocked from outer retries when their attempt timeout expires, including during Cosmos retry backoff. This fix does not require `ReplaySafe`.
-* Fixed transport timeout classification to require dial-phase evidence before treating a timeout as a pre-send failure.
-
 ### Other Changes
 
 ## 1.6.0-beta.4 (2026-10-14)

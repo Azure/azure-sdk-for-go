@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/Registry/ComponentVersion/createOrUpdate.json
+// Generated from example definition: 2026-07-01/Registry/ComponentVersion/createOrUpdate.json
 func ExampleRegistryComponentVersionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -78,7 +78,7 @@ func ExampleRegistryComponentVersionsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Registry/ComponentVersion/delete.json
+// Generated from example definition: 2026-07-01/Registry/ComponentVersion/delete.json
 func ExampleRegistryComponentVersionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -104,7 +104,7 @@ func ExampleRegistryComponentVersionsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Registry/ComponentVersion/get.json
+// Generated from example definition: 2026-07-01/Registry/ComponentVersion/get.json
 func ExampleRegistryComponentVersionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -152,7 +152,7 @@ func ExampleRegistryComponentVersionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Registry/ComponentVersion/list.json
+// Generated from example definition: 2026-07-01/Registry/ComponentVersion/list.json
 func ExampleRegistryComponentVersionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -178,7 +178,7 @@ func ExampleRegistryComponentVersionsClient_NewListPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armmachinelearning.RegistryComponentVersionsClientListResponse{
 		// 	ComponentVersionResourceArmPaginatedResult: armmachinelearning.ComponentVersionResourceArmPaginatedResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.MachineLearningServices/registries/registries123/components/string/versions?api-version=2025-07-01-preview&$skip=2"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.MachineLearningServices/registries/registries123/components/string/versions?api-version=2026-07-01&$skip=2"),
 		// 		Value: []*armmachinelearning.ComponentVersion{
 		// 			{
 		// 				Name: to.Ptr("string"),

@@ -1,5 +1,23 @@
 # Release History
 
+## 3.1.0 (2026-08-21)
+### Features Added
+
+- New value `ScopeManagementGroup` added to enum type `Scope`
+- New function `*ClientFactory.NewMarkupRulesClient() *MarkupRulesClient`
+- New function `*ManagementGroupScopeBenefitRecommendationProperties.GetBenefitRecommendationProperties() *BenefitRecommendationProperties`
+- New function `NewMarkupRulesClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*MarkupRulesClient, error)`
+- New function `*MarkupRulesClient.CreateOrUpdate(ctx context.Context, billingAccountID string, billingProfileID string, ruleName string, resource MarkupRule, options *MarkupRulesClientCreateOrUpdateOptions) (MarkupRulesClientCreateOrUpdateResponse, error)`
+- New function `*MarkupRulesClient.Delete(ctx context.Context, billingAccountID string, billingProfileID string, ruleName string, options *MarkupRulesClientDeleteOptions) (MarkupRulesClientDeleteResponse, error)`
+- New function `*MarkupRulesClient.Get(ctx context.Context, billingAccountID string, billingProfileID string, ruleName string, options *MarkupRulesClientGetOptions) (MarkupRulesClientGetResponse, error)`
+- New function `*MarkupRulesClient.NewListPager(billingAccountID string, billingProfileID string, options *MarkupRulesClientListOptions) *runtime.Pager[MarkupRulesClientListResponse]`
+- New struct `CustomerMetadata`
+- New struct `ManagementGroupScopeBenefitRecommendationProperties`
+- New struct `MarkupRule`
+- New struct `MarkupRulePagedResponse`
+- New struct `MarkupRuleProperties`
+
+
 ## 3.0.0 (2026-06-24)
 ### Breaking Changes
 

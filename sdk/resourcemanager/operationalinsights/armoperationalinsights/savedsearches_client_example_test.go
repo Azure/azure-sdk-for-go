@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/WorkspacesSavedSearchesCreateOrUpdate.json
+// Generated from example definition: 2026-03-01/WorkspacesSavedSearchesCreateOrUpdate.json
 func ExampleSavedSearchesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -61,7 +61,7 @@ func ExampleSavedSearchesClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/WorkspacesDeleteSavedSearches.json
+// Generated from example definition: 2026-03-01/WorkspacesDeleteSavedSearches.json
 func ExampleSavedSearchesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -83,7 +83,7 @@ func ExampleSavedSearchesClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/WorkspacesSavedSearchesGet.json
+// Generated from example definition: 2026-03-01/WorkspacesSavedSearchesGet.json
 func ExampleSavedSearchesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -117,7 +117,7 @@ func ExampleSavedSearchesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/SavedSearchesListByWorkspace.json
+// Generated from example definition: 2026-03-01/SavedSearchesListByWorkspace.json
 func ExampleSavedSearchesClient_ListByWorkspace() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

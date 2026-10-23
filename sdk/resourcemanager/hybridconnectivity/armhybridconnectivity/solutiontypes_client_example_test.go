@@ -7,11 +7,11 @@ package armhybridconnectivity_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridconnectivity/armhybridconnectivity"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridconnectivity/armhybridconnectivity/v2"
 	"log"
 )
 
-// Generated from example definition: 2024-12-01/SolutionTypes_Get.json
+// Generated from example definition: 2027-01-01/SolutionTypes_Get_MaximumSet_Gen.json
 func ExampleSolutionTypesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -22,7 +22,7 @@ func ExampleSolutionTypesClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewSolutionTypesClient("5ACC4579-DB34-4C2F-8F8C-25061168F342").Get(ctx, "rgpublicCloud", "lulzqllpu", nil)
+	res, err := clientFactory.NewSolutionTypesClient("5ACC4579-DB34-4C2F-8F8C-25061168F342").Get(ctx, "rghybridconnectivity", "uekzhgszlxyljiagul", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -32,27 +32,33 @@ func ExampleSolutionTypesClient_Get() {
 	// res = armhybridconnectivity.SolutionTypesClientGetResponse{
 	// 	SolutionTypeResource: armhybridconnectivity.SolutionTypeResource{
 	// 		Properties: &armhybridconnectivity.SolutionTypeProperties{
-	// 			SolutionType: to.Ptr("tjtoeycxhyqxtgd"),
-	// 			Description: to.Ptr("wxyxcvtzuxgodtlanjevedwfdwnznc"),
+	// 			SolutionType: to.Ptr("dembhpcydwoiyszmjtniletpy"),
 	// 			SupportedAzureRegions: []*string{
-	// 				to.Ptr("cimocdh"),
+	// 				to.Ptr("ujawbfint"),
 	// 			},
 	// 			SolutionSettings: []*armhybridconnectivity.SolutionTypeSettingsProperties{
 	// 				{
-	// 					Name: to.Ptr("tepghdgbefujhnnue"),
-	// 					DisplayName: to.Ptr("mwlzepoin"),
-	// 					Type: to.Ptr("je"),
-	// 					Description: to.Ptr("soq"),
+	// 					Name: to.Ptr("i"),
+	// 					DisplayName: to.Ptr("forzmqskffaub"),
+	// 					Type: to.Ptr("d"),
 	// 					AllowedValues: []*string{
-	// 						to.Ptr("pwizyngpkpxsllpluffjspx"),
+	// 						to.Ptr("uecqnmmssdeusxejcxrtkskfugvl"),
 	// 					},
-	// 					DefaultValue: to.Ptr("laekyetgapdpxyqervqaqfscfwagek"),
+	// 					DefaultValue: to.Ptr("uzwiymoxrummkoowwvzjhyazeavzr"),
+	// 					Description: to.Ptr("zrvionyqmsb"),
+	// 					HostTypes: []*armhybridconnectivity.HostType{
+	// 						to.Ptr(armhybridconnectivity.HostTypeAWS),
+	// 					},
 	// 				},
 	// 			},
+	// 			Description: to.Ptr("fhgkvkmrwozqlhpzycasojtlbrbx"),
+	// 			HostTypes: []*armhybridconnectivity.HostType{
+	// 				to.Ptr(armhybridconnectivity.HostTypeAWS),
+	// 			},
 	// 		},
-	// 		ID: to.Ptr("/subscriptions/testSubcrptions/resourceGroups/testResourceGroup/providers/Microsoft.HybridConnectivity/solutionTypes/j"),
-	// 		Name: to.Ptr("xczyyxuphhacyyj"),
-	// 		Type: to.Ptr("mf"),
+	// 		ID: to.Ptr("/subscriptions/testSubcrptions/resourceGroups/testResourceGroup/providers/Microsoft.HybridConnectivity/solutionTypes/i"),
+	// 		Name: to.Ptr("jtlxwihbuftmaobxfmfjojalhpwrv"),
+	// 		Type: to.Ptr("zditfautattfhnffvjw"),
 	// 		SystemData: &armhybridconnectivity.SystemData{
 	// 			CreatedBy: to.Ptr("rpxzkcrobprrdvuoqxz"),
 	// 			CreatedByType: to.Ptr(armhybridconnectivity.CreatedByTypeUser),
@@ -65,7 +71,7 @@ func ExampleSolutionTypesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2024-12-01/SolutionTypes_ListByResourceGroup.json
+// Generated from example definition: 2027-01-01/SolutionTypes_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleSolutionTypesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -76,7 +82,7 @@ func ExampleSolutionTypesClient_NewListByResourceGroupPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewSolutionTypesClient("5ACC4579-DB34-4C2F-8F8C-25061168F342").NewListByResourceGroupPager("rgpublicCloud", nil)
+	pager := clientFactory.NewSolutionTypesClient("5ACC4579-DB34-4C2F-8F8C-25061168F342").NewListByResourceGroupPager("rghybridconnectivity", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -92,27 +98,33 @@ func ExampleSolutionTypesClient_NewListByResourceGroupPager() {
 		// 		Value: []*armhybridconnectivity.SolutionTypeResource{
 		// 			{
 		// 				Properties: &armhybridconnectivity.SolutionTypeProperties{
-		// 					SolutionType: to.Ptr("j"),
-		// 					Description: to.Ptr("mhasmuazxsr"),
+		// 					SolutionType: to.Ptr("dembhpcydwoiyszmjtniletpy"),
 		// 					SupportedAzureRegions: []*string{
-		// 						to.Ptr("jfvkgljymtuzfwbumgabpdpjjnxit"),
+		// 						to.Ptr("ujawbfint"),
 		// 					},
 		// 					SolutionSettings: []*armhybridconnectivity.SolutionTypeSettingsProperties{
 		// 						{
-		// 							Name: to.Ptr("eepvybtmsjwgcpf"),
-		// 							DisplayName: to.Ptr("npxunbwkjrklbjsvdryzsjtecm"),
-		// 							Type: to.Ptr("fngmzlffmwmrglepeyce"),
-		// 							Description: to.Ptr("vdtvoysdagvae"),
+		// 							Name: to.Ptr("i"),
+		// 							DisplayName: to.Ptr("forzmqskffaub"),
+		// 							Type: to.Ptr("d"),
 		// 							AllowedValues: []*string{
-		// 								to.Ptr("cgbkgbmsgsfofmcrjerg"),
+		// 								to.Ptr("uecqnmmssdeusxejcxrtkskfugvl"),
 		// 							},
-		// 							DefaultValue: to.Ptr("knshmo"),
+		// 							DefaultValue: to.Ptr("uzwiymoxrummkoowwvzjhyazeavzr"),
+		// 							Description: to.Ptr("zrvionyqmsb"),
+		// 							HostTypes: []*armhybridconnectivity.HostType{
+		// 								to.Ptr(armhybridconnectivity.HostTypeAWS),
+		// 							},
 		// 						},
 		// 					},
+		// 					Description: to.Ptr("fhgkvkmrwozqlhpzycasojtlbrbx"),
+		// 					HostTypes: []*armhybridconnectivity.HostType{
+		// 						to.Ptr(armhybridconnectivity.HostTypeAWS),
+		// 					},
 		// 				},
-		// 				ID: to.Ptr("/subscriptions/testSubcrptions/resourceGroups/testResourceGroup/providers/Microsoft.HybridConnectivity/solutionTypes/j"),
-		// 				Name: to.Ptr("yzgpvbtzwvijawjgfvnhgbqefqq"),
-		// 				Type: to.Ptr("vamwfnqqpjosjnomwbkwnlnrg"),
+		// 				ID: to.Ptr("/subscriptions/testSubcrptions/resourceGroups/testResourceGroup/providers/Microsoft.HybridConnectivity/solutionTypes/i"),
+		// 				Name: to.Ptr("jtlxwihbuftmaobxfmfjojalhpwrv"),
+		// 				Type: to.Ptr("zditfautattfhnffvjw"),
 		// 				SystemData: &armhybridconnectivity.SystemData{
 		// 					CreatedBy: to.Ptr("rpxzkcrobprrdvuoqxz"),
 		// 					CreatedByType: to.Ptr(armhybridconnectivity.CreatedByTypeUser),
@@ -129,7 +141,7 @@ func ExampleSolutionTypesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2024-12-01/SolutionTypes_ListBySubscription.json
+// Generated from example definition: 2027-01-01/SolutionTypes_ListBySubscription_MaximumSet_Gen.json
 func ExampleSolutionTypesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -157,7 +169,6 @@ func ExampleSolutionTypesClient_NewListBySubscriptionPager() {
 		// 			{
 		// 				Properties: &armhybridconnectivity.SolutionTypeProperties{
 		// 					SolutionType: to.Ptr("dembhpcydwoiyszmjtniletpy"),
-		// 					Description: to.Ptr("fkegiumpjdwgkde"),
 		// 					SupportedAzureRegions: []*string{
 		// 						to.Ptr("ujawbfint"),
 		// 					},
@@ -166,12 +177,19 @@ func ExampleSolutionTypesClient_NewListBySubscriptionPager() {
 		// 							Name: to.Ptr("i"),
 		// 							DisplayName: to.Ptr("forzmqskffaub"),
 		// 							Type: to.Ptr("d"),
-		// 							Description: to.Ptr("cbyxsxfsaye"),
 		// 							AllowedValues: []*string{
 		// 								to.Ptr("uecqnmmssdeusxejcxrtkskfugvl"),
 		// 							},
 		// 							DefaultValue: to.Ptr("uzwiymoxrummkoowwvzjhyazeavzr"),
+		// 							Description: to.Ptr("zrvionyqmsb"),
+		// 							HostTypes: []*armhybridconnectivity.HostType{
+		// 								to.Ptr(armhybridconnectivity.HostTypeAWS),
+		// 							},
 		// 						},
+		// 					},
+		// 					Description: to.Ptr("fhgkvkmrwozqlhpzycasojtlbrbx"),
+		// 					HostTypes: []*armhybridconnectivity.HostType{
+		// 						to.Ptr(armhybridconnectivity.HostTypeAWS),
 		// 					},
 		// 				},
 		// 				ID: to.Ptr("/subscriptions/testSubcrptions/resourceGroups/testResourceGroup/providers/Microsoft.HybridConnectivity/solutionTypes/i"),

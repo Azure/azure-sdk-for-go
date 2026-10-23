@@ -7,11 +7,11 @@ package armhybridconnectivity_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridconnectivity/armhybridconnectivity"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridconnectivity/armhybridconnectivity/v2"
 	"log"
 )
 
-// Generated from example definition: 2024-12-01/Inventory_Get.json
+// Generated from example definition: 2027-01-01/Inventory_Get_MaximumSet_Gen.json
 func ExampleInventoryClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -22,7 +22,7 @@ func ExampleInventoryClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewInventoryClient().Get(ctx, "ymuj", "zarfsraogroxlaqjjnwixtn", "xofprmcboosrbd", nil)
+	res, err := clientFactory.NewInventoryClient().Get(ctx, "subscriptions/f5bcc1d9-23af-4ae9-aca1-041d0f593a63/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/machines/testMachine", "abc", "pr", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -54,7 +54,7 @@ func ExampleInventoryClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2024-12-01/Inventory_ListBySolutionConfiguration.json
+// Generated from example definition: 2027-01-01/Inventory_ListBySolutionConfiguration_MaximumSet_Gen.json
 func ExampleInventoryClient_NewListBySolutionConfigurationPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -65,7 +65,7 @@ func ExampleInventoryClient_NewListBySolutionConfigurationPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewInventoryClient().NewListBySolutionConfigurationPager("ymuj", "wsxt", nil)
+	pager := clientFactory.NewInventoryClient().NewListBySolutionConfigurationPager("subscriptions/f5bcc1d9-23af-4ae9-aca1-041d0f593a63/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/machines/testMachine", "abc", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

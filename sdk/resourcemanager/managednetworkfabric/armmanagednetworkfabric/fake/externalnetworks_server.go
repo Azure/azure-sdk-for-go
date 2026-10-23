@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric/v3"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -29,14 +29,6 @@ type ExternalNetworksServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, externalNetworkName string, options *armmanagednetworkfabric.ExternalNetworksClientBeginDeleteOptions) (resp azfake.PollerResponder[armmanagednetworkfabric.ExternalNetworksClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method ExternalNetworksClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, externalNetworkName string, options *armmanagednetworkfabric.ExternalNetworksClientGetOptions) (resp azfake.Responder[armmanagednetworkfabric.ExternalNetworksClientGetResponse], errResp azfake.ErrorResponder)
-
-	// NewListByL3IsolationDomainPager is the fake for method ExternalNetworksClient.NewListByL3IsolationDomainPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByL3IsolationDomainPager func(resourceGroupName string, l3IsolationDomainName string, options *armmanagednetworkfabric.ExternalNetworksClientListByL3IsolationDomainOptions) (resp azfake.PagerResponder[armmanagednetworkfabric.ExternalNetworksClientListByL3IsolationDomainResponse])
-
 	// BeginUpdate is the fake for method ExternalNetworksClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, externalNetworkName string, body armmanagednetworkfabric.ExternalNetworkPatch, options *armmanagednetworkfabric.ExternalNetworksClientBeginUpdateOptions) (resp azfake.PollerResponder[armmanagednetworkfabric.ExternalNetworksClientUpdateResponse], errResp azfake.ErrorResponder)
@@ -52,6 +44,14 @@ type ExternalNetworksServer struct {
 	// BeginUpdateStaticRouteBfdAdministrativeState is the fake for method ExternalNetworksClient.BeginUpdateStaticRouteBfdAdministrativeState
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdateStaticRouteBfdAdministrativeState func(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, externalNetworkName string, body armmanagednetworkfabric.UpdateAdministrativeState, options *armmanagednetworkfabric.ExternalNetworksClientBeginUpdateStaticRouteBfdAdministrativeStateOptions) (resp azfake.PollerResponder[armmanagednetworkfabric.ExternalNetworksClientUpdateStaticRouteBfdAdministrativeStateResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method ExternalNetworksClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, externalNetworkName string, options *armmanagednetworkfabric.ExternalNetworksClientGetOptions) (resp azfake.Responder[armmanagednetworkfabric.ExternalNetworksClientGetResponse], errResp azfake.ErrorResponder)
+
+	// NewListByL3IsolationDomainPager is the fake for method ExternalNetworksClient.NewListByL3IsolationDomainPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByL3IsolationDomainPager func(resourceGroupName string, l3IsolationDomainName string, options *armmanagednetworkfabric.ExternalNetworksClientListByL3IsolationDomainOptions) (resp azfake.PagerResponder[armmanagednetworkfabric.ExternalNetworksClientListByL3IsolationDomainResponse])
 }
 
 // NewExternalNetworksServerTransport creates a new instance of ExternalNetworksServerTransport with the provided implementation.
@@ -62,11 +62,11 @@ func NewExternalNetworksServerTransport(srv *ExternalNetworksServer) *ExternalNe
 		srv:                               srv,
 		beginCreate:                       newTracker[azfake.PollerResponder[armmanagednetworkfabric.ExternalNetworksClientCreateResponse]](),
 		beginDelete:                       newTracker[azfake.PollerResponder[armmanagednetworkfabric.ExternalNetworksClientDeleteResponse]](),
-		newListByL3IsolationDomainPager:   newTracker[azfake.PagerResponder[armmanagednetworkfabric.ExternalNetworksClientListByL3IsolationDomainResponse]](),
 		beginUpdate:                       newTracker[azfake.PollerResponder[armmanagednetworkfabric.ExternalNetworksClientUpdateResponse]](),
 		beginUpdateAdministrativeState:    newTracker[azfake.PollerResponder[armmanagednetworkfabric.ExternalNetworksClientUpdateAdministrativeStateResponse]](),
 		beginUpdateBfdAdministrativeState: newTracker[azfake.PollerResponder[armmanagednetworkfabric.ExternalNetworksClientUpdateBfdAdministrativeStateResponse]](),
 		beginUpdateStaticRouteBfdAdministrativeState: newTracker[azfake.PollerResponder[armmanagednetworkfabric.ExternalNetworksClientUpdateStaticRouteBfdAdministrativeStateResponse]](),
+		newListByL3IsolationDomainPager:              newTracker[azfake.PagerResponder[armmanagednetworkfabric.ExternalNetworksClientListByL3IsolationDomainResponse]](),
 	}
 }
 
@@ -76,11 +76,11 @@ type ExternalNetworksServerTransport struct {
 	srv                                          *ExternalNetworksServer
 	beginCreate                                  *tracker[azfake.PollerResponder[armmanagednetworkfabric.ExternalNetworksClientCreateResponse]]
 	beginDelete                                  *tracker[azfake.PollerResponder[armmanagednetworkfabric.ExternalNetworksClientDeleteResponse]]
-	newListByL3IsolationDomainPager              *tracker[azfake.PagerResponder[armmanagednetworkfabric.ExternalNetworksClientListByL3IsolationDomainResponse]]
 	beginUpdate                                  *tracker[azfake.PollerResponder[armmanagednetworkfabric.ExternalNetworksClientUpdateResponse]]
 	beginUpdateAdministrativeState               *tracker[azfake.PollerResponder[armmanagednetworkfabric.ExternalNetworksClientUpdateAdministrativeStateResponse]]
 	beginUpdateBfdAdministrativeState            *tracker[azfake.PollerResponder[armmanagednetworkfabric.ExternalNetworksClientUpdateBfdAdministrativeStateResponse]]
 	beginUpdateStaticRouteBfdAdministrativeState *tracker[azfake.PollerResponder[armmanagednetworkfabric.ExternalNetworksClientUpdateStaticRouteBfdAdministrativeStateResponse]]
+	newListByL3IsolationDomainPager              *tracker[azfake.PagerResponder[armmanagednetworkfabric.ExternalNetworksClientListByL3IsolationDomainResponse]]
 }
 
 // Do implements the policy.Transporter interface for ExternalNetworksServerTransport.
@@ -108,10 +108,6 @@ func (e *ExternalNetworksServerTransport) dispatchToMethodFake(req *http.Request
 				res.resp, res.err = e.dispatchBeginCreate(req)
 			case "ExternalNetworksClient.BeginDelete":
 				res.resp, res.err = e.dispatchBeginDelete(req)
-			case "ExternalNetworksClient.Get":
-				res.resp, res.err = e.dispatchGet(req)
-			case "ExternalNetworksClient.NewListByL3IsolationDomainPager":
-				res.resp, res.err = e.dispatchNewListByL3IsolationDomainPager(req)
 			case "ExternalNetworksClient.BeginUpdate":
 				res.resp, res.err = e.dispatchBeginUpdate(req)
 			case "ExternalNetworksClient.BeginUpdateAdministrativeState":
@@ -120,6 +116,10 @@ func (e *ExternalNetworksServerTransport) dispatchToMethodFake(req *http.Request
 				res.resp, res.err = e.dispatchBeginUpdateBfdAdministrativeState(req)
 			case "ExternalNetworksClient.BeginUpdateStaticRouteBfdAdministrativeState":
 				res.resp, res.err = e.dispatchBeginUpdateStaticRouteBfdAdministrativeState(req)
+			case "ExternalNetworksClient.Get":
+				res.resp, res.err = e.dispatchGet(req)
+			case "ExternalNetworksClient.NewListByL3IsolationDomainPager":
+				res.resp, res.err = e.dispatchNewListByL3IsolationDomainPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -233,84 +233,6 @@ func (e *ExternalNetworksServerTransport) dispatchBeginDelete(req *http.Request)
 		e.beginDelete.remove(req)
 	}
 
-	return resp, nil
-}
-
-func (e *ExternalNetworksServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if e.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/l3IsolationDomains/(?P<l3IsolationDomainName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/externalNetworks/(?P<externalNetworkName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	l3IsolationDomainNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("l3IsolationDomainName")])
-	if err != nil {
-		return nil, err
-	}
-	externalNetworkNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("externalNetworkName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := e.srv.Get(req.Context(), resourceGroupNameParam, l3IsolationDomainNameParam, externalNetworkNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ExternalNetwork, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (e *ExternalNetworksServerTransport) dispatchNewListByL3IsolationDomainPager(req *http.Request) (*http.Response, error) {
-	if e.srv.NewListByL3IsolationDomainPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByL3IsolationDomainPager not implemented")}
-	}
-	newListByL3IsolationDomainPager := e.newListByL3IsolationDomainPager.get(req)
-	if newListByL3IsolationDomainPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/l3IsolationDomains/(?P<l3IsolationDomainName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/externalNetworks`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		l3IsolationDomainNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("l3IsolationDomainName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := e.srv.NewListByL3IsolationDomainPager(resourceGroupNameParam, l3IsolationDomainNameParam, nil)
-		newListByL3IsolationDomainPager = &resp
-		e.newListByL3IsolationDomainPager.add(req, newListByL3IsolationDomainPager)
-		server.PagerResponderInjectNextLinks(newListByL3IsolationDomainPager, req, func(page *armmanagednetworkfabric.ExternalNetworksClientListByL3IsolationDomainResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByL3IsolationDomainPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		e.newListByL3IsolationDomainPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByL3IsolationDomainPager) {
-		e.newListByL3IsolationDomainPager.remove(req)
-	}
 	return resp, nil
 }
 
@@ -519,6 +441,84 @@ func (e *ExternalNetworksServerTransport) dispatchBeginUpdateStaticRouteBfdAdmin
 		e.beginUpdateStaticRouteBfdAdministrativeState.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (e *ExternalNetworksServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if e.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/l3IsolationDomains/(?P<l3IsolationDomainName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/externalNetworks/(?P<externalNetworkName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	l3IsolationDomainNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("l3IsolationDomainName")])
+	if err != nil {
+		return nil, err
+	}
+	externalNetworkNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("externalNetworkName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := e.srv.Get(req.Context(), resourceGroupNameParam, l3IsolationDomainNameParam, externalNetworkNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ExternalNetwork, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (e *ExternalNetworksServerTransport) dispatchNewListByL3IsolationDomainPager(req *http.Request) (*http.Response, error) {
+	if e.srv.NewListByL3IsolationDomainPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByL3IsolationDomainPager not implemented")}
+	}
+	newListByL3IsolationDomainPager := e.newListByL3IsolationDomainPager.get(req)
+	if newListByL3IsolationDomainPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/l3IsolationDomains/(?P<l3IsolationDomainName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/externalNetworks`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		l3IsolationDomainNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("l3IsolationDomainName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := e.srv.NewListByL3IsolationDomainPager(resourceGroupNameParam, l3IsolationDomainNameParam, nil)
+		newListByL3IsolationDomainPager = &resp
+		e.newListByL3IsolationDomainPager.add(req, newListByL3IsolationDomainPager)
+		server.PagerResponderInjectNextLinks(newListByL3IsolationDomainPager, req, func(page *armmanagednetworkfabric.ExternalNetworksClientListByL3IsolationDomainResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByL3IsolationDomainPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		e.newListByL3IsolationDomainPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByL3IsolationDomainPager) {
+		e.newListByL3IsolationDomainPager.remove(req)
+	}
 	return resp, nil
 }
 

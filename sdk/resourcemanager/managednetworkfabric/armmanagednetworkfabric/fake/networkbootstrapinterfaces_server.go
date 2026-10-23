@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric/v3"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -29,14 +29,6 @@ type NetworkBootstrapInterfacesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, networkBootstrapDeviceName string, networkBootstrapInterfaceName string, options *armmanagednetworkfabric.NetworkBootstrapInterfacesClientBeginDeleteOptions) (resp azfake.PollerResponder[armmanagednetworkfabric.NetworkBootstrapInterfacesClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method NetworkBootstrapInterfacesClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, networkBootstrapDeviceName string, networkBootstrapInterfaceName string, options *armmanagednetworkfabric.NetworkBootstrapInterfacesClientGetOptions) (resp azfake.Responder[armmanagednetworkfabric.NetworkBootstrapInterfacesClientGetResponse], errResp azfake.ErrorResponder)
-
-	// NewListByNetworkBootstrapDevicePager is the fake for method NetworkBootstrapInterfacesClient.NewListByNetworkBootstrapDevicePager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByNetworkBootstrapDevicePager func(resourceGroupName string, networkBootstrapDeviceName string, options *armmanagednetworkfabric.NetworkBootstrapInterfacesClientListByNetworkBootstrapDeviceOptions) (resp azfake.PagerResponder[armmanagednetworkfabric.NetworkBootstrapInterfacesClientListByNetworkBootstrapDeviceResponse])
-
 	// BeginUpdate is the fake for method NetworkBootstrapInterfacesClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, resourceGroupName string, networkBootstrapDeviceName string, networkBootstrapInterfaceName string, body armmanagednetworkfabric.NetworkBootstrapInterfacePatch, options *armmanagednetworkfabric.NetworkBootstrapInterfacesClientBeginUpdateOptions) (resp azfake.PollerResponder[armmanagednetworkfabric.NetworkBootstrapInterfacesClientUpdateResponse], errResp azfake.ErrorResponder)
@@ -44,6 +36,14 @@ type NetworkBootstrapInterfacesServer struct {
 	// BeginUpdateAdministrativeState is the fake for method NetworkBootstrapInterfacesClient.BeginUpdateAdministrativeState
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdateAdministrativeState func(ctx context.Context, resourceGroupName string, networkBootstrapDeviceName string, networkBootstrapInterfaceName string, body armmanagednetworkfabric.UpdateAdministrativeState, options *armmanagednetworkfabric.NetworkBootstrapInterfacesClientBeginUpdateAdministrativeStateOptions) (resp azfake.PollerResponder[armmanagednetworkfabric.NetworkBootstrapInterfacesClientUpdateAdministrativeStateResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method NetworkBootstrapInterfacesClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, networkBootstrapDeviceName string, networkBootstrapInterfaceName string, options *armmanagednetworkfabric.NetworkBootstrapInterfacesClientGetOptions) (resp azfake.Responder[armmanagednetworkfabric.NetworkBootstrapInterfacesClientGetResponse], errResp azfake.ErrorResponder)
+
+	// NewListByNetworkBootstrapDevicePager is the fake for method NetworkBootstrapInterfacesClient.NewListByNetworkBootstrapDevicePager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByNetworkBootstrapDevicePager func(resourceGroupName string, networkBootstrapDeviceName string, options *armmanagednetworkfabric.NetworkBootstrapInterfacesClientListByNetworkBootstrapDeviceOptions) (resp azfake.PagerResponder[armmanagednetworkfabric.NetworkBootstrapInterfacesClientListByNetworkBootstrapDeviceResponse])
 }
 
 // NewNetworkBootstrapInterfacesServerTransport creates a new instance of NetworkBootstrapInterfacesServerTransport with the provided implementation.
@@ -54,9 +54,9 @@ func NewNetworkBootstrapInterfacesServerTransport(srv *NetworkBootstrapInterface
 		srv:                                  srv,
 		beginCreate:                          newTracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkBootstrapInterfacesClientCreateResponse]](),
 		beginDelete:                          newTracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkBootstrapInterfacesClientDeleteResponse]](),
-		newListByNetworkBootstrapDevicePager: newTracker[azfake.PagerResponder[armmanagednetworkfabric.NetworkBootstrapInterfacesClientListByNetworkBootstrapDeviceResponse]](),
 		beginUpdate:                          newTracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkBootstrapInterfacesClientUpdateResponse]](),
 		beginUpdateAdministrativeState:       newTracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkBootstrapInterfacesClientUpdateAdministrativeStateResponse]](),
+		newListByNetworkBootstrapDevicePager: newTracker[azfake.PagerResponder[armmanagednetworkfabric.NetworkBootstrapInterfacesClientListByNetworkBootstrapDeviceResponse]](),
 	}
 }
 
@@ -66,9 +66,9 @@ type NetworkBootstrapInterfacesServerTransport struct {
 	srv                                  *NetworkBootstrapInterfacesServer
 	beginCreate                          *tracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkBootstrapInterfacesClientCreateResponse]]
 	beginDelete                          *tracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkBootstrapInterfacesClientDeleteResponse]]
-	newListByNetworkBootstrapDevicePager *tracker[azfake.PagerResponder[armmanagednetworkfabric.NetworkBootstrapInterfacesClientListByNetworkBootstrapDeviceResponse]]
 	beginUpdate                          *tracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkBootstrapInterfacesClientUpdateResponse]]
 	beginUpdateAdministrativeState       *tracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkBootstrapInterfacesClientUpdateAdministrativeStateResponse]]
+	newListByNetworkBootstrapDevicePager *tracker[azfake.PagerResponder[armmanagednetworkfabric.NetworkBootstrapInterfacesClientListByNetworkBootstrapDeviceResponse]]
 }
 
 // Do implements the policy.Transporter interface for NetworkBootstrapInterfacesServerTransport.
@@ -96,14 +96,14 @@ func (n *NetworkBootstrapInterfacesServerTransport) dispatchToMethodFake(req *ht
 				res.resp, res.err = n.dispatchBeginCreate(req)
 			case "NetworkBootstrapInterfacesClient.BeginDelete":
 				res.resp, res.err = n.dispatchBeginDelete(req)
-			case "NetworkBootstrapInterfacesClient.Get":
-				res.resp, res.err = n.dispatchGet(req)
-			case "NetworkBootstrapInterfacesClient.NewListByNetworkBootstrapDevicePager":
-				res.resp, res.err = n.dispatchNewListByNetworkBootstrapDevicePager(req)
 			case "NetworkBootstrapInterfacesClient.BeginUpdate":
 				res.resp, res.err = n.dispatchBeginUpdate(req)
 			case "NetworkBootstrapInterfacesClient.BeginUpdateAdministrativeState":
 				res.resp, res.err = n.dispatchBeginUpdateAdministrativeState(req)
+			case "NetworkBootstrapInterfacesClient.Get":
+				res.resp, res.err = n.dispatchGet(req)
+			case "NetworkBootstrapInterfacesClient.NewListByNetworkBootstrapDevicePager":
+				res.resp, res.err = n.dispatchNewListByNetworkBootstrapDevicePager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -220,84 +220,6 @@ func (n *NetworkBootstrapInterfacesServerTransport) dispatchBeginDelete(req *htt
 	return resp, nil
 }
 
-func (n *NetworkBootstrapInterfacesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if n.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/networkBootstrapDevices/(?P<networkBootstrapDeviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/networkBootstrapInterfaces/(?P<networkBootstrapInterfaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	networkBootstrapDeviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkBootstrapDeviceName")])
-	if err != nil {
-		return nil, err
-	}
-	networkBootstrapInterfaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkBootstrapInterfaceName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := n.srv.Get(req.Context(), resourceGroupNameParam, networkBootstrapDeviceNameParam, networkBootstrapInterfaceNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).NetworkBootstrapInterface, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (n *NetworkBootstrapInterfacesServerTransport) dispatchNewListByNetworkBootstrapDevicePager(req *http.Request) (*http.Response, error) {
-	if n.srv.NewListByNetworkBootstrapDevicePager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByNetworkBootstrapDevicePager not implemented")}
-	}
-	newListByNetworkBootstrapDevicePager := n.newListByNetworkBootstrapDevicePager.get(req)
-	if newListByNetworkBootstrapDevicePager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/networkBootstrapDevices/(?P<networkBootstrapDeviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/networkBootstrapInterfaces`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		networkBootstrapDeviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkBootstrapDeviceName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := n.srv.NewListByNetworkBootstrapDevicePager(resourceGroupNameParam, networkBootstrapDeviceNameParam, nil)
-		newListByNetworkBootstrapDevicePager = &resp
-		n.newListByNetworkBootstrapDevicePager.add(req, newListByNetworkBootstrapDevicePager)
-		server.PagerResponderInjectNextLinks(newListByNetworkBootstrapDevicePager, req, func(page *armmanagednetworkfabric.NetworkBootstrapInterfacesClientListByNetworkBootstrapDeviceResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByNetworkBootstrapDevicePager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		n.newListByNetworkBootstrapDevicePager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByNetworkBootstrapDevicePager) {
-		n.newListByNetworkBootstrapDevicePager.remove(req)
-	}
-	return resp, nil
-}
-
 func (n *NetworkBootstrapInterfacesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
 	if n.srv.BeginUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
@@ -399,6 +321,84 @@ func (n *NetworkBootstrapInterfacesServerTransport) dispatchBeginUpdateAdministr
 		n.beginUpdateAdministrativeState.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (n *NetworkBootstrapInterfacesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if n.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/networkBootstrapDevices/(?P<networkBootstrapDeviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/networkBootstrapInterfaces/(?P<networkBootstrapInterfaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	networkBootstrapDeviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkBootstrapDeviceName")])
+	if err != nil {
+		return nil, err
+	}
+	networkBootstrapInterfaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkBootstrapInterfaceName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := n.srv.Get(req.Context(), resourceGroupNameParam, networkBootstrapDeviceNameParam, networkBootstrapInterfaceNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).NetworkBootstrapInterface, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (n *NetworkBootstrapInterfacesServerTransport) dispatchNewListByNetworkBootstrapDevicePager(req *http.Request) (*http.Response, error) {
+	if n.srv.NewListByNetworkBootstrapDevicePager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByNetworkBootstrapDevicePager not implemented")}
+	}
+	newListByNetworkBootstrapDevicePager := n.newListByNetworkBootstrapDevicePager.get(req)
+	if newListByNetworkBootstrapDevicePager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/networkBootstrapDevices/(?P<networkBootstrapDeviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/networkBootstrapInterfaces`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		networkBootstrapDeviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkBootstrapDeviceName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := n.srv.NewListByNetworkBootstrapDevicePager(resourceGroupNameParam, networkBootstrapDeviceNameParam, nil)
+		newListByNetworkBootstrapDevicePager = &resp
+		n.newListByNetworkBootstrapDevicePager.add(req, newListByNetworkBootstrapDevicePager)
+		server.PagerResponderInjectNextLinks(newListByNetworkBootstrapDevicePager, req, func(page *armmanagednetworkfabric.NetworkBootstrapInterfacesClientListByNetworkBootstrapDeviceResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByNetworkBootstrapDevicePager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		n.newListByNetworkBootstrapDevicePager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByNetworkBootstrapDevicePager) {
+		n.newListByNetworkBootstrapDevicePager.remove(req)
+	}
 	return resp, nil
 }
 

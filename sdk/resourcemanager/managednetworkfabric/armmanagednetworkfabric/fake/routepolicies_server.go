@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric/v3"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -33,18 +33,6 @@ type RoutePoliciesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, routePolicyName string, options *armmanagednetworkfabric.RoutePoliciesClientBeginDeleteOptions) (resp azfake.PollerResponder[armmanagednetworkfabric.RoutePoliciesClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method RoutePoliciesClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, routePolicyName string, options *armmanagednetworkfabric.RoutePoliciesClientGetOptions) (resp azfake.Responder[armmanagednetworkfabric.RoutePoliciesClientGetResponse], errResp azfake.ErrorResponder)
-
-	// NewListByResourceGroupPager is the fake for method RoutePoliciesClient.NewListByResourceGroupPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupPager func(resourceGroupName string, options *armmanagednetworkfabric.RoutePoliciesClientListByResourceGroupOptions) (resp azfake.PagerResponder[armmanagednetworkfabric.RoutePoliciesClientListByResourceGroupResponse])
-
-	// NewListBySubscriptionPager is the fake for method RoutePoliciesClient.NewListBySubscriptionPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListBySubscriptionPager func(options *armmanagednetworkfabric.RoutePoliciesClientListBySubscriptionOptions) (resp azfake.PagerResponder[armmanagednetworkfabric.RoutePoliciesClientListBySubscriptionResponse])
-
 	// BeginUpdate is the fake for method RoutePoliciesClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, resourceGroupName string, routePolicyName string, body armmanagednetworkfabric.RoutePolicyPatch, options *armmanagednetworkfabric.RoutePoliciesClientBeginUpdateOptions) (resp azfake.PollerResponder[armmanagednetworkfabric.RoutePoliciesClientUpdateResponse], errResp azfake.ErrorResponder)
@@ -56,6 +44,18 @@ type RoutePoliciesServer struct {
 	// BeginValidateConfiguration is the fake for method RoutePoliciesClient.BeginValidateConfiguration
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginValidateConfiguration func(ctx context.Context, resourceGroupName string, routePolicyName string, options *armmanagednetworkfabric.RoutePoliciesClientBeginValidateConfigurationOptions) (resp azfake.PollerResponder[armmanagednetworkfabric.RoutePoliciesClientValidateConfigurationResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method RoutePoliciesClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, routePolicyName string, options *armmanagednetworkfabric.RoutePoliciesClientGetOptions) (resp azfake.Responder[armmanagednetworkfabric.RoutePoliciesClientGetResponse], errResp azfake.ErrorResponder)
+
+	// NewListByResourceGroupPager is the fake for method RoutePoliciesClient.NewListByResourceGroupPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByResourceGroupPager func(resourceGroupName string, options *armmanagednetworkfabric.RoutePoliciesClientListByResourceGroupOptions) (resp azfake.PagerResponder[armmanagednetworkfabric.RoutePoliciesClientListByResourceGroupResponse])
+
+	// NewListBySubscriptionPager is the fake for method RoutePoliciesClient.NewListBySubscriptionPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListBySubscriptionPager func(options *armmanagednetworkfabric.RoutePoliciesClientListBySubscriptionOptions) (resp azfake.PagerResponder[armmanagednetworkfabric.RoutePoliciesClientListBySubscriptionResponse])
 }
 
 // NewRoutePoliciesServerTransport creates a new instance of RoutePoliciesServerTransport with the provided implementation.
@@ -67,11 +67,11 @@ func NewRoutePoliciesServerTransport(srv *RoutePoliciesServer) *RoutePoliciesSer
 		beginCommitConfiguration:       newTracker[azfake.PollerResponder[armmanagednetworkfabric.RoutePoliciesClientCommitConfigurationResponse]](),
 		beginCreate:                    newTracker[azfake.PollerResponder[armmanagednetworkfabric.RoutePoliciesClientCreateResponse]](),
 		beginDelete:                    newTracker[azfake.PollerResponder[armmanagednetworkfabric.RoutePoliciesClientDeleteResponse]](),
-		newListByResourceGroupPager:    newTracker[azfake.PagerResponder[armmanagednetworkfabric.RoutePoliciesClientListByResourceGroupResponse]](),
-		newListBySubscriptionPager:     newTracker[azfake.PagerResponder[armmanagednetworkfabric.RoutePoliciesClientListBySubscriptionResponse]](),
 		beginUpdate:                    newTracker[azfake.PollerResponder[armmanagednetworkfabric.RoutePoliciesClientUpdateResponse]](),
 		beginUpdateAdministrativeState: newTracker[azfake.PollerResponder[armmanagednetworkfabric.RoutePoliciesClientUpdateAdministrativeStateResponse]](),
 		beginValidateConfiguration:     newTracker[azfake.PollerResponder[armmanagednetworkfabric.RoutePoliciesClientValidateConfigurationResponse]](),
+		newListByResourceGroupPager:    newTracker[azfake.PagerResponder[armmanagednetworkfabric.RoutePoliciesClientListByResourceGroupResponse]](),
+		newListBySubscriptionPager:     newTracker[azfake.PagerResponder[armmanagednetworkfabric.RoutePoliciesClientListBySubscriptionResponse]](),
 	}
 }
 
@@ -82,11 +82,11 @@ type RoutePoliciesServerTransport struct {
 	beginCommitConfiguration       *tracker[azfake.PollerResponder[armmanagednetworkfabric.RoutePoliciesClientCommitConfigurationResponse]]
 	beginCreate                    *tracker[azfake.PollerResponder[armmanagednetworkfabric.RoutePoliciesClientCreateResponse]]
 	beginDelete                    *tracker[azfake.PollerResponder[armmanagednetworkfabric.RoutePoliciesClientDeleteResponse]]
-	newListByResourceGroupPager    *tracker[azfake.PagerResponder[armmanagednetworkfabric.RoutePoliciesClientListByResourceGroupResponse]]
-	newListBySubscriptionPager     *tracker[azfake.PagerResponder[armmanagednetworkfabric.RoutePoliciesClientListBySubscriptionResponse]]
 	beginUpdate                    *tracker[azfake.PollerResponder[armmanagednetworkfabric.RoutePoliciesClientUpdateResponse]]
 	beginUpdateAdministrativeState *tracker[azfake.PollerResponder[armmanagednetworkfabric.RoutePoliciesClientUpdateAdministrativeStateResponse]]
 	beginValidateConfiguration     *tracker[azfake.PollerResponder[armmanagednetworkfabric.RoutePoliciesClientValidateConfigurationResponse]]
+	newListByResourceGroupPager    *tracker[azfake.PagerResponder[armmanagednetworkfabric.RoutePoliciesClientListByResourceGroupResponse]]
+	newListBySubscriptionPager     *tracker[azfake.PagerResponder[armmanagednetworkfabric.RoutePoliciesClientListBySubscriptionResponse]]
 }
 
 // Do implements the policy.Transporter interface for RoutePoliciesServerTransport.
@@ -116,18 +116,18 @@ func (r *RoutePoliciesServerTransport) dispatchToMethodFake(req *http.Request, m
 				res.resp, res.err = r.dispatchBeginCreate(req)
 			case "RoutePoliciesClient.BeginDelete":
 				res.resp, res.err = r.dispatchBeginDelete(req)
-			case "RoutePoliciesClient.Get":
-				res.resp, res.err = r.dispatchGet(req)
-			case "RoutePoliciesClient.NewListByResourceGroupPager":
-				res.resp, res.err = r.dispatchNewListByResourceGroupPager(req)
-			case "RoutePoliciesClient.NewListBySubscriptionPager":
-				res.resp, res.err = r.dispatchNewListBySubscriptionPager(req)
 			case "RoutePoliciesClient.BeginUpdate":
 				res.resp, res.err = r.dispatchBeginUpdate(req)
 			case "RoutePoliciesClient.BeginUpdateAdministrativeState":
 				res.resp, res.err = r.dispatchBeginUpdateAdministrativeState(req)
 			case "RoutePoliciesClient.BeginValidateConfiguration":
 				res.resp, res.err = r.dispatchBeginValidateConfiguration(req)
+			case "RoutePoliciesClient.Get":
+				res.resp, res.err = r.dispatchGet(req)
+			case "RoutePoliciesClient.NewListByResourceGroupPager":
+				res.resp, res.err = r.dispatchNewListByResourceGroupPager(req)
+			case "RoutePoliciesClient.NewListBySubscriptionPager":
+				res.resp, res.err = r.dispatchNewListBySubscriptionPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -280,109 +280,6 @@ func (r *RoutePoliciesServerTransport) dispatchBeginDelete(req *http.Request) (*
 	return resp, nil
 }
 
-func (r *RoutePoliciesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if r.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/routePolicies/(?P<routePolicyName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	routePolicyNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("routePolicyName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := r.srv.Get(req.Context(), resourceGroupNameParam, routePolicyNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RoutePolicy, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (r *RoutePoliciesServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
-	if r.srv.NewListByResourceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
-	}
-	newListByResourceGroupPager := r.newListByResourceGroupPager.get(req)
-	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/routePolicies`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := r.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
-		newListByResourceGroupPager = &resp
-		r.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armmanagednetworkfabric.RoutePoliciesClientListByResourceGroupResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		r.newListByResourceGroupPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByResourceGroupPager) {
-		r.newListByResourceGroupPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (r *RoutePoliciesServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
-	if r.srv.NewListBySubscriptionPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
-	}
-	newListBySubscriptionPager := r.newListBySubscriptionPager.get(req)
-	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/routePolicies`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := r.srv.NewListBySubscriptionPager(nil)
-		newListBySubscriptionPager = &resp
-		r.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
-		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armmanagednetworkfabric.RoutePoliciesClientListBySubscriptionResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		r.newListBySubscriptionPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListBySubscriptionPager) {
-		r.newListBySubscriptionPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (r *RoutePoliciesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
 	if r.srv.BeginUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
@@ -520,6 +417,109 @@ func (r *RoutePoliciesServerTransport) dispatchBeginValidateConfiguration(req *h
 		r.beginValidateConfiguration.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (r *RoutePoliciesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if r.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/routePolicies/(?P<routePolicyName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	routePolicyNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("routePolicyName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := r.srv.Get(req.Context(), resourceGroupNameParam, routePolicyNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RoutePolicy, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (r *RoutePoliciesServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
+	if r.srv.NewListByResourceGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
+	}
+	newListByResourceGroupPager := r.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/routePolicies`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := r.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
+		newListByResourceGroupPager = &resp
+		r.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armmanagednetworkfabric.RoutePoliciesClientListByResourceGroupResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		r.newListByResourceGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		r.newListByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (r *RoutePoliciesServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
+	if r.srv.NewListBySubscriptionPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
+	}
+	newListBySubscriptionPager := r.newListBySubscriptionPager.get(req)
+	if newListBySubscriptionPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/routePolicies`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := r.srv.NewListBySubscriptionPager(nil)
+		newListBySubscriptionPager = &resp
+		r.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
+		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armmanagednetworkfabric.RoutePoliciesClientListBySubscriptionResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		r.newListBySubscriptionPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListBySubscriptionPager) {
+		r.newListBySubscriptionPager.remove(req)
+	}
 	return resp, nil
 }
 

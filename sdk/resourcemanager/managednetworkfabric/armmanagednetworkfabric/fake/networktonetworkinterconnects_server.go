@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric/v3"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -29,14 +29,6 @@ type NetworkToNetworkInterconnectsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, networkFabricName string, networkToNetworkInterconnectName string, options *armmanagednetworkfabric.NetworkToNetworkInterconnectsClientBeginDeleteOptions) (resp azfake.PollerResponder[armmanagednetworkfabric.NetworkToNetworkInterconnectsClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method NetworkToNetworkInterconnectsClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, networkFabricName string, networkToNetworkInterconnectName string, options *armmanagednetworkfabric.NetworkToNetworkInterconnectsClientGetOptions) (resp azfake.Responder[armmanagednetworkfabric.NetworkToNetworkInterconnectsClientGetResponse], errResp azfake.ErrorResponder)
-
-	// NewListByNetworkFabricPager is the fake for method NetworkToNetworkInterconnectsClient.NewListByNetworkFabricPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByNetworkFabricPager func(resourceGroupName string, networkFabricName string, options *armmanagednetworkfabric.NetworkToNetworkInterconnectsClientListByNetworkFabricOptions) (resp azfake.PagerResponder[armmanagednetworkfabric.NetworkToNetworkInterconnectsClientListByNetworkFabricResponse])
-
 	// BeginUpdate is the fake for method NetworkToNetworkInterconnectsClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, resourceGroupName string, networkFabricName string, networkToNetworkInterconnectName string, body armmanagednetworkfabric.NetworkToNetworkInterconnectPatch, options *armmanagednetworkfabric.NetworkToNetworkInterconnectsClientBeginUpdateOptions) (resp azfake.PollerResponder[armmanagednetworkfabric.NetworkToNetworkInterconnectsClientUpdateResponse], errResp azfake.ErrorResponder)
@@ -52,6 +44,14 @@ type NetworkToNetworkInterconnectsServer struct {
 	// BeginUpdateNpbStaticRouteBfdAdministrativeState is the fake for method NetworkToNetworkInterconnectsClient.BeginUpdateNpbStaticRouteBfdAdministrativeState
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdateNpbStaticRouteBfdAdministrativeState func(ctx context.Context, resourceGroupName string, networkFabricName string, networkToNetworkInterconnectName string, body armmanagednetworkfabric.UpdateAdministrativeState, options *armmanagednetworkfabric.NetworkToNetworkInterconnectsClientBeginUpdateNpbStaticRouteBfdAdministrativeStateOptions) (resp azfake.PollerResponder[armmanagednetworkfabric.NetworkToNetworkInterconnectsClientUpdateNpbStaticRouteBfdAdministrativeStateResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method NetworkToNetworkInterconnectsClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, networkFabricName string, networkToNetworkInterconnectName string, options *armmanagednetworkfabric.NetworkToNetworkInterconnectsClientGetOptions) (resp azfake.Responder[armmanagednetworkfabric.NetworkToNetworkInterconnectsClientGetResponse], errResp azfake.ErrorResponder)
+
+	// NewListByNetworkFabricPager is the fake for method NetworkToNetworkInterconnectsClient.NewListByNetworkFabricPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByNetworkFabricPager func(resourceGroupName string, networkFabricName string, options *armmanagednetworkfabric.NetworkToNetworkInterconnectsClientListByNetworkFabricOptions) (resp azfake.PagerResponder[armmanagednetworkfabric.NetworkToNetworkInterconnectsClientListByNetworkFabricResponse])
 }
 
 // NewNetworkToNetworkInterconnectsServerTransport creates a new instance of NetworkToNetworkInterconnectsServerTransport with the provided implementation.
@@ -62,11 +62,11 @@ func NewNetworkToNetworkInterconnectsServerTransport(srv *NetworkToNetworkInterc
 		srv:                               srv,
 		beginCreate:                       newTracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkToNetworkInterconnectsClientCreateResponse]](),
 		beginDelete:                       newTracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkToNetworkInterconnectsClientDeleteResponse]](),
-		newListByNetworkFabricPager:       newTracker[azfake.PagerResponder[armmanagednetworkfabric.NetworkToNetworkInterconnectsClientListByNetworkFabricResponse]](),
 		beginUpdate:                       newTracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkToNetworkInterconnectsClientUpdateResponse]](),
 		beginUpdateAdministrativeState:    newTracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkToNetworkInterconnectsClientUpdateAdministrativeStateResponse]](),
 		beginUpdateBfdAdministrativeState: newTracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkToNetworkInterconnectsClientUpdateBfdAdministrativeStateResponse]](),
 		beginUpdateNpbStaticRouteBfdAdministrativeState: newTracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkToNetworkInterconnectsClientUpdateNpbStaticRouteBfdAdministrativeStateResponse]](),
+		newListByNetworkFabricPager:                     newTracker[azfake.PagerResponder[armmanagednetworkfabric.NetworkToNetworkInterconnectsClientListByNetworkFabricResponse]](),
 	}
 }
 
@@ -76,11 +76,11 @@ type NetworkToNetworkInterconnectsServerTransport struct {
 	srv                                             *NetworkToNetworkInterconnectsServer
 	beginCreate                                     *tracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkToNetworkInterconnectsClientCreateResponse]]
 	beginDelete                                     *tracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkToNetworkInterconnectsClientDeleteResponse]]
-	newListByNetworkFabricPager                     *tracker[azfake.PagerResponder[armmanagednetworkfabric.NetworkToNetworkInterconnectsClientListByNetworkFabricResponse]]
 	beginUpdate                                     *tracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkToNetworkInterconnectsClientUpdateResponse]]
 	beginUpdateAdministrativeState                  *tracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkToNetworkInterconnectsClientUpdateAdministrativeStateResponse]]
 	beginUpdateBfdAdministrativeState               *tracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkToNetworkInterconnectsClientUpdateBfdAdministrativeStateResponse]]
 	beginUpdateNpbStaticRouteBfdAdministrativeState *tracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkToNetworkInterconnectsClientUpdateNpbStaticRouteBfdAdministrativeStateResponse]]
+	newListByNetworkFabricPager                     *tracker[azfake.PagerResponder[armmanagednetworkfabric.NetworkToNetworkInterconnectsClientListByNetworkFabricResponse]]
 }
 
 // Do implements the policy.Transporter interface for NetworkToNetworkInterconnectsServerTransport.
@@ -108,10 +108,6 @@ func (n *NetworkToNetworkInterconnectsServerTransport) dispatchToMethodFake(req 
 				res.resp, res.err = n.dispatchBeginCreate(req)
 			case "NetworkToNetworkInterconnectsClient.BeginDelete":
 				res.resp, res.err = n.dispatchBeginDelete(req)
-			case "NetworkToNetworkInterconnectsClient.Get":
-				res.resp, res.err = n.dispatchGet(req)
-			case "NetworkToNetworkInterconnectsClient.NewListByNetworkFabricPager":
-				res.resp, res.err = n.dispatchNewListByNetworkFabricPager(req)
 			case "NetworkToNetworkInterconnectsClient.BeginUpdate":
 				res.resp, res.err = n.dispatchBeginUpdate(req)
 			case "NetworkToNetworkInterconnectsClient.BeginUpdateAdministrativeState":
@@ -120,6 +116,10 @@ func (n *NetworkToNetworkInterconnectsServerTransport) dispatchToMethodFake(req 
 				res.resp, res.err = n.dispatchBeginUpdateBfdAdministrativeState(req)
 			case "NetworkToNetworkInterconnectsClient.BeginUpdateNpbStaticRouteBfdAdministrativeState":
 				res.resp, res.err = n.dispatchBeginUpdateNpbStaticRouteBfdAdministrativeState(req)
+			case "NetworkToNetworkInterconnectsClient.Get":
+				res.resp, res.err = n.dispatchGet(req)
+			case "NetworkToNetworkInterconnectsClient.NewListByNetworkFabricPager":
+				res.resp, res.err = n.dispatchNewListByNetworkFabricPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -233,84 +233,6 @@ func (n *NetworkToNetworkInterconnectsServerTransport) dispatchBeginDelete(req *
 		n.beginDelete.remove(req)
 	}
 
-	return resp, nil
-}
-
-func (n *NetworkToNetworkInterconnectsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if n.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/networkFabrics/(?P<networkFabricName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/networkToNetworkInterconnects/(?P<networkToNetworkInterconnectName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	networkFabricNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkFabricName")])
-	if err != nil {
-		return nil, err
-	}
-	networkToNetworkInterconnectNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkToNetworkInterconnectName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := n.srv.Get(req.Context(), resourceGroupNameParam, networkFabricNameParam, networkToNetworkInterconnectNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).NetworkToNetworkInterconnect, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (n *NetworkToNetworkInterconnectsServerTransport) dispatchNewListByNetworkFabricPager(req *http.Request) (*http.Response, error) {
-	if n.srv.NewListByNetworkFabricPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByNetworkFabricPager not implemented")}
-	}
-	newListByNetworkFabricPager := n.newListByNetworkFabricPager.get(req)
-	if newListByNetworkFabricPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/networkFabrics/(?P<networkFabricName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/networkToNetworkInterconnects`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		networkFabricNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkFabricName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := n.srv.NewListByNetworkFabricPager(resourceGroupNameParam, networkFabricNameParam, nil)
-		newListByNetworkFabricPager = &resp
-		n.newListByNetworkFabricPager.add(req, newListByNetworkFabricPager)
-		server.PagerResponderInjectNextLinks(newListByNetworkFabricPager, req, func(page *armmanagednetworkfabric.NetworkToNetworkInterconnectsClientListByNetworkFabricResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByNetworkFabricPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		n.newListByNetworkFabricPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByNetworkFabricPager) {
-		n.newListByNetworkFabricPager.remove(req)
-	}
 	return resp, nil
 }
 
@@ -519,6 +441,84 @@ func (n *NetworkToNetworkInterconnectsServerTransport) dispatchBeginUpdateNpbSta
 		n.beginUpdateNpbStaticRouteBfdAdministrativeState.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (n *NetworkToNetworkInterconnectsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if n.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/networkFabrics/(?P<networkFabricName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/networkToNetworkInterconnects/(?P<networkToNetworkInterconnectName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	networkFabricNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkFabricName")])
+	if err != nil {
+		return nil, err
+	}
+	networkToNetworkInterconnectNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkToNetworkInterconnectName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := n.srv.Get(req.Context(), resourceGroupNameParam, networkFabricNameParam, networkToNetworkInterconnectNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).NetworkToNetworkInterconnect, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (n *NetworkToNetworkInterconnectsServerTransport) dispatchNewListByNetworkFabricPager(req *http.Request) (*http.Response, error) {
+	if n.srv.NewListByNetworkFabricPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByNetworkFabricPager not implemented")}
+	}
+	newListByNetworkFabricPager := n.newListByNetworkFabricPager.get(req)
+	if newListByNetworkFabricPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/networkFabrics/(?P<networkFabricName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/networkToNetworkInterconnects`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		networkFabricNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkFabricName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := n.srv.NewListByNetworkFabricPager(resourceGroupNameParam, networkFabricNameParam, nil)
+		newListByNetworkFabricPager = &resp
+		n.newListByNetworkFabricPager.add(req, newListByNetworkFabricPager)
+		server.PagerResponderInjectNextLinks(newListByNetworkFabricPager, req, func(page *armmanagednetworkfabric.NetworkToNetworkInterconnectsClientListByNetworkFabricResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByNetworkFabricPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		n.newListByNetworkFabricPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByNetworkFabricPager) {
+		n.newListByNetworkFabricPager.remove(req)
+	}
 	return resp, nil
 }
 

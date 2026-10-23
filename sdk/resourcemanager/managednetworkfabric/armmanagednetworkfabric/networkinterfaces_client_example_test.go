@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric/v3"
 	"log"
 )
 
-// Generated from example definition: 2025-07-15/NetworkInterfaces_Create.json
+// Generated from example definition: 2026-01-15-preview/NetworkInterfaces_Create.json
 func ExampleNetworkInterfacesClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,6 +54,7 @@ func ExampleNetworkInterfacesClient_BeginCreate() {
 	// 			ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateAccepted),
 	// 			AdministrativeState: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnabled),
 	// 			ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
+	// 			OperationalState: to.Ptr(armmanagednetworkfabric.OperationalStateUp),
 	// 		},
 	// 		ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device/networkInterfaces/example-interface"),
 	// 		Name: to.Ptr("example-interface"),
@@ -70,7 +71,7 @@ func ExampleNetworkInterfacesClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/NetworkInterfaces_Delete.json
+// Generated from example definition: 2026-01-15-preview/NetworkInterfaces_Delete.json
 func ExampleNetworkInterfacesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -91,121 +92,7 @@ func ExampleNetworkInterfacesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-07-15/NetworkInterfaces_Get.json
-func ExampleNetworkInterfacesClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmanagednetworkfabric.NewClientFactory("0000ABCD-0A0B-0000-0000-000000ABCDEF", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewNetworkInterfacesClient().Get(ctx, "example-rg", "example-device", "example-interface", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armmanagednetworkfabric.NetworkInterfacesClientGetResponse{
-	// 	NetworkInterface: armmanagednetworkfabric.NetworkInterface{
-	// 		Properties: &armmanagednetworkfabric.NetworkInterfaceProperties{
-	// 			Annotation: to.Ptr("annotation"),
-	// 			PhysicalIdentifier: to.Ptr("Id"),
-	// 			ConnectedTo: to.Ptr("external-interface"),
-	// 			InterfaceType: to.Ptr(armmanagednetworkfabric.InterfaceTypeManagement),
-	// 			IPv4Address: to.Ptr("10.2.2.8"),
-	// 			IPv6Address: to.Ptr("10:2:0:0::"),
-	// 			Description: to.Ptr("device 1"),
-	// 			LastOperation: &armmanagednetworkfabric.LastOperationProperties{
-	// 				Details: to.Ptr("Succeeded"),
-	// 			},
-	// 			NetworkFabricID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric"),
-	// 			AdditionalDescription: to.Ptr("device 1"),
-	// 			ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateAccepted),
-	// 			AdministrativeState: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnabled),
-	// 			ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
-	// 		},
-	// 		ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device/networkInterfaces/example-interface"),
-	// 		Name: to.Ptr("example-interface"),
-	// 		Type: to.Ptr("microsoft.managednetworkfabric/networkdevices/networkinterfaces"),
-	// 		SystemData: &armmanagednetworkfabric.SystemData{
-	// 			CreatedBy: to.Ptr("email@address.com"),
-	// 			CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("UserId"),
-	// 			LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-07-15/NetworkInterfaces_ListByNetworkDevice.json
-func ExampleNetworkInterfacesClient_NewListByNetworkDevicePager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmanagednetworkfabric.NewClientFactory("0000ABCD-0A0B-0000-0000-000000ABCDEF", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewNetworkInterfacesClient().NewListByNetworkDevicePager("example-rg", "example-device", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armmanagednetworkfabric.NetworkInterfacesClientListByNetworkDeviceResponse{
-		// 	NetworkInterfacesList: armmanagednetworkfabric.NetworkInterfacesList{
-		// 		Value: []*armmanagednetworkfabric.NetworkInterface{
-		// 			{
-		// 				Properties: &armmanagednetworkfabric.NetworkInterfaceProperties{
-		// 					Annotation: to.Ptr("annotation"),
-		// 					PhysicalIdentifier: to.Ptr("Id"),
-		// 					ConnectedTo: to.Ptr("external-interface"),
-		// 					InterfaceType: to.Ptr(armmanagednetworkfabric.InterfaceTypeManagement),
-		// 					IPv4Address: to.Ptr("10.2.2.8"),
-		// 					IPv6Address: to.Ptr("10:2:0:0::"),
-		// 					Description: to.Ptr("device 1"),
-		// 					LastOperation: &armmanagednetworkfabric.LastOperationProperties{
-		// 						Details: to.Ptr("Succeeded"),
-		// 					},
-		// 					NetworkFabricID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric"),
-		// 					AdditionalDescription: to.Ptr("device 1"),
-		// 					ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateAccepted),
-		// 					AdministrativeState: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnabled),
-		// 					ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
-		// 				},
-		// 				ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device/networkInterfaces/example-interface"),
-		// 				Name: to.Ptr("example-interface"),
-		// 				Type: to.Ptr("microsoft.managednetworkfabric/networkdevices/networkinterfaces"),
-		// 				SystemData: &armmanagednetworkfabric.SystemData{
-		// 					CreatedBy: to.Ptr("email@address.com"),
-		// 					CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("UserId"),
-		// 					LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
-		// 				},
-		// 			},
-		// 		},
-		// 		NextLink: to.Ptr("https://microsoft.com/aukskqxh"),
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2025-07-15/NetworkInterfaces_Update.json
+// Generated from example definition: 2026-01-15-preview/NetworkInterfaces_Update.json
 func ExampleNetworkInterfacesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -246,6 +133,7 @@ func ExampleNetworkInterfacesClient_BeginUpdate() {
 	// 			ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateAccepted),
 	// 			AdministrativeState: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnabled),
 	// 			ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
+	// 			OperationalState: to.Ptr(armmanagednetworkfabric.OperationalStateUp),
 	// 		},
 	// 		ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device/networkInterfaces/example-interface"),
 	// 		Name: to.Ptr("example-interface"),
@@ -262,7 +150,7 @@ func ExampleNetworkInterfacesClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/NetworkInterfaces_UpdateAdministrativeState.json
+// Generated from example definition: 2026-01-15-preview/NetworkInterfaces_UpdateAdministrativeState.json
 func ExampleNetworkInterfacesClient_BeginUpdateAdministrativeState() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -308,4 +196,120 @@ func ExampleNetworkInterfacesClient_BeginUpdateAdministrativeState() {
 	// 		},
 	// 	},
 	// }
+}
+
+// Generated from example definition: 2026-01-15-preview/NetworkInterfaces_Get.json
+func ExampleNetworkInterfacesClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmanagednetworkfabric.NewClientFactory("0000ABCD-0A0B-0000-0000-000000ABCDEF", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewNetworkInterfacesClient().Get(ctx, "example-rg", "example-device", "example-interface", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armmanagednetworkfabric.NetworkInterfacesClientGetResponse{
+	// 	NetworkInterface: armmanagednetworkfabric.NetworkInterface{
+	// 		Properties: &armmanagednetworkfabric.NetworkInterfaceProperties{
+	// 			Annotation: to.Ptr("annotation"),
+	// 			PhysicalIdentifier: to.Ptr("Id"),
+	// 			ConnectedTo: to.Ptr("external-interface"),
+	// 			InterfaceType: to.Ptr(armmanagednetworkfabric.InterfaceTypeManagement),
+	// 			IPv4Address: to.Ptr("10.2.2.8"),
+	// 			IPv6Address: to.Ptr("10:2:0:0::"),
+	// 			Description: to.Ptr("device 1"),
+	// 			LastOperation: &armmanagednetworkfabric.LastOperationProperties{
+	// 				Details: to.Ptr("Succeeded"),
+	// 			},
+	// 			NetworkFabricID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric"),
+	// 			AdditionalDescription: to.Ptr("device 1"),
+	// 			ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateAccepted),
+	// 			AdministrativeState: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnabled),
+	// 			ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
+	// 			OperationalState: to.Ptr(armmanagednetworkfabric.OperationalStateUp),
+	// 		},
+	// 		ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device/networkInterfaces/example-interface"),
+	// 		Name: to.Ptr("example-interface"),
+	// 		Type: to.Ptr("microsoft.managednetworkfabric/networkdevices/networkinterfaces"),
+	// 		SystemData: &armmanagednetworkfabric.SystemData{
+	// 			CreatedBy: to.Ptr("email@address.com"),
+	// 			CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("UserId"),
+	// 			LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-01-15-preview/NetworkInterfaces_ListByNetworkDevice.json
+func ExampleNetworkInterfacesClient_NewListByNetworkDevicePager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmanagednetworkfabric.NewClientFactory("0000ABCD-0A0B-0000-0000-000000ABCDEF", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewNetworkInterfacesClient().NewListByNetworkDevicePager("example-rg", "example-device", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armmanagednetworkfabric.NetworkInterfacesClientListByNetworkDeviceResponse{
+		// 	NetworkInterfacesList: armmanagednetworkfabric.NetworkInterfacesList{
+		// 		Value: []*armmanagednetworkfabric.NetworkInterface{
+		// 			{
+		// 				Properties: &armmanagednetworkfabric.NetworkInterfaceProperties{
+		// 					Annotation: to.Ptr("annotation"),
+		// 					PhysicalIdentifier: to.Ptr("Id"),
+		// 					ConnectedTo: to.Ptr("external-interface"),
+		// 					InterfaceType: to.Ptr(armmanagednetworkfabric.InterfaceTypeManagement),
+		// 					IPv4Address: to.Ptr("10.2.2.8"),
+		// 					IPv6Address: to.Ptr("10:2:0:0::"),
+		// 					Description: to.Ptr("device 1"),
+		// 					LastOperation: &armmanagednetworkfabric.LastOperationProperties{
+		// 						Details: to.Ptr("Succeeded"),
+		// 					},
+		// 					NetworkFabricID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric"),
+		// 					AdditionalDescription: to.Ptr("device 1"),
+		// 					ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateAccepted),
+		// 					AdministrativeState: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnabled),
+		// 					ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
+		// 					OperationalState: to.Ptr(armmanagednetworkfabric.OperationalStateUp),
+		// 				},
+		// 				ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device/networkInterfaces/example-interface"),
+		// 				Name: to.Ptr("example-interface"),
+		// 				Type: to.Ptr("microsoft.managednetworkfabric/networkdevices/networkinterfaces"),
+		// 				SystemData: &armmanagednetworkfabric.SystemData{
+		// 					CreatedBy: to.Ptr("email@address.com"),
+		// 					CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
+		// 					CreatedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("UserId"),
+		// 					LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
+		// 				},
+		// 			},
+		// 		},
+		// 		NextLink: to.Ptr("https://microsoft.com/aukskqxh"),
+		// 	},
+		// }
+	}
 }

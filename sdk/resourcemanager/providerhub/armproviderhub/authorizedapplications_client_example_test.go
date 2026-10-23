@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-10-01/AuthorizedApplications_CreateOrUpdate.json
+// Generated from example definition: 2026-10-01/AuthorizedApplications_CreateOrUpdate.json
 func ExampleAuthorizedApplicationsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -52,7 +52,7 @@ func ExampleAuthorizedApplicationsClient_BeginCreateOrUpdate() {
 	// res = armproviderhub.AuthorizedApplicationsClientCreateOrUpdateResponse{
 	// 	AuthorizedApplication: armproviderhub.AuthorizedApplication{
 	// 		ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso/authorizedApplications/760505bf-dcfa-4311-b890-18da392a00b2"),
-	// 		Name: to.Ptr("Microsoft.Contoso/760505bf-dcfa-4311-b890-18da392a00b2"),
+	// 		Name: to.Ptr("760505bf-dcfa-4311-b890-18da392a00b2"),
 	// 		Type: to.Ptr("Microsoft.ProviderHub/providerRegistrations/authorizedApplications"),
 	// 		Properties: &armproviderhub.AuthorizedApplicationProperties{
 	// 			ProviderAuthorization: &armproviderhub.ApplicationProviderAuthorization{
@@ -81,7 +81,7 @@ func ExampleAuthorizedApplicationsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-10-01/AuthorizedApplications_Delete.json
+// Generated from example definition: 2026-10-01/AuthorizedApplications_Delete.json
 func ExampleAuthorizedApplicationsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -103,7 +103,7 @@ func ExampleAuthorizedApplicationsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-10-01/AuthorizedApplications_Get.json
+// Generated from example definition: 2026-10-01/AuthorizedApplications_Get.json
 func ExampleAuthorizedApplicationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -124,7 +124,7 @@ func ExampleAuthorizedApplicationsClient_Get() {
 	// res = armproviderhub.AuthorizedApplicationsClientGetResponse{
 	// 	AuthorizedApplication: armproviderhub.AuthorizedApplication{
 	// 		ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso/authorizedApplications/760505bf-dcfa-4311-b890-18da392a00b2"),
-	// 		Name: to.Ptr("Microsoft.Contoso/760505bf-dcfa-4311-b890-18da392a00b2"),
+	// 		Name: to.Ptr("760505bf-dcfa-4311-b890-18da392a00b2"),
 	// 		Type: to.Ptr("Microsoft.ProviderHub/providerRegistrations/authorizedApplications"),
 	// 		Properties: &armproviderhub.AuthorizedApplicationProperties{
 	// 			ProviderAuthorization: &armproviderhub.ApplicationProviderAuthorization{
@@ -153,7 +153,7 @@ func ExampleAuthorizedApplicationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-10-01/AuthorizedApplications_List.json
+// Generated from example definition: 2026-10-01/AuthorizedApplications_List.json
 func ExampleAuthorizedApplicationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -180,7 +180,7 @@ func ExampleAuthorizedApplicationsClient_NewListPager() {
 		// 		Value: []*armproviderhub.AuthorizedApplication{
 		// 			{
 		// 				ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso/authorizedApplications/760505bf-dcfa-4311-b890-18da392a00b2"),
-		// 				Name: to.Ptr("Microsoft.Contoso/760505bf-dcfa-4311-b890-18da392a00b2"),
+		// 				Name: to.Ptr("760505bf-dcfa-4311-b890-18da392a00b2"),
 		// 				Type: to.Ptr("Microsoft.ProviderHub/providerRegistrations/authorizedApplications"),
 		// 				Properties: &armproviderhub.AuthorizedApplicationProperties{
 		// 					ProviderAuthorization: &armproviderhub.ApplicationProviderAuthorization{

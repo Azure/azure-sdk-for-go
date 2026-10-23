@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-10-01/DefaultRollouts_CreateOrUpdate.json
+// Generated from example definition: 2026-10-01/DefaultRollouts_CreateOrUpdate.json
 func ExampleDefaultRolloutsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -144,7 +144,7 @@ func ExampleDefaultRolloutsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-10-01/DefaultRollouts_Delete.json
+// Generated from example definition: 2026-10-01/DefaultRollouts_Delete.json
 func ExampleDefaultRolloutsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -166,7 +166,7 @@ func ExampleDefaultRolloutsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-10-01/DefaultRollouts_Get.json
+// Generated from example definition: 2026-10-01/DefaultRollouts_Get.json
 func ExampleDefaultRolloutsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -378,7 +378,7 @@ func ExampleDefaultRolloutsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-10-01/DefaultRollouts_ListByProviderRegistration.json
+// Generated from example definition: 2026-10-01/DefaultRollouts_ListByProviderRegistration.json
 func ExampleDefaultRolloutsClient_NewListByProviderRegistrationPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -584,7 +584,7 @@ func ExampleDefaultRolloutsClient_NewListByProviderRegistrationPager() {
 	}
 }
 
-// Generated from example definition: 2025-10-01/DefaultRollouts_Stop.json
+// Generated from example definition: 2026-10-01/DefaultRollouts_Stop.json
 func ExampleDefaultRolloutsClient_Stop() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

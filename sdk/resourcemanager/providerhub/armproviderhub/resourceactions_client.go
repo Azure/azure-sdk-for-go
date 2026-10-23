@@ -19,7 +19,7 @@ import (
 // ResourceActionsClient contains the methods for the ResourceActions group.
 // Don't use this type directly, use NewResourceActionsClient() instead.
 //
-// Generated from API version 2025-10-01
+// Generated from API version 2026-10-01
 type ResourceActionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -68,7 +68,7 @@ func (client *ResourceActionsClient) BeginDeleteResources(ctx context.Context, p
 	}
 }
 
-// DeleteResources - Deletes resources.
+// deleteResources - Deletes resources.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ResourceActionsClient) deleteResources(ctx context.Context, providerNamespace string, resourceActionName string, properties ResourceManagementAction, options *ResourceActionsClientBeginDeleteResourcesOptions) (*http.Response, error) {
 	var err error
@@ -90,7 +90,7 @@ func (client *ResourceActionsClient) deleteResources(ctx context.Context, provid
 	return httpResp, nil
 }
 
-// deleteResourcesCreateRequest creates the DeleteResources request.
+// deleteResourcesCreateRequest creates the deleteResources request.
 func (client *ResourceActionsClient) deleteResourcesCreateRequest(ctx context.Context, providerNamespace string, resourceActionName string, properties ResourceManagementAction, _ *ResourceActionsClientBeginDeleteResourcesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourceActions/{resourceActionName}/deleteResources"
 	if client.subscriptionID == "" {
@@ -110,7 +110,7 @@ func (client *ResourceActionsClient) deleteResourcesCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251001)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {

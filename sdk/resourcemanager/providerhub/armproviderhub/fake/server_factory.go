@@ -27,6 +27,9 @@ type ServerFactory struct {
 	// DefaultRolloutsServer contains the fakes for client DefaultRolloutsClient
 	DefaultRolloutsServer DefaultRolloutsServer
 
+	// EndpointRegistrationsServer contains the fakes for client EndpointRegistrationsClient
+	EndpointRegistrationsServer EndpointRegistrationsServer
+
 	// ManifestsServer contains the fakes for client ManifestsClient
 	ManifestsServer ManifestsServer
 
@@ -70,6 +73,7 @@ type ServerFactoryTransport struct {
 	trServer                          *ServerTransport
 	trCustomRolloutsServer            *CustomRolloutsServerTransport
 	trDefaultRolloutsServer           *DefaultRolloutsServerTransport
+	trEndpointRegistrationsServer     *EndpointRegistrationsServerTransport
 	trManifestsServer                 *ManifestsServerTransport
 	trNotificationRegistrationsServer *NotificationRegistrationsServerTransport
 	trOperationsServer                *OperationsServerTransport
@@ -111,6 +115,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewDefaultRolloutsServerTransport(&s.srv.DefaultRolloutsServer)
 		})
 		resp, err = s.trDefaultRolloutsServer.Do(req)
+	case "EndpointRegistrationsClient":
+		initServer(&s.trMu, &s.trEndpointRegistrationsServer, func() *EndpointRegistrationsServerTransport {
+			return NewEndpointRegistrationsServerTransport(&s.srv.EndpointRegistrationsServer)
+		})
+		resp, err = s.trEndpointRegistrationsServer.Do(req)
 	case "ManifestsClient":
 		initServer(&s.trMu, &s.trManifestsServer, func() *ManifestsServerTransport { return NewManifestsServerTransport(&s.srv.ManifestsServer) })
 		resp, err = s.trManifestsServer.Do(req)

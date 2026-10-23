@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-10-01/CheckinManifest.json
+// Generated from example definition: 2026-10-01/CheckinManifest.json
 func ExampleClient_CheckinManifest() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -26,6 +26,8 @@ func ExampleClient_CheckinManifest() {
 	res, err := clientFactory.NewClient().CheckinManifest(ctx, "Microsoft.Contoso", armproviderhub.CheckinManifestParams{
 		BaselineArmManifestLocation: to.Ptr("EastUS2EUAP"),
 		Environment:                 to.Ptr("Prod"),
+		SwaggerURI:                  to.Ptr("https://github.com/Azure/azure-rest-api-specs/pull/123456"),
+		CheckinComment:              to.Ptr("Add endpoint registration support"),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -41,7 +43,7 @@ func ExampleClient_CheckinManifest() {
 	// }
 }
 
-// Generated from example definition: 2025-10-01/GenerateManifest.json
+// Generated from example definition: 2026-10-01/GenerateManifest.json
 func ExampleClient_GenerateManifest() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

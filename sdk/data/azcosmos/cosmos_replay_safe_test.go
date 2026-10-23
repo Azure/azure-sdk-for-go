@@ -43,6 +43,8 @@ func replaySafeTestFailure(req *http.Request, failure string) (*http.Response, e
 	switch failure {
 	case "not sent":
 		return nil, &net.DNSError{Err: "unreachable"}
+	case "unclassified":
+		return nil, errors.New("unclassified transport failure")
 	case "EOF":
 		return nil, io.EOF
 	case "attempt timeout":
@@ -50,6 +52,8 @@ func replaySafeTestFailure(req *http.Request, failure string) (*http.Response, e
 		return nil, req.Context().Err()
 	case "408":
 		return readAttemptTimeoutResponse(req, http.StatusRequestTimeout), nil
+	case "418":
+		return readAttemptTimeoutResponse(req, http.StatusTeapot), nil
 	case "500":
 		return readAttemptTimeoutResponse(req, http.StatusInternalServerError), nil
 	case "502":
@@ -127,51 +131,94 @@ func TestReplaySafeItemWrites(t *testing.T) {
 	}
 }
 
-func TestReplaySafeWriteExhaustion(t *testing.T) {
-	for _, multiWrite := range []bool{false, true} {
-		for _, failure := range []string{"EOF", "attempt timeout", "408", "500", "502", "504"} {
-			t.Run(fmt.Sprintf("multiWrite=%t/%s", multiWrite, failure), func(t *testing.T) {
+func TestReplaySafeRetryParity(t *testing.T) {
+	for _, tt := range []struct {
+		name        string
+		failure     string
+		crossRegion bool
+		multiWrite  bool
+		noPreferred bool
+		// Counts are ordered read, replay-safe write, default write.
+		sends     [3]int
+		callbacks [3]int
+		delegated bool
+	}{
+		{name: "network disabled", failure: "EOF", sends: [3]int{1, 1, 1}},
+		{name: "network exhaustion", failure: "EOF", crossRegion: true, multiWrite: true, sends: [3]int{5, 5, 1}},
+		{name: "network single write region", failure: "EOF", crossRegion: true, sends: [3]int{5, 4, 1}},
+		{name: "not sent disabled", failure: "not sent", sends: [3]int{1, 1, 1}},
+		{name: "not sent exhaustion", failure: "not sent", crossRegion: true, multiWrite: true, sends: [3]int{5, 5, 5}},
+		{name: "not sent single write region", failure: "not sent", crossRegion: true, sends: [3]int{5, 4, 4}},
+		{name: "408 disabled", failure: "408", sends: [3]int{1, 1, 1}},
+		{name: "408 exhaustion", failure: "408", crossRegion: true, multiWrite: true, sends: [3]int{2, 2, 1}},
+		{name: "408 single write region", failure: "408", crossRegion: true, sends: [3]int{2, 2, 1}},
+		{name: "500 in region only", failure: "500", sends: [3]int{2, 2, 1}},
+		{name: "500 exhaustion", failure: "500", crossRegion: true, multiWrite: true, sends: [3]int{3, 3, 1}},
+		{name: "500 single write region", failure: "500", crossRegion: true, sends: [3]int{3, 2, 1}},
+		{name: "503 disabled", failure: "503", sends: [3]int{1, 1, 1}},
+		{name: "503 no preferred regions", failure: "503", crossRegion: true, multiWrite: true, noPreferred: true, sends: [3]int{1, 1, 1}},
+		{name: "503 exhaustion", failure: "503", crossRegion: true, multiWrite: true, sends: [3]int{4, 4, 4}},
+		{name: "503 single write region", failure: "503", crossRegion: true, sends: [3]int{4, 1, 1}},
+		{name: "unclassified delegated", failure: "unclassified", sends: [3]int{3, 3, 3}, callbacks: [3]int{3, 3, 3}, delegated: true},
+		{name: "attempt timeout delegated", failure: "attempt timeout", sends: [3]int{3, 3, 1}, callbacks: [3]int{3, 3, 0}, delegated: true},
+	} {
+		for i, operation := range []string{"read", "replay-safe write", "default write"} {
+			t.Run(tt.name+"/"+operation, func(t *testing.T) {
 				t.Parallel()
 				var hosts []string
 				callbacks := 0
+				item := []byte(`{"id":"item"}`)
 				transport := retryPolicyTransportFunc(func(req *http.Request) (*http.Response, error) {
 					hosts = append(hosts, req.URL.Host)
-					return replaySafeTestFailure(req, failure)
+					assert.Equal(t, req.URL.Host, req.Host)
+					if operation != "read" {
+						assert.Contains(t, []string{"write-a.test", "write-b.test"}, req.URL.Host)
+						if !tt.multiWrite {
+							assert.Equal(t, "write-a.test", req.URL.Host)
+						}
+						body, err := io.ReadAll(req.Body)
+						require.NoError(t, err)
+						assert.Equal(t, item, body, "every native or outer attempt must rewind the write")
+					}
+					return replaySafeTestFailure(req, tt.failure)
 				})
 				retry := policy.RetryOptions{
 					MaxRetries: 2, RetryDelay: time.Millisecond,
-					ShouldRetry: func(resp *http.Response, err error) bool {
+					ShouldRetry: func(*http.Response, error) bool {
 						callbacks++
-						if failure == "EOF" {
-							assert.ErrorIs(t, err, io.EOF)
-						} else if failure != "attempt timeout" {
-							require.NotNil(t, resp)
-							assert.NoError(t, err, "HTTP responses must reach azcore without error wrappers")
-						}
 						return true
 					},
 				}
-				want := []string{"write-a.test", "write-a.test", "write-a.test"}
-				if failure == "attempt timeout" {
+				if tt.failure == "attempt timeout" {
 					retry.TryTimeout = 10 * time.Millisecond
 				}
-				container, lc := newReplaySafeTestContainer(t, transport, retry, multiWrite, true)
-				_, err := container.UpsertItem(context.Background(), NewPartitionKeyString("pk"), []byte(`{"id":"item"}`), &ItemOptions{ReplaySafe: true})
-				require.Error(t, err)
-				assert.Equal(t, want, hosts, "write retries must never target the preferred read-only region")
-				if failure == "attempt timeout" {
-					assert.ErrorIs(t, err, context.DeadlineExceeded)
+				container, lc := newReplaySafeTestContainer(t, transport, retry, tt.multiWrite, tt.crossRegion)
+				if tt.noPreferred {
+					container.database.client.gem.preferredLocations = nil
 				}
-				assert.Equal(t, 3, callbacks)
-				var nonRetriable errorinfo.NonRetriable
-				assert.False(t, errors.As(err, &nonRetriable), "eligible failures must reach outer retries unwrapped")
-				assert.Empty(t, lc.locationUnavailabilityInfoMap)
+				var err error
+				if operation == "read" {
+					_, err = container.ReadItem(context.Background(), NewPartitionKeyString("pk"), "item", nil)
+				} else {
+					_, err = container.UpsertItem(context.Background(), NewPartitionKeyString("pk"), item, &ItemOptions{ReplaySafe: operation == "replay-safe write"})
+				}
+				require.Error(t, err)
+				assert.Len(t, hosts, tt.sends[i], "replay safety cannot increase the read retry budget")
+				if operation != "read" && tt.multiWrite && tt.crossRegion && !tt.noPreferred && len(hosts) > 1 {
+					assert.Contains(t, hosts, "write-b.test", "eligible native failover must reach the other writable region")
+				}
+				assert.Equal(t, tt.callbacks[i], callbacks, "shared native refusal must not reach outer ShouldRetry")
+				wantVeto := !tt.delegated || (tt.failure == "attempt timeout" && operation == "default write")
+				assert.Equal(t, wantVeto, errors.As(err, new(errorinfo.NonRetriable)))
+				if tt.failure != "not sent" {
+					assert.Empty(t, lc.locationUnavailabilityInfoMap, "ambiguous failures must not mark endpoints unavailable")
+				}
 			})
 		}
 	}
 }
 
-func TestReplaySafeWriteRetrySettings(t *testing.T) {
+func TestReplaySafeRetrySettings(t *testing.T) {
 	for _, tt := range []struct {
 		name        string
 		failure     string
@@ -181,49 +228,66 @@ func TestReplaySafeWriteRetrySettings(t *testing.T) {
 		reject      bool
 		wantSends   int
 	}{
-		{name: "network cross-region disabled", failure: "EOF", maxRetries: 2, wantSends: 3},
-		{name: "not sent cross-region disabled", failure: "not sent", maxRetries: 2, wantSends: 3},
+		{name: "network cross-region disabled", failure: "EOF", maxRetries: 2, wantSends: 1},
+		{name: "not sent cross-region disabled", failure: "not sent", maxRetries: 2, wantSends: 1},
 		{name: "not sent retries disabled", failure: "not sent", maxRetries: -1, wantSends: 1},
 		{name: "not sent ShouldRetry veto", failure: "not sent", maxRetries: 2, reject: true, wantSends: 1},
-		{name: "503 cross-region disabled", failure: "503", maxRetries: 2, wantSends: 3},
+		{name: "503 cross-region disabled", failure: "503", maxRetries: 2, wantSends: 1},
 		{name: "503 retries disabled", failure: "503", maxRetries: -1, wantSends: 1},
 		{name: "503 excluded status", failure: "503", maxRetries: 2, statusCodes: []int{502}, wantSends: 1},
-		{name: "503 included status", failure: "503", maxRetries: 2, statusCodes: []int{503}, wantSends: 3},
+		{name: "503 included status", failure: "503", maxRetries: 2, statusCodes: []int{503}, wantSends: 1},
 		{name: "503 ShouldRetry veto", failure: "503", maxRetries: 2, reject: true, wantSends: 1},
-		{name: "408 cross-region disabled", failure: "408", maxRetries: 2, wantSends: 3},
-		{name: "500 uses outer budget", failure: "500", maxRetries: 2, wantSends: 3},
-		{name: "network retries disabled", failure: "EOF", crossRegion: true, maxRetries: -1, wantSends: 1},
-		{name: "HTTP retries disabled", failure: "500", crossRegion: true, maxRetries: -1, wantSends: 1},
-		{name: "empty status list", failure: "408", crossRegion: true, maxRetries: 2, statusCodes: []int{}, wantSends: 1},
-		{name: "excluded status", failure: "500", crossRegion: true, maxRetries: 2, statusCodes: []int{502}, wantSends: 1},
+		{name: "408 cross-region disabled", failure: "408", maxRetries: 2, wantSends: 1},
+		{name: "500 uses native budget", failure: "500", maxRetries: 2, wantSends: 2},
+		{name: "network native budget with outer retries disabled", failure: "EOF", crossRegion: true, maxRetries: -1, wantSends: 5},
+		{name: "HTTP native budget with outer retries disabled", failure: "500", crossRegion: true, maxRetries: -1, wantSends: 3},
+		{name: "empty status list does not alter native 408", failure: "408", crossRegion: true, maxRetries: 2, statusCodes: []int{}, wantSends: 2},
+		{name: "excluded status does not alter native 500", failure: "500", crossRegion: true, maxRetries: 2, statusCodes: []int{502}, wantSends: 3},
 		{name: "included status", failure: "502", crossRegion: true, maxRetries: 2, statusCodes: []int{502}, wantSends: 3},
-		{name: "ShouldRetry veto", failure: "EOF", crossRegion: true, maxRetries: 2, reject: true, wantSends: 1},
+		{name: "ShouldRetry cannot extend native exhaustion", failure: "EOF", crossRegion: true, maxRetries: 2, reject: true, wantSends: 5},
+		{name: "unclassified uses outer budget", failure: "unclassified", maxRetries: 2, wantSends: 3},
+		{name: "unclassified retries disabled", failure: "unclassified", maxRetries: -1, wantSends: 1},
+		{name: "unclassified ShouldRetry veto", failure: "unclassified", maxRetries: 2, reject: true, wantSends: 1},
+		{name: "terminal status default", failure: "418", maxRetries: 2, wantSends: 1},
+		{name: "outer empty status list", failure: "418", maxRetries: 2, statusCodes: []int{}, wantSends: 1},
+		{name: "outer excluded status", failure: "418", maxRetries: 2, statusCodes: []int{502}, wantSends: 1},
+		{name: "outer included status", failure: "418", maxRetries: 2, statusCodes: []int{418}, wantSends: 3},
 		{name: "attempt retries disabled", failure: "attempt timeout", crossRegion: true, maxRetries: -1, wantSends: 1},
 		{name: "attempt retries bounded", failure: "attempt timeout", crossRegion: true, maxRetries: 1, wantSends: 2},
 	} {
-		t.Run(tt.name, func(t *testing.T) {
-			t.Parallel()
-			sends := 0
-			transport := retryPolicyTransportFunc(func(req *http.Request) (*http.Response, error) {
-				sends++
-				return replaySafeTestFailure(req, tt.failure)
+		for _, write := range []bool{false, true} {
+			t.Run(fmt.Sprintf("%s/write=%t", tt.name, write), func(t *testing.T) {
+				t.Parallel()
+				sends := 0
+				transport := retryPolicyTransportFunc(func(req *http.Request) (*http.Response, error) {
+					sends++
+					return replaySafeTestFailure(req, tt.failure)
+				})
+				retry := policy.RetryOptions{
+					MaxRetries: tt.maxRetries, RetryDelay: time.Millisecond, StatusCodes: tt.statusCodes,
+				}
+				if tt.failure == "attempt timeout" {
+					retry.TryTimeout = 20 * time.Millisecond
+				}
+				if tt.reject {
+					retry.ShouldRetry = func(*http.Response, error) bool { return false }
+				}
+				container, _ := newReplaySafeTestContainer(t, transport, retry, true, tt.crossRegion)
+				var err error
+				if write {
+					_, err = container.UpsertItem(context.Background(), NewPartitionKeyString("pk"), []byte(`{"id":"item"}`), &ItemOptions{ReplaySafe: true})
+				} else {
+					_, err = container.ReadItem(context.Background(), NewPartitionKeyString("pk"), "item", nil)
+				}
+				require.Error(t, err)
+				assert.Equal(t, tt.wantSends, sends)
 			})
-			retry := policy.RetryOptions{
-				MaxRetries: tt.maxRetries, RetryDelay: time.Millisecond, TryTimeout: 20 * time.Millisecond, StatusCodes: tt.statusCodes,
-			}
-			if tt.reject {
-				retry.ShouldRetry = func(*http.Response, error) bool { return false }
-			}
-			container, _ := newReplaySafeTestContainer(t, transport, retry, true, tt.crossRegion)
-			_, err := container.UpsertItem(context.Background(), NewPartitionKeyString("pk"), []byte(`{"id":"item"}`), &ItemOptions{ReplaySafe: true})
-			require.Error(t, err)
-			assert.Equal(t, tt.wantSends, sends)
-		})
+		}
 	}
 }
 
 func TestReplaySafeWriteOuterDelay(t *testing.T) {
-	for _, failure := range []string{"not sent", "EOF", "408", "503"} {
+	for _, failure := range []string{"unclassified", "attempt timeout"} {
 		t.Run(failure, func(t *testing.T) {
 			t.Parallel()
 			var hosts []string
@@ -249,22 +313,22 @@ func TestReplaySafeWriteOuterDelay(t *testing.T) {
 
 func TestReplaySafeWriteHTTPResponseHandoff(t *testing.T) {
 	for _, tt := range []struct {
-		status int
+		write  bool
 		capped bool
 	}{
-		{status: http.StatusBadGateway},
-		{status: http.StatusBadGateway, capped: true},
-		{status: http.StatusServiceUnavailable},
-		{status: http.StatusServiceUnavailable, capped: true},
+		{},
+		{capped: true},
+		{write: true},
+		{write: true, capped: true},
 	} {
-		t.Run(fmt.Sprintf("%d/RetryAfterCapped=%t", tt.status, tt.capped), func(t *testing.T) {
+		t.Run(fmt.Sprintf("write=%t/RetryAfterCapped=%t", tt.write, tt.capped), func(t *testing.T) {
 			t.Parallel()
 			var first *http.Response
 			sends, callbacks := 0, 0
 			transport := retryPolicyTransportFunc(func(req *http.Request) (*http.Response, error) {
 				sends++
 				if sends == 1 {
-					first = readAttemptTimeoutResponse(req, tt.status)
+					first = readAttemptTimeoutResponse(req, http.StatusTeapot)
 					first.Header.Set("Retry-After", "1")
 					first.Header.Set("x-ms-activity-id", "original-response")
 					return first, nil
@@ -280,7 +344,7 @@ func TestReplaySafeWriteHTTPResponseHandoff(t *testing.T) {
 						assert.Same(t, first, resp)
 						assert.Equal(t, "original-response", resp.Header.Get("x-ms-activity-id"))
 					}
-					return resp.StatusCode == tt.status
+					return resp.StatusCode == http.StatusTeapot
 				},
 			}
 			if tt.capped {
@@ -288,7 +352,12 @@ func TestReplaySafeWriteHTTPResponseHandoff(t *testing.T) {
 			}
 			container, _ := newReplaySafeTestContainer(t, transport, retry, false, false)
 			start := time.Now()
-			_, err := container.UpsertItem(context.Background(), NewPartitionKeyString("pk"), []byte(`{"id":"item"}`), &ItemOptions{ReplaySafe: true})
+			var err error
+			if tt.write {
+				_, err = container.UpsertItem(context.Background(), NewPartitionKeyString("pk"), []byte(`{"id":"item"}`), &ItemOptions{ReplaySafe: true})
+			} else {
+				_, err = container.ReadItem(context.Background(), NewPartitionKeyString("pk"), "item", nil)
+			}
 			if tt.capped {
 				require.Error(t, err)
 				assert.Equal(t, 1, sends, "Retry-After above the configured cap must not retry")
@@ -305,12 +374,12 @@ func TestReplaySafeWritePerCallRetryOverride(t *testing.T) {
 	sends := 0
 	transport := retryPolicyTransportFunc(func(req *http.Request) (*http.Response, error) {
 		sends++
-		return nil, io.EOF
+		return replaySafeTestFailure(req, "unclassified")
 	})
 	container, _ := newReplaySafeTestContainer(t, transport, policy.RetryOptions{MaxRetries: -1}, false, false)
 	ctx := policy.WithRetryOptions(context.Background(), policy.RetryOptions{MaxRetries: 2, RetryDelay: time.Millisecond})
 	_, err := container.UpsertItem(ctx, NewPartitionKeyString("pk"), []byte(`{"id":"item"}`), &ItemOptions{ReplaySafe: true})
-	assert.ErrorIs(t, err, io.EOF)
+	assert.ErrorContains(t, err, "unclassified transport failure")
 	assert.Equal(t, 3, sends)
 }
 
@@ -361,35 +430,42 @@ func TestReplaySafeWriteExistingRecovery(t *testing.T) {
 }
 
 func TestReplaySafeWriteCallerContext(t *testing.T) {
-	for _, failure := range []string{"not sent", "EOF", "408", "503", "attempt timeout"} {
+	for _, failure := range []string{"not sent", "EOF", "408", "unclassified", "attempt timeout"} {
 		for _, deadline := range []bool{false, true} {
-			t.Run(fmt.Sprintf("%s/deadline=%t", failure, deadline), func(t *testing.T) {
-				t.Parallel()
-				ctx, cancel := context.WithCancel(context.Background())
-				wantErr := context.Canceled
-				if deadline {
-					cancel()
-					ctx, cancel = context.WithTimeout(context.Background(), 40*time.Millisecond)
-					wantErr = context.DeadlineExceeded
-				}
-				defer cancel()
-				sends := 0
-				transport := retryPolicyTransportFunc(func(req *http.Request) (*http.Response, error) {
-					sends++
-					if !deadline {
-						timer := time.AfterFunc(10*time.Millisecond, cancel)
-						t.Cleanup(func() { timer.Stop() })
+			for _, write := range []bool{false, true} {
+				t.Run(fmt.Sprintf("%s/deadline=%t/write=%t", failure, deadline, write), func(t *testing.T) {
+					t.Parallel()
+					ctx, cancel := context.WithCancel(context.Background())
+					wantErr := context.Canceled
+					if deadline {
+						cancel()
+						ctx, cancel = context.WithTimeout(context.Background(), 40*time.Millisecond)
+						wantErr = context.DeadlineExceeded
 					}
-					return replaySafeTestFailure(req, failure)
+					defer cancel()
+					sends := 0
+					transport := retryPolicyTransportFunc(func(req *http.Request) (*http.Response, error) {
+						sends++
+						if !deadline {
+							timer := time.AfterFunc(10*time.Millisecond, cancel)
+							t.Cleanup(func() { timer.Stop() })
+						}
+						return replaySafeTestFailure(req, failure)
+					})
+					container, lc := newReplaySafeTestContainer(t, transport, policy.RetryOptions{
+						MaxRetries: 3, RetryDelay: time.Second, TryTimeout: time.Second,
+					}, false, true)
+					var err error
+					if write {
+						_, err = container.UpsertItem(ctx, NewPartitionKeyString("pk"), []byte(`{"id":"item"}`), &ItemOptions{ReplaySafe: true})
+					} else {
+						_, err = container.ReadItem(ctx, NewPartitionKeyString("pk"), "item", nil)
+					}
+					assert.ErrorIs(t, err, wantErr)
+					assert.Equal(t, 1, sends)
+					assert.Empty(t, lc.locationUnavailabilityInfoMap)
 				})
-				container, lc := newReplaySafeTestContainer(t, transport, policy.RetryOptions{
-					MaxRetries: 3, RetryDelay: time.Second, TryTimeout: time.Second,
-				}, false, false)
-				_, err := container.UpsertItem(ctx, NewPartitionKeyString("pk"), []byte(`{"id":"item"}`), &ItemOptions{ReplaySafe: true})
-				assert.ErrorIs(t, err, wantErr)
-				assert.Equal(t, 1, sends)
-				assert.Empty(t, lc.locationUnavailabilityInfoMap)
-			})
+			}
 		}
 	}
 }
@@ -415,38 +491,36 @@ func TestReplaySafeWriteDownstreamVeto(t *testing.T) {
 }
 
 func TestReplaySafeWriteRecoveryDownstreamVeto(t *testing.T) {
-	for _, failure := range []string{"not sent", "503"} {
-		for _, crossRegion := range []bool{false, true} {
-			t.Run(fmt.Sprintf("%s/crossRegion=%t", failure, crossRegion), func(t *testing.T) {
-				t.Parallel()
-				cause := errors.New("downstream veto")
-				sends, callbacks := 0, 0
-				transport := retryPolicyTransportFunc(func(req *http.Request) (*http.Response, error) {
-					sends++
-					assert.Equal(t, "write-a.test", req.URL.Host)
-					if sends == 1 {
-						return replaySafeTestFailure(req, failure)
-					}
-					return nil, fmt.Errorf("wrapped: %w", errorinfo.NonRetriableError(cause))
-				})
-				container, _ := newReplaySafeTestContainer(t, transport, policy.RetryOptions{
-					MaxRetries: 3, RetryDelay: time.Millisecond,
-					ShouldRetry: func(*http.Response, error) bool {
-						callbacks++
-						assert.Equal(t, 1, sends, "a downstream veto must not reach ShouldRetry")
-						return true
-					},
-				}, false, crossRegion)
-				_, err := container.UpsertItem(context.Background(), NewPartitionKeyString("pk"), []byte(`{"id":"item"}`), &ItemOptions{ReplaySafe: true})
-				assert.ErrorIs(t, err, cause)
-				assert.Equal(t, 2, sends)
-				wantCallbacks := 1
-				if failure == "not sent" && crossRegion {
-					wantCallbacks = 0
+	for _, failure := range []string{"not sent", "EOF", "408", "500", "503"} {
+		t.Run(failure, func(t *testing.T) {
+			t.Parallel()
+			cause := errors.New("downstream veto")
+			sends, callbacks := 0, 0
+			transport := retryPolicyTransportFunc(func(req *http.Request) (*http.Response, error) {
+				sends++
+				wantHost := "write-a.test"
+				if sends == 2 && (failure == "408" || failure == "503") {
+					wantHost = "write-b.test"
 				}
-				assert.Equal(t, wantCallbacks, callbacks)
+				assert.Equal(t, wantHost, req.URL.Host)
+				if sends == 1 {
+					return replaySafeTestFailure(req, failure)
+				}
+				return nil, fmt.Errorf("wrapped: %w", errorinfo.NonRetriableError(cause))
 			})
-		}
+			container, _ := newReplaySafeTestContainer(t, transport, policy.RetryOptions{
+				MaxRetries: 3, RetryDelay: time.Millisecond,
+				ShouldRetry: func(*http.Response, error) bool {
+					callbacks++
+					t.Error("native recovery and downstream veto must not reach ShouldRetry")
+					return true
+				},
+			}, true, true)
+			_, err := container.UpsertItem(context.Background(), NewPartitionKeyString("pk"), []byte(`{"id":"item"}`), &ItemOptions{ReplaySafe: true})
+			assert.ErrorIs(t, err, cause)
+			assert.Equal(t, 2, sends)
+			assert.Zero(t, callbacks)
+		})
 	}
 }
 
@@ -564,18 +638,7 @@ func TestReplaySafeWriteServiceUnavailableGuard(t *testing.T) {
 						if regions == "exhausted" && crossRegion {
 							want = append(want, "write-b.test")
 						}
-						if optIn {
-							if maxRetries > 0 {
-								want = append(want, want...)
-							}
-							wantCallbacks := 1
-							if maxRetries > 0 {
-								wantCallbacks++
-							}
-							assert.Equal(t, wantCallbacks, callbacks, "regional recovery availability must not veto outer retries")
-						} else {
-							assert.Zero(t, callbacks, "retain the unsafe-write default")
-						}
+						assert.Zero(t, callbacks, "shared 503 refusal must veto outer retries regardless of replay safety")
 						assert.Equal(t, want, hosts)
 						assert.Empty(t, lc.locationUnavailabilityInfoMap)
 					})
@@ -615,10 +678,6 @@ func TestReplaySafeWriteNotSentRecoveryRefusal(t *testing.T) {
 					}, false, crossRegion)
 					_, err := container.UpsertItem(context.Background(), NewPartitionKeyString("pk"), item, &ItemOptions{ReplaySafe: optIn})
 					require.ErrorIs(t, err, cause)
-					outerAttempts := 1
-					if optIn && maxRetries > 0 {
-						outerAttempts += int(maxRetries)
-					}
 					sendsPerAttempt := 1
 					if crossRegion {
 						sendsPerAttempt += maxSameRegionConnectionRetries
@@ -626,14 +685,9 @@ func TestReplaySafeWriteNotSentRecoveryRefusal(t *testing.T) {
 					} else {
 						assert.Empty(t, lc.locationUnavailabilityInfoMap)
 					}
-					assert.Len(t, hosts, sendsPerAttempt*outerAttempts, "only the existing native and azcore budgets apply")
-					if optIn {
-						assert.Equal(t, outerAttempts, callbacks)
-						assert.False(t, errors.As(err, new(errorinfo.NonRetriable)))
-					} else {
-						assert.Zero(t, callbacks)
-						assert.True(t, errors.As(err, new(errorinfo.NonRetriable)))
-					}
+					assert.Len(t, hosts, sendsPerAttempt, "native refusal must not start another outer budget")
+					assert.Zero(t, callbacks)
+					assert.True(t, errors.As(err, new(errorinfo.NonRetriable)))
 				})
 			}
 		}

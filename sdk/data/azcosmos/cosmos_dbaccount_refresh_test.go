@@ -300,7 +300,7 @@ func TestFix3b_RequestTimeoutDoesNotMarkEndpointUnavailable(t *testing.T) {
 	require.NoError(t, err)
 
 	rc := &retryContext{}
-	shouldRetry, err := retry.attemptRetryOnRequestTimeout(req, false /*isWriteOperation*/, rc)
+	shouldRetry, err := retry.attemptRetryOnRequestTimeout(req, pipelineRequestOptions{}, rc)
 	require.NoError(t, err)
 	require.True(t, shouldRetry)
 	require.True(t, rc.requestTimeoutRetryDone)
@@ -343,7 +343,7 @@ func TestFix3c_RequestTimeoutDoesNotBlockOnStalledGEM(t *testing.T) {
 	var shouldRetry bool
 	var retryErr error
 	go func() {
-		shouldRetry, retryErr = retry.attemptRetryOnRequestTimeout(req, false, &retryContext{})
+		shouldRetry, retryErr = retry.attemptRetryOnRequestTimeout(req, pipelineRequestOptions{}, &retryContext{})
 		close(done)
 	}()
 	select {

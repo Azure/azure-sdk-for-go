@@ -88,17 +88,19 @@ response, err := container.PatchItem(ctx, pk, id, patch, &azcosmos.ItemOptions{
 handle(err)
 ```
 
-The flag bypasses guards whose reason is write replay safety, leaving the existing
-outer azcore policy to decide whether to retry. This includes transport failures,
-attempt timeouts, and HTTP 408/500/502/503/504. After native transport or HTTP 503
-recovery declines another attempt, outer replay does not require regional failover:
-it remains eligible when cross-region retries are disabled, preferred regions are
-absent or exhausted, or the account has only one write region.
-Responses and transport errors are passed through, not converted to success.
-`RetryOptions` control `MaxRetries`, delays, status checks, `ShouldRetry`,
-`Retry-After`, and attempt timeouts; parent cancellation still stops retries.
-Independent vetoes, including downstream non-retriable errors and exhausted
-endpoint/session recovery budgets, still apply. Terminal statuses are not automatically retried.
+The flag bypasses only mutation replay-safety guards. Replay-safe writes use the
+same native retry eligibility and budgets as reads for transport failures and
+HTTP 408/500/502/504, subject to write endpoint eligibility. Shared stop conditions
+still apply: disabled regional retries, absent or exhausted preferred regions,
+native retry exhaustion, and downstream non-retriable errors do not gain an outer
+retry solely because the flag is set. HTTP 503 retains its existing recovery
+rules, including the requirement for multiple write locations on writes.
+
+The existing outer azcore policy handles only failures the read path already
+delegates, such as attempt timeouts. For those failures, `RetryOptions` still
+control `MaxRetries`, delays, status checks, `ShouldRetry`, `Retry-After`, and
+attempt timeouts. Parent cancellation stops retries. Terminal statuses remain
+errors and are not automatically retried.
 
 There is no new policy, loop, or regional retry logic. Requests retain their write
 classification and never gain permission to target read-only regions. Existing

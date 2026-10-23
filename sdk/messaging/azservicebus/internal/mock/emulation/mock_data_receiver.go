@@ -37,8 +37,8 @@ func (rcvr *MockReceiver) Done() <-chan error {
 
 	go func() {
 		select {
-		case <-rcvr.Session.Done():
-			errCh <- rcvr.Session.Status.Err()
+		case err := <-rcvr.Session.Done():
+			errCh <- err
 		case <-rcvr.Status.Done():
 			errCh <- rcvr.Status.Err()
 		}

@@ -5,6 +5,7 @@ package emulation_test
 
 import (
 	"context"
+	"errors"
 	"testing"
 	"time"
 
@@ -42,6 +43,31 @@ func TestNewConnection(t *testing.T) {
 	msg, err := rcvr.Receive(context.Background(), nil)
 	require.NoError(t, err)
 	require.Equal(t, []byte("hello"), msg.Value)
+}
+
+func TestMockReceiverDone(t *testing.T) {
+	for _, source := range []string{"connection", "session"} {
+		t.Run(source, func(t *testing.T) {
+			conn := &emulation.MockConnection{Status: emulation.NewStatus(nil)}
+			sess := &emulation.MockSession{Conn: conn, Status: emulation.NewStatus(nil)}
+			rcvr := &emulation.MockReceiver{Session: sess, Status: emulation.NewStatus(nil)}
+			done := rcvr.Done()
+			expectedErr := errors.New(source)
+
+			if source == "connection" {
+				conn.Status.CloseWithError(expectedErr)
+			} else {
+				sess.Status.CloseWithError(expectedErr)
+			}
+
+			select {
+			case err := <-done:
+				require.ErrorIs(t, err, expectedErr)
+			case <-time.After(5 * time.Second):
+				t.Fatal("receiver did not forward the session notification")
+			}
+		})
+	}
 }
 
 func TestClosingConnectionClosesChildren(t *testing.T) {

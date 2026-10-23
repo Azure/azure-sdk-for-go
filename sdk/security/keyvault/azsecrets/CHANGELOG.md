@@ -1,6 +1,12 @@
 # Release History
 
-## 1.5.1 (2026-10-23)
+<!-- cspell:ignore azsecrets francescomari -->
+
+## 1.5.1-beta.1 (2026-10-23)
+### Features Added
+
+- Regenerated the library for stable Key Vault API version `2026-04-01`.
+
 ### Other Changes
 
 

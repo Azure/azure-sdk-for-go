@@ -19,7 +19,7 @@ import (
 // ConfigTemplateVersionsClient contains the methods for the ConfigTemplateVersions group.
 // Don't use this type directly, use NewConfigTemplateVersionsClient() instead.
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2026-05-01-preview
 type ConfigTemplateVersionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,6 +42,162 @@ func NewConfigTemplateVersionsClient(subscriptionID string, credential azcore.To
 		internal:       cl,
 	}
 	return client, nil
+}
+
+// BeginCreateOrUpdate - Create or update a Config Template Version Resource
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - configTemplateName - The name of the ConfigTemplate
+//   - configTemplateVersionName - The name of the ConfigTemplateVersion
+//   - resource - Resource create parameters.
+//   - options - ConfigTemplateVersionsClientBeginCreateOrUpdateOptions contains the optional parameters for the ConfigTemplateVersionsClient.BeginCreateOrUpdate
+//     method.
+func (client *ConfigTemplateVersionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, configTemplateName string, configTemplateVersionName string, resource ConfigTemplateVersion, options *ConfigTemplateVersionsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ConfigTemplateVersionsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, configTemplateName, configTemplateVersionName, resource, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ConfigTemplateVersionsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ConfigTemplateVersionsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// CreateOrUpdate - Create or update a Config Template Version Resource
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ConfigTemplateVersionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, configTemplateName string, configTemplateVersionName string, resource ConfigTemplateVersion, options *ConfigTemplateVersionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ConfigTemplateVersionsClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, configTemplateName, configTemplateVersionName, resource, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+func (client *ConfigTemplateVersionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, configTemplateName string, configTemplateVersionName string, resource ConfigTemplateVersion, _ *ConfigTemplateVersionsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/configTemplates/{configTemplateName}/versions/{configTemplateVersionName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if configTemplateName == "" {
+		return nil, errors.New("parameter configTemplateName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{configTemplateName}", url.PathEscape(configTemplateName))
+	if configTemplateVersionName == "" {
+		return nil, errors.New("parameter configTemplateVersionName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{configTemplateVersionName}", url.PathEscape(configTemplateVersionName))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, resource); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginDelete - Delete a Config Template Version Resource
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - configTemplateName - The name of the ConfigTemplate
+//   - configTemplateVersionName - The name of the ConfigTemplateVersion
+//   - options - ConfigTemplateVersionsClientBeginDeleteOptions contains the optional parameters for the ConfigTemplateVersionsClient.BeginDelete
+//     method.
+func (client *ConfigTemplateVersionsClient) BeginDelete(ctx context.Context, resourceGroupName string, configTemplateName string, configTemplateVersionName string, options *ConfigTemplateVersionsClientBeginDeleteOptions) (*runtime.Poller[ConfigTemplateVersionsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, configTemplateName, configTemplateVersionName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ConfigTemplateVersionsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ConfigTemplateVersionsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// Delete - Delete a Config Template Version Resource
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ConfigTemplateVersionsClient) deleteOperation(ctx context.Context, resourceGroupName string, configTemplateName string, configTemplateVersionName string, options *ConfigTemplateVersionsClientBeginDeleteOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ConfigTemplateVersionsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, configTemplateName, configTemplateVersionName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// deleteCreateRequest creates the Delete request.
+func (client *ConfigTemplateVersionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, configTemplateName string, configTemplateVersionName string, _ *ConfigTemplateVersionsClientBeginDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/configTemplates/{configTemplateName}/versions/{configTemplateVersionName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if configTemplateName == "" {
+		return nil, errors.New("parameter configTemplateName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{configTemplateName}", url.PathEscape(configTemplateName))
+	if configTemplateVersionName == "" {
+		return nil, errors.New("parameter configTemplateVersionName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{configTemplateVersionName}", url.PathEscape(configTemplateVersionName))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
 }
 
 // Get - Get a Config Template Version Resource
@@ -92,7 +248,7 @@ func (client *ConfigTemplateVersionsClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -168,7 +324,7 @@ func (client *ConfigTemplateVersionsClient) listByConfigTemplateCreateRequest(ct
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250601)
+		reqQP.Set("api-version", version20260501Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -183,6 +339,77 @@ func (client *ConfigTemplateVersionsClient) listByConfigTemplateHandleResponse(r
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConfigTemplateVersionListResult); err != nil {
 		return ConfigTemplateVersionsClientListByConfigTemplateResponse{}, err
+	}
+	return result, nil
+}
+
+// Update - Update a Config Template Version Resource
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - configTemplateName - The name of the ConfigTemplate
+//   - configTemplateVersionName - The name of the ConfigTemplateVersion
+//   - properties - The resource properties to be updated.
+//   - options - ConfigTemplateVersionsClientUpdateOptions contains the optional parameters for the ConfigTemplateVersionsClient.Update
+//     method.
+func (client *ConfigTemplateVersionsClient) Update(ctx context.Context, resourceGroupName string, configTemplateName string, configTemplateVersionName string, properties ConfigTemplateVersion, options *ConfigTemplateVersionsClientUpdateOptions) (ConfigTemplateVersionsClientUpdateResponse, error) {
+	var err error
+	const operationName = "ConfigTemplateVersionsClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, configTemplateName, configTemplateVersionName, properties, options)
+	if err != nil {
+		return ConfigTemplateVersionsClientUpdateResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ConfigTemplateVersionsClientUpdateResponse{}, err
+	}
+	return client.updateHandleResponse(httpResp, http.StatusOK)
+}
+
+// updateCreateRequest creates the Update request.
+func (client *ConfigTemplateVersionsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, configTemplateName string, configTemplateVersionName string, properties ConfigTemplateVersion, _ *ConfigTemplateVersionsClientUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/configTemplates/{configTemplateName}/versions/{configTemplateVersionName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if configTemplateName == "" {
+		return nil, errors.New("parameter configTemplateName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{configTemplateName}", url.PathEscape(configTemplateName))
+	if configTemplateVersionName == "" {
+		return nil, errors.New("parameter configTemplateVersionName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{configTemplateVersionName}", url.PathEscape(configTemplateVersionName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, properties); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// updateHandleResponse handles the Update response.
+func (client *ConfigTemplateVersionsClient) updateHandleResponse(resp *http.Response, successCodes ...int) (ConfigTemplateVersionsClientUpdateResponse, error) {
+	result := ConfigTemplateVersionsClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ConfigTemplateVersion); err != nil {
+		return ConfigTemplateVersionsClientUpdateResponse{}, err
 	}
 	return result, nil
 }

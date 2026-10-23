@@ -19,7 +19,7 @@ import (
 // MigrationsClient contains the methods for the Migrations group.
 // Don't use this type directly, use NewMigrationsClient() instead.
 //
-// Generated from API version 2026-06-01-preview
+// Generated from API version 2026-09-01
 type MigrationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -44,38 +44,115 @@ func NewMigrationsClient(subscriptionID string, credential azcore.TokenCredentia
 	return client, nil
 }
 
-// BeginCancel - Cancel or rollback the migration operation in a Redis Enterprise cluster.
+// BeginStart - Starts a new migration
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed characters(A-Z, a-z,
 //     0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens
-//   - options - MigrationsClientBeginCancelOptions contains the optional parameters for the MigrationsClient.BeginCancel method.
-func (client *MigrationsClient) BeginCancel(ctx context.Context, resourceGroupName string, clusterName string, options *MigrationsClientBeginCancelOptions) (*runtime.Poller[MigrationsClientCancelResponse], error) {
+//   - parameters - Parameters supplied to start a migration operation.
+//   - options - MigrationsClientBeginStartOptions contains the optional parameters for the MigrationsClient.BeginStart method.
+func (client *MigrationsClient) BeginStart(ctx context.Context, resourceGroupName string, clusterName string, parameters Migration, options *MigrationsClientBeginStartOptions) (*runtime.Poller[MigrationsClientStartResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.cancel(ctx, resourceGroupName, clusterName, options)
+		resp, err := client.start(ctx, resourceGroupName, clusterName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[MigrationsClientCancelResponse]{
-			Tracer: client.internal.Tracer(),
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[MigrationsClientStartResponse]{
+			FinalStateVia: runtime.FinalStateViaOriginalURI,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[MigrationsClientCancelResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[MigrationsClientStartResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// Cancel - Cancel or rollback the migration operation in a Redis Enterprise cluster.
+// start - Starts a new migration
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *MigrationsClient) cancel(ctx context.Context, resourceGroupName string, clusterName string, options *MigrationsClientBeginCancelOptions) (*http.Response, error) {
+func (client *MigrationsClient) start(ctx context.Context, resourceGroupName string, clusterName string, parameters Migration, options *MigrationsClientBeginStartOptions) (*http.Response, error) {
 	var err error
-	const operationName = "MigrationsClient.BeginCancel"
+	const operationName = "MigrationsClient.BeginStart"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.cancelCreateRequest(ctx, resourceGroupName, clusterName, options)
+	req, err := client.startCreateRequest(ctx, resourceGroupName, clusterName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// startCreateRequest creates the start request.
+func (client *MigrationsClient) startCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, parameters Migration, _ *MigrationsClientBeginStartOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redisEnterprise/{clusterName}/migrations/default"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if clusterName == "" {
+		return nil, errors.New("parameter clusterName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginUndo - Cancel or rollback the migration operation in a Redis Enterprise cluster.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - clusterName - The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed characters(A-Z, a-z,
+//     0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens
+//   - options - MigrationsClientBeginUndoOptions contains the optional parameters for the MigrationsClient.BeginUndo method.
+func (client *MigrationsClient) BeginUndo(ctx context.Context, resourceGroupName string, clusterName string, options *MigrationsClientBeginUndoOptions) (*runtime.Poller[MigrationsClientUndoResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.undo(ctx, resourceGroupName, clusterName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[MigrationsClientUndoResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[MigrationsClientUndoResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// undo - Cancel or rollback the migration operation in a Redis Enterprise cluster.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *MigrationsClient) undo(ctx context.Context, resourceGroupName string, clusterName string, options *MigrationsClientBeginUndoOptions) (*http.Response, error) {
+	var err error
+	const operationName = "MigrationsClient.BeginUndo"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.undoCreateRequest(ctx, resourceGroupName, clusterName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -89,8 +166,8 @@ func (client *MigrationsClient) cancel(ctx context.Context, resourceGroupName st
 	return httpResp, nil
 }
 
-// cancelCreateRequest creates the Cancel request.
-func (client *MigrationsClient) cancelCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, _ *MigrationsClientBeginCancelOptions) (*policy.Request, error) {
+// undoCreateRequest creates the undo request.
+func (client *MigrationsClient) undoCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, options *MigrationsClientBeginUndoOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redisEnterprise/{clusterName}/migrations/default/cancel"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -109,7 +186,87 @@ func (client *MigrationsClient) cancelCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601Preview)
+	reqQP.Set("api-version", version20260901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	if options != nil && options.Body != nil {
+		req.Raw().Header["Content-Type"] = []string{"application/json"}
+		if err := runtime.MarshalAsJSON(req, *options.Body); err != nil {
+			return nil, err
+		}
+		return req, nil
+	}
+	return req, nil
+}
+
+// BeginUnlinkMigratedEndpoint - Unlinks the migrated endpoint from the Azure Managed Redis cluster that was migrated from
+// Azure Cache for Redis, removing the source cache endpoint that was redirected to this cluster during migration.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - clusterName - The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed characters(A-Z, a-z,
+//     0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens
+//   - options - MigrationsClientBeginUnlinkMigratedEndpointOptions contains the optional parameters for the MigrationsClient.BeginUnlinkMigratedEndpoint
+//     method.
+func (client *MigrationsClient) BeginUnlinkMigratedEndpoint(ctx context.Context, resourceGroupName string, clusterName string, options *MigrationsClientBeginUnlinkMigratedEndpointOptions) (*runtime.Poller[MigrationsClientUnlinkMigratedEndpointResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.unlinkMigratedEndpoint(ctx, resourceGroupName, clusterName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[MigrationsClientUnlinkMigratedEndpointResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[MigrationsClientUnlinkMigratedEndpointResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// unlinkMigratedEndpoint - Unlinks the migrated endpoint from the Azure Managed Redis cluster that was migrated from Azure
+// Cache for Redis, removing the source cache endpoint that was redirected to this cluster during migration.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *MigrationsClient) unlinkMigratedEndpoint(ctx context.Context, resourceGroupName string, clusterName string, options *MigrationsClientBeginUnlinkMigratedEndpointOptions) (*http.Response, error) {
+	var err error
+	const operationName = "MigrationsClient.BeginUnlinkMigratedEndpoint"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.unlinkMigratedEndpointCreateRequest(ctx, resourceGroupName, clusterName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// unlinkMigratedEndpointCreateRequest creates the unlinkMigratedEndpoint request.
+func (client *MigrationsClient) unlinkMigratedEndpointCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, _ *MigrationsClientBeginUnlinkMigratedEndpointOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redisEnterprise/{clusterName}/migrations/default/unlinkMigratedEndpoint"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if clusterName == "" {
+		return nil, errors.New("parameter clusterName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -157,7 +314,7 @@ func (client *MigrationsClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601Preview)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -233,7 +390,7 @@ func (client *MigrationsClient) listCreateRequest(ctx context.Context, resourceG
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260601Preview)
+		reqQP.Set("api-version", version20260901)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -250,83 +407,6 @@ func (client *MigrationsClient) listHandleResponse(resp *http.Response, successC
 		return MigrationsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginStart - Starts a new migration
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - clusterName - The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed characters(A-Z, a-z,
-//     0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens
-//   - parameters - Parameters supplied to start a migration operation.
-//   - options - MigrationsClientBeginStartOptions contains the optional parameters for the MigrationsClient.BeginStart method.
-func (client *MigrationsClient) BeginStart(ctx context.Context, resourceGroupName string, clusterName string, parameters Migration, options *MigrationsClientBeginStartOptions) (*runtime.Poller[MigrationsClientStartResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.start(ctx, resourceGroupName, clusterName, parameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[MigrationsClientStartResponse]{
-			FinalStateVia: runtime.FinalStateViaOriginalURI,
-			Tracer:        client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[MigrationsClientStartResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Start - Starts a new migration
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *MigrationsClient) start(ctx context.Context, resourceGroupName string, clusterName string, parameters Migration, options *MigrationsClientBeginStartOptions) (*http.Response, error) {
-	var err error
-	const operationName = "MigrationsClient.BeginStart"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.startCreateRequest(ctx, resourceGroupName, clusterName, parameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// startCreateRequest creates the Start request.
-func (client *MigrationsClient) startCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, parameters Migration, _ *MigrationsClientBeginStartOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redisEnterprise/{clusterName}/migrations/default"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if clusterName == "" {
-		return nil, errors.New("parameter clusterName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
-	return req, nil
 }
 
 // Validate - Validates if a source Azure Cache for Redis resource can be migrated to a target Azure Managed Redis resource.
@@ -373,7 +453,7 @@ func (client *MigrationsClient) validateCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601Preview)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

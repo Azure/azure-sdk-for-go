@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-06-01/FileShare_GetLimits_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-01/FileShare_GetLimits_MaximumSet_Gen.json
 func ExampleInformationalOperationsClient_GetLimits_fileShareGetLimitsMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -23,7 +23,14 @@ func ExampleInformationalOperationsClient_GetLimits_fileShareGetLimitsMaximumSet
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewInformationalOperationsClient().GetLimits(ctx, "westus", nil)
+	res, err := clientFactory.NewInformationalOperationsClient().GetLimits(ctx, "westus", &armfileshares.InformationalOperationsClientGetLimitsOptions{
+		Body: &armfileshares.FileShareLimitsRequest{
+			Properties: &armfileshares.FileShareOfferInput{
+				Protocol:  to.Ptr(armfileshares.ProtocolNFS),
+				MediaTier: to.Ptr(armfileshares.MediaTierHDD),
+				ScaleMode: to.Ptr(armfileshares.ScaleModeScale),
+			},
+		}})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -58,7 +65,7 @@ func ExampleInformationalOperationsClient_GetLimits_fileShareGetLimitsMaximumSet
 	// }
 }
 
-// Generated from example definition: 2026-06-01/FileShare_GetLimits_MinimumSet_Gen.json
+// Generated from example definition: 2026-09-01/FileShare_GetLimits_MinimumSet_Gen.json
 func ExampleInformationalOperationsClient_GetLimits_fileShareGetLimitsMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -69,7 +76,10 @@ func ExampleInformationalOperationsClient_GetLimits_fileShareGetLimitsMinimumSet
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewInformationalOperationsClient().GetLimits(ctx, "westus", nil)
+	res, err := clientFactory.NewInformationalOperationsClient().GetLimits(ctx, "westus", &armfileshares.InformationalOperationsClientGetLimitsOptions{
+		Body: &armfileshares.FileShareLimitsRequest{
+			Properties: &armfileshares.FileShareOfferInput{},
+		}})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -104,7 +114,7 @@ func ExampleInformationalOperationsClient_GetLimits_fileShareGetLimitsMinimumSet
 	// }
 }
 
-// Generated from example definition: 2026-06-01/FileShare_GetProvisioningRecommendation_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-01/FileShare_GetProvisioningRecommendation_MaximumSet_Gen.json
 func ExampleInformationalOperationsClient_GetProvisioningRecommendation_fileShareGetProvisioningRecommendationMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -118,6 +128,9 @@ func ExampleInformationalOperationsClient_GetProvisioningRecommendation_fileShar
 	res, err := clientFactory.NewInformationalOperationsClient().GetProvisioningRecommendation(ctx, "westus", armfileshares.FileShareProvisioningRecommendationRequest{
 		Properties: &armfileshares.FileShareProvisioningRecommendationInput{
 			ProvisionedStorageGiB: to.Ptr[int32](7),
+			Protocol:              to.Ptr(armfileshares.ProtocolNFS),
+			MediaTier:             to.Ptr(armfileshares.MediaTierHDD),
+			ScaleMode:             to.Ptr(armfileshares.ScaleModeScale),
 		},
 	}, nil)
 	if err != nil {
@@ -139,7 +152,7 @@ func ExampleInformationalOperationsClient_GetProvisioningRecommendation_fileShar
 	// }
 }
 
-// Generated from example definition: 2026-06-01/FileShare_GetProvisioningRecommendation_MinimumSet_Gen.json
+// Generated from example definition: 2026-09-01/FileShare_GetProvisioningRecommendation_MinimumSet_Gen.json
 func ExampleInformationalOperationsClient_GetProvisioningRecommendation_fileShareGetProvisioningRecommendationMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -174,7 +187,7 @@ func ExampleInformationalOperationsClient_GetProvisioningRecommendation_fileShar
 	// }
 }
 
-// Generated from example definition: 2026-06-01/FileShare_GetUsageData_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-01/FileShare_GetUsageData_MaximumSet_Gen.json
 func ExampleInformationalOperationsClient_GetUsageData_fileShareGetUsageDataMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -203,7 +216,7 @@ func ExampleInformationalOperationsClient_GetUsageData_fileShareGetUsageDataMaxi
 	// }
 }
 
-// Generated from example definition: 2026-06-01/FileShare_GetUsageData_MinimumSet_Gen.json
+// Generated from example definition: 2026-09-01/FileShare_GetUsageData_MinimumSet_Gen.json
 func ExampleInformationalOperationsClient_GetUsageData_fileShareGetUsageDataMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

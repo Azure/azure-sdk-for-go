@@ -104,7 +104,7 @@ func (t *TransfersServerTransport) dispatchCancel(req *http.Request) (*http.Resp
 	if t.srv.Cancel == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Cancel not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/invoiceSections/(?P<invoiceSectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/transfers/(?P<transferName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cancel`
+	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/billingProfiles/(?P<billingProfileName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/invoiceSections/(?P<invoiceSectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/transfers/(?P<transferName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/cancel`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -145,7 +145,7 @@ func (t *TransfersServerTransport) dispatchGet(req *http.Request) (*http.Respons
 	if t.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/invoiceSections/(?P<invoiceSectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/transfers/(?P<transferName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/billingProfiles/(?P<billingProfileName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/invoiceSections/(?P<invoiceSectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/transfers/(?P<transferName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -186,7 +186,7 @@ func (t *TransfersServerTransport) dispatchInitiate(req *http.Request) (*http.Re
 	if t.srv.Initiate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Initiate not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/invoiceSections/(?P<invoiceSectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/transfers/(?P<transferName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/billingProfiles/(?P<billingProfileName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/invoiceSections/(?P<invoiceSectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/transfers/(?P<transferName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -233,7 +233,7 @@ func (t *TransfersServerTransport) dispatchNewListPager(req *http.Request) (*htt
 	}
 	newListPager := t.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/invoiceSections/(?P<invoiceSectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/transfers`
+		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/billingProfiles/(?P<billingProfileName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/invoiceSections/(?P<invoiceSectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/transfers`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {

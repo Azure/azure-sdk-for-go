@@ -87,7 +87,7 @@ func (s *ServersMigrationServerTransport) dispatchBeginCutoverMigration(req *htt
 	}
 	beginCutoverMigration := s.beginCutoverMigration.get(req)
 	if beginCutoverMigration == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DBforMySQL/flexibleServers/(?P<serverName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cutoverMigration`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DBforMySQL/flexibleServers/(?P<serverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/cutoverMigration`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {

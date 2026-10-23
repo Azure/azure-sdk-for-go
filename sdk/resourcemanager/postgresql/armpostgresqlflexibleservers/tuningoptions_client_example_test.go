@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-04-01-preview/TuningOptionsGet.json
+// Generated from example definition: 2026-07-01-preview/TuningOptionsGet.json
 func ExampleTuningOptionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -39,7 +39,7 @@ func ExampleTuningOptionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/TuningOptionsListByServer.json
+// Generated from example definition: 2026-07-01-preview/TuningOptionsListByServer.json
 func ExampleTuningOptionsClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -80,7 +80,7 @@ func ExampleTuningOptionsClient_NewListByServerPager() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/TuningOptionsListIndexRecommendations.json
+// Generated from example definition: 2026-07-01-preview/TuningOptionsListIndexRecommendations.json
 func ExampleTuningOptionsClient_NewListRecommendationsPager_listAvailableIndexRecommendations() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -221,7 +221,7 @@ func ExampleTuningOptionsClient_NewListRecommendationsPager_listAvailableIndexRe
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/TuningOptionsListIndexRecommendationsFilteredForCreateIndex.json
+// Generated from example definition: 2026-07-01-preview/TuningOptionsListIndexRecommendationsFilteredForCreateIndex.json
 func ExampleTuningOptionsClient_NewListRecommendationsPager_listAvailableIndexRecommendationsFilteredToExclusivelyGetThoseOfCreateIndexType() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -363,7 +363,7 @@ func ExampleTuningOptionsClient_NewListRecommendationsPager_listAvailableIndexRe
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/TuningOptionsListTableRecommendations.json
+// Generated from example definition: 2026-07-01-preview/TuningOptionsListTableRecommendations.json
 func ExampleTuningOptionsClient_NewListRecommendationsPager_listAvailableTableRecommendations() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -468,7 +468,7 @@ func ExampleTuningOptionsClient_NewListRecommendationsPager_listAvailableTableRe
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/TuningOptionsListTableRecommendationsFilteredForAnalyzeTable.json
+// Generated from example definition: 2026-07-01-preview/TuningOptionsListTableRecommendationsFilteredForAnalyzeTable.json
 func ExampleTuningOptionsClient_NewListRecommendationsPager_listAvailableTableRecommendationsFilteredToExclusivelyGetThoseOfAnalyzeTableType() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

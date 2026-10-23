@@ -7,11 +7,11 @@ package armcompute_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v8"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v9"
 	"log"
 )
 
-// Generated from example definition: 2025-12-03/tenantLevelSharedGalleryInviteExamples/TenantLevelSharedGalleryInvite_Accept.json
+// Generated from example definition: 2026-03-03/tenantLevelSharedGalleryInviteExamples/TenantLevelSharedGalleryInvite_Accept.json
 func ExampleTenantLevelSharedGalleryInvitesClient_BeginTenantLevelGallerySharingAccept() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -32,7 +32,7 @@ func ExampleTenantLevelSharedGalleryInvitesClient_BeginTenantLevelGallerySharing
 	}
 }
 
-// Generated from example definition: 2025-12-03/tenantLevelSharedGalleryInviteExamples/TenantLevelSharedGalleryInvite_Reject.json
+// Generated from example definition: 2026-03-03/tenantLevelSharedGalleryInviteExamples/TenantLevelSharedGalleryInvite_Reject.json
 func ExampleTenantLevelSharedGalleryInvitesClient_BeginTenantLevelGallerySharingReject() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

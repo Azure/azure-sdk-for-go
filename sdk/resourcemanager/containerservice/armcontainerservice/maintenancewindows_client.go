@@ -19,7 +19,7 @@ import (
 // MaintenanceWindowsClient contains the methods for the MaintenanceWindows group.
 // Don't use this type directly, use NewMaintenanceWindowsClient() instead.
 //
-// Generated from API version 2026-05-02-preview
+// Generated from API version 2026-08-02-preview
 type MaintenanceWindowsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type MaintenanceWindowsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewMaintenanceWindowsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MaintenanceWindowsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -65,7 +68,7 @@ func (client *MaintenanceWindowsClient) BeginCreateOrUpdate(ctx context.Context,
 	}
 }
 
-// CreateOrUpdate - Creates or updates a maintenance window.
+// createOrUpdate - Creates or updates a maintenance window.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *MaintenanceWindowsClient) createOrUpdate(ctx context.Context, resourceGroupName string, maintenanceWindowName string, resource MaintenanceWindowResource, options *MaintenanceWindowsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -87,11 +90,11 @@ func (client *MaintenanceWindowsClient) createOrUpdate(ctx context.Context, reso
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *MaintenanceWindowsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, maintenanceWindowName string, resource MaintenanceWindowResource, _ *MaintenanceWindowsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/maintenanceWindows/{maintenanceWindowName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -107,7 +110,7 @@ func (client *MaintenanceWindowsClient) createOrUpdateCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260502Preview)
+	reqQP.Set("api-version", version20260802Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -140,7 +143,7 @@ func (client *MaintenanceWindowsClient) BeginDelete(ctx context.Context, resourc
 	}
 }
 
-// Delete - Deletes a maintenance window.
+// deleteOperation - Deletes a maintenance window.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *MaintenanceWindowsClient) deleteOperation(ctx context.Context, resourceGroupName string, maintenanceWindowName string, options *MaintenanceWindowsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -162,11 +165,11 @@ func (client *MaintenanceWindowsClient) deleteOperation(ctx context.Context, res
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *MaintenanceWindowsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, maintenanceWindowName string, _ *MaintenanceWindowsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/maintenanceWindows/{maintenanceWindowName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -182,7 +185,7 @@ func (client *MaintenanceWindowsClient) deleteCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260502Preview)
+	reqQP.Set("api-version", version20260802Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -213,7 +216,7 @@ func (client *MaintenanceWindowsClient) Get(ctx context.Context, resourceGroupNa
 func (client *MaintenanceWindowsClient) getCreateRequest(ctx context.Context, resourceGroupName string, maintenanceWindowName string, _ *MaintenanceWindowsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/maintenanceWindows/{maintenanceWindowName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -229,7 +232,7 @@ func (client *MaintenanceWindowsClient) getCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260502Preview)
+	reqQP.Set("api-version", version20260802Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -243,6 +246,73 @@ func (client *MaintenanceWindowsClient) getHandleResponse(resp *http.Response, s
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MaintenanceWindowResource); err != nil {
 		return MaintenanceWindowsClientGetResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListBySubscriptionPager - Lists maintenance windows in the specified subscription.
+//   - options - MaintenanceWindowsClientListBySubscriptionOptions contains the optional parameters for the MaintenanceWindowsClient.NewListBySubscriptionPager
+//     method.
+func (client *MaintenanceWindowsClient) NewListBySubscriptionPager(options *MaintenanceWindowsClientListBySubscriptionOptions) *runtime.Pager[MaintenanceWindowsClientListBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PagingHandler[MaintenanceWindowsClientListBySubscriptionResponse]{
+		More: func(page MaintenanceWindowsClientListBySubscriptionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *MaintenanceWindowsClientListBySubscriptionResponse) (MaintenanceWindowsClientListBySubscriptionResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "MaintenanceWindowsClient.NewListBySubscriptionPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listBySubscriptionCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return MaintenanceWindowsClientListBySubscriptionResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return MaintenanceWindowsClientListBySubscriptionResponse{}, err
+			}
+			return client.listBySubscriptionHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listBySubscriptionCreateRequest creates the ListBySubscription request.
+func (client *MaintenanceWindowsClient) listBySubscriptionCreateRequest(ctx context.Context, nextLink string, _ *MaintenanceWindowsClientListBySubscriptionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/maintenanceWindows"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260802Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listBySubscriptionHandleResponse handles the ListBySubscription response.
+func (client *MaintenanceWindowsClient) listBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (MaintenanceWindowsClientListBySubscriptionResponse, error) {
+	result := MaintenanceWindowsClientListBySubscriptionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.MaintenanceWindowResourceListResult); err != nil {
+		return MaintenanceWindowsClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
 }
@@ -284,7 +354,7 @@ func (client *MaintenanceWindowsClient) listCreateRequest(ctx context.Context, r
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/maintenanceWindows"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -300,7 +370,7 @@ func (client *MaintenanceWindowsClient) listCreateRequest(ctx context.Context, r
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260502Preview)
+		reqQP.Set("api-version", version20260802Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -315,73 +385,6 @@ func (client *MaintenanceWindowsClient) listHandleResponse(resp *http.Response, 
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MaintenanceWindowResourceListResult); err != nil {
 		return MaintenanceWindowsClientListResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListBySubscriptionPager - Lists maintenance windows in the specified subscription.
-//   - options - MaintenanceWindowsClientListBySubscriptionOptions contains the optional parameters for the MaintenanceWindowsClient.NewListBySubscriptionPager
-//     method.
-func (client *MaintenanceWindowsClient) NewListBySubscriptionPager(options *MaintenanceWindowsClientListBySubscriptionOptions) *runtime.Pager[MaintenanceWindowsClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PagingHandler[MaintenanceWindowsClientListBySubscriptionResponse]{
-		More: func(page MaintenanceWindowsClientListBySubscriptionResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *MaintenanceWindowsClientListBySubscriptionResponse) (MaintenanceWindowsClientListBySubscriptionResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "MaintenanceWindowsClient.NewListBySubscriptionPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listBySubscriptionCreateRequest(ctx, nextLink, options)
-			if err != nil {
-				return MaintenanceWindowsClientListBySubscriptionResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return MaintenanceWindowsClientListBySubscriptionResponse{}, err
-			}
-			return client.listBySubscriptionHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *MaintenanceWindowsClient) listBySubscriptionCreateRequest(ctx context.Context, nextLink string, _ *MaintenanceWindowsClientListBySubscriptionOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/maintenanceWindows"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260502Preview)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *MaintenanceWindowsClient) listBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (MaintenanceWindowsClientListBySubscriptionResponse, error) {
-	result := MaintenanceWindowsClientListBySubscriptionResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.MaintenanceWindowResourceListResult); err != nil {
-		return MaintenanceWindowsClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
 }
@@ -414,7 +417,7 @@ func (client *MaintenanceWindowsClient) UpdateTags(ctx context.Context, resource
 func (client *MaintenanceWindowsClient) updateTagsCreateRequest(ctx context.Context, resourceGroupName string, maintenanceWindowName string, properties TagsObject, _ *MaintenanceWindowsClientUpdateTagsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/maintenanceWindows/{maintenanceWindowName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -430,7 +433,7 @@ func (client *MaintenanceWindowsClient) updateTagsCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260502Preview)
+	reqQP.Set("api-version", version20260802Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

@@ -30,6 +30,9 @@ type TemplateClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewTemplateClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TemplateClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -68,7 +71,7 @@ func (client *TemplateClient) Get(ctx context.Context, templateName string, opti
 func (client *TemplateClient) getCreateRequest(ctx context.Context, templateName string, _ *TemplateClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DevHub/templates/{templateName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if templateName == "" {
@@ -135,7 +138,7 @@ func (client *TemplateClient) listCreateRequest(ctx context.Context, nextLink st
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DevHub/templates"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))

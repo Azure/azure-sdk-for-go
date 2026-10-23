@@ -81,7 +81,7 @@ func (p *PrivateLinkResourcesServerTransport) dispatchListByStorageSyncService(r
 	if p.srv.ListByStorageSyncService == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListByStorageSyncService not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.StorageSync/storageSyncServices/(?P<storageSyncServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateLinkResources`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.StorageSync/storageSyncServices/(?P<storageSyncServiceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/privateLinkResources`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {

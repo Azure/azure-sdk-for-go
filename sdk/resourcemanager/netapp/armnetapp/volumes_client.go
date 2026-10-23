@@ -20,7 +20,7 @@ import (
 // VolumesClient contains the methods for the Volumes group.
 // Don't use this type directly, use NewVolumesClient() instead.
 //
-// Generated from API version 2026-05-15-preview
+// Generated from API version 2026-08-01
 type VolumesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -31,6 +31,9 @@ type VolumesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewVolumesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VolumesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -69,7 +72,7 @@ func (client *VolumesClient) BeginAuthorizeExternalReplication(ctx context.Conte
 	}
 }
 
-// AuthorizeExternalReplication - Starts SVM peering and returns a command to be run on the external ONTAP to accept it. Once
+// authorizeExternalReplication - Starts SVM peering and returns a command to be run on the external ONTAP to accept it. Once
 // the SVM have been peered a SnapMirror will be created
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *VolumesClient) authorizeExternalReplication(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginAuthorizeExternalReplicationOptions) (*http.Response, error) {
@@ -92,11 +95,11 @@ func (client *VolumesClient) authorizeExternalReplication(ctx context.Context, r
 	return httpResp, nil
 }
 
-// authorizeExternalReplicationCreateRequest creates the AuthorizeExternalReplication request.
+// authorizeExternalReplicationCreateRequest creates the authorizeExternalReplication request.
 func (client *VolumesClient) authorizeExternalReplicationCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, _ *VolumesClientBeginAuthorizeExternalReplicationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/authorizeExternalReplication"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -120,7 +123,7 @@ func (client *VolumesClient) authorizeExternalReplicationCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
+	reqQP.Set("api-version", version20260801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -152,7 +155,7 @@ func (client *VolumesClient) BeginAuthorizeReplication(ctx context.Context, reso
 	}
 }
 
-// AuthorizeReplication - Authorize the replication connection on the source volume
+// authorizeReplication - Authorize the replication connection on the source volume
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *VolumesClient) authorizeReplication(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body AuthorizeRequest, options *VolumesClientBeginAuthorizeReplicationOptions) (*http.Response, error) {
 	var err error
@@ -174,11 +177,11 @@ func (client *VolumesClient) authorizeReplication(ctx context.Context, resourceG
 	return httpResp, nil
 }
 
-// authorizeReplicationCreateRequest creates the AuthorizeReplication request.
+// authorizeReplicationCreateRequest creates the authorizeReplication request.
 func (client *VolumesClient) authorizeReplicationCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body AuthorizeRequest, _ *VolumesClientBeginAuthorizeReplicationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/authorizeReplication"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -202,7 +205,7 @@ func (client *VolumesClient) authorizeReplicationCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
+	reqQP.Set("api-version", version20260801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -236,7 +239,7 @@ func (client *VolumesClient) BeginBreakFileLocks(ctx context.Context, resourceGr
 	}
 }
 
-// BreakFileLocks - Break all the file locks on a volume
+// breakFileLocks - Break all the file locks on a volume
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *VolumesClient) breakFileLocks(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginBreakFileLocksOptions) (*http.Response, error) {
 	var err error
@@ -258,11 +261,11 @@ func (client *VolumesClient) breakFileLocks(ctx context.Context, resourceGroupNa
 	return httpResp, nil
 }
 
-// breakFileLocksCreateRequest creates the BreakFileLocks request.
+// breakFileLocksCreateRequest creates the breakFileLocks request.
 func (client *VolumesClient) breakFileLocksCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginBreakFileLocksOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/breakFileLocks"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -286,7 +289,7 @@ func (client *VolumesClient) breakFileLocksCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
+	reqQP.Set("api-version", version20260801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.Body != nil {
 		req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -323,7 +326,7 @@ func (client *VolumesClient) BeginBreakReplication(ctx context.Context, resource
 	}
 }
 
-// BreakReplication - Break the replication connection on the destination volume
+// breakReplication - Break the replication connection on the destination volume
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *VolumesClient) breakReplication(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginBreakReplicationOptions) (*http.Response, error) {
 	var err error
@@ -345,11 +348,11 @@ func (client *VolumesClient) breakReplication(ctx context.Context, resourceGroup
 	return httpResp, nil
 }
 
-// breakReplicationCreateRequest creates the BreakReplication request.
+// breakReplicationCreateRequest creates the breakReplication request.
 func (client *VolumesClient) breakReplicationCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginBreakReplicationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/breakReplication"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -373,7 +376,7 @@ func (client *VolumesClient) breakReplicationCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
+	reqQP.Set("api-version", version20260801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.Body != nil {
 		req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -412,7 +415,7 @@ func (client *VolumesClient) BeginCreateOrUpdate(ctx context.Context, resourceGr
 	}
 }
 
-// CreateOrUpdate - Create or update the specified volume within the capacity pool
+// createOrUpdate - Create or update the specified volume within the capacity pool
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *VolumesClient) createOrUpdate(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body Volume, options *VolumesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -434,11 +437,11 @@ func (client *VolumesClient) createOrUpdate(ctx context.Context, resourceGroupNa
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *VolumesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body Volume, _ *VolumesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -462,7 +465,7 @@ func (client *VolumesClient) createOrUpdateCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
+	reqQP.Set("api-version", version20260801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -496,7 +499,7 @@ func (client *VolumesClient) BeginDelete(ctx context.Context, resourceGroupName 
 	}
 }
 
-// Delete - Delete the specified volume
+// deleteOperation - Delete the specified volume
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *VolumesClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -518,11 +521,11 @@ func (client *VolumesClient) deleteOperation(ctx context.Context, resourceGroupN
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *VolumesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -546,7 +549,7 @@ func (client *VolumesClient) deleteCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
+	reqQP.Set("api-version", version20260801)
 	if options != nil && options.ForceDelete != nil {
 		reqQP.Set("forceDelete", strconv.FormatBool(*options.ForceDelete))
 	}
@@ -579,7 +582,7 @@ func (client *VolumesClient) BeginDeleteReplication(ctx context.Context, resourc
 	}
 }
 
-// DeleteReplication - Delete the replication connection on the destination volume, and send release to the source replication
+// deleteReplication - Delete the replication connection on the destination volume, and send release to the source replication
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *VolumesClient) deleteReplication(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginDeleteReplicationOptions) (*http.Response, error) {
 	var err error
@@ -601,11 +604,11 @@ func (client *VolumesClient) deleteReplication(ctx context.Context, resourceGrou
 	return httpResp, nil
 }
 
-// deleteReplicationCreateRequest creates the DeleteReplication request.
+// deleteReplicationCreateRequest creates the deleteReplication request.
 func (client *VolumesClient) deleteReplicationCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, _ *VolumesClientBeginDeleteReplicationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/deleteReplication"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -629,7 +632,7 @@ func (client *VolumesClient) deleteReplicationCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
+	reqQP.Set("api-version", version20260801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -660,7 +663,7 @@ func (client *VolumesClient) BeginFinalizeExternalReplication(ctx context.Contex
 	}
 }
 
-// FinalizeExternalReplication - Finalizes the migration of an external volume by releasing the replication and breaking the
+// finalizeExternalReplication - Finalizes the migration of an external volume by releasing the replication and breaking the
 // external cluster peering if no other migration is active.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *VolumesClient) finalizeExternalReplication(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginFinalizeExternalReplicationOptions) (*http.Response, error) {
@@ -683,11 +686,11 @@ func (client *VolumesClient) finalizeExternalReplication(ctx context.Context, re
 	return httpResp, nil
 }
 
-// finalizeExternalReplicationCreateRequest creates the FinalizeExternalReplication request.
+// finalizeExternalReplicationCreateRequest creates the finalizeExternalReplication request.
 func (client *VolumesClient) finalizeExternalReplicationCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, _ *VolumesClientBeginFinalizeExternalReplicationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/finalizeExternalReplication"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -711,7 +714,7 @@ func (client *VolumesClient) finalizeExternalReplicationCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
+	reqQP.Set("api-version", version20260801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -741,7 +744,7 @@ func (client *VolumesClient) BeginFinalizeRelocation(ctx context.Context, resour
 	}
 }
 
-// FinalizeRelocation - Finalizes the relocation of the volume and cleans up the old volume.
+// finalizeRelocation - Finalizes the relocation of the volume and cleans up the old volume.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *VolumesClient) finalizeRelocation(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginFinalizeRelocationOptions) (*http.Response, error) {
 	var err error
@@ -763,11 +766,11 @@ func (client *VolumesClient) finalizeRelocation(ctx context.Context, resourceGro
 	return httpResp, nil
 }
 
-// finalizeRelocationCreateRequest creates the FinalizeRelocation request.
+// finalizeRelocationCreateRequest creates the finalizeRelocation request.
 func (client *VolumesClient) finalizeRelocationCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, _ *VolumesClientBeginFinalizeRelocationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/finalizeRelocation"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -791,8 +794,1263 @@ func (client *VolumesClient) finalizeRelocationCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
+	reqQP.Set("api-version", version20260801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginListGetGroupIDListForLdapUser - Returns the list of group Ids for a specific LDAP User
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of the NetApp account
+//   - poolName - The name of the capacity pool
+//   - volumeName - The name of the volume
+//   - body - Returns group Id list for a specific LDAP user
+//   - options - VolumesClientBeginListGetGroupIDListForLdapUserOptions contains the optional parameters for the VolumesClient.BeginListGetGroupIDListForLdapUser
+//     method.
+func (client *VolumesClient) BeginListGetGroupIDListForLdapUser(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body GetGroupIDListForLDAPUserRequest, options *VolumesClientBeginListGetGroupIDListForLdapUserOptions) (*runtime.Poller[VolumesClientListGetGroupIDListForLdapUserResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.listGetGroupIDListForLdapUser(ctx, resourceGroupName, accountName, poolName, volumeName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VolumesClientListGetGroupIDListForLdapUserResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VolumesClientListGetGroupIDListForLdapUserResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// listGetGroupIDListForLdapUser - Returns the list of group Ids for a specific LDAP User
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *VolumesClient) listGetGroupIDListForLdapUser(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body GetGroupIDListForLDAPUserRequest, options *VolumesClientBeginListGetGroupIDListForLdapUserOptions) (*http.Response, error) {
+	var err error
+	const operationName = "VolumesClient.BeginListGetGroupIDListForLdapUser"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listGetGroupIDListForLdapUserCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// listGetGroupIDListForLdapUserCreateRequest creates the listGetGroupIDListForLdapUser request.
+func (client *VolumesClient) listGetGroupIDListForLdapUserCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body GetGroupIDListForLDAPUserRequest, _ *VolumesClientBeginListGetGroupIDListForLdapUserOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/getGroupIdListForLdapUser"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if poolName == "" {
+		return nil, errors.New("parameter poolName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
+	if volumeName == "" {
+		return nil, errors.New("parameter volumeName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{volumeName}", url.PathEscape(volumeName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginListQuotaReport - Get quota report for volume (with filter support)
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of the NetApp account
+//   - poolName - The name of the capacity pool
+//   - volumeName - The name of the volume
+//   - options - VolumesClientBeginListQuotaReportOptions contains the optional parameters for the VolumesClient.BeginListQuotaReport
+//     method.
+func (client *VolumesClient) BeginListQuotaReport(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginListQuotaReportOptions) (*runtime.Poller[VolumesClientListQuotaReportResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.listQuotaReport(ctx, resourceGroupName, accountName, poolName, volumeName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VolumesClientListQuotaReportResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VolumesClientListQuotaReportResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// listQuotaReport - Get quota report for volume (with filter support)
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *VolumesClient) listQuotaReport(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginListQuotaReportOptions) (*http.Response, error) {
+	var err error
+	const operationName = "VolumesClient.BeginListQuotaReport"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listQuotaReportCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// listQuotaReportCreateRequest creates the listQuotaReport request.
+func (client *VolumesClient) listQuotaReportCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginListQuotaReportOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/listQuotaReport"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if poolName == "" {
+		return nil, errors.New("parameter poolName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
+	if volumeName == "" {
+		return nil, errors.New("parameter volumeName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{volumeName}", url.PathEscape(volumeName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if options != nil && options.Body != nil {
+		req.Raw().Header["Content-Type"] = []string{"application/json"}
+		if err := runtime.MarshalAsJSON(req, *options.Body); err != nil {
+			return nil, err
+		}
+		return req, nil
+	}
+	return req, nil
+}
+
+// BeginPeerExternalCluster - Starts peering the external cluster for this migration volume
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of the NetApp account
+//   - poolName - The name of the capacity pool
+//   - volumeName - The name of the volume
+//   - body - Cluster peer request object supplied in the body of the operation.
+//   - options - VolumesClientBeginPeerExternalClusterOptions contains the optional parameters for the VolumesClient.BeginPeerExternalCluster
+//     method.
+func (client *VolumesClient) BeginPeerExternalCluster(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body PeerClusterForVolumeMigrationRequest, options *VolumesClientBeginPeerExternalClusterOptions) (*runtime.Poller[VolumesClientPeerExternalClusterResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.peerExternalCluster(ctx, resourceGroupName, accountName, poolName, volumeName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VolumesClientPeerExternalClusterResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VolumesClientPeerExternalClusterResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// peerExternalCluster - Starts peering the external cluster for this migration volume
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *VolumesClient) peerExternalCluster(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body PeerClusterForVolumeMigrationRequest, options *VolumesClientBeginPeerExternalClusterOptions) (*http.Response, error) {
+	var err error
+	const operationName = "VolumesClient.BeginPeerExternalCluster"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.peerExternalClusterCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// peerExternalClusterCreateRequest creates the peerExternalCluster request.
+func (client *VolumesClient) peerExternalClusterCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body PeerClusterForVolumeMigrationRequest, _ *VolumesClientBeginPeerExternalClusterOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/peerExternalCluster"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if poolName == "" {
+		return nil, errors.New("parameter poolName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
+	if volumeName == "" {
+		return nil, errors.New("parameter volumeName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{volumeName}", url.PathEscape(volumeName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginPerformReplicationTransfer - Performs an adhoc replication transfer on a volume with volumeType Migration
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of the NetApp account
+//   - poolName - The name of the capacity pool
+//   - volumeName - The name of the volume
+//   - options - VolumesClientBeginPerformReplicationTransferOptions contains the optional parameters for the VolumesClient.BeginPerformReplicationTransfer
+//     method.
+func (client *VolumesClient) BeginPerformReplicationTransfer(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginPerformReplicationTransferOptions) (*runtime.Poller[VolumesClientPerformReplicationTransferResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.performReplicationTransfer(ctx, resourceGroupName, accountName, poolName, volumeName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VolumesClientPerformReplicationTransferResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VolumesClientPerformReplicationTransferResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// performReplicationTransfer - Performs an adhoc replication transfer on a volume with volumeType Migration
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *VolumesClient) performReplicationTransfer(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginPerformReplicationTransferOptions) (*http.Response, error) {
+	var err error
+	const operationName = "VolumesClient.BeginPerformReplicationTransfer"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.performReplicationTransferCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// performReplicationTransferCreateRequest creates the performReplicationTransfer request.
+func (client *VolumesClient) performReplicationTransferCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, _ *VolumesClientBeginPerformReplicationTransferOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/performReplicationTransfer"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if poolName == "" {
+		return nil, errors.New("parameter poolName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
+	if volumeName == "" {
+		return nil, errors.New("parameter volumeName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{volumeName}", url.PathEscape(volumeName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginPoolChange - Moves volume to another pool
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of the NetApp account
+//   - poolName - The name of the capacity pool
+//   - volumeName - The name of the volume
+//   - body - Move volume to the pool supplied in the body of the operation.
+//   - options - VolumesClientBeginPoolChangeOptions contains the optional parameters for the VolumesClient.BeginPoolChange method.
+func (client *VolumesClient) BeginPoolChange(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body PoolChangeRequest, options *VolumesClientBeginPoolChangeOptions) (*runtime.Poller[VolumesClientPoolChangeResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.poolChange(ctx, resourceGroupName, accountName, poolName, volumeName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VolumesClientPoolChangeResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VolumesClientPoolChangeResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// poolChange - Moves volume to another pool
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *VolumesClient) poolChange(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body PoolChangeRequest, options *VolumesClientBeginPoolChangeOptions) (*http.Response, error) {
+	var err error
+	const operationName = "VolumesClient.BeginPoolChange"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.poolChangeCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// poolChangeCreateRequest creates the poolChange request.
+func (client *VolumesClient) poolChangeCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body PoolChangeRequest, _ *VolumesClientBeginPoolChangeOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/poolChange"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if poolName == "" {
+		return nil, errors.New("parameter poolName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
+	if volumeName == "" {
+		return nil, errors.New("parameter volumeName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{volumeName}", url.PathEscape(volumeName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginPopulateAvailabilityZone - This operation will populate availability zone information for a volume
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of the NetApp account
+//   - poolName - The name of the capacity pool
+//   - volumeName - The name of the volume
+//   - options - VolumesClientBeginPopulateAvailabilityZoneOptions contains the optional parameters for the VolumesClient.BeginPopulateAvailabilityZone
+//     method.
+func (client *VolumesClient) BeginPopulateAvailabilityZone(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginPopulateAvailabilityZoneOptions) (*runtime.Poller[VolumesClientPopulateAvailabilityZoneResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.populateAvailabilityZone(ctx, resourceGroupName, accountName, poolName, volumeName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VolumesClientPopulateAvailabilityZoneResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VolumesClientPopulateAvailabilityZoneResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// populateAvailabilityZone - This operation will populate availability zone information for a volume
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *VolumesClient) populateAvailabilityZone(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginPopulateAvailabilityZoneOptions) (*http.Response, error) {
+	var err error
+	const operationName = "VolumesClient.BeginPopulateAvailabilityZone"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.populateAvailabilityZoneCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// populateAvailabilityZoneCreateRequest creates the populateAvailabilityZone request.
+func (client *VolumesClient) populateAvailabilityZoneCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, _ *VolumesClientBeginPopulateAvailabilityZoneOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/populateAvailabilityZone"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if poolName == "" {
+		return nil, errors.New("parameter poolName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
+	if volumeName == "" {
+		return nil, errors.New("parameter volumeName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{volumeName}", url.PathEscape(volumeName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// BeginReInitializeReplication - Re-Initializes the replication connection on the destination volume
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of the NetApp account
+//   - poolName - The name of the capacity pool
+//   - volumeName - The name of the volume
+//   - options - VolumesClientBeginReInitializeReplicationOptions contains the optional parameters for the VolumesClient.BeginReInitializeReplication
+//     method.
+func (client *VolumesClient) BeginReInitializeReplication(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginReInitializeReplicationOptions) (*runtime.Poller[VolumesClientReInitializeReplicationResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.reInitializeReplication(ctx, resourceGroupName, accountName, poolName, volumeName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VolumesClientReInitializeReplicationResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VolumesClientReInitializeReplicationResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// reInitializeReplication - Re-Initializes the replication connection on the destination volume
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *VolumesClient) reInitializeReplication(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginReInitializeReplicationOptions) (*http.Response, error) {
+	var err error
+	const operationName = "VolumesClient.BeginReInitializeReplication"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.reInitializeReplicationCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// reInitializeReplicationCreateRequest creates the reInitializeReplication request.
+func (client *VolumesClient) reInitializeReplicationCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, _ *VolumesClientBeginReInitializeReplicationOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/reinitializeReplication"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if poolName == "" {
+		return nil, errors.New("parameter poolName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
+	if volumeName == "" {
+		return nil, errors.New("parameter volumeName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{volumeName}", url.PathEscape(volumeName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginReestablishReplication - Re-establish a previously deleted replication between 2 volumes that have a common ad-hoc
+// or policy-based snapshots
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of the NetApp account
+//   - poolName - The name of the capacity pool
+//   - volumeName - The name of the volume
+//   - body - body for the id of the source volume.
+//   - options - VolumesClientBeginReestablishReplicationOptions contains the optional parameters for the VolumesClient.BeginReestablishReplication
+//     method.
+func (client *VolumesClient) BeginReestablishReplication(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body ReestablishReplicationRequest, options *VolumesClientBeginReestablishReplicationOptions) (*runtime.Poller[VolumesClientReestablishReplicationResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.reestablishReplication(ctx, resourceGroupName, accountName, poolName, volumeName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VolumesClientReestablishReplicationResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VolumesClientReestablishReplicationResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// reestablishReplication - Re-establish a previously deleted replication between 2 volumes that have a common ad-hoc or policy-based
+// snapshots
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *VolumesClient) reestablishReplication(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body ReestablishReplicationRequest, options *VolumesClientBeginReestablishReplicationOptions) (*http.Response, error) {
+	var err error
+	const operationName = "VolumesClient.BeginReestablishReplication"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.reestablishReplicationCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// reestablishReplicationCreateRequest creates the reestablishReplication request.
+func (client *VolumesClient) reestablishReplicationCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body ReestablishReplicationRequest, _ *VolumesClientBeginReestablishReplicationOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/reestablishReplication"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if poolName == "" {
+		return nil, errors.New("parameter poolName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
+	if volumeName == "" {
+		return nil, errors.New("parameter volumeName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{volumeName}", url.PathEscape(volumeName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginRelocate - Relocates volume to a new stamp
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of the NetApp account
+//   - poolName - The name of the capacity pool
+//   - volumeName - The name of the volume
+//   - options - VolumesClientBeginRelocateOptions contains the optional parameters for the VolumesClient.BeginRelocate method.
+func (client *VolumesClient) BeginRelocate(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginRelocateOptions) (*runtime.Poller[VolumesClientRelocateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.relocate(ctx, resourceGroupName, accountName, poolName, volumeName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VolumesClientRelocateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VolumesClientRelocateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// relocate - Relocates volume to a new stamp
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *VolumesClient) relocate(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginRelocateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "VolumesClient.BeginRelocate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.relocateCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// relocateCreateRequest creates the relocate request.
+func (client *VolumesClient) relocateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginRelocateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/relocate"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if poolName == "" {
+		return nil, errors.New("parameter poolName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
+	if volumeName == "" {
+		return nil, errors.New("parameter volumeName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{volumeName}", url.PathEscape(volumeName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	if options != nil && options.Body != nil {
+		req.Raw().Header["Content-Type"] = []string{"application/json"}
+		if err := runtime.MarshalAsJSON(req, *options.Body); err != nil {
+			return nil, err
+		}
+		return req, nil
+	}
+	return req, nil
+}
+
+// BeginResetCifsPassword - Reset cifs password from volume
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of the NetApp account
+//   - poolName - The name of the capacity pool
+//   - volumeName - The name of the volume
+//   - options - VolumesClientBeginResetCifsPasswordOptions contains the optional parameters for the VolumesClient.BeginResetCifsPassword
+//     method.
+func (client *VolumesClient) BeginResetCifsPassword(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginResetCifsPasswordOptions) (*runtime.Poller[VolumesClientResetCifsPasswordResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.resetCifsPassword(ctx, resourceGroupName, accountName, poolName, volumeName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VolumesClientResetCifsPasswordResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VolumesClientResetCifsPasswordResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// resetCifsPassword - Reset cifs password from volume
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *VolumesClient) resetCifsPassword(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginResetCifsPasswordOptions) (*http.Response, error) {
+	var err error
+	const operationName = "VolumesClient.BeginResetCifsPassword"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.resetCifsPasswordCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// resetCifsPasswordCreateRequest creates the resetCifsPassword request.
+func (client *VolumesClient) resetCifsPasswordCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, _ *VolumesClientBeginResetCifsPasswordOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/resetCifsPassword"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if poolName == "" {
+		return nil, errors.New("parameter poolName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
+	if volumeName == "" {
+		return nil, errors.New("parameter volumeName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{volumeName}", url.PathEscape(volumeName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginResyncReplication - Resync the connection on the destination volume. If the operation is ran on the source volume
+// it will reverse-resync the connection and sync from destination to source.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of the NetApp account
+//   - poolName - The name of the capacity pool
+//   - volumeName - The name of the volume
+//   - options - VolumesClientBeginResyncReplicationOptions contains the optional parameters for the VolumesClient.BeginResyncReplication
+//     method.
+func (client *VolumesClient) BeginResyncReplication(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginResyncReplicationOptions) (*runtime.Poller[VolumesClientResyncReplicationResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.resyncReplication(ctx, resourceGroupName, accountName, poolName, volumeName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VolumesClientResyncReplicationResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VolumesClientResyncReplicationResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// resyncReplication - Resync the connection on the destination volume. If the operation is ran on the source volume it will
+// reverse-resync the connection and sync from destination to source.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *VolumesClient) resyncReplication(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginResyncReplicationOptions) (*http.Response, error) {
+	var err error
+	const operationName = "VolumesClient.BeginResyncReplication"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.resyncReplicationCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// resyncReplicationCreateRequest creates the resyncReplication request.
+func (client *VolumesClient) resyncReplicationCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, _ *VolumesClientBeginResyncReplicationOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/resyncReplication"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if poolName == "" {
+		return nil, errors.New("parameter poolName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
+	if volumeName == "" {
+		return nil, errors.New("parameter volumeName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{volumeName}", url.PathEscape(volumeName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginRevert - Revert a volume to the snapshot specified in the body
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of the NetApp account
+//   - poolName - The name of the capacity pool
+//   - volumeName - The name of the volume
+//   - body - Object for snapshot to revert supplied in the body of the operation.
+//   - options - VolumesClientBeginRevertOptions contains the optional parameters for the VolumesClient.BeginRevert method.
+func (client *VolumesClient) BeginRevert(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body VolumeRevert, options *VolumesClientBeginRevertOptions) (*runtime.Poller[VolumesClientRevertResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.revert(ctx, resourceGroupName, accountName, poolName, volumeName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VolumesClientRevertResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VolumesClientRevertResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// revert - Revert a volume to the snapshot specified in the body
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *VolumesClient) revert(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body VolumeRevert, options *VolumesClientBeginRevertOptions) (*http.Response, error) {
+	var err error
+	const operationName = "VolumesClient.BeginRevert"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.revertCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// revertCreateRequest creates the revert request.
+func (client *VolumesClient) revertCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body VolumeRevert, _ *VolumesClientBeginRevertOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/revert"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if poolName == "" {
+		return nil, errors.New("parameter poolName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
+	if volumeName == "" {
+		return nil, errors.New("parameter volumeName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{volumeName}", url.PathEscape(volumeName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginRevertRelocation - Reverts the volume relocation process, cleans up the new volume and starts using the former-existing
+// volume.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of the NetApp account
+//   - poolName - The name of the capacity pool
+//   - volumeName - The name of the volume
+//   - options - VolumesClientBeginRevertRelocationOptions contains the optional parameters for the VolumesClient.BeginRevertRelocation
+//     method.
+func (client *VolumesClient) BeginRevertRelocation(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginRevertRelocationOptions) (*runtime.Poller[VolumesClientRevertRelocationResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.revertRelocation(ctx, resourceGroupName, accountName, poolName, volumeName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VolumesClientRevertRelocationResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VolumesClientRevertRelocationResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// revertRelocation - Reverts the volume relocation process, cleans up the new volume and starts using the former-existing
+// volume.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *VolumesClient) revertRelocation(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginRevertRelocationOptions) (*http.Response, error) {
+	var err error
+	const operationName = "VolumesClient.BeginRevertRelocation"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.revertRelocationCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// revertRelocationCreateRequest creates the revertRelocation request.
+func (client *VolumesClient) revertRelocationCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, _ *VolumesClientBeginRevertRelocationOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/revertRelocation"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if poolName == "" {
+		return nil, errors.New("parameter poolName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
+	if volumeName == "" {
+		return nil, errors.New("parameter volumeName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{volumeName}", url.PathEscape(volumeName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginSplitCloneFromParent - Split operation to convert clone volume to an independent volume.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of the NetApp account
+//   - poolName - The name of the capacity pool
+//   - volumeName - The name of the volume
+//   - options - VolumesClientBeginSplitCloneFromParentOptions contains the optional parameters for the VolumesClient.BeginSplitCloneFromParent
+//     method.
+func (client *VolumesClient) BeginSplitCloneFromParent(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginSplitCloneFromParentOptions) (*runtime.Poller[VolumesClientSplitCloneFromParentResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.splitCloneFromParent(ctx, resourceGroupName, accountName, poolName, volumeName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VolumesClientSplitCloneFromParentResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VolumesClientSplitCloneFromParentResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// splitCloneFromParent - Split operation to convert clone volume to an independent volume.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *VolumesClient) splitCloneFromParent(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginSplitCloneFromParentOptions) (*http.Response, error) {
+	var err error
+	const operationName = "VolumesClient.BeginSplitCloneFromParent"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.splitCloneFromParentCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// splitCloneFromParentCreateRequest creates the splitCloneFromParent request.
+func (client *VolumesClient) splitCloneFromParentCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, _ *VolumesClientBeginSplitCloneFromParentOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/splitCloneFromParent"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if poolName == "" {
+		return nil, errors.New("parameter poolName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
+	if volumeName == "" {
+		return nil, errors.New("parameter volumeName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{volumeName}", url.PathEscape(volumeName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// BeginUpdate - Patch the specified volume
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of the NetApp account
+//   - poolName - The name of the capacity pool
+//   - volumeName - The name of the volume
+//   - body - Volume object supplied in the body of the operation.
+//   - options - VolumesClientBeginUpdateOptions contains the optional parameters for the VolumesClient.BeginUpdate method.
+func (client *VolumesClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body VolumePatch, options *VolumesClientBeginUpdateOptions) (*runtime.Poller[VolumesClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, accountName, poolName, volumeName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VolumesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VolumesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Patch the specified volume
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *VolumesClient) update(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body VolumePatch, options *VolumesClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "VolumesClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *VolumesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body VolumePatch, _ *VolumesClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if poolName == "" {
+		return nil, errors.New("parameter poolName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
+	if volumeName == "" {
+		return nil, errors.New("parameter volumeName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{volumeName}", url.PathEscape(volumeName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -824,7 +2082,7 @@ func (client *VolumesClient) Get(ctx context.Context, resourceGroupName string, 
 func (client *VolumesClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, _ *VolumesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -848,7 +2106,7 @@ func (client *VolumesClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
+	reqQP.Set("api-version", version20260801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -904,7 +2162,7 @@ func (client *VolumesClient) listCreateRequest(ctx context.Context, resourceGrou
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -928,7 +2186,7 @@ func (client *VolumesClient) listCreateRequest(ctx context.Context, resourceGrou
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260515Preview)
+		reqQP.Set("api-version", version20260801)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -945,182 +2203,6 @@ func (client *VolumesClient) listHandleResponse(resp *http.Response, successCode
 		return VolumesClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginListGetGroupIDListForLdapUser - Returns the list of group Ids for a specific LDAP User
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - accountName - The name of the NetApp account
-//   - poolName - The name of the capacity pool
-//   - volumeName - The name of the volume
-//   - body - Returns group Id list for a specific LDAP user
-//   - options - VolumesClientBeginListGetGroupIDListForLdapUserOptions contains the optional parameters for the VolumesClient.BeginListGetGroupIDListForLdapUser
-//     method.
-func (client *VolumesClient) BeginListGetGroupIDListForLdapUser(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body GetGroupIDListForLDAPUserRequest, options *VolumesClientBeginListGetGroupIDListForLdapUserOptions) (*runtime.Poller[VolumesClientListGetGroupIDListForLdapUserResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.listGetGroupIDListForLdapUser(ctx, resourceGroupName, accountName, poolName, volumeName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VolumesClientListGetGroupIDListForLdapUserResponse]{
-			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
-			Tracer:        client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VolumesClientListGetGroupIDListForLdapUserResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// ListGetGroupIDListForLdapUser - Returns the list of group Ids for a specific LDAP User
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *VolumesClient) listGetGroupIDListForLdapUser(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body GetGroupIDListForLDAPUserRequest, options *VolumesClientBeginListGetGroupIDListForLdapUserOptions) (*http.Response, error) {
-	var err error
-	const operationName = "VolumesClient.BeginListGetGroupIDListForLdapUser"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listGetGroupIDListForLdapUserCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// listGetGroupIDListForLdapUserCreateRequest creates the ListGetGroupIDListForLdapUser request.
-func (client *VolumesClient) listGetGroupIDListForLdapUserCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body GetGroupIDListForLDAPUserRequest, _ *VolumesClientBeginListGetGroupIDListForLdapUserOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/getGroupIdListForLdapUser"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if poolName == "" {
-		return nil, errors.New("parameter poolName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
-	if volumeName == "" {
-		return nil, errors.New("parameter volumeName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{volumeName}", url.PathEscape(volumeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginListQuotaReport - Get quota report for volume (with filter support)
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - accountName - The name of the NetApp account
-//   - poolName - The name of the capacity pool
-//   - volumeName - The name of the volume
-//   - options - VolumesClientBeginListQuotaReportOptions contains the optional parameters for the VolumesClient.BeginListQuotaReport
-//     method.
-func (client *VolumesClient) BeginListQuotaReport(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginListQuotaReportOptions) (*runtime.Poller[VolumesClientListQuotaReportResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.listQuotaReport(ctx, resourceGroupName, accountName, poolName, volumeName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VolumesClientListQuotaReportResponse]{
-			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
-			Tracer:        client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VolumesClientListQuotaReportResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// ListQuotaReport - Get quota report for volume (with filter support)
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *VolumesClient) listQuotaReport(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginListQuotaReportOptions) (*http.Response, error) {
-	var err error
-	const operationName = "VolumesClient.BeginListQuotaReport"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listQuotaReportCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// listQuotaReportCreateRequest creates the ListQuotaReport request.
-func (client *VolumesClient) listQuotaReportCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginListQuotaReportOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/listQuotaReport"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if poolName == "" {
-		return nil, errors.New("parameter poolName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
-	if volumeName == "" {
-		return nil, errors.New("parameter volumeName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{volumeName}", url.PathEscape(volumeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	if options != nil && options.Body != nil {
-		req.Raw().Header["Content-Type"] = []string{"application/json"}
-		if err := runtime.MarshalAsJSON(req, *options.Body); err != nil {
-			return nil, err
-		}
-		return req, nil
-	}
-	return req, nil
 }
 
 // NewListReplicationsPager - List all replications for a specified volume
@@ -1163,7 +2245,7 @@ func (client *VolumesClient) listReplicationsCreateRequest(ctx context.Context, 
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/listReplications"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -1191,7 +2273,7 @@ func (client *VolumesClient) listReplicationsCreateRequest(ctx context.Context, 
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260515Preview)
+		reqQP.Set("api-version", version20260801)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 		if options != nil && options.Body != nil {
@@ -1215,591 +2297,6 @@ func (client *VolumesClient) listReplicationsHandleResponse(resp *http.Response,
 		return VolumesClientListReplicationsResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginPeerExternalCluster - Starts peering the external cluster for this migration volume
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - accountName - The name of the NetApp account
-//   - poolName - The name of the capacity pool
-//   - volumeName - The name of the volume
-//   - body - Cluster peer request object supplied in the body of the operation.
-//   - options - VolumesClientBeginPeerExternalClusterOptions contains the optional parameters for the VolumesClient.BeginPeerExternalCluster
-//     method.
-func (client *VolumesClient) BeginPeerExternalCluster(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body PeerClusterForVolumeMigrationRequest, options *VolumesClientBeginPeerExternalClusterOptions) (*runtime.Poller[VolumesClientPeerExternalClusterResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.peerExternalCluster(ctx, resourceGroupName, accountName, poolName, volumeName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VolumesClientPeerExternalClusterResponse]{
-			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
-			Tracer:        client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VolumesClientPeerExternalClusterResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// PeerExternalCluster - Starts peering the external cluster for this migration volume
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *VolumesClient) peerExternalCluster(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body PeerClusterForVolumeMigrationRequest, options *VolumesClientBeginPeerExternalClusterOptions) (*http.Response, error) {
-	var err error
-	const operationName = "VolumesClient.BeginPeerExternalCluster"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.peerExternalClusterCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// peerExternalClusterCreateRequest creates the PeerExternalCluster request.
-func (client *VolumesClient) peerExternalClusterCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body PeerClusterForVolumeMigrationRequest, _ *VolumesClientBeginPeerExternalClusterOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/peerExternalCluster"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if poolName == "" {
-		return nil, errors.New("parameter poolName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
-	if volumeName == "" {
-		return nil, errors.New("parameter volumeName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{volumeName}", url.PathEscape(volumeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginPerformReplicationTransfer - Performs an adhoc replication transfer on a volume with volumeType Migration
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - accountName - The name of the NetApp account
-//   - poolName - The name of the capacity pool
-//   - volumeName - The name of the volume
-//   - options - VolumesClientBeginPerformReplicationTransferOptions contains the optional parameters for the VolumesClient.BeginPerformReplicationTransfer
-//     method.
-func (client *VolumesClient) BeginPerformReplicationTransfer(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginPerformReplicationTransferOptions) (*runtime.Poller[VolumesClientPerformReplicationTransferResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.performReplicationTransfer(ctx, resourceGroupName, accountName, poolName, volumeName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VolumesClientPerformReplicationTransferResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VolumesClientPerformReplicationTransferResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// PerformReplicationTransfer - Performs an adhoc replication transfer on a volume with volumeType Migration
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *VolumesClient) performReplicationTransfer(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginPerformReplicationTransferOptions) (*http.Response, error) {
-	var err error
-	const operationName = "VolumesClient.BeginPerformReplicationTransfer"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.performReplicationTransferCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// performReplicationTransferCreateRequest creates the PerformReplicationTransfer request.
-func (client *VolumesClient) performReplicationTransferCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, _ *VolumesClientBeginPerformReplicationTransferOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/performReplicationTransfer"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if poolName == "" {
-		return nil, errors.New("parameter poolName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
-	if volumeName == "" {
-		return nil, errors.New("parameter volumeName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{volumeName}", url.PathEscape(volumeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
-}
-
-// BeginPoolChange - Moves volume to another pool
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - accountName - The name of the NetApp account
-//   - poolName - The name of the capacity pool
-//   - volumeName - The name of the volume
-//   - body - Move volume to the pool supplied in the body of the operation.
-//   - options - VolumesClientBeginPoolChangeOptions contains the optional parameters for the VolumesClient.BeginPoolChange method.
-func (client *VolumesClient) BeginPoolChange(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body PoolChangeRequest, options *VolumesClientBeginPoolChangeOptions) (*runtime.Poller[VolumesClientPoolChangeResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.poolChange(ctx, resourceGroupName, accountName, poolName, volumeName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VolumesClientPoolChangeResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VolumesClientPoolChangeResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// PoolChange - Moves volume to another pool
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *VolumesClient) poolChange(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body PoolChangeRequest, options *VolumesClientBeginPoolChangeOptions) (*http.Response, error) {
-	var err error
-	const operationName = "VolumesClient.BeginPoolChange"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.poolChangeCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// poolChangeCreateRequest creates the PoolChange request.
-func (client *VolumesClient) poolChangeCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body PoolChangeRequest, _ *VolumesClientBeginPoolChangeOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/poolChange"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if poolName == "" {
-		return nil, errors.New("parameter poolName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
-	if volumeName == "" {
-		return nil, errors.New("parameter volumeName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{volumeName}", url.PathEscape(volumeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginPopulateAvailabilityZone - This operation will populate availability zone information for a volume
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - accountName - The name of the NetApp account
-//   - poolName - The name of the capacity pool
-//   - volumeName - The name of the volume
-//   - options - VolumesClientBeginPopulateAvailabilityZoneOptions contains the optional parameters for the VolumesClient.BeginPopulateAvailabilityZone
-//     method.
-func (client *VolumesClient) BeginPopulateAvailabilityZone(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginPopulateAvailabilityZoneOptions) (*runtime.Poller[VolumesClientPopulateAvailabilityZoneResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.populateAvailabilityZone(ctx, resourceGroupName, accountName, poolName, volumeName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VolumesClientPopulateAvailabilityZoneResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VolumesClientPopulateAvailabilityZoneResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// PopulateAvailabilityZone - This operation will populate availability zone information for a volume
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *VolumesClient) populateAvailabilityZone(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginPopulateAvailabilityZoneOptions) (*http.Response, error) {
-	var err error
-	const operationName = "VolumesClient.BeginPopulateAvailabilityZone"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.populateAvailabilityZoneCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// populateAvailabilityZoneCreateRequest creates the PopulateAvailabilityZone request.
-func (client *VolumesClient) populateAvailabilityZoneCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, _ *VolumesClientBeginPopulateAvailabilityZoneOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/populateAvailabilityZone"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if poolName == "" {
-		return nil, errors.New("parameter poolName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
-	if volumeName == "" {
-		return nil, errors.New("parameter volumeName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{volumeName}", url.PathEscape(volumeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// BeginReInitializeReplication - Re-Initializes the replication connection on the destination volume
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - accountName - The name of the NetApp account
-//   - poolName - The name of the capacity pool
-//   - volumeName - The name of the volume
-//   - options - VolumesClientBeginReInitializeReplicationOptions contains the optional parameters for the VolumesClient.BeginReInitializeReplication
-//     method.
-func (client *VolumesClient) BeginReInitializeReplication(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginReInitializeReplicationOptions) (*runtime.Poller[VolumesClientReInitializeReplicationResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.reInitializeReplication(ctx, resourceGroupName, accountName, poolName, volumeName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VolumesClientReInitializeReplicationResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VolumesClientReInitializeReplicationResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// ReInitializeReplication - Re-Initializes the replication connection on the destination volume
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *VolumesClient) reInitializeReplication(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginReInitializeReplicationOptions) (*http.Response, error) {
-	var err error
-	const operationName = "VolumesClient.BeginReInitializeReplication"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.reInitializeReplicationCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// reInitializeReplicationCreateRequest creates the ReInitializeReplication request.
-func (client *VolumesClient) reInitializeReplicationCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, _ *VolumesClientBeginReInitializeReplicationOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/reinitializeReplication"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if poolName == "" {
-		return nil, errors.New("parameter poolName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
-	if volumeName == "" {
-		return nil, errors.New("parameter volumeName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{volumeName}", url.PathEscape(volumeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
-}
-
-// BeginReestablishReplication - Re-establish a previously deleted replication between 2 volumes that have a common ad-hoc
-// or policy-based snapshots
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - accountName - The name of the NetApp account
-//   - poolName - The name of the capacity pool
-//   - volumeName - The name of the volume
-//   - body - body for the id of the source volume.
-//   - options - VolumesClientBeginReestablishReplicationOptions contains the optional parameters for the VolumesClient.BeginReestablishReplication
-//     method.
-func (client *VolumesClient) BeginReestablishReplication(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body ReestablishReplicationRequest, options *VolumesClientBeginReestablishReplicationOptions) (*runtime.Poller[VolumesClientReestablishReplicationResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.reestablishReplication(ctx, resourceGroupName, accountName, poolName, volumeName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VolumesClientReestablishReplicationResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VolumesClientReestablishReplicationResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// ReestablishReplication - Re-establish a previously deleted replication between 2 volumes that have a common ad-hoc or policy-based
-// snapshots
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *VolumesClient) reestablishReplication(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body ReestablishReplicationRequest, options *VolumesClientBeginReestablishReplicationOptions) (*http.Response, error) {
-	var err error
-	const operationName = "VolumesClient.BeginReestablishReplication"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.reestablishReplicationCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// reestablishReplicationCreateRequest creates the ReestablishReplication request.
-func (client *VolumesClient) reestablishReplicationCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body ReestablishReplicationRequest, _ *VolumesClientBeginReestablishReplicationOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/reestablishReplication"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if poolName == "" {
-		return nil, errors.New("parameter poolName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
-	if volumeName == "" {
-		return nil, errors.New("parameter volumeName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{volumeName}", url.PathEscape(volumeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginRelocate - Relocates volume to a new stamp
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - accountName - The name of the NetApp account
-//   - poolName - The name of the capacity pool
-//   - volumeName - The name of the volume
-//   - options - VolumesClientBeginRelocateOptions contains the optional parameters for the VolumesClient.BeginRelocate method.
-func (client *VolumesClient) BeginRelocate(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginRelocateOptions) (*runtime.Poller[VolumesClientRelocateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.relocate(ctx, resourceGroupName, accountName, poolName, volumeName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VolumesClientRelocateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VolumesClientRelocateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Relocate - Relocates volume to a new stamp
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *VolumesClient) relocate(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginRelocateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "VolumesClient.BeginRelocate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.relocateCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// relocateCreateRequest creates the Relocate request.
-func (client *VolumesClient) relocateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginRelocateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/relocate"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if poolName == "" {
-		return nil, errors.New("parameter poolName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
-	if volumeName == "" {
-		return nil, errors.New("parameter volumeName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{volumeName}", url.PathEscape(volumeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	if options != nil && options.Body != nil {
-		req.Raw().Header["Content-Type"] = []string{"application/json"}
-		if err := runtime.MarshalAsJSON(req, *options.Body); err != nil {
-			return nil, err
-		}
-		return req, nil
-	}
-	return req, nil
 }
 
 // ReplicationStatus - Get the status of the replication
@@ -1831,7 +2328,7 @@ func (client *VolumesClient) ReplicationStatus(ctx context.Context, resourceGrou
 func (client *VolumesClient) replicationStatusCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, _ *VolumesClientReplicationStatusOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/replicationStatus"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1855,7 +2352,7 @@ func (client *VolumesClient) replicationStatusCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
+	reqQP.Set("api-version", version20260801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1871,498 +2368,4 @@ func (client *VolumesClient) replicationStatusHandleResponse(resp *http.Response
 		return VolumesClientReplicationStatusResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginResetCifsPassword - Reset cifs password from volume
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - accountName - The name of the NetApp account
-//   - poolName - The name of the capacity pool
-//   - volumeName - The name of the volume
-//   - options - VolumesClientBeginResetCifsPasswordOptions contains the optional parameters for the VolumesClient.BeginResetCifsPassword
-//     method.
-func (client *VolumesClient) BeginResetCifsPassword(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginResetCifsPasswordOptions) (*runtime.Poller[VolumesClientResetCifsPasswordResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.resetCifsPassword(ctx, resourceGroupName, accountName, poolName, volumeName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VolumesClientResetCifsPasswordResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VolumesClientResetCifsPasswordResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// ResetCifsPassword - Reset cifs password from volume
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *VolumesClient) resetCifsPassword(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginResetCifsPasswordOptions) (*http.Response, error) {
-	var err error
-	const operationName = "VolumesClient.BeginResetCifsPassword"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.resetCifsPasswordCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// resetCifsPasswordCreateRequest creates the ResetCifsPassword request.
-func (client *VolumesClient) resetCifsPasswordCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, _ *VolumesClientBeginResetCifsPasswordOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/resetCifsPassword"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if poolName == "" {
-		return nil, errors.New("parameter poolName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
-	if volumeName == "" {
-		return nil, errors.New("parameter volumeName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{volumeName}", url.PathEscape(volumeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
-}
-
-// BeginResyncReplication - Resync the connection on the destination volume. If the operation is ran on the source volume
-// it will reverse-resync the connection and sync from destination to source.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - accountName - The name of the NetApp account
-//   - poolName - The name of the capacity pool
-//   - volumeName - The name of the volume
-//   - options - VolumesClientBeginResyncReplicationOptions contains the optional parameters for the VolumesClient.BeginResyncReplication
-//     method.
-func (client *VolumesClient) BeginResyncReplication(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginResyncReplicationOptions) (*runtime.Poller[VolumesClientResyncReplicationResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.resyncReplication(ctx, resourceGroupName, accountName, poolName, volumeName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VolumesClientResyncReplicationResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VolumesClientResyncReplicationResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// ResyncReplication - Resync the connection on the destination volume. If the operation is ran on the source volume it will
-// reverse-resync the connection and sync from destination to source.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *VolumesClient) resyncReplication(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginResyncReplicationOptions) (*http.Response, error) {
-	var err error
-	const operationName = "VolumesClient.BeginResyncReplication"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.resyncReplicationCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// resyncReplicationCreateRequest creates the ResyncReplication request.
-func (client *VolumesClient) resyncReplicationCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, _ *VolumesClientBeginResyncReplicationOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/resyncReplication"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if poolName == "" {
-		return nil, errors.New("parameter poolName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
-	if volumeName == "" {
-		return nil, errors.New("parameter volumeName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{volumeName}", url.PathEscape(volumeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
-}
-
-// BeginRevert - Revert a volume to the snapshot specified in the body
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - accountName - The name of the NetApp account
-//   - poolName - The name of the capacity pool
-//   - volumeName - The name of the volume
-//   - body - Object for snapshot to revert supplied in the body of the operation.
-//   - options - VolumesClientBeginRevertOptions contains the optional parameters for the VolumesClient.BeginRevert method.
-func (client *VolumesClient) BeginRevert(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body VolumeRevert, options *VolumesClientBeginRevertOptions) (*runtime.Poller[VolumesClientRevertResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.revert(ctx, resourceGroupName, accountName, poolName, volumeName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VolumesClientRevertResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VolumesClientRevertResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Revert - Revert a volume to the snapshot specified in the body
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *VolumesClient) revert(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body VolumeRevert, options *VolumesClientBeginRevertOptions) (*http.Response, error) {
-	var err error
-	const operationName = "VolumesClient.BeginRevert"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.revertCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// revertCreateRequest creates the Revert request.
-func (client *VolumesClient) revertCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body VolumeRevert, _ *VolumesClientBeginRevertOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/revert"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if poolName == "" {
-		return nil, errors.New("parameter poolName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
-	if volumeName == "" {
-		return nil, errors.New("parameter volumeName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{volumeName}", url.PathEscape(volumeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginRevertRelocation - Reverts the volume relocation process, cleans up the new volume and starts using the former-existing
-// volume.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - accountName - The name of the NetApp account
-//   - poolName - The name of the capacity pool
-//   - volumeName - The name of the volume
-//   - options - VolumesClientBeginRevertRelocationOptions contains the optional parameters for the VolumesClient.BeginRevertRelocation
-//     method.
-func (client *VolumesClient) BeginRevertRelocation(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginRevertRelocationOptions) (*runtime.Poller[VolumesClientRevertRelocationResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.revertRelocation(ctx, resourceGroupName, accountName, poolName, volumeName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VolumesClientRevertRelocationResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VolumesClientRevertRelocationResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// RevertRelocation - Reverts the volume relocation process, cleans up the new volume and starts using the former-existing
-// volume.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *VolumesClient) revertRelocation(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginRevertRelocationOptions) (*http.Response, error) {
-	var err error
-	const operationName = "VolumesClient.BeginRevertRelocation"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.revertRelocationCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// revertRelocationCreateRequest creates the RevertRelocation request.
-func (client *VolumesClient) revertRelocationCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, _ *VolumesClientBeginRevertRelocationOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/revertRelocation"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if poolName == "" {
-		return nil, errors.New("parameter poolName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
-	if volumeName == "" {
-		return nil, errors.New("parameter volumeName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{volumeName}", url.PathEscape(volumeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
-}
-
-// BeginSplitCloneFromParent - Split operation to convert clone volume to an independent volume.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - accountName - The name of the NetApp account
-//   - poolName - The name of the capacity pool
-//   - volumeName - The name of the volume
-//   - options - VolumesClientBeginSplitCloneFromParentOptions contains the optional parameters for the VolumesClient.BeginSplitCloneFromParent
-//     method.
-func (client *VolumesClient) BeginSplitCloneFromParent(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginSplitCloneFromParentOptions) (*runtime.Poller[VolumesClientSplitCloneFromParentResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.splitCloneFromParent(ctx, resourceGroupName, accountName, poolName, volumeName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VolumesClientSplitCloneFromParentResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VolumesClientSplitCloneFromParentResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// SplitCloneFromParent - Split operation to convert clone volume to an independent volume.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *VolumesClient) splitCloneFromParent(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginSplitCloneFromParentOptions) (*http.Response, error) {
-	var err error
-	const operationName = "VolumesClient.BeginSplitCloneFromParent"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.splitCloneFromParentCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// splitCloneFromParentCreateRequest creates the SplitCloneFromParent request.
-func (client *VolumesClient) splitCloneFromParentCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, _ *VolumesClientBeginSplitCloneFromParentOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/splitCloneFromParent"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if poolName == "" {
-		return nil, errors.New("parameter poolName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
-	if volumeName == "" {
-		return nil, errors.New("parameter volumeName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{volumeName}", url.PathEscape(volumeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// BeginUpdate - Patch the specified volume
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - accountName - The name of the NetApp account
-//   - poolName - The name of the capacity pool
-//   - volumeName - The name of the volume
-//   - body - Volume object supplied in the body of the operation.
-//   - options - VolumesClientBeginUpdateOptions contains the optional parameters for the VolumesClient.BeginUpdate method.
-func (client *VolumesClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body VolumePatch, options *VolumesClientBeginUpdateOptions) (*runtime.Poller[VolumesClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, accountName, poolName, volumeName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VolumesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VolumesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Patch the specified volume
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *VolumesClient) update(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body VolumePatch, options *VolumesClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "VolumesClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *VolumesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body VolumePatch, _ *VolumesClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if poolName == "" {
-		return nil, errors.New("parameter poolName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
-	if volumeName == "" {
-		return nil, errors.New("parameter volumeName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{volumeName}", url.PathEscape(volumeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

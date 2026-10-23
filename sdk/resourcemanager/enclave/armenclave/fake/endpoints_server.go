@@ -142,7 +142,7 @@ func (e *EndpointsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request
 	}
 	beginCreateOrUpdate := e.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Mission/virtualEnclaves/(?P<virtualEnclaveName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/enclaveEndpoints/(?P<enclaveEndpointName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Mission/virtualEnclaves/(?P<virtualEnclaveName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/enclaveEndpoints/(?P<enclaveEndpointName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -194,7 +194,7 @@ func (e *EndpointsServerTransport) dispatchBeginDelete(req *http.Request) (*http
 	}
 	beginDelete := e.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Mission/virtualEnclaves/(?P<virtualEnclaveName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/enclaveEndpoints/(?P<enclaveEndpointName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Mission/virtualEnclaves/(?P<virtualEnclaveName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/enclaveEndpoints/(?P<enclaveEndpointName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -240,7 +240,7 @@ func (e *EndpointsServerTransport) dispatchGet(req *http.Request) (*http.Respons
 	if e.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Mission/virtualEnclaves/(?P<virtualEnclaveName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/enclaveEndpoints/(?P<enclaveEndpointName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Mission/virtualEnclaves/(?P<virtualEnclaveName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/enclaveEndpoints/(?P<enclaveEndpointName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -279,7 +279,7 @@ func (e *EndpointsServerTransport) dispatchBeginHandleApprovalCreation(req *http
 	}
 	beginHandleApprovalCreation := e.beginHandleApprovalCreation.get(req)
 	if beginHandleApprovalCreation == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Mission/virtualEnclaves/(?P<virtualEnclaveName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/enclaveEndpoints/(?P<enclaveEndpointName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/handleApprovalCreation`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Mission/virtualEnclaves/(?P<virtualEnclaveName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/enclaveEndpoints/(?P<enclaveEndpointName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/handleApprovalCreation`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -331,7 +331,7 @@ func (e *EndpointsServerTransport) dispatchBeginHandleApprovalDeletion(req *http
 	}
 	beginHandleApprovalDeletion := e.beginHandleApprovalDeletion.get(req)
 	if beginHandleApprovalDeletion == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Mission/virtualEnclaves/(?P<virtualEnclaveName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/enclaveEndpoints/(?P<enclaveEndpointName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/handleApprovalDeletion`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Mission/virtualEnclaves/(?P<virtualEnclaveName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/enclaveEndpoints/(?P<enclaveEndpointName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/handleApprovalDeletion`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -383,7 +383,7 @@ func (e *EndpointsServerTransport) dispatchNewListByEnclaveResourcePager(req *ht
 	}
 	newListByEnclaveResourcePager := e.newListByEnclaveResourcePager.get(req)
 	if newListByEnclaveResourcePager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Mission/virtualEnclaves/(?P<virtualEnclaveName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/enclaveEndpoints`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Mission/virtualEnclaves/(?P<virtualEnclaveName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/enclaveEndpoints`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -424,7 +424,7 @@ func (e *EndpointsServerTransport) dispatchNewListBySubscriptionPager(req *http.
 	}
 	newListBySubscriptionPager := e.newListBySubscriptionPager.get(req)
 	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Mission/virtualEnclaves/(?P<virtualEnclaveName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/enclaveEndpoints`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Mission/virtualEnclaves/(?P<virtualEnclaveName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/enclaveEndpoints`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -461,7 +461,7 @@ func (e *EndpointsServerTransport) dispatchBeginUpdate(req *http.Request) (*http
 	}
 	beginUpdate := e.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Mission/virtualEnclaves/(?P<virtualEnclaveName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/enclaveEndpoints/(?P<enclaveEndpointName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Mission/virtualEnclaves/(?P<virtualEnclaveName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/enclaveEndpoints/(?P<enclaveEndpointName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {

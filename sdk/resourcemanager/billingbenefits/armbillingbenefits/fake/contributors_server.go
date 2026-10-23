@@ -100,7 +100,7 @@ func (c *ContributorsServerTransport) dispatchGetFromPrimary(req *http.Request) 
 	if c.srv.GetFromPrimary == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetFromPrimary not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.BillingBenefits/maccs/(?P<maccName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/contributors/(?P<contributorName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.BillingBenefits/maccs/(?P<maccName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/contributors/(?P<contributorName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -139,7 +139,7 @@ func (c *ContributorsServerTransport) dispatchNewListFromApplicableMaccPager(req
 	}
 	newListFromApplicableMaccPager := c.newListFromApplicableMaccPager.get(req)
 	if newListFromApplicableMaccPager == nil {
-		const regexStr = `/providers/microsoft\.Billing/billingAccounts/(?P<billingAccountId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.BillingBenefits/applicableMaccs/(?P<systemId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/microsoft\.BillingBenefits/applicableContributors`
+		const regexStr = `/providers/microsoft\.Billing/billingAccounts/(?P<billingAccountId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.BillingBenefits/applicableMaccs/(?P<systemId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/microsoft\.BillingBenefits/applicableContributors`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -180,7 +180,7 @@ func (c *ContributorsServerTransport) dispatchNewListFromPrimaryPager(req *http.
 	}
 	newListFromPrimaryPager := c.newListFromPrimaryPager.get(req)
 	if newListFromPrimaryPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.BillingBenefits/maccs/(?P<maccName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/contributors`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.BillingBenefits/maccs/(?P<maccName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/contributors`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {

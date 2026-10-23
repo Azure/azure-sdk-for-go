@@ -11,7 +11,7 @@ import (
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elasticsan/armelasticsan"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elasticsan/armelasticsan/v2"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -81,7 +81,7 @@ func (p *PrivateLinkResourcesServerTransport) dispatchListByElasticSan(req *http
 	if p.srv.ListByElasticSan == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListByElasticSan not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ElasticSan/elasticSans/(?P<elasticSanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateLinkResources`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ElasticSan/elasticSans/(?P<elasticSanName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/privateLinkResources`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {

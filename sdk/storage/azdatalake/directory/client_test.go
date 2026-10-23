@@ -5,8 +5,10 @@ package directory_test
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"strconv"
+	"strings"
 	"testing"
 	"time"
 
@@ -1260,7 +1262,8 @@ func (s *RecordedTestSuite) TestDirSetAccessControlIfUnmodifiedSinceTrue() {
 			ModifiedAccessConditions: &directory.ModifiedAccessConditions{
 				IfUnmodifiedSince: &currentTime,
 			},
-		}}
+		},
+	}
 
 	_, err = dirClient.SetAccessControl(context.Background(), opts)
 	_require.NoError(err)
@@ -1379,7 +1382,8 @@ func (s *RecordedTestSuite) TestDirSetAccessControlIfETagMatchFalse() {
 			ModifiedAccessConditions: &directory.ModifiedAccessConditions{
 				IfNoneMatch: etag,
 			},
-		}}
+		},
+	}
 
 	_, err = dirClient.SetAccessControl(context.Background(), opts)
 	_require.Error(err)
@@ -1766,7 +1770,8 @@ func (s *RecordedTestSuite) TestDirGetAccessControlIfUnmodifiedSinceTrue() {
 			ModifiedAccessConditions: &directory.ModifiedAccessConditions{
 				IfUnmodifiedSince: &currentTime,
 			},
-		}}
+		},
+	}
 
 	getACLResp, err := dirClient.GetAccessControl(context.Background(), opts)
 	_require.NoError(err)
@@ -1881,7 +1886,8 @@ func (s *RecordedTestSuite) TestDirGetAccessControlIfETagMatchFalse() {
 			ModifiedAccessConditions: &directory.ModifiedAccessConditions{
 				IfNoneMatch: etag,
 			},
-		}}
+		},
+	}
 
 	_, err = dirClient.GetAccessControl(context.Background(), opts)
 	_require.Error(err)
@@ -3918,4 +3924,28 @@ func (s *UnrecordedTestSuite) TestDirGetSetTagsFileSystemIdentitySas() {
 	}
 	_require.Equal(tags["tagKey0"], tagMap["tagKey0"])
 	_require.Equal(tags["tagKey1"], tagMap["tagKey1"])
+}
+
+// TestDirectoryGetSASURLPreservesCustomQueryParams is a regression test for GetSASURL()
+// appending a duplicated "?" to the resulting URL when the client's underlying blob URL
+// already contained a query string (e.g. a customer-provided endpoint with pre-existing
+// custom query parameters), which previously produced a malformed SAS URL.
+func TestDirectoryGetSASURLPreservesCustomQueryParams(t *testing.T) {
+	_require := require.New(t)
+	const accountName = "fakestorageaccount"
+	// base64-encoded fake key; not a real secret.
+	const accountKey = "PSA7dl59RwZBFEBhBEtdrsq/g7VpjMFeSPzdC4SoBiQI3xVLg2y8HRoAF3PidfB8/i9v67QCNSAdVdJdKrmqSw=="
+	cred, err := azdatalake.NewSharedKeyCredential(accountName, accountKey)
+	_require.NoError(err)
+
+	dirURL := fmt.Sprintf("https://%s.dfs.core.windows.net/filesystem/dir?customparam=value", accountName)
+	dirClient, err := directory.NewClientWithSharedKeyCredential(dirURL, cred, nil)
+	_require.NoError(err)
+
+	sasURL, err := dirClient.GetSASURL(sas.DirectoryPermissions{Read: true}, time.Now().Add(time.Hour), nil)
+	_require.NoError(err)
+
+	_require.Equal(1, strings.Count(sasURL, "?"), "SAS URL must not contain a duplicated '?': %s", sasURL)
+	_require.Contains(sasURL, "customparam=value")
+	_require.Contains(sasURL, "sig=")
 }

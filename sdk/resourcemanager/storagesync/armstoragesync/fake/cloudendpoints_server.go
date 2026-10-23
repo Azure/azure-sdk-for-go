@@ -168,7 +168,7 @@ func (c *CloudEndpointsServerTransport) dispatchAfsShareMetadataCertificatePubli
 	if c.srv.AfsShareMetadataCertificatePublicKeys == nil {
 		return nil, &nonRetriableError{errors.New("fake for method AfsShareMetadataCertificatePublicKeys not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.StorageSync/storageSyncServices/(?P<storageSyncServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/syncGroups/(?P<syncGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cloudEndpoints/(?P<cloudEndpointName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/afsShareMetadataCertificatePublicKeys`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.StorageSync/storageSyncServices/(?P<storageSyncServiceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/syncGroups/(?P<syncGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/cloudEndpoints/(?P<cloudEndpointName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/afsShareMetadataCertificatePublicKeys`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -217,7 +217,7 @@ func (c *CloudEndpointsServerTransport) dispatchBeginCreate(req *http.Request) (
 	}
 	beginCreate := c.beginCreate.get(req)
 	if beginCreate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.StorageSync/storageSyncServices/(?P<storageSyncServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/syncGroups/(?P<syncGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cloudEndpoints/(?P<cloudEndpointName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.StorageSync/storageSyncServices/(?P<storageSyncServiceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/syncGroups/(?P<syncGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/cloudEndpoints/(?P<cloudEndpointName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -273,7 +273,7 @@ func (c *CloudEndpointsServerTransport) dispatchBeginDelete(req *http.Request) (
 	}
 	beginDelete := c.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.StorageSync/storageSyncServices/(?P<storageSyncServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/syncGroups/(?P<syncGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cloudEndpoints/(?P<cloudEndpointName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.StorageSync/storageSyncServices/(?P<storageSyncServiceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/syncGroups/(?P<syncGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/cloudEndpoints/(?P<cloudEndpointName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -323,7 +323,7 @@ func (c *CloudEndpointsServerTransport) dispatchGet(req *http.Request) (*http.Re
 	if c.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.StorageSync/storageSyncServices/(?P<storageSyncServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/syncGroups/(?P<syncGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cloudEndpoints/(?P<cloudEndpointName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.StorageSync/storageSyncServices/(?P<storageSyncServiceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/syncGroups/(?P<syncGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/cloudEndpoints/(?P<cloudEndpointName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -372,7 +372,7 @@ func (c *CloudEndpointsServerTransport) dispatchNewListBySyncGroupPager(req *htt
 	}
 	newListBySyncGroupPager := c.newListBySyncGroupPager.get(req)
 	if newListBySyncGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.StorageSync/storageSyncServices/(?P<storageSyncServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/syncGroups/(?P<syncGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cloudEndpoints`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.StorageSync/storageSyncServices/(?P<storageSyncServiceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/syncGroups/(?P<syncGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/cloudEndpoints`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -417,7 +417,7 @@ func (c *CloudEndpointsServerTransport) dispatchBeginPostBackup(req *http.Reques
 	}
 	beginPostBackup := c.beginPostBackup.get(req)
 	if beginPostBackup == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.StorageSync/storageSyncServices/(?P<storageSyncServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/syncGroups/(?P<syncGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cloudEndpoints/(?P<cloudEndpointName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/postbackup`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.StorageSync/storageSyncServices/(?P<storageSyncServiceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/syncGroups/(?P<syncGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/cloudEndpoints/(?P<cloudEndpointName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/postbackup`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -473,7 +473,7 @@ func (c *CloudEndpointsServerTransport) dispatchBeginPostRestore(req *http.Reque
 	}
 	beginPostRestore := c.beginPostRestore.get(req)
 	if beginPostRestore == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.StorageSync/storageSyncServices/(?P<storageSyncServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/syncGroups/(?P<syncGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cloudEndpoints/(?P<cloudEndpointName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/postrestore`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.StorageSync/storageSyncServices/(?P<storageSyncServiceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/syncGroups/(?P<syncGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/cloudEndpoints/(?P<cloudEndpointName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/postrestore`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -529,7 +529,7 @@ func (c *CloudEndpointsServerTransport) dispatchBeginPreBackup(req *http.Request
 	}
 	beginPreBackup := c.beginPreBackup.get(req)
 	if beginPreBackup == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.StorageSync/storageSyncServices/(?P<storageSyncServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/syncGroups/(?P<syncGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cloudEndpoints/(?P<cloudEndpointName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/prebackup`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.StorageSync/storageSyncServices/(?P<storageSyncServiceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/syncGroups/(?P<syncGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/cloudEndpoints/(?P<cloudEndpointName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/prebackup`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -585,7 +585,7 @@ func (c *CloudEndpointsServerTransport) dispatchBeginPreRestore(req *http.Reques
 	}
 	beginPreRestore := c.beginPreRestore.get(req)
 	if beginPreRestore == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.StorageSync/storageSyncServices/(?P<storageSyncServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/syncGroups/(?P<syncGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cloudEndpoints/(?P<cloudEndpointName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/prerestore`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.StorageSync/storageSyncServices/(?P<storageSyncServiceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/syncGroups/(?P<syncGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/cloudEndpoints/(?P<cloudEndpointName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/prerestore`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -639,7 +639,7 @@ func (c *CloudEndpointsServerTransport) dispatchRestoreheartbeat(req *http.Reque
 	if c.srv.Restoreheartbeat == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Restoreheartbeat not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.StorageSync/storageSyncServices/(?P<storageSyncServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/syncGroups/(?P<syncGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cloudEndpoints/(?P<cloudEndpointName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/restoreheartbeat`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.StorageSync/storageSyncServices/(?P<storageSyncServiceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/syncGroups/(?P<syncGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/cloudEndpoints/(?P<cloudEndpointName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/restoreheartbeat`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -688,7 +688,7 @@ func (c *CloudEndpointsServerTransport) dispatchBeginTriggerChangeDetection(req 
 	}
 	beginTriggerChangeDetection := c.beginTriggerChangeDetection.get(req)
 	if beginTriggerChangeDetection == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.StorageSync/storageSyncServices/(?P<storageSyncServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/syncGroups/(?P<syncGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cloudEndpoints/(?P<cloudEndpointName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/triggerChangeDetection`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.StorageSync/storageSyncServices/(?P<storageSyncServiceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/syncGroups/(?P<syncGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/cloudEndpoints/(?P<cloudEndpointName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/triggerChangeDetection`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -744,7 +744,7 @@ func (c *CloudEndpointsServerTransport) dispatchBeginUpdate(req *http.Request) (
 	}
 	beginUpdate := c.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.StorageSync/storageSyncServices/(?P<storageSyncServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/syncGroups/(?P<syncGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cloudEndpoints/(?P<cloudEndpointName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.StorageSync/storageSyncServices/(?P<storageSyncServiceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/syncGroups/(?P<syncGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/cloudEndpoints/(?P<cloudEndpointName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {

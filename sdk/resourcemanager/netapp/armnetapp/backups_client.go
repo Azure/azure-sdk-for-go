@@ -19,7 +19,7 @@ import (
 // BackupsClient contains the methods for the Backups group.
 // Don't use this type directly, use NewBackupsClient() instead.
 //
-// Generated from API version 2026-05-15-preview
+// Generated from API version 2026-08-01
 type BackupsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type BackupsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewBackupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BackupsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -66,7 +69,7 @@ func (client *BackupsClient) BeginCreate(ctx context.Context, resourceGroupName 
 	}
 }
 
-// Create - Create a backup under the Backup Vault
+// create - Create a backup under the Backup Vault
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *BackupsClient) create(ctx context.Context, resourceGroupName string, accountName string, backupVaultName string, backupName string, body Backup, options *BackupsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
@@ -88,11 +91,11 @@ func (client *BackupsClient) create(ctx context.Context, resourceGroupName strin
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *BackupsClient) createCreateRequest(ctx context.Context, resourceGroupName string, accountName string, backupVaultName string, backupName string, body Backup, _ *BackupsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/backupVaults/{backupVaultName}/backups/{backupName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -116,7 +119,7 @@ func (client *BackupsClient) createCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
+	reqQP.Set("api-version", version20260801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -150,7 +153,7 @@ func (client *BackupsClient) BeginDelete(ctx context.Context, resourceGroupName 
 	}
 }
 
-// Delete - Delete a Backup under the Backup Vault
+// deleteOperation - Delete a Backup under the Backup Vault
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *BackupsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, backupVaultName string, backupName string, options *BackupsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -172,11 +175,11 @@ func (client *BackupsClient) deleteOperation(ctx context.Context, resourceGroupN
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *BackupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, backupVaultName string, backupName string, _ *BackupsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/backupVaults/{backupVaultName}/backups/{backupName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -200,8 +203,93 @@ func (client *BackupsClient) deleteCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
+	reqQP.Set("api-version", version20260801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - Patch a Backup under the Backup Vault
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of the NetApp account
+//   - backupVaultName - The name of the Backup Vault
+//   - backupName - The name of the backup
+//   - body - Backup object supplied in the body of the operation.
+//   - options - BackupsClientBeginUpdateOptions contains the optional parameters for the BackupsClient.BeginUpdate method.
+func (client *BackupsClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, backupVaultName string, backupName string, body BackupPatch, options *BackupsClientBeginUpdateOptions) (*runtime.Poller[BackupsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, accountName, backupVaultName, backupName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[BackupsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[BackupsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Patch a Backup under the Backup Vault
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *BackupsClient) update(ctx context.Context, resourceGroupName string, accountName string, backupVaultName string, backupName string, body BackupPatch, options *BackupsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "BackupsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, backupVaultName, backupName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *BackupsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, backupVaultName string, backupName string, body BackupPatch, _ *BackupsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/backupVaults/{backupVaultName}/backups/{backupName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if backupVaultName == "" {
+		return nil, errors.New("parameter backupVaultName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{backupVaultName}", url.PathEscape(backupVaultName))
+	if backupName == "" {
+		return nil, errors.New("parameter backupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{backupName}", url.PathEscape(backupName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -233,7 +321,7 @@ func (client *BackupsClient) Get(ctx context.Context, resourceGroupName string, 
 func (client *BackupsClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, backupVaultName string, backupName string, _ *BackupsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/backupVaults/{backupVaultName}/backups/{backupName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -257,7 +345,7 @@ func (client *BackupsClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
+	reqQP.Set("api-version", version20260801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -303,7 +391,7 @@ func (client *BackupsClient) GetLatestStatus(ctx context.Context, resourceGroupN
 func (client *BackupsClient) getLatestStatusCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, _ *BackupsClientGetLatestStatusOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/latestBackupStatus/current"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -327,7 +415,7 @@ func (client *BackupsClient) getLatestStatusCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
+	reqQP.Set("api-version", version20260801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -374,7 +462,7 @@ func (client *BackupsClient) GetVolumeLatestRestoreStatus(ctx context.Context, r
 func (client *BackupsClient) getVolumeLatestRestoreStatusCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, _ *BackupsClientGetVolumeLatestRestoreStatusOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/latestRestoreStatus/current"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -398,7 +486,7 @@ func (client *BackupsClient) getVolumeLatestRestoreStatusCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
+	reqQP.Set("api-version", version20260801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -454,7 +542,7 @@ func (client *BackupsClient) listByVaultCreateRequest(ctx context.Context, resou
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/backupVaults/{backupVaultName}/backups"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -481,7 +569,7 @@ func (client *BackupsClient) listByVaultCreateRequest(ctx context.Context, resou
 		if options != nil && options.Filter != nil {
 			reqQP.Set("$filter", *options.Filter)
 		}
-		reqQP.Set("api-version", version20260515Preview)
+		reqQP.Set("api-version", version20260801)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -498,89 +586,4 @@ func (client *BackupsClient) listByVaultHandleResponse(resp *http.Response, succ
 		return BackupsClientListByVaultResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Patch a Backup under the Backup Vault
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - accountName - The name of the NetApp account
-//   - backupVaultName - The name of the Backup Vault
-//   - backupName - The name of the backup
-//   - body - Backup object supplied in the body of the operation.
-//   - options - BackupsClientBeginUpdateOptions contains the optional parameters for the BackupsClient.BeginUpdate method.
-func (client *BackupsClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, backupVaultName string, backupName string, body BackupPatch, options *BackupsClientBeginUpdateOptions) (*runtime.Poller[BackupsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, accountName, backupVaultName, backupName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[BackupsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[BackupsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Patch a Backup under the Backup Vault
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *BackupsClient) update(ctx context.Context, resourceGroupName string, accountName string, backupVaultName string, backupName string, body BackupPatch, options *BackupsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "BackupsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, backupVaultName, backupName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *BackupsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, backupVaultName string, backupName string, body BackupPatch, _ *BackupsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/backupVaults/{backupVaultName}/backups/{backupName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if backupVaultName == "" {
-		return nil, errors.New("parameter backupVaultName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{backupVaultName}", url.PathEscape(backupVaultName))
-	if backupName == "" {
-		return nil, errors.New("parameter backupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{backupName}", url.PathEscape(backupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

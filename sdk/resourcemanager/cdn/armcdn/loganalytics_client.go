@@ -33,6 +33,9 @@ type LogAnalyticsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewLogAnalyticsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LogAnalyticsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -72,7 +75,7 @@ func (client *LogAnalyticsClient) GetLogAnalyticsLocations(ctx context.Context, 
 func (client *LogAnalyticsClient) getLogAnalyticsLocationsCreateRequest(ctx context.Context, resourceGroupName string, profileName string, _ *LogAnalyticsClientGetLogAnalyticsLocationsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/getLogAnalyticsLocations"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -134,7 +137,7 @@ func (client *LogAnalyticsClient) GetLogAnalyticsMetrics(ctx context.Context, re
 func (client *LogAnalyticsClient) getLogAnalyticsMetricsCreateRequest(ctx context.Context, resourceGroupName string, profileName string, metrics []LogMetric, dateTimeBegin time.Time, dateTimeEnd time.Time, granularity LogMetricsGranularity, customDomains []string, protocols []string, options *LogAnalyticsClientGetLogAnalyticsMetricsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/getLogAnalyticsMetrics"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -223,7 +226,7 @@ func (client *LogAnalyticsClient) GetLogAnalyticsRankings(ctx context.Context, r
 func (client *LogAnalyticsClient) getLogAnalyticsRankingsCreateRequest(ctx context.Context, resourceGroupName string, profileName string, rankings []LogRanking, metrics []LogRankingMetric, maxRanking int32, dateTimeBegin time.Time, dateTimeEnd time.Time, options *LogAnalyticsClientGetLogAnalyticsRankingsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/getLogAnalyticsRankings"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -299,7 +302,7 @@ func (client *LogAnalyticsClient) GetLogAnalyticsResources(ctx context.Context, 
 func (client *LogAnalyticsClient) getLogAnalyticsResourcesCreateRequest(ctx context.Context, resourceGroupName string, profileName string, _ *LogAnalyticsClientGetLogAnalyticsResourcesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/getLogAnalyticsResources"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -361,7 +364,7 @@ func (client *LogAnalyticsClient) GetWafLogAnalyticsMetrics(ctx context.Context,
 func (client *LogAnalyticsClient) getWafLogAnalyticsMetricsCreateRequest(ctx context.Context, resourceGroupName string, profileName string, metrics []WafMetric, dateTimeBegin time.Time, dateTimeEnd time.Time, granularity WafGranularity, options *LogAnalyticsClientGetWafLogAnalyticsMetricsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/getWafLogAnalyticsMetrics"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -444,7 +447,7 @@ func (client *LogAnalyticsClient) GetWafLogAnalyticsRankings(ctx context.Context
 func (client *LogAnalyticsClient) getWafLogAnalyticsRankingsCreateRequest(ctx context.Context, resourceGroupName string, profileName string, metrics []WafMetric, dateTimeBegin time.Time, dateTimeEnd time.Time, maxRanking int32, rankings []WafRankingType, options *LogAnalyticsClientGetWafLogAnalyticsRankingsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/getWafLogAnalyticsRankings"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {

@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v12"
 	"net/http"
 	"net/url"
 	"reflect"
@@ -42,21 +42,9 @@ type VirtualAppliancesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginExecuteMigration func(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, body armnetwork.VirtualApplianceExecuteMigrationRequest, options *armnetwork.VirtualAppliancesClientBeginExecuteMigrationOptions) (resp azfake.PollerResponder[armnetwork.VirtualAppliancesClientExecuteMigrationResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method VirtualAppliancesClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, options *armnetwork.VirtualAppliancesClientGetOptions) (resp azfake.Responder[armnetwork.VirtualAppliancesClientGetResponse], errResp azfake.ErrorResponder)
-
 	// BeginGetBootDiagnosticLogs is the fake for method VirtualAppliancesClient.BeginGetBootDiagnosticLogs
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginGetBootDiagnosticLogs func(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, request armnetwork.VirtualApplianceBootDiagnosticParameters, options *armnetwork.VirtualAppliancesClientBeginGetBootDiagnosticLogsOptions) (resp azfake.PollerResponder[armnetwork.VirtualAppliancesClientGetBootDiagnosticLogsResponse], errResp azfake.ErrorResponder)
-
-	// NewListPager is the fake for method VirtualAppliancesClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armnetwork.VirtualAppliancesClientListOptions) (resp azfake.PagerResponder[armnetwork.VirtualAppliancesClientListResponse])
-
-	// NewListByResourceGroupPager is the fake for method VirtualAppliancesClient.NewListByResourceGroupPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupPager func(resourceGroupName string, options *armnetwork.VirtualAppliancesClientListByResourceGroupOptions) (resp azfake.PagerResponder[armnetwork.VirtualAppliancesClientListByResourceGroupResponse])
 
 	// BeginPrepareMigration is the fake for method VirtualAppliancesClient.BeginPrepareMigration
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
@@ -69,6 +57,18 @@ type VirtualAppliancesServer struct {
 	// BeginRestart is the fake for method VirtualAppliancesClient.BeginRestart
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginRestart func(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, options *armnetwork.VirtualAppliancesClientBeginRestartOptions) (resp azfake.PollerResponder[armnetwork.VirtualAppliancesClientRestartResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method VirtualAppliancesClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, options *armnetwork.VirtualAppliancesClientGetOptions) (resp azfake.Responder[armnetwork.VirtualAppliancesClientGetResponse], errResp azfake.ErrorResponder)
+
+	// NewListByResourceGroupPager is the fake for method VirtualAppliancesClient.NewListByResourceGroupPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByResourceGroupPager func(resourceGroupName string, options *armnetwork.VirtualAppliancesClientListByResourceGroupOptions) (resp azfake.PagerResponder[armnetwork.VirtualAppliancesClientListByResourceGroupResponse])
+
+	// NewListPager is the fake for method VirtualAppliancesClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armnetwork.VirtualAppliancesClientListOptions) (resp azfake.PagerResponder[armnetwork.VirtualAppliancesClientListResponse])
 
 	// UpdateTags is the fake for method VirtualAppliancesClient.UpdateTags
 	// HTTP status codes to indicate success: http.StatusOK
@@ -87,11 +87,11 @@ func NewVirtualAppliancesServerTransport(srv *VirtualAppliancesServer) *VirtualA
 		beginDelete:                 newTracker[azfake.PollerResponder[armnetwork.VirtualAppliancesClientDeleteResponse]](),
 		beginExecuteMigration:       newTracker[azfake.PollerResponder[armnetwork.VirtualAppliancesClientExecuteMigrationResponse]](),
 		beginGetBootDiagnosticLogs:  newTracker[azfake.PollerResponder[armnetwork.VirtualAppliancesClientGetBootDiagnosticLogsResponse]](),
-		newListPager:                newTracker[azfake.PagerResponder[armnetwork.VirtualAppliancesClientListResponse]](),
-		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armnetwork.VirtualAppliancesClientListByResourceGroupResponse]](),
 		beginPrepareMigration:       newTracker[azfake.PollerResponder[armnetwork.VirtualAppliancesClientPrepareMigrationResponse]](),
 		beginReimage:                newTracker[azfake.PollerResponder[armnetwork.VirtualAppliancesClientReimageResponse]](),
 		beginRestart:                newTracker[azfake.PollerResponder[armnetwork.VirtualAppliancesClientRestartResponse]](),
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armnetwork.VirtualAppliancesClientListByResourceGroupResponse]](),
+		newListPager:                newTracker[azfake.PagerResponder[armnetwork.VirtualAppliancesClientListResponse]](),
 	}
 }
 
@@ -105,11 +105,11 @@ type VirtualAppliancesServerTransport struct {
 	beginDelete                 *tracker[azfake.PollerResponder[armnetwork.VirtualAppliancesClientDeleteResponse]]
 	beginExecuteMigration       *tracker[azfake.PollerResponder[armnetwork.VirtualAppliancesClientExecuteMigrationResponse]]
 	beginGetBootDiagnosticLogs  *tracker[azfake.PollerResponder[armnetwork.VirtualAppliancesClientGetBootDiagnosticLogsResponse]]
-	newListPager                *tracker[azfake.PagerResponder[armnetwork.VirtualAppliancesClientListResponse]]
-	newListByResourceGroupPager *tracker[azfake.PagerResponder[armnetwork.VirtualAppliancesClientListByResourceGroupResponse]]
 	beginPrepareMigration       *tracker[azfake.PollerResponder[armnetwork.VirtualAppliancesClientPrepareMigrationResponse]]
 	beginReimage                *tracker[azfake.PollerResponder[armnetwork.VirtualAppliancesClientReimageResponse]]
 	beginRestart                *tracker[azfake.PollerResponder[armnetwork.VirtualAppliancesClientRestartResponse]]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armnetwork.VirtualAppliancesClientListByResourceGroupResponse]]
+	newListPager                *tracker[azfake.PagerResponder[armnetwork.VirtualAppliancesClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for VirtualAppliancesServerTransport.
@@ -143,20 +143,20 @@ func (v *VirtualAppliancesServerTransport) dispatchToMethodFake(req *http.Reques
 				res.resp, res.err = v.dispatchBeginDelete(req)
 			case "VirtualAppliancesClient.BeginExecuteMigration":
 				res.resp, res.err = v.dispatchBeginExecuteMigration(req)
-			case "VirtualAppliancesClient.Get":
-				res.resp, res.err = v.dispatchGet(req)
 			case "VirtualAppliancesClient.BeginGetBootDiagnosticLogs":
 				res.resp, res.err = v.dispatchBeginGetBootDiagnosticLogs(req)
-			case "VirtualAppliancesClient.NewListPager":
-				res.resp, res.err = v.dispatchNewListPager(req)
-			case "VirtualAppliancesClient.NewListByResourceGroupPager":
-				res.resp, res.err = v.dispatchNewListByResourceGroupPager(req)
 			case "VirtualAppliancesClient.BeginPrepareMigration":
 				res.resp, res.err = v.dispatchBeginPrepareMigration(req)
 			case "VirtualAppliancesClient.BeginReimage":
 				res.resp, res.err = v.dispatchBeginReimage(req)
 			case "VirtualAppliancesClient.BeginRestart":
 				res.resp, res.err = v.dispatchBeginRestart(req)
+			case "VirtualAppliancesClient.Get":
+				res.resp, res.err = v.dispatchGet(req)
+			case "VirtualAppliancesClient.NewListByResourceGroupPager":
+				res.resp, res.err = v.dispatchNewListByResourceGroupPager(req)
+			case "VirtualAppliancesClient.NewListPager":
+				res.resp, res.err = v.dispatchNewListPager(req)
 			case "VirtualAppliancesClient.UpdateTags":
 				res.resp, res.err = v.dispatchUpdateTags(req)
 			default:
@@ -181,7 +181,7 @@ func (v *VirtualAppliancesServerTransport) dispatchBeginAbortMigration(req *http
 	}
 	beginAbortMigration := v.beginAbortMigration.get(req)
 	if beginAbortMigration == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/networkVirtualAppliances/(?P<networkVirtualApplianceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/abortMigration`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkVirtualAppliances/(?P<networkVirtualApplianceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/abortMigration`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -225,7 +225,7 @@ func (v *VirtualAppliancesServerTransport) dispatchBeginCommitMigration(req *htt
 	}
 	beginCommitMigration := v.beginCommitMigration.get(req)
 	if beginCommitMigration == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/networkVirtualAppliances/(?P<networkVirtualApplianceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/commitMigration`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkVirtualAppliances/(?P<networkVirtualApplianceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/commitMigration`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -273,7 +273,7 @@ func (v *VirtualAppliancesServerTransport) dispatchBeginCreateOrUpdate(req *http
 	}
 	beginCreateOrUpdate := v.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/networkVirtualAppliances/(?P<networkVirtualApplianceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkVirtualAppliances/(?P<networkVirtualApplianceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -321,7 +321,7 @@ func (v *VirtualAppliancesServerTransport) dispatchBeginDelete(req *http.Request
 	}
 	beginDelete := v.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/networkVirtualAppliances/(?P<networkVirtualApplianceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkVirtualAppliances/(?P<networkVirtualApplianceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -365,7 +365,7 @@ func (v *VirtualAppliancesServerTransport) dispatchBeginExecuteMigration(req *ht
 	}
 	beginExecuteMigration := v.beginExecuteMigration.get(req)
 	if beginExecuteMigration == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/networkVirtualAppliances/(?P<networkVirtualApplianceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/executeMigration`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkVirtualAppliances/(?P<networkVirtualApplianceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/executeMigration`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -407,54 +407,13 @@ func (v *VirtualAppliancesServerTransport) dispatchBeginExecuteMigration(req *ht
 	return resp, nil
 }
 
-func (v *VirtualAppliancesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if v.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/networkVirtualAppliances/(?P<networkVirtualApplianceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	qp := req.URL.Query()
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	networkVirtualApplianceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkVirtualApplianceName")])
-	if err != nil {
-		return nil, err
-	}
-	expandParam := getOptional(qp.Get("$expand"))
-	var options *armnetwork.VirtualAppliancesClientGetOptions
-	if expandParam != nil {
-		options = &armnetwork.VirtualAppliancesClientGetOptions{
-			Expand: expandParam,
-		}
-	}
-	respr, errRespr := v.srv.Get(req.Context(), resourceGroupNameParam, networkVirtualApplianceNameParam, options)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).VirtualAppliance, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (v *VirtualAppliancesServerTransport) dispatchBeginGetBootDiagnosticLogs(req *http.Request) (*http.Response, error) {
 	if v.srv.BeginGetBootDiagnosticLogs == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginGetBootDiagnosticLogs not implemented")}
 	}
 	beginGetBootDiagnosticLogs := v.beginGetBootDiagnosticLogs.get(req)
 	if beginGetBootDiagnosticLogs == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/networkVirtualAppliances/(?P<networkVirtualApplianceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getBootDiagnosticLogs`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkVirtualAppliances/(?P<networkVirtualApplianceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getBootDiagnosticLogs`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -496,83 +455,13 @@ func (v *VirtualAppliancesServerTransport) dispatchBeginGetBootDiagnosticLogs(re
 	return resp, nil
 }
 
-func (v *VirtualAppliancesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if v.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := v.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/networkVirtualAppliances`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := v.srv.NewListPager(nil)
-		newListPager = &resp
-		v.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.VirtualAppliancesClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		v.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		v.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (v *VirtualAppliancesServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
-	if v.srv.NewListByResourceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
-	}
-	newListByResourceGroupPager := v.newListByResourceGroupPager.get(req)
-	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/networkVirtualAppliances`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := v.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
-		newListByResourceGroupPager = &resp
-		v.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armnetwork.VirtualAppliancesClientListByResourceGroupResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		v.newListByResourceGroupPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByResourceGroupPager) {
-		v.newListByResourceGroupPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (v *VirtualAppliancesServerTransport) dispatchBeginPrepareMigration(req *http.Request) (*http.Response, error) {
 	if v.srv.BeginPrepareMigration == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginPrepareMigration not implemented")}
 	}
 	beginPrepareMigration := v.beginPrepareMigration.get(req)
 	if beginPrepareMigration == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/networkVirtualAppliances/(?P<networkVirtualApplianceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/prepareMigration`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkVirtualAppliances/(?P<networkVirtualApplianceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/prepareMigration`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -620,7 +509,7 @@ func (v *VirtualAppliancesServerTransport) dispatchBeginReimage(req *http.Reques
 	}
 	beginReimage := v.beginReimage.get(req)
 	if beginReimage == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/networkVirtualAppliances/(?P<networkVirtualApplianceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/reimage`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkVirtualAppliances/(?P<networkVirtualApplianceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/reimage`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -674,7 +563,7 @@ func (v *VirtualAppliancesServerTransport) dispatchBeginRestart(req *http.Reques
 	}
 	beginRestart := v.beginRestart.get(req)
 	if beginRestart == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/networkVirtualAppliances/(?P<networkVirtualApplianceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/restart`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkVirtualAppliances/(?P<networkVirtualApplianceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/restart`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -722,11 +611,122 @@ func (v *VirtualAppliancesServerTransport) dispatchBeginRestart(req *http.Reques
 	return resp, nil
 }
 
+func (v *VirtualAppliancesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if v.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkVirtualAppliances/(?P<networkVirtualApplianceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	qp := req.URL.Query()
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	networkVirtualApplianceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkVirtualApplianceName")])
+	if err != nil {
+		return nil, err
+	}
+	expandParam := getOptional(qp.Get("$expand"))
+	var options *armnetwork.VirtualAppliancesClientGetOptions
+	if expandParam != nil {
+		options = &armnetwork.VirtualAppliancesClientGetOptions{
+			Expand: expandParam,
+		}
+	}
+	respr, errRespr := v.srv.Get(req.Context(), resourceGroupNameParam, networkVirtualApplianceNameParam, options)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).VirtualAppliance, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (v *VirtualAppliancesServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
+	if v.srv.NewListByResourceGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
+	}
+	newListByResourceGroupPager := v.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkVirtualAppliances`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := v.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
+		newListByResourceGroupPager = &resp
+		v.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armnetwork.VirtualAppliancesClientListByResourceGroupResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		v.newListByResourceGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		v.newListByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (v *VirtualAppliancesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if v.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := v.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkVirtualAppliances`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := v.srv.NewListPager(nil)
+		newListPager = &resp
+		v.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.VirtualAppliancesClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		v.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		v.newListPager.remove(req)
+	}
+	return resp, nil
+}
+
 func (v *VirtualAppliancesServerTransport) dispatchUpdateTags(req *http.Request) (*http.Response, error) {
 	if v.srv.UpdateTags == nil {
 		return nil, &nonRetriableError{errors.New("fake for method UpdateTags not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/networkVirtualAppliances/(?P<networkVirtualApplianceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkVirtualAppliances/(?P<networkVirtualApplianceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {

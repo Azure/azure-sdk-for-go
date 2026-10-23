@@ -104,6 +104,22 @@ func (c *ClientFactory) NewDNSPrivateZonesClient() *DNSPrivateZonesClient {
 	}
 }
 
+// NewDatabaseEditionsClient creates a new instance of DatabaseEditionsClient.
+func (c *ClientFactory) NewDatabaseEditionsClient() *DatabaseEditionsClient {
+	return &DatabaseEditionsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewDatabaseSystemShapeResourcesClient creates a new instance of DatabaseSystemShapeResourcesClient.
+func (c *ClientFactory) NewDatabaseSystemShapeResourcesClient() *DatabaseSystemShapeResourcesClient {
+	return &DatabaseSystemShapeResourcesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewDbNodesClient creates a new instance of DbNodesClient.
 func (c *ClientFactory) NewDbNodesClient() *DbNodesClient {
 	return &DbNodesClient{
@@ -187,6 +203,22 @@ func (c *ClientFactory) NewGiMinorVersionsClient() *GiMinorVersionsClient {
 // NewGiVersionsClient creates a new instance of GiVersionsClient.
 func (c *ClientFactory) NewGiVersionsClient() *GiVersionsClient {
 	return &GiVersionsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewGoldenGateConnectionsClient creates a new instance of GoldenGateConnectionsClient.
+func (c *ClientFactory) NewGoldenGateConnectionsClient() *GoldenGateConnectionsClient {
+	return &GoldenGateConnectionsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewGoldenGateDeploymentsClient creates a new instance of GoldenGateDeploymentsClient.
+func (c *ClientFactory) NewGoldenGateDeploymentsClient() *GoldenGateDeploymentsClient {
+	return &GoldenGateDeploymentsClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

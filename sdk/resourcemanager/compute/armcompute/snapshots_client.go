@@ -30,6 +30,9 @@ type SnapshotsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSnapshotsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SnapshotsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -66,7 +69,7 @@ func (client *SnapshotsClient) BeginCreateOrUpdate(ctx context.Context, resource
 	}
 }
 
-// CreateOrUpdate - Creates or updates a snapshot.
+// createOrUpdate - Creates or updates a snapshot.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *SnapshotsClient) createOrUpdate(ctx context.Context, resourceGroupName string, snapshotName string, snapshot Snapshot, options *SnapshotsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -88,11 +91,11 @@ func (client *SnapshotsClient) createOrUpdate(ctx context.Context, resourceGroup
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *SnapshotsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, snapshotName string, snapshot Snapshot, _ *SnapshotsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/snapshots/{snapshotName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -141,7 +144,7 @@ func (client *SnapshotsClient) BeginDelete(ctx context.Context, resourceGroupNam
 	}
 }
 
-// Delete - Deletes a snapshot.
+// deleteOperation - Deletes a snapshot.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *SnapshotsClient) deleteOperation(ctx context.Context, resourceGroupName string, snapshotName string, options *SnapshotsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -163,11 +166,11 @@ func (client *SnapshotsClient) deleteOperation(ctx context.Context, resourceGrou
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *SnapshotsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, snapshotName string, _ *SnapshotsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/snapshots/{snapshotName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -186,67 +189,6 @@ func (client *SnapshotsClient) deleteCreateRequest(ctx context.Context, resource
 	reqQP.Set("api-version", version20260302)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
-}
-
-// Get - Gets information about a snapshot.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - snapshotName - The name of the snapshot that is being created. The name can't be changed after the snapshot is created.
-//     Supported characters for the name are a-z, A-Z, 0-9, _ and -. The max name length is 80 characters.
-//   - options - SnapshotsClientGetOptions contains the optional parameters for the SnapshotsClient.Get method.
-func (client *SnapshotsClient) Get(ctx context.Context, resourceGroupName string, snapshotName string, options *SnapshotsClientGetOptions) (SnapshotsClientGetResponse, error) {
-	var err error
-	const operationName = "SnapshotsClient.Get"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, resourceGroupName, snapshotName, options)
-	if err != nil {
-		return SnapshotsClientGetResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return SnapshotsClientGetResponse{}, err
-	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
-}
-
-// getCreateRequest creates the Get request.
-func (client *SnapshotsClient) getCreateRequest(ctx context.Context, resourceGroupName string, snapshotName string, _ *SnapshotsClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/snapshots/{snapshotName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if snapshotName == "" {
-		return nil, errors.New("parameter snapshotName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{snapshotName}", url.PathEscape(snapshotName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260302)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// getHandleResponse handles the Get response.
-func (client *SnapshotsClient) getHandleResponse(resp *http.Response, successCodes ...int) (SnapshotsClientGetResponse, error) {
-	result := SnapshotsClientGetResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.Snapshot); err != nil {
-		return SnapshotsClientGetResponse{}, err
-	}
-	return result, nil
 }
 
 // BeginGrantAccess - Grants access to a snapshot.
@@ -274,7 +216,7 @@ func (client *SnapshotsClient) BeginGrantAccess(ctx context.Context, resourceGro
 	}
 }
 
-// GrantAccess - Grants access to a snapshot.
+// grantAccess - Grants access to a snapshot.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *SnapshotsClient) grantAccess(ctx context.Context, resourceGroupName string, snapshotName string, grantAccessData GrantAccessData, options *SnapshotsClientBeginGrantAccessOptions) (*http.Response, error) {
 	var err error
@@ -296,11 +238,11 @@ func (client *SnapshotsClient) grantAccess(ctx context.Context, resourceGroupNam
 	return httpResp, nil
 }
 
-// grantAccessCreateRequest creates the GrantAccess request.
+// grantAccessCreateRequest creates the grantAccess request.
 func (client *SnapshotsClient) grantAccessCreateRequest(ctx context.Context, resourceGroupName string, snapshotName string, grantAccessData GrantAccessData, _ *SnapshotsClientBeginGrantAccessOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/snapshots/{snapshotName}/beginGetAccess"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -324,144 +266,6 @@ func (client *SnapshotsClient) grantAccessCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	return req, nil
-}
-
-// NewListPager - Lists snapshots under a subscription.
-//   - options - SnapshotsClientListOptions contains the optional parameters for the SnapshotsClient.NewListPager method.
-func (client *SnapshotsClient) NewListPager(options *SnapshotsClientListOptions) *runtime.Pager[SnapshotsClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[SnapshotsClientListResponse]{
-		More: func(page SnapshotsClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *SnapshotsClientListResponse) (SnapshotsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SnapshotsClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listCreateRequest(ctx, nextLink, options)
-			if err != nil {
-				return SnapshotsClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return SnapshotsClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *SnapshotsClient) listCreateRequest(ctx context.Context, nextLink string, _ *SnapshotsClientListOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/snapshots"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260302)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *SnapshotsClient) listHandleResponse(resp *http.Response, successCodes ...int) (SnapshotsClientListResponse, error) {
-	result := SnapshotsClientListResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.SnapshotList); err != nil {
-		return SnapshotsClientListResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListByResourceGroupPager - Lists snapshots under a resource group.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - options - SnapshotsClientListByResourceGroupOptions contains the optional parameters for the SnapshotsClient.NewListByResourceGroupPager
-//     method.
-func (client *SnapshotsClient) NewListByResourceGroupPager(resourceGroupName string, options *SnapshotsClientListByResourceGroupOptions) *runtime.Pager[SnapshotsClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PagingHandler[SnapshotsClientListByResourceGroupResponse]{
-		More: func(page SnapshotsClientListByResourceGroupResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *SnapshotsClientListByResourceGroupResponse) (SnapshotsClientListByResourceGroupResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SnapshotsClient.NewListByResourceGroupPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
-			if err != nil {
-				return SnapshotsClientListByResourceGroupResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return SnapshotsClientListByResourceGroupResponse{}, err
-			}
-			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *SnapshotsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *SnapshotsClientListByResourceGroupOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/snapshots"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		if resourceGroupName == "" {
-			return nil, errors.New("parameter resourceGroupName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260302)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *SnapshotsClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (SnapshotsClientListByResourceGroupResponse, error) {
-	result := SnapshotsClientListByResourceGroupResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.SnapshotList); err != nil {
-		return SnapshotsClientListByResourceGroupResponse{}, err
-	}
-	return result, nil
 }
 
 // BeginRevokeAccess - Revokes access to a snapshot.
@@ -488,7 +292,7 @@ func (client *SnapshotsClient) BeginRevokeAccess(ctx context.Context, resourceGr
 	}
 }
 
-// RevokeAccess - Revokes access to a snapshot.
+// revokeAccess - Revokes access to a snapshot.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *SnapshotsClient) revokeAccess(ctx context.Context, resourceGroupName string, snapshotName string, options *SnapshotsClientBeginRevokeAccessOptions) (*http.Response, error) {
 	var err error
@@ -510,11 +314,11 @@ func (client *SnapshotsClient) revokeAccess(ctx context.Context, resourceGroupNa
 	return httpResp, nil
 }
 
-// revokeAccessCreateRequest creates the RevokeAccess request.
+// revokeAccessCreateRequest creates the revokeAccess request.
 func (client *SnapshotsClient) revokeAccessCreateRequest(ctx context.Context, resourceGroupName string, snapshotName string, _ *SnapshotsClientBeginRevokeAccessOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/snapshots/{snapshotName}/endGetAccess"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -559,7 +363,7 @@ func (client *SnapshotsClient) BeginUpdate(ctx context.Context, resourceGroupNam
 	}
 }
 
-// Update - Updates (patches) a snapshot.
+// update - Updates (patches) a snapshot.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *SnapshotsClient) update(ctx context.Context, resourceGroupName string, snapshotName string, snapshot SnapshotUpdate, options *SnapshotsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
@@ -581,11 +385,11 @@ func (client *SnapshotsClient) update(ctx context.Context, resourceGroupName str
 	return httpResp, nil
 }
 
-// updateCreateRequest creates the Update request.
+// updateCreateRequest creates the update request.
 func (client *SnapshotsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, snapshotName string, snapshot SnapshotUpdate, _ *SnapshotsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/snapshots/{snapshotName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -638,7 +442,7 @@ func (client *SnapshotsClient) BeginUpdateImmutabilityPolicy(ctx context.Context
 	}
 }
 
-// UpdateImmutabilityPolicy - Updates the immutability policy of a snapshot. Sets or extends an unlocked immutability policy
+// updateImmutabilityPolicy - Updates the immutability policy of a snapshot. Sets or extends an unlocked immutability policy
 // with the specified duration and type. If the snapshot already has a locked policy, the request will be rejected. Use updateImmutabilityPolicyLock
 // to lock an immutability policy.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -662,11 +466,11 @@ func (client *SnapshotsClient) updateImmutabilityPolicy(ctx context.Context, res
 	return httpResp, nil
 }
 
-// updateImmutabilityPolicyCreateRequest creates the UpdateImmutabilityPolicy request.
+// updateImmutabilityPolicyCreateRequest creates the updateImmutabilityPolicy request.
 func (client *SnapshotsClient) updateImmutabilityPolicyCreateRequest(ctx context.Context, resourceGroupName string, snapshotName string, immutabilityPolicyData ImmutabilityPolicyData, _ *SnapshotsClientBeginUpdateImmutabilityPolicyOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/snapshots/{snapshotName}/updateImmutabilityPolicy"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -718,7 +522,7 @@ func (client *SnapshotsClient) BeginUpdateImmutabilityPolicyLock(ctx context.Con
 	}
 }
 
-// UpdateImmutabilityPolicyLock - Locks the immutability policy of a snapshot. Once locked, the policy cannot be reduced or
+// updateImmutabilityPolicyLock - Locks the immutability policy of a snapshot. Once locked, the policy cannot be reduced or
 // removed until the lock period expires.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *SnapshotsClient) updateImmutabilityPolicyLock(ctx context.Context, resourceGroupName string, snapshotName string, immutabilityPolicyData ImmutabilityPolicyLockData, options *SnapshotsClientBeginUpdateImmutabilityPolicyLockOptions) (*http.Response, error) {
@@ -741,11 +545,11 @@ func (client *SnapshotsClient) updateImmutabilityPolicyLock(ctx context.Context,
 	return httpResp, nil
 }
 
-// updateImmutabilityPolicyLockCreateRequest creates the UpdateImmutabilityPolicyLock request.
+// updateImmutabilityPolicyLockCreateRequest creates the updateImmutabilityPolicyLock request.
 func (client *SnapshotsClient) updateImmutabilityPolicyLockCreateRequest(ctx context.Context, resourceGroupName string, snapshotName string, immutabilityPolicyData ImmutabilityPolicyLockData, _ *SnapshotsClientBeginUpdateImmutabilityPolicyLockOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/snapshots/{snapshotName}/updateImmutabilityPolicyLock"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -769,4 +573,203 @@ func (client *SnapshotsClient) updateImmutabilityPolicyLockCreateRequest(ctx con
 		return nil, err
 	}
 	return req, nil
+}
+
+// Get - Gets information about a snapshot.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - snapshotName - The name of the snapshot that is being created. The name can't be changed after the snapshot is created.
+//     Supported characters for the name are a-z, A-Z, 0-9, _ and -. The max name length is 80 characters.
+//   - options - SnapshotsClientGetOptions contains the optional parameters for the SnapshotsClient.Get method.
+func (client *SnapshotsClient) Get(ctx context.Context, resourceGroupName string, snapshotName string, options *SnapshotsClientGetOptions) (SnapshotsClientGetResponse, error) {
+	var err error
+	const operationName = "SnapshotsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getCreateRequest(ctx, resourceGroupName, snapshotName, options)
+	if err != nil {
+		return SnapshotsClientGetResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return SnapshotsClientGetResponse{}, err
+	}
+	return client.getHandleResponse(httpResp, http.StatusOK)
+}
+
+// getCreateRequest creates the Get request.
+func (client *SnapshotsClient) getCreateRequest(ctx context.Context, resourceGroupName string, snapshotName string, _ *SnapshotsClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/snapshots/{snapshotName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if snapshotName == "" {
+		return nil, errors.New("parameter snapshotName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{snapshotName}", url.PathEscape(snapshotName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260302)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getHandleResponse handles the Get response.
+func (client *SnapshotsClient) getHandleResponse(resp *http.Response, successCodes ...int) (SnapshotsClientGetResponse, error) {
+	result := SnapshotsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Snapshot); err != nil {
+		return SnapshotsClientGetResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListByResourceGroupPager - Lists snapshots under a resource group.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - options - SnapshotsClientListByResourceGroupOptions contains the optional parameters for the SnapshotsClient.NewListByResourceGroupPager
+//     method.
+func (client *SnapshotsClient) NewListByResourceGroupPager(resourceGroupName string, options *SnapshotsClientListByResourceGroupOptions) *runtime.Pager[SnapshotsClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PagingHandler[SnapshotsClientListByResourceGroupResponse]{
+		More: func(page SnapshotsClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *SnapshotsClientListByResourceGroupResponse) (SnapshotsClientListByResourceGroupResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SnapshotsClient.NewListByResourceGroupPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
+			if err != nil {
+				return SnapshotsClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return SnapshotsClientListByResourceGroupResponse{}, err
+			}
+			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listByResourceGroupCreateRequest creates the ListByResourceGroup request.
+func (client *SnapshotsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *SnapshotsClientListByResourceGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/snapshots"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260302)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listByResourceGroupHandleResponse handles the ListByResourceGroup response.
+func (client *SnapshotsClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (SnapshotsClientListByResourceGroupResponse, error) {
+	result := SnapshotsClientListByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SnapshotList); err != nil {
+		return SnapshotsClientListByResourceGroupResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListPager - Lists snapshots under a subscription.
+//   - options - SnapshotsClientListOptions contains the optional parameters for the SnapshotsClient.NewListPager method.
+func (client *SnapshotsClient) NewListPager(options *SnapshotsClientListOptions) *runtime.Pager[SnapshotsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[SnapshotsClientListResponse]{
+		More: func(page SnapshotsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *SnapshotsClientListResponse) (SnapshotsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SnapshotsClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return SnapshotsClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return SnapshotsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listCreateRequest creates the List request.
+func (client *SnapshotsClient) listCreateRequest(ctx context.Context, nextLink string, _ *SnapshotsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/snapshots"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260302)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listHandleResponse handles the List response.
+func (client *SnapshotsClient) listHandleResponse(resp *http.Response, successCodes ...int) (SnapshotsClientListResponse, error) {
+	result := SnapshotsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SnapshotList); err != nil {
+		return SnapshotsClientListResponse{}, err
+	}
+	return result, nil
 }

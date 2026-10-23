@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01-preview/VolumeGroups_Create_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/VolumeGroups_Create_MaximumSet_Gen.json
 func ExampleVolumeGroupsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -25,6 +25,8 @@ func ExampleVolumeGroupsClient_BeginCreate() {
 	}
 	poller, err := clientFactory.NewVolumeGroupsClient().BeginCreate(ctx, "rgpurestorage", "storagepool-01", "volumegroup-01", armpurestorageblock.VolumeGroup{
 		Properties: &armpurestorageblock.VolumeGroupProperties{
+			SourceType:               to.Ptr(armpurestorageblock.VolumeGroupSourceTypeSnapshot),
+			SourceSnapshotResourceID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgpurestorage/providers/PureStorage.Block/storagePools/storagepool-01/volumeGroups/volumegroup-src/snapshots/snapshot-01"),
 			PerformanceParameters: &armpurestorageblock.PerformanceParameters{
 				BandwidthLimitMbPerSec: to.Ptr[int64](500),
 				IopsLimit:              to.Ptr[int64](10000),
@@ -83,7 +85,7 @@ func ExampleVolumeGroupsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/VolumeGroups_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/VolumeGroups_Delete_MaximumSet_Gen.json
 func ExampleVolumeGroupsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -104,7 +106,7 @@ func ExampleVolumeGroupsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-01-01-preview/VolumeGroups_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/VolumeGroups_Get_MaximumSet_Gen.json
 func ExampleVolumeGroupsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -156,7 +158,7 @@ func ExampleVolumeGroupsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/VolumeGroups_GetStatus_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/VolumeGroups_GetStatus_MaximumSet_Gen.json
 func ExampleVolumeGroupsClient_GetStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -187,7 +189,7 @@ func ExampleVolumeGroupsClient_GetStatus() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/VolumeGroups_ListByStoragePool_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/VolumeGroups_ListByStoragePool_MaximumSet_Gen.json
 func ExampleVolumeGroupsClient_NewListByStoragePoolPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -248,7 +250,7 @@ func ExampleVolumeGroupsClient_NewListByStoragePoolPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01-preview/VolumeGroups_ListConnectionParameters_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/VolumeGroups_ListConnectionParameters_MaximumSet_Gen.json
 func ExampleVolumeGroupsClient_ListConnectionParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -281,7 +283,31 @@ func ExampleVolumeGroupsClient_ListConnectionParameters() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/VolumeGroups_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/VolumeGroups_Overwrite_MaximumSet_Gen.json
+func ExampleVolumeGroupsClient_BeginOverwrite() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpurestorageblock.NewClientFactory("11111111-1111-1111-1111-111111111111", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVolumeGroupsClient().BeginOverwrite(ctx, "rgpurestorage", "storagepool-01", "volumegroup-01", armpurestorageblock.VolumeGroupOverwriteRequest{
+		SourceSnapshotResourceID:    to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgpurestorage/providers/PureStorage.Block/storagePools/storagepool-01/volumeGroups/volumegroup-01/snapshots/snapshot-01"),
+		SourceVolumeGroupResourceID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgpurestorage/providers/PureStorage.Block/storagePools/storagepool-01/volumeGroups/volumegroup-01"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-05-01-preview/VolumeGroups_Update_MaximumSet_Gen.json
 func ExampleVolumeGroupsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

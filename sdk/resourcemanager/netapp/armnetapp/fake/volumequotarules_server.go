@@ -29,6 +29,10 @@ type VolumeQuotaRulesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, volumeQuotaRuleName string, options *armnetapp.VolumeQuotaRulesClientBeginDeleteOptions) (resp azfake.PollerResponder[armnetapp.VolumeQuotaRulesClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method VolumeQuotaRulesClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, volumeQuotaRuleName string, body armnetapp.VolumeQuotaRulePatch, options *armnetapp.VolumeQuotaRulesClientBeginUpdateOptions) (resp azfake.PollerResponder[armnetapp.VolumeQuotaRulesClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method VolumeQuotaRulesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, volumeQuotaRuleName string, options *armnetapp.VolumeQuotaRulesClientGetOptions) (resp azfake.Responder[armnetapp.VolumeQuotaRulesClientGetResponse], errResp azfake.ErrorResponder)
@@ -36,10 +40,6 @@ type VolumeQuotaRulesServer struct {
 	// NewListByVolumePager is the fake for method VolumeQuotaRulesClient.NewListByVolumePager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByVolumePager func(resourceGroupName string, accountName string, poolName string, volumeName string, options *armnetapp.VolumeQuotaRulesClientListByVolumeOptions) (resp azfake.PagerResponder[armnetapp.VolumeQuotaRulesClientListByVolumeResponse])
-
-	// BeginUpdate is the fake for method VolumeQuotaRulesClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, volumeQuotaRuleName string, body armnetapp.VolumeQuotaRulePatch, options *armnetapp.VolumeQuotaRulesClientBeginUpdateOptions) (resp azfake.PollerResponder[armnetapp.VolumeQuotaRulesClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewVolumeQuotaRulesServerTransport creates a new instance of VolumeQuotaRulesServerTransport with the provided implementation.
@@ -50,8 +50,8 @@ func NewVolumeQuotaRulesServerTransport(srv *VolumeQuotaRulesServer) *VolumeQuot
 		srv:                  srv,
 		beginCreate:          newTracker[azfake.PollerResponder[armnetapp.VolumeQuotaRulesClientCreateResponse]](),
 		beginDelete:          newTracker[azfake.PollerResponder[armnetapp.VolumeQuotaRulesClientDeleteResponse]](),
-		newListByVolumePager: newTracker[azfake.PagerResponder[armnetapp.VolumeQuotaRulesClientListByVolumeResponse]](),
 		beginUpdate:          newTracker[azfake.PollerResponder[armnetapp.VolumeQuotaRulesClientUpdateResponse]](),
+		newListByVolumePager: newTracker[azfake.PagerResponder[armnetapp.VolumeQuotaRulesClientListByVolumeResponse]](),
 	}
 }
 
@@ -61,8 +61,8 @@ type VolumeQuotaRulesServerTransport struct {
 	srv                  *VolumeQuotaRulesServer
 	beginCreate          *tracker[azfake.PollerResponder[armnetapp.VolumeQuotaRulesClientCreateResponse]]
 	beginDelete          *tracker[azfake.PollerResponder[armnetapp.VolumeQuotaRulesClientDeleteResponse]]
-	newListByVolumePager *tracker[azfake.PagerResponder[armnetapp.VolumeQuotaRulesClientListByVolumeResponse]]
 	beginUpdate          *tracker[azfake.PollerResponder[armnetapp.VolumeQuotaRulesClientUpdateResponse]]
+	newListByVolumePager *tracker[azfake.PagerResponder[armnetapp.VolumeQuotaRulesClientListByVolumeResponse]]
 }
 
 // Do implements the policy.Transporter interface for VolumeQuotaRulesServerTransport.
@@ -90,12 +90,12 @@ func (v *VolumeQuotaRulesServerTransport) dispatchToMethodFake(req *http.Request
 				res.resp, res.err = v.dispatchBeginCreate(req)
 			case "VolumeQuotaRulesClient.BeginDelete":
 				res.resp, res.err = v.dispatchBeginDelete(req)
+			case "VolumeQuotaRulesClient.BeginUpdate":
+				res.resp, res.err = v.dispatchBeginUpdate(req)
 			case "VolumeQuotaRulesClient.Get":
 				res.resp, res.err = v.dispatchGet(req)
 			case "VolumeQuotaRulesClient.NewListByVolumePager":
 				res.resp, res.err = v.dispatchNewListByVolumePager(req)
-			case "VolumeQuotaRulesClient.BeginUpdate":
-				res.resp, res.err = v.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -118,7 +118,7 @@ func (v *VolumeQuotaRulesServerTransport) dispatchBeginCreate(req *http.Request)
 	}
 	beginCreate := v.beginCreate.get(req)
 	if beginCreate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/capacityPools/(?P<poolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/volumes/(?P<volumeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/volumeQuotaRules/(?P<volumeQuotaRuleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/capacityPools/(?P<poolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumes/(?P<volumeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumeQuotaRules/(?P<volumeQuotaRuleName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 7 {
@@ -178,7 +178,7 @@ func (v *VolumeQuotaRulesServerTransport) dispatchBeginDelete(req *http.Request)
 	}
 	beginDelete := v.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/capacityPools/(?P<poolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/volumes/(?P<volumeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/volumeQuotaRules/(?P<volumeQuotaRuleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/capacityPools/(?P<poolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumes/(?P<volumeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumeQuotaRules/(?P<volumeQuotaRuleName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 7 {
@@ -228,107 +228,13 @@ func (v *VolumeQuotaRulesServerTransport) dispatchBeginDelete(req *http.Request)
 	return resp, nil
 }
 
-func (v *VolumeQuotaRulesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if v.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/capacityPools/(?P<poolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/volumes/(?P<volumeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/volumeQuotaRules/(?P<volumeQuotaRuleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 7 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-	if err != nil {
-		return nil, err
-	}
-	poolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("poolName")])
-	if err != nil {
-		return nil, err
-	}
-	volumeNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("volumeName")])
-	if err != nil {
-		return nil, err
-	}
-	volumeQuotaRuleNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("volumeQuotaRuleName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := v.srv.Get(req.Context(), resourceGroupNameParam, accountNameParam, poolNameParam, volumeNameParam, volumeQuotaRuleNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).VolumeQuotaRule, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (v *VolumeQuotaRulesServerTransport) dispatchNewListByVolumePager(req *http.Request) (*http.Response, error) {
-	if v.srv.NewListByVolumePager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByVolumePager not implemented")}
-	}
-	newListByVolumePager := v.newListByVolumePager.get(req)
-	if newListByVolumePager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/capacityPools/(?P<poolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/volumes/(?P<volumeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/volumeQuotaRules`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 6 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-		if err != nil {
-			return nil, err
-		}
-		poolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("poolName")])
-		if err != nil {
-			return nil, err
-		}
-		volumeNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("volumeName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := v.srv.NewListByVolumePager(resourceGroupNameParam, accountNameParam, poolNameParam, volumeNameParam, nil)
-		newListByVolumePager = &resp
-		v.newListByVolumePager.add(req, newListByVolumePager)
-		server.PagerResponderInjectNextLinks(newListByVolumePager, req, func(page *armnetapp.VolumeQuotaRulesClientListByVolumeResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByVolumePager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		v.newListByVolumePager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByVolumePager) {
-		v.newListByVolumePager.remove(req)
-	}
-	return resp, nil
-}
-
 func (v *VolumeQuotaRulesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
 	if v.srv.BeginUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
 	}
 	beginUpdate := v.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/capacityPools/(?P<poolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/volumes/(?P<volumeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/volumeQuotaRules/(?P<volumeQuotaRuleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/capacityPools/(?P<poolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumes/(?P<volumeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumeQuotaRules/(?P<volumeQuotaRuleName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 7 {
@@ -379,6 +285,100 @@ func (v *VolumeQuotaRulesServerTransport) dispatchBeginUpdate(req *http.Request)
 		v.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (v *VolumeQuotaRulesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if v.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/capacityPools/(?P<poolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumes/(?P<volumeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumeQuotaRules/(?P<volumeQuotaRuleName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 7 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+	if err != nil {
+		return nil, err
+	}
+	poolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("poolName")])
+	if err != nil {
+		return nil, err
+	}
+	volumeNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("volumeName")])
+	if err != nil {
+		return nil, err
+	}
+	volumeQuotaRuleNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("volumeQuotaRuleName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := v.srv.Get(req.Context(), resourceGroupNameParam, accountNameParam, poolNameParam, volumeNameParam, volumeQuotaRuleNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).VolumeQuotaRule, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (v *VolumeQuotaRulesServerTransport) dispatchNewListByVolumePager(req *http.Request) (*http.Response, error) {
+	if v.srv.NewListByVolumePager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByVolumePager not implemented")}
+	}
+	newListByVolumePager := v.newListByVolumePager.get(req)
+	if newListByVolumePager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/capacityPools/(?P<poolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumes/(?P<volumeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumeQuotaRules`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 6 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		poolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("poolName")])
+		if err != nil {
+			return nil, err
+		}
+		volumeNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("volumeName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := v.srv.NewListByVolumePager(resourceGroupNameParam, accountNameParam, poolNameParam, volumeNameParam, nil)
+		newListByVolumePager = &resp
+		v.newListByVolumePager.add(req, newListByVolumePager)
+		server.PagerResponderInjectNextLinks(newListByVolumePager, req, func(page *armnetapp.VolumeQuotaRulesClientListByVolumeResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByVolumePager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		v.newListByVolumePager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByVolumePager) {
+		v.newListByVolumePager.remove(req)
+	}
 	return resp, nil
 }
 

@@ -19,7 +19,7 @@ import (
 // ContainerAppsLabelHistoryClient contains the methods for the ContainerAppsLabelHistory group.
 // Don't use this type directly, use NewContainerAppsLabelHistoryClient() instead.
 //
-// Generated from API version 2025-10-02-preview
+// Generated from API version 2026-07-01
 type ContainerAppsLabelHistoryClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type ContainerAppsLabelHistoryClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewContainerAppsLabelHistoryClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ContainerAppsLabelHistoryClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -43,7 +46,7 @@ func NewContainerAppsLabelHistoryClient(subscriptionID string, credential azcore
 
 // DeleteLabelHistory - Delete the history of a label.
 //
-// Delete the history of a label.
+// Deletes the revision history associated with a Container App label.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - containerAppName - Name of the Container App.
@@ -72,9 +75,9 @@ func (client *ContainerAppsLabelHistoryClient) DeleteLabelHistory(ctx context.Co
 
 // deleteLabelHistoryCreateRequest creates the DeleteLabelHistory request.
 func (client *ContainerAppsLabelHistoryClient) deleteLabelHistoryCreateRequest(ctx context.Context, resourceGroupName string, containerAppName string, labelName string, _ *ContainerAppsLabelHistoryClientDeleteLabelHistoryOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/labelHistory/{labelName}"
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/labelHistories/{labelName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -94,14 +97,14 @@ func (client *ContainerAppsLabelHistoryClient) deleteLabelHistoryCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251002Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // GetLabelHistory - Get the history of a label.
 //
-// Get the history of a label.
+// Gets the revision history associated with a Container App label.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - containerAppName - Name of the Container App.
@@ -127,9 +130,9 @@ func (client *ContainerAppsLabelHistoryClient) GetLabelHistory(ctx context.Conte
 
 // getLabelHistoryCreateRequest creates the GetLabelHistory request.
 func (client *ContainerAppsLabelHistoryClient) getLabelHistoryCreateRequest(ctx context.Context, resourceGroupName string, containerAppName string, labelName string, _ *ContainerAppsLabelHistoryClientGetLabelHistoryOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/labelHistory/{labelName}"
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/labelHistories/{labelName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -149,7 +152,7 @@ func (client *ContainerAppsLabelHistoryClient) getLabelHistoryCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251002Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -169,7 +172,7 @@ func (client *ContainerAppsLabelHistoryClient) getLabelHistoryHandleResponse(res
 
 // NewListLabelHistoryPager - Get the Label History for a given Container App.
 //
-// Get the Label History for a given Container App.
+// Lists the label revision histories for a Container App.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - containerAppName - Name of the Container App.
 //   - options - ContainerAppsLabelHistoryClientListLabelHistoryOptions contains the optional parameters for the ContainerAppsLabelHistoryClient.NewListLabelHistoryPager
@@ -205,9 +208,9 @@ func (client *ContainerAppsLabelHistoryClient) listLabelHistoryCreateRequest(ctx
 	var req *policy.Request
 	var err error
 	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/labelHistory"
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/labelHistories"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -230,7 +233,7 @@ func (client *ContainerAppsLabelHistoryClient) listLabelHistoryCreateRequest(ctx
 		if options != nil && options.Filter != nil {
 			reqQP.Set("$filter", *options.Filter)
 		}
-		reqQP.Set("api-version", version20251002Preview)
+		reqQP.Set("api-version", version20260701)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

@@ -107,7 +107,7 @@ func (c *CommunicationsServerTransport) dispatchCheckNameAvailability(req *http.
 	if c.srv.CheckNameAvailability == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CheckNameAvailability not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Support/supportTickets/(?P<supportTicketName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/checkNameAvailability`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Support/supportTickets/(?P<supportTicketName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/checkNameAvailability`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -142,7 +142,7 @@ func (c *CommunicationsServerTransport) dispatchBeginCreate(req *http.Request) (
 	}
 	beginCreate := c.beginCreate.get(req)
 	if beginCreate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Support/supportTickets/(?P<supportTicketName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/communications/(?P<communicationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Support/supportTickets/(?P<supportTicketName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/communications/(?P<communicationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -188,7 +188,7 @@ func (c *CommunicationsServerTransport) dispatchGet(req *http.Request) (*http.Re
 	if c.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Support/supportTickets/(?P<supportTicketName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/communications/(?P<communicationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Support/supportTickets/(?P<supportTicketName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/communications/(?P<communicationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -223,7 +223,7 @@ func (c *CommunicationsServerTransport) dispatchNewListPager(req *http.Request) 
 	}
 	newListPager := c.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Support/supportTickets/(?P<supportTicketName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/communications`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Support/supportTickets/(?P<supportTicketName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/communications`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {

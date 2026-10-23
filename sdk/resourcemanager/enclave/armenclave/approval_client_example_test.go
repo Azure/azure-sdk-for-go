@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2026-03-01-preview/Approvals_CreateOrUpdate.json
+// Generated from example definition: 2026-04-01/Approvals_CreateOrUpdate.json
 func ExampleApprovalClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -111,7 +111,7 @@ func ExampleApprovalClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/Approvals_Delete.json
+// Generated from example definition: 2026-04-01/Approvals_Delete.json
 func ExampleApprovalClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -132,7 +132,7 @@ func ExampleApprovalClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/Approvals_Get.json
+// Generated from example definition: 2026-04-01/Approvals_Get.json
 func ExampleApprovalClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -206,7 +206,7 @@ func ExampleApprovalClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/Approvals_ListByParent.json
+// Generated from example definition: 2026-04-01/Approvals_ListByParent.json
 func ExampleApprovalClient_NewListByParentPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -290,7 +290,7 @@ func ExampleApprovalClient_NewListByParentPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/Approvals_NotifyInitiator.json
+// Generated from example definition: 2026-04-01/Approvals_NotifyInitiator.json
 func ExampleApprovalClient_BeginNotifyInitiator() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -321,7 +321,7 @@ func ExampleApprovalClient_BeginNotifyInitiator() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/Approvals_Update.json
+// Generated from example definition: 2026-04-01/Approvals_Update.json
 func ExampleApprovalClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

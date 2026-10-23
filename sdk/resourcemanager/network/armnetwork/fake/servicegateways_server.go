@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v12"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -41,13 +41,13 @@ type ServiceGatewaysServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewGetServicesPager func(resourceGroupName string, serviceGatewayName string, options *armnetwork.ServiceGatewaysClientGetServicesOptions) (resp azfake.PagerResponder[armnetwork.ServiceGatewaysClientGetServicesResponse])
 
-	// NewListPager is the fake for method ServiceGatewaysClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, options *armnetwork.ServiceGatewaysClientListOptions) (resp azfake.PagerResponder[armnetwork.ServiceGatewaysClientListResponse])
-
 	// NewListAllPager is the fake for method ServiceGatewaysClient.NewListAllPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListAllPager func(options *armnetwork.ServiceGatewaysClientListAllOptions) (resp azfake.PagerResponder[armnetwork.ServiceGatewaysClientListAllResponse])
+
+	// NewListPager is the fake for method ServiceGatewaysClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(resourceGroupName string, options *armnetwork.ServiceGatewaysClientListOptions) (resp azfake.PagerResponder[armnetwork.ServiceGatewaysClientListResponse])
 
 	// UpdateAddressLocations is the fake for method ServiceGatewaysClient.UpdateAddressLocations
 	// HTTP status codes to indicate success: http.StatusOK
@@ -72,8 +72,8 @@ func NewServiceGatewaysServerTransport(srv *ServiceGatewaysServer) *ServiceGatew
 		beginDelete:                 newTracker[azfake.PollerResponder[armnetwork.ServiceGatewaysClientDeleteResponse]](),
 		newGetAddressLocationsPager: newTracker[azfake.PagerResponder[armnetwork.ServiceGatewaysClientGetAddressLocationsResponse]](),
 		newGetServicesPager:         newTracker[azfake.PagerResponder[armnetwork.ServiceGatewaysClientGetServicesResponse]](),
-		newListPager:                newTracker[azfake.PagerResponder[armnetwork.ServiceGatewaysClientListResponse]](),
 		newListAllPager:             newTracker[azfake.PagerResponder[armnetwork.ServiceGatewaysClientListAllResponse]](),
+		newListPager:                newTracker[azfake.PagerResponder[armnetwork.ServiceGatewaysClientListResponse]](),
 	}
 }
 
@@ -85,8 +85,8 @@ type ServiceGatewaysServerTransport struct {
 	beginDelete                 *tracker[azfake.PollerResponder[armnetwork.ServiceGatewaysClientDeleteResponse]]
 	newGetAddressLocationsPager *tracker[azfake.PagerResponder[armnetwork.ServiceGatewaysClientGetAddressLocationsResponse]]
 	newGetServicesPager         *tracker[azfake.PagerResponder[armnetwork.ServiceGatewaysClientGetServicesResponse]]
-	newListPager                *tracker[azfake.PagerResponder[armnetwork.ServiceGatewaysClientListResponse]]
 	newListAllPager             *tracker[azfake.PagerResponder[armnetwork.ServiceGatewaysClientListAllResponse]]
+	newListPager                *tracker[azfake.PagerResponder[armnetwork.ServiceGatewaysClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for ServiceGatewaysServerTransport.
@@ -120,10 +120,10 @@ func (s *ServiceGatewaysServerTransport) dispatchToMethodFake(req *http.Request,
 				res.resp, res.err = s.dispatchNewGetAddressLocationsPager(req)
 			case "ServiceGatewaysClient.NewGetServicesPager":
 				res.resp, res.err = s.dispatchNewGetServicesPager(req)
-			case "ServiceGatewaysClient.NewListPager":
-				res.resp, res.err = s.dispatchNewListPager(req)
 			case "ServiceGatewaysClient.NewListAllPager":
 				res.resp, res.err = s.dispatchNewListAllPager(req)
+			case "ServiceGatewaysClient.NewListPager":
+				res.resp, res.err = s.dispatchNewListPager(req)
 			case "ServiceGatewaysClient.UpdateAddressLocations":
 				res.resp, res.err = s.dispatchUpdateAddressLocations(req)
 			case "ServiceGatewaysClient.UpdateServices":
@@ -152,7 +152,7 @@ func (s *ServiceGatewaysServerTransport) dispatchBeginCreateOrUpdate(req *http.R
 	}
 	beginCreateOrUpdate := s.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/serviceGateways/(?P<serviceGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/serviceGateways/(?P<serviceGatewayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -200,7 +200,7 @@ func (s *ServiceGatewaysServerTransport) dispatchBeginDelete(req *http.Request) 
 	}
 	beginDelete := s.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/serviceGateways/(?P<serviceGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/serviceGateways/(?P<serviceGatewayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -242,7 +242,7 @@ func (s *ServiceGatewaysServerTransport) dispatchGet(req *http.Request) (*http.R
 	if s.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/serviceGateways/(?P<serviceGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/serviceGateways/(?P<serviceGatewayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -277,7 +277,7 @@ func (s *ServiceGatewaysServerTransport) dispatchNewGetAddressLocationsPager(req
 	}
 	newGetAddressLocationsPager := s.newGetAddressLocationsPager.get(req)
 	if newGetAddressLocationsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/serviceGateways/(?P<serviceGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/addressLocations`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/serviceGateways/(?P<serviceGatewayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/addressLocations`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -318,7 +318,7 @@ func (s *ServiceGatewaysServerTransport) dispatchNewGetServicesPager(req *http.R
 	}
 	newGetServicesPager := s.newGetServicesPager.get(req)
 	if newGetServicesPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/serviceGateways/(?P<serviceGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/services`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/serviceGateways/(?P<serviceGatewayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/services`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -353,13 +353,46 @@ func (s *ServiceGatewaysServerTransport) dispatchNewGetServicesPager(req *http.R
 	return resp, nil
 }
 
+func (s *ServiceGatewaysServerTransport) dispatchNewListAllPager(req *http.Request) (*http.Response, error) {
+	if s.srv.NewListAllPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListAllPager not implemented")}
+	}
+	newListAllPager := s.newListAllPager.get(req)
+	if newListAllPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/serviceGateways`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := s.srv.NewListAllPager(nil)
+		newListAllPager = &resp
+		s.newListAllPager.add(req, newListAllPager)
+		server.PagerResponderInjectNextLinks(newListAllPager, req, func(page *armnetwork.ServiceGatewaysClientListAllResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListAllPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		s.newListAllPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListAllPager) {
+		s.newListAllPager.remove(req)
+	}
+	return resp, nil
+}
+
 func (s *ServiceGatewaysServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
 	if s.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
 	newListPager := s.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/serviceGateways`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/serviceGateways`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -390,44 +423,11 @@ func (s *ServiceGatewaysServerTransport) dispatchNewListPager(req *http.Request)
 	return resp, nil
 }
 
-func (s *ServiceGatewaysServerTransport) dispatchNewListAllPager(req *http.Request) (*http.Response, error) {
-	if s.srv.NewListAllPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListAllPager not implemented")}
-	}
-	newListAllPager := s.newListAllPager.get(req)
-	if newListAllPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/serviceGateways`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := s.srv.NewListAllPager(nil)
-		newListAllPager = &resp
-		s.newListAllPager.add(req, newListAllPager)
-		server.PagerResponderInjectNextLinks(newListAllPager, req, func(page *armnetwork.ServiceGatewaysClientListAllResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListAllPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		s.newListAllPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListAllPager) {
-		s.newListAllPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (s *ServiceGatewaysServerTransport) dispatchUpdateAddressLocations(req *http.Request) (*http.Response, error) {
 	if s.srv.UpdateAddressLocations == nil {
 		return nil, &nonRetriableError{errors.New("fake for method UpdateAddressLocations not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/serviceGateways/(?P<serviceGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/updateAddressLocations`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/serviceGateways/(?P<serviceGatewayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/updateAddressLocations`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -464,7 +464,7 @@ func (s *ServiceGatewaysServerTransport) dispatchUpdateServices(req *http.Reques
 	if s.srv.UpdateServices == nil {
 		return nil, &nonRetriableError{errors.New("fake for method UpdateServices not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/serviceGateways/(?P<serviceGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/updateServices`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/serviceGateways/(?P<serviceGatewayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/updateServices`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -501,7 +501,7 @@ func (s *ServiceGatewaysServerTransport) dispatchUpdateTags(req *http.Request) (
 	if s.srv.UpdateTags == nil {
 		return nil, &nonRetriableError{errors.New("fake for method UpdateTags not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/serviceGateways/(?P<serviceGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/serviceGateways/(?P<serviceGatewayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {

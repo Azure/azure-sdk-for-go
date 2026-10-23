@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos/v3"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -104,7 +104,7 @@ func (c *CapabilitiesServerTransport) dispatchCreateOrUpdate(req *http.Request) 
 	if c.srv.CreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/(?P<parentProviderNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<parentResourceType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<parentResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Chaos/targets/(?P<targetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/capabilities/(?P<capabilityName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/(?P<parentProviderNamespace>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/(?P<parentResourceType>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/(?P<parentResourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Chaos/targets/(?P<targetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/capabilities/(?P<capabilityName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 8 {
@@ -157,7 +157,7 @@ func (c *CapabilitiesServerTransport) dispatchDelete(req *http.Request) (*http.R
 	if c.srv.Delete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/(?P<parentProviderNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<parentResourceType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<parentResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Chaos/targets/(?P<targetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/capabilities/(?P<capabilityName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/(?P<parentProviderNamespace>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/(?P<parentResourceType>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/(?P<parentResourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Chaos/targets/(?P<targetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/capabilities/(?P<capabilityName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 8 {
@@ -206,7 +206,7 @@ func (c *CapabilitiesServerTransport) dispatchGet(req *http.Request) (*http.Resp
 	if c.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/(?P<parentProviderNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<parentResourceType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<parentResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Chaos/targets/(?P<targetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/capabilities/(?P<capabilityName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/(?P<parentProviderNamespace>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/(?P<parentResourceType>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/(?P<parentResourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Chaos/targets/(?P<targetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/capabilities/(?P<capabilityName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 8 {
@@ -257,7 +257,7 @@ func (c *CapabilitiesServerTransport) dispatchNewListPager(req *http.Request) (*
 	}
 	newListPager := c.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/(?P<parentProviderNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<parentResourceType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<parentResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Chaos/targets/(?P<targetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/capabilities`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/(?P<parentProviderNamespace>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/(?P<parentResourceType>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/(?P<parentResourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Chaos/targets/(?P<targetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/capabilities`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 7 {

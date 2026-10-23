@@ -105,7 +105,7 @@ func (j *JoinRequestsServerTransport) dispatchApprove(req *http.Request) (*http.
 	if j.srv.Approve == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Approve not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/invoiceSections/(?P<invoiceSectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Education/labs/default/joinRequests/(?P<joinRequestName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/approve`
+	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/billingProfiles/(?P<billingProfileName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/invoiceSections/(?P<invoiceSectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Education/labs/default/joinRequests/(?P<joinRequestName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/approve`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -146,7 +146,7 @@ func (j *JoinRequestsServerTransport) dispatchDeny(req *http.Request) (*http.Res
 	if j.srv.Deny == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Deny not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/invoiceSections/(?P<invoiceSectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Education/labs/default/joinRequests/(?P<joinRequestName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/deny`
+	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/billingProfiles/(?P<billingProfileName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/invoiceSections/(?P<invoiceSectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Education/labs/default/joinRequests/(?P<joinRequestName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/deny`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -187,7 +187,7 @@ func (j *JoinRequestsServerTransport) dispatchGet(req *http.Request) (*http.Resp
 	if j.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/invoiceSections/(?P<invoiceSectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Education/labs/default/joinRequests/(?P<joinRequestName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/billingProfiles/(?P<billingProfileName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/invoiceSections/(?P<invoiceSectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Education/labs/default/joinRequests/(?P<joinRequestName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -230,7 +230,7 @@ func (j *JoinRequestsServerTransport) dispatchNewListPager(req *http.Request) (*
 	}
 	newListPager := j.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/invoiceSections/(?P<invoiceSectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Education/labs/default/joinRequests`
+		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/billingProfiles/(?P<billingProfileName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/invoiceSections/(?P<invoiceSectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Education/labs/default/joinRequests`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {

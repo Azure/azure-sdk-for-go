@@ -130,7 +130,7 @@ func (v *ViewsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.
 	if v.srv.CreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.CostManagement/views/(?P<viewName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.CostManagement/views/(?P<viewName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -163,7 +163,7 @@ func (v *ViewsServerTransport) dispatchCreateOrUpdateByScope(req *http.Request) 
 	if v.srv.CreateOrUpdateByScope == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdateByScope not implemented")}
 	}
-	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CostManagement/views/(?P<viewName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CostManagement/views/(?P<viewName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -200,7 +200,7 @@ func (v *ViewsServerTransport) dispatchDelete(req *http.Request) (*http.Response
 	if v.srv.Delete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.CostManagement/views/(?P<viewName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.CostManagement/views/(?P<viewName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -229,7 +229,7 @@ func (v *ViewsServerTransport) dispatchDeleteByScope(req *http.Request) (*http.R
 	if v.srv.DeleteByScope == nil {
 		return nil, &nonRetriableError{errors.New("fake for method DeleteByScope not implemented")}
 	}
-	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CostManagement/views/(?P<viewName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CostManagement/views/(?P<viewName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -262,7 +262,7 @@ func (v *ViewsServerTransport) dispatchGet(req *http.Request) (*http.Response, e
 	if v.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.CostManagement/views/(?P<viewName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.CostManagement/views/(?P<viewName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -291,7 +291,7 @@ func (v *ViewsServerTransport) dispatchGetByScope(req *http.Request) (*http.Resp
 	if v.srv.GetByScope == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetByScope not implemented")}
 	}
-	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CostManagement/views/(?P<viewName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CostManagement/views/(?P<viewName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -353,7 +353,7 @@ func (v *ViewsServerTransport) dispatchNewListByScopePager(req *http.Request) (*
 	}
 	newListByScopePager := v.newListByScopePager.get(req)
 	if newListByScopePager == nil {
-		const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CostManagement/views`
+		const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CostManagement/views`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {

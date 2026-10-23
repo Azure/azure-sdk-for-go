@@ -19,7 +19,7 @@ import (
 // MaintenanceEventsClient - Maintenance event operations for PostgreSQL flexible servers.
 // Don't use this type directly, use NewMaintenanceEventsClient() instead.
 //
-// Generated from API version 2026-04-01-preview
+// Generated from API version 2026-07-01-preview
 type MaintenanceEventsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type MaintenanceEventsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewMaintenanceEventsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MaintenanceEventsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -91,7 +94,7 @@ func (client *MaintenanceEventsClient) applyNow(ctx context.Context, resourceGro
 func (client *MaintenanceEventsClient) applyNowCreateRequest(ctx context.Context, resourceGroupName string, serverName string, maintenanceEventID string, _ *MaintenanceEventsClientBeginApplyNowOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/maintenanceEvents/{maintenanceEventId}/applyNow"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -111,7 +114,7 @@ func (client *MaintenanceEventsClient) applyNowCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -144,7 +147,7 @@ func (client *MaintenanceEventsClient) Get(ctx context.Context, resourceGroupNam
 func (client *MaintenanceEventsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, maintenanceEventID string, _ *MaintenanceEventsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/maintenanceEvents/{maintenanceEventId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -164,7 +167,7 @@ func (client *MaintenanceEventsClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -220,7 +223,7 @@ func (client *MaintenanceEventsClient) listCreateRequest(ctx context.Context, re
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/maintenanceEvents"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -240,7 +243,7 @@ func (client *MaintenanceEventsClient) listCreateRequest(ctx context.Context, re
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260401Preview)
+		reqQP.Set("api-version", version20260701Preview)
 		if options != nil && options.MaintenanceStatus != nil {
 			reqQP.Set("maintenanceStatus", string(*options.MaintenanceStatus))
 		}
@@ -313,7 +316,7 @@ func (client *MaintenanceEventsClient) reschedule(ctx context.Context, resourceG
 func (client *MaintenanceEventsClient) rescheduleCreateRequest(ctx context.Context, resourceGroupName string, serverName string, maintenanceEventID string, body MaintenanceEventRescheduleRequest, _ *MaintenanceEventsClientBeginRescheduleOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/maintenanceEvents/{maintenanceEventId}/reschedule"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -333,7 +336,7 @@ func (client *MaintenanceEventsClient) rescheduleCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

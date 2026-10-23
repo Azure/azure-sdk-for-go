@@ -92,7 +92,7 @@ func (u *UnsupportedVMSizesServerTransport) dispatchGet(req *http.Request) (*htt
 	if u.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ServiceFabric/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/unsupportedVmSizes/(?P<vmSize>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ServiceFabric/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/unsupportedVmSizes/(?P<vmSize>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -127,7 +127,7 @@ func (u *UnsupportedVMSizesServerTransport) dispatchNewListPager(req *http.Reque
 	}
 	newListPager := u.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ServiceFabric/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/unsupportedVmSizes`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ServiceFabric/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/unsupportedVmSizes`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {

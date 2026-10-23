@@ -832,6 +832,14 @@ type CommunityGalleryImageVersionProperties struct {
 
 	// Describes the storage profile of the image version.
 	StorageProfile *SharedGalleryImageVersionStorageProfile
+
+	// READ-ONLY; The timestamp after which a soft-deleted gallery image version is no longer consumable for VM/VMSS creation
+	// or VMSS scale out. It is calculated from the soft-deleted time plus the retention period, and is not present for active
+	// gallery image versions. In dateTime offset format.
+	ConsumptionEndTime *time.Time
+
+	// READ-ONLY; The state of the gallery image version, derived from its soft-delete status.
+	ImageState *GalleryImageVersionState
 }
 
 // CommunityGalleryInfo - Information of community gallery if current gallery is shared to community
@@ -1037,6 +1045,18 @@ type DataDiskImageEncryption struct {
 
 	// A relative URI containing the resource ID of the disk encryption set.
 	DiskEncryptionSetID *string
+
+	// This property specifies the security profile of a data disk image.
+	SecurityProfile *DataDiskImageSecurityProfile
+}
+
+// DataDiskImageSecurityProfile - Contains security profile for a DataDisk image.
+type DataDiskImageSecurityProfile struct {
+	// confidential VM encryption types
+	ConfidentialVMEncryptionType *ConfidentialVMEncryptionType
+
+	// secure VM disk encryption set id
+	SecureVMDiskEncryptionSetID *string
 }
 
 // DataDisksToAttach - Describes the data disk to be attached.
@@ -2087,6 +2107,17 @@ type ExternalHealthPolicy struct {
 	GracePeriod *string
 }
 
+// FlexProfile - Specifies the FlexProfile for a virtual machine. When set, Azure may deploy a compatible alternative VM size
+// based on capacity and placement considerations, and the deployed size is returned in hardwareProfile.vmSize. See the properties.flexProfile
+// description for the full usage rules, including how it interacts with hardwareProfile.vmSize.
+type FlexProfile struct {
+	// REQUIRED; Specifies the preferred VM size, for example Standard_D4s_v5. Azure may deploy a compatible alternative size
+	// based on capacity and placement considerations. Supported VM families for FlexProfile may vary by region. The recommended
+	// way to get the list of available sizes is using these APIs: [List all available virtual machine sizes in a region](https://docs.microsoft.com/rest/api/compute/resourceskus/list),
+	// [List all available virtual machine sizes for resizing](https://docs.microsoft.com/rest/api/compute/virtualmachines/listavailablesizes).
+	PreferredVMSize *string
+}
+
 // Gallery - Specifies information about the Shared Image Gallery that you want to create or update.
 type Gallery struct {
 	// REQUIRED; The geo-location where the resource lives
@@ -2601,6 +2632,9 @@ type GalleryImageVersionProperties struct {
 
 	// The security profile of a gallery image version
 	SecurityProfile *ImageVersionSecurityProfile
+
+	// READ-ONLY; The image metadata profiles associated with the gallery image version.
+	ImageMetadataProfiles []*ImageMetadataProfile
 
 	// READ-ONLY; The provisioning state, which only appears in the response.
 	ProvisioningState *GalleryProvisioningState
@@ -3153,6 +3187,14 @@ type GallerySoftDeletedResourceProperties struct {
 
 	// The timestamp for when the resource is soft-deleted. In dateTime offset format.
 	SoftDeletedTime *string
+
+	// READ-ONLY; The timestamp after which a soft-deleted gallery image version is no longer consumable for VM/VMSS creation
+	// or VMSS scale out. It is calculated from the soft-deleted time plus the retention period. In dateTime offset format.
+	ConsumptionEndTime *time.Time
+
+	// READ-ONLY; The timestamp at which a soft-deleted gallery image version is permanently (hard) deleted and can no longer
+	// be recovered. In dateTime offset format.
+	HardDeletionTargetTime *time.Time
 }
 
 type GalleryTargetExtendedLocation struct {
@@ -3341,6 +3383,20 @@ type ImageListResult struct {
 	NextLink *string
 }
 
+// ImageMetadataProfile - Describes the metadata profile of an image.
+type ImageMetadataProfile struct {
+	// REQUIRED; The type of metadata.
+	Type *MetadataType
+
+	// The list of internal metadata key-value pairs. Contains non-sensitive service-internal metadata for diagnostics and tracking.
+	// No secret material is emitted in this list.
+	InternalMetadataList []*MetadataKeyValue
+
+	// The list of public metadata key-value pairs. Contains non-sensitive image capability metadata such as supported OS, component
+	// names, and versions. No secret material is emitted in this list.
+	PublicMetadataList []*MetadataKeyValue
+}
+
 // ImageOSDisk - Describes an Operating System disk.
 type ImageOSDisk struct {
 	// REQUIRED; The OS State. For managed images, use Generalized.
@@ -3467,6 +3523,10 @@ type ImageUpdate struct {
 
 // ImageVersionSecurityProfile - The security profile of a gallery image version
 type ImageVersionSecurityProfile struct {
+	// Specifies the secrets provisioning settings for the gallery image version. Used on create or update to configure secrets
+	// provisioning.
+	SecretsProvisioningSettings *SecretsProvisioningSettings
+
 	// Contains UEFI settings for the image version.
 	UefiSettings *GalleryImageVersionUefiSettings
 }
@@ -3892,6 +3952,18 @@ type MaxInstancePercentPerZonePolicy struct {
 
 	// Limit on the number of instances in each zone as a percentage of the total capacity of the virtual machine scale set.
 	Value *int32
+}
+
+// MetadataKeyValue - Describes a key-value pair for image metadata.
+type MetadataKeyValue struct {
+	// REQUIRED; The metadata key. Known keys emitted by the service include 'Linux.AzureSecretsProvisioning.Enabled', 'OS.Name',
+	// and '{componentName}.Version' (e.g., 'AzureGuestAgent.Version'). All values are non-sensitive configuration; no secrets,
+	// credentials, or cryptographic material transit this field.
+	MetadataKey *string
+
+	// The metadata value. Contains non-sensitive configuration such as capability flags ('true'/'false'), OS names ('Linux',
+	// 'Windows'), and version strings (e.g., '1.0.0').
+	MetadataValue *string
 }
 
 // MigrateToVirtualMachineScaleSetInput - Describes the Virtual Machine Scale Set to migrate from Availability Set.
@@ -4938,7 +5010,9 @@ type RestorePointInstanceView struct {
 	// The disk restore points information.
 	DiskRestorePoints []*DiskRestorePointInstanceView
 
-	// The resource status information.
+	// The aggregate status information for the restore point. The list may include separate aggregate entries for replication
+	// and, in supported API versions, Instant Access, as applicable. For more information about Instant Access, see [Use virtual
+	// machine restore points](https://learn.microsoft.com/azure/virtual-machines/virtual-machines-create-restore-points#instant-access).
 	Statuses []*InstanceViewStatus
 }
 
@@ -5518,6 +5592,27 @@ type ScriptSource struct {
 	Parameters []*GalleryScriptParameter
 }
 
+// SecretsProvisioningComponent - Describes a component involved in secrets provisioning.
+type SecretsProvisioningComponent struct {
+	// The name of the component.
+	Name *SecretsProvisioningComponentName
+
+	// The version of the component.
+	Version *string
+}
+
+// SecretsProvisioningSettings - Describes the secrets provisioning settings for a gallery image version.
+type SecretsProvisioningSettings struct {
+	// The list of component versions involved in secrets provisioning.
+	Components []*SecretsProvisioningComponent
+
+	// Specifies whether the image version supports secrets provisioning.
+	IsSupported *bool
+
+	// The name of the operating system (e.g., "mariner").
+	OSName *string
+}
+
 // SecurityPostureReference - Specifies the security posture to be used in the scale set. Minimum api-version: 2023-03-01
 type SecurityPostureReference struct {
 	// REQUIRED; The security posture reference id in the form of /CommunityGalleries/{communityGalleryName}/securityPostures/{securityPostureName}/versions/{major.minor.patch}|latest
@@ -5723,6 +5818,14 @@ type SharedGalleryImageVersionProperties struct {
 
 	// Describes the storage profile of the image version.
 	StorageProfile *SharedGalleryImageVersionStorageProfile
+
+	// READ-ONLY; The timestamp after which a soft-deleted gallery image version is no longer consumable for VM/VMSS creation
+	// or VMSS scale out. It is calculated from the soft-deleted time plus the retention period, and is not present for active
+	// gallery image versions. In dateTime offset format.
+	ConsumptionEndTime *time.Time
+
+	// READ-ONLY; The state of the gallery image version, derived from its soft-delete status.
+	ImageState *GalleryImageVersionState
 }
 
 // SharedGalleryImageVersionStorageProfile - This is the storage profile of a Gallery Image Version.
@@ -5987,8 +6090,16 @@ type SnapshotUpdateProperties struct {
 
 // SoftDeletePolicy - Contains information about the soft deletion policy of the gallery.
 type SoftDeletePolicy struct {
+	// The grace period in days for a simulated hard-deleted resource. During this period the gallery image version is unusable
+	// but can still be recovered if required. After this period elapses, the gallery image version is permanently (hard) deleted.
+	GracePeriodInDays *int32
+
 	// Enables soft-deletion for resources in this gallery, allowing them to be recovered within retention time.
 	IsSoftDeleteEnabled *bool
+
+	// The retention period in days for a soft-deleted resource. After this period elapses, the soft-deleted gallery image version
+	// transitions to a simulated hard-deleted state.
+	RetentionPeriodInDays *int32
 }
 
 // SourceVault - The vault id is an Azure Resource Manager Resource id in the form /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}
@@ -7296,6 +7407,10 @@ type VirtualMachineNetworkInterfaceIPConfigurationProperties struct {
 	// Specifies the primary network interface in case the virtual machine has more than 1 network interface.
 	Primary *bool
 
+	// The private IP address prefix length. If specified and the allocation method is dynamic, the service will allocate a CIDR
+	// block instead of a single IP address.
+	PrivateIPAddressPrefixLength *int32
+
 	// Available from Api-Version 2017-03-30 onwards, it represents whether the specific ipconfiguration is IPv4 or IPv6. Default
 	// is taken as IPv4. Possible values are: 'IPv4' and 'IPv6'.
 	PrivateIPAddressVersion *IPVersions
@@ -7354,6 +7469,14 @@ type VirtualMachineProperties struct {
 	// (inclusive) and should be specified in ISO 8601 format. The default value is 90 minutes (PT1H30M). Minimum api-version:
 	// 2020-06-01.
 	ExtensionsTimeBudget *string
+
+	// [Preview Feature] Specifies a FlexProfile for VM size. Azure may deploy a compatible alternative VM size based on capacity
+	// and placement considerations, and returns the deployed size in hardwareProfile.vmSize. A request that adds flexProfile
+	// must omit hardwareProfile.vmSize. For a virtual machine that uses FlexProfile, a hardwareProfile.vmSize equal to the deployed
+	// size is ignored, so a GET response can be sent back unchanged. A PATCH request that omits flexProfile keeps it. A PUT request
+	// that omits flexProfile and sets hardwareProfile.vmSize clears it. This property cannot exist along with a non-null properties.availabilitySet,
+	// properties.capacityReservation, properties.host, properties.hostGroup, properties.proximityPlacementGroup or properties.virtualMachineScaleSet.
+	FlexProfile *FlexProfile
 
 	// Specifies the hardware settings for the virtual machine.
 	HardwareProfile *HardwareProfile
@@ -7892,6 +8015,10 @@ type VirtualMachineScaleSetIPConfigurationProperties struct {
 
 	// Specifies the primary network interface in case the virtual machine has more than 1 network interface.
 	Primary *bool
+
+	// The private IP address prefix length. If specified and the allocation method is dynamic, the service will allocate a CIDR
+	// block instead of a single IP address.
+	PrivateIPAddressPrefixLength *int32
 
 	// Available from Api-Version 2017-03-30 onwards, it represents whether the specific ipconfiguration is IPv4 or IPv6. Default
 	// is taken as IPv4. Possible values are: 'IPv4' and 'IPv6'.
@@ -8457,6 +8584,10 @@ type VirtualMachineScaleSetUpdateIPConfigurationProperties struct {
 
 	// Specifies the primary IP Configuration in case the network interface has more than one IP Configuration.
 	Primary *bool
+
+	// The private IP address prefix length. If specified and the allocation method is dynamic, the service will allocate a CIDR
+	// block instead of a single IP address.
+	PrivateIPAddressPrefixLength *int32
 
 	// Available from Api-Version 2017-03-30 onwards, it represents whether the specific ipconfiguration is IPv4 or IPv6. Default
 	// is taken as IPv4. Possible values are: 'IPv4' and 'IPv6'.

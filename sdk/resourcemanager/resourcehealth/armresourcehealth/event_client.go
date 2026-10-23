@@ -30,6 +30,9 @@ type EventClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewEventClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*EventClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -68,7 +71,7 @@ func (client *EventClient) FetchBilllingCommunicationDetailsBySubscriptionIDAndT
 func (client *EventClient) fetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingIDCreateRequest(ctx context.Context, eventTrackingID string, _ *EventClientFetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingIDOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ResourceHealth/events/{eventTrackingId}/fetchBillingCommunicationDetails"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if eventTrackingID == "" {
@@ -125,7 +128,7 @@ func (client *EventClient) FetchDetailsBySubscriptionIDAndTrackingID(ctx context
 func (client *EventClient) fetchDetailsBySubscriptionIDAndTrackingIDCreateRequest(ctx context.Context, eventTrackingID string, _ *EventClientFetchDetailsBySubscriptionIDAndTrackingIDOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ResourceHealth/events/{eventTrackingId}/fetchEventDetails"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if eventTrackingID == "" {
@@ -234,7 +237,7 @@ func (client *EventClient) GetBySubscriptionIDAndTrackingID(ctx context.Context,
 func (client *EventClient) getBySubscriptionIDAndTrackingIDCreateRequest(ctx context.Context, eventTrackingID string, options *EventClientGetBySubscriptionIDAndTrackingIDOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ResourceHealth/events/{eventTrackingId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if eventTrackingID == "" {

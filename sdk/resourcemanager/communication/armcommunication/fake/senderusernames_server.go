@@ -104,7 +104,7 @@ func (s *SenderUsernamesServerTransport) dispatchCreateOrUpdate(req *http.Reques
 	if s.srv.CreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Communication/emailServices/(?P<emailServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/domains/(?P<domainName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/senderUsernames/(?P<senderUsername>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Communication/emailServices/(?P<emailServiceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/domains/(?P<domainName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/senderUsernames/(?P<senderUsername>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -149,7 +149,7 @@ func (s *SenderUsernamesServerTransport) dispatchDelete(req *http.Request) (*htt
 	if s.srv.Delete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Communication/emailServices/(?P<emailServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/domains/(?P<domainName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/senderUsernames/(?P<senderUsername>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Communication/emailServices/(?P<emailServiceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/domains/(?P<domainName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/senderUsernames/(?P<senderUsername>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -190,7 +190,7 @@ func (s *SenderUsernamesServerTransport) dispatchGet(req *http.Request) (*http.R
 	if s.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Communication/emailServices/(?P<emailServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/domains/(?P<domainName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/senderUsernames/(?P<senderUsername>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Communication/emailServices/(?P<emailServiceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/domains/(?P<domainName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/senderUsernames/(?P<senderUsername>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -233,7 +233,7 @@ func (s *SenderUsernamesServerTransport) dispatchNewListByDomainsPager(req *http
 	}
 	newListByDomainsPager := s.newListByDomainsPager.get(req)
 	if newListByDomainsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Communication/emailServices/(?P<emailServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/domains/(?P<domainName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/senderUsernames`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Communication/emailServices/(?P<emailServiceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/domains/(?P<domainName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/senderUsernames`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {

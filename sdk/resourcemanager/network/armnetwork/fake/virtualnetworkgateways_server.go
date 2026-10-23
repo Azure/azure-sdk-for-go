@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v12"
 	"net/http"
 	"net/url"
 	"reflect"
@@ -42,10 +42,6 @@ type VirtualNetworkGatewaysServer struct {
 	// BeginGeneratevpnclientpackage is the fake for method VirtualNetworkGatewaysClient.BeginGeneratevpnclientpackage
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginGeneratevpnclientpackage func(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, parameters armnetwork.VPNClientParameters, options *armnetwork.VirtualNetworkGatewaysClientBeginGeneratevpnclientpackageOptions) (resp azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientGeneratevpnclientpackageResponse], errResp azfake.ErrorResponder)
-
-	// Get is the fake for method VirtualNetworkGatewaysClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, options *armnetwork.VirtualNetworkGatewaysClientGetOptions) (resp azfake.Responder[armnetwork.VirtualNetworkGatewaysClientGetResponse], errResp azfake.ErrorResponder)
 
 	// BeginGetAdvertisedRoutes is the fake for method VirtualNetworkGatewaysClient.BeginGetAdvertisedRoutes
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
@@ -107,18 +103,6 @@ type VirtualNetworkGatewaysServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginInvokePrepareMigration func(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, migrationParams armnetwork.VirtualNetworkGatewayMigrationParameters, options *armnetwork.VirtualNetworkGatewaysClientBeginInvokePrepareMigrationOptions) (resp azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientInvokePrepareMigrationResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method VirtualNetworkGatewaysClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, options *armnetwork.VirtualNetworkGatewaysClientListOptions) (resp azfake.PagerResponder[armnetwork.VirtualNetworkGatewaysClientListResponse])
-
-	// NewListConnectionsPager is the fake for method VirtualNetworkGatewaysClient.NewListConnectionsPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListConnectionsPager func(resourceGroupName string, virtualNetworkGatewayName string, options *armnetwork.VirtualNetworkGatewaysClientListConnectionsOptions) (resp azfake.PagerResponder[armnetwork.VirtualNetworkGatewaysClientListConnectionsResponse])
-
-	// ListRadiusSecrets is the fake for method VirtualNetworkGatewaysClient.ListRadiusSecrets
-	// HTTP status codes to indicate success: http.StatusOK
-	ListRadiusSecrets func(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, options *armnetwork.VirtualNetworkGatewaysClientListRadiusSecretsOptions) (resp azfake.Responder[armnetwork.VirtualNetworkGatewaysClientListRadiusSecretsResponse], errResp azfake.ErrorResponder)
-
 	// BeginReset is the fake for method VirtualNetworkGatewaysClient.BeginReset
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginReset func(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, options *armnetwork.VirtualNetworkGatewaysClientBeginResetOptions) (resp azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientResetResponse], errResp azfake.ErrorResponder)
@@ -147,13 +131,29 @@ type VirtualNetworkGatewaysServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginStopPacketCapture func(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, parameters armnetwork.VPNPacketCaptureStopParameters, options *armnetwork.VirtualNetworkGatewaysClientBeginStopPacketCaptureOptions) (resp azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientStopPacketCaptureResponse], errResp azfake.ErrorResponder)
 
-	// SupportedVPNDevices is the fake for method VirtualNetworkGatewaysClient.SupportedVPNDevices
-	// HTTP status codes to indicate success: http.StatusOK
-	SupportedVPNDevices func(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, options *armnetwork.VirtualNetworkGatewaysClientSupportedVPNDevicesOptions) (resp azfake.Responder[armnetwork.VirtualNetworkGatewaysClientSupportedVPNDevicesResponse], errResp azfake.ErrorResponder)
-
 	// BeginUpdateTags is the fake for method VirtualNetworkGatewaysClient.BeginUpdateTags
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdateTags func(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, parameters armnetwork.TagsObject, options *armnetwork.VirtualNetworkGatewaysClientBeginUpdateTagsOptions) (resp azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientUpdateTagsResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method VirtualNetworkGatewaysClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, options *armnetwork.VirtualNetworkGatewaysClientGetOptions) (resp azfake.Responder[armnetwork.VirtualNetworkGatewaysClientGetResponse], errResp azfake.ErrorResponder)
+
+	// ListRadiusSecrets is the fake for method VirtualNetworkGatewaysClient.ListRadiusSecrets
+	// HTTP status codes to indicate success: http.StatusOK
+	ListRadiusSecrets func(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, options *armnetwork.VirtualNetworkGatewaysClientListRadiusSecretsOptions) (resp azfake.Responder[armnetwork.VirtualNetworkGatewaysClientListRadiusSecretsResponse], errResp azfake.ErrorResponder)
+
+	// NewListConnectionsPager is the fake for method VirtualNetworkGatewaysClient.NewListConnectionsPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListConnectionsPager func(resourceGroupName string, virtualNetworkGatewayName string, options *armnetwork.VirtualNetworkGatewaysClientListConnectionsOptions) (resp azfake.PagerResponder[armnetwork.VirtualNetworkGatewaysClientListConnectionsResponse])
+
+	// NewListPager is the fake for method VirtualNetworkGatewaysClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(resourceGroupName string, options *armnetwork.VirtualNetworkGatewaysClientListOptions) (resp azfake.PagerResponder[armnetwork.VirtualNetworkGatewaysClientListResponse])
+
+	// SupportedVPNDevices is the fake for method VirtualNetworkGatewaysClient.SupportedVPNDevices
+	// HTTP status codes to indicate success: http.StatusOK
+	SupportedVPNDevices func(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, options *armnetwork.VirtualNetworkGatewaysClientSupportedVPNDevicesOptions) (resp azfake.Responder[armnetwork.VirtualNetworkGatewaysClientSupportedVPNDevicesResponse], errResp azfake.ErrorResponder)
 
 	// VPNDeviceConfigurationScript is the fake for method VirtualNetworkGatewaysClient.VPNDeviceConfigurationScript
 	// HTTP status codes to indicate success: http.StatusOK
@@ -186,8 +186,6 @@ func NewVirtualNetworkGatewaysServerTransport(srv *VirtualNetworkGatewaysServer)
 		beginInvokeCommitMigration:                         newTracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientInvokeCommitMigrationResponse]](),
 		beginInvokeExecuteMigration:                        newTracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientInvokeExecuteMigrationResponse]](),
 		beginInvokePrepareMigration:                        newTracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientInvokePrepareMigrationResponse]](),
-		newListPager:                                       newTracker[azfake.PagerResponder[armnetwork.VirtualNetworkGatewaysClientListResponse]](),
-		newListConnectionsPager:                            newTracker[azfake.PagerResponder[armnetwork.VirtualNetworkGatewaysClientListConnectionsResponse]](),
 		beginReset:                                         newTracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientResetResponse]](),
 		beginResetVPNClientSharedKey:                       newTracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientResetVPNClientSharedKeyResponse]](),
 		beginSetVpnclientIPSecParameters:                   newTracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientSetVpnclientIPSecParametersResponse]](),
@@ -196,6 +194,8 @@ func NewVirtualNetworkGatewaysServerTransport(srv *VirtualNetworkGatewaysServer)
 		beginStopExpressRouteSiteFailoverSimulation:        newTracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientStopExpressRouteSiteFailoverSimulationResponse]](),
 		beginStopPacketCapture:                             newTracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientStopPacketCaptureResponse]](),
 		beginUpdateTags:                                    newTracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientUpdateTagsResponse]](),
+		newListConnectionsPager:                            newTracker[azfake.PagerResponder[armnetwork.VirtualNetworkGatewaysClientListConnectionsResponse]](),
+		newListPager:                                       newTracker[azfake.PagerResponder[armnetwork.VirtualNetworkGatewaysClientListResponse]](),
 	}
 }
 
@@ -223,8 +223,6 @@ type VirtualNetworkGatewaysServerTransport struct {
 	beginInvokeCommitMigration                         *tracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientInvokeCommitMigrationResponse]]
 	beginInvokeExecuteMigration                        *tracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientInvokeExecuteMigrationResponse]]
 	beginInvokePrepareMigration                        *tracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientInvokePrepareMigrationResponse]]
-	newListPager                                       *tracker[azfake.PagerResponder[armnetwork.VirtualNetworkGatewaysClientListResponse]]
-	newListConnectionsPager                            *tracker[azfake.PagerResponder[armnetwork.VirtualNetworkGatewaysClientListConnectionsResponse]]
 	beginReset                                         *tracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientResetResponse]]
 	beginResetVPNClientSharedKey                       *tracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientResetVPNClientSharedKeyResponse]]
 	beginSetVpnclientIPSecParameters                   *tracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientSetVpnclientIPSecParametersResponse]]
@@ -233,6 +231,8 @@ type VirtualNetworkGatewaysServerTransport struct {
 	beginStopExpressRouteSiteFailoverSimulation        *tracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientStopExpressRouteSiteFailoverSimulationResponse]]
 	beginStopPacketCapture                             *tracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientStopPacketCaptureResponse]]
 	beginUpdateTags                                    *tracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientUpdateTagsResponse]]
+	newListConnectionsPager                            *tracker[azfake.PagerResponder[armnetwork.VirtualNetworkGatewaysClientListConnectionsResponse]]
+	newListPager                                       *tracker[azfake.PagerResponder[armnetwork.VirtualNetworkGatewaysClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for VirtualNetworkGatewaysServerTransport.
@@ -266,8 +266,6 @@ func (v *VirtualNetworkGatewaysServerTransport) dispatchToMethodFake(req *http.R
 				res.resp, res.err = v.dispatchBeginGenerateVPNProfile(req)
 			case "VirtualNetworkGatewaysClient.BeginGeneratevpnclientpackage":
 				res.resp, res.err = v.dispatchBeginGeneratevpnclientpackage(req)
-			case "VirtualNetworkGatewaysClient.Get":
-				res.resp, res.err = v.dispatchGet(req)
 			case "VirtualNetworkGatewaysClient.BeginGetAdvertisedRoutes":
 				res.resp, res.err = v.dispatchBeginGetAdvertisedRoutes(req)
 			case "VirtualNetworkGatewaysClient.BeginGetBgpPeerStatus":
@@ -298,12 +296,6 @@ func (v *VirtualNetworkGatewaysServerTransport) dispatchToMethodFake(req *http.R
 				res.resp, res.err = v.dispatchBeginInvokeExecuteMigration(req)
 			case "VirtualNetworkGatewaysClient.BeginInvokePrepareMigration":
 				res.resp, res.err = v.dispatchBeginInvokePrepareMigration(req)
-			case "VirtualNetworkGatewaysClient.NewListPager":
-				res.resp, res.err = v.dispatchNewListPager(req)
-			case "VirtualNetworkGatewaysClient.NewListConnectionsPager":
-				res.resp, res.err = v.dispatchNewListConnectionsPager(req)
-			case "VirtualNetworkGatewaysClient.ListRadiusSecrets":
-				res.resp, res.err = v.dispatchListRadiusSecrets(req)
 			case "VirtualNetworkGatewaysClient.BeginReset":
 				res.resp, res.err = v.dispatchBeginReset(req)
 			case "VirtualNetworkGatewaysClient.BeginResetVPNClientSharedKey":
@@ -318,10 +310,18 @@ func (v *VirtualNetworkGatewaysServerTransport) dispatchToMethodFake(req *http.R
 				res.resp, res.err = v.dispatchBeginStopExpressRouteSiteFailoverSimulation(req)
 			case "VirtualNetworkGatewaysClient.BeginStopPacketCapture":
 				res.resp, res.err = v.dispatchBeginStopPacketCapture(req)
-			case "VirtualNetworkGatewaysClient.SupportedVPNDevices":
-				res.resp, res.err = v.dispatchSupportedVPNDevices(req)
 			case "VirtualNetworkGatewaysClient.BeginUpdateTags":
 				res.resp, res.err = v.dispatchBeginUpdateTags(req)
+			case "VirtualNetworkGatewaysClient.Get":
+				res.resp, res.err = v.dispatchGet(req)
+			case "VirtualNetworkGatewaysClient.ListRadiusSecrets":
+				res.resp, res.err = v.dispatchListRadiusSecrets(req)
+			case "VirtualNetworkGatewaysClient.NewListConnectionsPager":
+				res.resp, res.err = v.dispatchNewListConnectionsPager(req)
+			case "VirtualNetworkGatewaysClient.NewListPager":
+				res.resp, res.err = v.dispatchNewListPager(req)
+			case "VirtualNetworkGatewaysClient.SupportedVPNDevices":
+				res.resp, res.err = v.dispatchSupportedVPNDevices(req)
 			case "VirtualNetworkGatewaysClient.VPNDeviceConfigurationScript":
 				res.resp, res.err = v.dispatchVPNDeviceConfigurationScript(req)
 			default:
@@ -346,7 +346,7 @@ func (v *VirtualNetworkGatewaysServerTransport) dispatchBeginCreateOrUpdate(req 
 	}
 	beginCreateOrUpdate := v.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -394,7 +394,7 @@ func (v *VirtualNetworkGatewaysServerTransport) dispatchBeginDelete(req *http.Re
 	}
 	beginDelete := v.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -438,7 +438,7 @@ func (v *VirtualNetworkGatewaysServerTransport) dispatchBeginDisconnectVirtualNe
 	}
 	beginDisconnectVirtualNetworkGatewayVPNConnections := v.beginDisconnectVirtualNetworkGatewayVPNConnections.get(req)
 	if beginDisconnectVirtualNetworkGatewayVPNConnections == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/disconnectVirtualNetworkGatewayVpnConnections`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/disconnectVirtualNetworkGatewayVpnConnections`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -486,7 +486,7 @@ func (v *VirtualNetworkGatewaysServerTransport) dispatchBeginGenerateVPNProfile(
 	}
 	beginGenerateVPNProfile := v.beginGenerateVPNProfile.get(req)
 	if beginGenerateVPNProfile == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/generatevpnprofile`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/generatevpnprofile`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -534,7 +534,7 @@ func (v *VirtualNetworkGatewaysServerTransport) dispatchBeginGeneratevpnclientpa
 	}
 	beginGeneratevpnclientpackage := v.beginGeneratevpnclientpackage.get(req)
 	if beginGeneratevpnclientpackage == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/generatevpnclientpackage`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/generatevpnclientpackage`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -576,46 +576,13 @@ func (v *VirtualNetworkGatewaysServerTransport) dispatchBeginGeneratevpnclientpa
 	return resp, nil
 }
 
-func (v *VirtualNetworkGatewaysServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if v.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	virtualNetworkGatewayNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("virtualNetworkGatewayName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := v.srv.Get(req.Context(), resourceGroupNameParam, virtualNetworkGatewayNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).VirtualNetworkGateway, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (v *VirtualNetworkGatewaysServerTransport) dispatchBeginGetAdvertisedRoutes(req *http.Request) (*http.Response, error) {
 	if v.srv.BeginGetAdvertisedRoutes == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginGetAdvertisedRoutes not implemented")}
 	}
 	beginGetAdvertisedRoutes := v.beginGetAdvertisedRoutes.get(req)
 	if beginGetAdvertisedRoutes == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getAdvertisedRoutes`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getAdvertisedRoutes`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -660,7 +627,7 @@ func (v *VirtualNetworkGatewaysServerTransport) dispatchBeginGetBgpPeerStatus(re
 	}
 	beginGetBgpPeerStatus := v.beginGetBgpPeerStatus.get(req)
 	if beginGetBgpPeerStatus == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getBgpPeerStatus`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getBgpPeerStatus`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -712,7 +679,7 @@ func (v *VirtualNetworkGatewaysServerTransport) dispatchBeginGetEffectiveRoutes(
 	}
 	beginGetEffectiveRoutes := v.beginGetEffectiveRoutes.get(req)
 	if beginGetEffectiveRoutes == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getEffectiveRoutes`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getEffectiveRoutes`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -756,7 +723,7 @@ func (v *VirtualNetworkGatewaysServerTransport) dispatchBeginGetFailoverAllTestD
 	}
 	beginGetFailoverAllTestDetails := v.beginGetFailoverAllTestDetails.get(req)
 	if beginGetFailoverAllTestDetails == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getFailoverAllTestsDetails`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getFailoverAllTestsDetails`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -805,7 +772,7 @@ func (v *VirtualNetworkGatewaysServerTransport) dispatchBeginGetFailoverSingleTe
 	}
 	beginGetFailoverSingleTestDetails := v.beginGetFailoverSingleTestDetails.get(req)
 	if beginGetFailoverSingleTestDetails == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getFailoverSingleTestDetails`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getFailoverSingleTestDetails`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -850,7 +817,7 @@ func (v *VirtualNetworkGatewaysServerTransport) dispatchBeginGetLearnedRoutes(re
 	}
 	beginGetLearnedRoutes := v.beginGetLearnedRoutes.get(req)
 	if beginGetLearnedRoutes == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getLearnedRoutes`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getLearnedRoutes`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -894,7 +861,7 @@ func (v *VirtualNetworkGatewaysServerTransport) dispatchBeginGetResiliencyInform
 	}
 	beginGetResiliencyInformation := v.beginGetResiliencyInformation.get(req)
 	if beginGetResiliencyInformation == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getResiliencyInformation`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getResiliencyInformation`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -949,7 +916,7 @@ func (v *VirtualNetworkGatewaysServerTransport) dispatchBeginGetRoutesInformatio
 	}
 	beginGetRoutesInformation := v.beginGetRoutesInformation.get(req)
 	if beginGetRoutesInformation == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getRoutesInformation`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getRoutesInformation`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -1004,7 +971,7 @@ func (v *VirtualNetworkGatewaysServerTransport) dispatchBeginGetVPNProfilePackag
 	}
 	beginGetVPNProfilePackageURL := v.beginGetVPNProfilePackageURL.get(req)
 	if beginGetVPNProfilePackageURL == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getvpnprofilepackageurl`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getvpnprofilepackageurl`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -1048,7 +1015,7 @@ func (v *VirtualNetworkGatewaysServerTransport) dispatchBeginGetVpnclientConnect
 	}
 	beginGetVpnclientConnectionHealth := v.beginGetVpnclientConnectionHealth.get(req)
 	if beginGetVpnclientConnectionHealth == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getVpnClientConnectionHealth`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getVpnClientConnectionHealth`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -1092,7 +1059,7 @@ func (v *VirtualNetworkGatewaysServerTransport) dispatchBeginGetVpnclientIPSecPa
 	}
 	beginGetVpnclientIPSecParameters := v.beginGetVpnclientIPSecParameters.get(req)
 	if beginGetVpnclientIPSecParameters == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getvpnclientipsecparameters`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getvpnclientipsecparameters`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -1136,7 +1103,7 @@ func (v *VirtualNetworkGatewaysServerTransport) dispatchBeginInvokeAbortMigratio
 	}
 	beginInvokeAbortMigration := v.beginInvokeAbortMigration.get(req)
 	if beginInvokeAbortMigration == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/abortMigration`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/abortMigration`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -1180,7 +1147,7 @@ func (v *VirtualNetworkGatewaysServerTransport) dispatchBeginInvokeCommitMigrati
 	}
 	beginInvokeCommitMigration := v.beginInvokeCommitMigration.get(req)
 	if beginInvokeCommitMigration == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/commitMigration`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/commitMigration`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -1224,7 +1191,7 @@ func (v *VirtualNetworkGatewaysServerTransport) dispatchBeginInvokeExecuteMigrat
 	}
 	beginInvokeExecuteMigration := v.beginInvokeExecuteMigration.get(req)
 	if beginInvokeExecuteMigration == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/executeMigration`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/executeMigration`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -1268,7 +1235,7 @@ func (v *VirtualNetworkGatewaysServerTransport) dispatchBeginInvokePrepareMigrat
 	}
 	beginInvokePrepareMigration := v.beginInvokePrepareMigration.get(req)
 	if beginInvokePrepareMigration == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/prepareMigration`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/prepareMigration`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -1310,124 +1277,13 @@ func (v *VirtualNetworkGatewaysServerTransport) dispatchBeginInvokePrepareMigrat
 	return resp, nil
 }
 
-func (v *VirtualNetworkGatewaysServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if v.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := v.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/virtualNetworkGateways`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := v.srv.NewListPager(resourceGroupNameParam, nil)
-		newListPager = &resp
-		v.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.VirtualNetworkGatewaysClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		v.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		v.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (v *VirtualNetworkGatewaysServerTransport) dispatchNewListConnectionsPager(req *http.Request) (*http.Response, error) {
-	if v.srv.NewListConnectionsPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListConnectionsPager not implemented")}
-	}
-	newListConnectionsPager := v.newListConnectionsPager.get(req)
-	if newListConnectionsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/connections`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		virtualNetworkGatewayNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("virtualNetworkGatewayName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := v.srv.NewListConnectionsPager(resourceGroupNameParam, virtualNetworkGatewayNameParam, nil)
-		newListConnectionsPager = &resp
-		v.newListConnectionsPager.add(req, newListConnectionsPager)
-		server.PagerResponderInjectNextLinks(newListConnectionsPager, req, func(page *armnetwork.VirtualNetworkGatewaysClientListConnectionsResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListConnectionsPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		v.newListConnectionsPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListConnectionsPager) {
-		v.newListConnectionsPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (v *VirtualNetworkGatewaysServerTransport) dispatchListRadiusSecrets(req *http.Request) (*http.Response, error) {
-	if v.srv.ListRadiusSecrets == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListRadiusSecrets not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listRadiusSecrets`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	virtualNetworkGatewayNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("virtualNetworkGatewayName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := v.srv.ListRadiusSecrets(req.Context(), resourceGroupNameParam, virtualNetworkGatewayNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RadiusAuthServerListResult, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (v *VirtualNetworkGatewaysServerTransport) dispatchBeginReset(req *http.Request) (*http.Response, error) {
 	if v.srv.BeginReset == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginReset not implemented")}
 	}
 	beginReset := v.beginReset.get(req)
 	if beginReset == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/reset`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/reset`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -1479,7 +1335,7 @@ func (v *VirtualNetworkGatewaysServerTransport) dispatchBeginResetVPNClientShare
 	}
 	beginResetVPNClientSharedKey := v.beginResetVPNClientSharedKey.get(req)
 	if beginResetVPNClientSharedKey == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resetvpnclientsharedkey`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resetvpnclientsharedkey`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -1523,7 +1379,7 @@ func (v *VirtualNetworkGatewaysServerTransport) dispatchBeginSetVpnclientIPSecPa
 	}
 	beginSetVpnclientIPSecParameters := v.beginSetVpnclientIPSecParameters.get(req)
 	if beginSetVpnclientIPSecParameters == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/setvpnclientipsecparameters`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/setvpnclientipsecparameters`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -1571,7 +1427,7 @@ func (v *VirtualNetworkGatewaysServerTransport) dispatchBeginStartExpressRouteSi
 	}
 	beginStartExpressRouteSiteFailoverSimulation := v.beginStartExpressRouteSiteFailoverSimulation.get(req)
 	if beginStartExpressRouteSiteFailoverSimulation == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/startSiteFailoverTest`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/startSiteFailoverTest`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -1616,7 +1472,7 @@ func (v *VirtualNetworkGatewaysServerTransport) dispatchBeginStartPacketCapture(
 	}
 	beginStartPacketCapture := v.beginStartPacketCapture.get(req)
 	if beginStartPacketCapture == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/startPacketCapture`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/startPacketCapture`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -1670,7 +1526,7 @@ func (v *VirtualNetworkGatewaysServerTransport) dispatchBeginStopExpressRouteSit
 	}
 	beginStopExpressRouteSiteFailoverSimulation := v.beginStopExpressRouteSiteFailoverSimulation.get(req)
 	if beginStopExpressRouteSiteFailoverSimulation == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/stopSiteFailoverTest`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/stopSiteFailoverTest`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -1718,7 +1574,7 @@ func (v *VirtualNetworkGatewaysServerTransport) dispatchBeginStopPacketCapture(r
 	}
 	beginStopPacketCapture := v.beginStopPacketCapture.get(req)
 	if beginStopPacketCapture == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/stopPacketCapture`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/stopPacketCapture`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -1760,46 +1616,13 @@ func (v *VirtualNetworkGatewaysServerTransport) dispatchBeginStopPacketCapture(r
 	return resp, nil
 }
 
-func (v *VirtualNetworkGatewaysServerTransport) dispatchSupportedVPNDevices(req *http.Request) (*http.Response, error) {
-	if v.srv.SupportedVPNDevices == nil {
-		return nil, &nonRetriableError{errors.New("fake for method SupportedVPNDevices not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/supportedvpndevices`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	virtualNetworkGatewayNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("virtualNetworkGatewayName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := v.srv.SupportedVPNDevices(req.Context(), resourceGroupNameParam, virtualNetworkGatewayNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Value, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (v *VirtualNetworkGatewaysServerTransport) dispatchBeginUpdateTags(req *http.Request) (*http.Response, error) {
 	if v.srv.BeginUpdateTags == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdateTags not implemented")}
 	}
 	beginUpdateTags := v.beginUpdateTags.get(req)
 	if beginUpdateTags == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -1841,11 +1664,188 @@ func (v *VirtualNetworkGatewaysServerTransport) dispatchBeginUpdateTags(req *htt
 	return resp, nil
 }
 
+func (v *VirtualNetworkGatewaysServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if v.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	virtualNetworkGatewayNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("virtualNetworkGatewayName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := v.srv.Get(req.Context(), resourceGroupNameParam, virtualNetworkGatewayNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).VirtualNetworkGateway, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (v *VirtualNetworkGatewaysServerTransport) dispatchListRadiusSecrets(req *http.Request) (*http.Response, error) {
+	if v.srv.ListRadiusSecrets == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListRadiusSecrets not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listRadiusSecrets`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	virtualNetworkGatewayNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("virtualNetworkGatewayName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := v.srv.ListRadiusSecrets(req.Context(), resourceGroupNameParam, virtualNetworkGatewayNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RadiusAuthServerListResult, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (v *VirtualNetworkGatewaysServerTransport) dispatchNewListConnectionsPager(req *http.Request) (*http.Response, error) {
+	if v.srv.NewListConnectionsPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListConnectionsPager not implemented")}
+	}
+	newListConnectionsPager := v.newListConnectionsPager.get(req)
+	if newListConnectionsPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/connections`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		virtualNetworkGatewayNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("virtualNetworkGatewayName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := v.srv.NewListConnectionsPager(resourceGroupNameParam, virtualNetworkGatewayNameParam, nil)
+		newListConnectionsPager = &resp
+		v.newListConnectionsPager.add(req, newListConnectionsPager)
+		server.PagerResponderInjectNextLinks(newListConnectionsPager, req, func(page *armnetwork.VirtualNetworkGatewaysClientListConnectionsResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListConnectionsPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		v.newListConnectionsPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListConnectionsPager) {
+		v.newListConnectionsPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (v *VirtualNetworkGatewaysServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if v.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := v.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/virtualNetworkGateways`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := v.srv.NewListPager(resourceGroupNameParam, nil)
+		newListPager = &resp
+		v.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.VirtualNetworkGatewaysClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		v.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		v.newListPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (v *VirtualNetworkGatewaysServerTransport) dispatchSupportedVPNDevices(req *http.Request) (*http.Response, error) {
+	if v.srv.SupportedVPNDevices == nil {
+		return nil, &nonRetriableError{errors.New("fake for method SupportedVPNDevices not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/supportedvpndevices`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	virtualNetworkGatewayNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("virtualNetworkGatewayName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := v.srv.SupportedVPNDevices(req.Context(), resourceGroupNameParam, virtualNetworkGatewayNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Value, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (v *VirtualNetworkGatewaysServerTransport) dispatchVPNDeviceConfigurationScript(req *http.Request) (*http.Response, error) {
 	if v.srv.VPNDeviceConfigurationScript == nil {
 		return nil, &nonRetriableError{errors.New("fake for method VPNDeviceConfigurationScript not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/connections/(?P<virtualNetworkGatewayConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/vpndeviceconfigurationscript`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/connections/(?P<virtualNetworkGatewayConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/vpndeviceconfigurationscript`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {

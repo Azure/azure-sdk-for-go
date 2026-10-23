@@ -80,7 +80,10 @@ func (c *operationResultsCollector) Add(operation string, latency time.Duration,
 // not perturbed. The caller must hold c.mu.
 func (c *operationResultsCollector) addLocked(rec operationResult) {
 	c.seen++
-	if c.max <= 0 || len(c.results) < c.max {
+	if c.max < 0 {
+		return
+	}
+	if c.max == 0 || len(c.results) < c.max {
 		c.results = append(c.results, rec)
 		return
 	}
@@ -113,13 +116,7 @@ func (c *operationResultsCollector) MergeFrom(other *operationResultsCollector) 
 		c.seen += otherSeen
 		return
 	}
-
-	for _, rec := range copied {
-		c.addLocked(rec)
-	}
-	if extra := otherSeen - int64(len(copied)); extra > 0 {
-		c.seen += extra
-	}
+	c.results, c.seen = mergeReservoirs(c.results, c.seen, copied, otherSeen, c.max, c.rng)
 }
 
 func (c *operationResultsCollector) WriteJSON(path string) error {

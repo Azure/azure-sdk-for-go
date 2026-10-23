@@ -19,7 +19,7 @@ import (
 // RaiToolLabelsClient contains the methods for the RaiToolLabels group.
 // Don't use this type directly, use NewRaiToolLabelsClient() instead.
 //
-// Generated from API version 2026-05-15-preview
+// Generated from API version 2026-09-15-preview
 type RaiToolLabelsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type RaiToolLabelsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewRaiToolLabelsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RaiToolLabelsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -39,6 +42,81 @@ func NewRaiToolLabelsClient(subscriptionID string, credential azcore.TokenCreden
 		internal:       cl,
 	}
 	return client, nil
+}
+
+// BeginDelete - Deletes the specified RAI Tool Label associated with the Azure OpenAI account.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of Cognitive Services account.
+//   - raiToolConnectionName - The name of the Rai Tool Label
+//   - options - RaiToolLabelsClientBeginDeleteOptions contains the optional parameters for the RaiToolLabelsClient.BeginDelete
+//     method.
+func (client *RaiToolLabelsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, raiToolConnectionName string, options *RaiToolLabelsClientBeginDeleteOptions) (*runtime.Poller[RaiToolLabelsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.delete(ctx, resourceGroupName, accountName, raiToolConnectionName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[RaiToolLabelsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[RaiToolLabelsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// delete - Deletes the specified RAI Tool Label associated with the Azure OpenAI account.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *RaiToolLabelsClient) delete(ctx context.Context, resourceGroupName string, accountName string, raiToolConnectionName string, options *RaiToolLabelsClientBeginDeleteOptions) (*http.Response, error) {
+	var err error
+	const operationName = "RaiToolLabelsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, raiToolConnectionName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// deleteCreateRequest creates the delete request.
+func (client *RaiToolLabelsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, raiToolConnectionName string, _ *RaiToolLabelsClientBeginDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiToolLabels/{raiToolConnectionName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if raiToolConnectionName == "" {
+		return nil, errors.New("parameter raiToolConnectionName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{raiToolConnectionName}", url.PathEscape(raiToolConnectionName))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260915Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
 }
 
 // CreateOrUpdate - Creates the RAI Tool Label associated with the Azure OpenAI account.
@@ -63,19 +141,14 @@ func (client *RaiToolLabelsClient) CreateOrUpdate(ctx context.Context, resourceG
 	if err != nil {
 		return RaiToolLabelsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return RaiToolLabelsClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *RaiToolLabelsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, raiToolConnectionName string, raiToolLabel RaiToolLabel, _ *RaiToolLabelsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiToolLabels/{raiToolConnectionName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -95,7 +168,7 @@ func (client *RaiToolLabelsClient) createOrUpdateCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
+	reqQP.Set("api-version", version20260915Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -106,88 +179,15 @@ func (client *RaiToolLabelsClient) createOrUpdateCreateRequest(ctx context.Conte
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *RaiToolLabelsClient) createOrUpdateHandleResponse(resp *http.Response) (RaiToolLabelsClientCreateOrUpdateResponse, error) {
+func (client *RaiToolLabelsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (RaiToolLabelsClientCreateOrUpdateResponse, error) {
 	result := RaiToolLabelsClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RaiToolLabel); err != nil {
 		return RaiToolLabelsClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginDelete - Deletes the specified RAI Tool Label associated with the Azure OpenAI account.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - accountName - The name of Cognitive Services account.
-//   - raiToolConnectionName - The name of the Rai Tool Label
-//   - options - RaiToolLabelsClientBeginDeleteOptions contains the optional parameters for the RaiToolLabelsClient.BeginDelete
-//     method.
-func (client *RaiToolLabelsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, raiToolConnectionName string, options *RaiToolLabelsClientBeginDeleteOptions) (*runtime.Poller[RaiToolLabelsClientDeleteResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, raiToolConnectionName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[RaiToolLabelsClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[RaiToolLabelsClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Delete - Deletes the specified RAI Tool Label associated with the Azure OpenAI account.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *RaiToolLabelsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, raiToolConnectionName string, options *RaiToolLabelsClientBeginDeleteOptions) (*http.Response, error) {
-	var err error
-	const operationName = "RaiToolLabelsClient.BeginDelete"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, raiToolConnectionName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
-	}
-	return httpResp, nil
-}
-
-// deleteCreateRequest creates the Delete request.
-func (client *RaiToolLabelsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, raiToolConnectionName string, _ *RaiToolLabelsClientBeginDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiToolLabels/{raiToolConnectionName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if raiToolConnectionName == "" {
-		return nil, errors.New("parameter raiToolConnectionName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{raiToolConnectionName}", url.PathEscape(raiToolConnectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
 }
 
 // Get - Gets the specified RAI Tool Label associated with the Azure OpenAI account.
@@ -210,19 +210,14 @@ func (client *RaiToolLabelsClient) Get(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return RaiToolLabelsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return RaiToolLabelsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *RaiToolLabelsClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, raiToolConnectionName string, _ *RaiToolLabelsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiToolLabels/{raiToolConnectionName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -242,15 +237,18 @@ func (client *RaiToolLabelsClient) getCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
+	reqQP.Set("api-version", version20260915Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *RaiToolLabelsClient) getHandleResponse(resp *http.Response) (RaiToolLabelsClientGetResponse, error) {
+func (client *RaiToolLabelsClient) getHandleResponse(resp *http.Response, successCodes ...int) (RaiToolLabelsClientGetResponse, error) {
 	result := RaiToolLabelsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RaiToolLabel); err != nil {
 		return RaiToolLabelsClientGetResponse{}, err
 	}
@@ -272,47 +270,61 @@ func (client *RaiToolLabelsClient) NewListPager(resourceGroupName string, accoun
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, accountName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, accountName, nextLink, options)
 			if err != nil {
 				return RaiToolLabelsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return RaiToolLabelsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *RaiToolLabelsClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, _ *RaiToolLabelsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiToolLabels"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *RaiToolLabelsClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, nextLink string, _ *RaiToolLabelsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiToolLabels"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if accountName == "" {
+			return nil, errors.New("parameter accountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260915Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *RaiToolLabelsClient) listHandleResponse(resp *http.Response) (RaiToolLabelsClientListResponse, error) {
+func (client *RaiToolLabelsClient) listHandleResponse(resp *http.Response, successCodes ...int) (RaiToolLabelsClientListResponse, error) {
 	result := RaiToolLabelsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RaiToolLabelResult); err != nil {
 		return RaiToolLabelsClientListResponse{}, err
 	}

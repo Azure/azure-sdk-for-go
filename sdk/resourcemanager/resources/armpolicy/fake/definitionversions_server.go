@@ -163,7 +163,7 @@ func (d *DefinitionVersionsServerTransport) dispatchCreateOrUpdate(req *http.Req
 	if d.srv.CreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/policyDefinitions/(?P<policyDefinitionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions/(?P<policyDefinitionVersion>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Authorization/policyDefinitions/(?P<policyDefinitionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/versions/(?P<policyDefinitionVersion>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -200,7 +200,7 @@ func (d *DefinitionVersionsServerTransport) dispatchCreateOrUpdateAtManagementGr
 	if d.srv.CreateOrUpdateAtManagementGroup == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdateAtManagementGroup not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/policyDefinitions/(?P<policyDefinitionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions/(?P<policyDefinitionVersion>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Authorization/policyDefinitions/(?P<policyDefinitionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/versions/(?P<policyDefinitionVersion>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -241,7 +241,7 @@ func (d *DefinitionVersionsServerTransport) dispatchDelete(req *http.Request) (*
 	if d.srv.Delete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/policyDefinitions/(?P<policyDefinitionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions/(?P<policyDefinitionVersion>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Authorization/policyDefinitions/(?P<policyDefinitionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/versions/(?P<policyDefinitionVersion>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -274,7 +274,7 @@ func (d *DefinitionVersionsServerTransport) dispatchDeleteAtManagementGroup(req 
 	if d.srv.DeleteAtManagementGroup == nil {
 		return nil, &nonRetriableError{errors.New("fake for method DeleteAtManagementGroup not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/policyDefinitions/(?P<policyDefinitionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions/(?P<policyDefinitionVersion>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Authorization/policyDefinitions/(?P<policyDefinitionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/versions/(?P<policyDefinitionVersion>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -311,7 +311,7 @@ func (d *DefinitionVersionsServerTransport) dispatchGet(req *http.Request) (*htt
 	if d.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/policyDefinitions/(?P<policyDefinitionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions/(?P<policyDefinitionVersion>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Authorization/policyDefinitions/(?P<policyDefinitionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/versions/(?P<policyDefinitionVersion>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -344,7 +344,7 @@ func (d *DefinitionVersionsServerTransport) dispatchGetAtManagementGroup(req *ht
 	if d.srv.GetAtManagementGroup == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetAtManagementGroup not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/policyDefinitions/(?P<policyDefinitionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions/(?P<policyDefinitionVersion>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Authorization/policyDefinitions/(?P<policyDefinitionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/versions/(?P<policyDefinitionVersion>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -381,7 +381,7 @@ func (d *DefinitionVersionsServerTransport) dispatchGetBuiltIn(req *http.Request
 	if d.srv.GetBuiltIn == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetBuiltIn not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Authorization/policyDefinitions/(?P<policyDefinitionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions/(?P<policyDefinitionVersion>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.Authorization/policyDefinitions/(?P<policyDefinitionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/versions/(?P<policyDefinitionVersion>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -416,7 +416,7 @@ func (d *DefinitionVersionsServerTransport) dispatchNewListPager(req *http.Reque
 	}
 	newListPager := d.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/policyDefinitions/(?P<policyDefinitionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Authorization/policyDefinitions/(?P<policyDefinitionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/versions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -468,7 +468,7 @@ func (d *DefinitionVersionsServerTransport) dispatchListAll(req *http.Request) (
 	if d.srv.ListAll == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListAll not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/listPolicyDefinitionVersions`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Authorization/listPolicyDefinitionVersions`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -493,7 +493,7 @@ func (d *DefinitionVersionsServerTransport) dispatchListAllAtManagementGroup(req
 	if d.srv.ListAllAtManagementGroup == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListAllAtManagementGroup not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/listPolicyDefinitionVersions`
+	const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Authorization/listPolicyDefinitionVersions`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -543,7 +543,7 @@ func (d *DefinitionVersionsServerTransport) dispatchNewListBuiltInPager(req *htt
 	}
 	newListBuiltInPager := d.newListBuiltInPager.get(req)
 	if newListBuiltInPager == nil {
-		const regexStr = `/providers/Microsoft\.Authorization/policyDefinitions/(?P<policyDefinitionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions`
+		const regexStr = `/providers/Microsoft\.Authorization/policyDefinitions/(?P<policyDefinitionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/versions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -597,7 +597,7 @@ func (d *DefinitionVersionsServerTransport) dispatchNewListByManagementGroupPage
 	}
 	newListByManagementGroupPager := d.newListByManagementGroupPager.get(req)
 	if newListByManagementGroupPager == nil {
-		const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/policyDefinitions/(?P<policyDefinitionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions`
+		const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Authorization/policyDefinitions/(?P<policyDefinitionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/versions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {

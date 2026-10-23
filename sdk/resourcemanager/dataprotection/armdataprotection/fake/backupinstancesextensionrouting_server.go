@@ -13,7 +13,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dataprotection/armdataprotection/v4"
 	"net/http"
-	"net/url"
 	"regexp"
 	"slices"
 )
@@ -87,16 +86,13 @@ func (b *BackupInstancesExtensionRoutingServerTransport) dispatchNewListPager(re
 	}
 	newListPager := b.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/(?P<resourceId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DataProtection/backupInstances`
+		const regexStr = `/(?P<resourceId>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.DataProtection/backupInstances`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resourceIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceId")])
-		if err != nil {
-			return nil, err
-		}
+		resourceIDParam := matches[regex.SubexpIndex("resourceId")]
 		resp := b.srv.NewListPager(resourceIDParam, nil)
 		newListPager = &resp
 		b.newListPager.add(req, newListPager)

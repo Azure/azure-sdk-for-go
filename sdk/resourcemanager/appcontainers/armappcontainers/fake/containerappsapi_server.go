@@ -87,7 +87,7 @@ func (c *ContainerAppsAPIServerTransport) dispatchGetCustomDomainVerificationID(
 	if c.srv.GetCustomDomainVerificationID == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetCustomDomainVerificationID not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.App/getCustomDomainVerificationId`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.App/getCustomDomainVerificationId`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -101,7 +101,7 @@ func (c *ContainerAppsAPIServerTransport) dispatchGetCustomDomainVerificationID(
 	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
-	resp, err := server.MarshalResponseAsText(respContent, server.GetResponse(respr).Value, req)
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Value, req)
 	if err != nil {
 		return nil, err
 	}
@@ -112,7 +112,7 @@ func (c *ContainerAppsAPIServerTransport) dispatchJobExecution(req *http.Request
 	if c.srv.JobExecution == nil {
 		return nil, &nonRetriableError{errors.New("fake for method JobExecution not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.App/jobs/(?P<jobName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/executions/(?P<jobExecutionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.App/jobs/(?P<jobName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/executions/(?P<jobExecutionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {

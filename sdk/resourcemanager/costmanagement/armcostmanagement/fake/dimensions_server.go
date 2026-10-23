@@ -96,7 +96,7 @@ func (d *DimensionsServerTransport) dispatchNewByExternalCloudProviderTypePager(
 	}
 	newByExternalCloudProviderTypePager := d.newByExternalCloudProviderTypePager.get(req)
 	if newByExternalCloudProviderTypePager == nil {
-		const regexStr = `/providers/Microsoft\.CostManagement/(?P<externalCloudProviderType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<externalCloudProviderId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/dimensions`
+		const regexStr = `/providers/Microsoft\.CostManagement/(?P<externalCloudProviderType>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/(?P<externalCloudProviderId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/dimensions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -166,17 +166,14 @@ func (d *DimensionsServerTransport) dispatchNewListPager(req *http.Request) (*ht
 	}
 	newListPager := d.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CostManagement/dimensions`
+		const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.CostManagement/dimensions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-		if err != nil {
-			return nil, err
-		}
+		scopeParam := matches[regex.SubexpIndex("scope")]
 		filterParam := getOptional(qp.Get("$filter"))
 		expandParam := getOptional(qp.Get("$expand"))
 		skiptokenParam := getOptional(qp.Get("$skiptoken"))

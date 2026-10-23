@@ -98,7 +98,7 @@ func (a *ArtifactsServerTransport) dispatchGet(req *http.Request) (*http.Respons
 	if a.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Edge/disconnectedOperations/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/images/(?P<imageName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/artifacts/(?P<artifactName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Edge/disconnectedOperations/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/images/(?P<imageName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/artifacts/(?P<artifactName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -141,7 +141,7 @@ func (a *ArtifactsServerTransport) dispatchNewListByParentPager(req *http.Reques
 	}
 	newListByParentPager := a.newListByParentPager.get(req)
 	if newListByParentPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Edge/disconnectedOperations/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/images/(?P<imageName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/artifacts`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Edge/disconnectedOperations/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/images/(?P<imageName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/artifacts`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -184,7 +184,7 @@ func (a *ArtifactsServerTransport) dispatchListDownloadURI(req *http.Request) (*
 	if a.srv.ListDownloadURI == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListDownloadURI not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Edge/disconnectedOperations/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/images/(?P<imageName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/artifacts/(?P<artifactName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listDownloadUri`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Edge/disconnectedOperations/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/images/(?P<imageName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/artifacts/(?P<artifactName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listDownloadUri`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {

@@ -6,5 +6,5 @@ package armelasticsan
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elasticsan/armelasticsan"
-	moduleVersion = "v1.2.0"
+	moduleVersion = "v2.0.0-beta.1"
 )

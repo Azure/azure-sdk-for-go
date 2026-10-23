@@ -64,9 +64,9 @@ func (c *ClientFactory) NewDefaultRolloutsClient() *DefaultRolloutsClient {
 	}
 }
 
-// NewNewRegionFrontloadReleaseClient creates a new instance of NewRegionFrontloadReleaseClient.
-func (c *ClientFactory) NewNewRegionFrontloadReleaseClient() *NewRegionFrontloadReleaseClient {
-	return &NewRegionFrontloadReleaseClient{
+// NewManifestsClient creates a new instance of ManifestsClient.
+func (c *ClientFactory) NewManifestsClient() *ManifestsClient {
+	return &ManifestsClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

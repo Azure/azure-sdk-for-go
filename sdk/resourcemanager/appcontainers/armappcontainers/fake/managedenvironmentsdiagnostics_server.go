@@ -81,7 +81,7 @@ func (m *ManagedEnvironmentsDiagnosticsServerTransport) dispatchGetRoot(req *htt
 	if m.srv.GetRoot == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetRoot not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.App/managedEnvironments/(?P<environmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/detectorProperties/rootApi/`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.App/managedEnvironments/(?P<environmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/detectorProperties/rootApi/`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {

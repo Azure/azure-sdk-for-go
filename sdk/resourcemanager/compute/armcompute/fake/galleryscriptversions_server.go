@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v8"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v9"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -29,6 +29,10 @@ type GalleryScriptVersionsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, galleryName string, galleryScriptName string, galleryScriptVersionName string, options *armcompute.GalleryScriptVersionsClientBeginDeleteOptions) (resp azfake.PollerResponder[armcompute.GalleryScriptVersionsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method GalleryScriptVersionsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, galleryName string, galleryScriptName string, galleryScriptVersionName string, galleryScriptVersion armcompute.GalleryScriptVersionUpdate, options *armcompute.GalleryScriptVersionsClientBeginUpdateOptions) (resp azfake.PollerResponder[armcompute.GalleryScriptVersionsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method GalleryScriptVersionsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, galleryName string, galleryScriptName string, galleryScriptVersionName string, options *armcompute.GalleryScriptVersionsClientGetOptions) (resp azfake.Responder[armcompute.GalleryScriptVersionsClientGetResponse], errResp azfake.ErrorResponder)
@@ -36,10 +40,6 @@ type GalleryScriptVersionsServer struct {
 	// NewListByGalleryScriptPager is the fake for method GalleryScriptVersionsClient.NewListByGalleryScriptPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByGalleryScriptPager func(resourceGroupName string, galleryName string, galleryScriptName string, options *armcompute.GalleryScriptVersionsClientListByGalleryScriptOptions) (resp azfake.PagerResponder[armcompute.GalleryScriptVersionsClientListByGalleryScriptResponse])
-
-	// BeginUpdate is the fake for method GalleryScriptVersionsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, galleryName string, galleryScriptName string, galleryScriptVersionName string, galleryScriptVersion armcompute.GalleryScriptVersionUpdate, options *armcompute.GalleryScriptVersionsClientBeginUpdateOptions) (resp azfake.PollerResponder[armcompute.GalleryScriptVersionsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewGalleryScriptVersionsServerTransport creates a new instance of GalleryScriptVersionsServerTransport with the provided implementation.
@@ -50,8 +50,8 @@ func NewGalleryScriptVersionsServerTransport(srv *GalleryScriptVersionsServer) *
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armcompute.GalleryScriptVersionsClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armcompute.GalleryScriptVersionsClientDeleteResponse]](),
-		newListByGalleryScriptPager: newTracker[azfake.PagerResponder[armcompute.GalleryScriptVersionsClientListByGalleryScriptResponse]](),
 		beginUpdate:                 newTracker[azfake.PollerResponder[armcompute.GalleryScriptVersionsClientUpdateResponse]](),
+		newListByGalleryScriptPager: newTracker[azfake.PagerResponder[armcompute.GalleryScriptVersionsClientListByGalleryScriptResponse]](),
 	}
 }
 
@@ -61,8 +61,8 @@ type GalleryScriptVersionsServerTransport struct {
 	srv                         *GalleryScriptVersionsServer
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armcompute.GalleryScriptVersionsClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armcompute.GalleryScriptVersionsClientDeleteResponse]]
-	newListByGalleryScriptPager *tracker[azfake.PagerResponder[armcompute.GalleryScriptVersionsClientListByGalleryScriptResponse]]
 	beginUpdate                 *tracker[azfake.PollerResponder[armcompute.GalleryScriptVersionsClientUpdateResponse]]
+	newListByGalleryScriptPager *tracker[azfake.PagerResponder[armcompute.GalleryScriptVersionsClientListByGalleryScriptResponse]]
 }
 
 // Do implements the policy.Transporter interface for GalleryScriptVersionsServerTransport.
@@ -90,12 +90,12 @@ func (g *GalleryScriptVersionsServerTransport) dispatchToMethodFake(req *http.Re
 				res.resp, res.err = g.dispatchBeginCreateOrUpdate(req)
 			case "GalleryScriptVersionsClient.BeginDelete":
 				res.resp, res.err = g.dispatchBeginDelete(req)
+			case "GalleryScriptVersionsClient.BeginUpdate":
+				res.resp, res.err = g.dispatchBeginUpdate(req)
 			case "GalleryScriptVersionsClient.Get":
 				res.resp, res.err = g.dispatchGet(req)
 			case "GalleryScriptVersionsClient.NewListByGalleryScriptPager":
 				res.resp, res.err = g.dispatchNewListByGalleryScriptPager(req)
-			case "GalleryScriptVersionsClient.BeginUpdate":
-				res.resp, res.err = g.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -118,7 +118,7 @@ func (g *GalleryScriptVersionsServerTransport) dispatchBeginCreateOrUpdate(req *
 	}
 	beginCreateOrUpdate := g.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/galleries/(?P<galleryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/scripts/(?P<galleryScriptName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions/(?P<galleryScriptVersionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/galleries/(?P<galleryName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/scripts/(?P<galleryScriptName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/versions/(?P<galleryScriptVersionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -174,7 +174,7 @@ func (g *GalleryScriptVersionsServerTransport) dispatchBeginDelete(req *http.Req
 	}
 	beginDelete := g.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/galleries/(?P<galleryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/scripts/(?P<galleryScriptName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions/(?P<galleryScriptVersionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/galleries/(?P<galleryName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/scripts/(?P<galleryScriptName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/versions/(?P<galleryScriptVersionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -220,99 +220,13 @@ func (g *GalleryScriptVersionsServerTransport) dispatchBeginDelete(req *http.Req
 	return resp, nil
 }
 
-func (g *GalleryScriptVersionsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if g.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/galleries/(?P<galleryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/scripts/(?P<galleryScriptName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions/(?P<galleryScriptVersionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 6 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	galleryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("galleryName")])
-	if err != nil {
-		return nil, err
-	}
-	galleryScriptNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("galleryScriptName")])
-	if err != nil {
-		return nil, err
-	}
-	galleryScriptVersionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("galleryScriptVersionName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := g.srv.Get(req.Context(), resourceGroupNameParam, galleryNameParam, galleryScriptNameParam, galleryScriptVersionNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).GalleryScriptVersion, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (g *GalleryScriptVersionsServerTransport) dispatchNewListByGalleryScriptPager(req *http.Request) (*http.Response, error) {
-	if g.srv.NewListByGalleryScriptPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByGalleryScriptPager not implemented")}
-	}
-	newListByGalleryScriptPager := g.newListByGalleryScriptPager.get(req)
-	if newListByGalleryScriptPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/galleries/(?P<galleryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/scripts/(?P<galleryScriptName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		galleryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("galleryName")])
-		if err != nil {
-			return nil, err
-		}
-		galleryScriptNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("galleryScriptName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := g.srv.NewListByGalleryScriptPager(resourceGroupNameParam, galleryNameParam, galleryScriptNameParam, nil)
-		newListByGalleryScriptPager = &resp
-		g.newListByGalleryScriptPager.add(req, newListByGalleryScriptPager)
-		server.PagerResponderInjectNextLinks(newListByGalleryScriptPager, req, func(page *armcompute.GalleryScriptVersionsClientListByGalleryScriptResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByGalleryScriptPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		g.newListByGalleryScriptPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByGalleryScriptPager) {
-		g.newListByGalleryScriptPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (g *GalleryScriptVersionsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
 	if g.srv.BeginUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
 	}
 	beginUpdate := g.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/galleries/(?P<galleryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/scripts/(?P<galleryScriptName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions/(?P<galleryScriptVersionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/galleries/(?P<galleryName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/scripts/(?P<galleryScriptName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/versions/(?P<galleryScriptVersionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -359,6 +273,92 @@ func (g *GalleryScriptVersionsServerTransport) dispatchBeginUpdate(req *http.Req
 		g.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (g *GalleryScriptVersionsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if g.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/galleries/(?P<galleryName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/scripts/(?P<galleryScriptName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/versions/(?P<galleryScriptVersionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 6 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	galleryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("galleryName")])
+	if err != nil {
+		return nil, err
+	}
+	galleryScriptNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("galleryScriptName")])
+	if err != nil {
+		return nil, err
+	}
+	galleryScriptVersionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("galleryScriptVersionName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := g.srv.Get(req.Context(), resourceGroupNameParam, galleryNameParam, galleryScriptNameParam, galleryScriptVersionNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).GalleryScriptVersion, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (g *GalleryScriptVersionsServerTransport) dispatchNewListByGalleryScriptPager(req *http.Request) (*http.Response, error) {
+	if g.srv.NewListByGalleryScriptPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByGalleryScriptPager not implemented")}
+	}
+	newListByGalleryScriptPager := g.newListByGalleryScriptPager.get(req)
+	if newListByGalleryScriptPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/galleries/(?P<galleryName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/scripts/(?P<galleryScriptName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/versions`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		galleryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("galleryName")])
+		if err != nil {
+			return nil, err
+		}
+		galleryScriptNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("galleryScriptName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := g.srv.NewListByGalleryScriptPager(resourceGroupNameParam, galleryNameParam, galleryScriptNameParam, nil)
+		newListByGalleryScriptPager = &resp
+		g.newListByGalleryScriptPager.add(req, newListByGalleryScriptPager)
+		server.PagerResponderInjectNextLinks(newListByGalleryScriptPager, req, func(page *armcompute.GalleryScriptVersionsClientListByGalleryScriptResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByGalleryScriptPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		g.newListByGalleryScriptPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByGalleryScriptPager) {
+		g.newListByGalleryScriptPager.remove(req)
+	}
 	return resp, nil
 }
 

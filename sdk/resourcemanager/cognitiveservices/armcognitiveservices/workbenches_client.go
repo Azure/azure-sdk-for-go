@@ -19,7 +19,7 @@ import (
 // WorkbenchesClient contains the methods for the Workbenches group.
 // Don't use this type directly, use NewWorkbenchesClient() instead.
 //
-// Generated from API version 2026-05-15-preview
+// Generated from API version 2026-09-15-preview
 type WorkbenchesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type WorkbenchesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewWorkbenchesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WorkbenchesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -67,7 +70,7 @@ func (client *WorkbenchesClient) BeginCreateOrUpdate(ctx context.Context, resour
 	}
 }
 
-// CreateOrUpdate - Creates or updates a workbench associated with the project.
+// createOrUpdate - Creates or updates a workbench associated with the project.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *WorkbenchesClient) createOrUpdate(ctx context.Context, resourceGroupName string, accountName string, projectName string, workbenchName string, resource Workbench, options *WorkbenchesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -84,17 +87,16 @@ func (client *WorkbenchesClient) createOrUpdate(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *WorkbenchesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, projectName string, workbenchName string, resource Workbench, _ *WorkbenchesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/workbenches/{workbenchName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -118,7 +120,7 @@ func (client *WorkbenchesClient) createOrUpdateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
+	reqQP.Set("api-version", version20260915Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -137,7 +139,7 @@ func (client *WorkbenchesClient) createOrUpdateCreateRequest(ctx context.Context
 //   - options - WorkbenchesClientBeginDeleteOptions contains the optional parameters for the WorkbenchesClient.BeginDelete method.
 func (client *WorkbenchesClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, projectName string, workbenchName string, options *WorkbenchesClientBeginDeleteOptions) (*runtime.Poller[WorkbenchesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, projectName, workbenchName, options)
+		resp, err := client.delete(ctx, resourceGroupName, accountName, projectName, workbenchName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -152,9 +154,9 @@ func (client *WorkbenchesClient) BeginDelete(ctx context.Context, resourceGroupN
 	}
 }
 
-// Delete - Deletes the specified workbench associated with the project.
+// delete - Deletes the specified workbench associated with the project.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *WorkbenchesClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, projectName string, workbenchName string, options *WorkbenchesClientBeginDeleteOptions) (*http.Response, error) {
+func (client *WorkbenchesClient) delete(ctx context.Context, resourceGroupName string, accountName string, projectName string, workbenchName string, options *WorkbenchesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WorkbenchesClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -169,17 +171,16 @@ func (client *WorkbenchesClient) deleteOperation(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *WorkbenchesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, projectName string, workbenchName string, _ *WorkbenchesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/workbenches/{workbenchName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -203,148 +204,9 @@ func (client *WorkbenchesClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
+	reqQP.Set("api-version", version20260915Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
-}
-
-// Get - Gets the specified workbench associated with the project.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - accountName - The name of Cognitive Services account.
-//   - projectName - The name of Cognitive Services account's project.
-//   - workbenchName - The name of the workbench associated with the project.
-//   - options - WorkbenchesClientGetOptions contains the optional parameters for the WorkbenchesClient.Get method.
-func (client *WorkbenchesClient) Get(ctx context.Context, resourceGroupName string, accountName string, projectName string, workbenchName string, options *WorkbenchesClientGetOptions) (WorkbenchesClientGetResponse, error) {
-	var err error
-	const operationName = "WorkbenchesClient.Get"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, projectName, workbenchName, options)
-	if err != nil {
-		return WorkbenchesClientGetResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return WorkbenchesClientGetResponse{}, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WorkbenchesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
-}
-
-// getCreateRequest creates the Get request.
-func (client *WorkbenchesClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, projectName string, workbenchName string, _ *WorkbenchesClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/workbenches/{workbenchName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if projectName == "" {
-		return nil, errors.New("parameter projectName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{projectName}", url.PathEscape(projectName))
-	if workbenchName == "" {
-		return nil, errors.New("parameter workbenchName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workbenchName}", url.PathEscape(workbenchName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// getHandleResponse handles the Get response.
-func (client *WorkbenchesClient) getHandleResponse(resp *http.Response) (WorkbenchesClientGetResponse, error) {
-	result := WorkbenchesClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.Workbench); err != nil {
-		return WorkbenchesClientGetResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListPager - Gets the workbenches associated with the project.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - accountName - The name of Cognitive Services account.
-//   - projectName - The name of Cognitive Services account's project.
-//   - options - WorkbenchesClientListOptions contains the optional parameters for the WorkbenchesClient.NewListPager method.
-func (client *WorkbenchesClient) NewListPager(resourceGroupName string, accountName string, projectName string, options *WorkbenchesClientListOptions) *runtime.Pager[WorkbenchesClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[WorkbenchesClientListResponse]{
-		More: func(page WorkbenchesClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *WorkbenchesClientListResponse) (WorkbenchesClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "WorkbenchesClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, accountName, projectName, options)
-			}, nil)
-			if err != nil {
-				return WorkbenchesClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *WorkbenchesClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, projectName string, _ *WorkbenchesClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/workbenches"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if projectName == "" {
-		return nil, errors.New("parameter projectName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{projectName}", url.PathEscape(projectName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *WorkbenchesClient) listHandleResponse(resp *http.Response) (WorkbenchesClientListResponse, error) {
-	result := WorkbenchesClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.WorkbenchListResult); err != nil {
-		return WorkbenchesClientListResponse{}, err
-	}
-	return result, nil
 }
 
 // BeginRestart - Restarts a running workbench resource.
@@ -374,7 +236,7 @@ func (client *WorkbenchesClient) BeginRestart(ctx context.Context, resourceGroup
 	}
 }
 
-// Restart - Restarts a running workbench resource.
+// restart - Restarts a running workbench resource.
 // This is a long-running operation that returns 202 Accepted.
 // Returns 204 if the workbench is already in the target state.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -393,17 +255,16 @@ func (client *WorkbenchesClient) restart(ctx context.Context, resourceGroupName 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
 
-// restartCreateRequest creates the Restart request.
+// restartCreateRequest creates the restart request.
 func (client *WorkbenchesClient) restartCreateRequest(ctx context.Context, resourceGroupName string, accountName string, projectName string, workbenchName string, _ *WorkbenchesClientBeginRestartOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/workbenches/{workbenchName}/restart"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -427,7 +288,7 @@ func (client *WorkbenchesClient) restartCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
+	reqQP.Set("api-version", version20260915Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -458,7 +319,7 @@ func (client *WorkbenchesClient) BeginStart(ctx context.Context, resourceGroupNa
 	}
 }
 
-// Start - Starts a stopped workbench resource.
+// start - Starts a stopped workbench resource.
 // This is a long-running operation that returns 202 Accepted.
 // Returns 204 if the workbench is already in the target state.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -477,17 +338,16 @@ func (client *WorkbenchesClient) start(ctx context.Context, resourceGroupName st
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
 
-// startCreateRequest creates the Start request.
+// startCreateRequest creates the start request.
 func (client *WorkbenchesClient) startCreateRequest(ctx context.Context, resourceGroupName string, accountName string, projectName string, workbenchName string, _ *WorkbenchesClientBeginStartOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/workbenches/{workbenchName}/start"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -511,7 +371,7 @@ func (client *WorkbenchesClient) startCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
+	reqQP.Set("api-version", version20260915Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -542,7 +402,7 @@ func (client *WorkbenchesClient) BeginStop(ctx context.Context, resourceGroupNam
 	}
 }
 
-// Stop - Stops a running workbench resource.
+// stop - Stops a running workbench resource.
 // This is a long-running operation that returns 202 Accepted.
 // Returns 204 if the workbench is already in the target state.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -561,17 +421,16 @@ func (client *WorkbenchesClient) stop(ctx context.Context, resourceGroupName str
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
 
-// stopCreateRequest creates the Stop request.
+// stopCreateRequest creates the stop request.
 func (client *WorkbenchesClient) stopCreateRequest(ctx context.Context, resourceGroupName string, accountName string, projectName string, workbenchName string, _ *WorkbenchesClientBeginStopOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/workbenches/{workbenchName}/stop"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -595,64 +454,192 @@ func (client *WorkbenchesClient) stopCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
+	reqQP.Set("api-version", version20260915Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
-// BeginUpdate - Updates a workbench associated with the project.
+// Get - Gets the specified workbench associated with the project.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of Cognitive Services account.
+//   - projectName - The name of Cognitive Services account's project.
+//   - workbenchName - The name of the workbench associated with the project.
+//   - options - WorkbenchesClientGetOptions contains the optional parameters for the WorkbenchesClient.Get method.
+func (client *WorkbenchesClient) Get(ctx context.Context, resourceGroupName string, accountName string, projectName string, workbenchName string, options *WorkbenchesClientGetOptions) (WorkbenchesClientGetResponse, error) {
+	var err error
+	const operationName = "WorkbenchesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, projectName, workbenchName, options)
+	if err != nil {
+		return WorkbenchesClientGetResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return WorkbenchesClientGetResponse{}, err
+	}
+	return client.getHandleResponse(httpResp, http.StatusOK)
+}
+
+// getCreateRequest creates the Get request.
+func (client *WorkbenchesClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, projectName string, workbenchName string, _ *WorkbenchesClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/workbenches/{workbenchName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if projectName == "" {
+		return nil, errors.New("parameter projectName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{projectName}", url.PathEscape(projectName))
+	if workbenchName == "" {
+		return nil, errors.New("parameter workbenchName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{workbenchName}", url.PathEscape(workbenchName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260915Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getHandleResponse handles the Get response.
+func (client *WorkbenchesClient) getHandleResponse(resp *http.Response, successCodes ...int) (WorkbenchesClientGetResponse, error) {
+	result := WorkbenchesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Workbench); err != nil {
+		return WorkbenchesClientGetResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListPager - Gets the workbenches associated with the project.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of Cognitive Services account.
+//   - projectName - The name of Cognitive Services account's project.
+//   - options - WorkbenchesClientListOptions contains the optional parameters for the WorkbenchesClient.NewListPager method.
+func (client *WorkbenchesClient) NewListPager(resourceGroupName string, accountName string, projectName string, options *WorkbenchesClientListOptions) *runtime.Pager[WorkbenchesClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[WorkbenchesClientListResponse]{
+		More: func(page WorkbenchesClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *WorkbenchesClientListResponse) (WorkbenchesClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "WorkbenchesClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, resourceGroupName, accountName, projectName, nextLink, options)
+			if err != nil {
+				return WorkbenchesClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WorkbenchesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listCreateRequest creates the List request.
+func (client *WorkbenchesClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, projectName string, nextLink string, _ *WorkbenchesClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/workbenches"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if accountName == "" {
+			return nil, errors.New("parameter accountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+		if projectName == "" {
+			return nil, errors.New("parameter projectName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{projectName}", url.PathEscape(projectName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260915Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listHandleResponse handles the List response.
+func (client *WorkbenchesClient) listHandleResponse(resp *http.Response, successCodes ...int) (WorkbenchesClientListResponse, error) {
+	result := WorkbenchesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.WorkbenchListResult); err != nil {
+		return WorkbenchesClientListResponse{}, err
+	}
+	return result, nil
+}
+
+// Update - Updates a workbench associated with the project.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
 //   - projectName - The name of Cognitive Services account's project.
 //   - workbenchName - The name of the workbench associated with the project.
 //   - properties - The workbench properties to update.
-//   - options - WorkbenchesClientBeginUpdateOptions contains the optional parameters for the WorkbenchesClient.BeginUpdate method.
-func (client *WorkbenchesClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, projectName string, workbenchName string, properties Workbench, options *WorkbenchesClientBeginUpdateOptions) (*runtime.Poller[WorkbenchesClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, accountName, projectName, workbenchName, properties, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WorkbenchesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[WorkbenchesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Updates a workbench associated with the project.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *WorkbenchesClient) update(ctx context.Context, resourceGroupName string, accountName string, projectName string, workbenchName string, properties Workbench, options *WorkbenchesClientBeginUpdateOptions) (*http.Response, error) {
+//   - options - WorkbenchesClientUpdateOptions contains the optional parameters for the WorkbenchesClient.Update method.
+func (client *WorkbenchesClient) Update(ctx context.Context, resourceGroupName string, accountName string, projectName string, workbenchName string, properties WorkbenchUpdate, options *WorkbenchesClientUpdateOptions) (WorkbenchesClientUpdateResponse, error) {
 	var err error
-	const operationName = "WorkbenchesClient.BeginUpdate"
+	const operationName = "WorkbenchesClient.Update"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, projectName, workbenchName, properties, options)
 	if err != nil {
-		return nil, err
+		return WorkbenchesClientUpdateResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WorkbenchesClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
-	}
-	return httpResp, nil
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *WorkbenchesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, projectName string, workbenchName string, properties Workbench, _ *WorkbenchesClientBeginUpdateOptions) (*policy.Request, error) {
+func (client *WorkbenchesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, projectName string, workbenchName string, properties WorkbenchUpdate, _ *WorkbenchesClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/workbenches/{workbenchName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -676,7 +663,7 @@ func (client *WorkbenchesClient) updateCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
+	reqQP.Set("api-version", version20260915Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -684,4 +671,16 @@ func (client *WorkbenchesClient) updateCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	return req, nil
+}
+
+// updateHandleResponse handles the Update response.
+func (client *WorkbenchesClient) updateHandleResponse(resp *http.Response, successCodes ...int) (WorkbenchesClientUpdateResponse, error) {
+	result := WorkbenchesClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Workbench); err != nil {
+		return WorkbenchesClientUpdateResponse{}, err
+	}
+	return result, nil
 }

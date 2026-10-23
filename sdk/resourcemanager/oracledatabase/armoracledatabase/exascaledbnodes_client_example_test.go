@@ -8,12 +8,12 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/oracledatabase/armoracledatabase/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/oracledatabase/armoracledatabase/v3"
 	"log"
 )
 
-// Generated from example definition: 2025-09-01/ExascaleDbNodes_Action_MaximumSet_Gen.json
-func ExampleExascaleDbNodesClient_BeginAction_exascaleDbNodesActionMaximumSet() {
+// Generated from example definition: 2026-06-01/ExascaleDbNodes_Action_MaximumSet_Gen.json
+func ExampleExascaleDbNodesClient_BeginAction() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -23,7 +23,7 @@ func ExampleExascaleDbNodesClient_BeginAction_exascaleDbNodesActionMaximumSet() 
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewExascaleDbNodesClient().BeginAction(ctx, "rgopenapi", "exadbvmcluster1", "exascaledbnode1", armoracledatabase.DbNodeAction{
+	poller, err := clientFactory.NewExascaleDbNodesClient().BeginAction(ctx, "rgopenapi", "resource1", "resource1", armoracledatabase.DbNodeAction{
 		Action: to.Ptr(armoracledatabase.DbNodeActionEnumStart),
 	}, nil)
 	if err != nil {
@@ -43,8 +43,8 @@ func ExampleExascaleDbNodesClient_BeginAction_exascaleDbNodesActionMaximumSet() 
 	// }
 }
 
-// Generated from example definition: 2025-09-01/ExascaleDbNodes_Action_MinimumSet_Gen.json
-func ExampleExascaleDbNodesClient_BeginAction_exascaleDbNodesActionMinimumSet() {
+// Generated from example definition: 2026-06-01/ExascaleDbNodes_Get_MaximumSet_Gen.json
+func ExampleExascaleDbNodesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -54,37 +54,7 @@ func ExampleExascaleDbNodesClient_BeginAction_exascaleDbNodesActionMinimumSet() 
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewExascaleDbNodesClient().BeginAction(ctx, "rgopenapi", "exadbvmcluster1", "exascaledbnode1", armoracledatabase.DbNodeAction{
-		Action: to.Ptr(armoracledatabase.DbNodeActionEnumStart),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armoracledatabase.ExascaleDbNodesClientActionResponse{
-	// 	DbActionResponse: armoracledatabase.DbActionResponse{
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-09-01/ExascaleDbNodes_Get_MaximumSet_Gen.json
-func ExampleExascaleDbNodesClient_Get_exascaleDbNodesGetMaximumSet() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewExascaleDbNodesClient().Get(ctx, "rgopenapi", "exadbvmcluster1", "exascaledbnode1", nil)
+	res, err := clientFactory.NewExascaleDbNodesClient().Get(ctx, "rgopenapi", "resource1", "resource1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -95,36 +65,36 @@ func ExampleExascaleDbNodesClient_Get_exascaleDbNodesGetMaximumSet() {
 	// 	ExascaleDbNode: armoracledatabase.ExascaleDbNode{
 	// 		Properties: &armoracledatabase.ExascaleDbNodeProperties{
 	// 			Ocid: to.Ptr("ocid1.autonomousdatabase.oc1..aaaaa3klq"),
-	// 			AdditionalDetails: to.Ptr("oupnryozdltusyfmuwxeypba"),
-	// 			CPUCoreCount: to.Ptr[int32](25),
-	// 			DbNodeStorageSizeInGbs: to.Ptr[int32](27),
-	// 			FaultDomain: to.Ptr("hoqlrgfreufurgyqopbheuemriplppsgotxfusefpjndjsmwmysxxzuhdcmhopyhefyeggaazqjfslmjtbhmgonfbrmlbixwhnabslzojilytcotyjxfrkz"),
-	// 			Hostname: to.Ptr("jofhtdgbgrelmzgwssfjjfpc"),
+	// 			AdditionalDetails: to.Ptr("e"),
+	// 			CPUCoreCount: to.Ptr[int32](24),
+	// 			DbNodeStorageSizeInGbs: to.Ptr[int32](15),
+	// 			FaultDomain: to.Ptr("example"),
+	// 			Hostname: to.Ptr("iazbspvk"),
 	// 			LifecycleState: to.Ptr(armoracledatabase.DbNodeProvisioningStateAvailable),
-	// 			MaintenanceType: to.Ptr("qsc"),
-	// 			MemorySizeInGbs: to.Ptr[int32](3),
-	// 			SoftwareStorageSizeInGb: to.Ptr[int32](23),
-	// 			TimeMaintenanceWindowEnd: to.Ptr(time.Date(2025, time.August, 1, 4, 34, 55, 878000000, time.UTC)),
-	// 			TimeMaintenanceWindowStart: to.Ptr(time.Date(2025, time.August, 1, 4, 34, 55, 878000000, time.UTC)),
-	// 			TotalCPUCoreCount: to.Ptr[int32](10),
+	// 			MaintenanceType: to.Ptr("example"),
+	// 			MemorySizeInGbs: to.Ptr[int32](11),
+	// 			SoftwareStorageSizeInGb: to.Ptr[int32](28),
+	// 			TimeMaintenanceWindowEnd: to.Ptr(time.Date(2026, time.July, 28, 21, 48, 1, 814000000, time.UTC)),
+	// 			TimeMaintenanceWindowStart: to.Ptr(time.Date(2026, time.July, 28, 21, 48, 1, 814000000, time.UTC)),
+	// 			TotalCPUCoreCount: to.Ptr[int32](25),
 	// 		},
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Oracle.Database/exadbVmClusters/vmCluster/dbNodes/exscaledbnode1"),
-	// 		Name: to.Ptr("exascaledbnode1"),
-	// 		Type: to.Ptr("exmncrkyrczwremkz"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/resources/resource1"),
+	// 		Name: to.Ptr("resource1"),
+	// 		Type: to.Ptr("Oracle.Database/resource"),
 	// 		SystemData: &armoracledatabase.SystemData{
-	// 			CreatedBy: to.Ptr("sqehacivpuim"),
+	// 			CreatedBy: to.Ptr("ns"),
 	// 			CreatedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2025, time.August, 1, 4, 32, 58, 716000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("axrqfdkqylvjv"),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.July, 28, 21, 47, 8, 141000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("example"),
 	// 			LastModifiedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.August, 1, 4, 32, 58, 716000000, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.July, 28, 21, 47, 8, 141000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-09-01/ExascaleDbNodes_Get_MinimumSet_Gen.json
-func ExampleExascaleDbNodesClient_Get_exascaleDbNodesGetMaximumSetGeneratedByMinimumSetRule() {
+// Generated from example definition: 2026-06-01/ExascaleDbNodes_ListByParent_MaximumSet_Gen.json
+func ExampleExascaleDbNodesClient_NewListByParentPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -134,32 +104,7 @@ func ExampleExascaleDbNodesClient_Get_exascaleDbNodesGetMaximumSetGeneratedByMin
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewExascaleDbNodesClient().Get(ctx, "rgopenapi", "vmcluster", "exascaledbnode1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armoracledatabase.ExascaleDbNodesClientGetResponse{
-	// 	ExascaleDbNode: armoracledatabase.ExascaleDbNode{
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Oracle.Database/exadbVmClusters/vmCluster/dbNodes/exscaledbnode1"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-09-01/ExascaleDbNodes_ListByParent_MaximumSet_Gen.json
-func ExampleExascaleDbNodesClient_NewListByParentPager_exascaleDbNodesListByParentMaximumSet() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewExascaleDbNodesClient().NewListByParentPager("rgopenapi", "vmcluster", nil)
+	pager := clientFactory.NewExascaleDbNodesClient().NewListByParentPager("rgopenapi", "resource1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -176,67 +121,33 @@ func ExampleExascaleDbNodesClient_NewListByParentPager_exascaleDbNodesListByPare
 		// 			{
 		// 				Properties: &armoracledatabase.ExascaleDbNodeProperties{
 		// 					Ocid: to.Ptr("ocid1.autonomousdatabase.oc1..aaaaa3klq"),
-		// 					AdditionalDetails: to.Ptr("oupnryozdltusyfmuwxeypba"),
-		// 					CPUCoreCount: to.Ptr[int32](25),
-		// 					DbNodeStorageSizeInGbs: to.Ptr[int32](27),
-		// 					FaultDomain: to.Ptr("hoqlrgfreufurgyqopbheuemriplppsgotxfusefpjndjsmwmysxxzuhdcmhopyhefyeggaazqjfslmjtbhmgonfbrmlbixwhnabslzojilytcotyjxfrkz"),
-		// 					Hostname: to.Ptr("jofhtdgbgrelmzgwssfjjfpc"),
+		// 					AdditionalDetails: to.Ptr("e"),
+		// 					CPUCoreCount: to.Ptr[int32](24),
+		// 					DbNodeStorageSizeInGbs: to.Ptr[int32](15),
+		// 					FaultDomain: to.Ptr("example"),
+		// 					Hostname: to.Ptr("iazbspvk"),
 		// 					LifecycleState: to.Ptr(armoracledatabase.DbNodeProvisioningStateAvailable),
-		// 					MaintenanceType: to.Ptr("qsc"),
-		// 					MemorySizeInGbs: to.Ptr[int32](3),
-		// 					SoftwareStorageSizeInGb: to.Ptr[int32](23),
-		// 					TimeMaintenanceWindowEnd: to.Ptr(time.Date(2025, time.August, 1, 4, 34, 55, 878000000, time.UTC)),
-		// 					TimeMaintenanceWindowStart: to.Ptr(time.Date(2025, time.August, 1, 4, 34, 55, 878000000, time.UTC)),
-		// 					TotalCPUCoreCount: to.Ptr[int32](10),
+		// 					MaintenanceType: to.Ptr("example"),
+		// 					MemorySizeInGbs: to.Ptr[int32](11),
+		// 					SoftwareStorageSizeInGb: to.Ptr[int32](28),
+		// 					TimeMaintenanceWindowEnd: to.Ptr(time.Date(2026, time.July, 28, 21, 48, 1, 814000000, time.UTC)),
+		// 					TimeMaintenanceWindowStart: to.Ptr(time.Date(2026, time.July, 28, 21, 48, 1, 814000000, time.UTC)),
+		// 					TotalCPUCoreCount: to.Ptr[int32](25),
 		// 				},
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Oracle.Database/exadbVmClusters/vmCluster/dbNodes/dbnode1"),
-		// 				Name: to.Ptr("dbnode1"),
-		// 				Type: to.Ptr("exmncrkyrczwremkz"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/resources/resource1"),
+		// 				Name: to.Ptr("resource1"),
+		// 				Type: to.Ptr("Oracle.Database/resource"),
 		// 				SystemData: &armoracledatabase.SystemData{
-		// 					CreatedBy: to.Ptr("sqehacivpuim"),
+		// 					CreatedBy: to.Ptr("ns"),
 		// 					CreatedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(time.Date(2025, time.August, 1, 4, 32, 58, 716000000, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("axrqfdkqylvjv"),
+		// 					CreatedAt: to.Ptr(time.Date(2026, time.July, 28, 21, 47, 8, 141000000, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("example"),
 		// 					LastModifiedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.August, 1, 4, 32, 58, 716000000, time.UTC)),
+		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.July, 28, 21, 47, 8, 141000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
 		// 		NextLink: to.Ptr("https://microsoft.com/a"),
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2025-09-01/ExascaleDbNodes_ListByParent_MinimumSet_Gen.json
-func ExampleExascaleDbNodesClient_NewListByParentPager_exascaleDbNodesListByParentMaximumSetGeneratedByMinimumSetRule() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewExascaleDbNodesClient().NewListByParentPager("rgopenapi", "vmcluster", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armoracledatabase.ExascaleDbNodesClientListByParentResponse{
-		// 	ExascaleDbNodeListResult: armoracledatabase.ExascaleDbNodeListResult{
-		// 		Value: []*armoracledatabase.ExascaleDbNode{
-		// 			{
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Oracle.Database/exadbVmClusters/vmCluster/dbNodes/dbNode1"),
-		// 			},
-		// 		},
 		// 	},
 		// }
 	}

@@ -19,7 +19,7 @@ import (
 // ProtectedItemsClient contains the methods for the ProtectedItems group.
 // Don't use this type directly, use NewProtectedItemsClient() instead.
 //
-// Generated from API version 2026-07-03-preview
+// Generated from API version 2026-09-30
 type ProtectedItemsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type ProtectedItemsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewProtectedItemsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProtectedItemsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -71,7 +74,7 @@ func (client *ProtectedItemsClient) Get(ctx context.Context, resourceGroupName s
 func (client *ProtectedItemsClient) getCreateRequest(ctx context.Context, resourceGroupName string, cloudAccountName string, protectionGroupName string, protectedItemName string, _ *ProtectedItemsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}/protectionGroups/{protectionGroupName}/protectedItems/{protectedItemName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -95,7 +98,7 @@ func (client *ProtectedItemsClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260703Preview)
+	reqQP.Set("api-version", version20260930)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -144,7 +147,7 @@ func (client *ProtectedItemsClient) GetRestorePoints(ctx context.Context, resour
 func (client *ProtectedItemsClient) getRestorePointsCreateRequest(ctx context.Context, resourceGroupName string, cloudAccountName string, protectionGroupName string, protectedItemName string, _ *ProtectedItemsClientGetRestorePointsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}/protectionGroups/{protectionGroupName}/protectedItems/{protectedItemName}/getRestorePoints"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -168,7 +171,7 @@ func (client *ProtectedItemsClient) getRestorePointsCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260703Preview)
+	reqQP.Set("api-version", version20260930)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -225,7 +228,7 @@ func (client *ProtectedItemsClient) listByProtectionGroupCreateRequest(ctx conte
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}/protectionGroups/{protectionGroupName}/protectedItems"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -249,7 +252,7 @@ func (client *ProtectedItemsClient) listByProtectionGroupCreateRequest(ctx conte
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260703Preview)
+		reqQP.Set("api-version", version20260930)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -299,7 +302,7 @@ func (client *ProtectedItemsClient) Restore(ctx context.Context, resourceGroupNa
 func (client *ProtectedItemsClient) restoreCreateRequest(ctx context.Context, resourceGroupName string, cloudAccountName string, protectionGroupName string, protectedItemName string, request RestoreProtectionItemRequest, _ *ProtectedItemsClientRestoreOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}/protectionGroups/{protectionGroupName}/protectedItems/{protectedItemName}/restore"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -323,7 +326,7 @@ func (client *ProtectedItemsClient) restoreCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260703Preview)
+	reqQP.Set("api-version", version20260930)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

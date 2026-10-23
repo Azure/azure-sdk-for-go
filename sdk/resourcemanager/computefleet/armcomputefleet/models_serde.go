@@ -647,7 +647,6 @@ func (f FleetProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "vmAttributes", f.VMAttributes)
 	populate(objectMap, "vmNamePrefix", f.VMNamePrefix)
 	populate(objectMap, "vmSizesProfile", f.VMSizesProfile)
-	populate(objectMap, "zoneAllocationPolicy", f.ZoneAllocationPolicy)
 	return json.Marshal(objectMap)
 }
 
@@ -695,9 +694,6 @@ func (f *FleetProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "vmSizesProfile":
 			err = unpopulate(val, "VMSizesProfile", &f.VMSizesProfile)
-			delete(rawMsg, key)
-		case "zoneAllocationPolicy":
-			err = unpopulate(val, "ZoneAllocationPolicy", &f.ZoneAllocationPolicy)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -3361,68 +3357,6 @@ func (w *WindowsVMGuestPatchAutomaticByPlatformSettings) UnmarshalJSON(data []by
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %s", w, err.Error())
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ZoneAllocationPolicy.
-func (z ZoneAllocationPolicy) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "distributionStrategy", z.DistributionStrategy)
-	populate(objectMap, "zonePreferences", z.ZonePreferences)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ZoneAllocationPolicy.
-func (z *ZoneAllocationPolicy) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %s", z, err.Error())
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "distributionStrategy":
-			err = unpopulate(val, "DistributionStrategy", &z.DistributionStrategy)
-			delete(rawMsg, key)
-		case "zonePreferences":
-			err = unpopulate(val, "ZonePreferences", &z.ZonePreferences)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %s", z, err.Error())
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ZonePreference.
-func (z ZonePreference) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "rank", z.Rank)
-	populate(objectMap, "zone", z.Zone)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ZonePreference.
-func (z *ZonePreference) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %s", z, err.Error())
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "rank":
-			err = unpopulate(val, "Rank", &z.Rank)
-			delete(rawMsg, key)
-		case "zone":
-			err = unpopulate(val, "Zone", &z.Zone)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %s", z, err.Error())
 		}
 	}
 	return nil

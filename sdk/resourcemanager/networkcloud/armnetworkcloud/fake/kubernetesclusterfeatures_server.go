@@ -119,7 +119,7 @@ func (k *KubernetesClusterFeaturesServerTransport) dispatchBeginCreateOrUpdate(r
 	}
 	beginCreateOrUpdate := k.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetworkCloud/kubernetesClusters/(?P<kubernetesClusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/features/(?P<featureName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetworkCloud/kubernetesClusters/(?P<kubernetesClusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/features/(?P<featureName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -180,7 +180,7 @@ func (k *KubernetesClusterFeaturesServerTransport) dispatchBeginDelete(req *http
 	}
 	beginDelete := k.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetworkCloud/kubernetesClusters/(?P<kubernetesClusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/features/(?P<featureName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetworkCloud/kubernetesClusters/(?P<kubernetesClusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/features/(?P<featureName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -235,7 +235,7 @@ func (k *KubernetesClusterFeaturesServerTransport) dispatchGet(req *http.Request
 	if k.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetworkCloud/kubernetesClusters/(?P<kubernetesClusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/features/(?P<featureName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetworkCloud/kubernetesClusters/(?P<kubernetesClusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/features/(?P<featureName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -274,7 +274,7 @@ func (k *KubernetesClusterFeaturesServerTransport) dispatchNewListByKubernetesCl
 	}
 	newListByKubernetesClusterPager := k.newListByKubernetesClusterPager.get(req)
 	if newListByKubernetesClusterPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetworkCloud/kubernetesClusters/(?P<kubernetesClusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/features`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetworkCloud/kubernetesClusters/(?P<kubernetesClusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/features`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -334,7 +334,7 @@ func (k *KubernetesClusterFeaturesServerTransport) dispatchBeginUpdate(req *http
 	}
 	beginUpdate := k.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetworkCloud/kubernetesClusters/(?P<kubernetesClusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/features/(?P<featureName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetworkCloud/kubernetesClusters/(?P<kubernetesClusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/features/(?P<featureName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {

@@ -105,7 +105,7 @@ func (e *EventServerTransport) dispatchFetchBilllingCommunicationDetailsBySubscr
 	if e.srv.FetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingID == nil {
 		return nil, &nonRetriableError{errors.New("fake for method FetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingID not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ResourceHealth/events/(?P<eventTrackingId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/fetchBillingCommunicationDetails`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ResourceHealth/events/(?P<eventTrackingId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/fetchBillingCommunicationDetails`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -134,7 +134,7 @@ func (e *EventServerTransport) dispatchFetchDetailsBySubscriptionIDAndTrackingID
 	if e.srv.FetchDetailsBySubscriptionIDAndTrackingID == nil {
 		return nil, &nonRetriableError{errors.New("fake for method FetchDetailsBySubscriptionIDAndTrackingID not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ResourceHealth/events/(?P<eventTrackingId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/fetchEventDetails`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ResourceHealth/events/(?P<eventTrackingId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/fetchEventDetails`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -163,7 +163,7 @@ func (e *EventServerTransport) dispatchFetchDetailsByTenantIDAndTrackingID(req *
 	if e.srv.FetchDetailsByTenantIDAndTrackingID == nil {
 		return nil, &nonRetriableError{errors.New("fake for method FetchDetailsByTenantIDAndTrackingID not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.ResourceHealth/events/(?P<eventTrackingId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/fetchEventDetails`
+	const regexStr = `/providers/Microsoft\.ResourceHealth/events/(?P<eventTrackingId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/fetchEventDetails`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -192,7 +192,7 @@ func (e *EventServerTransport) dispatchGetBySubscriptionIDAndTrackingID(req *htt
 	if e.srv.GetBySubscriptionIDAndTrackingID == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetBySubscriptionIDAndTrackingID not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ResourceHealth/events/(?P<eventTrackingId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ResourceHealth/events/(?P<eventTrackingId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -231,7 +231,7 @@ func (e *EventServerTransport) dispatchGetByTenantIDAndTrackingID(req *http.Requ
 	if e.srv.GetByTenantIDAndTrackingID == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetByTenantIDAndTrackingID not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.ResourceHealth/events/(?P<eventTrackingId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.ResourceHealth/events/(?P<eventTrackingId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {

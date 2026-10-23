@@ -30,11 +30,20 @@ type ServerFactory struct {
 	// OperationsServer contains the fakes for client OperationsClient
 	OperationsServer OperationsServer
 
+	// RecoverableVolumeGroupsServer contains the fakes for client RecoverableVolumeGroupsClient
+	RecoverableVolumeGroupsServer RecoverableVolumeGroupsServer
+
 	// ReservationsServer contains the fakes for client ReservationsClient
 	ReservationsServer ReservationsServer
 
+	// SaaSOperationGroupServer contains the fakes for client SaaSOperationGroupClient
+	SaaSOperationGroupServer SaaSOperationGroupServer
+
 	// StoragePoolsServer contains the fakes for client StoragePoolsClient
 	StoragePoolsServer StoragePoolsServer
+
+	// VolumeGroupSnapshotsServer contains the fakes for client VolumeGroupSnapshotsClient
+	VolumeGroupSnapshotsServer VolumeGroupSnapshotsServer
 
 	// VolumeGroupsServer contains the fakes for client VolumeGroupsClient
 	VolumeGroupsServer VolumeGroupsServer
@@ -62,8 +71,11 @@ type ServerFactoryTransport struct {
 	trAvsVMVolumesServer               *AvsVMVolumesServerTransport
 	trAvsVMsServer                     *AvsVMsServerTransport
 	trOperationsServer                 *OperationsServerTransport
+	trRecoverableVolumeGroupsServer    *RecoverableVolumeGroupsServerTransport
 	trReservationsServer               *ReservationsServerTransport
+	trSaaSOperationGroupServer         *SaaSOperationGroupServerTransport
 	trStoragePoolsServer               *StoragePoolsServerTransport
+	trVolumeGroupSnapshotsServer       *VolumeGroupSnapshotsServerTransport
 	trVolumeGroupsServer               *VolumeGroupsServerTransport
 	trVolumesServer                    *VolumesServerTransport
 }
@@ -100,12 +112,27 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "OperationsClient":
 		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
+	case "RecoverableVolumeGroupsClient":
+		initServer(&s.trMu, &s.trRecoverableVolumeGroupsServer, func() *RecoverableVolumeGroupsServerTransport {
+			return NewRecoverableVolumeGroupsServerTransport(&s.srv.RecoverableVolumeGroupsServer)
+		})
+		resp, err = s.trRecoverableVolumeGroupsServer.Do(req)
 	case "ReservationsClient":
 		initServer(&s.trMu, &s.trReservationsServer, func() *ReservationsServerTransport { return NewReservationsServerTransport(&s.srv.ReservationsServer) })
 		resp, err = s.trReservationsServer.Do(req)
+	case "SaaSOperationGroupClient":
+		initServer(&s.trMu, &s.trSaaSOperationGroupServer, func() *SaaSOperationGroupServerTransport {
+			return NewSaaSOperationGroupServerTransport(&s.srv.SaaSOperationGroupServer)
+		})
+		resp, err = s.trSaaSOperationGroupServer.Do(req)
 	case "StoragePoolsClient":
 		initServer(&s.trMu, &s.trStoragePoolsServer, func() *StoragePoolsServerTransport { return NewStoragePoolsServerTransport(&s.srv.StoragePoolsServer) })
 		resp, err = s.trStoragePoolsServer.Do(req)
+	case "VolumeGroupSnapshotsClient":
+		initServer(&s.trMu, &s.trVolumeGroupSnapshotsServer, func() *VolumeGroupSnapshotsServerTransport {
+			return NewVolumeGroupSnapshotsServerTransport(&s.srv.VolumeGroupSnapshotsServer)
+		})
+		resp, err = s.trVolumeGroupSnapshotsServer.Do(req)
 	case "VolumeGroupsClient":
 		initServer(&s.trMu, &s.trVolumeGroupsServer, func() *VolumeGroupsServerTransport { return NewVolumeGroupsServerTransport(&s.srv.VolumeGroupsServer) })
 		resp, err = s.trVolumeGroupsServer.Do(req)

@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/StorageTargets_Flush.json
+// Generated from example definition: 2026-08-01/StorageTargets_Flush.json
 func ExampleStorageTargetClient_BeginFlush() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -37,7 +37,7 @@ func ExampleStorageTargetClient_BeginFlush() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/StorageTargets_Invalidate.json
+// Generated from example definition: 2026-08-01/StorageTargets_Invalidate.json
 func ExampleStorageTargetClient_BeginInvalidate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -63,7 +63,7 @@ func ExampleStorageTargetClient_BeginInvalidate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/StorageTargets_Resume.json
+// Generated from example definition: 2026-08-01/StorageTargets_Resume.json
 func ExampleStorageTargetClient_BeginResume() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -89,7 +89,7 @@ func ExampleStorageTargetClient_BeginResume() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/StorageTargets_Suspend.json
+// Generated from example definition: 2026-08-01/StorageTargets_Suspend.json
 func ExampleStorageTargetClient_BeginSuspend() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

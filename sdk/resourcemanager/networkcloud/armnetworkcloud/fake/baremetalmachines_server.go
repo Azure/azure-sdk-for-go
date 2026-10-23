@@ -216,7 +216,7 @@ func (b *BareMetalMachinesServerTransport) dispatchBeginCordon(req *http.Request
 	}
 	beginCordon := b.beginCordon.get(req)
 	if beginCordon == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetworkCloud/bareMetalMachines/(?P<bareMetalMachineName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cordon`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetworkCloud/bareMetalMachines/(?P<bareMetalMachineName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/cordon`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -270,7 +270,7 @@ func (b *BareMetalMachinesServerTransport) dispatchBeginCreateOrUpdate(req *http
 	}
 	beginCreateOrUpdate := b.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetworkCloud/bareMetalMachines/(?P<bareMetalMachineName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetworkCloud/bareMetalMachines/(?P<bareMetalMachineName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -327,7 +327,7 @@ func (b *BareMetalMachinesServerTransport) dispatchBeginDelete(req *http.Request
 	}
 	beginDelete := b.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetworkCloud/bareMetalMachines/(?P<bareMetalMachineName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetworkCloud/bareMetalMachines/(?P<bareMetalMachineName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -378,7 +378,7 @@ func (b *BareMetalMachinesServerTransport) dispatchGet(req *http.Request) (*http
 	if b.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetworkCloud/bareMetalMachines/(?P<bareMetalMachineName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetworkCloud/bareMetalMachines/(?P<bareMetalMachineName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -413,7 +413,7 @@ func (b *BareMetalMachinesServerTransport) dispatchNewListByResourceGroupPager(r
 	}
 	newListByResourceGroupPager := b.newListByResourceGroupPager.get(req)
 	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetworkCloud/bareMetalMachines`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetworkCloud/bareMetalMachines`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -469,7 +469,7 @@ func (b *BareMetalMachinesServerTransport) dispatchNewListBySubscriptionPager(re
 	}
 	newListBySubscriptionPager := b.newListBySubscriptionPager.get(req)
 	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetworkCloud/bareMetalMachines`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetworkCloud/bareMetalMachines`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -521,7 +521,7 @@ func (b *BareMetalMachinesServerTransport) dispatchBeginPowerOff(req *http.Reque
 	}
 	beginPowerOff := b.beginPowerOff.get(req)
 	if beginPowerOff == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetworkCloud/bareMetalMachines/(?P<bareMetalMachineName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/powerOff`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetworkCloud/bareMetalMachines/(?P<bareMetalMachineName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/powerOff`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -575,7 +575,7 @@ func (b *BareMetalMachinesServerTransport) dispatchBeginReimage(req *http.Reques
 	}
 	beginReimage := b.beginReimage.get(req)
 	if beginReimage == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetworkCloud/bareMetalMachines/(?P<bareMetalMachineName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/reimage`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetworkCloud/bareMetalMachines/(?P<bareMetalMachineName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/reimage`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -629,7 +629,7 @@ func (b *BareMetalMachinesServerTransport) dispatchBeginReplace(req *http.Reques
 	}
 	beginReplace := b.beginReplace.get(req)
 	if beginReplace == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetworkCloud/bareMetalMachines/(?P<bareMetalMachineName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replace`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetworkCloud/bareMetalMachines/(?P<bareMetalMachineName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/replace`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -683,7 +683,7 @@ func (b *BareMetalMachinesServerTransport) dispatchBeginRestart(req *http.Reques
 	}
 	beginRestart := b.beginRestart.get(req)
 	if beginRestart == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetworkCloud/bareMetalMachines/(?P<bareMetalMachineName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/restart`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetworkCloud/bareMetalMachines/(?P<bareMetalMachineName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/restart`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -727,7 +727,7 @@ func (b *BareMetalMachinesServerTransport) dispatchBeginRunCommand(req *http.Req
 	}
 	beginRunCommand := b.beginRunCommand.get(req)
 	if beginRunCommand == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetworkCloud/bareMetalMachines/(?P<bareMetalMachineName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/runCommand`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetworkCloud/bareMetalMachines/(?P<bareMetalMachineName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/runCommand`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -775,7 +775,7 @@ func (b *BareMetalMachinesServerTransport) dispatchBeginRunDataExtracts(req *htt
 	}
 	beginRunDataExtracts := b.beginRunDataExtracts.get(req)
 	if beginRunDataExtracts == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetworkCloud/bareMetalMachines/(?P<bareMetalMachineName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/runDataExtracts`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetworkCloud/bareMetalMachines/(?P<bareMetalMachineName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/runDataExtracts`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -823,7 +823,7 @@ func (b *BareMetalMachinesServerTransport) dispatchBeginRunDataExtractsRestricte
 	}
 	beginRunDataExtractsRestricted := b.beginRunDataExtractsRestricted.get(req)
 	if beginRunDataExtractsRestricted == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetworkCloud/bareMetalMachines/(?P<bareMetalMachineName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/runDataExtractsRestricted`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetworkCloud/bareMetalMachines/(?P<bareMetalMachineName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/runDataExtractsRestricted`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -871,7 +871,7 @@ func (b *BareMetalMachinesServerTransport) dispatchBeginRunReadCommands(req *htt
 	}
 	beginRunReadCommands := b.beginRunReadCommands.get(req)
 	if beginRunReadCommands == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetworkCloud/bareMetalMachines/(?P<bareMetalMachineName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/runReadCommands`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetworkCloud/bareMetalMachines/(?P<bareMetalMachineName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/runReadCommands`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -919,7 +919,7 @@ func (b *BareMetalMachinesServerTransport) dispatchBeginStart(req *http.Request)
 	}
 	beginStart := b.beginStart.get(req)
 	if beginStart == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetworkCloud/bareMetalMachines/(?P<bareMetalMachineName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/start`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetworkCloud/bareMetalMachines/(?P<bareMetalMachineName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/start`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -963,7 +963,7 @@ func (b *BareMetalMachinesServerTransport) dispatchBeginUncordon(req *http.Reque
 	}
 	beginUncordon := b.beginUncordon.get(req)
 	if beginUncordon == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetworkCloud/bareMetalMachines/(?P<bareMetalMachineName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/uncordon`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetworkCloud/bareMetalMachines/(?P<bareMetalMachineName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/uncordon`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -1007,7 +1007,7 @@ func (b *BareMetalMachinesServerTransport) dispatchBeginUpdate(req *http.Request
 	}
 	beginUpdate := b.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetworkCloud/bareMetalMachines/(?P<bareMetalMachineName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetworkCloud/bareMetalMachines/(?P<bareMetalMachineName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {

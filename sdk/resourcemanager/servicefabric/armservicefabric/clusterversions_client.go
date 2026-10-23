@@ -30,6 +30,9 @@ type ClusterVersionsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewClusterVersionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClusterVersionsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -69,7 +72,7 @@ func (client *ClusterVersionsClient) Get(ctx context.Context, location string, c
 func (client *ClusterVersionsClient) getCreateRequest(ctx context.Context, location string, clusterVersion string, _ *ClusterVersionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ServiceFabric/locations/{location}/clusterVersions/{clusterVersion}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {
@@ -133,7 +136,7 @@ func (client *ClusterVersionsClient) GetByEnvironment(ctx context.Context, locat
 func (client *ClusterVersionsClient) getByEnvironmentCreateRequest(ctx context.Context, location string, environment ClusterVersionsEnvironment, clusterVersion string, _ *ClusterVersionsClientGetByEnvironmentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ServiceFabric/locations/{location}/environments/{environment}/clusterVersions/{clusterVersion}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {
@@ -198,7 +201,7 @@ func (client *ClusterVersionsClient) List(ctx context.Context, location string, 
 func (client *ClusterVersionsClient) listCreateRequest(ctx context.Context, location string, _ *ClusterVersionsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ServiceFabric/locations/{location}/clusterVersions"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {
@@ -257,7 +260,7 @@ func (client *ClusterVersionsClient) ListByEnvironment(ctx context.Context, loca
 func (client *ClusterVersionsClient) listByEnvironmentCreateRequest(ctx context.Context, location string, environment ClusterVersionsEnvironment, _ *ClusterVersionsClientListByEnvironmentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ServiceFabric/locations/{location}/environments/{environment}/clusterVersions"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {

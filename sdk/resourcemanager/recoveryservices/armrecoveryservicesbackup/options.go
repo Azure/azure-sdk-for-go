@@ -214,6 +214,12 @@ type GetTieringCostOperationResultClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
+// ItemLevelRecoveryConnectionsClientListInstantItemRecoveryOperationResultOptions contains the optional parameters for the
+// ItemLevelRecoveryConnectionsClient.ListInstantItemRecoveryOperationResult method.
+type ItemLevelRecoveryConnectionsClientListInstantItemRecoveryOperationResultOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ItemLevelRecoveryConnectionsClientProvisionOptions contains the optional parameters for the ItemLevelRecoveryConnectionsClient.Provision
 // method.
 type ItemLevelRecoveryConnectionsClientProvisionOptions struct {
@@ -332,6 +338,12 @@ type ProtectionContainerRefreshOperationResultsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
+// ProtectionContainerRefreshOperationStatusesClientGetOptions contains the optional parameters for the ProtectionContainerRefreshOperationStatusesClient.Get
+// method.
+type ProtectionContainerRefreshOperationStatusesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ProtectionContainersClientBeginRegisterOptions contains the optional parameters for the ProtectionContainersClient.BeginRegister
 // method.
 type ProtectionContainersClientBeginRegisterOptions struct {
@@ -412,8 +424,21 @@ type ProtectionPolicyOperationStatusesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
+// RecoveryPointsClientBeginGetRPExtendedInfoOptions contains the optional parameters for the RecoveryPointsClient.BeginGetRPExtendedInfo
+// method.
+type RecoveryPointsClientBeginGetRPExtendedInfoOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
 // RecoveryPointsClientGetOptions contains the optional parameters for the RecoveryPointsClient.Get method.
 type RecoveryPointsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RecoveryPointsClientGetRPExtendedInfoOperationResultOptions contains the optional parameters for the RecoveryPointsClient.GetRPExtendedInfoOperationResult
+// method.
+type RecoveryPointsClientGetRPExtendedInfoOperationResultOptions struct {
 	// placeholder for future optional parameters
 }
 

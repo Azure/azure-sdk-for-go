@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-05-01-preview/ConnectedPartnerResources_List.json
+// Generated from example definition: 2026-06-01/ConnectedPartnerResources_List.json
 func ExampleConnectedPartnerResourcesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

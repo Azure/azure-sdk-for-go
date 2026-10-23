@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2026-04-01-preview/MaintenanceEventsApplyNow.json
+// Generated from example definition: 2026-07-01-preview/MaintenanceEventsApplyNow.json
 func ExampleMaintenanceEventsClient_BeginApplyNow() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -48,7 +48,7 @@ func ExampleMaintenanceEventsClient_BeginApplyNow() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/MaintenanceEventsGet.json
+// Generated from example definition: 2026-07-01-preview/MaintenanceEventsGet.json
 func ExampleMaintenanceEventsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -87,7 +87,7 @@ func ExampleMaintenanceEventsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/MaintenanceEventsListByServer.json
+// Generated from example definition: 2026-07-01-preview/MaintenanceEventsListByServer.json
 func ExampleMaintenanceEventsClient_NewListPager_listOngoingAndScheduledMaintenanceEventsForAServer() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -152,7 +152,7 @@ func ExampleMaintenanceEventsClient_NewListPager_listOngoingAndScheduledMaintena
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/MaintenanceEventsListByServerWithFilter.json
+// Generated from example definition: 2026-07-01-preview/MaintenanceEventsListByServerWithFilter.json
 func ExampleMaintenanceEventsClient_NewListPager_listMaintenanceEventsFilteredByStatusForAServer() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -218,7 +218,7 @@ func ExampleMaintenanceEventsClient_NewListPager_listMaintenanceEventsFilteredBy
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/MaintenanceEventsReschedule.json
+// Generated from example definition: 2026-07-01-preview/MaintenanceEventsReschedule.json
 func ExampleMaintenanceEventsClient_BeginReschedule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

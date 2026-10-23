@@ -31,6 +31,9 @@ type PartnerRegistrationsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewPartnerRegistrationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PartnerRegistrationsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -96,7 +99,7 @@ func (client *PartnerRegistrationsClient) createOrUpdate(ctx context.Context, re
 func (client *PartnerRegistrationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, partnerRegistrationName string, partnerRegistrationInfo PartnerRegistration, _ *PartnerRegistrationsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerRegistrations/{partnerRegistrationName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -175,7 +178,7 @@ func (client *PartnerRegistrationsClient) deleteOperation(ctx context.Context, r
 func (client *PartnerRegistrationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, partnerRegistrationName string, _ *PartnerRegistrationsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerRegistrations/{partnerRegistrationName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -225,7 +228,7 @@ func (client *PartnerRegistrationsClient) Get(ctx context.Context, resourceGroup
 func (client *PartnerRegistrationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, partnerRegistrationName string, _ *PartnerRegistrationsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerRegistrations/{partnerRegistrationName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -298,7 +301,7 @@ func (client *PartnerRegistrationsClient) listByResourceGroupCreateRequest(ctx c
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerRegistrations"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -377,7 +380,7 @@ func (client *PartnerRegistrationsClient) listBySubscriptionCreateRequest(ctx co
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.EventGrid/partnerRegistrations"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
@@ -468,7 +471,7 @@ func (client *PartnerRegistrationsClient) update(ctx context.Context, resourceGr
 func (client *PartnerRegistrationsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, partnerRegistrationName string, partnerRegistrationUpdateParameters PartnerRegistrationUpdateParameters, _ *PartnerRegistrationsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerRegistrations/{partnerRegistrationName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {

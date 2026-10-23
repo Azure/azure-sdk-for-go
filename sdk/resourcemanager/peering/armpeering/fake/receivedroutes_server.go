@@ -87,7 +87,7 @@ func (r *ReceivedRoutesServerTransport) dispatchNewListByPeeringPager(req *http.
 	}
 	newListByPeeringPager := r.newListByPeeringPager.get(req)
 	if newListByPeeringPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Peering/peerings/(?P<peeringName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/receivedRoutes`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Peering/peerings/(?P<peeringName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/receivedRoutes`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {

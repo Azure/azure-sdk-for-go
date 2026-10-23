@@ -30,6 +30,9 @@ type SharedLimitCapsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSharedLimitCapsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SharedLimitCapsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -69,7 +72,7 @@ func (client *SharedLimitCapsClient) CreateOrUpdate(ctx context.Context, locatio
 func (client *SharedLimitCapsClient) createOrUpdateCreateRequest(ctx context.Context, location string, vmFamilyName string, resource SharedLimitCap, _ *SharedLimitCapsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeLimit/locations/{location}/sharedLimitCaps/{vmFamilyName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {
@@ -136,7 +139,7 @@ func (client *SharedLimitCapsClient) Delete(ctx context.Context, location string
 func (client *SharedLimitCapsClient) deleteCreateRequest(ctx context.Context, location string, vmFamilyName string, _ *SharedLimitCapsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeLimit/locations/{location}/sharedLimitCaps/{vmFamilyName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {
@@ -183,7 +186,7 @@ func (client *SharedLimitCapsClient) Get(ctx context.Context, location string, v
 func (client *SharedLimitCapsClient) getCreateRequest(ctx context.Context, location string, vmFamilyName string, _ *SharedLimitCapsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeLimit/locations/{location}/sharedLimitCaps/{vmFamilyName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {
@@ -254,7 +257,7 @@ func (client *SharedLimitCapsClient) listBySubscriptionLocationResourceCreateReq
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeLimit/locations/{location}/sharedLimitCaps"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if location == "" {
@@ -319,7 +322,7 @@ func (client *SharedLimitCapsClient) SetMemberCapOverrides(ctx context.Context, 
 func (client *SharedLimitCapsClient) setMemberCapOverridesCreateRequest(ctx context.Context, location string, vmFamilyName string, body SetMemberCapOverridesRequest, _ *SharedLimitCapsClientSetMemberCapOverridesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeLimit/locations/{location}/sharedLimitCaps/{vmFamilyName}/setMemberCapOverrides"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {

@@ -99,7 +99,7 @@ func (m *MicrosoftSerialConsoleServerTransport) dispatchDisableConsole(req *http
 	if m.srv.DisableConsole == nil {
 		return nil, &nonRetriableError{errors.New("fake for method DisableConsole not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SerialConsole/consoleServices/(?P<default>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/disableConsole`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.SerialConsole/consoleServices/(?P<default>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/disableConsole`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -128,7 +128,7 @@ func (m *MicrosoftSerialConsoleServerTransport) dispatchEnableConsole(req *http.
 	if m.srv.EnableConsole == nil {
 		return nil, &nonRetriableError{errors.New("fake for method EnableConsole not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SerialConsole/consoleServices/(?P<default>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/enableConsole`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.SerialConsole/consoleServices/(?P<default>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/enableConsole`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -157,7 +157,7 @@ func (m *MicrosoftSerialConsoleServerTransport) dispatchGetConsoleStatus(req *ht
 	if m.srv.GetConsoleStatus == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetConsoleStatus not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SerialConsole/consoleServices/(?P<default>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.SerialConsole/consoleServices/(?P<default>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {

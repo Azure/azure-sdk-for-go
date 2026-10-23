@@ -203,7 +203,7 @@ func (e *EventSubscriptionsServerTransport) dispatchBeginCreateOrUpdate(req *htt
 	}
 	beginCreateOrUpdate := e.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventGrid/eventSubscriptions/(?P<eventSubscriptionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventGrid/eventSubscriptions/(?P<eventSubscriptionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -251,7 +251,7 @@ func (e *EventSubscriptionsServerTransport) dispatchBeginDelete(req *http.Reques
 	}
 	beginDelete := e.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventGrid/eventSubscriptions/(?P<eventSubscriptionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventGrid/eventSubscriptions/(?P<eventSubscriptionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -293,7 +293,7 @@ func (e *EventSubscriptionsServerTransport) dispatchGet(req *http.Request) (*htt
 	if e.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventGrid/eventSubscriptions/(?P<eventSubscriptionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventGrid/eventSubscriptions/(?P<eventSubscriptionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -326,7 +326,7 @@ func (e *EventSubscriptionsServerTransport) dispatchGetDeliveryAttributes(req *h
 	if e.srv.GetDeliveryAttributes == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetDeliveryAttributes not implemented")}
 	}
-	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventGrid/eventSubscriptions/(?P<eventSubscriptionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getDeliveryAttributes`
+	const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventGrid/eventSubscriptions/(?P<eventSubscriptionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getDeliveryAttributes`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -359,7 +359,7 @@ func (e *EventSubscriptionsServerTransport) dispatchGetFullURL(req *http.Request
 	if e.srv.GetFullURL == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetFullURL not implemented")}
 	}
-	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventGrid/eventSubscriptions/(?P<eventSubscriptionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getFullUrl`
+	const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventGrid/eventSubscriptions/(?P<eventSubscriptionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getFullUrl`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -394,7 +394,7 @@ func (e *EventSubscriptionsServerTransport) dispatchNewListByDomainTopicPager(re
 	}
 	newListByDomainTopicPager := e.newListByDomainTopicPager.get(req)
 	if newListByDomainTopicPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventGrid/domains/(?P<domainName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/topics/(?P<topicName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventGrid/eventSubscriptions`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventGrid/domains/(?P<domainName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/topics/(?P<topicName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventGrid/eventSubscriptions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -458,7 +458,7 @@ func (e *EventSubscriptionsServerTransport) dispatchNewListByResourcePager(req *
 	}
 	newListByResourcePager := e.newListByResourcePager.get(req)
 	if newListByResourcePager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/(?P<providerNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<resourceTypeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventGrid/eventSubscriptions`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/(?P<providerNamespace>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/(?P<resourceTypeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventGrid/eventSubscriptions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -526,7 +526,7 @@ func (e *EventSubscriptionsServerTransport) dispatchNewListGlobalByResourceGroup
 	}
 	newListGlobalByResourceGroupPager := e.newListGlobalByResourceGroupPager.get(req)
 	if newListGlobalByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventGrid/eventSubscriptions`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventGrid/eventSubscriptions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -582,7 +582,7 @@ func (e *EventSubscriptionsServerTransport) dispatchNewListGlobalByResourceGroup
 	}
 	newListGlobalByResourceGroupForTopicTypePager := e.newListGlobalByResourceGroupForTopicTypePager.get(req)
 	if newListGlobalByResourceGroupForTopicTypePager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventGrid/topicTypes/(?P<topicTypeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/eventSubscriptions`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventGrid/topicTypes/(?P<topicTypeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/eventSubscriptions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -642,7 +642,7 @@ func (e *EventSubscriptionsServerTransport) dispatchNewListGlobalBySubscriptionP
 	}
 	newListGlobalBySubscriptionPager := e.newListGlobalBySubscriptionPager.get(req)
 	if newListGlobalBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventGrid/eventSubscriptions`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventGrid/eventSubscriptions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -694,7 +694,7 @@ func (e *EventSubscriptionsServerTransport) dispatchNewListGlobalBySubscriptionF
 	}
 	newListGlobalBySubscriptionForTopicTypePager := e.newListGlobalBySubscriptionForTopicTypePager.get(req)
 	if newListGlobalBySubscriptionForTopicTypePager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventGrid/topicTypes/(?P<topicTypeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/eventSubscriptions`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventGrid/topicTypes/(?P<topicTypeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/eventSubscriptions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -750,7 +750,7 @@ func (e *EventSubscriptionsServerTransport) dispatchNewListRegionalByResourceGro
 	}
 	newListRegionalByResourceGroupPager := e.newListRegionalByResourceGroupPager.get(req)
 	if newListRegionalByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventGrid/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/eventSubscriptions`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventGrid/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/eventSubscriptions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -810,7 +810,7 @@ func (e *EventSubscriptionsServerTransport) dispatchNewListRegionalByResourceGro
 	}
 	newListRegionalByResourceGroupForTopicTypePager := e.newListRegionalByResourceGroupForTopicTypePager.get(req)
 	if newListRegionalByResourceGroupForTopicTypePager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventGrid/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/topicTypes/(?P<topicTypeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/eventSubscriptions`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventGrid/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/topicTypes/(?P<topicTypeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/eventSubscriptions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -874,7 +874,7 @@ func (e *EventSubscriptionsServerTransport) dispatchNewListRegionalBySubscriptio
 	}
 	newListRegionalBySubscriptionPager := e.newListRegionalBySubscriptionPager.get(req)
 	if newListRegionalBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventGrid/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/eventSubscriptions`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventGrid/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/eventSubscriptions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -930,7 +930,7 @@ func (e *EventSubscriptionsServerTransport) dispatchNewListRegionalBySubscriptio
 	}
 	newListRegionalBySubscriptionForTopicTypePager := e.newListRegionalBySubscriptionForTopicTypePager.get(req)
 	if newListRegionalBySubscriptionForTopicTypePager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventGrid/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/topicTypes/(?P<topicTypeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/eventSubscriptions`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventGrid/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/topicTypes/(?P<topicTypeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/eventSubscriptions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -990,7 +990,7 @@ func (e *EventSubscriptionsServerTransport) dispatchBeginUpdate(req *http.Reques
 	}
 	beginUpdate := e.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventGrid/eventSubscriptions/(?P<eventSubscriptionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventGrid/eventSubscriptions/(?P<eventSubscriptionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {

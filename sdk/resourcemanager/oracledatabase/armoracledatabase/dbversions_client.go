@@ -20,7 +20,7 @@ import (
 // DbVersionsClient contains the methods for the DbVersions group.
 // Don't use this type directly, use NewDbVersionsClient() instead.
 //
-// Generated from API version 2025-09-01
+// Generated from API version 2026-06-01
 type DbVersionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -31,6 +31,9 @@ type DbVersionsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewDbVersionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DbVersionsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -68,7 +71,7 @@ func (client *DbVersionsClient) Get(ctx context.Context, location string, dbvers
 func (client *DbVersionsClient) getCreateRequest(ctx context.Context, location string, dbversionsname string, _ *DbVersionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Oracle.Database/locations/{location}/dbSystemDbVersions/{dbversionsname}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {
@@ -84,7 +87,7 @@ func (client *DbVersionsClient) getCreateRequest(ctx context.Context, location s
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -139,7 +142,7 @@ func (client *DbVersionsClient) listByLocationCreateRequest(ctx context.Context,
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/Oracle.Database/locations/{location}/dbSystemDbVersions"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if location == "" {
@@ -155,7 +158,7 @@ func (client *DbVersionsClient) listByLocationCreateRequest(ctx context.Context,
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250901)
+		reqQP.Set("api-version", version20260601)
 		if options != nil && options.DbSystemID != nil {
 			reqQP.Set("dbSystemId", *options.DbSystemID)
 		}

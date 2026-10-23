@@ -8,12 +8,12 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v12"
 	"log"
 )
 
-// Generated from example definition: 2025-09-01/IpamPools_Create.json
-func ExampleIpamPoolsClient_BeginCreate() {
+// Generated from example definition: 2026-03-01/IpamPools_Create.json
+func ExampleIpamPoolsClient_BeginCreate_ipamPoolsCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -75,7 +75,74 @@ func ExampleIpamPoolsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/IpamPools_Delete.json
+// Generated from example definition: 2026-03-01/IpamPools_CreateWithAllocationBounds.json
+func ExampleIpamPoolsClient_BeginCreate_createUpdateThePoolResourceWithAllocationSizeBounds() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("11111111-1111-1111-1111-111111111111", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewIpamPoolsClient().BeginCreate(ctx, "rg1", "TestNetworkManager", "TestPool", armnetwork.IpamPool{
+		Location: to.Ptr("eastus"),
+		Properties: &armnetwork.IpamPoolProperties{
+			Description: to.Ptr("Test description."),
+			AddressPrefixes: []*string{
+				to.Ptr("10.0.0.0/24"),
+			},
+			MaxAllocationSize: to.Ptr("256"),
+			MinAllocationSize: to.Ptr("16"),
+			ParentPoolName:    to.Ptr(""),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.IpamPoolsClientCreateResponse{
+	// 	IpamPool: armnetwork.IpamPool{
+	// 		Name: to.Ptr("TestPool"),
+	// 		Type: to.Ptr("Microsoft.Network/networkManagers/ipamPools"),
+	// 		Etag: to.Ptr("\"00000000-0000-0000-0000-000000000000\""),
+	// 		ID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rg1/providers/Microsoft.Network/networkManagers/TestNetworkManager/ipamPools/TestPool"),
+	// 		Location: to.Ptr("eastus"),
+	// 		Properties: &armnetwork.IpamPoolProperties{
+	// 			Description: to.Ptr("Test description."),
+	// 			AddressPrefixes: []*string{
+	// 				to.Ptr("10.0.0.0/24"),
+	// 			},
+	// 			IPAddressType: []*armnetwork.IPType{
+	// 				to.Ptr(armnetwork.IPTypeIPv4),
+	// 			},
+	// 			MaxAllocationSize: to.Ptr("256"),
+	// 			MinAllocationSize: to.Ptr("16"),
+	// 			ParentPoolName: to.Ptr(""),
+	// 			ProvisioningState: to.Ptr(armnetwork.ProvisioningStateUpdating),
+	// 		},
+	// 		SystemData: &armnetwork.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 11, 18, 52, 27, 0, time.UTC)),
+	// 			CreatedBy: to.Ptr("b69a9388-9488-4534-b470-7ec6d41beef5"),
+	// 			CreatedByType: to.Ptr(armnetwork.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.January, 11, 18, 52, 27, 0, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("b69a9388-9488-4534-b470-7ec6d41beef5"),
+	// 			LastModifiedByType: to.Ptr(armnetwork.CreatedByTypeUser),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-03-01/IpamPools_Delete.json
 func ExampleIpamPoolsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -96,7 +163,7 @@ func ExampleIpamPoolsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/IpamPools_Get.json
+// Generated from example definition: 2026-03-01/IpamPools_Get.json
 func ExampleIpamPoolsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -146,7 +213,7 @@ func ExampleIpamPoolsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/IpamPools_GetPoolUsage.json
+// Generated from example definition: 2026-03-01/IpamPools_GetPoolUsage.json
 func ExampleIpamPoolsClient_GetPoolUsage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -221,7 +288,52 @@ func ExampleIpamPoolsClient_GetPoolUsage() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/IpamPools_List.json
+// Generated from example definition: 2026-03-01/IpamPools_ListAssociatedResources.json
+func ExampleIpamPoolsClient_NewListAssociatedResourcesPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("11111111-1111-1111-1111-111111111111", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewIpamPoolsClient().NewListAssociatedResourcesPager("rg1", "TestNetworkManager", "TestPool", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armnetwork.IpamPoolsClientListAssociatedResourcesResponse{
+		// 	PoolAssociationList: armnetwork.PoolAssociationList{
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rg1/providers/Microsoft.Network/networkManagers/TestNetworkManager/ipamPools/TestPool/listAssociatedResources?api-version=2025-07-01"),
+		// 		Value: []*armnetwork.PoolAssociation{
+		// 			{
+		// 				Description: to.Ptr(""),
+		// 				AddressPrefixes: []*string{
+		// 					to.Ptr("10.0.0.0/24"),
+		// 				},
+		// 				CreatedAt: to.Ptr(time.Date(2020, time.September, 9, 20, 0, 0, 0, time.UTC)),
+		// 				NumberOfReservedIPAddresses: to.Ptr("0"),
+		// 				PoolID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rg1/providers/Microsoft.Network/networkManagers/TestNetworkManager/ipamPools/TestPool"),
+		// 				ReservedPrefixes: []*string{
+		// 				},
+		// 				ResourceID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/testVnet"),
+		// 				TotalNumberOfIPAddresses: to.Ptr("256"),
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-03-01/IpamPools_List.json
 func ExampleIpamPoolsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -281,8 +393,8 @@ func ExampleIpamPoolsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/IpamPools_ListAssociatedResources.json
-func ExampleIpamPoolsClient_NewListAssociatedResourcesPager() {
+// Generated from example definition: 2026-03-01/IpamPools_Update.json
+func ExampleIpamPoolsClient_Update_ipamPoolsUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -292,42 +404,99 @@ func ExampleIpamPoolsClient_NewListAssociatedResourcesPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewIpamPoolsClient().NewListAssociatedResourcesPager("rg1", "TestNetworkManager", "TestPool", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnetwork.IpamPoolsClientListAssociatedResourcesResponse{
-		// 	PoolAssociationList: armnetwork.PoolAssociationList{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rg1/providers/Microsoft.Network/networkManagers/TestNetworkManager/ipamPools/TestPool/listAssociatedResources?api-version=2025-07-01"),
-		// 		Value: []*armnetwork.PoolAssociation{
-		// 			{
-		// 				Description: to.Ptr(""),
-		// 				AddressPrefixes: []*string{
-		// 					to.Ptr("10.0.0.0/24"),
-		// 				},
-		// 				CreatedAt: to.Ptr(time.Date(2020, time.September, 9, 20, 0, 0, 0, time.UTC)),
-		// 				NumberOfReservedIPAddresses: to.Ptr("0"),
-		// 				PoolID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rg1/providers/Microsoft.Network/networkManagers/TestNetworkManager/ipamPools/TestPool"),
-		// 				ReservedPrefixes: []*string{
-		// 				},
-		// 				ResourceID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/testVnet"),
-		// 				TotalNumberOfIPAddresses: to.Ptr("256"),
-		// 			},
-		// 		},
-		// 	},
-		// }
+	res, err := clientFactory.NewIpamPoolsClient().Update(ctx, "rg1", "TestNetworkManager", "TestPool", armnetwork.IpamPoolUpdate{}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
 	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.IpamPoolsClientUpdateResponse{
+	// 	IpamPool: armnetwork.IpamPool{
+	// 		Name: to.Ptr("TestPool"),
+	// 		Type: to.Ptr("Microsoft.Network/networkManagers/ipamPools"),
+	// 		Etag: to.Ptr("\"00000000-0000-0000-0000-000000000000\""),
+	// 		ID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rg1/providers/Microsoft.Network/networkManagers/TestNetworkManager/ipamPools/TestPool"),
+	// 		Location: to.Ptr("eastus"),
+	// 		Properties: &armnetwork.IpamPoolProperties{
+	// 			Description: to.Ptr("Test description."),
+	// 			AddressPrefixes: []*string{
+	// 				to.Ptr("10.0.0.0/24"),
+	// 			},
+	// 			IPAddressType: []*armnetwork.IPType{
+	// 				to.Ptr(armnetwork.IPTypeIPv4),
+	// 			},
+	// 			ParentPoolName: to.Ptr("test-ipam-pool"),
+	// 			ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+	// 		},
+	// 		SystemData: &armnetwork.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 11, 18, 52, 27, 0, time.UTC)),
+	// 			CreatedBy: to.Ptr("b69a9388-9488-4534-b470-7ec6d41beef5"),
+	// 			CreatedByType: to.Ptr(armnetwork.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.January, 11, 18, 52, 27, 0, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("b69a9388-9488-4534-b470-7ec6d41beef5"),
+	// 			LastModifiedByType: to.Ptr(armnetwork.CreatedByTypeUser),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 		},
+	// 	},
+	// }
 }
 
-// Generated from example definition: 2025-09-01/IpamPools_Update.json
-func ExampleIpamPoolsClient_Update() {
+// Generated from example definition: 2026-03-01/IpamPools_UpdateAllocationBounds.json
+func ExampleIpamPoolsClient_Update_updateTheAllocationSizeBoundsOnAPoolResource() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("11111111-1111-1111-1111-111111111111", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewIpamPoolsClient().Update(ctx, "rg1", "TestNetworkManager", "TestPool", armnetwork.IpamPoolUpdate{}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.IpamPoolsClientUpdateResponse{
+	// 	IpamPool: armnetwork.IpamPool{
+	// 		Name: to.Ptr("TestPool"),
+	// 		Type: to.Ptr("Microsoft.Network/networkManagers/ipamPools"),
+	// 		Etag: to.Ptr("\"00000000-0000-0000-0000-000000000000\""),
+	// 		ID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rg1/providers/Microsoft.Network/networkManagers/TestNetworkManager/ipamPools/TestPool"),
+	// 		Location: to.Ptr("eastus"),
+	// 		Properties: &armnetwork.IpamPoolProperties{
+	// 			Description: to.Ptr("Test description."),
+	// 			AddressPrefixes: []*string{
+	// 				to.Ptr("10.0.0.0/24"),
+	// 			},
+	// 			IPAddressType: []*armnetwork.IPType{
+	// 				to.Ptr(armnetwork.IPTypeIPv4),
+	// 			},
+	// 			MaxAllocationSize: to.Ptr("512"),
+	// 			MinAllocationSize: to.Ptr("32"),
+	// 			ParentPoolName: to.Ptr("test-ipam-pool"),
+	// 			ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+	// 		},
+	// 		SystemData: &armnetwork.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 11, 18, 52, 27, 0, time.UTC)),
+	// 			CreatedBy: to.Ptr("b69a9388-9488-4534-b470-7ec6d41beef5"),
+	// 			CreatedByType: to.Ptr(armnetwork.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.January, 11, 18, 52, 27, 0, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("b69a9388-9488-4534-b470-7ec6d41beef5"),
+	// 			LastModifiedByType: to.Ptr(armnetwork.CreatedByTypeUser),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-03-01/IpamPools_UpdateClearAllocationBounds.json
+func ExampleIpamPoolsClient_Update_clearTheAllocationSizeBoundsOnAPoolResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)

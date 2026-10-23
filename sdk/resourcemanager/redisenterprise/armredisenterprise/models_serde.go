@@ -122,6 +122,8 @@ func (a *AccessPolicyAssignmentList) UnmarshalJSON(data []byte) error {
 func (a AccessPolicyAssignmentProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "accessPolicyName", a.AccessPolicyName)
+	populate(objectMap, "accessString", a.AccessString)
+	populate(objectMap, "provisioningError", a.ProvisioningError)
 	populate(objectMap, "provisioningState", a.ProvisioningState)
 	populate(objectMap, "user", a.User)
 	return json.Marshal(objectMap)
@@ -138,6 +140,12 @@ func (a *AccessPolicyAssignmentProperties) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "accessPolicyName":
 			err = unpopulate(val, "AccessPolicyName", &a.AccessPolicyName)
+			delete(rawMsg, key)
+		case "accessString":
+			err = unpopulate(val, "AccessString", &a.AccessString)
+			delete(rawMsg, key)
+		case "provisioningError":
+			err = unpopulate(val, "ProvisioningError", &a.ProvisioningError)
 			delete(rawMsg, key)
 		case "provisioningState":
 			err = unpopulate(val, "ProvisioningState", &a.ProvisioningState)
@@ -171,6 +179,41 @@ func (a *AccessPolicyAssignmentPropertiesUser) UnmarshalJSON(data []byte) error 
 		switch key {
 		case "objectId":
 			err = unpopulate(val, "ObjectID", &a.ObjectID)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", a, err.Error())
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AccessPolicyAssignmentProvisioningError.
+func (a AccessPolicyAssignmentProvisioningError) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "code", a.Code)
+	populate(objectMap, "message", a.Message)
+	populate(objectMap, "target", a.Target)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AccessPolicyAssignmentProvisioningError.
+func (a *AccessPolicyAssignmentProvisioningError) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", a, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "code":
+			err = unpopulate(val, "Code", &a.Code)
+			delete(rawMsg, key)
+		case "message":
+			err = unpopulate(val, "Message", &a.Message)
+			delete(rawMsg, key)
+		case "target":
+			err = unpopulate(val, "Target", &a.Target)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -664,6 +707,7 @@ func (d DatabaseCreateProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "evictionPolicy", d.EvictionPolicy)
 	populate(objectMap, "geoReplication", d.GeoReplication)
 	populate(objectMap, "modules", d.Modules)
+	populate(objectMap, "notifyKeyspaceEvents", d.NotifyKeyspaceEvents)
 	populate(objectMap, "persistence", d.Persistence)
 	populate(objectMap, "port", d.Port)
 	populate(objectMap, "provisioningState", d.ProvisioningState)
@@ -701,6 +745,9 @@ func (d *DatabaseCreateProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "modules":
 			err = unpopulate(val, "Modules", &d.Modules)
+			delete(rawMsg, key)
+		case "notifyKeyspaceEvents":
+			err = unpopulate(val, "NotifyKeyspaceEvents", &d.NotifyKeyspaceEvents)
 			delete(rawMsg, key)
 		case "persistence":
 			err = unpopulate(val, "Persistence", &d.Persistence)
@@ -824,6 +871,7 @@ func (d DatabaseUpdateProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "evictionPolicy", d.EvictionPolicy)
 	populate(objectMap, "geoReplication", d.GeoReplication)
 	populate(objectMap, "modules", d.Modules)
+	populate(objectMap, "notifyKeyspaceEvents", d.NotifyKeyspaceEvents)
 	populate(objectMap, "persistence", d.Persistence)
 	populate(objectMap, "port", d.Port)
 	populate(objectMap, "provisioningState", d.ProvisioningState)
@@ -861,6 +909,9 @@ func (d *DatabaseUpdateProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "modules":
 			err = unpopulate(val, "Modules", &d.Modules)
+			delete(rawMsg, key)
+		case "notifyKeyspaceEvents":
+			err = unpopulate(val, "NotifyKeyspaceEvents", &d.NotifyKeyspaceEvents)
 			delete(rawMsg, key)
 		case "persistence":
 			err = unpopulate(val, "Persistence", &d.Persistence)

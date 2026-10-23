@@ -118,7 +118,7 @@ func (f *FileShareSnapshotsServerTransport) dispatchBeginCreateOrUpdateFileShare
 	}
 	beginCreateOrUpdateFileShareSnapshot := f.beginCreateOrUpdateFileShareSnapshot.get(req)
 	if beginCreateOrUpdateFileShareSnapshot == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.FileShares/fileShares/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/fileShareSnapshots/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.FileShares/fileShares/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/fileShareSnapshots/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -170,7 +170,7 @@ func (f *FileShareSnapshotsServerTransport) dispatchBeginDeleteFileShareSnapshot
 	}
 	beginDeleteFileShareSnapshot := f.beginDeleteFileShareSnapshot.get(req)
 	if beginDeleteFileShareSnapshot == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.FileShares/fileShares/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/fileShareSnapshots/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.FileShares/fileShares/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/fileShareSnapshots/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -216,7 +216,7 @@ func (f *FileShareSnapshotsServerTransport) dispatchGetFileShareSnapshot(req *ht
 	if f.srv.GetFileShareSnapshot == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetFileShareSnapshot not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.FileShares/fileShares/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/fileShareSnapshots/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.FileShares/fileShares/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/fileShareSnapshots/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -255,7 +255,7 @@ func (f *FileShareSnapshotsServerTransport) dispatchNewListByFileSharePager(req 
 	}
 	newListByFileSharePager := f.newListByFileSharePager.get(req)
 	if newListByFileSharePager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.FileShares/fileShares/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/fileShareSnapshots`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.FileShares/fileShares/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/fileShareSnapshots`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -296,7 +296,7 @@ func (f *FileShareSnapshotsServerTransport) dispatchBeginUpdateFileShareSnapshot
 	}
 	beginUpdateFileShareSnapshot := f.beginUpdateFileShareSnapshot.get(req)
 	if beginUpdateFileShareSnapshot == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.FileShares/fileShares/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/fileShareSnapshots/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.FileShares/fileShares/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/fileShareSnapshots/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {

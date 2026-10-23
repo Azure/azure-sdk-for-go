@@ -95,7 +95,7 @@ func (o *ObjectDataTypesServerTransport) dispatchNewListFieldsByModuleAndTypePag
 	}
 	newListFieldsByModuleAndTypePager := o.newListFieldsByModuleAndTypePager.get(req)
 	if newListFieldsByModuleAndTypePager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/modules/(?P<moduleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/objectDataTypes/(?P<typeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/fields`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/modules/(?P<moduleName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/objectDataTypes/(?P<typeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/fields`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -144,7 +144,7 @@ func (o *ObjectDataTypesServerTransport) dispatchNewListFieldsByTypePager(req *h
 	}
 	newListFieldsByTypePager := o.newListFieldsByTypePager.get(req)
 	if newListFieldsByTypePager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/objectDataTypes/(?P<typeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/fields`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/objectDataTypes/(?P<typeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/fields`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {

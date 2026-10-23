@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v12"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -38,13 +38,13 @@ type IpamPoolsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetPoolUsage func(ctx context.Context, resourceGroupName string, networkManagerName string, poolName string, options *armnetwork.IpamPoolsClientGetPoolUsageOptions) (resp azfake.Responder[armnetwork.IpamPoolsClientGetPoolUsageResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method IpamPoolsClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, networkManagerName string, options *armnetwork.IpamPoolsClientListOptions) (resp azfake.PagerResponder[armnetwork.IpamPoolsClientListResponse])
-
 	// NewListAssociatedResourcesPager is the fake for method IpamPoolsClient.NewListAssociatedResourcesPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListAssociatedResourcesPager func(resourceGroupName string, networkManagerName string, poolName string, options *armnetwork.IpamPoolsClientListAssociatedResourcesOptions) (resp azfake.PagerResponder[armnetwork.IpamPoolsClientListAssociatedResourcesResponse])
+
+	// NewListPager is the fake for method IpamPoolsClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(resourceGroupName string, networkManagerName string, options *armnetwork.IpamPoolsClientListOptions) (resp azfake.PagerResponder[armnetwork.IpamPoolsClientListResponse])
 
 	// Update is the fake for method IpamPoolsClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
@@ -59,8 +59,8 @@ func NewIpamPoolsServerTransport(srv *IpamPoolsServer) *IpamPoolsServerTransport
 		srv:                             srv,
 		beginCreate:                     newTracker[azfake.PollerResponder[armnetwork.IpamPoolsClientCreateResponse]](),
 		beginDelete:                     newTracker[azfake.PollerResponder[armnetwork.IpamPoolsClientDeleteResponse]](),
-		newListPager:                    newTracker[azfake.PagerResponder[armnetwork.IpamPoolsClientListResponse]](),
 		newListAssociatedResourcesPager: newTracker[azfake.PagerResponder[armnetwork.IpamPoolsClientListAssociatedResourcesResponse]](),
+		newListPager:                    newTracker[azfake.PagerResponder[armnetwork.IpamPoolsClientListResponse]](),
 	}
 }
 
@@ -70,8 +70,8 @@ type IpamPoolsServerTransport struct {
 	srv                             *IpamPoolsServer
 	beginCreate                     *tracker[azfake.PollerResponder[armnetwork.IpamPoolsClientCreateResponse]]
 	beginDelete                     *tracker[azfake.PollerResponder[armnetwork.IpamPoolsClientDeleteResponse]]
-	newListPager                    *tracker[azfake.PagerResponder[armnetwork.IpamPoolsClientListResponse]]
 	newListAssociatedResourcesPager *tracker[azfake.PagerResponder[armnetwork.IpamPoolsClientListAssociatedResourcesResponse]]
+	newListPager                    *tracker[azfake.PagerResponder[armnetwork.IpamPoolsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for IpamPoolsServerTransport.
@@ -103,10 +103,10 @@ func (i *IpamPoolsServerTransport) dispatchToMethodFake(req *http.Request, metho
 				res.resp, res.err = i.dispatchGet(req)
 			case "IpamPoolsClient.GetPoolUsage":
 				res.resp, res.err = i.dispatchGetPoolUsage(req)
-			case "IpamPoolsClient.NewListPager":
-				res.resp, res.err = i.dispatchNewListPager(req)
 			case "IpamPoolsClient.NewListAssociatedResourcesPager":
 				res.resp, res.err = i.dispatchNewListAssociatedResourcesPager(req)
+			case "IpamPoolsClient.NewListPager":
+				res.resp, res.err = i.dispatchNewListPager(req)
 			case "IpamPoolsClient.Update":
 				res.resp, res.err = i.dispatchUpdate(req)
 			default:
@@ -131,7 +131,7 @@ func (i *IpamPoolsServerTransport) dispatchBeginCreate(req *http.Request) (*http
 	}
 	beginCreate := i.beginCreate.get(req)
 	if beginCreate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/networkManagers/(?P<networkManagerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/ipamPools/(?P<poolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkManagers/(?P<networkManagerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/ipamPools/(?P<poolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -190,7 +190,7 @@ func (i *IpamPoolsServerTransport) dispatchBeginDelete(req *http.Request) (*http
 	}
 	beginDelete := i.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/networkManagers/(?P<networkManagerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/ipamPools/(?P<poolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkManagers/(?P<networkManagerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/ipamPools/(?P<poolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -243,7 +243,7 @@ func (i *IpamPoolsServerTransport) dispatchGet(req *http.Request) (*http.Respons
 	if i.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/networkManagers/(?P<networkManagerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/ipamPools/(?P<poolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkManagers/(?P<networkManagerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/ipamPools/(?P<poolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -280,7 +280,7 @@ func (i *IpamPoolsServerTransport) dispatchGetPoolUsage(req *http.Request) (*htt
 	if i.srv.GetPoolUsage == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetPoolUsage not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/networkManagers/(?P<networkManagerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/ipamPools/(?P<poolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getPoolUsage`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkManagers/(?P<networkManagerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/ipamPools/(?P<poolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getPoolUsage`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -313,13 +313,58 @@ func (i *IpamPoolsServerTransport) dispatchGetPoolUsage(req *http.Request) (*htt
 	return resp, nil
 }
 
+func (i *IpamPoolsServerTransport) dispatchNewListAssociatedResourcesPager(req *http.Request) (*http.Response, error) {
+	if i.srv.NewListAssociatedResourcesPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListAssociatedResourcesPager not implemented")}
+	}
+	newListAssociatedResourcesPager := i.newListAssociatedResourcesPager.get(req)
+	if newListAssociatedResourcesPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkManagers/(?P<networkManagerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/ipamPools/(?P<poolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listAssociatedResources`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		networkManagerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkManagerName")])
+		if err != nil {
+			return nil, err
+		}
+		poolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("poolName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := i.srv.NewListAssociatedResourcesPager(resourceGroupNameParam, networkManagerNameParam, poolNameParam, nil)
+		newListAssociatedResourcesPager = &resp
+		i.newListAssociatedResourcesPager.add(req, newListAssociatedResourcesPager)
+		server.PagerResponderInjectNextLinks(newListAssociatedResourcesPager, req, func(page *armnetwork.IpamPoolsClientListAssociatedResourcesResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListAssociatedResourcesPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		i.newListAssociatedResourcesPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListAssociatedResourcesPager) {
+		i.newListAssociatedResourcesPager.remove(req)
+	}
+	return resp, nil
+}
+
 func (i *IpamPoolsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
 	if i.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
 	newListPager := i.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/networkManagers/(?P<networkManagerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/ipamPools`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkManagers/(?P<networkManagerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/ipamPools`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -388,56 +433,11 @@ func (i *IpamPoolsServerTransport) dispatchNewListPager(req *http.Request) (*htt
 	return resp, nil
 }
 
-func (i *IpamPoolsServerTransport) dispatchNewListAssociatedResourcesPager(req *http.Request) (*http.Response, error) {
-	if i.srv.NewListAssociatedResourcesPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListAssociatedResourcesPager not implemented")}
-	}
-	newListAssociatedResourcesPager := i.newListAssociatedResourcesPager.get(req)
-	if newListAssociatedResourcesPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/networkManagers/(?P<networkManagerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/ipamPools/(?P<poolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listAssociatedResources`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		networkManagerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkManagerName")])
-		if err != nil {
-			return nil, err
-		}
-		poolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("poolName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := i.srv.NewListAssociatedResourcesPager(resourceGroupNameParam, networkManagerNameParam, poolNameParam, nil)
-		newListAssociatedResourcesPager = &resp
-		i.newListAssociatedResourcesPager.add(req, newListAssociatedResourcesPager)
-		server.PagerResponderInjectNextLinks(newListAssociatedResourcesPager, req, func(page *armnetwork.IpamPoolsClientListAssociatedResourcesResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListAssociatedResourcesPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		i.newListAssociatedResourcesPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListAssociatedResourcesPager) {
-		i.newListAssociatedResourcesPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (i *IpamPoolsServerTransport) dispatchUpdate(req *http.Request) (*http.Response, error) {
 	if i.srv.Update == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Update not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/networkManagers/(?P<networkManagerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/ipamPools/(?P<poolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkManagers/(?P<networkManagerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/ipamPools/(?P<poolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {

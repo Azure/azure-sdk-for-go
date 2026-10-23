@@ -110,7 +110,7 @@ func (s *SharedLimitCapsServerTransport) dispatchCreateOrUpdate(req *http.Reques
 	if s.srv.CreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ComputeLimit/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sharedLimitCaps/(?P<vmFamilyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ComputeLimit/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sharedLimitCaps/(?P<vmFamilyName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -147,7 +147,7 @@ func (s *SharedLimitCapsServerTransport) dispatchDelete(req *http.Request) (*htt
 	if s.srv.Delete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ComputeLimit/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sharedLimitCaps/(?P<vmFamilyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ComputeLimit/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sharedLimitCaps/(?P<vmFamilyName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -180,7 +180,7 @@ func (s *SharedLimitCapsServerTransport) dispatchGet(req *http.Request) (*http.R
 	if s.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ComputeLimit/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sharedLimitCaps/(?P<vmFamilyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ComputeLimit/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sharedLimitCaps/(?P<vmFamilyName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -215,7 +215,7 @@ func (s *SharedLimitCapsServerTransport) dispatchNewListBySubscriptionLocationRe
 	}
 	newListBySubscriptionLocationResourcePager := s.newListBySubscriptionLocationResourcePager.get(req)
 	if newListBySubscriptionLocationResourcePager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ComputeLimit/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sharedLimitCaps`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ComputeLimit/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sharedLimitCaps`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -250,7 +250,7 @@ func (s *SharedLimitCapsServerTransport) dispatchSetMemberCapOverrides(req *http
 	if s.srv.SetMemberCapOverrides == nil {
 		return nil, &nonRetriableError{errors.New("fake for method SetMemberCapOverrides not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ComputeLimit/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sharedLimitCaps/(?P<vmFamilyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/setMemberCapOverrides`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ComputeLimit/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sharedLimitCaps/(?P<vmFamilyName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/setMemberCapOverrides`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {

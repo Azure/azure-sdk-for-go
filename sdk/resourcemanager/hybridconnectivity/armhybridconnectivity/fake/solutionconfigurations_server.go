@@ -119,7 +119,7 @@ func (s *SolutionConfigurationsServerTransport) dispatchCreateOrUpdate(req *http
 	if s.srv.CreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
 	}
-	const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.HybridConnectivity/solutionConfigurations/(?P<solutionConfiguration>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/(?P<resourceUri>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.HybridConnectivity/solutionConfigurations/(?P<solutionConfiguration>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -129,10 +129,7 @@ func (s *SolutionConfigurationsServerTransport) dispatchCreateOrUpdate(req *http
 	if err != nil {
 		return nil, err
 	}
-	resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-	if err != nil {
-		return nil, err
-	}
+	resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 	solutionConfigurationParam, err := url.PathUnescape(matches[regex.SubexpIndex("solutionConfiguration")])
 	if err != nil {
 		return nil, err
@@ -156,16 +153,13 @@ func (s *SolutionConfigurationsServerTransport) dispatchDelete(req *http.Request
 	if s.srv.Delete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
 	}
-	const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.HybridConnectivity/solutionConfigurations/(?P<solutionConfiguration>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/(?P<resourceUri>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.HybridConnectivity/solutionConfigurations/(?P<solutionConfiguration>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-	if err != nil {
-		return nil, err
-	}
+	resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 	solutionConfigurationParam, err := url.PathUnescape(matches[regex.SubexpIndex("solutionConfiguration")])
 	if err != nil {
 		return nil, err
@@ -189,16 +183,13 @@ func (s *SolutionConfigurationsServerTransport) dispatchGet(req *http.Request) (
 	if s.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.HybridConnectivity/solutionConfigurations/(?P<solutionConfiguration>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/(?P<resourceUri>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.HybridConnectivity/solutionConfigurations/(?P<solutionConfiguration>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-	if err != nil {
-		return nil, err
-	}
+	resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 	solutionConfigurationParam, err := url.PathUnescape(matches[regex.SubexpIndex("solutionConfiguration")])
 	if err != nil {
 		return nil, err
@@ -224,16 +215,13 @@ func (s *SolutionConfigurationsServerTransport) dispatchNewListPager(req *http.R
 	}
 	newListPager := s.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.HybridConnectivity/solutionConfigurations`
+		const regexStr = `/(?P<resourceUri>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.HybridConnectivity/solutionConfigurations`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-		if err != nil {
-			return nil, err
-		}
+		resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 		resp := s.srv.NewListPager(resourceURIParam, nil)
 		newListPager = &resp
 		s.newListPager.add(req, newListPager)
@@ -261,16 +249,13 @@ func (s *SolutionConfigurationsServerTransport) dispatchBeginSyncNow(req *http.R
 	}
 	beginSyncNow := s.beginSyncNow.get(req)
 	if beginSyncNow == nil {
-		const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.HybridConnectivity/solutionConfigurations/(?P<solutionConfiguration>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/syncNow`
+		const regexStr = `/(?P<resourceUri>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.HybridConnectivity/solutionConfigurations/(?P<solutionConfiguration>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/syncNow`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-		if err != nil {
-			return nil, err
-		}
+		resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 		solutionConfigurationParam, err := url.PathUnescape(matches[regex.SubexpIndex("solutionConfiguration")])
 		if err != nil {
 			return nil, err
@@ -303,7 +288,7 @@ func (s *SolutionConfigurationsServerTransport) dispatchUpdate(req *http.Request
 	if s.srv.Update == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Update not implemented")}
 	}
-	const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.HybridConnectivity/solutionConfigurations/(?P<solutionConfiguration>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/(?P<resourceUri>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.HybridConnectivity/solutionConfigurations/(?P<solutionConfiguration>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -313,10 +298,7 @@ func (s *SolutionConfigurationsServerTransport) dispatchUpdate(req *http.Request
 	if err != nil {
 		return nil, err
 	}
-	resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-	if err != nil {
-		return nil, err
-	}
+	resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 	solutionConfigurationParam, err := url.PathUnescape(matches[regex.SubexpIndex("solutionConfiguration")])
 	if err != nil {
 		return nil, err

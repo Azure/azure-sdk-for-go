@@ -19,7 +19,7 @@ import (
 // DdosProtectionPlansClient contains the methods for the DdosProtectionPlans group.
 // Don't use this type directly, use NewDdosProtectionPlansClient() instead.
 //
-// Generated from API version 2025-09-01
+// Generated from API version 2026-03-01
 type DdosProtectionPlansClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type DdosProtectionPlansClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewDdosProtectionPlansClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DdosProtectionPlansClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -65,7 +68,7 @@ func (client *DdosProtectionPlansClient) BeginCreateOrUpdate(ctx context.Context
 	}
 }
 
-// CreateOrUpdate - Creates or updates a DDoS protection plan.
+// createOrUpdate - Creates or updates a DDoS protection plan.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *DdosProtectionPlansClient) createOrUpdate(ctx context.Context, resourceGroupName string, ddosProtectionPlanName string, parameters DdosProtectionPlan, options *DdosProtectionPlansClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -87,11 +90,11 @@ func (client *DdosProtectionPlansClient) createOrUpdate(ctx context.Context, res
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *DdosProtectionPlansClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, ddosProtectionPlanName string, parameters DdosProtectionPlan, _ *DdosProtectionPlansClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/ddosProtectionPlans/{ddosProtectionPlanName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -107,7 +110,7 @@ func (client *DdosProtectionPlansClient) createOrUpdateCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -125,7 +128,7 @@ func (client *DdosProtectionPlansClient) createOrUpdateCreateRequest(ctx context
 //     method.
 func (client *DdosProtectionPlansClient) BeginDelete(ctx context.Context, resourceGroupName string, ddosProtectionPlanName string, options *DdosProtectionPlansClientBeginDeleteOptions) (*runtime.Poller[DdosProtectionPlansClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, ddosProtectionPlanName, options)
+		resp, err := client.delete(ctx, resourceGroupName, ddosProtectionPlanName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -140,9 +143,9 @@ func (client *DdosProtectionPlansClient) BeginDelete(ctx context.Context, resour
 	}
 }
 
-// Delete - Deletes the specified DDoS protection plan.
+// delete - Deletes the specified DDoS protection plan.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *DdosProtectionPlansClient) deleteOperation(ctx context.Context, resourceGroupName string, ddosProtectionPlanName string, options *DdosProtectionPlansClientBeginDeleteOptions) (*http.Response, error) {
+func (client *DdosProtectionPlansClient) delete(ctx context.Context, resourceGroupName string, ddosProtectionPlanName string, options *DdosProtectionPlansClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DdosProtectionPlansClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -162,11 +165,11 @@ func (client *DdosProtectionPlansClient) deleteOperation(ctx context.Context, re
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *DdosProtectionPlansClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, ddosProtectionPlanName string, _ *DdosProtectionPlansClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/ddosProtectionPlans/{ddosProtectionPlanName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -182,7 +185,7 @@ func (client *DdosProtectionPlansClient) deleteCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -213,7 +216,7 @@ func (client *DdosProtectionPlansClient) Get(ctx context.Context, resourceGroupN
 func (client *DdosProtectionPlansClient) getCreateRequest(ctx context.Context, resourceGroupName string, ddosProtectionPlanName string, _ *DdosProtectionPlansClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/ddosProtectionPlans/{ddosProtectionPlanName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -229,7 +232,7 @@ func (client *DdosProtectionPlansClient) getCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -243,73 +246,6 @@ func (client *DdosProtectionPlansClient) getHandleResponse(resp *http.Response, 
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DdosProtectionPlan); err != nil {
 		return DdosProtectionPlansClientGetResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListPager - Gets all DDoS protection plans in a subscription.
-//   - options - DdosProtectionPlansClientListOptions contains the optional parameters for the DdosProtectionPlansClient.NewListPager
-//     method.
-func (client *DdosProtectionPlansClient) NewListPager(options *DdosProtectionPlansClientListOptions) *runtime.Pager[DdosProtectionPlansClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[DdosProtectionPlansClientListResponse]{
-		More: func(page DdosProtectionPlansClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *DdosProtectionPlansClientListResponse) (DdosProtectionPlansClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DdosProtectionPlansClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listCreateRequest(ctx, nextLink, options)
-			if err != nil {
-				return DdosProtectionPlansClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return DdosProtectionPlansClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *DdosProtectionPlansClient) listCreateRequest(ctx context.Context, nextLink string, _ *DdosProtectionPlansClientListOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/ddosProtectionPlans"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250901)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *DdosProtectionPlansClient) listHandleResponse(resp *http.Response, successCodes ...int) (DdosProtectionPlansClientListResponse, error) {
-	result := DdosProtectionPlansClientListResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.DdosProtectionPlanListResult); err != nil {
-		return DdosProtectionPlansClientListResponse{}, err
 	}
 	return result, nil
 }
@@ -351,7 +287,7 @@ func (client *DdosProtectionPlansClient) listByResourceGroupCreateRequest(ctx co
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/ddosProtectionPlans"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -367,7 +303,7 @@ func (client *DdosProtectionPlansClient) listByResourceGroupCreateRequest(ctx co
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250901)
+		reqQP.Set("api-version", version20260301)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -382,6 +318,73 @@ func (client *DdosProtectionPlansClient) listByResourceGroupHandleResponse(resp 
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DdosProtectionPlanListResult); err != nil {
 		return DdosProtectionPlansClientListByResourceGroupResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListPager - Gets all DDoS protection plans in a subscription.
+//   - options - DdosProtectionPlansClientListOptions contains the optional parameters for the DdosProtectionPlansClient.NewListPager
+//     method.
+func (client *DdosProtectionPlansClient) NewListPager(options *DdosProtectionPlansClientListOptions) *runtime.Pager[DdosProtectionPlansClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[DdosProtectionPlansClientListResponse]{
+		More: func(page DdosProtectionPlansClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *DdosProtectionPlansClientListResponse) (DdosProtectionPlansClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DdosProtectionPlansClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return DdosProtectionPlansClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return DdosProtectionPlansClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listCreateRequest creates the List request.
+func (client *DdosProtectionPlansClient) listCreateRequest(ctx context.Context, nextLink string, _ *DdosProtectionPlansClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/ddosProtectionPlans"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260301)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listHandleResponse handles the List response.
+func (client *DdosProtectionPlansClient) listHandleResponse(resp *http.Response, successCodes ...int) (DdosProtectionPlansClientListResponse, error) {
+	result := DdosProtectionPlansClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DdosProtectionPlanListResult); err != nil {
+		return DdosProtectionPlansClientListResponse{}, err
 	}
 	return result, nil
 }
@@ -414,7 +417,7 @@ func (client *DdosProtectionPlansClient) UpdateTags(ctx context.Context, resourc
 func (client *DdosProtectionPlansClient) updateTagsCreateRequest(ctx context.Context, resourceGroupName string, ddosProtectionPlanName string, parameters TagsObject, _ *DdosProtectionPlansClientUpdateTagsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/ddosProtectionPlans/{ddosProtectionPlanName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -430,7 +433,7 @@ func (client *DdosProtectionPlansClient) updateTagsCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

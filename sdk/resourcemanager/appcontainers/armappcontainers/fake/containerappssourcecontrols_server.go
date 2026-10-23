@@ -17,7 +17,6 @@ import (
 	"net/url"
 	"regexp"
 	"slices"
-	"strconv"
 )
 
 // ContainerAppsSourceControlsServer is a fake server for instances of the armappcontainers.ContainerAppsSourceControlsClient type.
@@ -111,7 +110,7 @@ func (c *ContainerAppsSourceControlsServerTransport) dispatchBeginCreateOrUpdate
 	}
 	beginCreateOrUpdate := c.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.App/containerApps/(?P<containerAppName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sourcecontrols/(?P<sourceControlName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.App/containerApps/(?P<containerAppName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sourcecontrols/(?P<sourceControlName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -133,14 +132,7 @@ func (c *ContainerAppsSourceControlsServerTransport) dispatchBeginCreateOrUpdate
 		if err != nil {
 			return nil, err
 		}
-		xMSGithubAuxiliaryParam := getOptional(getHeaderValue(req.Header, "x-ms-github-auxiliary"))
-		var options *armappcontainers.ContainerAppsSourceControlsClientBeginCreateOrUpdateOptions
-		if xMSGithubAuxiliaryParam != nil {
-			options = &armappcontainers.ContainerAppsSourceControlsClientBeginCreateOrUpdateOptions{
-				XMSGithubAuxiliary: xMSGithubAuxiliaryParam,
-			}
-		}
-		respr, errRespr := c.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, containerAppNameParam, sourceControlNameParam, body, options)
+		respr, errRespr := c.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, containerAppNameParam, sourceControlNameParam, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -170,13 +162,12 @@ func (c *ContainerAppsSourceControlsServerTransport) dispatchBeginDelete(req *ht
 	}
 	beginDelete := c.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.App/containerApps/(?P<containerAppName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sourcecontrols/(?P<sourceControlName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.App/containerApps/(?P<containerAppName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sourcecontrols/(?P<sourceControlName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		qp := req.URL.Query()
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
@@ -189,24 +180,7 @@ func (c *ContainerAppsSourceControlsServerTransport) dispatchBeginDelete(req *ht
 		if err != nil {
 			return nil, err
 		}
-		xMSGithubAuxiliaryParam := getOptional(getHeaderValue(req.Header, "x-ms-github-auxiliary"))
-		ignoreWorkflowDeletionFailureParam, err := parseOptional(qp.Get("ignoreWorkflowDeletionFailure"), strconv.ParseBool)
-		if err != nil {
-			return nil, err
-		}
-		deleteWorkflowParam, err := parseOptional(qp.Get("deleteWorkflow"), strconv.ParseBool)
-		if err != nil {
-			return nil, err
-		}
-		var options *armappcontainers.ContainerAppsSourceControlsClientBeginDeleteOptions
-		if xMSGithubAuxiliaryParam != nil || ignoreWorkflowDeletionFailureParam != nil || deleteWorkflowParam != nil {
-			options = &armappcontainers.ContainerAppsSourceControlsClientBeginDeleteOptions{
-				XMSGithubAuxiliary:            xMSGithubAuxiliaryParam,
-				IgnoreWorkflowDeletionFailure: ignoreWorkflowDeletionFailureParam,
-				DeleteWorkflow:                deleteWorkflowParam,
-			}
-		}
-		respr, errRespr := c.srv.BeginDelete(req.Context(), resourceGroupNameParam, containerAppNameParam, sourceControlNameParam, options)
+		respr, errRespr := c.srv.BeginDelete(req.Context(), resourceGroupNameParam, containerAppNameParam, sourceControlNameParam, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -234,7 +208,7 @@ func (c *ContainerAppsSourceControlsServerTransport) dispatchGet(req *http.Reque
 	if c.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.App/containerApps/(?P<containerAppName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sourcecontrols/(?P<sourceControlName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.App/containerApps/(?P<containerAppName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sourcecontrols/(?P<sourceControlName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -273,7 +247,7 @@ func (c *ContainerAppsSourceControlsServerTransport) dispatchNewListByContainerA
 	}
 	newListByContainerAppPager := c.newListByContainerAppPager.get(req)
 	if newListByContainerAppPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.App/containerApps/(?P<containerAppName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sourcecontrols`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.App/containerApps/(?P<containerAppName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sourcecontrols`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {

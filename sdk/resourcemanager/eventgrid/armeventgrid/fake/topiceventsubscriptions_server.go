@@ -131,7 +131,7 @@ func (t *TopicEventSubscriptionsServerTransport) dispatchBeginCreateOrUpdate(req
 	}
 	beginCreateOrUpdate := t.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventGrid/topics/(?P<topicName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/eventSubscriptions/(?P<eventSubscriptionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventGrid/topics/(?P<topicName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/eventSubscriptions/(?P<eventSubscriptionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -183,7 +183,7 @@ func (t *TopicEventSubscriptionsServerTransport) dispatchBeginDelete(req *http.R
 	}
 	beginDelete := t.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventGrid/topics/(?P<topicName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/eventSubscriptions/(?P<eventSubscriptionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventGrid/topics/(?P<topicName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/eventSubscriptions/(?P<eventSubscriptionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -229,7 +229,7 @@ func (t *TopicEventSubscriptionsServerTransport) dispatchGet(req *http.Request) 
 	if t.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventGrid/topics/(?P<topicName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/eventSubscriptions/(?P<eventSubscriptionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventGrid/topics/(?P<topicName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/eventSubscriptions/(?P<eventSubscriptionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -266,7 +266,7 @@ func (t *TopicEventSubscriptionsServerTransport) dispatchGetDeliveryAttributes(r
 	if t.srv.GetDeliveryAttributes == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetDeliveryAttributes not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventGrid/topics/(?P<topicName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/eventSubscriptions/(?P<eventSubscriptionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getDeliveryAttributes`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventGrid/topics/(?P<topicName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/eventSubscriptions/(?P<eventSubscriptionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getDeliveryAttributes`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -303,7 +303,7 @@ func (t *TopicEventSubscriptionsServerTransport) dispatchGetFullURL(req *http.Re
 	if t.srv.GetFullURL == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetFullURL not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventGrid/topics/(?P<topicName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/eventSubscriptions/(?P<eventSubscriptionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getFullUrl`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventGrid/topics/(?P<topicName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/eventSubscriptions/(?P<eventSubscriptionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getFullUrl`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -342,7 +342,7 @@ func (t *TopicEventSubscriptionsServerTransport) dispatchNewListPager(req *http.
 	}
 	newListPager := t.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventGrid/topics/(?P<topicName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/eventSubscriptions`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventGrid/topics/(?P<topicName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/eventSubscriptions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -402,7 +402,7 @@ func (t *TopicEventSubscriptionsServerTransport) dispatchBeginUpdate(req *http.R
 	}
 	beginUpdate := t.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventGrid/topics/(?P<topicName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/eventSubscriptions/(?P<eventSubscriptionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventGrid/topics/(?P<topicName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/eventSubscriptions/(?P<eventSubscriptionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {

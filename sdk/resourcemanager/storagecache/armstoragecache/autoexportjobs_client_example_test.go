@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/autoExportJobs_CreateOrUpdate.json
+// Generated from example definition: 2026-08-01/autoExportJobs_CreateOrUpdate.json
 func ExampleAutoExportJobsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -79,7 +79,7 @@ func ExampleAutoExportJobsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/autoExportJobs_Delete.json
+// Generated from example definition: 2026-08-01/autoExportJobs_Delete.json
 func ExampleAutoExportJobsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -100,7 +100,7 @@ func ExampleAutoExportJobsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/autoExportJobs_Get.json
+// Generated from example definition: 2026-08-01/autoExportJobs_Get.json
 func ExampleAutoExportJobsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -121,8 +121,8 @@ func ExampleAutoExportJobsClient_Get() {
 	// res = armstoragecache.AutoExportJobsClientGetResponse{
 	// 	AutoExportJob: armstoragecache.AutoExportJob{
 	// 		Name: to.Ptr("job1"),
-	// 		Type: to.Ptr("Microsoft.StorageCache/amlFilesystem/autoExportJob"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.StorageCache/amlfilesystems/fs1/autoExportJob/job1"),
+	// 		Type: to.Ptr("Microsoft.StorageCache/amlFilesystems/autoExportJobs"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.StorageCache/amlFilesystems/fs1/autoExportJobs/job1"),
 	// 		Location: to.Ptr("eastus"),
 	// 		Properties: &armstoragecache.AutoExportJobProperties{
 	// 			AdminStatus: to.Ptr(armstoragecache.AutoExportJobAdminStatusEnable),
@@ -150,7 +150,7 @@ func ExampleAutoExportJobsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/autoExportJobs_ListByAmlFilesystem.json
+// Generated from example definition: 2026-08-01/autoExportJobs_ListByAmlFilesystem.json
 func ExampleAutoExportJobsClient_NewListByAmlFilesystemPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -238,7 +238,7 @@ func ExampleAutoExportJobsClient_NewListByAmlFilesystemPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/autoExportJobs_Update.json
+// Generated from example definition: 2026-08-01/autoExportJobs_Update.json
 func ExampleAutoExportJobsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -118,7 +118,7 @@ func (s *ServiceServerTransport) dispatchNewListAvailableSKUsByResourceGroupPage
 	}
 	newListAvailableSKUsByResourceGroupPager := s.newListAvailableSKUsByResourceGroupPager.get(req)
 	if newListAvailableSKUsByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DataBox/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/availableSkus`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataBox/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/availableSkus`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -161,7 +161,7 @@ func (s *ServiceServerTransport) dispatchRegionConfiguration(req *http.Request) 
 	if s.srv.RegionConfiguration == nil {
 		return nil, &nonRetriableError{errors.New("fake for method RegionConfiguration not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DataBox/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/regionConfiguration`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataBox/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/regionConfiguration`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -194,7 +194,7 @@ func (s *ServiceServerTransport) dispatchRegionConfigurationByResourceGroup(req 
 	if s.srv.RegionConfigurationByResourceGroup == nil {
 		return nil, &nonRetriableError{errors.New("fake for method RegionConfigurationByResourceGroup not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DataBox/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/regionConfiguration`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataBox/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/regionConfiguration`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -231,7 +231,7 @@ func (s *ServiceServerTransport) dispatchValidateAddress(req *http.Request) (*ht
 	if s.srv.ValidateAddress == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ValidateAddress not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DataBox/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validateAddress`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataBox/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/validateAddress`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -264,7 +264,7 @@ func (s *ServiceServerTransport) dispatchValidateInputs(req *http.Request) (*htt
 	if s.srv.ValidateInputs == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ValidateInputs not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DataBox/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validateInputs`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataBox/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/validateInputs`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -301,7 +301,7 @@ func (s *ServiceServerTransport) dispatchValidateInputsByResourceGroup(req *http
 	if s.srv.ValidateInputsByResourceGroup == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ValidateInputsByResourceGroup not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DataBox/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validateInputs`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataBox/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/validateInputs`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {

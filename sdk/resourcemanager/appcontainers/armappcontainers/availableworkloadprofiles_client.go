@@ -19,7 +19,7 @@ import (
 // AvailableWorkloadProfilesClient contains the methods for the AvailableWorkloadProfiles group.
 // Don't use this type directly, use NewAvailableWorkloadProfilesClient() instead.
 //
-// Generated from API version 2025-10-02-preview
+// Generated from API version 2026-07-01
 type AvailableWorkloadProfilesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type AvailableWorkloadProfilesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAvailableWorkloadProfilesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AvailableWorkloadProfilesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -44,7 +47,7 @@ func NewAvailableWorkloadProfilesClient(subscriptionID string, credential azcore
 // NewGetPager - Get available workload profiles by location.
 //
 // Get all available workload profiles for a location.
-//   - location - The location name.
+//   - location - The name of the Azure region.
 //   - options - AvailableWorkloadProfilesClientGetOptions contains the optional parameters for the AvailableWorkloadProfilesClient.NewGetPager
 //     method.
 func (client *AvailableWorkloadProfilesClient) NewGetPager(location string, options *AvailableWorkloadProfilesClientGetOptions) *runtime.Pager[AvailableWorkloadProfilesClientGetResponse] {
@@ -80,7 +83,7 @@ func (client *AvailableWorkloadProfilesClient) getCreateRequest(ctx context.Cont
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.App/locations/{location}/availableManagedEnvironmentsWorkloadProfileTypes"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if location == "" {
@@ -96,7 +99,7 @@ func (client *AvailableWorkloadProfilesClient) getCreateRequest(ctx context.Cont
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20251002Preview)
+		reqQP.Set("api-version", version20260701)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

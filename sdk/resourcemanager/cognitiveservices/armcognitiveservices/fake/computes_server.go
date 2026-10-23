@@ -22,20 +22,12 @@ import (
 // ComputesServer is a fake server for instances of the armcognitiveservices.ComputesClient type.
 type ComputesServer struct {
 	// BeginCreateOrUpdate is the fake for method ComputesClient.BeginCreateOrUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, accountName string, computeName string, resource armcognitiveservices.Compute, options *armcognitiveservices.ComputesClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armcognitiveservices.ComputesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method ComputesClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, accountName string, computeName string, options *armcognitiveservices.ComputesClientBeginDeleteOptions) (resp azfake.PollerResponder[armcognitiveservices.ComputesClientDeleteResponse], errResp azfake.ErrorResponder)
-
-	// Get is the fake for method ComputesClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, accountName string, computeName string, options *armcognitiveservices.ComputesClientGetOptions) (resp azfake.Responder[armcognitiveservices.ComputesClientGetResponse], errResp azfake.ErrorResponder)
-
-	// NewListPager is the fake for method ComputesClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, accountName string, options *armcognitiveservices.ComputesClientListOptions) (resp azfake.PagerResponder[armcognitiveservices.ComputesClientListResponse])
 
 	// BeginRestart is the fake for method ComputesClient.BeginRestart
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
@@ -49,9 +41,13 @@ type ComputesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginStop func(ctx context.Context, resourceGroupName string, accountName string, computeName string, options *armcognitiveservices.ComputesClientBeginStopOptions) (resp azfake.PollerResponder[armcognitiveservices.ComputesClientStopResponse], errResp azfake.ErrorResponder)
 
-	// BeginUpdate is the fake for method ComputesClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, accountName string, computeName string, properties armcognitiveservices.Compute, options *armcognitiveservices.ComputesClientBeginUpdateOptions) (resp azfake.PollerResponder[armcognitiveservices.ComputesClientUpdateResponse], errResp azfake.ErrorResponder)
+	// Get is the fake for method ComputesClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, accountName string, computeName string, options *armcognitiveservices.ComputesClientGetOptions) (resp azfake.Responder[armcognitiveservices.ComputesClientGetResponse], errResp azfake.ErrorResponder)
+
+	// NewListPager is the fake for method ComputesClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(resourceGroupName string, accountName string, options *armcognitiveservices.ComputesClientListOptions) (resp azfake.PagerResponder[armcognitiveservices.ComputesClientListResponse])
 }
 
 // NewComputesServerTransport creates a new instance of ComputesServerTransport with the provided implementation.
@@ -62,11 +58,10 @@ func NewComputesServerTransport(srv *ComputesServer) *ComputesServerTransport {
 		srv:                 srv,
 		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armcognitiveservices.ComputesClientCreateOrUpdateResponse]](),
 		beginDelete:         newTracker[azfake.PollerResponder[armcognitiveservices.ComputesClientDeleteResponse]](),
-		newListPager:        newTracker[azfake.PagerResponder[armcognitiveservices.ComputesClientListResponse]](),
 		beginRestart:        newTracker[azfake.PollerResponder[armcognitiveservices.ComputesClientRestartResponse]](),
 		beginStart:          newTracker[azfake.PollerResponder[armcognitiveservices.ComputesClientStartResponse]](),
 		beginStop:           newTracker[azfake.PollerResponder[armcognitiveservices.ComputesClientStopResponse]](),
-		beginUpdate:         newTracker[azfake.PollerResponder[armcognitiveservices.ComputesClientUpdateResponse]](),
+		newListPager:        newTracker[azfake.PagerResponder[armcognitiveservices.ComputesClientListResponse]](),
 	}
 }
 
@@ -76,11 +71,10 @@ type ComputesServerTransport struct {
 	srv                 *ComputesServer
 	beginCreateOrUpdate *tracker[azfake.PollerResponder[armcognitiveservices.ComputesClientCreateOrUpdateResponse]]
 	beginDelete         *tracker[azfake.PollerResponder[armcognitiveservices.ComputesClientDeleteResponse]]
-	newListPager        *tracker[azfake.PagerResponder[armcognitiveservices.ComputesClientListResponse]]
 	beginRestart        *tracker[azfake.PollerResponder[armcognitiveservices.ComputesClientRestartResponse]]
 	beginStart          *tracker[azfake.PollerResponder[armcognitiveservices.ComputesClientStartResponse]]
 	beginStop           *tracker[azfake.PollerResponder[armcognitiveservices.ComputesClientStopResponse]]
-	beginUpdate         *tracker[azfake.PollerResponder[armcognitiveservices.ComputesClientUpdateResponse]]
+	newListPager        *tracker[azfake.PagerResponder[armcognitiveservices.ComputesClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for ComputesServerTransport.
@@ -108,18 +102,16 @@ func (c *ComputesServerTransport) dispatchToMethodFake(req *http.Request, method
 				res.resp, res.err = c.dispatchBeginCreateOrUpdate(req)
 			case "ComputesClient.BeginDelete":
 				res.resp, res.err = c.dispatchBeginDelete(req)
-			case "ComputesClient.Get":
-				res.resp, res.err = c.dispatchGet(req)
-			case "ComputesClient.NewListPager":
-				res.resp, res.err = c.dispatchNewListPager(req)
 			case "ComputesClient.BeginRestart":
 				res.resp, res.err = c.dispatchBeginRestart(req)
 			case "ComputesClient.BeginStart":
 				res.resp, res.err = c.dispatchBeginStart(req)
 			case "ComputesClient.BeginStop":
 				res.resp, res.err = c.dispatchBeginStop(req)
-			case "ComputesClient.BeginUpdate":
-				res.resp, res.err = c.dispatchBeginUpdate(req)
+			case "ComputesClient.Get":
+				res.resp, res.err = c.dispatchGet(req)
+			case "ComputesClient.NewListPager":
+				res.resp, res.err = c.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -142,7 +134,7 @@ func (c *ComputesServerTransport) dispatchBeginCreateOrUpdate(req *http.Request)
 	}
 	beginCreateOrUpdate := c.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CognitiveServices/accounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/computes/(?P<computeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CognitiveServices/accounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/computes/(?P<computeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -177,9 +169,9 @@ func (c *ComputesServerTransport) dispatchBeginCreateOrUpdate(req *http.Request)
 		return nil, err
 	}
 
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		c.beginCreateOrUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginCreateOrUpdate) {
 		c.beginCreateOrUpdate.remove(req)
@@ -194,7 +186,7 @@ func (c *ComputesServerTransport) dispatchBeginDelete(req *http.Request) (*http.
 	}
 	beginDelete := c.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CognitiveServices/accounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/computes/(?P<computeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CognitiveServices/accounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/computes/(?P<computeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -236,91 +228,13 @@ func (c *ComputesServerTransport) dispatchBeginDelete(req *http.Request) (*http.
 	return resp, nil
 }
 
-func (c *ComputesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if c.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CognitiveServices/accounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/computes/(?P<computeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-	if err != nil {
-		return nil, err
-	}
-	computeNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("computeName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := c.srv.Get(req.Context(), resourceGroupNameParam, accountNameParam, computeNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Compute, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (c *ComputesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if c.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := c.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CognitiveServices/accounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/computes`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := c.srv.NewListPager(resourceGroupNameParam, accountNameParam, nil)
-		newListPager = &resp
-		c.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcognitiveservices.ComputesClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		c.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		c.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (c *ComputesServerTransport) dispatchBeginRestart(req *http.Request) (*http.Response, error) {
 	if c.srv.BeginRestart == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginRestart not implemented")}
 	}
 	beginRestart := c.beginRestart.get(req)
 	if beginRestart == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CognitiveServices/accounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/computes/(?P<computeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/restart`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CognitiveServices/accounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/computes/(?P<computeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/restart`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -368,7 +282,7 @@ func (c *ComputesServerTransport) dispatchBeginStart(req *http.Request) (*http.R
 	}
 	beginStart := c.beginStart.get(req)
 	if beginStart == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CognitiveServices/accounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/computes/(?P<computeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/start`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CognitiveServices/accounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/computes/(?P<computeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/start`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -416,7 +330,7 @@ func (c *ComputesServerTransport) dispatchBeginStop(req *http.Request) (*http.Re
 	}
 	beginStop := c.beginStop.get(req)
 	if beginStop == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CognitiveServices/accounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/computes/(?P<computeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/stop`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CognitiveServices/accounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/computes/(?P<computeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/stop`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -458,21 +372,54 @@ func (c *ComputesServerTransport) dispatchBeginStop(req *http.Request) (*http.Re
 	return resp, nil
 }
 
-func (c *ComputesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if c.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+func (c *ComputesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if c.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	beginUpdate := c.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CognitiveServices/accounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/computes/(?P<computeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CognitiveServices/accounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/computes/(?P<computeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+	if err != nil {
+		return nil, err
+	}
+	computeNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("computeName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := c.srv.Get(req.Context(), resourceGroupNameParam, accountNameParam, computeNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Compute, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (c *ComputesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if c.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := c.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CognitiveServices/accounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/computes`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcognitiveservices.Compute](req)
-		if err != nil {
-			return nil, err
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
@@ -482,31 +429,24 @@ func (c *ComputesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.
 		if err != nil {
 			return nil, err
 		}
-		computeNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("computeName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := c.srv.BeginUpdate(req.Context(), resourceGroupNameParam, accountNameParam, computeNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		c.beginUpdate.add(req, beginUpdate)
+		resp := c.srv.NewListPager(resourceGroupNameParam, accountNameParam, nil)
+		newListPager = &resp
+		c.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcognitiveservices.ComputesClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
 	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		c.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		c.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(beginUpdate) {
-		c.beginUpdate.remove(req)
+	if !server.PagerResponderMore(newListPager) {
+		c.newListPager.remove(req)
 	}
-
 	return resp, nil
 }
 

@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01-preview/contentTemplates/GetProductTemplateById.json
+// Generated from example definition: 2025-10-01-preview/contentTemplates/GetProductTemplateById.json
 func ExampleProductTemplateClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

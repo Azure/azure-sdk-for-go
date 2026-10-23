@@ -93,7 +93,7 @@ func (m *ManagementServerTransport) dispatchCalculateModelCapacity(req *http.Req
 	if m.srv.CalculateModelCapacity == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CalculateModelCapacity not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CognitiveServices/calculateModelCapacity`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CognitiveServices/calculateModelCapacity`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -122,7 +122,7 @@ func (m *ManagementServerTransport) dispatchCheckDomainAvailability(req *http.Re
 	if m.srv.CheckDomainAvailability == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CheckDomainAvailability not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CognitiveServices/checkDomainAvailability`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CognitiveServices/checkDomainAvailability`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -151,7 +151,7 @@ func (m *ManagementServerTransport) dispatchCheckSKUAvailability(req *http.Reque
 	if m.srv.CheckSKUAvailability == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CheckSKUAvailability not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CognitiveServices/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/checkSkuAvailability`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CognitiveServices/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/checkSkuAvailability`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {

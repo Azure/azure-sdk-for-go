@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v8"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v9"
 	"net/http"
 	"net/url"
 	"reflect"
@@ -22,13 +22,13 @@ import (
 
 // AvailabilitySetsServer is a fake server for instances of the armcompute.AvailabilitySetsClient type.
 type AvailabilitySetsServer struct {
-	// CancelMigrationToVirtualMachineScaleSet is the fake for method AvailabilitySetsClient.CancelMigrationToVirtualMachineScaleSet
-	// HTTP status codes to indicate success: http.StatusNoContent
-	CancelMigrationToVirtualMachineScaleSet func(ctx context.Context, resourceGroupName string, availabilitySetName string, options *armcompute.AvailabilitySetsClientCancelMigrationToVirtualMachineScaleSetOptions) (resp azfake.Responder[armcompute.AvailabilitySetsClientCancelMigrationToVirtualMachineScaleSetResponse], errResp azfake.ErrorResponder)
-
 	// BeginConvertToVirtualMachineScaleSet is the fake for method AvailabilitySetsClient.BeginConvertToVirtualMachineScaleSet
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginConvertToVirtualMachineScaleSet func(ctx context.Context, resourceGroupName string, availabilitySetName string, options *armcompute.AvailabilitySetsClientBeginConvertToVirtualMachineScaleSetOptions) (resp azfake.PollerResponder[armcompute.AvailabilitySetsClientConvertToVirtualMachineScaleSetResponse], errResp azfake.ErrorResponder)
+
+	// CancelMigrationToVirtualMachineScaleSet is the fake for method AvailabilitySetsClient.CancelMigrationToVirtualMachineScaleSet
+	// HTTP status codes to indicate success: http.StatusNoContent
+	CancelMigrationToVirtualMachineScaleSet func(ctx context.Context, resourceGroupName string, availabilitySetName string, options *armcompute.AvailabilitySetsClientCancelMigrationToVirtualMachineScaleSetOptions) (resp azfake.Responder[armcompute.AvailabilitySetsClientCancelMigrationToVirtualMachineScaleSetResponse], errResp azfake.ErrorResponder)
 
 	// CreateOrUpdate is the fake for method AvailabilitySetsClient.CreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK
@@ -42,10 +42,6 @@ type AvailabilitySetsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, availabilitySetName string, options *armcompute.AvailabilitySetsClientGetOptions) (resp azfake.Responder[armcompute.AvailabilitySetsClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method AvailabilitySetsClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, options *armcompute.AvailabilitySetsClientListOptions) (resp azfake.PagerResponder[armcompute.AvailabilitySetsClientListResponse])
-
 	// NewListAvailableSizesPager is the fake for method AvailabilitySetsClient.NewListAvailableSizesPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListAvailableSizesPager func(resourceGroupName string, availabilitySetName string, options *armcompute.AvailabilitySetsClientListAvailableSizesOptions) (resp azfake.PagerResponder[armcompute.AvailabilitySetsClientListAvailableSizesResponse])
@@ -53,6 +49,10 @@ type AvailabilitySetsServer struct {
 	// NewListBySubscriptionPager is the fake for method AvailabilitySetsClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armcompute.AvailabilitySetsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armcompute.AvailabilitySetsClientListBySubscriptionResponse])
+
+	// NewListPager is the fake for method AvailabilitySetsClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(resourceGroupName string, options *armcompute.AvailabilitySetsClientListOptions) (resp azfake.PagerResponder[armcompute.AvailabilitySetsClientListResponse])
 
 	// StartMigrationToVirtualMachineScaleSet is the fake for method AvailabilitySetsClient.StartMigrationToVirtualMachineScaleSet
 	// HTTP status codes to indicate success: http.StatusNoContent
@@ -74,9 +74,9 @@ func NewAvailabilitySetsServerTransport(srv *AvailabilitySetsServer) *Availabili
 	return &AvailabilitySetsServerTransport{
 		srv:                                  srv,
 		beginConvertToVirtualMachineScaleSet: newTracker[azfake.PollerResponder[armcompute.AvailabilitySetsClientConvertToVirtualMachineScaleSetResponse]](),
-		newListPager:                         newTracker[azfake.PagerResponder[armcompute.AvailabilitySetsClientListResponse]](),
 		newListAvailableSizesPager:           newTracker[azfake.PagerResponder[armcompute.AvailabilitySetsClientListAvailableSizesResponse]](),
 		newListBySubscriptionPager:           newTracker[azfake.PagerResponder[armcompute.AvailabilitySetsClientListBySubscriptionResponse]](),
+		newListPager:                         newTracker[azfake.PagerResponder[armcompute.AvailabilitySetsClientListResponse]](),
 	}
 }
 
@@ -85,9 +85,9 @@ func NewAvailabilitySetsServerTransport(srv *AvailabilitySetsServer) *Availabili
 type AvailabilitySetsServerTransport struct {
 	srv                                  *AvailabilitySetsServer
 	beginConvertToVirtualMachineScaleSet *tracker[azfake.PollerResponder[armcompute.AvailabilitySetsClientConvertToVirtualMachineScaleSetResponse]]
-	newListPager                         *tracker[azfake.PagerResponder[armcompute.AvailabilitySetsClientListResponse]]
 	newListAvailableSizesPager           *tracker[azfake.PagerResponder[armcompute.AvailabilitySetsClientListAvailableSizesResponse]]
 	newListBySubscriptionPager           *tracker[azfake.PagerResponder[armcompute.AvailabilitySetsClientListBySubscriptionResponse]]
+	newListPager                         *tracker[azfake.PagerResponder[armcompute.AvailabilitySetsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for AvailabilitySetsServerTransport.
@@ -111,22 +111,22 @@ func (a *AvailabilitySetsServerTransport) dispatchToMethodFake(req *http.Request
 		}
 		if !intercepted {
 			switch method {
-			case "AvailabilitySetsClient.CancelMigrationToVirtualMachineScaleSet":
-				res.resp, res.err = a.dispatchCancelMigrationToVirtualMachineScaleSet(req)
 			case "AvailabilitySetsClient.BeginConvertToVirtualMachineScaleSet":
 				res.resp, res.err = a.dispatchBeginConvertToVirtualMachineScaleSet(req)
+			case "AvailabilitySetsClient.CancelMigrationToVirtualMachineScaleSet":
+				res.resp, res.err = a.dispatchCancelMigrationToVirtualMachineScaleSet(req)
 			case "AvailabilitySetsClient.CreateOrUpdate":
 				res.resp, res.err = a.dispatchCreateOrUpdate(req)
 			case "AvailabilitySetsClient.Delete":
 				res.resp, res.err = a.dispatchDelete(req)
 			case "AvailabilitySetsClient.Get":
 				res.resp, res.err = a.dispatchGet(req)
-			case "AvailabilitySetsClient.NewListPager":
-				res.resp, res.err = a.dispatchNewListPager(req)
 			case "AvailabilitySetsClient.NewListAvailableSizesPager":
 				res.resp, res.err = a.dispatchNewListAvailableSizesPager(req)
 			case "AvailabilitySetsClient.NewListBySubscriptionPager":
 				res.resp, res.err = a.dispatchNewListBySubscriptionPager(req)
+			case "AvailabilitySetsClient.NewListPager":
+				res.resp, res.err = a.dispatchNewListPager(req)
 			case "AvailabilitySetsClient.StartMigrationToVirtualMachineScaleSet":
 				res.resp, res.err = a.dispatchStartMigrationToVirtualMachineScaleSet(req)
 			case "AvailabilitySetsClient.Update":
@@ -149,46 +149,13 @@ func (a *AvailabilitySetsServerTransport) dispatchToMethodFake(req *http.Request
 	}
 }
 
-func (a *AvailabilitySetsServerTransport) dispatchCancelMigrationToVirtualMachineScaleSet(req *http.Request) (*http.Response, error) {
-	if a.srv.CancelMigrationToVirtualMachineScaleSet == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CancelMigrationToVirtualMachineScaleSet not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/availabilitySets/(?P<availabilitySetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cancelMigrationToVirtualMachineScaleSet`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	availabilitySetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("availabilitySetName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := a.srv.CancelMigrationToVirtualMachineScaleSet(req.Context(), resourceGroupNameParam, availabilitySetNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusNoContent}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusNoContent", respContent.HTTPStatus)}
-	}
-	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (a *AvailabilitySetsServerTransport) dispatchBeginConvertToVirtualMachineScaleSet(req *http.Request) (*http.Response, error) {
 	if a.srv.BeginConvertToVirtualMachineScaleSet == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginConvertToVirtualMachineScaleSet not implemented")}
 	}
 	beginConvertToVirtualMachineScaleSet := a.beginConvertToVirtualMachineScaleSet.get(req)
 	if beginConvertToVirtualMachineScaleSet == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/availabilitySets/(?P<availabilitySetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/convertToVirtualMachineScaleSet`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/availabilitySets/(?P<availabilitySetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/convertToVirtualMachineScaleSet`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -236,11 +203,44 @@ func (a *AvailabilitySetsServerTransport) dispatchBeginConvertToVirtualMachineSc
 	return resp, nil
 }
 
+func (a *AvailabilitySetsServerTransport) dispatchCancelMigrationToVirtualMachineScaleSet(req *http.Request) (*http.Response, error) {
+	if a.srv.CancelMigrationToVirtualMachineScaleSet == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CancelMigrationToVirtualMachineScaleSet not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/availabilitySets/(?P<availabilitySetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/cancelMigrationToVirtualMachineScaleSet`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	availabilitySetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("availabilitySetName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := a.srv.CancelMigrationToVirtualMachineScaleSet(req.Context(), resourceGroupNameParam, availabilitySetNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusNoContent}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusNoContent", respContent.HTTPStatus)}
+	}
+	resp, err := server.NewResponse(respContent, req, nil)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (a *AvailabilitySetsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
 	if a.srv.CreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/availabilitySets/(?P<availabilitySetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/availabilitySets/(?P<availabilitySetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -277,7 +277,7 @@ func (a *AvailabilitySetsServerTransport) dispatchDelete(req *http.Request) (*ht
 	if a.srv.Delete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/availabilitySets/(?P<availabilitySetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/availabilitySets/(?P<availabilitySetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -310,7 +310,7 @@ func (a *AvailabilitySetsServerTransport) dispatchGet(req *http.Request) (*http.
 	if a.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/availabilitySets/(?P<availabilitySetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/availabilitySets/(?P<availabilitySetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -339,50 +339,13 @@ func (a *AvailabilitySetsServerTransport) dispatchGet(req *http.Request) (*http.
 	return resp, nil
 }
 
-func (a *AvailabilitySetsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if a.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := a.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/availabilitySets`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := a.srv.NewListPager(resourceGroupNameParam, nil)
-		newListPager = &resp
-		a.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcompute.AvailabilitySetsClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		a.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		a.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (a *AvailabilitySetsServerTransport) dispatchNewListAvailableSizesPager(req *http.Request) (*http.Response, error) {
 	if a.srv.NewListAvailableSizesPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListAvailableSizesPager not implemented")}
 	}
 	newListAvailableSizesPager := a.newListAvailableSizesPager.get(req)
 	if newListAvailableSizesPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/availabilitySets/(?P<availabilitySetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/vmSizes`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/availabilitySets/(?P<availabilitySetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/vmSizes`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -423,7 +386,7 @@ func (a *AvailabilitySetsServerTransport) dispatchNewListBySubscriptionPager(req
 	}
 	newListBySubscriptionPager := a.newListBySubscriptionPager.get(req)
 	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/availabilitySets`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/availabilitySets`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -458,11 +421,48 @@ func (a *AvailabilitySetsServerTransport) dispatchNewListBySubscriptionPager(req
 	return resp, nil
 }
 
+func (a *AvailabilitySetsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if a.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := a.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/availabilitySets`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := a.srv.NewListPager(resourceGroupNameParam, nil)
+		newListPager = &resp
+		a.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcompute.AvailabilitySetsClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		a.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		a.newListPager.remove(req)
+	}
+	return resp, nil
+}
+
 func (a *AvailabilitySetsServerTransport) dispatchStartMigrationToVirtualMachineScaleSet(req *http.Request) (*http.Response, error) {
 	if a.srv.StartMigrationToVirtualMachineScaleSet == nil {
 		return nil, &nonRetriableError{errors.New("fake for method StartMigrationToVirtualMachineScaleSet not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/availabilitySets/(?P<availabilitySetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/startMigrationToVirtualMachineScaleSet`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/availabilitySets/(?P<availabilitySetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/startMigrationToVirtualMachineScaleSet`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -499,7 +499,7 @@ func (a *AvailabilitySetsServerTransport) dispatchUpdate(req *http.Request) (*ht
 	if a.srv.Update == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Update not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/availabilitySets/(?P<availabilitySetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/availabilitySets/(?P<availabilitySetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -536,7 +536,7 @@ func (a *AvailabilitySetsServerTransport) dispatchValidateMigrationToVirtualMach
 	if a.srv.ValidateMigrationToVirtualMachineScaleSet == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ValidateMigrationToVirtualMachineScaleSet not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/availabilitySets/(?P<availabilitySetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validateMigrationToVirtualMachineScaleSet`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/availabilitySets/(?P<availabilitySetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/validateMigrationToVirtualMachineScaleSet`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {

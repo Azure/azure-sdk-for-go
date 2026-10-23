@@ -143,7 +143,7 @@ func (g *GoalAssignmentsServerTransport) dispatchBeginCreateOrUpdate(req *http.R
 	}
 	beginCreateOrUpdate := g.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/goalAssignments/(?P<goalAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureResilienceManagement/goalAssignments/(?P<goalAssignmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -191,7 +191,7 @@ func (g *GoalAssignmentsServerTransport) dispatchBeginDelete(req *http.Request) 
 	}
 	beginDelete := g.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/goalAssignments/(?P<goalAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureResilienceManagement/goalAssignments/(?P<goalAssignmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -233,7 +233,7 @@ func (g *GoalAssignmentsServerTransport) dispatchGet(req *http.Request) (*http.R
 	if g.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/goalAssignments/(?P<goalAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureResilienceManagement/goalAssignments/(?P<goalAssignmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -268,7 +268,7 @@ func (g *GoalAssignmentsServerTransport) dispatchNewListPager(req *http.Request)
 	}
 	newListPager := g.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/goalAssignments`
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureResilienceManagement/goalAssignments`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -324,7 +324,7 @@ func (g *GoalAssignmentsServerTransport) dispatchBeginRecommendCapacity(req *htt
 	}
 	beginRecommendCapacity := g.beginRecommendCapacity.get(req)
 	if beginRecommendCapacity == nil {
-		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/goalAssignments/(?P<goalAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/recommendCapacity`
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureResilienceManagement/goalAssignments/(?P<goalAssignmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/recommendCapacity`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -372,7 +372,7 @@ func (g *GoalAssignmentsServerTransport) dispatchBeginRefreshGoalResources(req *
 	}
 	beginRefreshGoalResources := g.beginRefreshGoalResources.get(req)
 	if beginRefreshGoalResources == nil {
-		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/goalAssignments/(?P<goalAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/refreshGoalResources`
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureResilienceManagement/goalAssignments/(?P<goalAssignmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/refreshGoalResources`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -416,7 +416,7 @@ func (g *GoalAssignmentsServerTransport) dispatchBeginUpdate(req *http.Request) 
 	}
 	beginUpdate := g.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/goalAssignments/(?P<goalAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureResilienceManagement/goalAssignments/(?P<goalAssignmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -464,7 +464,7 @@ func (g *GoalAssignmentsServerTransport) dispatchBeginUpdateGoalResources(req *h
 	}
 	beginUpdateGoalResources := g.beginUpdateGoalResources.get(req)
 	if beginUpdateGoalResources == nil {
-		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/goalAssignments/(?P<goalAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/updateGoalResources`
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureResilienceManagement/goalAssignments/(?P<goalAssignmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/updateGoalResources`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {

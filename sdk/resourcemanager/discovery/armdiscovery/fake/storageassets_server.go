@@ -118,7 +118,7 @@ func (s *StorageAssetsServerTransport) dispatchBeginCreateOrUpdate(req *http.Req
 	}
 	beginCreateOrUpdate := s.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Discovery/storageContainers/(?P<storageContainerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/storageAssets/(?P<storageAssetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Discovery/storageContainers/(?P<storageContainerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/storageAssets/(?P<storageAssetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -170,7 +170,7 @@ func (s *StorageAssetsServerTransport) dispatchBeginDelete(req *http.Request) (*
 	}
 	beginDelete := s.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Discovery/storageContainers/(?P<storageContainerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/storageAssets/(?P<storageAssetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Discovery/storageContainers/(?P<storageContainerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/storageAssets/(?P<storageAssetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -216,7 +216,7 @@ func (s *StorageAssetsServerTransport) dispatchGet(req *http.Request) (*http.Res
 	if s.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Discovery/storageContainers/(?P<storageContainerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/storageAssets/(?P<storageAssetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Discovery/storageContainers/(?P<storageContainerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/storageAssets/(?P<storageAssetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -255,7 +255,7 @@ func (s *StorageAssetsServerTransport) dispatchNewListByStorageContainerPager(re
 	}
 	newListByStorageContainerPager := s.newListByStorageContainerPager.get(req)
 	if newListByStorageContainerPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Discovery/storageContainers/(?P<storageContainerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/storageAssets`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Discovery/storageContainers/(?P<storageContainerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/storageAssets`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -296,7 +296,7 @@ func (s *StorageAssetsServerTransport) dispatchBeginUpdate(req *http.Request) (*
 	}
 	beginUpdate := s.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Discovery/storageContainers/(?P<storageContainerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/storageAssets/(?P<storageAssetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Discovery/storageContainers/(?P<storageContainerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/storageAssets/(?P<storageAssetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {

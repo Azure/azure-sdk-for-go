@@ -5,7 +5,7 @@
 package armpolicy
 
 const (
-	version20260101Preview string = "2026-01-01-preview"
+	version20260601 string = "2026-06-01"
 )
 
 // AliasPathAttributes - The attributes of the token that the alias path is referring to.
@@ -101,25 +101,6 @@ func PossibleAliasTypeValues() []AliasType {
 	}
 }
 
-// AssignmentScopeValidation - The option to validate whether the exemption or enrollment is at or under the assignment scope.
-type AssignmentScopeValidation string
-
-const (
-	// AssignmentScopeValidationDefault - This option will validate the exemption is at or under the assignment scope.
-	AssignmentScopeValidationDefault AssignmentScopeValidation = "Default"
-	// AssignmentScopeValidationDoNotValidate - This option will bypass the validation the exemption scope is at or under the
-	// policy assignment scope.
-	AssignmentScopeValidationDoNotValidate AssignmentScopeValidation = "DoNotValidate"
-)
-
-// PossibleAssignmentScopeValidationValues returns the possible values for the AssignmentScopeValidation const type.
-func PossibleAssignmentScopeValidationValues() []AssignmentScopeValidation {
-	return []AssignmentScopeValidation{
-		AssignmentScopeValidationDefault,
-		AssignmentScopeValidationDoNotValidate,
-	}
-}
-
 // AssignmentType - The type of policy assignment. Possible values are NotSpecified, System, SystemHidden, and Custom. Immutable.
 type AssignmentType string
 
@@ -187,25 +168,6 @@ func PossibleEnforcementModeValues() []EnforcementMode {
 		EnforcementModeDefault,
 		EnforcementModeDoNotEnforce,
 		EnforcementModeEnroll,
-	}
-}
-
-// ExemptionCategory - The policy exemption category. Possible values are Waiver and Mitigated.
-type ExemptionCategory string
-
-const (
-	// ExemptionCategoryMitigated - This category of exemptions usually means the mitigation actions have been applied to the
-	// scope.
-	ExemptionCategoryMitigated ExemptionCategory = "Mitigated"
-	// ExemptionCategoryWaiver - This category of exemptions usually means the scope is not applicable for the policy.
-	ExemptionCategoryWaiver ExemptionCategory = "Waiver"
-)
-
-// PossibleExemptionCategoryValues returns the possible values for the ExemptionCategory const type.
-func PossibleExemptionCategoryValues() []ExemptionCategory {
-	return []ExemptionCategory{
-		ExemptionCategoryMitigated,
-		ExemptionCategoryWaiver,
 	}
 }
 
@@ -358,7 +320,7 @@ const (
 	ResourceIdentityTypeNone ResourceIdentityType = "None"
 	// ResourceIdentityTypeSystemAssigned - Indicates that a system assigned identity is associated with the resource.
 	ResourceIdentityTypeSystemAssigned ResourceIdentityType = "SystemAssigned"
-	// ResourceIdentityTypeUserAssigned - Indicates that a system assigned identity is associated with the resource.
+	// ResourceIdentityTypeUserAssigned - Indicates that a user assigned identity is associated with the resource.
 	ResourceIdentityTypeUserAssigned ResourceIdentityType = "UserAssigned"
 )
 
@@ -381,6 +343,8 @@ const (
 	SelectorKindPolicyDefinitionReferenceID SelectorKind = "policyDefinitionReferenceId"
 	// SelectorKindResourceLocation - The selector kind to filter policies by the resource location.
 	SelectorKindResourceLocation SelectorKind = "resourceLocation"
+	// SelectorKindResourceRolloutPercentage - The selector kind to filter policies by the resource rollout percentage.
+	SelectorKindResourceRolloutPercentage SelectorKind = "resourceRolloutPercentage"
 	// SelectorKindResourceType - The selector kind to filter policies by the resource type.
 	SelectorKindResourceType SelectorKind = "resourceType"
 	// SelectorKindResourceWithoutLocation - The selector kind to filter policies by the resource without location.
@@ -395,6 +359,7 @@ func PossibleSelectorKindValues() []SelectorKind {
 		SelectorKindGroupPrincipalID,
 		SelectorKindPolicyDefinitionReferenceID,
 		SelectorKindResourceLocation,
+		SelectorKindResourceRolloutPercentage,
 		SelectorKindResourceType,
 		SelectorKindResourceWithoutLocation,
 		SelectorKindUserPrincipalID,

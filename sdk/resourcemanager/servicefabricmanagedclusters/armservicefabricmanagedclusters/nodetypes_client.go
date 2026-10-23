@@ -30,6 +30,9 @@ type NodeTypesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewNodeTypesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*NodeTypesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -92,7 +95,7 @@ func (client *NodeTypesClient) createOrUpdate(ctx context.Context, resourceGroup
 func (client *NodeTypesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, nodeTypeName string, parameters NodeType, _ *NodeTypesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/nodeTypes/{nodeTypeName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -175,7 +178,7 @@ func (client *NodeTypesClient) deallocate(ctx context.Context, resourceGroupName
 func (client *NodeTypesClient) deallocateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, nodeTypeName string, parameters NodeTypeActionParameters, _ *NodeTypesClientBeginDeallocateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/nodeTypes/{nodeTypeName}/deallocate"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -253,7 +256,7 @@ func (client *NodeTypesClient) deleteOperation(ctx context.Context, resourceGrou
 func (client *NodeTypesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, nodeTypeName string, _ *NodeTypesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/nodeTypes/{nodeTypeName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -331,7 +334,7 @@ func (client *NodeTypesClient) deleteNode(ctx context.Context, resourceGroupName
 func (client *NodeTypesClient) deleteNodeCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, nodeTypeName string, parameters NodeTypeActionParameters, _ *NodeTypesClientBeginDeleteNodeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/nodeTypes/{nodeTypeName}/deleteNode"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -387,7 +390,7 @@ func (client *NodeTypesClient) Get(ctx context.Context, resourceGroupName string
 func (client *NodeTypesClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, nodeTypeName string, _ *NodeTypesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/nodeTypes/{nodeTypeName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -454,7 +457,7 @@ func (client *NodeTypesClient) GetFaultSimulation(ctx context.Context, resourceG
 func (client *NodeTypesClient) getFaultSimulationCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, nodeTypeName string, parameters FaultSimulationIDContent, _ *NodeTypesClientGetFaultSimulationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/nodeTypes/{nodeTypeName}/getFaultSimulation"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -534,7 +537,7 @@ func (client *NodeTypesClient) listByManagedClustersCreateRequest(ctx context.Co
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/nodeTypes"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -612,7 +615,7 @@ func (client *NodeTypesClient) listFaultSimulationCreateRequest(ctx context.Cont
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/nodeTypes/{nodeTypeName}/listFaultSimulation"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -707,7 +710,7 @@ func (client *NodeTypesClient) redeploy(ctx context.Context, resourceGroupName s
 func (client *NodeTypesClient) redeployCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, nodeTypeName string, parameters NodeTypeActionParameters, _ *NodeTypesClientBeginRedeployOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/nodeTypes/{nodeTypeName}/redeploy"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -788,7 +791,7 @@ func (client *NodeTypesClient) reimage(ctx context.Context, resourceGroupName st
 func (client *NodeTypesClient) reimageCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, nodeTypeName string, parameters NodeTypeActionParameters, _ *NodeTypesClientBeginReimageOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/nodeTypes/{nodeTypeName}/reimage"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -869,7 +872,7 @@ func (client *NodeTypesClient) restart(ctx context.Context, resourceGroupName st
 func (client *NodeTypesClient) restartCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, nodeTypeName string, parameters NodeTypeActionParameters, _ *NodeTypesClientBeginRestartOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/nodeTypes/{nodeTypeName}/restart"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -950,7 +953,7 @@ func (client *NodeTypesClient) start(ctx context.Context, resourceGroupName stri
 func (client *NodeTypesClient) startCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, nodeTypeName string, parameters NodeTypeActionParameters, _ *NodeTypesClientBeginStartOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/nodeTypes/{nodeTypeName}/start"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1030,7 +1033,7 @@ func (client *NodeTypesClient) startFaultSimulation(ctx context.Context, resourc
 func (client *NodeTypesClient) startFaultSimulationCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, nodeTypeName string, parameters FaultSimulationContentWrapper, _ *NodeTypesClientBeginStartFaultSimulationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/nodeTypes/{nodeTypeName}/startFaultSimulation"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1110,7 +1113,7 @@ func (client *NodeTypesClient) stopFaultSimulation(ctx context.Context, resource
 func (client *NodeTypesClient) stopFaultSimulationCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, nodeTypeName string, parameters FaultSimulationIDContent, _ *NodeTypesClientBeginStopFaultSimulationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/nodeTypes/{nodeTypeName}/stopFaultSimulation"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1189,7 +1192,7 @@ func (client *NodeTypesClient) update(ctx context.Context, resourceGroupName str
 func (client *NodeTypesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, nodeTypeName string, parameters NodeTypeUpdateParameters, _ *NodeTypesClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/nodeTypes/{nodeTypeName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {

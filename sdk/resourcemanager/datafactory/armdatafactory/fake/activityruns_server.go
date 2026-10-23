@@ -81,7 +81,7 @@ func (a *ActivityRunsServerTransport) dispatchQueryByPipelineRun(req *http.Reque
 	if a.srv.QueryByPipelineRun == nil {
 		return nil, &nonRetriableError{errors.New("fake for method QueryByPipelineRun not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DataFactory/factories/(?P<factoryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/pipelineruns/(?P<runId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/queryActivityruns`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataFactory/factories/(?P<factoryName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/pipelineruns/(?P<runId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/queryActivityruns`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {

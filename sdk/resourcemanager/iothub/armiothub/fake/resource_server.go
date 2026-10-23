@@ -238,7 +238,7 @@ func (r *ResourceServerTransport) dispatchCheckNameAvailability(req *http.Reques
 	if r.srv.CheckNameAvailability == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CheckNameAvailability not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Devices/checkNameAvailability`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Devices/checkNameAvailability`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -267,7 +267,7 @@ func (r *ResourceServerTransport) dispatchCreateEventHubConsumerGroup(req *http.
 	if r.srv.CreateEventHubConsumerGroup == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateEventHubConsumerGroup not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Devices/IotHubs/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/eventHubEndpoints/(?P<eventHubEndpointName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/ConsumerGroups/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Devices/IotHubs/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/eventHubEndpoints/(?P<eventHubEndpointName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/ConsumerGroups/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -314,7 +314,7 @@ func (r *ResourceServerTransport) dispatchBeginCreateOrUpdate(req *http.Request)
 	}
 	beginCreateOrUpdate := r.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Devices/IotHubs/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Devices/IotHubs/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -369,7 +369,7 @@ func (r *ResourceServerTransport) dispatchBeginDelete(req *http.Request) (*http.
 	}
 	beginDelete := r.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Devices/IotHubs/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Devices/IotHubs/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -411,7 +411,7 @@ func (r *ResourceServerTransport) dispatchDeleteEventHubConsumerGroup(req *http.
 	if r.srv.DeleteEventHubConsumerGroup == nil {
 		return nil, &nonRetriableError{errors.New("fake for method DeleteEventHubConsumerGroup not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Devices/IotHubs/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/eventHubEndpoints/(?P<eventHubEndpointName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/ConsumerGroups/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Devices/IotHubs/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/eventHubEndpoints/(?P<eventHubEndpointName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/ConsumerGroups/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -452,7 +452,7 @@ func (r *ResourceServerTransport) dispatchExportDevices(req *http.Request) (*htt
 	if r.srv.ExportDevices == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ExportDevices not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Devices/IotHubs/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/exportDevices`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Devices/IotHubs/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/exportDevices`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -489,7 +489,7 @@ func (r *ResourceServerTransport) dispatchGet(req *http.Request) (*http.Response
 	if r.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Devices/IotHubs/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Devices/IotHubs/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -524,7 +524,7 @@ func (r *ResourceServerTransport) dispatchNewGetEndpointHealthPager(req *http.Re
 	}
 	newGetEndpointHealthPager := r.newGetEndpointHealthPager.get(req)
 	if newGetEndpointHealthPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Devices/IotHubs/(?P<iotHubName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/routingEndpointsHealth`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Devices/IotHubs/(?P<iotHubName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/routingEndpointsHealth`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -563,7 +563,7 @@ func (r *ResourceServerTransport) dispatchGetEventHubConsumerGroup(req *http.Req
 	if r.srv.GetEventHubConsumerGroup == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetEventHubConsumerGroup not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Devices/IotHubs/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/eventHubEndpoints/(?P<eventHubEndpointName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/ConsumerGroups/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Devices/IotHubs/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/eventHubEndpoints/(?P<eventHubEndpointName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/ConsumerGroups/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -604,7 +604,7 @@ func (r *ResourceServerTransport) dispatchGetJob(req *http.Request) (*http.Respo
 	if r.srv.GetJob == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetJob not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Devices/IotHubs/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/jobs/(?P<jobId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Devices/IotHubs/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/jobs/(?P<jobId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -641,7 +641,7 @@ func (r *ResourceServerTransport) dispatchGetKeysForKeyName(req *http.Request) (
 	if r.srv.GetKeysForKeyName == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetKeysForKeyName not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Devices/IotHubs/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/IotHubKeys/(?P<keyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listkeys`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Devices/IotHubs/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/IotHubKeys/(?P<keyName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listkeys`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -680,7 +680,7 @@ func (r *ResourceServerTransport) dispatchNewGetQuotaMetricsPager(req *http.Requ
 	}
 	newGetQuotaMetricsPager := r.newGetQuotaMetricsPager.get(req)
 	if newGetQuotaMetricsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Devices/IotHubs/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/quotaMetrics`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Devices/IotHubs/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/quotaMetrics`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -719,7 +719,7 @@ func (r *ResourceServerTransport) dispatchGetStats(req *http.Request) (*http.Res
 	if r.srv.GetStats == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetStats not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Devices/IotHubs/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/IotHubStats`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Devices/IotHubs/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/IotHubStats`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -754,7 +754,7 @@ func (r *ResourceServerTransport) dispatchNewGetValidSKUsPager(req *http.Request
 	}
 	newGetValidSKUsPager := r.newGetValidSKUsPager.get(req)
 	if newGetValidSKUsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Devices/IotHubs/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/skus`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Devices/IotHubs/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/skus`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -793,7 +793,7 @@ func (r *ResourceServerTransport) dispatchImportDevices(req *http.Request) (*htt
 	if r.srv.ImportDevices == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ImportDevices not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Devices/IotHubs/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/importDevices`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Devices/IotHubs/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/importDevices`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -832,7 +832,7 @@ func (r *ResourceServerTransport) dispatchNewListByResourceGroupPager(req *http.
 	}
 	newListByResourceGroupPager := r.newListByResourceGroupPager.get(req)
 	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Devices/IotHubs`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Devices/IotHubs`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -869,7 +869,7 @@ func (r *ResourceServerTransport) dispatchNewListBySubscriptionPager(req *http.R
 	}
 	newListBySubscriptionPager := r.newListBySubscriptionPager.get(req)
 	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Devices/IotHubs`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Devices/IotHubs`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -902,7 +902,7 @@ func (r *ResourceServerTransport) dispatchNewListEventHubConsumerGroupsPager(req
 	}
 	newListEventHubConsumerGroupsPager := r.newListEventHubConsumerGroupsPager.get(req)
 	if newListEventHubConsumerGroupsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Devices/IotHubs/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/eventHubEndpoints/(?P<eventHubEndpointName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/ConsumerGroups`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Devices/IotHubs/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/eventHubEndpoints/(?P<eventHubEndpointName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/ConsumerGroups`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -947,7 +947,7 @@ func (r *ResourceServerTransport) dispatchNewListJobsPager(req *http.Request) (*
 	}
 	newListJobsPager := r.newListJobsPager.get(req)
 	if newListJobsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Devices/IotHubs/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/jobs`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Devices/IotHubs/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/jobs`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -988,7 +988,7 @@ func (r *ResourceServerTransport) dispatchNewListKeysPager(req *http.Request) (*
 	}
 	newListKeysPager := r.newListKeysPager.get(req)
 	if newListKeysPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Devices/IotHubs/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listkeys`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Devices/IotHubs/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listkeys`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -1027,7 +1027,7 @@ func (r *ResourceServerTransport) dispatchTestAllRoutes(req *http.Request) (*htt
 	if r.srv.TestAllRoutes == nil {
 		return nil, &nonRetriableError{errors.New("fake for method TestAllRoutes not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Devices/IotHubs/(?P<iotHubName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/routing/routes/\$testall`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Devices/IotHubs/(?P<iotHubName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/routing/routes/\$testall`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -1064,7 +1064,7 @@ func (r *ResourceServerTransport) dispatchTestRoute(req *http.Request) (*http.Re
 	if r.srv.TestRoute == nil {
 		return nil, &nonRetriableError{errors.New("fake for method TestRoute not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Devices/IotHubs/(?P<iotHubName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/routing/routes/\$testnew`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Devices/IotHubs/(?P<iotHubName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/routing/routes/\$testnew`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -1103,7 +1103,7 @@ func (r *ResourceServerTransport) dispatchBeginUpdate(req *http.Request) (*http.
 	}
 	beginUpdate := r.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Devices/IotHubs/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Devices/IotHubs/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {

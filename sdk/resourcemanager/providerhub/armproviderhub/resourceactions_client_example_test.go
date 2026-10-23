@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/providerhub/armproviderhub/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/providerhub/armproviderhub/v4"
 	"log"
 )
 
-// Generated from example definition: 2024-09-01/ResourceActions_DeleteResources.json
+// Generated from example definition: 2025-10-01/ResourceActions_DeleteResources.json
 func ExampleResourceActionsClient_BeginDeleteResources() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -26,9 +26,9 @@ func ExampleResourceActionsClient_BeginDeleteResources() {
 	poller, err := clientFactory.NewResourceActionsClient().BeginDeleteResources(ctx, "Microsoft.Contoso", "default", armproviderhub.ResourceManagementAction{
 		Resources: []*armproviderhub.ResourceManagementEntity{
 			{
-				HomeTenantID: to.Ptr("11111111-f7ef-471a-a2f4-d0ebbf494f77"),
-				Location:     to.Ptr("southeastasia"),
 				ResourceID:   to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.Contoso/employee/test"),
+				Location:     to.Ptr("southeastasia"),
+				HomeTenantID: to.Ptr("11111111-f7ef-471a-a2f4-d0ebbf494f77"),
 			},
 		},
 	}, nil)

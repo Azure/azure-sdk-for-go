@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-03-01-preview/TrafficControllerPut.json
+// Generated from example definition: 2026-03-01/TrafficControllerPut.json
 func ExampleTrafficControllerInterfaceClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -78,7 +78,7 @@ func ExampleTrafficControllerInterfaceClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01-preview/TrafficControllerDelete.json
+// Generated from example definition: 2026-03-01/TrafficControllerDelete.json
 func ExampleTrafficControllerInterfaceClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -99,7 +99,7 @@ func ExampleTrafficControllerInterfaceClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-03-01-preview/TrafficControllerGet.json
+// Generated from example definition: 2026-03-01/TrafficControllerGet.json
 func ExampleTrafficControllerInterfaceClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -137,7 +137,12 @@ func ExampleTrafficControllerInterfaceClient_Get() {
 	// 			},
 	// 			Associations: []*armservicenetworking.ResourceID{
 	// 				{
-	// 					ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ServiceNetworking/trafficControllers/tc1/association/as1"),
+	// 					ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ServiceNetworking/trafficControllers/tc1/associations/as1"),
+	// 				},
+	// 			},
+	// 			PrivateEndpointConnections: []*armservicenetworking.ResourceID{
+	// 				{
+	// 					ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ServiceNetworking/trafficControllers/tc1/privateEndpointConnections/pec1"),
 	// 				},
 	// 			},
 	// 			ProvisioningState: to.Ptr(armservicenetworking.ProvisioningStateSucceeded),
@@ -146,7 +151,7 @@ func ExampleTrafficControllerInterfaceClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01-preview/TrafficControllersGet.json
+// Generated from example definition: 2026-03-01/TrafficControllersGet.json
 func ExampleTrafficControllerInterfaceClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -212,7 +217,7 @@ func ExampleTrafficControllerInterfaceClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-03-01-preview/TrafficControllersGetList.json
+// Generated from example definition: 2026-03-01/TrafficControllersGetList.json
 func ExampleTrafficControllerInterfaceClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -278,7 +283,7 @@ func ExampleTrafficControllerInterfaceClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2025-03-01-preview/TrafficControllerPatch.json
+// Generated from example definition: 2026-03-01/TrafficControllerPatch.json
 func ExampleTrafficControllerInterfaceClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

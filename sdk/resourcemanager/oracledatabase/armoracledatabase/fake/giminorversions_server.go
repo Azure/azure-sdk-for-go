@@ -12,11 +12,12 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/oracledatabase/armoracledatabase/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/oracledatabase/armoracledatabase/v3"
 	"net/http"
 	"net/url"
 	"regexp"
 	"slices"
+	"strconv"
 )
 
 // GiMinorVersionsServer is a fake server for instances of the armoracledatabase.GiMinorVersionsClient type.
@@ -92,7 +93,7 @@ func (g *GiMinorVersionsServerTransport) dispatchGet(req *http.Request) (*http.R
 	if g.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Oracle\.Database/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/giVersions/(?P<giversionname>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/giMinorVersions/(?P<giMinorVersionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Oracle\.Database/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/giVersions/(?P<giversionname>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/giMinorVersions/(?P<giMinorVersionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -131,7 +132,7 @@ func (g *GiMinorVersionsServerTransport) dispatchNewListByParentPager(req *http.
 	}
 	newListByParentPager := g.newListByParentPager.get(req)
 	if newListByParentPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Oracle\.Database/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/giVersions/(?P<giversionname>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/giMinorVersions`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Oracle\.Database/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/giVersions/(?P<giversionname>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/giMinorVersions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -148,11 +149,20 @@ func (g *GiMinorVersionsServerTransport) dispatchNewListByParentPager(req *http.
 		}
 		shapeFamilyParam := getOptional(armoracledatabase.ShapeFamily(qp.Get("shapeFamily")))
 		zoneParam := getOptional(qp.Get("zone"))
+		shapeParam := getOptional(qp.Get("shape"))
+		isGiVersionForProvisioningParam, err := parseOptional(qp.Get("isGiVersionForProvisioning"), strconv.ParseBool)
+		if err != nil {
+			return nil, err
+		}
+		sortOrderParam := getOptional(armoracledatabase.GiMinorVersionSortOrder(qp.Get("sortOrder")))
 		var options *armoracledatabase.GiMinorVersionsClientListByParentOptions
-		if shapeFamilyParam != nil || zoneParam != nil {
+		if shapeFamilyParam != nil || zoneParam != nil || shapeParam != nil || isGiVersionForProvisioningParam != nil || sortOrderParam != nil {
 			options = &armoracledatabase.GiMinorVersionsClientListByParentOptions{
-				ShapeFamily: shapeFamilyParam,
-				Zone:        zoneParam,
+				ShapeFamily:                shapeFamilyParam,
+				Zone:                       zoneParam,
+				Shape:                      shapeParam,
+				IsGiVersionForProvisioning: isGiVersionForProvisioningParam,
+				SortOrder:                  sortOrderParam,
 			}
 		}
 		resp := g.srv.NewListByParentPager(locationParam, giversionnameParam, options)

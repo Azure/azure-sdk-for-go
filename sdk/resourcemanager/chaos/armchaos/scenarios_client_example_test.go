@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos/v3"
 	"log"
 )
 
-// Generated from example definition: 2026-05-01-preview/Scenarios_CreateOrUpdate.json
+// Generated from example definition: 2026-08-01-preview/Scenarios_CreateOrUpdate.json
 func ExampleScenariosClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -206,7 +206,7 @@ func ExampleScenariosClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/Scenarios_Delete.json
+// Generated from example definition: 2026-08-01-preview/Scenarios_Delete.json
 func ExampleScenariosClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -228,7 +228,7 @@ func ExampleScenariosClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/Scenarios_Get.json
+// Generated from example definition: 2026-08-01-preview/Scenarios_Get.json
 func ExampleScenariosClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -347,7 +347,7 @@ func ExampleScenariosClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/Scenarios_ListAll.json
+// Generated from example definition: 2026-08-01-preview/Scenarios_ListAll.json
 func ExampleScenariosClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

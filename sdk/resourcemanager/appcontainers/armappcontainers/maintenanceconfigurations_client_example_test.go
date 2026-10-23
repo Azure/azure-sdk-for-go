@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-10-02-preview/ManagedEnvironment_MaintenanceConfigurations_CreateOrUpdate.json
+// Generated from example definition: 2026-07-01/ManagedEnvironment_MaintenanceConfigurations_CreateOrUpdate.json
 func ExampleMaintenanceConfigurationsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -58,7 +58,7 @@ func ExampleMaintenanceConfigurationsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/ManagedEnvironment_MaintenanceConfigurations_Delete.json
+// Generated from example definition: 2026-07-01/ManagedEnvironment_MaintenanceConfigurations_Delete.json
 func ExampleMaintenanceConfigurationsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -80,7 +80,7 @@ func ExampleMaintenanceConfigurationsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/ManagedEnvironment_MaintenanceConfigurations_Get.json
+// Generated from example definition: 2026-07-01/ManagedEnvironment_MaintenanceConfigurations_Get.json
 func ExampleMaintenanceConfigurationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -116,7 +116,7 @@ func ExampleMaintenanceConfigurationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/ManagedEnvironment_MaintenanceConfigurations_List.json
+// Generated from example definition: 2026-07-01/ManagedEnvironment_MaintenanceConfigurations_List.json
 func ExampleMaintenanceConfigurationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

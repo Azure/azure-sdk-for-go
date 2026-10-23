@@ -87,7 +87,7 @@ func (c *CreationSupportedServerTransport) dispatchGet(req *http.Request) (*http
 	if c.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Dynatrace\.Observability/subscriptionStatuses/(?P<dynatraceEnvironmentId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/default`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Dynatrace\.Observability/subscriptionStatuses/(?P<dynatraceEnvironmentId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/default`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -116,7 +116,7 @@ func (c *CreationSupportedServerTransport) dispatchList(req *http.Request) (*htt
 	if c.srv.List == nil {
 		return nil, &nonRetriableError{errors.New("fake for method List not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Dynatrace\.Observability/subscriptionStatuses/(?P<dynatraceEnvironmentId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Dynatrace\.Observability/subscriptionStatuses/(?P<dynatraceEnvironmentId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {

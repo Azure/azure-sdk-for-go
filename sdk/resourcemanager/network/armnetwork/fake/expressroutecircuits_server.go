@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v12"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -30,10 +30,6 @@ type ExpressRouteCircuitsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, circuitName string, options *armnetwork.ExpressRouteCircuitsClientBeginDeleteOptions) (resp azfake.PollerResponder[armnetwork.ExpressRouteCircuitsClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method ExpressRouteCircuitsClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, circuitName string, options *armnetwork.ExpressRouteCircuitsClientGetOptions) (resp azfake.Responder[armnetwork.ExpressRouteCircuitsClientGetResponse], errResp azfake.ErrorResponder)
-
 	// BeginGetCircuitLinkFailoverAllTestsDetails is the fake for method ExpressRouteCircuitsClient.BeginGetCircuitLinkFailoverAllTestsDetails
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginGetCircuitLinkFailoverAllTestsDetails func(ctx context.Context, resourceGroupName string, circuitName string, options *armnetwork.ExpressRouteCircuitsClientBeginGetCircuitLinkFailoverAllTestsDetailsOptions) (resp azfake.PollerResponder[armnetwork.ExpressRouteCircuitsClientGetCircuitLinkFailoverAllTestsDetailsResponse], errResp azfake.ErrorResponder)
@@ -41,22 +37,6 @@ type ExpressRouteCircuitsServer struct {
 	// BeginGetCircuitLinkFailoverSingleTestDetails is the fake for method ExpressRouteCircuitsClient.BeginGetCircuitLinkFailoverSingleTestDetails
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginGetCircuitLinkFailoverSingleTestDetails func(ctx context.Context, resourceGroupName string, circuitName string, linkType string, circuitTestCategory string, failoverTestID string, options *armnetwork.ExpressRouteCircuitsClientBeginGetCircuitLinkFailoverSingleTestDetailsOptions) (resp azfake.PollerResponder[armnetwork.ExpressRouteCircuitsClientGetCircuitLinkFailoverSingleTestDetailsResponse], errResp azfake.ErrorResponder)
-
-	// GetPeeringStats is the fake for method ExpressRouteCircuitsClient.GetPeeringStats
-	// HTTP status codes to indicate success: http.StatusOK
-	GetPeeringStats func(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, options *armnetwork.ExpressRouteCircuitsClientGetPeeringStatsOptions) (resp azfake.Responder[armnetwork.ExpressRouteCircuitsClientGetPeeringStatsResponse], errResp azfake.ErrorResponder)
-
-	// GetStats is the fake for method ExpressRouteCircuitsClient.GetStats
-	// HTTP status codes to indicate success: http.StatusOK
-	GetStats func(ctx context.Context, resourceGroupName string, circuitName string, options *armnetwork.ExpressRouteCircuitsClientGetStatsOptions) (resp azfake.Responder[armnetwork.ExpressRouteCircuitsClientGetStatsResponse], errResp azfake.ErrorResponder)
-
-	// NewListPager is the fake for method ExpressRouteCircuitsClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, options *armnetwork.ExpressRouteCircuitsClientListOptions) (resp azfake.PagerResponder[armnetwork.ExpressRouteCircuitsClientListResponse])
-
-	// NewListAllPager is the fake for method ExpressRouteCircuitsClient.NewListAllPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListAllPager func(options *armnetwork.ExpressRouteCircuitsClientListAllOptions) (resp azfake.PagerResponder[armnetwork.ExpressRouteCircuitsClientListAllResponse])
 
 	// BeginListArpTable is the fake for method ExpressRouteCircuitsClient.BeginListArpTable
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
@@ -78,6 +58,26 @@ type ExpressRouteCircuitsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginStopCircuitLinkFailoverTest func(ctx context.Context, resourceGroupName string, circuitName string, stopParameters armnetwork.ExpressRouteLinkFailoverStopAPIParameters, options *armnetwork.ExpressRouteCircuitsClientBeginStopCircuitLinkFailoverTestOptions) (resp azfake.PollerResponder[armnetwork.ExpressRouteCircuitsClientStopCircuitLinkFailoverTestResponse], errResp azfake.ErrorResponder)
 
+	// Get is the fake for method ExpressRouteCircuitsClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, circuitName string, options *armnetwork.ExpressRouteCircuitsClientGetOptions) (resp azfake.Responder[armnetwork.ExpressRouteCircuitsClientGetResponse], errResp azfake.ErrorResponder)
+
+	// GetPeeringStats is the fake for method ExpressRouteCircuitsClient.GetPeeringStats
+	// HTTP status codes to indicate success: http.StatusOK
+	GetPeeringStats func(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, options *armnetwork.ExpressRouteCircuitsClientGetPeeringStatsOptions) (resp azfake.Responder[armnetwork.ExpressRouteCircuitsClientGetPeeringStatsResponse], errResp azfake.ErrorResponder)
+
+	// GetStats is the fake for method ExpressRouteCircuitsClient.GetStats
+	// HTTP status codes to indicate success: http.StatusOK
+	GetStats func(ctx context.Context, resourceGroupName string, circuitName string, options *armnetwork.ExpressRouteCircuitsClientGetStatsOptions) (resp azfake.Responder[armnetwork.ExpressRouteCircuitsClientGetStatsResponse], errResp azfake.ErrorResponder)
+
+	// NewListAllPager is the fake for method ExpressRouteCircuitsClient.NewListAllPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListAllPager func(options *armnetwork.ExpressRouteCircuitsClientListAllOptions) (resp azfake.PagerResponder[armnetwork.ExpressRouteCircuitsClientListAllResponse])
+
+	// NewListPager is the fake for method ExpressRouteCircuitsClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(resourceGroupName string, options *armnetwork.ExpressRouteCircuitsClientListOptions) (resp azfake.PagerResponder[armnetwork.ExpressRouteCircuitsClientListResponse])
+
 	// UpdateTags is the fake for method ExpressRouteCircuitsClient.UpdateTags
 	// HTTP status codes to indicate success: http.StatusOK
 	UpdateTags func(ctx context.Context, resourceGroupName string, circuitName string, parameters armnetwork.TagsObject, options *armnetwork.ExpressRouteCircuitsClientUpdateTagsOptions) (resp azfake.Responder[armnetwork.ExpressRouteCircuitsClientUpdateTagsResponse], errResp azfake.ErrorResponder)
@@ -93,13 +93,13 @@ func NewExpressRouteCircuitsServerTransport(srv *ExpressRouteCircuitsServer) *Ex
 		beginDelete:         newTracker[azfake.PollerResponder[armnetwork.ExpressRouteCircuitsClientDeleteResponse]](),
 		beginGetCircuitLinkFailoverAllTestsDetails:   newTracker[azfake.PollerResponder[armnetwork.ExpressRouteCircuitsClientGetCircuitLinkFailoverAllTestsDetailsResponse]](),
 		beginGetCircuitLinkFailoverSingleTestDetails: newTracker[azfake.PollerResponder[armnetwork.ExpressRouteCircuitsClientGetCircuitLinkFailoverSingleTestDetailsResponse]](),
-		newListPager:                      newTracker[azfake.PagerResponder[armnetwork.ExpressRouteCircuitsClientListResponse]](),
-		newListAllPager:                   newTracker[azfake.PagerResponder[armnetwork.ExpressRouteCircuitsClientListAllResponse]](),
 		beginListArpTable:                 newTracker[azfake.PollerResponder[armnetwork.ExpressRouteCircuitsClientListArpTableResponse]](),
 		beginListRoutesTable:              newTracker[azfake.PollerResponder[armnetwork.ExpressRouteCircuitsClientListRoutesTableResponse]](),
 		beginListRoutesTableSummary:       newTracker[azfake.PollerResponder[armnetwork.ExpressRouteCircuitsClientListRoutesTableSummaryResponse]](),
 		beginStartCircuitLinkFailoverTest: newTracker[azfake.PollerResponder[armnetwork.ExpressRouteCircuitsClientStartCircuitLinkFailoverTestResponse]](),
 		beginStopCircuitLinkFailoverTest:  newTracker[azfake.PollerResponder[armnetwork.ExpressRouteCircuitsClientStopCircuitLinkFailoverTestResponse]](),
+		newListAllPager:                   newTracker[azfake.PagerResponder[armnetwork.ExpressRouteCircuitsClientListAllResponse]](),
+		newListPager:                      newTracker[azfake.PagerResponder[armnetwork.ExpressRouteCircuitsClientListResponse]](),
 	}
 }
 
@@ -111,13 +111,13 @@ type ExpressRouteCircuitsServerTransport struct {
 	beginDelete                                  *tracker[azfake.PollerResponder[armnetwork.ExpressRouteCircuitsClientDeleteResponse]]
 	beginGetCircuitLinkFailoverAllTestsDetails   *tracker[azfake.PollerResponder[armnetwork.ExpressRouteCircuitsClientGetCircuitLinkFailoverAllTestsDetailsResponse]]
 	beginGetCircuitLinkFailoverSingleTestDetails *tracker[azfake.PollerResponder[armnetwork.ExpressRouteCircuitsClientGetCircuitLinkFailoverSingleTestDetailsResponse]]
-	newListPager                                 *tracker[azfake.PagerResponder[armnetwork.ExpressRouteCircuitsClientListResponse]]
-	newListAllPager                              *tracker[azfake.PagerResponder[armnetwork.ExpressRouteCircuitsClientListAllResponse]]
 	beginListArpTable                            *tracker[azfake.PollerResponder[armnetwork.ExpressRouteCircuitsClientListArpTableResponse]]
 	beginListRoutesTable                         *tracker[azfake.PollerResponder[armnetwork.ExpressRouteCircuitsClientListRoutesTableResponse]]
 	beginListRoutesTableSummary                  *tracker[azfake.PollerResponder[armnetwork.ExpressRouteCircuitsClientListRoutesTableSummaryResponse]]
 	beginStartCircuitLinkFailoverTest            *tracker[azfake.PollerResponder[armnetwork.ExpressRouteCircuitsClientStartCircuitLinkFailoverTestResponse]]
 	beginStopCircuitLinkFailoverTest             *tracker[azfake.PollerResponder[armnetwork.ExpressRouteCircuitsClientStopCircuitLinkFailoverTestResponse]]
+	newListAllPager                              *tracker[azfake.PagerResponder[armnetwork.ExpressRouteCircuitsClientListAllResponse]]
+	newListPager                                 *tracker[azfake.PagerResponder[armnetwork.ExpressRouteCircuitsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for ExpressRouteCircuitsServerTransport.
@@ -145,20 +145,10 @@ func (e *ExpressRouteCircuitsServerTransport) dispatchToMethodFake(req *http.Req
 				res.resp, res.err = e.dispatchBeginCreateOrUpdate(req)
 			case "ExpressRouteCircuitsClient.BeginDelete":
 				res.resp, res.err = e.dispatchBeginDelete(req)
-			case "ExpressRouteCircuitsClient.Get":
-				res.resp, res.err = e.dispatchGet(req)
 			case "ExpressRouteCircuitsClient.BeginGetCircuitLinkFailoverAllTestsDetails":
 				res.resp, res.err = e.dispatchBeginGetCircuitLinkFailoverAllTestsDetails(req)
 			case "ExpressRouteCircuitsClient.BeginGetCircuitLinkFailoverSingleTestDetails":
 				res.resp, res.err = e.dispatchBeginGetCircuitLinkFailoverSingleTestDetails(req)
-			case "ExpressRouteCircuitsClient.GetPeeringStats":
-				res.resp, res.err = e.dispatchGetPeeringStats(req)
-			case "ExpressRouteCircuitsClient.GetStats":
-				res.resp, res.err = e.dispatchGetStats(req)
-			case "ExpressRouteCircuitsClient.NewListPager":
-				res.resp, res.err = e.dispatchNewListPager(req)
-			case "ExpressRouteCircuitsClient.NewListAllPager":
-				res.resp, res.err = e.dispatchNewListAllPager(req)
 			case "ExpressRouteCircuitsClient.BeginListArpTable":
 				res.resp, res.err = e.dispatchBeginListArpTable(req)
 			case "ExpressRouteCircuitsClient.BeginListRoutesTable":
@@ -169,6 +159,16 @@ func (e *ExpressRouteCircuitsServerTransport) dispatchToMethodFake(req *http.Req
 				res.resp, res.err = e.dispatchBeginStartCircuitLinkFailoverTest(req)
 			case "ExpressRouteCircuitsClient.BeginStopCircuitLinkFailoverTest":
 				res.resp, res.err = e.dispatchBeginStopCircuitLinkFailoverTest(req)
+			case "ExpressRouteCircuitsClient.Get":
+				res.resp, res.err = e.dispatchGet(req)
+			case "ExpressRouteCircuitsClient.GetPeeringStats":
+				res.resp, res.err = e.dispatchGetPeeringStats(req)
+			case "ExpressRouteCircuitsClient.GetStats":
+				res.resp, res.err = e.dispatchGetStats(req)
+			case "ExpressRouteCircuitsClient.NewListAllPager":
+				res.resp, res.err = e.dispatchNewListAllPager(req)
+			case "ExpressRouteCircuitsClient.NewListPager":
+				res.resp, res.err = e.dispatchNewListPager(req)
 			case "ExpressRouteCircuitsClient.UpdateTags":
 				res.resp, res.err = e.dispatchUpdateTags(req)
 			default:
@@ -193,7 +193,7 @@ func (e *ExpressRouteCircuitsServerTransport) dispatchBeginCreateOrUpdate(req *h
 	}
 	beginCreateOrUpdate := e.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/expressRouteCircuits/(?P<circuitName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/expressRouteCircuits/(?P<circuitName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -241,7 +241,7 @@ func (e *ExpressRouteCircuitsServerTransport) dispatchBeginDelete(req *http.Requ
 	}
 	beginDelete := e.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/expressRouteCircuits/(?P<circuitName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/expressRouteCircuits/(?P<circuitName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -279,46 +279,13 @@ func (e *ExpressRouteCircuitsServerTransport) dispatchBeginDelete(req *http.Requ
 	return resp, nil
 }
 
-func (e *ExpressRouteCircuitsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if e.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/expressRouteCircuits/(?P<circuitName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	circuitNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("circuitName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := e.srv.Get(req.Context(), resourceGroupNameParam, circuitNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ExpressRouteCircuit, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (e *ExpressRouteCircuitsServerTransport) dispatchBeginGetCircuitLinkFailoverAllTestsDetails(req *http.Request) (*http.Response, error) {
 	if e.srv.BeginGetCircuitLinkFailoverAllTestsDetails == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginGetCircuitLinkFailoverAllTestsDetails not implemented")}
 	}
 	beginGetCircuitLinkFailoverAllTestsDetails := e.beginGetCircuitLinkFailoverAllTestsDetails.get(req)
 	if beginGetCircuitLinkFailoverAllTestsDetails == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/expressRouteCircuits/(?P<circuitName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getCircuitLinkFailoverAllTestsDetails`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/expressRouteCircuits/(?P<circuitName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getCircuitLinkFailoverAllTestsDetails`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -375,7 +342,7 @@ func (e *ExpressRouteCircuitsServerTransport) dispatchBeginGetCircuitLinkFailove
 	}
 	beginGetCircuitLinkFailoverSingleTestDetails := e.beginGetCircuitLinkFailoverSingleTestDetails.get(req)
 	if beginGetCircuitLinkFailoverSingleTestDetails == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/expressRouteCircuits/(?P<circuitName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getCircuitLinkFailoverSingleTestDetails`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/expressRouteCircuits/(?P<circuitName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getCircuitLinkFailoverSingleTestDetails`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -414,153 +381,13 @@ func (e *ExpressRouteCircuitsServerTransport) dispatchBeginGetCircuitLinkFailove
 	return resp, nil
 }
 
-func (e *ExpressRouteCircuitsServerTransport) dispatchGetPeeringStats(req *http.Request) (*http.Response, error) {
-	if e.srv.GetPeeringStats == nil {
-		return nil, &nonRetriableError{errors.New("fake for method GetPeeringStats not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/expressRouteCircuits/(?P<circuitName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/peerings/(?P<peeringName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/stats`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	circuitNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("circuitName")])
-	if err != nil {
-		return nil, err
-	}
-	peeringNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("peeringName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := e.srv.GetPeeringStats(req.Context(), resourceGroupNameParam, circuitNameParam, peeringNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ExpressRouteCircuitStats, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (e *ExpressRouteCircuitsServerTransport) dispatchGetStats(req *http.Request) (*http.Response, error) {
-	if e.srv.GetStats == nil {
-		return nil, &nonRetriableError{errors.New("fake for method GetStats not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/expressRouteCircuits/(?P<circuitName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/stats`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	circuitNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("circuitName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := e.srv.GetStats(req.Context(), resourceGroupNameParam, circuitNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ExpressRouteCircuitStats, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (e *ExpressRouteCircuitsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if e.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := e.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/expressRouteCircuits`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := e.srv.NewListPager(resourceGroupNameParam, nil)
-		newListPager = &resp
-		e.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.ExpressRouteCircuitsClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		e.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		e.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (e *ExpressRouteCircuitsServerTransport) dispatchNewListAllPager(req *http.Request) (*http.Response, error) {
-	if e.srv.NewListAllPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListAllPager not implemented")}
-	}
-	newListAllPager := e.newListAllPager.get(req)
-	if newListAllPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/expressRouteCircuits`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := e.srv.NewListAllPager(nil)
-		newListAllPager = &resp
-		e.newListAllPager.add(req, newListAllPager)
-		server.PagerResponderInjectNextLinks(newListAllPager, req, func(page *armnetwork.ExpressRouteCircuitsClientListAllResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListAllPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		e.newListAllPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListAllPager) {
-		e.newListAllPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (e *ExpressRouteCircuitsServerTransport) dispatchBeginListArpTable(req *http.Request) (*http.Response, error) {
 	if e.srv.BeginListArpTable == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginListArpTable not implemented")}
 	}
 	beginListArpTable := e.beginListArpTable.get(req)
 	if beginListArpTable == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/expressRouteCircuits/(?P<circuitName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/peerings/(?P<peeringName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/arpTables/(?P<devicePath>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/expressRouteCircuits/(?P<circuitName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/peerings/(?P<peeringName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/arpTables/(?P<devicePath>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -612,7 +439,7 @@ func (e *ExpressRouteCircuitsServerTransport) dispatchBeginListRoutesTable(req *
 	}
 	beginListRoutesTable := e.beginListRoutesTable.get(req)
 	if beginListRoutesTable == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/expressRouteCircuits/(?P<circuitName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/peerings/(?P<peeringName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/routeTables/(?P<devicePath>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/expressRouteCircuits/(?P<circuitName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/peerings/(?P<peeringName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/routeTables/(?P<devicePath>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -664,7 +491,7 @@ func (e *ExpressRouteCircuitsServerTransport) dispatchBeginListRoutesTableSummar
 	}
 	beginListRoutesTableSummary := e.beginListRoutesTableSummary.get(req)
 	if beginListRoutesTableSummary == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/expressRouteCircuits/(?P<circuitName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/peerings/(?P<peeringName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/routeTablesSummary/(?P<devicePath>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/expressRouteCircuits/(?P<circuitName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/peerings/(?P<peeringName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/routeTablesSummary/(?P<devicePath>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -716,7 +543,7 @@ func (e *ExpressRouteCircuitsServerTransport) dispatchBeginStartCircuitLinkFailo
 	}
 	beginStartCircuitLinkFailoverTest := e.beginStartCircuitLinkFailoverTest.get(req)
 	if beginStartCircuitLinkFailoverTest == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/expressRouteCircuits/(?P<circuitName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/startCircuitLinkFailoverTest`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/expressRouteCircuits/(?P<circuitName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/startCircuitLinkFailoverTest`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -761,7 +588,7 @@ func (e *ExpressRouteCircuitsServerTransport) dispatchBeginStopCircuitLinkFailov
 	}
 	beginStopCircuitLinkFailoverTest := e.beginStopCircuitLinkFailoverTest.get(req)
 	if beginStopCircuitLinkFailoverTest == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/expressRouteCircuits/(?P<circuitName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/stopCircuitLinkFailoverTest`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/expressRouteCircuits/(?P<circuitName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/stopCircuitLinkFailoverTest`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -803,11 +630,184 @@ func (e *ExpressRouteCircuitsServerTransport) dispatchBeginStopCircuitLinkFailov
 	return resp, nil
 }
 
+func (e *ExpressRouteCircuitsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if e.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/expressRouteCircuits/(?P<circuitName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	circuitNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("circuitName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := e.srv.Get(req.Context(), resourceGroupNameParam, circuitNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ExpressRouteCircuit, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (e *ExpressRouteCircuitsServerTransport) dispatchGetPeeringStats(req *http.Request) (*http.Response, error) {
+	if e.srv.GetPeeringStats == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetPeeringStats not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/expressRouteCircuits/(?P<circuitName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/peerings/(?P<peeringName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/stats`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	circuitNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("circuitName")])
+	if err != nil {
+		return nil, err
+	}
+	peeringNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("peeringName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := e.srv.GetPeeringStats(req.Context(), resourceGroupNameParam, circuitNameParam, peeringNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ExpressRouteCircuitStats, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (e *ExpressRouteCircuitsServerTransport) dispatchGetStats(req *http.Request) (*http.Response, error) {
+	if e.srv.GetStats == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetStats not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/expressRouteCircuits/(?P<circuitName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/stats`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	circuitNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("circuitName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := e.srv.GetStats(req.Context(), resourceGroupNameParam, circuitNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ExpressRouteCircuitStats, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (e *ExpressRouteCircuitsServerTransport) dispatchNewListAllPager(req *http.Request) (*http.Response, error) {
+	if e.srv.NewListAllPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListAllPager not implemented")}
+	}
+	newListAllPager := e.newListAllPager.get(req)
+	if newListAllPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/expressRouteCircuits`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := e.srv.NewListAllPager(nil)
+		newListAllPager = &resp
+		e.newListAllPager.add(req, newListAllPager)
+		server.PagerResponderInjectNextLinks(newListAllPager, req, func(page *armnetwork.ExpressRouteCircuitsClientListAllResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListAllPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		e.newListAllPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListAllPager) {
+		e.newListAllPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (e *ExpressRouteCircuitsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if e.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := e.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/expressRouteCircuits`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := e.srv.NewListPager(resourceGroupNameParam, nil)
+		newListPager = &resp
+		e.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.ExpressRouteCircuitsClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		e.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		e.newListPager.remove(req)
+	}
+	return resp, nil
+}
+
 func (e *ExpressRouteCircuitsServerTransport) dispatchUpdateTags(req *http.Request) (*http.Response, error) {
 	if e.srv.UpdateTags == nil {
 		return nil, &nonRetriableError{errors.New("fake for method UpdateTags not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/expressRouteCircuits/(?P<circuitName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/expressRouteCircuits/(?P<circuitName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {

@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elasticsan/armelasticsan"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elasticsan/armelasticsan/v2"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -134,7 +134,7 @@ func (v *VolumesServerTransport) dispatchBeginCreate(req *http.Request) (*http.R
 	}
 	beginCreate := v.beginCreate.get(req)
 	if beginCreate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ElasticSan/elasticSans/(?P<elasticSanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/volumegroups/(?P<volumeGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/volumes/(?P<volumeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ElasticSan/elasticSans/(?P<elasticSanName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumegroups/(?P<volumeGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumes/(?P<volumeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -190,12 +190,13 @@ func (v *VolumesServerTransport) dispatchBeginDelete(req *http.Request) (*http.R
 	}
 	beginDelete := v.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ElasticSan/elasticSans/(?P<elasticSanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/volumegroups/(?P<volumeGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/volumes/(?P<volumeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ElasticSan/elasticSans/(?P<elasticSanName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumegroups/(?P<volumeGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumes/(?P<volumeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
+		qp := req.URL.Query()
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
@@ -214,11 +215,13 @@ func (v *VolumesServerTransport) dispatchBeginDelete(req *http.Request) (*http.R
 		}
 		xMSDeleteSnapshotsParam := getOptional(armelasticsan.XMSDeleteSnapshots(getHeaderValue(req.Header, "x-ms-delete-snapshots")))
 		xMSForceDeleteParam := getOptional(armelasticsan.XMSForceDelete(getHeaderValue(req.Header, "x-ms-force-delete")))
+		deleteTypeParam := getOptional(armelasticsan.DeleteType(qp.Get("deleteType")))
 		var options *armelasticsan.VolumesClientBeginDeleteOptions
-		if xMSDeleteSnapshotsParam != nil || xMSForceDeleteParam != nil {
+		if xMSDeleteSnapshotsParam != nil || xMSForceDeleteParam != nil || deleteTypeParam != nil {
 			options = &armelasticsan.VolumesClientBeginDeleteOptions{
 				XMSDeleteSnapshots: xMSDeleteSnapshotsParam,
 				XMSForceDelete:     xMSForceDeleteParam,
+				DeleteType:         deleteTypeParam,
 			}
 		}
 		respr, errRespr := v.srv.BeginDelete(req.Context(), resourceGroupNameParam, elasticSanNameParam, volumeGroupNameParam, volumeNameParam, options)
@@ -249,7 +252,7 @@ func (v *VolumesServerTransport) dispatchGet(req *http.Request) (*http.Response,
 	if v.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ElasticSan/elasticSans/(?P<elasticSanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/volumegroups/(?P<volumeGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/volumes/(?P<volumeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ElasticSan/elasticSans/(?P<elasticSanName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumegroups/(?P<volumeGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumes/(?P<volumeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -292,7 +295,7 @@ func (v *VolumesServerTransport) dispatchNewListByVolumeGroupPager(req *http.Req
 	}
 	newListByVolumeGroupPager := v.newListByVolumeGroupPager.get(req)
 	if newListByVolumeGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ElasticSan/elasticSans/(?P<elasticSanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/volumegroups/(?P<volumeGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/volumes`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ElasticSan/elasticSans/(?P<elasticSanName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumegroups/(?P<volumeGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumes`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -310,7 +313,14 @@ func (v *VolumesServerTransport) dispatchNewListByVolumeGroupPager(req *http.Req
 		if err != nil {
 			return nil, err
 		}
-		resp := v.srv.NewListByVolumeGroupPager(resourceGroupNameParam, elasticSanNameParam, volumeGroupNameParam, nil)
+		xMSAccessSoftDeletedResourcesParam := getOptional(armelasticsan.XMSAccessSoftDeletedResources(getHeaderValue(req.Header, "x-ms-access-soft-deleted-resources")))
+		var options *armelasticsan.VolumesClientListByVolumeGroupOptions
+		if xMSAccessSoftDeletedResourcesParam != nil {
+			options = &armelasticsan.VolumesClientListByVolumeGroupOptions{
+				XMSAccessSoftDeletedResources: xMSAccessSoftDeletedResourcesParam,
+			}
+		}
+		resp := v.srv.NewListByVolumeGroupPager(resourceGroupNameParam, elasticSanNameParam, volumeGroupNameParam, options)
 		newListByVolumeGroupPager = &resp
 		v.newListByVolumeGroupPager.add(req, newListByVolumeGroupPager)
 		server.PagerResponderInjectNextLinks(newListByVolumeGroupPager, req, func(page *armelasticsan.VolumesClientListByVolumeGroupResponse, createLink func() string) {
@@ -337,7 +347,7 @@ func (v *VolumesServerTransport) dispatchBeginPreBackup(req *http.Request) (*htt
 	}
 	beginPreBackup := v.beginPreBackup.get(req)
 	if beginPreBackup == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ElasticSan/elasticSans/(?P<elasticSanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/volumegroups/(?P<volumeGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/preBackup`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ElasticSan/elasticSans/(?P<elasticSanName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumegroups/(?P<volumeGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/preBackup`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -389,7 +399,7 @@ func (v *VolumesServerTransport) dispatchBeginPreRestore(req *http.Request) (*ht
 	}
 	beginPreRestore := v.beginPreRestore.get(req)
 	if beginPreRestore == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ElasticSan/elasticSans/(?P<elasticSanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/volumegroups/(?P<volumeGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/preRestore`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ElasticSan/elasticSans/(?P<elasticSanName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumegroups/(?P<volumeGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/preRestore`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -441,7 +451,7 @@ func (v *VolumesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.R
 	}
 	beginUpdate := v.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ElasticSan/elasticSans/(?P<elasticSanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/volumegroups/(?P<volumeGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/volumes/(?P<volumeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ElasticSan/elasticSans/(?P<elasticSanName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumegroups/(?P<volumeGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumes/(?P<volumeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {

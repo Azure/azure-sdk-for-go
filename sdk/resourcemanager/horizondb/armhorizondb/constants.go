@@ -5,7 +5,7 @@
 package armhorizondb
 
 const (
-	version20260120Preview string = "2026-01-20-preview"
+	version20261001Preview string = "2026-10-01-preview"
 )
 
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -23,42 +23,540 @@ func PossibleActionTypeValues() []ActionType {
 	}
 }
 
-// CreateModeCluster - The mode to create a new HorizonDb cluster.
-type CreateModeCluster string
+// AiModelManagementStatus - The AI Model Management status for a HorizonDB cluster.
+type AiModelManagementStatus string
 
 const (
-	// CreateModeClusterCreate - Create a new cluster
-	CreateModeClusterCreate CreateModeCluster = "Create"
-	// CreateModeClusterPointInTimeRestore - Create cluster from point-in-time restore
-	CreateModeClusterPointInTimeRestore CreateModeCluster = "PointInTimeRestore"
-	// CreateModeClusterUpdate - Update an existing cluster
-	CreateModeClusterUpdate CreateModeCluster = "Update"
+	// AiModelManagementStatusDisabled - AI Model Management is disabled.
+	AiModelManagementStatusDisabled AiModelManagementStatus = "Disabled"
+	// AiModelManagementStatusEnabled - AI Model Management is enabled.
+	AiModelManagementStatusEnabled AiModelManagementStatus = "Enabled"
 )
 
-// PossibleCreateModeClusterValues returns the possible values for the CreateModeCluster const type.
-func PossibleCreateModeClusterValues() []CreateModeCluster {
-	return []CreateModeCluster{
-		CreateModeClusterCreate,
-		CreateModeClusterPointInTimeRestore,
-		CreateModeClusterUpdate,
+// PossibleAiModelManagementStatusValues returns the possible values for the AiModelManagementStatus const type.
+func PossibleAiModelManagementStatusValues() []AiModelManagementStatus {
+	return []AiModelManagementStatus{
+		AiModelManagementStatusDisabled,
+		AiModelManagementStatusEnabled,
 	}
 }
 
-// CreateModePool - The mode to create a new HorizonDb cluster.
-type CreateModePool string
+// AuthenticationName - The name of a service-created authentication configuration.
+type AuthenticationName string
 
 const (
-	// CreateModePoolCreate - Create a new pool
-	CreateModePoolCreate CreateModePool = "Create"
-	// CreateModePoolUpdate - Update an existing pool
-	CreateModePoolUpdate CreateModePool = "Update"
+	// AuthenticationNameMicrosoftEntra - Microsoft Entra authentication.
+	AuthenticationNameMicrosoftEntra AuthenticationName = "microsoftEntra"
+	// AuthenticationNamePasswordMethod - PostgreSQL username-and-password authentication.
+	AuthenticationNamePasswordMethod AuthenticationName = "passwordMethod"
 )
 
-// PossibleCreateModePoolValues returns the possible values for the CreateModePool const type.
-func PossibleCreateModePoolValues() []CreateModePool {
-	return []CreateModePool{
-		CreateModePoolCreate,
-		CreateModePoolUpdate,
+// PossibleAuthenticationNameValues returns the possible values for the AuthenticationName const type.
+func PossibleAuthenticationNameValues() []AuthenticationName {
+	return []AuthenticationName{
+		AuthenticationNameMicrosoftEntra,
+		AuthenticationNamePasswordMethod,
+	}
+}
+
+// AuthenticationState - Indicates if authentication state is enabled or not.
+type AuthenticationState string
+
+const (
+	// AuthenticationStateDisabled - Is disabled
+	AuthenticationStateDisabled AuthenticationState = "Disabled"
+	// AuthenticationStateEnabled - Is enabled
+	AuthenticationStateEnabled AuthenticationState = "Enabled"
+)
+
+// PossibleAuthenticationStateValues returns the possible values for the AuthenticationState const type.
+func PossibleAuthenticationStateValues() []AuthenticationState {
+	return []AuthenticationState{
+		AuthenticationStateDisabled,
+		AuthenticationStateEnabled,
+	}
+}
+
+// ChangeDataCaptureDesiredState - The requested state of a HorizonDB change data capture capability, destination, or configuration.
+type ChangeDataCaptureDesiredState string
+
+const (
+	// ChangeDataCaptureDesiredStateDisabled - The resource should be disabled.
+	ChangeDataCaptureDesiredStateDisabled ChangeDataCaptureDesiredState = "Disabled"
+	// ChangeDataCaptureDesiredStateEnabled - The resource should be enabled.
+	ChangeDataCaptureDesiredStateEnabled ChangeDataCaptureDesiredState = "Enabled"
+)
+
+// PossibleChangeDataCaptureDesiredStateValues returns the possible values for the ChangeDataCaptureDesiredState const type.
+func PossibleChangeDataCaptureDesiredStateValues() []ChangeDataCaptureDesiredState {
+	return []ChangeDataCaptureDesiredState{
+		ChangeDataCaptureDesiredStateDisabled,
+		ChangeDataCaptureDesiredStateEnabled,
+	}
+}
+
+// ChangeDataCaptureDestinationEffectiveState - The effective state of a HorizonDB change data capture destination.
+type ChangeDataCaptureDestinationEffectiveState string
+
+const (
+	// ChangeDataCaptureDestinationEffectiveStateDegraded - The destination is available with reduced functionality or impaired
+	// health.
+	ChangeDataCaptureDestinationEffectiveStateDegraded ChangeDataCaptureDestinationEffectiveState = "Degraded"
+	// ChangeDataCaptureDestinationEffectiveStateDisabled - The destination is disabled.
+	ChangeDataCaptureDestinationEffectiveStateDisabled ChangeDataCaptureDestinationEffectiveState = "Disabled"
+	// ChangeDataCaptureDestinationEffectiveStateDisabling - The destination is being disabled.
+	ChangeDataCaptureDestinationEffectiveStateDisabling ChangeDataCaptureDestinationEffectiveState = "Disabling"
+	// ChangeDataCaptureDestinationEffectiveStateEnabled - The destination is enabled.
+	ChangeDataCaptureDestinationEffectiveStateEnabled ChangeDataCaptureDestinationEffectiveState = "Enabled"
+	// ChangeDataCaptureDestinationEffectiveStateEnabling - The destination is being enabled.
+	ChangeDataCaptureDestinationEffectiveStateEnabling ChangeDataCaptureDestinationEffectiveState = "Enabling"
+	// ChangeDataCaptureDestinationEffectiveStateFailed - The destination is not operational because reconciliation failed.
+	ChangeDataCaptureDestinationEffectiveStateFailed ChangeDataCaptureDestinationEffectiveState = "Failed"
+	// ChangeDataCaptureDestinationEffectiveStateWaitingForIdentity - The destination is waiting for a validated active identity
+	// assignment.
+	ChangeDataCaptureDestinationEffectiveStateWaitingForIdentity ChangeDataCaptureDestinationEffectiveState = "WaitingForIdentity"
+)
+
+// PossibleChangeDataCaptureDestinationEffectiveStateValues returns the possible values for the ChangeDataCaptureDestinationEffectiveState const type.
+func PossibleChangeDataCaptureDestinationEffectiveStateValues() []ChangeDataCaptureDestinationEffectiveState {
+	return []ChangeDataCaptureDestinationEffectiveState{
+		ChangeDataCaptureDestinationEffectiveStateDegraded,
+		ChangeDataCaptureDestinationEffectiveStateDisabled,
+		ChangeDataCaptureDestinationEffectiveStateDisabling,
+		ChangeDataCaptureDestinationEffectiveStateEnabled,
+		ChangeDataCaptureDestinationEffectiveStateEnabling,
+		ChangeDataCaptureDestinationEffectiveStateFailed,
+		ChangeDataCaptureDestinationEffectiveStateWaitingForIdentity,
+	}
+}
+
+// ChangeDataCaptureDestinationType - The destination type supported by this API version.
+type ChangeDataCaptureDestinationType string
+
+const (
+	// ChangeDataCaptureDestinationTypeFabric - A Microsoft Fabric destination.
+	ChangeDataCaptureDestinationTypeFabric ChangeDataCaptureDestinationType = "Fabric"
+)
+
+// PossibleChangeDataCaptureDestinationTypeValues returns the possible values for the ChangeDataCaptureDestinationType const type.
+func PossibleChangeDataCaptureDestinationTypeValues() []ChangeDataCaptureDestinationType {
+	return []ChangeDataCaptureDestinationType{
+		ChangeDataCaptureDestinationTypeFabric,
+	}
+}
+
+// ChangeDataCaptureEffectiveState - The effective state of a HorizonDB change data capture capability or configuration.
+type ChangeDataCaptureEffectiveState string
+
+const (
+	// ChangeDataCaptureEffectiveStateDegraded - The resource is available with reduced functionality or impaired health.
+	ChangeDataCaptureEffectiveStateDegraded ChangeDataCaptureEffectiveState = "Degraded"
+	// ChangeDataCaptureEffectiveStateDisabled - The resource is disabled.
+	ChangeDataCaptureEffectiveStateDisabled ChangeDataCaptureEffectiveState = "Disabled"
+	// ChangeDataCaptureEffectiveStateDisabling - The resource is being disabled.
+	ChangeDataCaptureEffectiveStateDisabling ChangeDataCaptureEffectiveState = "Disabling"
+	// ChangeDataCaptureEffectiveStateEnabled - The resource is enabled.
+	ChangeDataCaptureEffectiveStateEnabled ChangeDataCaptureEffectiveState = "Enabled"
+	// ChangeDataCaptureEffectiveStateEnabling - The resource is being enabled.
+	ChangeDataCaptureEffectiveStateEnabling ChangeDataCaptureEffectiveState = "Enabling"
+	// ChangeDataCaptureEffectiveStateFailed - The resource is not operational because reconciliation failed.
+	ChangeDataCaptureEffectiveStateFailed ChangeDataCaptureEffectiveState = "Failed"
+)
+
+// PossibleChangeDataCaptureEffectiveStateValues returns the possible values for the ChangeDataCaptureEffectiveState const type.
+func PossibleChangeDataCaptureEffectiveStateValues() []ChangeDataCaptureEffectiveState {
+	return []ChangeDataCaptureEffectiveState{
+		ChangeDataCaptureEffectiveStateDegraded,
+		ChangeDataCaptureEffectiveStateDisabled,
+		ChangeDataCaptureEffectiveStateDisabling,
+		ChangeDataCaptureEffectiveStateEnabled,
+		ChangeDataCaptureEffectiveStateEnabling,
+		ChangeDataCaptureEffectiveStateFailed,
+	}
+}
+
+// ChangeDataCaptureEngineConfigurationState - The readiness of HorizonDB engine settings required for change data capture.
+type ChangeDataCaptureEngineConfigurationState string
+
+const (
+	// ChangeDataCaptureEngineConfigurationStateFailed - Engine-setting reconciliation failed.
+	ChangeDataCaptureEngineConfigurationStateFailed ChangeDataCaptureEngineConfigurationState = "Failed"
+	// ChangeDataCaptureEngineConfigurationStateNotReady - One or more required engine settings are not ready.
+	ChangeDataCaptureEngineConfigurationStateNotReady ChangeDataCaptureEngineConfigurationState = "NotReady"
+	// ChangeDataCaptureEngineConfigurationStateReady - The required engine settings are ready.
+	ChangeDataCaptureEngineConfigurationStateReady ChangeDataCaptureEngineConfigurationState = "Ready"
+	// ChangeDataCaptureEngineConfigurationStateReconciling - The service is reconciling required engine settings.
+	ChangeDataCaptureEngineConfigurationStateReconciling ChangeDataCaptureEngineConfigurationState = "Reconciling"
+)
+
+// PossibleChangeDataCaptureEngineConfigurationStateValues returns the possible values for the ChangeDataCaptureEngineConfigurationState const type.
+func PossibleChangeDataCaptureEngineConfigurationStateValues() []ChangeDataCaptureEngineConfigurationState {
+	return []ChangeDataCaptureEngineConfigurationState{
+		ChangeDataCaptureEngineConfigurationStateFailed,
+		ChangeDataCaptureEngineConfigurationStateNotReady,
+		ChangeDataCaptureEngineConfigurationStateReady,
+		ChangeDataCaptureEngineConfigurationStateReconciling,
+	}
+}
+
+// ChangeDataCaptureExtensionState - The lifecycle state of the HorizonDB change data capture extension.
+type ChangeDataCaptureExtensionState string
+
+const (
+	// ChangeDataCaptureExtensionStateFailed - The extension operation failed.
+	ChangeDataCaptureExtensionStateFailed ChangeDataCaptureExtensionState = "Failed"
+	// ChangeDataCaptureExtensionStateInstalling - The extension is being installed.
+	ChangeDataCaptureExtensionStateInstalling ChangeDataCaptureExtensionState = "Installing"
+	// ChangeDataCaptureExtensionStateNotInstalled - The extension is not installed.
+	ChangeDataCaptureExtensionStateNotInstalled ChangeDataCaptureExtensionState = "NotInstalled"
+	// ChangeDataCaptureExtensionStateReady - The extension is ready.
+	ChangeDataCaptureExtensionStateReady ChangeDataCaptureExtensionState = "Ready"
+	// ChangeDataCaptureExtensionStateRemoving - The extension is being removed.
+	ChangeDataCaptureExtensionStateRemoving ChangeDataCaptureExtensionState = "Removing"
+	// ChangeDataCaptureExtensionStateUpgrading - The extension is being upgraded.
+	ChangeDataCaptureExtensionStateUpgrading ChangeDataCaptureExtensionState = "Upgrading"
+)
+
+// PossibleChangeDataCaptureExtensionStateValues returns the possible values for the ChangeDataCaptureExtensionState const type.
+func PossibleChangeDataCaptureExtensionStateValues() []ChangeDataCaptureExtensionState {
+	return []ChangeDataCaptureExtensionState{
+		ChangeDataCaptureExtensionStateFailed,
+		ChangeDataCaptureExtensionStateInstalling,
+		ChangeDataCaptureExtensionStateNotInstalled,
+		ChangeDataCaptureExtensionStateReady,
+		ChangeDataCaptureExtensionStateRemoving,
+		ChangeDataCaptureExtensionStateUpgrading,
+	}
+}
+
+// ChangeDataCaptureIdentityActivationState - The activation state of a change data capture identity assignment.
+type ChangeDataCaptureIdentityActivationState string
+
+const (
+	// ChangeDataCaptureIdentityActivationStateActivating - The identity assignment is being activated.
+	ChangeDataCaptureIdentityActivationStateActivating ChangeDataCaptureIdentityActivationState = "Activating"
+	// ChangeDataCaptureIdentityActivationStateActive - The identity assignment is active.
+	ChangeDataCaptureIdentityActivationStateActive ChangeDataCaptureIdentityActivationState = "Active"
+	// ChangeDataCaptureIdentityActivationStateDeactivating - The identity assignment is being deactivated.
+	ChangeDataCaptureIdentityActivationStateDeactivating ChangeDataCaptureIdentityActivationState = "Deactivating"
+	// ChangeDataCaptureIdentityActivationStateFailed - The identity activation transition failed.
+	ChangeDataCaptureIdentityActivationStateFailed ChangeDataCaptureIdentityActivationState = "Failed"
+	// ChangeDataCaptureIdentityActivationStateInactive - The identity assignment is not active.
+	ChangeDataCaptureIdentityActivationStateInactive ChangeDataCaptureIdentityActivationState = "Inactive"
+)
+
+// PossibleChangeDataCaptureIdentityActivationStateValues returns the possible values for the ChangeDataCaptureIdentityActivationState const type.
+func PossibleChangeDataCaptureIdentityActivationStateValues() []ChangeDataCaptureIdentityActivationState {
+	return []ChangeDataCaptureIdentityActivationState{
+		ChangeDataCaptureIdentityActivationStateActivating,
+		ChangeDataCaptureIdentityActivationStateActive,
+		ChangeDataCaptureIdentityActivationStateDeactivating,
+		ChangeDataCaptureIdentityActivationStateFailed,
+		ChangeDataCaptureIdentityActivationStateInactive,
+	}
+}
+
+// ChangeDataCaptureIdentityAssignmentState - The lifecycle state of a change data capture identity assignment.
+type ChangeDataCaptureIdentityAssignmentState string
+
+const (
+	// ChangeDataCaptureIdentityAssignmentStateAssigned - The identity is assigned.
+	ChangeDataCaptureIdentityAssignmentStateAssigned ChangeDataCaptureIdentityAssignmentState = "Assigned"
+	// ChangeDataCaptureIdentityAssignmentStateAssigning - The identity is being assigned.
+	ChangeDataCaptureIdentityAssignmentStateAssigning ChangeDataCaptureIdentityAssignmentState = "Assigning"
+	// ChangeDataCaptureIdentityAssignmentStateFailed - The identity assignment operation failed.
+	ChangeDataCaptureIdentityAssignmentStateFailed ChangeDataCaptureIdentityAssignmentState = "Failed"
+	// ChangeDataCaptureIdentityAssignmentStateRemoving - The identity assignment is being removed.
+	ChangeDataCaptureIdentityAssignmentStateRemoving ChangeDataCaptureIdentityAssignmentState = "Removing"
+)
+
+// PossibleChangeDataCaptureIdentityAssignmentStateValues returns the possible values for the ChangeDataCaptureIdentityAssignmentState const type.
+func PossibleChangeDataCaptureIdentityAssignmentStateValues() []ChangeDataCaptureIdentityAssignmentState {
+	return []ChangeDataCaptureIdentityAssignmentState{
+		ChangeDataCaptureIdentityAssignmentStateAssigned,
+		ChangeDataCaptureIdentityAssignmentStateAssigning,
+		ChangeDataCaptureIdentityAssignmentStateFailed,
+		ChangeDataCaptureIdentityAssignmentStateRemoving,
+	}
+}
+
+// ChangeDataCaptureIdentityValidationState - The validation state of a change data capture identity assignment.
+type ChangeDataCaptureIdentityValidationState string
+
+const (
+	// ChangeDataCaptureIdentityValidationStateFailed - Identity validation failed.
+	ChangeDataCaptureIdentityValidationStateFailed ChangeDataCaptureIdentityValidationState = "Failed"
+	// ChangeDataCaptureIdentityValidationStateNotStarted - Identity validation has not started.
+	ChangeDataCaptureIdentityValidationStateNotStarted ChangeDataCaptureIdentityValidationState = "NotStarted"
+	// ChangeDataCaptureIdentityValidationStateRunning - Identity validation is running.
+	ChangeDataCaptureIdentityValidationStateRunning ChangeDataCaptureIdentityValidationState = "Running"
+	// ChangeDataCaptureIdentityValidationStateSucceeded - Identity validation succeeded.
+	ChangeDataCaptureIdentityValidationStateSucceeded ChangeDataCaptureIdentityValidationState = "Succeeded"
+)
+
+// PossibleChangeDataCaptureIdentityValidationStateValues returns the possible values for the ChangeDataCaptureIdentityValidationState const type.
+func PossibleChangeDataCaptureIdentityValidationStateValues() []ChangeDataCaptureIdentityValidationState {
+	return []ChangeDataCaptureIdentityValidationState{
+		ChangeDataCaptureIdentityValidationStateFailed,
+		ChangeDataCaptureIdentityValidationStateNotStarted,
+		ChangeDataCaptureIdentityValidationStateRunning,
+		ChangeDataCaptureIdentityValidationStateSucceeded,
+	}
+}
+
+// ChangeDataCaptureProtocol - The protocol used to communicate with a change data capture destination.
+type ChangeDataCaptureProtocol string
+
+const (
+	// ChangeDataCaptureProtocolNative - The destination's native protocol.
+	ChangeDataCaptureProtocolNative ChangeDataCaptureProtocol = "Native"
+)
+
+// PossibleChangeDataCaptureProtocolValues returns the possible values for the ChangeDataCaptureProtocol const type.
+func PossibleChangeDataCaptureProtocolValues() []ChangeDataCaptureProtocol {
+	return []ChangeDataCaptureProtocol{
+		ChangeDataCaptureProtocolNative,
+	}
+}
+
+// ChangeDataCaptureReadWriteEndpointState - The availability of a read-write endpoint for change data capture engine mutations.
+type ChangeDataCaptureReadWriteEndpointState string
+
+const (
+	// ChangeDataCaptureReadWriteEndpointStateReady - An eligible read-write endpoint is ready.
+	ChangeDataCaptureReadWriteEndpointStateReady ChangeDataCaptureReadWriteEndpointState = "Ready"
+	// ChangeDataCaptureReadWriteEndpointStateUnavailable - No eligible read-write endpoint is currently available.
+	ChangeDataCaptureReadWriteEndpointStateUnavailable ChangeDataCaptureReadWriteEndpointState = "Unavailable"
+)
+
+// PossibleChangeDataCaptureReadWriteEndpointStateValues returns the possible values for the ChangeDataCaptureReadWriteEndpointState const type.
+func PossibleChangeDataCaptureReadWriteEndpointStateValues() []ChangeDataCaptureReadWriteEndpointState {
+	return []ChangeDataCaptureReadWriteEndpointState{
+		ChangeDataCaptureReadWriteEndpointStateReady,
+		ChangeDataCaptureReadWriteEndpointStateUnavailable,
+	}
+}
+
+// ChangeDataCaptureReplicationArchitecture - The implementation architecture used to capture and publish changes.
+type ChangeDataCaptureReplicationArchitecture string
+
+const (
+	// ChangeDataCaptureReplicationArchitectureComputeBased - Change capture runs with the HorizonDB compute layer.
+	ChangeDataCaptureReplicationArchitectureComputeBased ChangeDataCaptureReplicationArchitecture = "ComputeBased"
+	// ChangeDataCaptureReplicationArchitectureHybrid - Change capture uses both compute and storage components.
+	ChangeDataCaptureReplicationArchitectureHybrid ChangeDataCaptureReplicationArchitecture = "Hybrid"
+	// ChangeDataCaptureReplicationArchitectureStorageBased - Change capture runs with the HorizonDB storage layer.
+	ChangeDataCaptureReplicationArchitectureStorageBased ChangeDataCaptureReplicationArchitecture = "StorageBased"
+)
+
+// PossibleChangeDataCaptureReplicationArchitectureValues returns the possible values for the ChangeDataCaptureReplicationArchitecture const type.
+func PossibleChangeDataCaptureReplicationArchitectureValues() []ChangeDataCaptureReplicationArchitecture {
+	return []ChangeDataCaptureReplicationArchitecture{
+		ChangeDataCaptureReplicationArchitectureComputeBased,
+		ChangeDataCaptureReplicationArchitectureHybrid,
+		ChangeDataCaptureReplicationArchitectureStorageBased,
+	}
+}
+
+// ChangeDataCaptureReplicationState - The state of a destination-owned replication session.
+type ChangeDataCaptureReplicationState string
+
+const (
+	// ChangeDataCaptureReplicationStateConnecting - A destination session is connecting.
+	ChangeDataCaptureReplicationStateConnecting ChangeDataCaptureReplicationState = "Connecting"
+	// ChangeDataCaptureReplicationStateDegraded - The destination session is operating with impaired health.
+	ChangeDataCaptureReplicationStateDegraded ChangeDataCaptureReplicationState = "Degraded"
+	// ChangeDataCaptureReplicationStateFailed - The destination session failed.
+	ChangeDataCaptureReplicationStateFailed ChangeDataCaptureReplicationState = "Failed"
+	// ChangeDataCaptureReplicationStateNotApplicable - A destination session does not apply to the current resource state.
+	ChangeDataCaptureReplicationStateNotApplicable ChangeDataCaptureReplicationState = "NotApplicable"
+	// ChangeDataCaptureReplicationStateNotConnected - No destination session is connected.
+	ChangeDataCaptureReplicationStateNotConnected ChangeDataCaptureReplicationState = "NotConnected"
+	// ChangeDataCaptureReplicationStatePaused - The destination session is paused.
+	ChangeDataCaptureReplicationStatePaused ChangeDataCaptureReplicationState = "Paused"
+	// ChangeDataCaptureReplicationStateReconnecting - A destination session is reconnecting after an interruption.
+	ChangeDataCaptureReplicationStateReconnecting ChangeDataCaptureReplicationState = "Reconnecting"
+	// ChangeDataCaptureReplicationStateReplicating - A destination session is replicating changes.
+	ChangeDataCaptureReplicationStateReplicating ChangeDataCaptureReplicationState = "Replicating"
+	// ChangeDataCaptureReplicationStateStopping - The destination session is stopping.
+	ChangeDataCaptureReplicationStateStopping ChangeDataCaptureReplicationState = "Stopping"
+)
+
+// PossibleChangeDataCaptureReplicationStateValues returns the possible values for the ChangeDataCaptureReplicationState const type.
+func PossibleChangeDataCaptureReplicationStateValues() []ChangeDataCaptureReplicationState {
+	return []ChangeDataCaptureReplicationState{
+		ChangeDataCaptureReplicationStateConnecting,
+		ChangeDataCaptureReplicationStateDegraded,
+		ChangeDataCaptureReplicationStateFailed,
+		ChangeDataCaptureReplicationStateNotApplicable,
+		ChangeDataCaptureReplicationStateNotConnected,
+		ChangeDataCaptureReplicationStatePaused,
+		ChangeDataCaptureReplicationStateReconnecting,
+		ChangeDataCaptureReplicationStateReplicating,
+		ChangeDataCaptureReplicationStateStopping,
+	}
+}
+
+// ChangeDataCaptureTopologyBindingState - The relationship of a change data capture configuration to the current writer topology.
+type ChangeDataCaptureTopologyBindingState string
+
+const (
+	// ChangeDataCaptureTopologyBindingStateActive - The configuration belongs to the current active writer.
+	ChangeDataCaptureTopologyBindingStateActive ChangeDataCaptureTopologyBindingState = "Active"
+	// ChangeDataCaptureTopologyBindingStateConflict - Equivalent change data capture state could not be materialized without
+	// overwriting unrelated state.
+	ChangeDataCaptureTopologyBindingStateConflict ChangeDataCaptureTopologyBindingState = "Conflict"
+	// ChangeDataCaptureTopologyBindingStateRebindRequired - The destination session must bind to a replacement configuration
+	// resource ID.
+	ChangeDataCaptureTopologyBindingStateRebindRequired ChangeDataCaptureTopologyBindingState = "RebindRequired"
+	// ChangeDataCaptureTopologyBindingStateReconciling - The service is reconciling the configuration after a writer change.
+	ChangeDataCaptureTopologyBindingStateReconciling ChangeDataCaptureTopologyBindingState = "Reconciling"
+	// ChangeDataCaptureTopologyBindingStateSuperseded - The configuration belongs to a former writer and has been replaced.
+	ChangeDataCaptureTopologyBindingStateSuperseded ChangeDataCaptureTopologyBindingState = "Superseded"
+)
+
+// PossibleChangeDataCaptureTopologyBindingStateValues returns the possible values for the ChangeDataCaptureTopologyBindingState const type.
+func PossibleChangeDataCaptureTopologyBindingStateValues() []ChangeDataCaptureTopologyBindingState {
+	return []ChangeDataCaptureTopologyBindingState{
+		ChangeDataCaptureTopologyBindingStateActive,
+		ChangeDataCaptureTopologyBindingStateConflict,
+		ChangeDataCaptureTopologyBindingStateRebindRequired,
+		ChangeDataCaptureTopologyBindingStateReconciling,
+		ChangeDataCaptureTopologyBindingStateSuperseded,
+	}
+}
+
+// ChangeDataCaptureUsageProfile - The reason that a change data capture configuration exists.
+type ChangeDataCaptureUsageProfile string
+
+const (
+	// ChangeDataCaptureUsageProfileMirroring - The configuration publishes database changes for Microsoft Fabric Mirroring.
+	ChangeDataCaptureUsageProfileMirroring ChangeDataCaptureUsageProfile = "Mirroring"
+)
+
+// PossibleChangeDataCaptureUsageProfileValues returns the possible values for the ChangeDataCaptureUsageProfile const type.
+func PossibleChangeDataCaptureUsageProfileValues() []ChangeDataCaptureUsageProfile {
+	return []ChangeDataCaptureUsageProfile{
+		ChangeDataCaptureUsageProfileMirroring,
+	}
+}
+
+// ClusterCreateMode - Controls how a HorizonDB cluster PUT request is processed.
+type ClusterCreateMode string
+
+const (
+	// ClusterCreateModeCreate - Process the request as a normal cluster creation.
+	ClusterCreateModeCreate ClusterCreateMode = "Create"
+	// ClusterCreateModePointInTimeRestore - Create the cluster from a point-in-time restore.
+	ClusterCreateModePointInTimeRestore ClusterCreateMode = "PointInTimeRestore"
+)
+
+// PossibleClusterCreateModeValues returns the possible values for the ClusterCreateMode const type.
+func PossibleClusterCreateModeValues() []ClusterCreateMode {
+	return []ClusterCreateMode{
+		ClusterCreateModeCreate,
+		ClusterCreateModePointInTimeRestore,
+	}
+}
+
+// ClusterDataEncryptionType - The type of data encryption used by a HorizonDB cluster. The type is selected at cluster creation;
+// switching between SystemManaged and AzureKeyVault after creation is not supported.
+type ClusterDataEncryptionType string
+
+const (
+	// ClusterDataEncryptionTypeAzureKeyVault - Data encryption uses customer-managed keys stored in Azure Key Vault.
+	ClusterDataEncryptionTypeAzureKeyVault ClusterDataEncryptionType = "AzureKeyVault"
+	// ClusterDataEncryptionTypeSystemManaged - Data encryption is managed by Azure using platform-managed keys.
+	ClusterDataEncryptionTypeSystemManaged ClusterDataEncryptionType = "SystemManaged"
+)
+
+// PossibleClusterDataEncryptionTypeValues returns the possible values for the ClusterDataEncryptionType const type.
+func PossibleClusterDataEncryptionTypeValues() []ClusterDataEncryptionType {
+	return []ClusterDataEncryptionType{
+		ClusterDataEncryptionTypeAzureKeyVault,
+		ClusterDataEncryptionTypeSystemManaged,
+	}
+}
+
+// ClusterEncryptionKeyStatus - The validation status of a customer-managed encryption key used by a HorizonDB cluster.
+type ClusterEncryptionKeyStatus string
+
+const (
+	// ClusterEncryptionKeyStatusInvalid - The encryption key is invalid or inaccessible to the configured user-assigned managed
+	// identity.
+	ClusterEncryptionKeyStatusInvalid ClusterEncryptionKeyStatus = "Invalid"
+	// ClusterEncryptionKeyStatusValid - The encryption key is valid and accessible to the configured user-assigned managed identity.
+	ClusterEncryptionKeyStatusValid ClusterEncryptionKeyStatus = "Valid"
+)
+
+// PossibleClusterEncryptionKeyStatusValues returns the possible values for the ClusterEncryptionKeyStatus const type.
+func PossibleClusterEncryptionKeyStatusValues() []ClusterEncryptionKeyStatus {
+	return []ClusterEncryptionKeyStatus{
+		ClusterEncryptionKeyStatusInvalid,
+		ClusterEncryptionKeyStatusValid,
+	}
+}
+
+// ClusterIdentityType - The managed identity types supported by a HorizonDB cluster.
+type ClusterIdentityType string
+
+const (
+	// ClusterIdentityTypeNone - No managed identity is assigned. Setting type to None clears all managed identity assignments.
+	ClusterIdentityTypeNone ClusterIdentityType = "None"
+	// ClusterIdentityTypeUserAssigned - User-assigned managed identities are assigned.
+	ClusterIdentityTypeUserAssigned ClusterIdentityType = "UserAssigned"
+)
+
+// PossibleClusterIdentityTypeValues returns the possible values for the ClusterIdentityType const type.
+func PossibleClusterIdentityTypeValues() []ClusterIdentityType {
+	return []ClusterIdentityType{
+		ClusterIdentityTypeNone,
+		ClusterIdentityTypeUserAssigned,
+	}
+}
+
+// ClusterState - Current state of a HorizonDB cluster.
+type ClusterState string
+
+const (
+	// ClusterStateDeleting - Is being deleted
+	ClusterStateDeleting ClusterState = "Deleting"
+	// ClusterStateInaccessible - Is inaccessible
+	ClusterStateInaccessible ClusterState = "Inaccessible"
+	// ClusterStateProvisioning - Is provisioning
+	ClusterStateProvisioning ClusterState = "Provisioning"
+	// ClusterStateReady - Is ready and operational
+	ClusterStateReady ClusterState = "Ready"
+	// ClusterStateUpdating - Is being updated
+	ClusterStateUpdating ClusterState = "Updating"
+)
+
+// PossibleClusterStateValues returns the possible values for the ClusterState const type.
+func PossibleClusterStateValues() []ClusterState {
+	return []ClusterState{
+		ClusterStateDeleting,
+		ClusterStateInaccessible,
+		ClusterStateProvisioning,
+		ClusterStateReady,
+		ClusterStateUpdating,
+	}
+}
+
+// ComputeProcessorType - The compute processor type.
+type ComputeProcessorType string
+
+const (
+	// ComputeProcessorTypeAMD - AMD processor
+	ComputeProcessorTypeAMD ComputeProcessorType = "AMD"
+	// ComputeProcessorTypeIntel - Intel processor
+	ComputeProcessorTypeIntel ComputeProcessorType = "Intel"
+)
+
+// PossibleComputeProcessorTypeValues returns the possible values for the ComputeProcessorType const type.
+func PossibleComputeProcessorTypeValues() []ComputeProcessorType {
+	return []ComputeProcessorType{
+		ComputeProcessorTypeAMD,
+		ComputeProcessorTypeIntel,
 	}
 }
 
@@ -86,6 +584,172 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
+// EndpointRole - Role of the endpoint.
+type EndpointRole string
+
+const (
+	// EndpointRoleReadOnly - The Endpoint accepts read-only traffic. This applies to Pool-scoped Endpoints and may apply to other
+	// endpoint scenarios introduced by later API versions.
+	EndpointRoleReadOnly EndpointRole = "ReadOnly"
+	// EndpointRoleReadWrite - The Cluster-scoped Endpoint accepts read and write traffic.
+	EndpointRoleReadWrite EndpointRole = "ReadWrite"
+)
+
+// PossibleEndpointRoleValues returns the possible values for the EndpointRole const type.
+func PossibleEndpointRoleValues() []EndpointRole {
+	return []EndpointRole{
+		EndpointRoleReadOnly,
+		EndpointRoleReadWrite,
+	}
+}
+
+// EndpointScope - The scope of a HorizonDB endpoint.
+type EndpointScope string
+
+const (
+	// EndpointScopeCluster - The Endpoint is associated with its parent Cluster.
+	EndpointScopeCluster EndpointScope = "Cluster"
+	// EndpointScopePool - The Endpoint is associated with a Pool under its parent Cluster and has the ReadOnly role.
+	EndpointScopePool EndpointScope = "Pool"
+)
+
+// PossibleEndpointScopeValues returns the possible values for the EndpointScope const type.
+func PossibleEndpointScopeValues() []EndpointScope {
+	return []EndpointScope{
+		EndpointScopeCluster,
+		EndpointScopePool,
+	}
+}
+
+// GeoRedundancyState - Indicates the geo-redundancy state.
+type GeoRedundancyState string
+
+const (
+	// GeoRedundancyStateDisabled - Geo-redundancy is disabled
+	GeoRedundancyStateDisabled GeoRedundancyState = "Disabled"
+	// GeoRedundancyStateEnabled - Geo-redundancy is enabled. This value is not supported when dataEncryption.type is AzureKeyVault.
+	GeoRedundancyStateEnabled GeoRedundancyState = "Enabled"
+)
+
+// PossibleGeoRedundancyStateValues returns the possible values for the GeoRedundancyState const type.
+func PossibleGeoRedundancyStateValues() []GeoRedundancyState {
+	return []GeoRedundancyState{
+		GeoRedundancyStateDisabled,
+		GeoRedundancyStateEnabled,
+	}
+}
+
+// LogCaptureState - Specifies whether HorizonDB captures log files.
+type LogCaptureState string
+
+const (
+	// LogCaptureStateDisabled - Log capture is disabled.
+	LogCaptureStateDisabled LogCaptureState = "Disabled"
+	// LogCaptureStateEnabled - Log capture is enabled.
+	LogCaptureStateEnabled LogCaptureState = "Enabled"
+)
+
+// PossibleLogCaptureStateValues returns the possible values for the LogCaptureState const type.
+func PossibleLogCaptureStateValues() []LogCaptureState {
+	return []LogCaptureState{
+		LogCaptureStateDisabled,
+		LogCaptureStateEnabled,
+	}
+}
+
+// LogFileType - The type of a captured HorizonDB log file.
+type LogFileType string
+
+const (
+	// LogFileTypePostgreSQLServer - A PostgreSQL server log file.
+	LogFileTypePostgreSQLServer LogFileType = "PostgreSqlServer"
+)
+
+// PossibleLogFileTypeValues returns the possible values for the LogFileType const type.
+func PossibleLogFileTypeValues() []LogFileType {
+	return []LogFileType{
+		LogFileTypePostgreSQLServer,
+	}
+}
+
+// MaintenanceEventStatus - The status of a maintenance event.
+type MaintenanceEventStatus string
+
+const (
+	// MaintenanceEventStatusCanceled - The maintenance event was canceled, failed, or timed out.
+	MaintenanceEventStatusCanceled MaintenanceEventStatus = "Canceled"
+	// MaintenanceEventStatusComplete - The maintenance event completed successfully.
+	MaintenanceEventStatusComplete MaintenanceEventStatus = "Complete"
+	// MaintenanceEventStatusInProgress - The maintenance event is currently in progress.
+	MaintenanceEventStatusInProgress MaintenanceEventStatus = "InProgress"
+	// MaintenanceEventStatusPlanned - The maintenance event is scheduled and has not yet started.
+	MaintenanceEventStatusPlanned MaintenanceEventStatus = "Planned"
+	// MaintenanceEventStatusRescheduled - The customer rescheduled the maintenance event.
+	MaintenanceEventStatusRescheduled MaintenanceEventStatus = "Rescheduled"
+)
+
+// PossibleMaintenanceEventStatusValues returns the possible values for the MaintenanceEventStatus const type.
+func PossibleMaintenanceEventStatusValues() []MaintenanceEventStatus {
+	return []MaintenanceEventStatus{
+		MaintenanceEventStatusCanceled,
+		MaintenanceEventStatusComplete,
+		MaintenanceEventStatusInProgress,
+		MaintenanceEventStatusPlanned,
+		MaintenanceEventStatusRescheduled,
+	}
+}
+
+// MaintenanceType - The type of a maintenance event.
+type MaintenanceType string
+
+const (
+	// MaintenanceTypePlannedMaintenance - A planned maintenance event.
+	MaintenanceTypePlannedMaintenance MaintenanceType = "PlannedMaintenance"
+)
+
+// PossibleMaintenanceTypeValues returns the possible values for the MaintenanceType const type.
+func PossibleMaintenanceTypeValues() []MaintenanceType {
+	return []MaintenanceType{
+		MaintenanceTypePlannedMaintenance,
+	}
+}
+
+// MicrosoftEntraAuthenticationName - The name of the Microsoft Entra authentication method.
+type MicrosoftEntraAuthenticationName string
+
+const (
+	// MicrosoftEntraAuthenticationNameMicrosoftEntra - Microsoft Entra authentication.
+	MicrosoftEntraAuthenticationNameMicrosoftEntra MicrosoftEntraAuthenticationName = "microsoftEntra"
+)
+
+// PossibleMicrosoftEntraAuthenticationNameValues returns the possible values for the MicrosoftEntraAuthenticationName const type.
+func PossibleMicrosoftEntraAuthenticationNameValues() []MicrosoftEntraAuthenticationName {
+	return []MicrosoftEntraAuthenticationName{
+		MicrosoftEntraAuthenticationNameMicrosoftEntra,
+	}
+}
+
+// NodeRole - The role performed by a node within its HorizonDB pool.
+type NodeRole string
+
+const (
+	// NodeRoleReadOnly - The node accepts read-only traffic.
+	NodeRoleReadOnly NodeRole = "ReadOnly"
+	// NodeRoleReadWrite - The node accepts read and write traffic for its cluster.
+	NodeRoleReadWrite NodeRole = "ReadWrite"
+	// NodeRoleUnassigned - The node is not currently assigned a read-write or read-only role.
+	NodeRoleUnassigned NodeRole = "Unassigned"
+)
+
+// PossibleNodeRoleValues returns the possible values for the NodeRole const type.
+func PossibleNodeRoleValues() []NodeRole {
+	return []NodeRole{
+		NodeRoleReadOnly,
+		NodeRoleReadWrite,
+		NodeRoleUnassigned,
+	}
+}
+
 // Origin - The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
 // value is "user,system"
 type Origin string
@@ -105,6 +769,225 @@ func PossibleOriginValues() []Origin {
 		OriginSystem,
 		OriginUser,
 		OriginUserSystem,
+	}
+}
+
+// ParameterApplyMethod - Controls when dynamic parameter changes become effective. Static parameter changes always become
+// effective only after a customer-initiated pool Restart. Stop followed by Start and scheduled maintenance do not apply pending
+// parameter changes.
+type ParameterApplyMethod string
+
+const (
+	// ParameterApplyMethodImmediate - Apply dynamic parameter changes immediately. Static parameter changes remain pending until
+	// a customer-initiated pool Restart.
+	ParameterApplyMethodImmediate ParameterApplyMethod = "Immediate"
+	// ParameterApplyMethodPendingReboot - Keep dynamic and static parameter changes pending until a customer-initiated pool Restart.
+	// Stop followed by Start and scheduled maintenance do not apply them.
+	ParameterApplyMethodPendingReboot ParameterApplyMethod = "PendingReboot"
+)
+
+// PossibleParameterApplyMethodValues returns the possible values for the ParameterApplyMethod const type.
+func PossibleParameterApplyMethodValues() []ParameterApplyMethod {
+	return []ParameterApplyMethod{
+		ParameterApplyMethodImmediate,
+		ParameterApplyMethodPendingReboot,
+	}
+}
+
+// ParameterGroupSyncStatus - Indicates synchronization status between a HorizonDB resource and its parameter group.
+type ParameterGroupSyncStatus string
+
+const (
+	// ParameterGroupSyncStatusApplying - Parameter updates are currently being applied.
+	ParameterGroupSyncStatusApplying ParameterGroupSyncStatus = "Applying"
+	// ParameterGroupSyncStatusFailedToApply - Applying parameter updates failed.
+	ParameterGroupSyncStatusFailedToApply ParameterGroupSyncStatus = "FailedToApply"
+	// ParameterGroupSyncStatusInSync - Parameter values are synchronized and up to date.
+	ParameterGroupSyncStatusInSync ParameterGroupSyncStatus = "InSync"
+	// ParameterGroupSyncStatusPendingReboot - Parameter updates are pending and require a customer-initiated pool Restart to
+	// take effect. Stop followed by Start and scheduled maintenance preserve this status.
+	ParameterGroupSyncStatusPendingReboot ParameterGroupSyncStatus = "PendingReboot"
+)
+
+// PossibleParameterGroupSyncStatusValues returns the possible values for the ParameterGroupSyncStatus const type.
+func PossibleParameterGroupSyncStatusValues() []ParameterGroupSyncStatus {
+	return []ParameterGroupSyncStatus{
+		ParameterGroupSyncStatusApplying,
+		ParameterGroupSyncStatusFailedToApply,
+		ParameterGroupSyncStatusInSync,
+		ParameterGroupSyncStatusPendingReboot,
+	}
+}
+
+// ParameterValueSource - The source of the effective value assigned to a HorizonDB parameter.
+type ParameterValueSource string
+
+const (
+	// ParameterValueSourceSystemDefault - The effective value is the system-defined default.
+	ParameterValueSourceSystemDefault ParameterValueSource = "SystemDefault"
+	// ParameterValueSourceUserOverride - The effective value was explicitly supplied by the user, even when it equals the system-defined
+	// default value.
+	ParameterValueSourceUserOverride ParameterValueSource = "UserOverride"
+)
+
+// PossibleParameterValueSourceValues returns the possible values for the ParameterValueSource const type.
+func PossibleParameterValueSourceValues() []ParameterValueSource {
+	return []ParameterValueSource{
+		ParameterValueSourceSystemDefault,
+		ParameterValueSourceUserOverride,
+	}
+}
+
+// PasswordAuthenticationName - The name of the PostgreSQL username-and-password authentication method.
+type PasswordAuthenticationName string
+
+const (
+	// PasswordAuthenticationNamePasswordMethod - PostgreSQL username-and-password authentication.
+	PasswordAuthenticationNamePasswordMethod PasswordAuthenticationName = "passwordMethod"
+)
+
+// PossiblePasswordAuthenticationNameValues returns the possible values for the PasswordAuthenticationName const type.
+func PossiblePasswordAuthenticationNameValues() []PasswordAuthenticationName {
+	return []PasswordAuthenticationName{
+		PasswordAuthenticationNamePasswordMethod,
+	}
+}
+
+// PoolComputeModelType - The compute model type.
+type PoolComputeModelType string
+
+const (
+	// PoolComputeModelTypeProvisioned - Provisioned compute model
+	PoolComputeModelTypeProvisioned PoolComputeModelType = "Provisioned"
+)
+
+// PossiblePoolComputeModelTypeValues returns the possible values for the PoolComputeModelType const type.
+func PossiblePoolComputeModelTypeValues() []PoolComputeModelType {
+	return []PoolComputeModelType{
+		PoolComputeModelTypeProvisioned,
+	}
+}
+
+// PoolHighAvailabilityMode - The high-availability mode requested for a HorizonDB pool.
+type PoolHighAvailabilityMode string
+
+const (
+	// PoolHighAvailabilityModeAnyZone - The service may allocate nodes in the same availability zone or across availability zones.
+	// This mode is valid only when nodeCount is 2 through 16.
+	PoolHighAvailabilityModeAnyZone PoolHighAvailabilityMode = "AnyZone"
+	// PoolHighAvailabilityModeDisabled - High availability is disabled. This mode is valid only when nodeCount is 1.
+	PoolHighAvailabilityModeDisabled PoolHighAvailabilityMode = "Disabled"
+	// PoolHighAvailabilityModeZoneRedundant - The service must allocate nodes across availability zones. This mode is valid only
+	// when nodeCount is 2 through 16.
+	PoolHighAvailabilityModeZoneRedundant PoolHighAvailabilityMode = "ZoneRedundant"
+)
+
+// PossiblePoolHighAvailabilityModeValues returns the possible values for the PoolHighAvailabilityMode const type.
+func PossiblePoolHighAvailabilityModeValues() []PoolHighAvailabilityMode {
+	return []PoolHighAvailabilityMode{
+		PoolHighAvailabilityModeAnyZone,
+		PoolHighAvailabilityModeDisabled,
+		PoolHighAvailabilityModeZoneRedundant,
+	}
+}
+
+// PoolState - Current state of a HorizonDB pool.
+type PoolState string
+
+const (
+	// PoolStateDeleting - Is being deleted
+	PoolStateDeleting PoolState = "Deleting"
+	// PoolStateInaccessible - Is inaccessible
+	PoolStateInaccessible PoolState = "Inaccessible"
+	// PoolStateProvisioning - Is provisioning
+	PoolStateProvisioning PoolState = "Provisioning"
+	// PoolStateReady - Is ready and operational
+	PoolStateReady PoolState = "Ready"
+	// PoolStateRestarting - Is restarting
+	PoolStateRestarting PoolState = "Restarting"
+	// PoolStateStarting - Is starting up
+	PoolStateStarting PoolState = "Starting"
+	// PoolStateStopped - Is stopped
+	PoolStateStopped PoolState = "Stopped"
+	// PoolStateStopping - Is stopping
+	PoolStateStopping PoolState = "Stopping"
+	// PoolStateUpdating - Is being updated
+	PoolStateUpdating PoolState = "Updating"
+)
+
+// PossiblePoolStateValues returns the possible values for the PoolState const type.
+func PossiblePoolStateValues() []PoolState {
+	return []PoolState{
+		PoolStateDeleting,
+		PoolStateInaccessible,
+		PoolStateProvisioning,
+		PoolStateReady,
+		PoolStateRestarting,
+		PoolStateStarting,
+		PoolStateStopped,
+		PoolStateStopping,
+		PoolStateUpdating,
+	}
+}
+
+// PostgreSQLCapabilityVersion - A PostgreSQL major version advertised by the HorizonDB capabilities API.
+type PostgreSQLCapabilityVersion string
+
+const (
+	// PostgreSQLCapabilityVersionV17 - PostgreSQL major version 17.
+	PostgreSQLCapabilityVersionV17 PostgreSQLCapabilityVersion = "17"
+	// PostgreSQLCapabilityVersionV18 - PostgreSQL major version 18.
+	PostgreSQLCapabilityVersionV18 PostgreSQLCapabilityVersion = "18"
+)
+
+// PossiblePostgreSQLCapabilityVersionValues returns the possible values for the PostgreSQLCapabilityVersion const type.
+func PossiblePostgreSQLCapabilityVersionValues() []PostgreSQLCapabilityVersion {
+	return []PostgreSQLCapabilityVersion{
+		PostgreSQLCapabilityVersionV17,
+		PostgreSQLCapabilityVersionV18,
+	}
+}
+
+// PostgreSQLVersion - A PostgreSQL major version supported by HorizonDB. API version 2026-10-01-preview accepts 17 and 18.
+// Future API versions may add named values, and clients must tolerate unknown values returned by the service.
+type PostgreSQLVersion string
+
+const (
+	// PostgreSQLVersionV17 - PostgreSQL major version 17.
+	PostgreSQLVersionV17 PostgreSQLVersion = "17"
+	// PostgreSQLVersionV18 - PostgreSQL major version 18.
+	PostgreSQLVersionV18 PostgreSQLVersion = "18"
+)
+
+// PossiblePostgreSQLVersionValues returns the possible values for the PostgreSQLVersion const type.
+func PossiblePostgreSQLVersionValues() []PostgreSQLVersion {
+	return []PostgreSQLVersion{
+		PostgreSQLVersionV17,
+		PostgreSQLVersionV18,
+	}
+}
+
+// PrincipalTypes - The type of Microsoft Entra principal mapped to a PostgreSQL role.
+type PrincipalTypes string
+
+const (
+	// PrincipalTypesGroup - A Microsoft Entra ID security group. All members of the group inherit administrator privileges.
+	PrincipalTypesGroup PrincipalTypes = "Group"
+	// PrincipalTypesServicePrincipal - A Microsoft Entra ID application or service principal used for automated workloads.
+	PrincipalTypesServicePrincipal PrincipalTypes = "ServicePrincipal"
+	// PrincipalTypesUnknown - An unknown or unrecognized type. This value is for internal use and is not accepted in requests.
+	PrincipalTypesUnknown PrincipalTypes = "Unknown"
+	// PrincipalTypesUser - A Microsoft Entra ID user account.
+	PrincipalTypesUser PrincipalTypes = "User"
+)
+
+// PossiblePrincipalTypesValues returns the possible values for the PrincipalTypes const type.
+func PossiblePrincipalTypesValues() []PrincipalTypes {
+	return []PrincipalTypes{
+		PrincipalTypesGroup,
+		PrincipalTypesServicePrincipal,
+		PrincipalTypesUnknown,
+		PrincipalTypesUser,
 	}
 }
 
@@ -157,15 +1040,15 @@ func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointSer
 type ProvisioningState string
 
 const (
-	// ProvisioningStateCanceled - Provisioning was canceled
+	// ProvisioningStateCanceled - Resource creation was canceled.
 	ProvisioningStateCanceled ProvisioningState = "Canceled"
-	// ProvisioningStateFailed - Provisioning failed
+	// ProvisioningStateFailed - Resource creation failed.
 	ProvisioningStateFailed ProvisioningState = "Failed"
-	// ProvisioningStateInProgress - Provisioning is in progress
+	// ProvisioningStateInProgress - The HorizonDB resource operation is actively running.
 	ProvisioningStateInProgress ProvisioningState = "InProgress"
-	// ProvisioningStateProvisioning - Provisioning is in progress
+	// ProvisioningStateProvisioning - The HorizonDB resource is still provisioning.
 	ProvisioningStateProvisioning ProvisioningState = "Provisioning"
-	// ProvisioningStateSucceeded - Provisioning completed successfully
+	// ProvisioningStateSucceeded - Resource has been created.
 	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
 )
 
@@ -198,74 +1081,17 @@ func PossiblePublicNetworkAccessStateValues() []PublicNetworkAccessState {
 	}
 }
 
-// ReplicaRole - Role of the replica.
-type ReplicaRole string
+// ScheduledMaintenanceManagementType - Specifies who manages scheduled maintenance for a HorizonDB pool.
+type ScheduledMaintenanceManagementType string
 
 const (
-	// ReplicaRoleRead - Read-only replica
-	ReplicaRoleRead ReplicaRole = "Read"
-	// ReplicaRoleReadWrite - ReadWrite replica
-	ReplicaRoleReadWrite ReplicaRole = "ReadWrite"
+	// ScheduledMaintenanceManagementTypeSystem - Scheduled maintenance is managed by the system.
+	ScheduledMaintenanceManagementTypeSystem ScheduledMaintenanceManagementType = "System"
 )
 
-// PossibleReplicaRoleValues returns the possible values for the ReplicaRole const type.
-func PossibleReplicaRoleValues() []ReplicaRole {
-	return []ReplicaRole{
-		ReplicaRoleRead,
-		ReplicaRoleReadWrite,
-	}
-}
-
-// State - Current states.
-type State string
-
-const (
-	// StateDisabled - Is disabled
-	StateDisabled State = "Disabled"
-	// StateDropping - Is being dropped/deleted
-	StateDropping State = "Dropping"
-	// StateHealthy - Is healthy
-	StateHealthy State = "Healthy"
-	// StateReady - Is ready and operational
-	StateReady State = "Ready"
-	// StateStarting - Is starting up
-	StateStarting State = "Starting"
-	// StateStopped - Is stopped
-	StateStopped State = "Stopped"
-	// StateStopping - Is stopping
-	StateStopping State = "Stopping"
-	// StateUpdating - Is being updated
-	StateUpdating State = "Updating"
-)
-
-// PossibleStateValues returns the possible values for the State const type.
-func PossibleStateValues() []State {
-	return []State{
-		StateDisabled,
-		StateDropping,
-		StateHealthy,
-		StateReady,
-		StateStarting,
-		StateStopped,
-		StateStopping,
-		StateUpdating,
-	}
-}
-
-// ZonePlacementPolicy - The zone redundancy option for the cluster.
-type ZonePlacementPolicy string
-
-const (
-	// ZonePlacementPolicyBestEffort - Best-effort placement (default)
-	ZonePlacementPolicyBestEffort ZonePlacementPolicy = "BestEffort"
-	// ZonePlacementPolicyStrict - Enforce zonal redundancy
-	ZonePlacementPolicyStrict ZonePlacementPolicy = "Strict"
-)
-
-// PossibleZonePlacementPolicyValues returns the possible values for the ZonePlacementPolicy const type.
-func PossibleZonePlacementPolicyValues() []ZonePlacementPolicy {
-	return []ZonePlacementPolicy{
-		ZonePlacementPolicyBestEffort,
-		ZonePlacementPolicyStrict,
+// PossibleScheduledMaintenanceManagementTypeValues returns the possible values for the ScheduledMaintenanceManagementType const type.
+func PossibleScheduledMaintenanceManagementTypeValues() []ScheduledMaintenanceManagementType {
+	return []ScheduledMaintenanceManagementType{
+		ScheduledMaintenanceManagementTypeSystem,
 	}
 }

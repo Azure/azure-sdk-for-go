@@ -30,6 +30,9 @@ type QueryPacksClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewQueryPacksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*QueryPacksClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -70,7 +73,7 @@ func (client *QueryPacksClient) CreateOrUpdate(ctx context.Context, resourceGrou
 func (client *QueryPacksClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, queryPackName string, logAnalyticsQueryPackPayload LogAnalyticsQueryPack, _ *QueryPacksClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/queryPacks/{queryPackName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -136,7 +139,7 @@ func (client *QueryPacksClient) CreateOrUpdateWithoutName(ctx context.Context, r
 func (client *QueryPacksClient) createOrUpdateWithoutNameCreateRequest(ctx context.Context, resourceGroupName string, logAnalyticsQueryPackPayload LogAnalyticsQueryPack, _ *QueryPacksClientCreateOrUpdateWithoutNameOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/queryPacks"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -199,7 +202,7 @@ func (client *QueryPacksClient) Delete(ctx context.Context, resourceGroupName st
 func (client *QueryPacksClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, queryPackName string, _ *QueryPacksClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/queryPacks/{queryPackName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -246,7 +249,7 @@ func (client *QueryPacksClient) Get(ctx context.Context, resourceGroupName strin
 func (client *QueryPacksClient) getCreateRequest(ctx context.Context, resourceGroupName string, queryPackName string, _ *QueryPacksClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/queryPacks/{queryPackName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -315,7 +318,7 @@ func (client *QueryPacksClient) listCreateRequest(ctx context.Context, nextLink 
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.OperationalInsights/queryPacks"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
@@ -383,7 +386,7 @@ func (client *QueryPacksClient) listByResourceGroupCreateRequest(ctx context.Con
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/queryPacks"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -445,7 +448,7 @@ func (client *QueryPacksClient) UpdateTags(ctx context.Context, resourceGroupNam
 func (client *QueryPacksClient) updateTagsCreateRequest(ctx context.Context, resourceGroupName string, queryPackName string, queryPackTags TagsResource, _ *QueryPacksClientUpdateTagsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/queryPacks/{queryPackName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {

@@ -1,5 +1,46 @@
 # Release History
 
+## 1.0.0 (2026-10-15)
+### Other Changes
+- Release stable version.
+
+## 0.5.0 (2026-09-25)
+### Breaking Changes
+
+- Field `AggregationType`, `DimensionFilter`, `MetricName`, `MetricNamespace`, `TimeGrain`, `Unit` of struct `SignalConfiguration` has been removed
+
+### Features Added
+
+- New enum type `SignalRecommendationKind` with values `SignalRecommendationKindAzureResourceMetric`, `SignalRecommendationKindLogAnalyticsQuery`, `SignalRecommendationKindPrometheusMetricsQuery`
+- New function `*AzureResourceMetricRecommendationConfiguration.GetSignalRecommendationConfiguration() *SignalRecommendationConfiguration`
+- New function `*LogAnalyticsQueryRecommendationConfiguration.GetSignalRecommendationConfiguration() *SignalRecommendationConfiguration`
+- New function `*PrometheusMetricsRecommendationConfiguration.GetSignalRecommendationConfiguration() *SignalRecommendationConfiguration`
+- New function `*SignalRecommendationConfiguration.GetSignalRecommendationConfiguration() *SignalRecommendationConfiguration`
+- New struct `AzureResourceMetricRecommendationConfiguration`
+- New struct `LogAnalyticsQueryRecommendationConfiguration`
+- New struct `PrometheusMetricsRecommendationConfiguration`
+- New field `ApplicableResourceTypes`, `Configuration`, `DataUnit`, `Description`, `DisplayName`, `RefreshInterval` in struct `SignalConfiguration`
+
+
+## 0.4.0 (2026-08-25)
+### Breaking Changes
+
+- Type of `DependenciesSignalGroupV2.AggregationType` has been changed from `*DependenciesAggregationType` to `*AggregationType`
+- Type of `DependenciesSignalGroupV2.Unit` has been changed from `*DependenciesAggregationUnit` to `*AggregationUnit`
+- `HealthStateDeleted` from enum `HealthState` has been removed
+- Enum `DependenciesAggregationType` has been removed
+- Enum `DependenciesAggregationUnit` has been removed
+- Enum `LookBackWindow` has been removed
+- Field `LookBackWindow` of struct `ThresholdRuleV2` has been removed
+
+### Features Added
+
+- New enum type `AggregationType` with values `AggregationTypeBestOf`, `AggregationTypeMaxNotHealthy`, `AggregationTypeMinHealthy`, `AggregationTypeWorstOf`
+- New enum type `AggregationUnit` with values `AggregationUnitAbsolute`, `AggregationUnitPercentage`
+- New struct `SignalAggregationGroup`
+- New field `SignalAggregationGroups` in struct `EntityProperties`
+
+
 ## 0.3.0 (2026-07-12)
 ### Breaking Changes
 

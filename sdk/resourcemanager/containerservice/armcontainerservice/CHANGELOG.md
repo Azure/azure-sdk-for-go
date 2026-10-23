@@ -1,38 +1,42 @@
 # Release History
 
-## 9.5.0-beta.1 (2026-07-24)
+## 9.8.0-beta.1 (2026-10-21)
 ### Features Added
 
 - New value `AgentPoolModeMachines`, `AgentPoolModeManagedSystem` added to enum type `AgentPoolMode`
-- New value `AgentPoolSSHAccessEntraID` added to enum type `AgentPoolSSHAccess`
 - New value `AgentPoolTypeFlexNodes` added to enum type `AgentPoolType`
 - New value `BackendPoolTypePodIP` added to enum type `BackendPoolType`
 - New value `LoadBalancerSKUService` added to enum type `LoadBalancerSKU`
-- New value `OSSKUFlatcar`, `OSSKUMariner`, `OSSKUWindowsAnnual` added to enum type `OSSKU`
-- New value `OutboundTypeManagedNATGatewayV2` added to enum type `OutboundType`
+- New value `OSSKUFlatcar`, `OSSKUMariner`, `OSSKUUbuntu2604`, `OSSKUWindowsAnnual` added to enum type `OSSKU`
 - New value `PublicNetworkAccessSecuredByPerimeter` added to enum type `PublicNetworkAccess`
 - New value `SnapshotTypeManagedCluster` added to enum type `SnapshotType`
 - New value `TransitEncryptionTypeMTLS` added to enum type `TransitEncryptionType`
 - New value `WorkloadRuntimeKataMshvVMIsolation` added to enum type `WorkloadRuntime`
 - New enum type `AddonAutoscaling` with values `AddonAutoscalingDisabled`, `AddonAutoscalingEnabled`
+- New enum type `AgentFabricMembershipProvisioningState` with values `AgentFabricMembershipProvisioningStateCanceled`, `AgentFabricMembershipProvisioningStateCreating`, `AgentFabricMembershipProvisioningStateDeleting`, `AgentFabricMembershipProvisioningStateFailed`, `AgentFabricMembershipProvisioningStateSucceeded`, `AgentFabricMembershipProvisioningStateUpdating`
+- New enum type `AgentFabricMembershipSKUName` with values `AgentFabricMembershipSKUNamePremium`, `AgentFabricMembershipSKUNameStandard`
+- New enum type `AgentPoolNICPublicIPAddressVersion` with values `AgentPoolNICPublicIPAddressVersionIPv4`
 - New enum type `AgentPoolNetworkInterfaceType` with values `AgentPoolNetworkInterfaceTypeDynamic`, `AgentPoolNetworkInterfaceTypeStandard`
 - New enum type `AlertConfigurationMode` with values `AlertConfigurationModeDisabled`, `AlertConfigurationModeManaged`
 - New enum type `AlertConfigurationProvisioningState` with values `AlertConfigurationProvisioningStateCanceled`, `AlertConfigurationProvisioningStateCreating`, `AlertConfigurationProvisioningStateDeleting`, `AlertConfigurationProvisioningStateFailed`, `AlertConfigurationProvisioningStateSucceeded`, `AlertConfigurationProvisioningStateUpdating`
 - New enum type `BastionSKU` with values `BastionSKUPremium`, `BastionSKUStandard`
+- New enum type `CloudShellProfileMode` with values `CloudShellProfileModeCustom`, `CloudShellProfileModeDisabled`, `CloudShellProfileModeManaged`
+- New enum type `CloudShellStorageProfileMode` with values `CloudShellStorageProfileModeCustom`, `CloudShellStorageProfileModeDisabled`, `CloudShellStorageProfileModeManaged`
 - New enum type `ClusterServiceLoadBalancerHealthProbeMode` with values `ClusterServiceLoadBalancerHealthProbeModeServiceNodePort`, `ClusterServiceLoadBalancerHealthProbeModeShared`
-- New enum type `ContainerNetworkLogs` with values `ContainerNetworkLogsDisabled`, `ContainerNetworkLogsEnabled`
 - New enum type `ControlPlaneScalingSize` with values `ControlPlaneScalingSizeH2`, `ControlPlaneScalingSizeH4`, `ControlPlaneScalingSizeH8`
 - New enum type `DriftAction` with values `DriftActionRecreate`, `DriftActionSynced`
 - New enum type `DriverType` with values `DriverTypeCUDA`, `DriverTypeGRID`
 - New enum type `GuardrailsSupport` with values `GuardrailsSupportPreview`, `GuardrailsSupportStable`
-- New enum type `InfrastructureEncryption` with values `InfrastructureEncryptionDisabled`, `InfrastructureEncryptionEnabled`
+- New enum type `ImpactedResourceKind` with values `ImpactedResourceKindArm`, `ImpactedResourceKindKubernetes`
 - New enum type `IpvsScheduler` with values `IpvsSchedulerLeastConnection`, `IpvsSchedulerRoundRobin`
 - New enum type `JWTAuthenticatorProvisioningState` with values `JWTAuthenticatorProvisioningStateCanceled`, `JWTAuthenticatorProvisioningStateCreating`, `JWTAuthenticatorProvisioningStateDeleting`, `JWTAuthenticatorProvisioningStateFailed`, `JWTAuthenticatorProvisioningStateSucceeded`, `JWTAuthenticatorProvisioningStateUpdating`
-- New enum type `ManagementMode` with values `ManagementModeManaged`, `ManagementModeUnmanaged`
+- New enum type `KubernetesVersionSupportStatus` with values `KubernetesVersionSupportStatusInSupport`, `KubernetesVersionSupportStatusOutOfSupport`
+- New enum type `MaintenanceWindowSource` with values `MaintenanceWindowSourceClusterAutoUpgradeSchedule`, `MaintenanceWindowSourceNodeOSUpgradeSchedule`
 - New enum type `MeshMembershipProvisioningState` with values `MeshMembershipProvisioningStateCanceled`, `MeshMembershipProvisioningStateCreating`, `MeshMembershipProvisioningStateDeleting`, `MeshMembershipProvisioningStateFailed`, `MeshMembershipProvisioningStateSucceeded`, `MeshMembershipProvisioningStateUpdating`
 - New enum type `MigStrategy` with values `MigStrategyMixed`, `MigStrategyNone`, `MigStrategySingle`
 - New enum type `Mode` with values `ModeIPTABLES`, `ModeIPVS`, `ModeNFTABLES`
 - New enum type `NodeDisruptionPolicy` with values `NodeDisruptionPolicyAllow`, `NodeDisruptionPolicyAllowDuringMaintenanceWindow`, `NodeDisruptionPolicyBlock`
+- New enum type `NvidiaDriverMode` with values `NvidiaDriverModeDRA`, `NvidiaDriverModeDevicePlugin`
 - New enum type `Operator` with values `OperatorDoesNotExist`, `OperatorExists`, `OperatorIn`, `OperatorNotIn`
 - New enum type `PodLinkLocalAccess` with values `PodLinkLocalAccessIMDS`, `PodLinkLocalAccessNone`
 - New enum type `ResourceProvisioningState` with values `ResourceProvisioningStateCanceled`, `ResourceProvisioningStateFailed`, `ResourceProvisioningStateSucceeded`
@@ -41,17 +45,32 @@
 - New enum type `ResourceSKURestrictionsType` with values `ResourceSKURestrictionsTypeLocation`, `ResourceSKURestrictionsTypeZone`
 - New enum type `SafeguardsSupport` with values `SafeguardsSupportPreview`, `SafeguardsSupportStable`
 - New enum type `SeccompDefault` with values `SeccompDefaultRuntimeDefault`, `SeccompDefaultUnconfined`
+- New enum type `UpgradeInsightStatus` with values `UpgradeInsightStatusFailed`, `UpgradeInsightStatusPassed`, `UpgradeInsightStatusWarning`
+- New enum type `UpgradeInsightStrategy` with values `UpgradeInsightStrategyAuto`, `UpgradeInsightStrategyManual`
+- New enum type `UpgradeIssueSeverity` with values `UpgradeIssueSeverityBlocking`, `UpgradeIssueSeverityWarning`
+- New enum type `UpgradeIssueType` with values `UpgradeIssueTypeAPIBreakingChange`, `UpgradeIssueTypeComponentVersionMismatch`, `UpgradeIssueTypeNodeImageOutOfSLA`, `UpgradeIssueTypePDBConstraint`, `UpgradeIssueTypeQuotaExceeded`, `UpgradeIssueTypeSubnetIPExhausted`, `UpgradeIssueTypeUnsupportedKubernetesVersion`
 - New enum type `UpgradeStrategy` with values `UpgradeStrategyBlueGreen`, `UpgradeStrategyRolling`
+- New enum type `UpgradeType` with values `UpgradeTypeAgentPool`, `UpgradeTypeControlPlane`, `UpgradeTypeControlPlaneAndAgentPools`, `UpgradeTypeNodeImage`
 - New enum type `VMState` with values `VMStateDeleted`, `VMStateRunning`
+- New function `NewAgentFabricMembershipsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AgentFabricMembershipsClient, error)`
+- New function `*AgentFabricMembershipsClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, agentFabricMembershipName string, resource AgentFabricMembership, options *AgentFabricMembershipsClientBeginCreateOrUpdateOptions) (*runtime.Poller[AgentFabricMembershipsClientCreateOrUpdateResponse], error)`
+- New function `*AgentFabricMembershipsClient.BeginDelete(ctx context.Context, resourceGroupName string, resourceName string, agentFabricMembershipName string, options *AgentFabricMembershipsClientBeginDeleteOptions) (*runtime.Poller[AgentFabricMembershipsClientDeleteResponse], error)`
+- New function `*AgentFabricMembershipsClient.Get(ctx context.Context, resourceGroupName string, resourceName string, agentFabricMembershipName string, options *AgentFabricMembershipsClientGetOptions) (AgentFabricMembershipsClientGetResponse, error)`
+- New function `*AgentFabricMembershipsClient.NewListByManagedClusterPager(resourceGroupName string, resourceName string, options *AgentFabricMembershipsClientListByManagedClusterOptions) *runtime.Pager[AgentFabricMembershipsClientListByManagedClusterResponse]`
+- New function `*AgentPoolGenerateUpgradeInsightsContent.GetGenerateUpgradeInsightsContent() *GenerateUpgradeInsightsContent`
+- New function `*AgentPoolUpgradeInsightProperties.GetUpgradeInsightProperties() *UpgradeInsightProperties`
 - New function `*AgentPoolsClient.BeginCompleteUpgrade(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, options *AgentPoolsClientBeginCompleteUpgradeOptions) (*runtime.Poller[AgentPoolsClientCompleteUpgradeResponse], error)`
 - New function `*AgentPoolsClient.ListBootstrapData(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, body ListBootstrapDataRequest, options *AgentPoolsClientListBootstrapDataOptions) (AgentPoolsClientListBootstrapDataResponse, error)`
+- New function `*AgentPoolsClient.BeginUpdate(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, parameters AgentPoolUpdate, options *AgentPoolsClientBeginUpdateOptions) (*runtime.Poller[AgentPoolsClientUpdateResponse], error)`
 - New function `NewAlertConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AlertConfigurationsClient, error)`
 - New function `*AlertConfigurationsClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, configurationName string, resource AlertConfiguration, options *AlertConfigurationsClientBeginCreateOrUpdateOptions) (*runtime.Poller[AlertConfigurationsClientCreateOrUpdateResponse], error)`
 - New function `*AlertConfigurationsClient.BeginDelete(ctx context.Context, resourceGroupName string, resourceName string, configurationName string, options *AlertConfigurationsClientBeginDeleteOptions) (*runtime.Poller[AlertConfigurationsClientDeleteResponse], error)`
 - New function `*AlertConfigurationsClient.Get(ctx context.Context, resourceGroupName string, resourceName string, configurationName string, options *AlertConfigurationsClientGetOptions) (AlertConfigurationsClientGetResponse, error)`
 - New function `*AlertConfigurationsClient.NewListByManagedClusterPager(resourceGroupName string, resourceName string, options *AlertConfigurationsClientListByManagedClusterOptions) *runtime.Pager[AlertConfigurationsClientListByManagedClusterResponse]`
+- New function `*ArmImpactedResource.GetUpgradeInsightImpactedResource() *UpgradeInsightImpactedResource`
 - New function `NewClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*Client, error)`
 - New function `*Client.NewListNodeImageVersionsPager(location string, options *ClientListNodeImageVersionsOptions) *runtime.Pager[ClientListNodeImageVersionsResponse]`
+- New function `*ClientFactory.NewAgentFabricMembershipsClient() *AgentFabricMembershipsClient`
 - New function `*ClientFactory.NewAlertConfigurationsClient() *AlertConfigurationsClient`
 - New function `*ClientFactory.NewClient() *Client`
 - New function `*ClientFactory.NewJWTAuthenticatorsClient() *JWTAuthenticatorsClient`
@@ -60,12 +79,19 @@
 - New function `*ClientFactory.NewManagedClusterSnapshotsClient() *ManagedClusterSnapshotsClient`
 - New function `*ClientFactory.NewMeshMembershipsClient() *MeshMembershipsClient`
 - New function `*ClientFactory.NewOperationStatusResultClient() *OperationStatusResultClient`
+- New function `*ClientFactory.NewUpgradeInsightsClient() *UpgradeInsightsClient`
 - New function `*ClientFactory.NewVMSKUsClient() *VMSKUsClient`
+- New function `*ControlPlaneAndAgentPoolsGenerateUpgradeInsightsContent.GetGenerateUpgradeInsightsContent() *GenerateUpgradeInsightsContent`
+- New function `*ControlPlaneAndAgentPoolsUpgradeInsightProperties.GetUpgradeInsightProperties() *UpgradeInsightProperties`
+- New function `*ControlPlaneGenerateUpgradeInsightsContent.GetGenerateUpgradeInsightsContent() *GenerateUpgradeInsightsContent`
+- New function `*ControlPlaneUpgradeInsightProperties.GetUpgradeInsightProperties() *UpgradeInsightProperties`
+- New function `*GenerateUpgradeInsightsContent.GetGenerateUpgradeInsightsContent() *GenerateUpgradeInsightsContent`
 - New function `NewJWTAuthenticatorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*JWTAuthenticatorsClient, error)`
 - New function `*JWTAuthenticatorsClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, jwtAuthenticatorName string, parameters JWTAuthenticator, options *JWTAuthenticatorsClientBeginCreateOrUpdateOptions) (*runtime.Poller[JWTAuthenticatorsClientCreateOrUpdateResponse], error)`
 - New function `*JWTAuthenticatorsClient.BeginDelete(ctx context.Context, resourceGroupName string, resourceName string, jwtAuthenticatorName string, options *JWTAuthenticatorsClientBeginDeleteOptions) (*runtime.Poller[JWTAuthenticatorsClientDeleteResponse], error)`
 - New function `*JWTAuthenticatorsClient.Get(ctx context.Context, resourceGroupName string, resourceName string, jwtAuthenticatorName string, options *JWTAuthenticatorsClientGetOptions) (JWTAuthenticatorsClientGetResponse, error)`
 - New function `*JWTAuthenticatorsClient.NewListByManagedClusterPager(resourceGroupName string, resourceName string, options *JWTAuthenticatorsClientListByManagedClusterOptions) *runtime.Pager[JWTAuthenticatorsClientListByManagedClusterResponse]`
+- New function `*KubernetesImpactedResource.GetUpgradeInsightImpactedResource() *UpgradeInsightImpactedResource`
 - New function `NewLoadBalancersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LoadBalancersClient, error)`
 - New function `*LoadBalancersClient.CreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, loadBalancerName string, parameters LoadBalancer, options *LoadBalancersClientCreateOrUpdateOptions) (LoadBalancersClientCreateOrUpdateResponse, error)`
 - New function `*LoadBalancersClient.BeginDelete(ctx context.Context, resourceGroupName string, resourceName string, loadBalancerName string, options *LoadBalancersClientBeginDeleteOptions) (*runtime.Poller[LoadBalancersClientDeleteResponse], error)`
@@ -99,16 +125,38 @@
 - New function `NewOperationStatusResultClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OperationStatusResultClient, error)`
 - New function `*OperationStatusResultClient.Get(ctx context.Context, resourceGroupName string, resourceName string, operationID string, options *OperationStatusResultClientGetOptions) (OperationStatusResultClientGetResponse, error)`
 - New function `*OperationStatusResultClient.GetByAgentPool(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, operationID string, options *OperationStatusResultClientGetByAgentPoolOptions) (OperationStatusResultClientGetByAgentPoolResponse, error)`
+- New function `*OperationStatusResultClient.NewListByAgentPoolPager(resourceGroupName string, resourceName string, agentPoolName string, options *OperationStatusResultClientListByAgentPoolOptions) *runtime.Pager[OperationStatusResultClientListByAgentPoolResponse]`
 - New function `*OperationStatusResultClient.NewListPager(resourceGroupName string, resourceName string, options *OperationStatusResultClientListOptions) *runtime.Pager[OperationStatusResultClientListResponse]`
+- New function `*UpgradeInsightImpactedResource.GetUpgradeInsightImpactedResource() *UpgradeInsightImpactedResource`
+- New function `*UpgradeInsightProperties.GetUpgradeInsightProperties() *UpgradeInsightProperties`
+- New function `NewUpgradeInsightsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*UpgradeInsightsClient, error)`
+- New function `*UpgradeInsightsClient.Generate(ctx context.Context, resourceGroupName string, resourceName string, body GenerateUpgradeInsightsContentClassification, options *UpgradeInsightsClientGenerateOptions) (UpgradeInsightsClientGenerateResponse, error)`
+- New function `*UpgradeInsightsClient.Get(ctx context.Context, resourceGroupName string, resourceName string, upgradeInsightName string, options *UpgradeInsightsClientGetOptions) (UpgradeInsightsClientGetResponse, error)`
+- New function `*UpgradeInsightsClient.NewListPager(resourceGroupName string, resourceName string, options *UpgradeInsightsClientListOptions) *runtime.Pager[UpgradeInsightsClientListResponse]`
 - New function `NewVMSKUsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VMSKUsClient, error)`
 - New function `*VMSKUsClient.NewListPager(location string, options *VMSKUsClientListOptions) *runtime.Pager[VMSKUsClientListResponse]`
+- New function `*NodeImageGenerateUpgradeInsightsContent.GetGenerateUpgradeInsightsContent() *GenerateUpgradeInsightsContent`
+- New function `*NodeImageUpgradeInsightProperties.GetUpgradeInsightProperties() *UpgradeInsightProperties`
+- New struct `AgentFabricMembership`
+- New struct `AgentFabricMembershipProperties`
+- New struct `AgentFabricMembershipsListResult`
 - New struct `AgentPoolBlueGreenUpgradeSettings`
+- New struct `AgentPoolGenerateUpgradeInsightsContent`
+- New struct `AgentPoolNICPublicIPAddressConfiguration`
 - New struct `AgentPoolNetworkInterface`
+- New struct `AgentPoolScopeEvaluation`
+- New struct `AgentPoolUpdate`
+- New struct `AgentPoolUpdateManualScaleProfile`
+- New struct `AgentPoolUpdateProperties`
+- New struct `AgentPoolUpdateScaleProfile`
+- New struct `AgentPoolUpdateVirtualMachinesProfile`
+- New struct `AgentPoolUpgradeInsightProperties`
 - New struct `AlertConfiguration`
 - New struct `AlertConfigurationListResult`
 - New struct `AlertConfigurationProperties`
 - New struct `AlertNotification`
 - New struct `AllowedSubject`
+- New struct `ArmImpactedResource`
 - New struct `BastionProfile`
 - New struct `BootstrapAzureConfig`
 - New struct `BootstrapComponentVersions`
@@ -117,8 +165,19 @@
 - New struct `BootstrapNodeConfig`
 - New struct `BootstrapTargetCluster`
 - New struct `BootstrapTokenInfo`
+- New struct `CapacityReservation`
+- New struct `CapacityReservationGroup`
+- New struct `CloudShellNetworkProfile`
+- New struct `CloudShellProfile`
+- New struct `CloudShellStorageProfile`
+- New struct `ClusterAPIConnectivityProfile`
 - New struct `Component`
 - New struct `ComponentsByRelease`
+- New struct `ControlPlaneAndAgentPoolsGenerateUpgradeInsightsContent`
+- New struct `ControlPlaneAndAgentPoolsUpgradeInsightProperties`
+- New struct `ControlPlaneGenerateUpgradeInsightsContent`
+- New struct `ControlPlaneUpgradeInsightProperties`
+- New struct `DetectedUpgradeIssue`
 - New struct `GuardrailsAvailableVersion`
 - New struct `GuardrailsAvailableVersionsList`
 - New struct `GuardrailsAvailableVersionsProperties`
@@ -132,7 +191,7 @@
 - New struct `JWTAuthenticatorProperties`
 - New struct `JWTAuthenticatorValidationRule`
 - New struct `KubeReserved`
-- New struct `KubernetesResourceObjectEncryptionProfile`
+- New struct `KubernetesImpactedResource`
 - New struct `LabelSelector`
 - New struct `LabelSelectorRequirement`
 - New struct `ListBootstrapDataRequest`
@@ -149,21 +208,19 @@
 - New struct `MaintenanceWindowResource`
 - New struct `MaintenanceWindowResourceListResult`
 - New struct `MaintenanceWindowResourceProperties`
-- New struct `ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryLogsAndTraces`
-- New struct `ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryMetrics`
-- New struct `ManagedClusterAzureMonitorProfileContainerInsights`
+- New struct `ManagedClusterAgentSandboxProfile`
 - New struct `ManagedClusterControlPlaneScalingProfile`
 - New struct `ManagedClusterHealthMonitorProfile`
 - New struct `ManagedClusterIngressDefaultDomainProfile`
 - New struct `ManagedClusterIngressProfileApplicationLoadBalancer`
-- New struct `ManagedClusterNATGatewayProfileOutboundIPPrefixes`
-- New struct `ManagedClusterNATGatewayProfileOutboundIPs`
+- New struct `ManagedClusterPodSnapshotProfile`
 - New struct `ManagedClusterPropertiesForSnapshot`
 - New struct `ManagedClusterSecurityProfileImageIntegrity`
 - New struct `ManagedClusterSecurityProfileNodeRestriction`
 - New struct `ManagedClusterSnapshot`
 - New struct `ManagedClusterSnapshotListResult`
 - New struct `ManagedClusterSnapshotProperties`
+- New struct `ManagedClusterStorageProfileDiskCSIDriverQuickAttachDetach`
 - New struct `MeshMembership`
 - New struct `MeshMembershipPrivateConnectProfile`
 - New struct `MeshMembershipProperties`
@@ -172,9 +229,10 @@
 - New struct `NetworkProfileKubeProxyConfig`
 - New struct `NetworkProfileKubeProxyConfigIpvsConfig`
 - New struct `NodeDisruptionProfile`
+- New struct `NodeImageGenerateUpgradeInsightsContent`
+- New struct `NodeImageUpgradeInsightProperties`
 - New struct `NodeImageVersion`
 - New struct `NodeImageVersionsListResult`
-- New struct `NvidiaGPUProfile`
 - New struct `OperationStatusResult`
 - New struct `OperationStatusResultList`
 - New struct `PoolBootstrapData`
@@ -191,35 +249,82 @@
 - New struct `SafeguardsAvailableVersion`
 - New struct `SafeguardsAvailableVersionsList`
 - New struct `SafeguardsAvailableVersionsProperties`
+- New struct `ScopeEvaluationResult`
 - New struct `ServiceAccountImagePullProfile`
+- New struct `SoftEvictionGracePeriod`
+- New struct `SoftEvictionThreshold`
+- New struct `UpgradeContext`
+- New struct `UpgradeGateSettings`
+- New struct `UpgradeInsight`
+- New struct `UpgradeInsightEvaluation`
+- New struct `UpgradeInsightListResult`
+- New struct `UpgradeInsightMaintenanceWindow`
+- New struct `UpgradeInsightRecommendedAction`
 - New struct `VMSKUsListResult`
 - New field `NodePublicIPPrefixIDs`, `SecondaryNetworkInterfaces` in struct `AgentPoolNetworkProfile`
 - New field `ComponentsByReleases` in struct `AgentPoolUpgradeProfileProperties`
 - New field `IsOutOfSupport` in struct `AgentPoolUpgradeProfilePropertiesUpgradesItem`
-- New field `MaxBlockedNodes` in struct `AgentPoolUpgradeSettings`
-- New field `DriverType`, `Nvidia` in struct `GPUProfile`
+- New field `MaxBlockedNodes`, `UpgradeGateSettings` in struct `AgentPoolUpgradeSettings`
+- New field `UpgradeGateSettings` in struct `ClusterUpgradeSettings`
+- New field `DriverType` in struct `GPUProfile`
+- New field `ManagedBy` in struct `IdentityBinding`
 - New field `AllowedSubjects` in struct `IdentityBindingProperties`
-- New field `HardEvictionThreshold`, `KubeReserved`, `SeccompDefault` in struct `KubeletConfig`
-- New field `EnableNodePublicIP`, `NodePublicIPPrefixID`, `NodePublicIPTags`, `PodSubnetID`, `VnetSubnetID` in struct `MachineNetworkProperties`
-- New field `Billing`, `ETag`, `EvictionPolicy`, `Hardware`, `Kubernetes`, `LocalDNSProfile`, `Mode`, `NodeImageVersion`, `OperatingSystem`, `Priority`, `ProvisioningState`, `Security`, `Status`, `Tags` in struct `MachineProperties`
+- New field `EvictionMaxPodGracePeriodInSeconds`, `HardEvictionThreshold`, `KubeReserved`, `SeccompDefault`, `SoftEvictionGracePeriod`, `SoftEvictionThreshold` in struct `KubeletConfig`
+- New field `EnableNodePublicIP`, `NodePublicIPPrefixID`, `NodePublicIPTags`, `PodIPAllocationMode`, `PodSubnetID`, `VnetSubnetID` in struct `MachineNetworkProperties`
+- New field `Billing`, `CapacityReservation`, `ETag`, `EvictionPolicy`, `Hardware`, `Kubernetes`, `LocalDNSProfile`, `Mode`, `NodeImageVersion`, `OperatingSystem`, `Priority`, `ProvisioningState`, `Security`, `Status`, `Tags` in struct `MachineProperties`
 - New field `MaintenanceWindowID` in struct `MaintenanceConfigurationProperties`
 - New field `EnableOSDiskFullCaching`, `NodeInitializationTaints`, `PreparedImageSpecificationProfile`, `UpgradeSettingsBlueGreen`, `UpgradeStrategy` in struct `ManagedClusterAgentPoolProfile`
 - New field `EnableOSDiskFullCaching`, `NodeInitializationTaints`, `PreparedImageSpecificationProfile`, `UpgradeSettingsBlueGreen`, `UpgradeStrategy` in struct `ManagedClusterAgentPoolProfileProperties`
-- New field `ContainerInsights` in struct `ManagedClusterAzureMonitorProfile`
-- New field `OpenTelemetryLogsAndTraces`, `OpenTelemetryMetrics` in struct `ManagedClusterAzureMonitorProfileAppMonitoring`
 - New field `EffectiveNoProxy` in struct `ManagedClusterHTTPProxyConfig`
 - New field `ApplicationLoadBalancer` in struct `ManagedClusterIngressProfile`
 - New field `DefaultDomain` in struct `ManagedClusterIngressProfileWebAppRouting`
 - New field `ClusterServiceLoadBalancerHealthProbeMode` in struct `ManagedClusterLoadBalancerProfile`
-- New field `CountIPv6` in struct `ManagedClusterManagedOutboundIPProfile`
-- New field `OutboundIPPrefixes`, `OutboundIPs` in struct `ManagedClusterNATGatewayProfile`
 - New field `ComponentsByReleases` in struct `ManagedClusterPoolUpgradeProfile`
 - New field `IsOutOfSupport` in struct `ManagedClusterPoolUpgradeProfileUpgradesItem`
-- New field `ControlPlaneScalingProfile`, `CreationData`, `EnableFIPS`, `EnableNamespaceResources`, `HealthMonitorProfile`, `NodeDisruptionProfile` in struct `ManagedClusterProperties`
-- New field `ImageIntegrity`, `KubernetesResourceObjectEncryptionProfile`, `NodeRestriction`, `ServiceAccountImagePullProfile` in struct `ManagedClusterSecurityProfile`
+- New field `AgentSandboxProfile`, `ControlPlaneScalingProfile`, `CreationData`, `EnableNamespaceResources`, `EnableNodeHardening`, `HealthMonitorProfile`, `NodeDisruptionProfile`, `PodSnapshotProfile` in struct `ManagedClusterProperties`
+- New field `ImageIntegrity`, `NodeRestriction`, `ServiceAccountImagePullProfile` in struct `ManagedClusterSecurityProfile`
+- New field `QuickAttachDetach` in struct `ManagedClusterStorageProfileDiskCSIDriver`
 - New field `AddonAutoscaling` in struct `ManagedClusterWorkloadAutoScalerProfileVerticalPodAutoscaler`
 - New field `IgnorePodDisruptionBudget` in struct `ManagedClustersClientBeginDeleteOptions`
-- New field `BastionProfile`, `KubeProxyConfig`, `NatGatewayID`, `PodLinkLocalAccess` in struct `NetworkProfile`
+- New field `ClusterAPIConnectivityProfile`, `KubeProxyConfig`, `NatGatewayID`, `PodLinkLocalAccess` in struct `NetworkProfile`
+- New field `DriverMode`, `MigProfiles`, `MigStrategy` in struct `NvidiaGPUProfile`
+
+
+## 9.7.0 (2026-10-19)
+### Features Added
+
+- New enum type `ManagementMode` with values `ManagementModeManaged`, `ManagementModeUnmanaged`
+- New struct `NvidiaGPUProfile`
+- New field `Nvidia` in struct `GPUProfile`
+
+
+## 9.6.0 (2026-09-29)
+### Features Added
+
+- New enum type `InfrastructureEncryption` with values `InfrastructureEncryptionEnabled`
+- New struct `KubernetesResourceObjectEncryptionProfile`
+- New field `EnableFIPS` in struct `ManagedClusterProperties`
+- New field `KubernetesResourceObjectEncryptionProfile` in struct `ManagedClusterSecurityProfile`
+
+
+## 9.5.0 (2026-08-25)
+### Features Added
+
+- New value `AgentPoolSSHAccessEntraID` added to enum type `AgentPoolSSHAccess`
+- New enum type `ContainerNetworkLogs` with values `ContainerNetworkLogsDisabled`, `ContainerNetworkLogsEnabled`
+- New enum type `DRANETMode` with values `DRANETModeManaged`, `DRANETModeUnmanaged`
+- New enum type `ManagedClusterNATGatewaySKU` with values `ManagedClusterNATGatewaySKUStandard`, `ManagedClusterNATGatewaySKUStandardV2`
+- New struct `DRANETProfile`
+- New struct `ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryLogsAndTraces`
+- New struct `ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryMetrics`
+- New struct `ManagedClusterAzureMonitorProfileContainerInsights`
+- New struct `ManagedClusterNATGatewayProfileOutboundIPPrefixes`
+- New struct `ManagedClusterNATGatewayProfileOutboundIPs`
+- New field `Dranet` in struct `AgentPoolNetworkProfile`
+- New field `ContainerInsights` in struct `ManagedClusterAzureMonitorProfile`
+- New field `OpenTelemetryLogsAndTraces`, `OpenTelemetryMetrics` in struct `ManagedClusterAzureMonitorProfileAppMonitoring`
+- New field `CountIPv6` in struct `ManagedClusterManagedOutboundIPProfile`
+- New field `OutboundIPPrefixes`, `OutboundIPs`, `SKU` in struct `ManagedClusterNATGatewayProfile`
 
 
 ## 9.4.0 (2026-07-22)

@@ -31,6 +31,9 @@ type OperatorAPIPlansClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewOperatorAPIPlansClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OperatorAPIPlansClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -67,7 +70,7 @@ func (client *OperatorAPIPlansClient) Get(ctx context.Context, operatorAPIPlanNa
 func (client *OperatorAPIPlansClient) getCreateRequest(ctx context.Context, operatorAPIPlanName string, _ *OperatorAPIPlansClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProgrammableConnectivity/operatorApiPlans/{operatorApiPlanName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if operatorAPIPlanName == "" {
@@ -133,7 +136,7 @@ func (client *OperatorAPIPlansClient) listBySubscriptionCreateRequest(ctx contex
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProgrammableConnectivity/operatorApiPlans"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))

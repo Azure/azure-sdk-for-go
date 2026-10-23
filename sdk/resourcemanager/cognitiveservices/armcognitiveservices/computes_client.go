@@ -19,7 +19,7 @@ import (
 // ComputesClient contains the methods for the Computes group.
 // Don't use this type directly, use NewComputesClient() instead.
 //
-// Generated from API version 2026-05-15-preview
+// Generated from API version 2026-09-15-preview
 type ComputesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type ComputesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewComputesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ComputesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -66,7 +69,7 @@ func (client *ComputesClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 	}
 }
 
-// CreateOrUpdate - Creates or updates a compute associated with the Cognitive Services account.
+// createOrUpdate - Creates or updates a compute associated with the Cognitive Services account.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ComputesClient) createOrUpdate(ctx context.Context, resourceGroupName string, accountName string, computeName string, resource Compute, options *ComputesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -82,18 +85,17 @@ func (client *ComputesClient) createOrUpdate(ctx context.Context, resourceGroupN
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ComputesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, computeName string, resource Compute, _ *ComputesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/computes/{computeName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -113,9 +115,8 @@ func (client *ComputesClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
+	reqQP.Set("api-version", version20260915Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
 		return nil, err
@@ -131,7 +132,7 @@ func (client *ComputesClient) createOrUpdateCreateRequest(ctx context.Context, r
 //   - options - ComputesClientBeginDeleteOptions contains the optional parameters for the ComputesClient.BeginDelete method.
 func (client *ComputesClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, computeName string, options *ComputesClientBeginDeleteOptions) (*runtime.Poller[ComputesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, computeName, options)
+		resp, err := client.delete(ctx, resourceGroupName, accountName, computeName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -146,9 +147,9 @@ func (client *ComputesClient) BeginDelete(ctx context.Context, resourceGroupName
 	}
 }
 
-// Delete - Deletes the specified compute associated with the Cognitive Services account.
+// delete - Deletes the specified compute associated with the Cognitive Services account.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *ComputesClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, computeName string, options *ComputesClientBeginDeleteOptions) (*http.Response, error) {
+func (client *ComputesClient) delete(ctx context.Context, resourceGroupName string, accountName string, computeName string, options *ComputesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ComputesClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -163,17 +164,16 @@ func (client *ComputesClient) deleteOperation(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ComputesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, computeName string, _ *ComputesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/computes/{computeName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -193,138 +193,9 @@ func (client *ComputesClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
+	reqQP.Set("api-version", version20260915Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
-}
-
-// Get - Gets the specified compute associated with the Cognitive Services account.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - accountName - The name of Cognitive Services account.
-//   - computeName - The name of the compute associated with the Cognitive Services Account.
-//   - options - ComputesClientGetOptions contains the optional parameters for the ComputesClient.Get method.
-func (client *ComputesClient) Get(ctx context.Context, resourceGroupName string, accountName string, computeName string, options *ComputesClientGetOptions) (ComputesClientGetResponse, error) {
-	var err error
-	const operationName = "ComputesClient.Get"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, computeName, options)
-	if err != nil {
-		return ComputesClientGetResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return ComputesClientGetResponse{}, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ComputesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
-}
-
-// getCreateRequest creates the Get request.
-func (client *ComputesClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, computeName string, _ *ComputesClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/computes/{computeName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if computeName == "" {
-		return nil, errors.New("parameter computeName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{computeName}", url.PathEscape(computeName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// getHandleResponse handles the Get response.
-func (client *ComputesClient) getHandleResponse(resp *http.Response) (ComputesClientGetResponse, error) {
-	result := ComputesClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.Compute); err != nil {
-		return ComputesClientGetResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListPager - Gets the computes associated with the Cognitive Services account.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - accountName - The name of Cognitive Services account.
-//   - options - ComputesClientListOptions contains the optional parameters for the ComputesClient.NewListPager method.
-func (client *ComputesClient) NewListPager(resourceGroupName string, accountName string, options *ComputesClientListOptions) *runtime.Pager[ComputesClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ComputesClientListResponse]{
-		More: func(page ComputesClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *ComputesClientListResponse) (ComputesClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ComputesClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, accountName, options)
-			}, nil)
-			if err != nil {
-				return ComputesClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *ComputesClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, _ *ComputesClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/computes"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *ComputesClient) listHandleResponse(resp *http.Response) (ComputesClientListResponse, error) {
-	result := ComputesClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ComputeListResult); err != nil {
-		return ComputesClientListResponse{}, err
-	}
-	return result, nil
 }
 
 // BeginRestart - Restarts a running ContainerInstance compute resource.
@@ -352,7 +223,7 @@ func (client *ComputesClient) BeginRestart(ctx context.Context, resourceGroupNam
 	}
 }
 
-// Restart - Restarts a running ContainerInstance compute resource.
+// restart - Restarts a running ContainerInstance compute resource.
 // This is a long-running operation that returns 202 Accepted.
 // Only applicable when computeType is ContainerInstance.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -371,17 +242,16 @@ func (client *ComputesClient) restart(ctx context.Context, resourceGroupName str
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
 
-// restartCreateRequest creates the Restart request.
+// restartCreateRequest creates the restart request.
 func (client *ComputesClient) restartCreateRequest(ctx context.Context, resourceGroupName string, accountName string, computeName string, _ *ComputesClientBeginRestartOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/computes/{computeName}/restart"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -401,7 +271,7 @@ func (client *ComputesClient) restartCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
+	reqQP.Set("api-version", version20260915Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -431,7 +301,7 @@ func (client *ComputesClient) BeginStart(ctx context.Context, resourceGroupName 
 	}
 }
 
-// Start - Starts a stopped ContainerInstance compute resource.
+// start - Starts a stopped ContainerInstance compute resource.
 // This is a long-running operation that returns 202 Accepted.
 // Only applicable when computeType is ContainerInstance.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -450,17 +320,16 @@ func (client *ComputesClient) start(ctx context.Context, resourceGroupName strin
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
 
-// startCreateRequest creates the Start request.
+// startCreateRequest creates the start request.
 func (client *ComputesClient) startCreateRequest(ctx context.Context, resourceGroupName string, accountName string, computeName string, _ *ComputesClientBeginStartOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/computes/{computeName}/start"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -480,7 +349,7 @@ func (client *ComputesClient) startCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
+	reqQP.Set("api-version", version20260915Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -510,7 +379,7 @@ func (client *ComputesClient) BeginStop(ctx context.Context, resourceGroupName s
 	}
 }
 
-// Stop - Stops a running ContainerInstance compute resource.
+// stop - Stops a running ContainerInstance compute resource.
 // This is a long-running operation that returns 202 Accepted.
 // Only applicable when computeType is ContainerInstance.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -529,17 +398,16 @@ func (client *ComputesClient) stop(ctx context.Context, resourceGroupName string
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
 
-// stopCreateRequest creates the Stop request.
+// stopCreateRequest creates the stop request.
 func (client *ComputesClient) stopCreateRequest(ctx context.Context, resourceGroupName string, accountName string, computeName string, _ *ComputesClientBeginStopOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/computes/{computeName}/stop"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -559,63 +427,39 @@ func (client *ComputesClient) stopCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
+	reqQP.Set("api-version", version20260915Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
-// BeginUpdate - Updates a compute associated with the Cognitive Services account.
+// Get - Gets the specified compute associated with the Cognitive Services account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
 //   - computeName - The name of the compute associated with the Cognitive Services Account.
-//   - properties - The compute properties to update.
-//   - options - ComputesClientBeginUpdateOptions contains the optional parameters for the ComputesClient.BeginUpdate method.
-func (client *ComputesClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, computeName string, properties Compute, options *ComputesClientBeginUpdateOptions) (*runtime.Poller[ComputesClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, accountName, computeName, properties, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ComputesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ComputesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Updates a compute associated with the Cognitive Services account.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ComputesClient) update(ctx context.Context, resourceGroupName string, accountName string, computeName string, properties Compute, options *ComputesClientBeginUpdateOptions) (*http.Response, error) {
+//   - options - ComputesClientGetOptions contains the optional parameters for the ComputesClient.Get method.
+func (client *ComputesClient) Get(ctx context.Context, resourceGroupName string, accountName string, computeName string, options *ComputesClientGetOptions) (ComputesClientGetResponse, error) {
 	var err error
-	const operationName = "ComputesClient.BeginUpdate"
+	const operationName = "ComputesClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, computeName, properties, options)
+	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, computeName, options)
 	if err != nil {
-		return nil, err
+		return ComputesClientGetResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return ComputesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
-	}
-	return httpResp, nil
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
-// updateCreateRequest creates the Update request.
-func (client *ComputesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, computeName string, properties Compute, _ *ComputesClientBeginUpdateOptions) (*policy.Request, error) {
+// getCreateRequest creates the Get request.
+func (client *ComputesClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, computeName string, _ *ComputesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/computes/{computeName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -630,17 +474,101 @@ func (client *ComputesClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter computeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{computeName}", url.PathEscape(computeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
+	reqQP.Set("api-version", version20260915Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, properties); err != nil {
+	return req, nil
+}
+
+// getHandleResponse handles the Get response.
+func (client *ComputesClient) getHandleResponse(resp *http.Response, successCodes ...int) (ComputesClientGetResponse, error) {
+	result := ComputesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Compute); err != nil {
+		return ComputesClientGetResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListPager - Gets the computes associated with the Cognitive Services account.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of Cognitive Services account.
+//   - options - ComputesClientListOptions contains the optional parameters for the ComputesClient.NewListPager method.
+func (client *ComputesClient) NewListPager(resourceGroupName string, accountName string, options *ComputesClientListOptions) *runtime.Pager[ComputesClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ComputesClientListResponse]{
+		More: func(page ComputesClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *ComputesClientListResponse) (ComputesClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ComputesClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, resourceGroupName, accountName, nextLink, options)
+			if err != nil {
+				return ComputesClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ComputesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listCreateRequest creates the List request.
+func (client *ComputesClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, nextLink string, _ *ComputesClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/computes"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if accountName == "" {
+			return nil, errors.New("parameter accountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
 		return nil, err
 	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260915Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
+}
+
+// listHandleResponse handles the List response.
+func (client *ComputesClient) listHandleResponse(resp *http.Response, successCodes ...int) (ComputesClientListResponse, error) {
+	result := ComputesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ComputeListResult); err != nil {
+		return ComputesClientListResponse{}, err
+	}
+	return result, nil
 }

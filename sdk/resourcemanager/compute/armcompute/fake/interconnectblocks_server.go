@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v8"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v9"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -29,6 +29,10 @@ type InterconnectBlocksServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, interconnectBlockName string, options *armcompute.InterconnectBlocksClientBeginDeleteOptions) (resp azfake.PollerResponder[armcompute.InterconnectBlocksClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method InterconnectBlocksClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, interconnectBlockName string, properties armcompute.InterconnectBlockUpdate, options *armcompute.InterconnectBlocksClientBeginUpdateOptions) (resp azfake.PollerResponder[armcompute.InterconnectBlocksClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method InterconnectBlocksClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, interconnectBlockName string, options *armcompute.InterconnectBlocksClientGetOptions) (resp azfake.Responder[armcompute.InterconnectBlocksClientGetResponse], errResp azfake.ErrorResponder)
@@ -40,10 +44,6 @@ type InterconnectBlocksServer struct {
 	// NewListBySubscriptionPager is the fake for method InterconnectBlocksClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armcompute.InterconnectBlocksClientListBySubscriptionOptions) (resp azfake.PagerResponder[armcompute.InterconnectBlocksClientListBySubscriptionResponse])
-
-	// BeginUpdate is the fake for method InterconnectBlocksClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, interconnectBlockName string, properties armcompute.InterconnectBlockUpdate, options *armcompute.InterconnectBlocksClientBeginUpdateOptions) (resp azfake.PollerResponder[armcompute.InterconnectBlocksClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewInterconnectBlocksServerTransport creates a new instance of InterconnectBlocksServerTransport with the provided implementation.
@@ -54,9 +54,9 @@ func NewInterconnectBlocksServerTransport(srv *InterconnectBlocksServer) *Interc
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armcompute.InterconnectBlocksClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armcompute.InterconnectBlocksClientDeleteResponse]](),
+		beginUpdate:                 newTracker[azfake.PollerResponder[armcompute.InterconnectBlocksClientUpdateResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armcompute.InterconnectBlocksClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armcompute.InterconnectBlocksClientListBySubscriptionResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armcompute.InterconnectBlocksClientUpdateResponse]](),
 	}
 }
 
@@ -66,9 +66,9 @@ type InterconnectBlocksServerTransport struct {
 	srv                         *InterconnectBlocksServer
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armcompute.InterconnectBlocksClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armcompute.InterconnectBlocksClientDeleteResponse]]
+	beginUpdate                 *tracker[azfake.PollerResponder[armcompute.InterconnectBlocksClientUpdateResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armcompute.InterconnectBlocksClientListByResourceGroupResponse]]
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armcompute.InterconnectBlocksClientListBySubscriptionResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armcompute.InterconnectBlocksClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for InterconnectBlocksServerTransport.
@@ -96,14 +96,14 @@ func (i *InterconnectBlocksServerTransport) dispatchToMethodFake(req *http.Reque
 				res.resp, res.err = i.dispatchBeginCreateOrUpdate(req)
 			case "InterconnectBlocksClient.BeginDelete":
 				res.resp, res.err = i.dispatchBeginDelete(req)
+			case "InterconnectBlocksClient.BeginUpdate":
+				res.resp, res.err = i.dispatchBeginUpdate(req)
 			case "InterconnectBlocksClient.Get":
 				res.resp, res.err = i.dispatchGet(req)
 			case "InterconnectBlocksClient.NewListByResourceGroupPager":
 				res.resp, res.err = i.dispatchNewListByResourceGroupPager(req)
 			case "InterconnectBlocksClient.NewListBySubscriptionPager":
 				res.resp, res.err = i.dispatchNewListBySubscriptionPager(req)
-			case "InterconnectBlocksClient.BeginUpdate":
-				res.resp, res.err = i.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -126,7 +126,7 @@ func (i *InterconnectBlocksServerTransport) dispatchBeginCreateOrUpdate(req *htt
 	}
 	beginCreateOrUpdate := i.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/interconnectBlocks/(?P<interconnectBlockName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/interconnectBlocks/(?P<interconnectBlockName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -174,7 +174,7 @@ func (i *InterconnectBlocksServerTransport) dispatchBeginDelete(req *http.Reques
 	}
 	beginDelete := i.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/interconnectBlocks/(?P<interconnectBlockName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/interconnectBlocks/(?P<interconnectBlockName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -212,11 +212,59 @@ func (i *InterconnectBlocksServerTransport) dispatchBeginDelete(req *http.Reques
 	return resp, nil
 }
 
+func (i *InterconnectBlocksServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if i.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := i.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/interconnectBlocks/(?P<interconnectBlockName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armcompute.InterconnectBlockUpdate](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		interconnectBlockNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("interconnectBlockName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := i.srv.BeginUpdate(req.Context(), resourceGroupNameParam, interconnectBlockNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		i.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		i.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		i.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (i *InterconnectBlocksServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if i.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/interconnectBlocks/(?P<interconnectBlockName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/interconnectBlocks/(?P<interconnectBlockName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -259,7 +307,7 @@ func (i *InterconnectBlocksServerTransport) dispatchNewListByResourceGroupPager(
 	}
 	newListByResourceGroupPager := i.newListByResourceGroupPager.get(req)
 	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/interconnectBlocks`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/interconnectBlocks`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -296,7 +344,7 @@ func (i *InterconnectBlocksServerTransport) dispatchNewListBySubscriptionPager(r
 	}
 	newListBySubscriptionPager := i.newListBySubscriptionPager.get(req)
 	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/interconnectBlocks`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/interconnectBlocks`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -320,54 +368,6 @@ func (i *InterconnectBlocksServerTransport) dispatchNewListBySubscriptionPager(r
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		i.newListBySubscriptionPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (i *InterconnectBlocksServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if i.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := i.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/interconnectBlocks/(?P<interconnectBlockName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcompute.InterconnectBlockUpdate](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		interconnectBlockNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("interconnectBlockName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := i.srv.BeginUpdate(req.Context(), resourceGroupNameParam, interconnectBlockNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		i.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		i.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		i.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

@@ -104,7 +104,7 @@ func (s *SMTPUsernamesServerTransport) dispatchCreateOrUpdate(req *http.Request)
 	if s.srv.CreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Communication/communicationServices/(?P<communicationServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/smtpUsernames/(?P<smtpUsername>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Communication/communicationServices/(?P<communicationServiceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/smtpUsernames/(?P<smtpUsername>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -145,7 +145,7 @@ func (s *SMTPUsernamesServerTransport) dispatchDelete(req *http.Request) (*http.
 	if s.srv.Delete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Communication/communicationServices/(?P<communicationServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/smtpUsernames/(?P<smtpUsername>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Communication/communicationServices/(?P<communicationServiceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/smtpUsernames/(?P<smtpUsername>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -182,7 +182,7 @@ func (s *SMTPUsernamesServerTransport) dispatchGet(req *http.Request) (*http.Res
 	if s.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Communication/communicationServices/(?P<communicationServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/smtpUsernames/(?P<smtpUsername>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Communication/communicationServices/(?P<communicationServiceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/smtpUsernames/(?P<smtpUsername>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -221,7 +221,7 @@ func (s *SMTPUsernamesServerTransport) dispatchNewListPager(req *http.Request) (
 	}
 	newListPager := s.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Communication/communicationServices/(?P<communicationServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/smtpUsernames`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Communication/communicationServices/(?P<communicationServiceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/smtpUsernames`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {

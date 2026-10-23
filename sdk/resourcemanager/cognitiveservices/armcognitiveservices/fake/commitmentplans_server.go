@@ -21,10 +21,6 @@ import (
 
 // CommitmentPlansServer is a fake server for instances of the armcognitiveservices.CommitmentPlansClient type.
 type CommitmentPlansServer struct {
-	// CreateOrUpdate is the fake for method CommitmentPlansClient.CreateOrUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	CreateOrUpdate func(ctx context.Context, resourceGroupName string, accountName string, commitmentPlanName string, commitmentPlan armcognitiveservices.CommitmentPlan, options *armcognitiveservices.CommitmentPlansClientCreateOrUpdateOptions) (resp azfake.Responder[armcognitiveservices.CommitmentPlansClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
-
 	// BeginCreateOrUpdateAssociation is the fake for method CommitmentPlansClient.BeginCreateOrUpdateAssociation
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreateOrUpdateAssociation func(ctx context.Context, resourceGroupName string, commitmentPlanName string, commitmentPlanAssociationName string, association armcognitiveservices.CommitmentPlanAccountAssociation, options *armcognitiveservices.CommitmentPlansClientBeginCreateOrUpdateAssociationOptions) (resp azfake.PollerResponder[armcognitiveservices.CommitmentPlansClientCreateOrUpdateAssociationResponse], errResp azfake.ErrorResponder)
@@ -45,6 +41,14 @@ type CommitmentPlansServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDeletePlan func(ctx context.Context, resourceGroupName string, commitmentPlanName string, options *armcognitiveservices.CommitmentPlansClientBeginDeletePlanOptions) (resp azfake.PollerResponder[armcognitiveservices.CommitmentPlansClientDeletePlanResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdatePlan is the fake for method CommitmentPlansClient.BeginUpdatePlan
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdatePlan func(ctx context.Context, resourceGroupName string, commitmentPlanName string, commitmentPlan armcognitiveservices.PatchResourceTagsAndSKU, options *armcognitiveservices.CommitmentPlansClientBeginUpdatePlanOptions) (resp azfake.PollerResponder[armcognitiveservices.CommitmentPlansClientUpdatePlanResponse], errResp azfake.ErrorResponder)
+
+	// CreateOrUpdate is the fake for method CommitmentPlansClient.CreateOrUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	CreateOrUpdate func(ctx context.Context, resourceGroupName string, accountName string, commitmentPlanName string, commitmentPlan armcognitiveservices.CommitmentPlan, options *armcognitiveservices.CommitmentPlansClientCreateOrUpdateOptions) (resp azfake.Responder[armcognitiveservices.CommitmentPlansClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method CommitmentPlansClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, accountName string, commitmentPlanName string, options *armcognitiveservices.CommitmentPlansClientGetOptions) (resp azfake.Responder[armcognitiveservices.CommitmentPlansClientGetResponse], errResp azfake.ErrorResponder)
@@ -57,13 +61,13 @@ type CommitmentPlansServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetPlan func(ctx context.Context, resourceGroupName string, commitmentPlanName string, options *armcognitiveservices.CommitmentPlansClientGetPlanOptions) (resp azfake.Responder[armcognitiveservices.CommitmentPlansClientGetPlanResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method CommitmentPlansClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, accountName string, options *armcognitiveservices.CommitmentPlansClientListOptions) (resp azfake.PagerResponder[armcognitiveservices.CommitmentPlansClientListResponse])
-
 	// NewListAssociationsPager is the fake for method CommitmentPlansClient.NewListAssociationsPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListAssociationsPager func(resourceGroupName string, commitmentPlanName string, options *armcognitiveservices.CommitmentPlansClientListAssociationsOptions) (resp azfake.PagerResponder[armcognitiveservices.CommitmentPlansClientListAssociationsResponse])
+
+	// NewListPager is the fake for method CommitmentPlansClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(resourceGroupName string, accountName string, options *armcognitiveservices.CommitmentPlansClientListOptions) (resp azfake.PagerResponder[armcognitiveservices.CommitmentPlansClientListResponse])
 
 	// NewListPlansByResourceGroupPager is the fake for method CommitmentPlansClient.NewListPlansByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -72,10 +76,6 @@ type CommitmentPlansServer struct {
 	// NewListPlansBySubscriptionPager is the fake for method CommitmentPlansClient.NewListPlansBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPlansBySubscriptionPager func(options *armcognitiveservices.CommitmentPlansClientListPlansBySubscriptionOptions) (resp azfake.PagerResponder[armcognitiveservices.CommitmentPlansClientListPlansBySubscriptionResponse])
-
-	// BeginUpdatePlan is the fake for method CommitmentPlansClient.BeginUpdatePlan
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdatePlan func(ctx context.Context, resourceGroupName string, commitmentPlanName string, commitmentPlan armcognitiveservices.PatchResourceTagsAndSKU, options *armcognitiveservices.CommitmentPlansClientBeginUpdatePlanOptions) (resp azfake.PollerResponder[armcognitiveservices.CommitmentPlansClientUpdatePlanResponse], errResp azfake.ErrorResponder)
 }
 
 // NewCommitmentPlansServerTransport creates a new instance of CommitmentPlansServerTransport with the provided implementation.
@@ -89,11 +89,11 @@ func NewCommitmentPlansServerTransport(srv *CommitmentPlansServer) *CommitmentPl
 		beginDelete:                      newTracker[azfake.PollerResponder[armcognitiveservices.CommitmentPlansClientDeleteResponse]](),
 		beginDeleteAssociation:           newTracker[azfake.PollerResponder[armcognitiveservices.CommitmentPlansClientDeleteAssociationResponse]](),
 		beginDeletePlan:                  newTracker[azfake.PollerResponder[armcognitiveservices.CommitmentPlansClientDeletePlanResponse]](),
-		newListPager:                     newTracker[azfake.PagerResponder[armcognitiveservices.CommitmentPlansClientListResponse]](),
+		beginUpdatePlan:                  newTracker[azfake.PollerResponder[armcognitiveservices.CommitmentPlansClientUpdatePlanResponse]](),
 		newListAssociationsPager:         newTracker[azfake.PagerResponder[armcognitiveservices.CommitmentPlansClientListAssociationsResponse]](),
+		newListPager:                     newTracker[azfake.PagerResponder[armcognitiveservices.CommitmentPlansClientListResponse]](),
 		newListPlansByResourceGroupPager: newTracker[azfake.PagerResponder[armcognitiveservices.CommitmentPlansClientListPlansByResourceGroupResponse]](),
 		newListPlansBySubscriptionPager:  newTracker[azfake.PagerResponder[armcognitiveservices.CommitmentPlansClientListPlansBySubscriptionResponse]](),
-		beginUpdatePlan:                  newTracker[azfake.PollerResponder[armcognitiveservices.CommitmentPlansClientUpdatePlanResponse]](),
 	}
 }
 
@@ -106,11 +106,11 @@ type CommitmentPlansServerTransport struct {
 	beginDelete                      *tracker[azfake.PollerResponder[armcognitiveservices.CommitmentPlansClientDeleteResponse]]
 	beginDeleteAssociation           *tracker[azfake.PollerResponder[armcognitiveservices.CommitmentPlansClientDeleteAssociationResponse]]
 	beginDeletePlan                  *tracker[azfake.PollerResponder[armcognitiveservices.CommitmentPlansClientDeletePlanResponse]]
-	newListPager                     *tracker[azfake.PagerResponder[armcognitiveservices.CommitmentPlansClientListResponse]]
+	beginUpdatePlan                  *tracker[azfake.PollerResponder[armcognitiveservices.CommitmentPlansClientUpdatePlanResponse]]
 	newListAssociationsPager         *tracker[azfake.PagerResponder[armcognitiveservices.CommitmentPlansClientListAssociationsResponse]]
+	newListPager                     *tracker[azfake.PagerResponder[armcognitiveservices.CommitmentPlansClientListResponse]]
 	newListPlansByResourceGroupPager *tracker[azfake.PagerResponder[armcognitiveservices.CommitmentPlansClientListPlansByResourceGroupResponse]]
 	newListPlansBySubscriptionPager  *tracker[azfake.PagerResponder[armcognitiveservices.CommitmentPlansClientListPlansBySubscriptionResponse]]
-	beginUpdatePlan                  *tracker[azfake.PollerResponder[armcognitiveservices.CommitmentPlansClientUpdatePlanResponse]]
 }
 
 // Do implements the policy.Transporter interface for CommitmentPlansServerTransport.
@@ -134,8 +134,6 @@ func (c *CommitmentPlansServerTransport) dispatchToMethodFake(req *http.Request,
 		}
 		if !intercepted {
 			switch method {
-			case "CommitmentPlansClient.CreateOrUpdate":
-				res.resp, res.err = c.dispatchCreateOrUpdate(req)
 			case "CommitmentPlansClient.BeginCreateOrUpdateAssociation":
 				res.resp, res.err = c.dispatchBeginCreateOrUpdateAssociation(req)
 			case "CommitmentPlansClient.BeginCreateOrUpdatePlan":
@@ -146,22 +144,24 @@ func (c *CommitmentPlansServerTransport) dispatchToMethodFake(req *http.Request,
 				res.resp, res.err = c.dispatchBeginDeleteAssociation(req)
 			case "CommitmentPlansClient.BeginDeletePlan":
 				res.resp, res.err = c.dispatchBeginDeletePlan(req)
+			case "CommitmentPlansClient.BeginUpdatePlan":
+				res.resp, res.err = c.dispatchBeginUpdatePlan(req)
+			case "CommitmentPlansClient.CreateOrUpdate":
+				res.resp, res.err = c.dispatchCreateOrUpdate(req)
 			case "CommitmentPlansClient.Get":
 				res.resp, res.err = c.dispatchGet(req)
 			case "CommitmentPlansClient.GetAssociation":
 				res.resp, res.err = c.dispatchGetAssociation(req)
 			case "CommitmentPlansClient.GetPlan":
 				res.resp, res.err = c.dispatchGetPlan(req)
-			case "CommitmentPlansClient.NewListPager":
-				res.resp, res.err = c.dispatchNewListPager(req)
 			case "CommitmentPlansClient.NewListAssociationsPager":
 				res.resp, res.err = c.dispatchNewListAssociationsPager(req)
+			case "CommitmentPlansClient.NewListPager":
+				res.resp, res.err = c.dispatchNewListPager(req)
 			case "CommitmentPlansClient.NewListPlansByResourceGroupPager":
 				res.resp, res.err = c.dispatchNewListPlansByResourceGroupPager(req)
 			case "CommitmentPlansClient.NewListPlansBySubscriptionPager":
 				res.resp, res.err = c.dispatchNewListPlansBySubscriptionPager(req)
-			case "CommitmentPlansClient.BeginUpdatePlan":
-				res.resp, res.err = c.dispatchBeginUpdatePlan(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -178,54 +178,13 @@ func (c *CommitmentPlansServerTransport) dispatchToMethodFake(req *http.Request,
 	}
 }
 
-func (c *CommitmentPlansServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
-	if c.srv.CreateOrUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CognitiveServices/accounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/commitmentPlans/(?P<commitmentPlanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armcognitiveservices.CommitmentPlan](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-	if err != nil {
-		return nil, err
-	}
-	commitmentPlanNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("commitmentPlanName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := c.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, accountNameParam, commitmentPlanNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CommitmentPlan, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (c *CommitmentPlansServerTransport) dispatchBeginCreateOrUpdateAssociation(req *http.Request) (*http.Response, error) {
 	if c.srv.BeginCreateOrUpdateAssociation == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdateAssociation not implemented")}
 	}
 	beginCreateOrUpdateAssociation := c.beginCreateOrUpdateAssociation.get(req)
 	if beginCreateOrUpdateAssociation == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CognitiveServices/commitmentPlans/(?P<commitmentPlanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/accountAssociations/(?P<commitmentPlanAssociationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CognitiveServices/commitmentPlans/(?P<commitmentPlanName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/accountAssociations/(?P<commitmentPlanAssociationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -277,7 +236,7 @@ func (c *CommitmentPlansServerTransport) dispatchBeginCreateOrUpdatePlan(req *ht
 	}
 	beginCreateOrUpdatePlan := c.beginCreateOrUpdatePlan.get(req)
 	if beginCreateOrUpdatePlan == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CognitiveServices/commitmentPlans/(?P<commitmentPlanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CognitiveServices/commitmentPlans/(?P<commitmentPlanName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -325,7 +284,7 @@ func (c *CommitmentPlansServerTransport) dispatchBeginDelete(req *http.Request) 
 	}
 	beginDelete := c.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CognitiveServices/accounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/commitmentPlans/(?P<commitmentPlanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CognitiveServices/accounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/commitmentPlans/(?P<commitmentPlanName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -373,7 +332,7 @@ func (c *CommitmentPlansServerTransport) dispatchBeginDeleteAssociation(req *htt
 	}
 	beginDeleteAssociation := c.beginDeleteAssociation.get(req)
 	if beginDeleteAssociation == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CognitiveServices/commitmentPlans/(?P<commitmentPlanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/accountAssociations/(?P<commitmentPlanAssociationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CognitiveServices/commitmentPlans/(?P<commitmentPlanName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/accountAssociations/(?P<commitmentPlanAssociationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -421,7 +380,7 @@ func (c *CommitmentPlansServerTransport) dispatchBeginDeletePlan(req *http.Reque
 	}
 	beginDeletePlan := c.beginDeletePlan.get(req)
 	if beginDeletePlan == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CognitiveServices/commitmentPlans/(?P<commitmentPlanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CognitiveServices/commitmentPlans/(?P<commitmentPlanName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -459,272 +418,13 @@ func (c *CommitmentPlansServerTransport) dispatchBeginDeletePlan(req *http.Reque
 	return resp, nil
 }
 
-func (c *CommitmentPlansServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if c.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CognitiveServices/accounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/commitmentPlans/(?P<commitmentPlanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-	if err != nil {
-		return nil, err
-	}
-	commitmentPlanNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("commitmentPlanName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := c.srv.Get(req.Context(), resourceGroupNameParam, accountNameParam, commitmentPlanNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CommitmentPlan, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (c *CommitmentPlansServerTransport) dispatchGetAssociation(req *http.Request) (*http.Response, error) {
-	if c.srv.GetAssociation == nil {
-		return nil, &nonRetriableError{errors.New("fake for method GetAssociation not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CognitiveServices/commitmentPlans/(?P<commitmentPlanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/accountAssociations/(?P<commitmentPlanAssociationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	commitmentPlanNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("commitmentPlanName")])
-	if err != nil {
-		return nil, err
-	}
-	commitmentPlanAssociationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("commitmentPlanAssociationName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := c.srv.GetAssociation(req.Context(), resourceGroupNameParam, commitmentPlanNameParam, commitmentPlanAssociationNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CommitmentPlanAccountAssociation, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (c *CommitmentPlansServerTransport) dispatchGetPlan(req *http.Request) (*http.Response, error) {
-	if c.srv.GetPlan == nil {
-		return nil, &nonRetriableError{errors.New("fake for method GetPlan not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CognitiveServices/commitmentPlans/(?P<commitmentPlanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	commitmentPlanNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("commitmentPlanName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := c.srv.GetPlan(req.Context(), resourceGroupNameParam, commitmentPlanNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CommitmentPlan, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (c *CommitmentPlansServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if c.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := c.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CognitiveServices/accounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/commitmentPlans`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := c.srv.NewListPager(resourceGroupNameParam, accountNameParam, nil)
-		newListPager = &resp
-		c.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcognitiveservices.CommitmentPlansClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		c.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		c.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (c *CommitmentPlansServerTransport) dispatchNewListAssociationsPager(req *http.Request) (*http.Response, error) {
-	if c.srv.NewListAssociationsPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListAssociationsPager not implemented")}
-	}
-	newListAssociationsPager := c.newListAssociationsPager.get(req)
-	if newListAssociationsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CognitiveServices/commitmentPlans/(?P<commitmentPlanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/accountAssociations`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		commitmentPlanNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("commitmentPlanName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := c.srv.NewListAssociationsPager(resourceGroupNameParam, commitmentPlanNameParam, nil)
-		newListAssociationsPager = &resp
-		c.newListAssociationsPager.add(req, newListAssociationsPager)
-		server.PagerResponderInjectNextLinks(newListAssociationsPager, req, func(page *armcognitiveservices.CommitmentPlansClientListAssociationsResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListAssociationsPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		c.newListAssociationsPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListAssociationsPager) {
-		c.newListAssociationsPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (c *CommitmentPlansServerTransport) dispatchNewListPlansByResourceGroupPager(req *http.Request) (*http.Response, error) {
-	if c.srv.NewListPlansByResourceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPlansByResourceGroupPager not implemented")}
-	}
-	newListPlansByResourceGroupPager := c.newListPlansByResourceGroupPager.get(req)
-	if newListPlansByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CognitiveServices/commitmentPlans`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := c.srv.NewListPlansByResourceGroupPager(resourceGroupNameParam, nil)
-		newListPlansByResourceGroupPager = &resp
-		c.newListPlansByResourceGroupPager.add(req, newListPlansByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListPlansByResourceGroupPager, req, func(page *armcognitiveservices.CommitmentPlansClientListPlansByResourceGroupResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPlansByResourceGroupPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		c.newListPlansByResourceGroupPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPlansByResourceGroupPager) {
-		c.newListPlansByResourceGroupPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (c *CommitmentPlansServerTransport) dispatchNewListPlansBySubscriptionPager(req *http.Request) (*http.Response, error) {
-	if c.srv.NewListPlansBySubscriptionPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPlansBySubscriptionPager not implemented")}
-	}
-	newListPlansBySubscriptionPager := c.newListPlansBySubscriptionPager.get(req)
-	if newListPlansBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CognitiveServices/commitmentPlans`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := c.srv.NewListPlansBySubscriptionPager(nil)
-		newListPlansBySubscriptionPager = &resp
-		c.newListPlansBySubscriptionPager.add(req, newListPlansBySubscriptionPager)
-		server.PagerResponderInjectNextLinks(newListPlansBySubscriptionPager, req, func(page *armcognitiveservices.CommitmentPlansClientListPlansBySubscriptionResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPlansBySubscriptionPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		c.newListPlansBySubscriptionPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPlansBySubscriptionPager) {
-		c.newListPlansBySubscriptionPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (c *CommitmentPlansServerTransport) dispatchBeginUpdatePlan(req *http.Request) (*http.Response, error) {
 	if c.srv.BeginUpdatePlan == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdatePlan not implemented")}
 	}
 	beginUpdatePlan := c.beginUpdatePlan.get(req)
 	if beginUpdatePlan == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CognitiveServices/commitmentPlans/(?P<commitmentPlanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CognitiveServices/commitmentPlans/(?P<commitmentPlanName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -763,6 +463,306 @@ func (c *CommitmentPlansServerTransport) dispatchBeginUpdatePlan(req *http.Reque
 		c.beginUpdatePlan.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (c *CommitmentPlansServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
+	if c.srv.CreateOrUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CognitiveServices/accounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/commitmentPlans/(?P<commitmentPlanName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armcognitiveservices.CommitmentPlan](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+	if err != nil {
+		return nil, err
+	}
+	commitmentPlanNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("commitmentPlanName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := c.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, accountNameParam, commitmentPlanNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CommitmentPlan, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (c *CommitmentPlansServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if c.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CognitiveServices/accounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/commitmentPlans/(?P<commitmentPlanName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+	if err != nil {
+		return nil, err
+	}
+	commitmentPlanNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("commitmentPlanName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := c.srv.Get(req.Context(), resourceGroupNameParam, accountNameParam, commitmentPlanNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CommitmentPlan, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (c *CommitmentPlansServerTransport) dispatchGetAssociation(req *http.Request) (*http.Response, error) {
+	if c.srv.GetAssociation == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetAssociation not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CognitiveServices/commitmentPlans/(?P<commitmentPlanName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/accountAssociations/(?P<commitmentPlanAssociationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	commitmentPlanNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("commitmentPlanName")])
+	if err != nil {
+		return nil, err
+	}
+	commitmentPlanAssociationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("commitmentPlanAssociationName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := c.srv.GetAssociation(req.Context(), resourceGroupNameParam, commitmentPlanNameParam, commitmentPlanAssociationNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CommitmentPlanAccountAssociation, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (c *CommitmentPlansServerTransport) dispatchGetPlan(req *http.Request) (*http.Response, error) {
+	if c.srv.GetPlan == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetPlan not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CognitiveServices/commitmentPlans/(?P<commitmentPlanName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	commitmentPlanNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("commitmentPlanName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := c.srv.GetPlan(req.Context(), resourceGroupNameParam, commitmentPlanNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CommitmentPlan, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (c *CommitmentPlansServerTransport) dispatchNewListAssociationsPager(req *http.Request) (*http.Response, error) {
+	if c.srv.NewListAssociationsPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListAssociationsPager not implemented")}
+	}
+	newListAssociationsPager := c.newListAssociationsPager.get(req)
+	if newListAssociationsPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CognitiveServices/commitmentPlans/(?P<commitmentPlanName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/accountAssociations`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		commitmentPlanNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("commitmentPlanName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := c.srv.NewListAssociationsPager(resourceGroupNameParam, commitmentPlanNameParam, nil)
+		newListAssociationsPager = &resp
+		c.newListAssociationsPager.add(req, newListAssociationsPager)
+		server.PagerResponderInjectNextLinks(newListAssociationsPager, req, func(page *armcognitiveservices.CommitmentPlansClientListAssociationsResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListAssociationsPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		c.newListAssociationsPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListAssociationsPager) {
+		c.newListAssociationsPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (c *CommitmentPlansServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if c.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := c.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CognitiveServices/accounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/commitmentPlans`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := c.srv.NewListPager(resourceGroupNameParam, accountNameParam, nil)
+		newListPager = &resp
+		c.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcognitiveservices.CommitmentPlansClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		c.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		c.newListPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (c *CommitmentPlansServerTransport) dispatchNewListPlansByResourceGroupPager(req *http.Request) (*http.Response, error) {
+	if c.srv.NewListPlansByResourceGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPlansByResourceGroupPager not implemented")}
+	}
+	newListPlansByResourceGroupPager := c.newListPlansByResourceGroupPager.get(req)
+	if newListPlansByResourceGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CognitiveServices/commitmentPlans`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := c.srv.NewListPlansByResourceGroupPager(resourceGroupNameParam, nil)
+		newListPlansByResourceGroupPager = &resp
+		c.newListPlansByResourceGroupPager.add(req, newListPlansByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListPlansByResourceGroupPager, req, func(page *armcognitiveservices.CommitmentPlansClientListPlansByResourceGroupResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPlansByResourceGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		c.newListPlansByResourceGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPlansByResourceGroupPager) {
+		c.newListPlansByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (c *CommitmentPlansServerTransport) dispatchNewListPlansBySubscriptionPager(req *http.Request) (*http.Response, error) {
+	if c.srv.NewListPlansBySubscriptionPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPlansBySubscriptionPager not implemented")}
+	}
+	newListPlansBySubscriptionPager := c.newListPlansBySubscriptionPager.get(req)
+	if newListPlansBySubscriptionPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CognitiveServices/commitmentPlans`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := c.srv.NewListPlansBySubscriptionPager(nil)
+		newListPlansBySubscriptionPager = &resp
+		c.newListPlansBySubscriptionPager.add(req, newListPlansBySubscriptionPager)
+		server.PagerResponderInjectNextLinks(newListPlansBySubscriptionPager, req, func(page *armcognitiveservices.CommitmentPlansClientListPlansBySubscriptionResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPlansBySubscriptionPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		c.newListPlansBySubscriptionPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPlansBySubscriptionPager) {
+		c.newListPlansBySubscriptionPager.remove(req)
+	}
 	return resp, nil
 }
 

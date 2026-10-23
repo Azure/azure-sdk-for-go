@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v12"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -22,13 +22,13 @@ import (
 
 // AdminRulesServer is a fake server for instances of the armnetwork.AdminRulesClient type.
 type AdminRulesServer struct {
-	// CreateOrUpdate is the fake for method AdminRulesClient.CreateOrUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	CreateOrUpdate func(ctx context.Context, resourceGroupName string, networkManagerName string, configurationName string, ruleCollectionName string, ruleName string, adminRule armnetwork.BaseAdminRuleClassification, options *armnetwork.AdminRulesClientCreateOrUpdateOptions) (resp azfake.Responder[armnetwork.AdminRulesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
-
 	// BeginDelete is the fake for method AdminRulesClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, networkManagerName string, configurationName string, ruleCollectionName string, ruleName string, options *armnetwork.AdminRulesClientBeginDeleteOptions) (resp azfake.PollerResponder[armnetwork.AdminRulesClientDeleteResponse], errResp azfake.ErrorResponder)
+
+	// CreateOrUpdate is the fake for method AdminRulesClient.CreateOrUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	CreateOrUpdate func(ctx context.Context, resourceGroupName string, networkManagerName string, configurationName string, ruleCollectionName string, ruleName string, adminRule armnetwork.BaseAdminRuleClassification, options *armnetwork.AdminRulesClientCreateOrUpdateOptions) (resp azfake.Responder[armnetwork.AdminRulesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method AdminRulesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -79,10 +79,10 @@ func (a *AdminRulesServerTransport) dispatchToMethodFake(req *http.Request, meth
 		}
 		if !intercepted {
 			switch method {
-			case "AdminRulesClient.CreateOrUpdate":
-				res.resp, res.err = a.dispatchCreateOrUpdate(req)
 			case "AdminRulesClient.BeginDelete":
 				res.resp, res.err = a.dispatchBeginDelete(req)
+			case "AdminRulesClient.CreateOrUpdate":
+				res.resp, res.err = a.dispatchCreateOrUpdate(req)
 			case "AdminRulesClient.Get":
 				res.resp, res.err = a.dispatchGet(req)
 			case "AdminRulesClient.NewListPager":
@@ -103,66 +103,13 @@ func (a *AdminRulesServerTransport) dispatchToMethodFake(req *http.Request, meth
 	}
 }
 
-func (a *AdminRulesServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
-	if a.srv.CreateOrUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/networkManagers/(?P<networkManagerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/securityAdminConfigurations/(?P<configurationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/ruleCollections/(?P<ruleCollectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/rules/(?P<ruleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 7 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	raw, err := readRequestBody(req)
-	if err != nil {
-		return nil, err
-	}
-	body, err := unmarshalBaseAdminRuleClassification(raw)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	networkManagerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkManagerName")])
-	if err != nil {
-		return nil, err
-	}
-	configurationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("configurationName")])
-	if err != nil {
-		return nil, err
-	}
-	ruleCollectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("ruleCollectionName")])
-	if err != nil {
-		return nil, err
-	}
-	ruleNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("ruleName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := a.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, networkManagerNameParam, configurationNameParam, ruleCollectionNameParam, ruleNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).BaseAdminRuleClassification, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (a *AdminRulesServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
 	if a.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
 	beginDelete := a.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/networkManagers/(?P<networkManagerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/securityAdminConfigurations/(?P<configurationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/ruleCollections/(?P<ruleCollectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/rules/(?P<ruleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkManagers/(?P<networkManagerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/securityAdminConfigurations/(?P<configurationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/ruleCollections/(?P<ruleCollectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/rules/(?P<ruleName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 7 {
@@ -223,11 +170,64 @@ func (a *AdminRulesServerTransport) dispatchBeginDelete(req *http.Request) (*htt
 	return resp, nil
 }
 
+func (a *AdminRulesServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
+	if a.srv.CreateOrUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkManagers/(?P<networkManagerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/securityAdminConfigurations/(?P<configurationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/ruleCollections/(?P<ruleCollectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/rules/(?P<ruleName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 7 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	raw, err := readRequestBody(req)
+	if err != nil {
+		return nil, err
+	}
+	body, err := unmarshalBaseAdminRuleClassification(raw)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	networkManagerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkManagerName")])
+	if err != nil {
+		return nil, err
+	}
+	configurationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("configurationName")])
+	if err != nil {
+		return nil, err
+	}
+	ruleCollectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("ruleCollectionName")])
+	if err != nil {
+		return nil, err
+	}
+	ruleNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("ruleName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := a.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, networkManagerNameParam, configurationNameParam, ruleCollectionNameParam, ruleNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).BaseAdminRuleClassification, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (a *AdminRulesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if a.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/networkManagers/(?P<networkManagerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/securityAdminConfigurations/(?P<configurationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/ruleCollections/(?P<ruleCollectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/rules/(?P<ruleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkManagers/(?P<networkManagerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/securityAdminConfigurations/(?P<configurationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/ruleCollections/(?P<ruleCollectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/rules/(?P<ruleName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 7 {
@@ -274,7 +274,7 @@ func (a *AdminRulesServerTransport) dispatchNewListPager(req *http.Request) (*ht
 	}
 	newListPager := a.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/networkManagers/(?P<networkManagerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/securityAdminConfigurations/(?P<configurationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/ruleCollections/(?P<ruleCollectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/rules`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkManagers/(?P<networkManagerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/securityAdminConfigurations/(?P<configurationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/ruleCollections/(?P<ruleCollectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/rules`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {

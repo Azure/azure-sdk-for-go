@@ -1,19 +1,29 @@
 # Release History
 
-## 2.2.1-beta.1 (Unreleased)
+## 2.3.1-beta.1 (Unreleased)
 
 ### Features Added
-* Added `Description` field to the `Setting` and `Snapshot` structs.
-* Added `Description` field to `AddSettingOptions`, `SetSettingOptions`, and `BeginCreateSnapshotOptions`.
-* Added `SettingFieldsDescription` and `SnapshotFieldsDescription` field selector constants.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.3.0 (2026-10-12)
+
+### Features Added
+* Added `Description` field to the `Setting` and `Snapshot` structs.
+* Added `Description` field to `AddSettingOptions`, `SetSettingOptions`, and `BeginCreateSnapshotOptions`.
+* Added `SettingFieldsDescription` and `SnapshotFieldsDescription` field selector constants.
+
+### Bugs Fixed
+* Fixed paging through settings, revisions, and snapshots when the service returns relative or absolute continuation URLs.
+
+### Other Changes
 * Updated to API version `2026-04-01`.
 * Updated dependencies.
+* Improved authentication for sovereign clouds when using a token credential. When `ClientOptions.Cloud` doesn't specify an audience, the client now infers it from the App Configuration endpoint.
 
 ## 2.2.0 (2026-04-14)
 

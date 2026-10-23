@@ -58,6 +58,26 @@ type CapabilityTypesClientListOptions struct {
 	ContinuationToken *string
 }
 
+// ConnectionsClientCreateOrUpdateOptions contains the optional parameters for the ConnectionsClient.CreateOrUpdate method.
+type ConnectionsClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConnectionsClientDeleteOptions contains the optional parameters for the ConnectionsClient.Delete method.
+type ConnectionsClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConnectionsClientGetOptions contains the optional parameters for the ConnectionsClient.Get method.
+type ConnectionsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConnectionsClientListAllOptions contains the optional parameters for the ConnectionsClient.NewListAllPager method.
+type ConnectionsClientListAllOptions struct {
+	// placeholder for future optional parameters
+}
+
 // DiscoveredResourcesClientGetOptions contains the optional parameters for the DiscoveredResourcesClient.Get method.
 type DiscoveredResourcesClientGetOptions struct {
 	// placeholder for future optional parameters
@@ -341,9 +361,14 @@ type WorkspacesClientBeginDeleteOptions struct {
 	ResumeToken string
 }
 
-// WorkspacesClientBeginRefreshRecommendationsOptions contains the optional parameters for the WorkspacesClient.BeginRefreshRecommendations
-// method.
-type WorkspacesClientBeginRefreshRecommendationsOptions struct {
+// WorkspacesClientBeginDiscoverOptions contains the optional parameters for the WorkspacesClient.BeginDiscover method.
+type WorkspacesClientBeginDiscoverOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// WorkspacesClientBeginEvaluateOptions contains the optional parameters for the WorkspacesClient.BeginEvaluate method.
+type WorkspacesClientBeginEvaluateOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }

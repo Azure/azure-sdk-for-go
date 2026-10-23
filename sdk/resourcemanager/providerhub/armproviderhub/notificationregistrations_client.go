@@ -19,7 +19,7 @@ import (
 // NotificationRegistrationsClient contains the methods for the NotificationRegistrations group.
 // Don't use this type directly, use NewNotificationRegistrationsClient() instead.
 //
-// Generated from API version 2024-09-01
+// Generated from API version 2025-10-01
 type NotificationRegistrationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type NotificationRegistrationsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewNotificationRegistrationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*NotificationRegistrationsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -69,7 +72,7 @@ func (client *NotificationRegistrationsClient) CreateOrUpdate(ctx context.Contex
 func (client *NotificationRegistrationsClient) createOrUpdateCreateRequest(ctx context.Context, providerNamespace string, notificationRegistrationName string, properties NotificationRegistration, _ *NotificationRegistrationsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/notificationRegistrations/{notificationRegistrationName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if providerNamespace == "" {
@@ -85,7 +88,7 @@ func (client *NotificationRegistrationsClient) createOrUpdateCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240901)
+	reqQP.Set("api-version", version20251001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -137,7 +140,7 @@ func (client *NotificationRegistrationsClient) Delete(ctx context.Context, provi
 func (client *NotificationRegistrationsClient) deleteCreateRequest(ctx context.Context, providerNamespace string, notificationRegistrationName string, _ *NotificationRegistrationsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/notificationRegistrations/{notificationRegistrationName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if providerNamespace == "" {
@@ -153,7 +156,7 @@ func (client *NotificationRegistrationsClient) deleteCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240901)
+	reqQP.Set("api-version", version20251001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -185,7 +188,7 @@ func (client *NotificationRegistrationsClient) Get(ctx context.Context, provider
 func (client *NotificationRegistrationsClient) getCreateRequest(ctx context.Context, providerNamespace string, notificationRegistrationName string, _ *NotificationRegistrationsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/notificationRegistrations/{notificationRegistrationName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if providerNamespace == "" {
@@ -201,7 +204,7 @@ func (client *NotificationRegistrationsClient) getCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240901)
+	reqQP.Set("api-version", version20251001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -256,7 +259,7 @@ func (client *NotificationRegistrationsClient) listByProviderRegistrationCreateR
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/notificationRegistrations"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if providerNamespace == "" {
@@ -272,7 +275,7 @@ func (client *NotificationRegistrationsClient) listByProviderRegistrationCreateR
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20240901)
+		reqQP.Set("api-version", version20251001)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

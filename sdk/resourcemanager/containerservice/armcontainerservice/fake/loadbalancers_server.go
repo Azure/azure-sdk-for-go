@@ -21,13 +21,13 @@ import (
 
 // LoadBalancersServer is a fake server for instances of the armcontainerservice.LoadBalancersClient type.
 type LoadBalancersServer struct {
-	// CreateOrUpdate is the fake for method LoadBalancersClient.CreateOrUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	CreateOrUpdate func(ctx context.Context, resourceGroupName string, resourceName string, loadBalancerName string, parameters armcontainerservice.LoadBalancer, options *armcontainerservice.LoadBalancersClientCreateOrUpdateOptions) (resp azfake.Responder[armcontainerservice.LoadBalancersClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
-
 	// BeginDelete is the fake for method LoadBalancersClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, resourceName string, loadBalancerName string, options *armcontainerservice.LoadBalancersClientBeginDeleteOptions) (resp azfake.PollerResponder[armcontainerservice.LoadBalancersClientDeleteResponse], errResp azfake.ErrorResponder)
+
+	// CreateOrUpdate is the fake for method LoadBalancersClient.CreateOrUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	CreateOrUpdate func(ctx context.Context, resourceGroupName string, resourceName string, loadBalancerName string, parameters armcontainerservice.LoadBalancer, options *armcontainerservice.LoadBalancersClientCreateOrUpdateOptions) (resp azfake.Responder[armcontainerservice.LoadBalancersClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method LoadBalancersClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -78,10 +78,10 @@ func (l *LoadBalancersServerTransport) dispatchToMethodFake(req *http.Request, m
 		}
 		if !intercepted {
 			switch method {
-			case "LoadBalancersClient.CreateOrUpdate":
-				res.resp, res.err = l.dispatchCreateOrUpdate(req)
 			case "LoadBalancersClient.BeginDelete":
 				res.resp, res.err = l.dispatchBeginDelete(req)
+			case "LoadBalancersClient.CreateOrUpdate":
+				res.resp, res.err = l.dispatchCreateOrUpdate(req)
 			case "LoadBalancersClient.Get":
 				res.resp, res.err = l.dispatchGet(req)
 			case "LoadBalancersClient.NewListByManagedClusterPager":
@@ -102,54 +102,13 @@ func (l *LoadBalancersServerTransport) dispatchToMethodFake(req *http.Request, m
 	}
 }
 
-func (l *LoadBalancersServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
-	if l.srv.CreateOrUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/loadBalancers/(?P<loadBalancerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armcontainerservice.LoadBalancer](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
-	if err != nil {
-		return nil, err
-	}
-	loadBalancerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("loadBalancerName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := l.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, resourceNameParam, loadBalancerNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).LoadBalancer, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (l *LoadBalancersServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
 	if l.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
 	beginDelete := l.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/loadBalancers/(?P<loadBalancerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/loadBalancers/(?P<loadBalancerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -191,11 +150,52 @@ func (l *LoadBalancersServerTransport) dispatchBeginDelete(req *http.Request) (*
 	return resp, nil
 }
 
+func (l *LoadBalancersServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
+	if l.srv.CreateOrUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/loadBalancers/(?P<loadBalancerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armcontainerservice.LoadBalancer](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
+	if err != nil {
+		return nil, err
+	}
+	loadBalancerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("loadBalancerName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := l.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, resourceNameParam, loadBalancerNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).LoadBalancer, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (l *LoadBalancersServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if l.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/loadBalancers/(?P<loadBalancerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/loadBalancers/(?P<loadBalancerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -234,7 +234,7 @@ func (l *LoadBalancersServerTransport) dispatchNewListByManagedClusterPager(req 
 	}
 	newListByManagedClusterPager := l.newListByManagedClusterPager.get(req)
 	if newListByManagedClusterPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/loadBalancers`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/loadBalancers`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {

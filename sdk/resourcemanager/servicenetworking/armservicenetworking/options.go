@@ -69,6 +69,44 @@ type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// PrivateEndpointConnectionsInterfaceClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsInterfaceClient.BeginDelete
+// method.
+type PrivateEndpointConnectionsInterfaceClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// PrivateEndpointConnectionsInterfaceClientBeginUpdateOptions contains the optional parameters for the PrivateEndpointConnectionsInterfaceClient.BeginUpdate
+// method.
+type PrivateEndpointConnectionsInterfaceClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// PrivateEndpointConnectionsInterfaceClientGetOptions contains the optional parameters for the PrivateEndpointConnectionsInterfaceClient.Get
+// method.
+type PrivateEndpointConnectionsInterfaceClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateEndpointConnectionsInterfaceClientListByTrafficControllerOptions contains the optional parameters for the PrivateEndpointConnectionsInterfaceClient.NewListByTrafficControllerPager
+// method.
+type PrivateEndpointConnectionsInterfaceClientListByTrafficControllerOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateLinkResourcesInterfaceClientGetOptions contains the optional parameters for the PrivateLinkResourcesInterfaceClient.Get
+// method.
+type PrivateLinkResourcesInterfaceClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateLinkResourcesInterfaceClientListByTrafficControllerOptions contains the optional parameters for the PrivateLinkResourcesInterfaceClient.NewListByTrafficControllerPager
+// method.
+type PrivateLinkResourcesInterfaceClientListByTrafficControllerOptions struct {
+	// placeholder for future optional parameters
+}
+
 // SecurityPoliciesInterfaceClientBeginCreateOrUpdateOptions contains the optional parameters for the SecurityPoliciesInterfaceClient.BeginCreateOrUpdate
 // method.
 type SecurityPoliciesInterfaceClientBeginCreateOrUpdateOptions struct {

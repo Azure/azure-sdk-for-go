@@ -12,7 +12,28 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-05-15-preview/PutRaiExternalSafetyProvider.json
+// Generated from example definition: 2026-09-15-preview/DeleteRaiExternalSafetyProvider.json
+func ExampleRaiExternalSafetyProviderClient_BeginDelete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcognitiveservices.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewRaiExternalSafetyProviderClient().BeginDelete(ctx, "safetyProviderName", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-09-15-preview/PutRaiExternalSafetyProvider.json
 func ExampleRaiExternalSafetyProviderClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,9 +66,9 @@ func ExampleRaiExternalSafetyProviderClient_CreateOrUpdate() {
 	// 		Name: to.Ptr("safetyProviderName"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.CognitiveServices/raiExternalSafetyProviders/safetyProviderName"),
 	// 		Properties: &armcognitiveservices.RaiExternalSafetyProviderSchemaProperties{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-07-01T00:00:00Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.July, 1, 0, 0, 0, 0, time.UTC)),
 	// 			KeyVaultURI: to.Ptr("https://example.vault.azure.net"),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-07-02T00:00:00Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.July, 2, 0, 0, 0, 0, time.UTC)),
 	// 			ManagedIdentity: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 			Mode: to.Ptr("sync"),
 	// 			ProviderID: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -59,28 +80,7 @@ func ExampleRaiExternalSafetyProviderClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15-preview/DeleteRaiExternalSafetyProvider.json
-func ExampleRaiExternalSafetyProviderClient_BeginDelete() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcognitiveservices.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewRaiExternalSafetyProviderClient().BeginDelete(ctx, "safetyProviderName", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2026-05-15-preview/GetRaiExternalSafetyProvider.json
+// Generated from example definition: 2026-09-15-preview/GetRaiExternalSafetyProvider.json
 func ExampleRaiExternalSafetyProviderClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -103,9 +103,9 @@ func ExampleRaiExternalSafetyProviderClient_Get() {
 	// 		Name: to.Ptr("safetyProviderName"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.CognitiveServices/raiExternalSafetyProviders/safetyProviderName"),
 	// 		Properties: &armcognitiveservices.RaiExternalSafetyProviderSchemaProperties{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-07-01T00:00:00Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.July, 1, 0, 0, 0, 0, time.UTC)),
 	// 			KeyVaultURI: to.Ptr("https://example.vault.azure.net"),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-07-02T00:00:00Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.July, 2, 0, 0, 0, 0, time.UTC)),
 	// 			ManagedIdentity: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 			Mode: to.Ptr("sync"),
 	// 			ProviderID: to.Ptr("00000000-0000-0000-0000-000000000000"),

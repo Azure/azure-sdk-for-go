@@ -5,7 +5,7 @@
 package armnewrelicobservability
 
 const (
-	version20250501Preview string = "2025-05-01-preview"
+	version20260601 string = "2026-06-01"
 )
 
 // AccountCreationSource - Source of Account creation

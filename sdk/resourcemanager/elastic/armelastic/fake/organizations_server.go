@@ -98,7 +98,7 @@ func (o *OrganizationsServerTransport) dispatchGetAPIKey(req *http.Request) (*ht
 	if o.srv.GetAPIKey == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetAPIKey not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Elastic/getOrganizationApiKey`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Elastic/getOrganizationApiKey`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -133,7 +133,7 @@ func (o *OrganizationsServerTransport) dispatchGetElasticToAzureSubscriptionMapp
 	if o.srv.GetElasticToAzureSubscriptionMapping == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetElasticToAzureSubscriptionMapping not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Elastic/getElasticOrganizationToAzureSubscriptionMapping`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Elastic/getElasticOrganizationToAzureSubscriptionMapping`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -160,7 +160,7 @@ func (o *OrganizationsServerTransport) dispatchBeginResubscribe(req *http.Reques
 	}
 	beginResubscribe := o.beginResubscribe.get(req)
 	if beginResubscribe == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Elastic/monitors/(?P<monitorName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resubscribe`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Elastic/monitors/(?P<monitorName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resubscribe`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {

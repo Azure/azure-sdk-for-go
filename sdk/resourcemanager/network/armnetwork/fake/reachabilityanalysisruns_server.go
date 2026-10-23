@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v12"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -22,13 +22,13 @@ import (
 
 // ReachabilityAnalysisRunsServer is a fake server for instances of the armnetwork.ReachabilityAnalysisRunsClient type.
 type ReachabilityAnalysisRunsServer struct {
-	// Create is the fake for method ReachabilityAnalysisRunsClient.Create
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	Create func(ctx context.Context, resourceGroupName string, networkManagerName string, workspaceName string, reachabilityAnalysisRunName string, body armnetwork.ReachabilityAnalysisRun, options *armnetwork.ReachabilityAnalysisRunsClientCreateOptions) (resp azfake.Responder[armnetwork.ReachabilityAnalysisRunsClientCreateResponse], errResp azfake.ErrorResponder)
-
 	// BeginDelete is the fake for method ReachabilityAnalysisRunsClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, networkManagerName string, workspaceName string, reachabilityAnalysisRunName string, options *armnetwork.ReachabilityAnalysisRunsClientBeginDeleteOptions) (resp azfake.PollerResponder[armnetwork.ReachabilityAnalysisRunsClientDeleteResponse], errResp azfake.ErrorResponder)
+
+	// Create is the fake for method ReachabilityAnalysisRunsClient.Create
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	Create func(ctx context.Context, resourceGroupName string, networkManagerName string, workspaceName string, reachabilityAnalysisRunName string, body armnetwork.ReachabilityAnalysisRun, options *armnetwork.ReachabilityAnalysisRunsClientCreateOptions) (resp azfake.Responder[armnetwork.ReachabilityAnalysisRunsClientCreateResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method ReachabilityAnalysisRunsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -79,10 +79,10 @@ func (r *ReachabilityAnalysisRunsServerTransport) dispatchToMethodFake(req *http
 		}
 		if !intercepted {
 			switch method {
-			case "ReachabilityAnalysisRunsClient.Create":
-				res.resp, res.err = r.dispatchCreate(req)
 			case "ReachabilityAnalysisRunsClient.BeginDelete":
 				res.resp, res.err = r.dispatchBeginDelete(req)
+			case "ReachabilityAnalysisRunsClient.Create":
+				res.resp, res.err = r.dispatchCreate(req)
 			case "ReachabilityAnalysisRunsClient.Get":
 				res.resp, res.err = r.dispatchGet(req)
 			case "ReachabilityAnalysisRunsClient.NewListPager":
@@ -103,58 +103,13 @@ func (r *ReachabilityAnalysisRunsServerTransport) dispatchToMethodFake(req *http
 	}
 }
 
-func (r *ReachabilityAnalysisRunsServerTransport) dispatchCreate(req *http.Request) (*http.Response, error) {
-	if r.srv.Create == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Create not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/networkManagers/(?P<networkManagerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/verifierWorkspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/reachabilityAnalysisRuns/(?P<reachabilityAnalysisRunName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 6 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armnetwork.ReachabilityAnalysisRun](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	networkManagerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkManagerName")])
-	if err != nil {
-		return nil, err
-	}
-	workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
-	if err != nil {
-		return nil, err
-	}
-	reachabilityAnalysisRunNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("reachabilityAnalysisRunName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := r.srv.Create(req.Context(), resourceGroupNameParam, networkManagerNameParam, workspaceNameParam, reachabilityAnalysisRunNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ReachabilityAnalysisRun, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (r *ReachabilityAnalysisRunsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
 	if r.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
 	beginDelete := r.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/networkManagers/(?P<networkManagerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/verifierWorkspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/reachabilityAnalysisRuns/(?P<reachabilityAnalysisRunName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkManagers/(?P<networkManagerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/verifierWorkspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/reachabilityAnalysisRuns/(?P<reachabilityAnalysisRunName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -200,11 +155,56 @@ func (r *ReachabilityAnalysisRunsServerTransport) dispatchBeginDelete(req *http.
 	return resp, nil
 }
 
+func (r *ReachabilityAnalysisRunsServerTransport) dispatchCreate(req *http.Request) (*http.Response, error) {
+	if r.srv.Create == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Create not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkManagers/(?P<networkManagerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/verifierWorkspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/reachabilityAnalysisRuns/(?P<reachabilityAnalysisRunName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 6 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armnetwork.ReachabilityAnalysisRun](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	networkManagerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkManagerName")])
+	if err != nil {
+		return nil, err
+	}
+	workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
+	if err != nil {
+		return nil, err
+	}
+	reachabilityAnalysisRunNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("reachabilityAnalysisRunName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := r.srv.Create(req.Context(), resourceGroupNameParam, networkManagerNameParam, workspaceNameParam, reachabilityAnalysisRunNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ReachabilityAnalysisRun, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (r *ReachabilityAnalysisRunsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if r.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/networkManagers/(?P<networkManagerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/verifierWorkspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/reachabilityAnalysisRuns/(?P<reachabilityAnalysisRunName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkManagers/(?P<networkManagerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/verifierWorkspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/reachabilityAnalysisRuns/(?P<reachabilityAnalysisRunName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -247,7 +247,7 @@ func (r *ReachabilityAnalysisRunsServerTransport) dispatchNewListPager(req *http
 	}
 	newListPager := r.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/networkManagers/(?P<networkManagerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/verifierWorkspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/reachabilityAnalysisRuns`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkManagers/(?P<networkManagerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/verifierWorkspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/reachabilityAnalysisRuns`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {

@@ -518,6 +518,91 @@ type LegacyChargeSummaryProperties struct {
 	UsageStart *string
 }
 
+// LegacyManagementGroupScopeReservationRecommendationProperties - The properties of the legacy reservation recommendation
+// for management group scope.
+type LegacyManagementGroupScopeReservationRecommendationProperties struct {
+	// REQUIRED; Shared or single recommendation.
+	Scope *string
+
+	// READ-ONLY; Management group id associated with management group scoped recommendation.
+	ManagementGroupID *string
+
+	// READ-ONLY; The tenant ID associated with the management group.
+	TenantID *string
+
+	// READ-ONLY; The total amount of cost without reserved instances.
+	CostWithNoReservedInstances *float64
+
+	// READ-ONLY; The usage date for looking back.
+	FirstUsageDate *time.Time
+
+	// READ-ONLY; The instance Flexibility Group.
+	InstanceFlexibilityGroup *string
+
+	// READ-ONLY; The instance Flexibility Ratio.
+	InstanceFlexibilityRatio *float32
+
+	// READ-ONLY; The last usage date used for looking back for computing the recommendation.
+	LastUsageDate *time.Time
+
+	// READ-ONLY; The number of days of usage to look back for recommendation.
+	LookBackPeriod *string
+
+	// READ-ONLY; The meter id (GUID)
+	MeterID *string
+
+	// READ-ONLY; Total estimated savings with reserved instances.
+	NetSavings *float64
+
+	// READ-ONLY; The normalized Size.
+	NormalizedSize *string
+
+	// READ-ONLY; Recommended quality for reserved instances.
+	RecommendedQuantity *float64
+
+	// READ-ONLY; The recommended Quantity Normalized.
+	RecommendedQuantityNormalized *float32
+
+	// READ-ONLY; The azure resource type.
+	ResourceType *string
+
+	// READ-ONLY; List of sku properties
+	SKUProperties []*SKUProperty
+
+	// READ-ONLY; Term period of the reservation. ex: P1M, P1Y or P3Y.
+	Term *string
+
+	// READ-ONLY; The total amount of cost with reserved instances.
+	TotalCostWithReservedInstances *float64
+
+	// READ-ONLY; The total hours for which the cost is covered.
+	TotalHours *int32
+}
+
+// GetLegacyReservationRecommendationProperties implements the LegacyReservationRecommendationPropertiesClassification interface
+// for type LegacyManagementGroupScopeReservationRecommendationProperties.
+func (l *LegacyManagementGroupScopeReservationRecommendationProperties) GetLegacyReservationRecommendationProperties() *LegacyReservationRecommendationProperties {
+	return &LegacyReservationRecommendationProperties{
+		CostWithNoReservedInstances:    l.CostWithNoReservedInstances,
+		FirstUsageDate:                 l.FirstUsageDate,
+		InstanceFlexibilityGroup:       l.InstanceFlexibilityGroup,
+		InstanceFlexibilityRatio:       l.InstanceFlexibilityRatio,
+		LastUsageDate:                  l.LastUsageDate,
+		LookBackPeriod:                 l.LookBackPeriod,
+		MeterID:                        l.MeterID,
+		NetSavings:                     l.NetSavings,
+		NormalizedSize:                 l.NormalizedSize,
+		RecommendedQuantity:            l.RecommendedQuantity,
+		RecommendedQuantityNormalized:  l.RecommendedQuantityNormalized,
+		ResourceType:                   l.ResourceType,
+		SKUProperties:                  l.SKUProperties,
+		Scope:                          l.Scope,
+		Term:                           l.Term,
+		TotalCostWithReservedInstances: l.TotalCostWithReservedInstances,
+		TotalHours:                     l.TotalHours,
+	}
+}
+
 // LegacyReservationRecommendation - Legacy reservation recommendation.
 type LegacyReservationRecommendation struct {
 	// REQUIRED; Specifies the kind of reservation recommendation.
@@ -1431,6 +1516,99 @@ type ModernChargeSummaryProperties struct {
 
 	// READ-ONLY; Usage start date.
 	UsageStart *string
+}
+
+// ModernManagementGroupScopeReservationRecommendationProperties - The properties of the modern reservation recommendation
+// for management group scope.
+type ModernManagementGroupScopeReservationRecommendationProperties struct {
+	// REQUIRED; Shared or single recommendation.
+	Scope *string
+
+	// READ-ONLY; Management group id associated with management group scoped recommendation.
+	ManagementGroupID *string
+
+	// READ-ONLY; The tenant ID associated with the management group.
+	TenantID *string
+
+	// READ-ONLY; The total amount of cost without reserved instances.
+	CostWithNoReservedInstances *Amount
+
+	// READ-ONLY; The usage date for looking back.
+	FirstUsageDate *time.Time
+
+	// READ-ONLY; The instance Flexibility Group.
+	InstanceFlexibilityGroup *string
+
+	// READ-ONLY; The instance Flexibility Ratio.
+	InstanceFlexibilityRatio *float32
+
+	// READ-ONLY; The last usage date used for looking back for computing the recommendation.
+	LastUsageDate *time.Time
+
+	// READ-ONLY; Resource Location.
+	Location *string
+
+	// READ-ONLY; The number of days of usage to look back for recommendation.
+	LookBackPeriod *int32
+
+	// READ-ONLY; The meter id (GUID)
+	MeterID *string
+
+	// READ-ONLY; Total estimated savings with reserved instances.
+	NetSavings *Amount
+
+	// READ-ONLY; The normalized Size.
+	NormalizedSize *string
+
+	// READ-ONLY; Recommended quality for reserved instances.
+	RecommendedQuantity *float64
+
+	// READ-ONLY; The recommended Quantity Normalized.
+	RecommendedQuantityNormalized *float32
+
+	// READ-ONLY; Resource type.
+	ResourceType *string
+
+	// READ-ONLY; This is the ARM Sku name.
+	SKUName *string
+
+	// READ-ONLY; List of sku properties
+	SKUProperties []*SKUProperty
+
+	// READ-ONLY; Term period of the reservation. ex: P1M, P1Y or P3Y.
+	Term *string
+
+	// READ-ONLY; The total amount of cost with reserved instances.
+	TotalCostWithReservedInstances *Amount
+
+	// READ-ONLY; The total hours for which the cost is covered.
+	TotalHours *int32
+}
+
+// GetModernReservationRecommendationProperties implements the ModernReservationRecommendationPropertiesClassification interface
+// for type ModernManagementGroupScopeReservationRecommendationProperties.
+func (m *ModernManagementGroupScopeReservationRecommendationProperties) GetModernReservationRecommendationProperties() *ModernReservationRecommendationProperties {
+	return &ModernReservationRecommendationProperties{
+		CostWithNoReservedInstances:    m.CostWithNoReservedInstances,
+		FirstUsageDate:                 m.FirstUsageDate,
+		InstanceFlexibilityGroup:       m.InstanceFlexibilityGroup,
+		InstanceFlexibilityRatio:       m.InstanceFlexibilityRatio,
+		LastUsageDate:                  m.LastUsageDate,
+		Location:                       m.Location,
+		LookBackPeriod:                 m.LookBackPeriod,
+		MeterID:                        m.MeterID,
+		NetSavings:                     m.NetSavings,
+		NormalizedSize:                 m.NormalizedSize,
+		RecommendedQuantity:            m.RecommendedQuantity,
+		RecommendedQuantityNormalized:  m.RecommendedQuantityNormalized,
+		ResourceType:                   m.ResourceType,
+		SKUName:                        m.SKUName,
+		SKUProperties:                  m.SKUProperties,
+		Scope:                          m.Scope,
+		Term:                           m.Term,
+		TotalCostWithReservedInstances: m.TotalCostWithReservedInstances,
+		TotalHours:                     m.TotalHours,
+	}
 }
 
 // ModernReservationRecommendation - Modern reservation recommendation.
@@ -2426,10 +2604,23 @@ type ReservationRecommendationDetailsModel struct {
 	Type *string
 }
 
+// ReservationRecommendationDetailsProjectedUsageProperties - Details about projected usage data that has been used for computing
+// the recommendation.
+type ReservationRecommendationDetailsProjectedUsageProperties struct {
+	// READ-ONLY; Total projected retail usage in commitment units (CUs).
+	TotalRetailUsageInCUs *float32
+}
+
 // ReservationRecommendationDetailsProperties - The properties of the reservation recommendation.
 type ReservationRecommendationDetailsProperties struct {
 	// READ-ONLY; An ISO 4217 currency code identifier for the costs and savings
 	Currency *string
+
+	// READ-ONLY; Management group id associated with management group scoped recommendation.
+	ManagementGroupID *string
+
+	// READ-ONLY; Projected usage details used for generating the recommendation.
+	ProjectedUsage *ReservationRecommendationDetailsProjectedUsageProperties
 
 	// READ-ONLY; Resource specific properties.
 	Resource *ReservationRecommendationDetailsResourceProperties
@@ -2442,6 +2633,9 @@ type ReservationRecommendationDetailsProperties struct {
 
 	// READ-ONLY; Scope of the reservation, ex: Single or Shared.
 	Scope *string
+
+	// READ-ONLY; The tenant ID associated with the management group. Populated only when managementGroupId is populated.
+	TenantID *string
 
 	// READ-ONLY; Historical usage details used to calculate the estimated savings.
 	Usage *ReservationRecommendationDetailsUsageProperties

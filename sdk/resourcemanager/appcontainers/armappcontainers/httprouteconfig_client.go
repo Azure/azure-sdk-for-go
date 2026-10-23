@@ -19,7 +19,7 @@ import (
 // HTTPRouteConfigClient contains the methods for the HTTPRouteConfig group.
 // Don't use this type directly, use NewHTTPRouteConfigClient() instead.
 //
-// Generated from API version 2025-10-02-preview
+// Generated from API version 2026-07-01
 type HTTPRouteConfigClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type HTTPRouteConfigClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewHTTPRouteConfigClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*HTTPRouteConfigClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -72,7 +75,7 @@ func (client *HTTPRouteConfigClient) CreateOrUpdate(ctx context.Context, resourc
 func (client *HTTPRouteConfigClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, environmentName string, httpRouteName string, httpRouteConfigEnvelope HTTPRouteConfig, _ *HTTPRouteConfigClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/httpRouteConfigs/{httpRouteName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -92,7 +95,7 @@ func (client *HTTPRouteConfigClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251002Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -114,7 +117,7 @@ func (client *HTTPRouteConfigClient) createOrUpdateHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// BeginDelete - Deletes the specified Managed Http Route.
+// BeginDelete - Deletes the specified Http Route Config.
 //
 // Deletes the specified Managed Http Route.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -140,7 +143,7 @@ func (client *HTTPRouteConfigClient) BeginDelete(ctx context.Context, resourceGr
 	}
 }
 
-// Delete - Deletes the specified Managed Http Route.
+// Delete - Deletes the specified Http Route Config.
 //
 // Deletes the specified Managed Http Route.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -168,7 +171,7 @@ func (client *HTTPRouteConfigClient) deleteOperation(ctx context.Context, resour
 func (client *HTTPRouteConfigClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, environmentName string, httpRouteName string, _ *HTTPRouteConfigClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/httpRouteConfigs/{httpRouteName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -188,12 +191,12 @@ func (client *HTTPRouteConfigClient) deleteCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251002Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
-// Get - Get the specified Managed Http Route Config.
+// Get - Get the specified Http Route Config.
 //
 // Get the specified Managed Http Route Config.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -222,7 +225,7 @@ func (client *HTTPRouteConfigClient) Get(ctx context.Context, resourceGroupName 
 func (client *HTTPRouteConfigClient) getCreateRequest(ctx context.Context, resourceGroupName string, environmentName string, httpRouteName string, _ *HTTPRouteConfigClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/httpRouteConfigs/{httpRouteName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -242,7 +245,7 @@ func (client *HTTPRouteConfigClient) getCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251002Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -260,7 +263,7 @@ func (client *HTTPRouteConfigClient) getHandleResponse(resp *http.Response, succ
 	return result, nil
 }
 
-// NewListPager - Get the Managed Http Routes in a given managed environment.
+// NewListPager - List the Http Route Configs in a given managed environment.
 //
 // Get the Managed Http Routes in a given managed environment.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -300,7 +303,7 @@ func (client *HTTPRouteConfigClient) listCreateRequest(ctx context.Context, reso
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/httpRouteConfigs"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -320,7 +323,7 @@ func (client *HTTPRouteConfigClient) listCreateRequest(ctx context.Context, reso
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20251002Preview)
+		reqQP.Set("api-version", version20260701)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -339,7 +342,7 @@ func (client *HTTPRouteConfigClient) listHandleResponse(resp *http.Response, suc
 	return result, nil
 }
 
-// Update - Update tags of a manged http route object
+// Update - Update tags of a Http Route Config object
 //
 // Patches an http route config resource. Only patching of tags is supported
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -369,7 +372,7 @@ func (client *HTTPRouteConfigClient) Update(ctx context.Context, resourceGroupNa
 func (client *HTTPRouteConfigClient) updateCreateRequest(ctx context.Context, resourceGroupName string, environmentName string, httpRouteName string, httpRouteConfigEnvelope HTTPRouteConfig, _ *HTTPRouteConfigClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/httpRouteConfigs/{httpRouteName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -389,7 +392,7 @@ func (client *HTTPRouteConfigClient) updateCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251002Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

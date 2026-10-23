@@ -81,7 +81,7 @@ func (r *RestorableTimeRangesServerTransport) dispatchFind(req *http.Request) (*
 	if r.srv.Find == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Find not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DataProtection/backupVaults/(?P<vaultName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/backupInstances/(?P<backupInstanceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/findRestorableTimeRanges`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataProtection/backupVaults/(?P<vaultName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/backupInstances/(?P<backupInstanceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/findRestorableTimeRanges`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {

@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v8"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v9"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -29,21 +29,21 @@ type ImagesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, imageName string, options *armcompute.ImagesClientBeginDeleteOptions) (resp azfake.PollerResponder[armcompute.ImagesClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method ImagesClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	BeginUpdate func(ctx context.Context, resourceGroupName string, imageName string, parameters armcompute.ImageUpdate, options *armcompute.ImagesClientBeginUpdateOptions) (resp azfake.PollerResponder[armcompute.ImagesClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method ImagesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, imageName string, options *armcompute.ImagesClientGetOptions) (resp azfake.Responder[armcompute.ImagesClientGetResponse], errResp azfake.ErrorResponder)
-
-	// NewListPager is the fake for method ImagesClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armcompute.ImagesClientListOptions) (resp azfake.PagerResponder[armcompute.ImagesClientListResponse])
 
 	// NewListByResourceGroupPager is the fake for method ImagesClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, options *armcompute.ImagesClientListByResourceGroupOptions) (resp azfake.PagerResponder[armcompute.ImagesClientListByResourceGroupResponse])
 
-	// BeginUpdate is the fake for method ImagesClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginUpdate func(ctx context.Context, resourceGroupName string, imageName string, parameters armcompute.ImageUpdate, options *armcompute.ImagesClientBeginUpdateOptions) (resp azfake.PollerResponder[armcompute.ImagesClientUpdateResponse], errResp azfake.ErrorResponder)
+	// NewListPager is the fake for method ImagesClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armcompute.ImagesClientListOptions) (resp azfake.PagerResponder[armcompute.ImagesClientListResponse])
 }
 
 // NewImagesServerTransport creates a new instance of ImagesServerTransport with the provided implementation.
@@ -54,9 +54,9 @@ func NewImagesServerTransport(srv *ImagesServer) *ImagesServerTransport {
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armcompute.ImagesClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armcompute.ImagesClientDeleteResponse]](),
-		newListPager:                newTracker[azfake.PagerResponder[armcompute.ImagesClientListResponse]](),
-		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armcompute.ImagesClientListByResourceGroupResponse]](),
 		beginUpdate:                 newTracker[azfake.PollerResponder[armcompute.ImagesClientUpdateResponse]](),
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armcompute.ImagesClientListByResourceGroupResponse]](),
+		newListPager:                newTracker[azfake.PagerResponder[armcompute.ImagesClientListResponse]](),
 	}
 }
 
@@ -66,9 +66,9 @@ type ImagesServerTransport struct {
 	srv                         *ImagesServer
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armcompute.ImagesClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armcompute.ImagesClientDeleteResponse]]
-	newListPager                *tracker[azfake.PagerResponder[armcompute.ImagesClientListResponse]]
-	newListByResourceGroupPager *tracker[azfake.PagerResponder[armcompute.ImagesClientListByResourceGroupResponse]]
 	beginUpdate                 *tracker[azfake.PollerResponder[armcompute.ImagesClientUpdateResponse]]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armcompute.ImagesClientListByResourceGroupResponse]]
+	newListPager                *tracker[azfake.PagerResponder[armcompute.ImagesClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for ImagesServerTransport.
@@ -96,14 +96,14 @@ func (i *ImagesServerTransport) dispatchToMethodFake(req *http.Request, method s
 				res.resp, res.err = i.dispatchBeginCreateOrUpdate(req)
 			case "ImagesClient.BeginDelete":
 				res.resp, res.err = i.dispatchBeginDelete(req)
-			case "ImagesClient.Get":
-				res.resp, res.err = i.dispatchGet(req)
-			case "ImagesClient.NewListPager":
-				res.resp, res.err = i.dispatchNewListPager(req)
-			case "ImagesClient.NewListByResourceGroupPager":
-				res.resp, res.err = i.dispatchNewListByResourceGroupPager(req)
 			case "ImagesClient.BeginUpdate":
 				res.resp, res.err = i.dispatchBeginUpdate(req)
+			case "ImagesClient.Get":
+				res.resp, res.err = i.dispatchGet(req)
+			case "ImagesClient.NewListByResourceGroupPager":
+				res.resp, res.err = i.dispatchNewListByResourceGroupPager(req)
+			case "ImagesClient.NewListPager":
+				res.resp, res.err = i.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -126,7 +126,7 @@ func (i *ImagesServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (
 	}
 	beginCreateOrUpdate := i.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/images/(?P<imageName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/images/(?P<imageName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -174,7 +174,7 @@ func (i *ImagesServerTransport) dispatchBeginDelete(req *http.Request) (*http.Re
 	}
 	beginDelete := i.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/images/(?P<imageName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/images/(?P<imageName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -212,124 +212,13 @@ func (i *ImagesServerTransport) dispatchBeginDelete(req *http.Request) (*http.Re
 	return resp, nil
 }
 
-func (i *ImagesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if i.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/images/(?P<imageName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	qp := req.URL.Query()
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	imageNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("imageName")])
-	if err != nil {
-		return nil, err
-	}
-	expandParam := getOptional(qp.Get("$expand"))
-	var options *armcompute.ImagesClientGetOptions
-	if expandParam != nil {
-		options = &armcompute.ImagesClientGetOptions{
-			Expand: expandParam,
-		}
-	}
-	respr, errRespr := i.srv.Get(req.Context(), resourceGroupNameParam, imageNameParam, options)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Image, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (i *ImagesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if i.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := i.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/images`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := i.srv.NewListPager(nil)
-		newListPager = &resp
-		i.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcompute.ImagesClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		i.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		i.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (i *ImagesServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
-	if i.srv.NewListByResourceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
-	}
-	newListByResourceGroupPager := i.newListByResourceGroupPager.get(req)
-	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/images`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := i.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
-		newListByResourceGroupPager = &resp
-		i.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armcompute.ImagesClientListByResourceGroupResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		i.newListByResourceGroupPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByResourceGroupPager) {
-		i.newListByResourceGroupPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (i *ImagesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
 	if i.srv.BeginUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
 	}
 	beginUpdate := i.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/images/(?P<imageName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/images/(?P<imageName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -368,6 +257,117 @@ func (i *ImagesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Re
 		i.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (i *ImagesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if i.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/images/(?P<imageName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	qp := req.URL.Query()
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	imageNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("imageName")])
+	if err != nil {
+		return nil, err
+	}
+	expandParam := getOptional(qp.Get("$expand"))
+	var options *armcompute.ImagesClientGetOptions
+	if expandParam != nil {
+		options = &armcompute.ImagesClientGetOptions{
+			Expand: expandParam,
+		}
+	}
+	respr, errRespr := i.srv.Get(req.Context(), resourceGroupNameParam, imageNameParam, options)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Image, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (i *ImagesServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
+	if i.srv.NewListByResourceGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
+	}
+	newListByResourceGroupPager := i.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/images`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := i.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
+		newListByResourceGroupPager = &resp
+		i.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armcompute.ImagesClientListByResourceGroupResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		i.newListByResourceGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		i.newListByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (i *ImagesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if i.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := i.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/images`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := i.srv.NewListPager(nil)
+		newListPager = &resp
+		i.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcompute.ImagesClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		i.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		i.newListPager.remove(req)
+	}
 	return resp, nil
 }
 

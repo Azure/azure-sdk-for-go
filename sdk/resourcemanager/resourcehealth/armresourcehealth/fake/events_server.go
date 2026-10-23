@@ -13,7 +13,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resourcehealth/armresourcehealth"
 	"net/http"
-	"net/url"
 	"regexp"
 	"slices"
 )
@@ -103,17 +102,14 @@ func (e *EventsServerTransport) dispatchNewListBySingleResourcePager(req *http.R
 	}
 	newListBySingleResourcePager := e.newListBySingleResourcePager.get(req)
 	if newListBySingleResourcePager == nil {
-		const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ResourceHealth/events`
+		const regexStr = `/(?P<resourceUri>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.ResourceHealth/events`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-		if err != nil {
-			return nil, err
-		}
+		resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 		filterParam := getOptional(qp.Get("$filter"))
 		var options *armresourcehealth.EventsClientListBySingleResourceOptions
 		if filterParam != nil {
@@ -148,7 +144,7 @@ func (e *EventsServerTransport) dispatchNewListBySubscriptionIDPager(req *http.R
 	}
 	newListBySubscriptionIDPager := e.newListBySubscriptionIDPager.get(req)
 	if newListBySubscriptionIDPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ResourceHealth/events`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ResourceHealth/events`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {

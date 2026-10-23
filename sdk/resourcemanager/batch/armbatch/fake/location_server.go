@@ -99,7 +99,7 @@ func (l *LocationServerTransport) dispatchCheckNameAvailability(req *http.Reques
 	if l.srv.CheckNameAvailability == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CheckNameAvailability not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Batch/locations/(?P<locationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/checkNameAvailability`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Batch/locations/(?P<locationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/checkNameAvailability`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -132,7 +132,7 @@ func (l *LocationServerTransport) dispatchGetQuotas(req *http.Request) (*http.Re
 	if l.srv.GetQuotas == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetQuotas not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Batch/locations/(?P<locationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/quotas`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Batch/locations/(?P<locationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/quotas`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -163,7 +163,7 @@ func (l *LocationServerTransport) dispatchNewListSupportedVirtualMachineSKUsPage
 	}
 	newListSupportedVirtualMachineSKUsPager := l.newListSupportedVirtualMachineSKUsPager.get(req)
 	if newListSupportedVirtualMachineSKUsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Batch/locations/(?P<locationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualMachineSkus`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Batch/locations/(?P<locationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/virtualMachineSkus`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {

@@ -92,7 +92,7 @@ func (o *OpenShiftVersionsServerTransport) dispatchGet(req *http.Request) (*http
 	if o.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.RedHatOpenShift/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/openShiftVersions/(?P<openShiftVersion>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.RedHatOpenShift/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/openShiftVersions/(?P<openShiftVersion>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -127,7 +127,7 @@ func (o *OpenShiftVersionsServerTransport) dispatchNewListPager(req *http.Reques
 	}
 	newListPager := o.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.RedHatOpenShift/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/openShiftVersions`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.RedHatOpenShift/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/openShiftVersions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {

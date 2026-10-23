@@ -19,7 +19,7 @@ import (
 // ResourceClient contains the methods for the Resource group.
 // Don't use this type directly, use NewResourceClient() instead.
 //
-// Generated from API version 2026-05-15-preview
+// Generated from API version 2026-08-01
 type ResourceClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type ResourceClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewResourceClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ResourceClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -39,6 +42,81 @@ func NewResourceClient(subscriptionID string, credential azcore.TokenCredential,
 		internal:       cl,
 	}
 	return client, nil
+}
+
+// BeginUpdateNetworkSiblingSet - Update the network features of a network sibling set
+//
+// Update the network features of the specified network sibling set.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - location - The name of the Azure region.
+//   - body - The request body
+//   - options - ResourceClientBeginUpdateNetworkSiblingSetOptions contains the optional parameters for the ResourceClient.BeginUpdateNetworkSiblingSet
+//     method.
+func (client *ResourceClient) BeginUpdateNetworkSiblingSet(ctx context.Context, location string, body UpdateNetworkSiblingSetRequest, options *ResourceClientBeginUpdateNetworkSiblingSetOptions) (*runtime.Poller[ResourceClientUpdateNetworkSiblingSetResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.updateNetworkSiblingSet(ctx, location, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ResourceClientUpdateNetworkSiblingSetResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ResourceClientUpdateNetworkSiblingSetResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// updateNetworkSiblingSet - Update the network features of a network sibling set
+//
+// Update the network features of the specified network sibling set.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ResourceClient) updateNetworkSiblingSet(ctx context.Context, location string, body UpdateNetworkSiblingSetRequest, options *ResourceClientBeginUpdateNetworkSiblingSetOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ResourceClient.BeginUpdateNetworkSiblingSet"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateNetworkSiblingSetCreateRequest(ctx, location, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateNetworkSiblingSetCreateRequest creates the updateNetworkSiblingSet request.
+func (client *ResourceClient) updateNetworkSiblingSetCreateRequest(ctx context.Context, location string, body UpdateNetworkSiblingSetRequest, _ *ResourceClientBeginUpdateNetworkSiblingSetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.NetApp/locations/{location}/updateNetworkSiblingSet"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if location == "" {
+		return nil, errors.New("parameter location cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
 }
 
 // CheckFilePathAvailability - Check file path availability
@@ -70,7 +148,7 @@ func (client *ResourceClient) CheckFilePathAvailability(ctx context.Context, loc
 func (client *ResourceClient) checkFilePathAvailabilityCreateRequest(ctx context.Context, location string, body FilePathAvailabilityRequest, _ *ResourceClientCheckFilePathAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.NetApp/locations/{location}/checkFilePathAvailability"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {
@@ -82,7 +160,7 @@ func (client *ResourceClient) checkFilePathAvailabilityCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
+	reqQP.Set("api-version", version20260801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -133,7 +211,7 @@ func (client *ResourceClient) CheckNameAvailability(ctx context.Context, locatio
 func (client *ResourceClient) checkNameAvailabilityCreateRequest(ctx context.Context, location string, body ResourceNameAvailabilityRequest, _ *ResourceClientCheckNameAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.NetApp/locations/{location}/checkNameAvailability"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {
@@ -145,7 +223,7 @@ func (client *ResourceClient) checkNameAvailabilityCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
+	reqQP.Set("api-version", version20260801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -196,7 +274,7 @@ func (client *ResourceClient) CheckQuotaAvailability(ctx context.Context, locati
 func (client *ResourceClient) checkQuotaAvailabilityCreateRequest(ctx context.Context, location string, body QuotaAvailabilityRequest, _ *ResourceClientCheckQuotaAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.NetApp/locations/{location}/checkQuotaAvailability"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {
@@ -208,7 +286,7 @@ func (client *ResourceClient) checkQuotaAvailabilityCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
+	reqQP.Set("api-version", version20260801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -259,7 +337,7 @@ func (client *ResourceClient) QueryNetworkSiblingSet(ctx context.Context, locati
 func (client *ResourceClient) queryNetworkSiblingSetCreateRequest(ctx context.Context, location string, body QueryNetworkSiblingSetRequest, _ *ResourceClientQueryNetworkSiblingSetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.NetApp/locations/{location}/queryNetworkSiblingSet"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {
@@ -271,7 +349,7 @@ func (client *ResourceClient) queryNetworkSiblingSetCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
+	reqQP.Set("api-version", version20260801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -321,7 +399,7 @@ func (client *ResourceClient) QueryRegionInfo(ctx context.Context, location stri
 func (client *ResourceClient) queryRegionInfoCreateRequest(ctx context.Context, location string, _ *ResourceClientQueryRegionInfoOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.NetApp/locations/{location}/regionInfo"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {
@@ -333,7 +411,7 @@ func (client *ResourceClient) queryRegionInfoCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
+	reqQP.Set("api-version", version20260801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -349,79 +427,4 @@ func (client *ResourceClient) queryRegionInfoHandleResponse(resp *http.Response,
 		return ResourceClientQueryRegionInfoResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdateNetworkSiblingSet - Update the network features of a network sibling set
-//
-// Update the network features of the specified network sibling set.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - location - The name of the Azure region.
-//   - body - The request body
-//   - options - ResourceClientBeginUpdateNetworkSiblingSetOptions contains the optional parameters for the ResourceClient.BeginUpdateNetworkSiblingSet
-//     method.
-func (client *ResourceClient) BeginUpdateNetworkSiblingSet(ctx context.Context, location string, body UpdateNetworkSiblingSetRequest, options *ResourceClientBeginUpdateNetworkSiblingSetOptions) (*runtime.Poller[ResourceClientUpdateNetworkSiblingSetResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.updateNetworkSiblingSet(ctx, location, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ResourceClientUpdateNetworkSiblingSetResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ResourceClientUpdateNetworkSiblingSetResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// UpdateNetworkSiblingSet - Update the network features of a network sibling set
-//
-// Update the network features of the specified network sibling set.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ResourceClient) updateNetworkSiblingSet(ctx context.Context, location string, body UpdateNetworkSiblingSetRequest, options *ResourceClientBeginUpdateNetworkSiblingSetOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ResourceClient.BeginUpdateNetworkSiblingSet"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateNetworkSiblingSetCreateRequest(ctx, location, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateNetworkSiblingSetCreateRequest creates the UpdateNetworkSiblingSet request.
-func (client *ResourceClient) updateNetworkSiblingSetCreateRequest(ctx context.Context, location string, body UpdateNetworkSiblingSetRequest, _ *ResourceClientBeginUpdateNetworkSiblingSetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.NetApp/locations/{location}/updateNetworkSiblingSet"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if location == "" {
-		return nil, errors.New("parameter location cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

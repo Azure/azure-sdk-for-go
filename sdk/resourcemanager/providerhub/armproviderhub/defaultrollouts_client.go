@@ -19,7 +19,7 @@ import (
 // DefaultRolloutsClient contains the methods for the DefaultRollouts group.
 // Don't use this type directly, use NewDefaultRolloutsClient() instead.
 //
-// Generated from API version 2024-09-01
+// Generated from API version 2025-10-01
 type DefaultRolloutsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type DefaultRolloutsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewDefaultRolloutsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DefaultRolloutsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -91,7 +94,7 @@ func (client *DefaultRolloutsClient) createOrUpdate(ctx context.Context, provide
 func (client *DefaultRolloutsClient) createOrUpdateCreateRequest(ctx context.Context, providerNamespace string, rolloutName string, properties DefaultRollout, _ *DefaultRolloutsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/defaultRollouts/{rolloutName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if providerNamespace == "" {
@@ -107,7 +110,7 @@ func (client *DefaultRolloutsClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240901)
+	reqQP.Set("api-version", version20251001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -146,7 +149,7 @@ func (client *DefaultRolloutsClient) Delete(ctx context.Context, providerNamespa
 func (client *DefaultRolloutsClient) deleteCreateRequest(ctx context.Context, providerNamespace string, rolloutName string, _ *DefaultRolloutsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/defaultRollouts/{rolloutName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if providerNamespace == "" {
@@ -162,7 +165,7 @@ func (client *DefaultRolloutsClient) deleteCreateRequest(ctx context.Context, pr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240901)
+	reqQP.Set("api-version", version20251001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -193,7 +196,7 @@ func (client *DefaultRolloutsClient) Get(ctx context.Context, providerNamespace 
 func (client *DefaultRolloutsClient) getCreateRequest(ctx context.Context, providerNamespace string, rolloutName string, _ *DefaultRolloutsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/defaultRollouts/{rolloutName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if providerNamespace == "" {
@@ -209,7 +212,7 @@ func (client *DefaultRolloutsClient) getCreateRequest(ctx context.Context, provi
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240901)
+	reqQP.Set("api-version", version20251001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -264,7 +267,7 @@ func (client *DefaultRolloutsClient) listByProviderRegistrationCreateRequest(ctx
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/defaultRollouts"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if providerNamespace == "" {
@@ -280,7 +283,7 @@ func (client *DefaultRolloutsClient) listByProviderRegistrationCreateRequest(ctx
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20240901)
+		reqQP.Set("api-version", version20251001)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -328,7 +331,7 @@ func (client *DefaultRolloutsClient) Stop(ctx context.Context, providerNamespace
 func (client *DefaultRolloutsClient) stopCreateRequest(ctx context.Context, providerNamespace string, rolloutName string, _ *DefaultRolloutsClientStopOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/defaultRollouts/{rolloutName}/stop"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if providerNamespace == "" {
@@ -344,7 +347,7 @@ func (client *DefaultRolloutsClient) stopCreateRequest(ctx context.Context, prov
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240901)
+	reqQP.Set("api-version", version20251001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }

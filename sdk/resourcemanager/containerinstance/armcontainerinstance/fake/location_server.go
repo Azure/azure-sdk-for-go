@@ -103,7 +103,7 @@ func (l *LocationServerTransport) dispatchNewListCachedImagesPager(req *http.Req
 	}
 	newListCachedImagesPager := l.newListCachedImagesPager.get(req)
 	if newListCachedImagesPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerInstance/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cachedImages`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerInstance/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/cachedImages`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -140,7 +140,7 @@ func (l *LocationServerTransport) dispatchNewListCapabilitiesPager(req *http.Req
 	}
 	newListCapabilitiesPager := l.newListCapabilitiesPager.get(req)
 	if newListCapabilitiesPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerInstance/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/capabilities`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerInstance/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/capabilities`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -177,7 +177,7 @@ func (l *LocationServerTransport) dispatchNewListUsagePager(req *http.Request) (
 	}
 	newListUsagePager := l.newListUsagePager.get(req)
 	if newListUsagePager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerInstance/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/usages`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerInstance/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/usages`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {

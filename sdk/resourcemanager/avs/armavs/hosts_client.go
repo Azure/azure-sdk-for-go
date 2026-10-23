@@ -19,7 +19,7 @@ import (
 // HostsClient contains the methods for the Hosts group.
 // Don't use this type directly, use NewHostsClient() instead.
 //
-// Generated from API version 2025-09-01
+// Generated from API version 2026-03-01
 type HostsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type HostsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewHostsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*HostsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -69,7 +72,7 @@ func (client *HostsClient) Get(ctx context.Context, resourceGroupName string, pr
 func (client *HostsClient) getCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, hostID string, _ *HostsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/clusters/{clusterName}/hosts/{hostId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -93,7 +96,7 @@ func (client *HostsClient) getCreateRequest(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -149,7 +152,7 @@ func (client *HostsClient) listCreateRequest(ctx context.Context, resourceGroupN
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/clusters/{clusterName}/hosts"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -173,7 +176,7 @@ func (client *HostsClient) listCreateRequest(ctx context.Context, resourceGroupN
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250901)
+		reqQP.Set("api-version", version20260301)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -188,6 +191,81 @@ func (client *HostsClient) listHandleResponse(resp *http.Response, successCodes 
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HostListResult); err != nil {
 		return HostsClientListResponse{}, err
+	}
+	return result, nil
+}
+
+// Update - Update a Host
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - privateCloudName - Name of the private cloud
+//   - clusterName - Name of the cluster
+//   - hostID - The host identifier.
+//   - properties - The resource properties to be updated.
+//   - options - HostsClientUpdateOptions contains the optional parameters for the HostsClient.Update method.
+func (client *HostsClient) Update(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, hostID string, properties HostUpdate, options *HostsClientUpdateOptions) (HostsClientUpdateResponse, error) {
+	var err error
+	const operationName = "HostsClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, privateCloudName, clusterName, hostID, properties, options)
+	if err != nil {
+		return HostsClientUpdateResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return HostsClientUpdateResponse{}, err
+	}
+	return client.updateHandleResponse(httpResp, http.StatusOK)
+}
+
+// updateCreateRequest creates the Update request.
+func (client *HostsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, hostID string, properties HostUpdate, _ *HostsClientUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/clusters/{clusterName}/hosts/{hostId}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if privateCloudName == "" {
+		return nil, errors.New("parameter privateCloudName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{privateCloudName}", url.PathEscape(privateCloudName))
+	if clusterName == "" {
+		return nil, errors.New("parameter clusterName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
+	if hostID == "" {
+		return nil, errors.New("parameter hostID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{hostId}", url.PathEscape(hostID))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260301)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, properties); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// updateHandleResponse handles the Update response.
+func (client *HostsClient) updateHandleResponse(resp *http.Response, successCodes ...int) (HostsClientUpdateResponse, error) {
+	result := HostsClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Host); err != nil {
+		return HostsClientUpdateResponse{}, err
 	}
 	return result, nil
 }

@@ -12,7 +12,56 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-20-preview/PrivateEndpointConnections_Delete.json
+// Generated from example definition: 2026-10-01-preview/PrivateEndpointConnections_ApproveOrReject.json
+func ExamplePrivateEndpointConnectionsClient_BeginApproveOrReject() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armhorizondb.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewPrivateEndpointConnectionsClient().BeginApproveOrReject(ctx, "example-resource-group", "example-cluster", "example-private-endpoint-connection", armhorizondb.PrivateEndpointConnectionResource{
+		Properties: &armhorizondb.PrivateEndpointConnectionProperties{
+			PrivateLinkServiceConnectionState: &armhorizondb.PrivateLinkServiceConnectionState{
+				Status:      to.Ptr(armhorizondb.PrivateEndpointServiceConnectionStatusApproved),
+				Description: to.Ptr("Approved for the production database network"),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armhorizondb.PrivateEndpointConnectionsClientApproveOrRejectResponse{
+	// 	PrivateEndpointConnectionResource: armhorizondb.PrivateEndpointConnectionResource{
+	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/example-resource-group/providers/Microsoft.HorizonDb/clusters/example-cluster/privateEndpointConnections/example-private-endpoint-connection"),
+	// 		Name: to.Ptr("example-private-endpoint-connection"),
+	// 		Type: to.Ptr("Microsoft.HorizonDb/clusters/privateEndpointConnections"),
+	// 		Properties: &armhorizondb.PrivateEndpointConnectionProperties{
+	// 			PrivateEndpoint: &armhorizondb.PrivateEndpoint{
+	// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/network-resource-group/providers/Microsoft.Network/privateEndpoints/example-private-endpoint"),
+	// 			},
+	// 			PrivateLinkServiceConnectionState: &armhorizondb.PrivateLinkServiceConnectionState{
+	// 				Status: to.Ptr(armhorizondb.PrivateEndpointServiceConnectionStatusApproved),
+	// 				Description: to.Ptr("Approved for the production database network"),
+	// 				ActionsRequired: to.Ptr("None"),
+	// 			},
+	// 			ProvisioningState: to.Ptr(armhorizondb.PrivateEndpointConnectionProvisioningStateSucceeded),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-01-preview/PrivateEndpointConnections_Delete.json
 func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -23,7 +72,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewPrivateEndpointConnectionsClient().BeginDelete(ctx, "exampleresourcegroup", "exampleprivateendpointconnection.1fa229cd-bf3f-47f0-8c49-afb36723997e", nil)
+	poller, err := clientFactory.NewPrivateEndpointConnectionsClient().BeginDelete(ctx, "example-resource-group", "example-cluster", "example-private-endpoint-connection", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -33,8 +82,8 @@ func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-01-20-preview/PrivateEndpointConnections_Get.json
-func ExamplePrivateEndpointConnectionsClient_Get() {
+// Generated from example definition: 2026-10-01-preview/PrivateEndpointConnections_Get.json
+func ExamplePrivateEndpointConnectionsClient_Get_getAPrivateEndpointConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -44,7 +93,7 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewPrivateEndpointConnectionsClient().Get(ctx, "exampleresourcegroup", "examplecluster", "exampleprivateendpointconnection.1fa229cd-bf3f-47f0-8c49-afb36723997e", nil)
+	res, err := clientFactory.NewPrivateEndpointConnectionsClient().Get(ctx, "example-resource-group", "example-cluster", "example-private-endpoint-connection", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -53,28 +102,69 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhorizondb.PrivateEndpointConnectionsClientGetResponse{
 	// 	PrivateEndpointConnectionResource: armhorizondb.PrivateEndpointConnectionResource{
-	// 		Name: to.Ptr("exampleprivateendpointconnection.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
+	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/example-resource-group/providers/Microsoft.HorizonDb/clusters/example-cluster/privateEndpointConnections/example-private-endpoint-connection"),
+	// 		Name: to.Ptr("example-private-endpoint-connection"),
 	// 		Type: to.Ptr("Microsoft.HorizonDb/clusters/privateEndpointConnections"),
-	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.HorizonDb/clusters/examplecluster/privateEndpointConnections/exampleprivateendpointconnection.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
 	// 		Properties: &armhorizondb.PrivateEndpointConnectionProperties{
 	// 			GroupIDs: []*string{
-	// 				to.Ptr("default"),
+	// 				to.Ptr("example-cluster"),
 	// 			},
 	// 			PrivateEndpoint: &armhorizondb.PrivateEndpoint{
-	// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.Network/privateEndpoints/private-endpoint-name"),
+	// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/network-resource-group/providers/Microsoft.Network/privateEndpoints/example-private-endpoint"),
 	// 			},
 	// 			PrivateLinkServiceConnectionState: &armhorizondb.PrivateLinkServiceConnectionState{
-	// 				Description: to.Ptr("Auto-approved"),
-	// 				ActionsRequired: to.Ptr("None"),
 	// 				Status: to.Ptr(armhorizondb.PrivateEndpointServiceConnectionStatusApproved),
+	// 				Description: to.Ptr("Approved for the production database network"),
+	// 				ActionsRequired: to.Ptr("None"),
 	// 			},
-	// 			ProvisioningState: to.Ptr(armhorizondb.PrivateEndpointConnectionProvisioningState("Ready")),
+	// 			ProvisioningState: to.Ptr(armhorizondb.PrivateEndpointConnectionProvisioningStateSucceeded),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-01-20-preview/PrivateEndpointConnections_List.json
+// Generated from example definition: 2026-10-01-preview/PrivateEndpointConnections_GetDisconnectedAfterLastPoolDeletion.json
+func ExamplePrivateEndpointConnectionsClient_Get_getAPrivateEndpointConnectionDisconnectedAfterTheLastPoolWasDeleted() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armhorizondb.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewPrivateEndpointConnectionsClient().Get(ctx, "example-resource-group", "example-cluster", "example-private-endpoint-connection", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armhorizondb.PrivateEndpointConnectionsClientGetResponse{
+	// 	PrivateEndpointConnectionResource: armhorizondb.PrivateEndpointConnectionResource{
+	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/example-resource-group/providers/Microsoft.HorizonDb/clusters/example-cluster/privateEndpointConnections/example-private-endpoint-connection"),
+	// 		Name: to.Ptr("example-private-endpoint-connection"),
+	// 		Type: to.Ptr("Microsoft.HorizonDb/clusters/privateEndpointConnections"),
+	// 		Properties: &armhorizondb.PrivateEndpointConnectionProperties{
+	// 			GroupIDs: []*string{
+	// 				to.Ptr("example-cluster"),
+	// 			},
+	// 			PrivateEndpoint: &armhorizondb.PrivateEndpoint{
+	// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/network-resource-group/providers/Microsoft.Network/privateEndpoints/example-private-endpoint"),
+	// 			},
+	// 			PrivateLinkServiceConnectionState: &armhorizondb.PrivateLinkServiceConnectionState{
+	// 				Status: to.Ptr(armhorizondb.PrivateEndpointServiceConnectionStatusRejected),
+	// 				Description: to.Ptr("Disconnected because the last pool in the cluster was deleted."),
+	// 				ActionsRequired: to.Ptr("Create a pool before requesting approval again."),
+	// 			},
+	// 			ProvisioningState: to.Ptr(armhorizondb.PrivateEndpointConnectionProvisioningStateSucceeded),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-01-preview/PrivateEndpointConnections_List.json
 func ExamplePrivateEndpointConnectionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -85,7 +175,7 @@ func ExamplePrivateEndpointConnectionsClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewPrivateEndpointConnectionsClient().NewListPager("exampleresourcegroup", "examplecluster", nil)
+	pager := clientFactory.NewPrivateEndpointConnectionsClient().NewListPager("example-resource-group", "example-cluster", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -100,93 +190,45 @@ func ExamplePrivateEndpointConnectionsClient_NewListPager() {
 		// 	PrivateEndpointConnectionResourceListResult: armhorizondb.PrivateEndpointConnectionResourceListResult{
 		// 		Value: []*armhorizondb.PrivateEndpointConnectionResource{
 		// 			{
-		// 				Name: to.Ptr("exampleprivateendpointconnection.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
+		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/example-resource-group/providers/Microsoft.HorizonDb/clusters/example-cluster/privateEndpointConnections/example-private-endpoint-connection"),
+		// 				Name: to.Ptr("example-private-endpoint-connection"),
 		// 				Type: to.Ptr("Microsoft.HorizonDb/clusters/privateEndpointConnections"),
-		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.HorizonDb/clusters/examplecluster/privateEndpointConnections/exampleprivateendpointconnection.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
 		// 				Properties: &armhorizondb.PrivateEndpointConnectionProperties{
 		// 					GroupIDs: []*string{
-		// 						to.Ptr("postgresqlServer"),
+		// 						to.Ptr("example-cluster"),
 		// 					},
 		// 					PrivateEndpoint: &armhorizondb.PrivateEndpoint{
-		// 						ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.Network/privateEndpoints/private-endpoint-name"),
+		// 						ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/network-resource-group/providers/Microsoft.Network/privateEndpoints/example-private-endpoint"),
 		// 					},
 		// 					PrivateLinkServiceConnectionState: &armhorizondb.PrivateLinkServiceConnectionState{
-		// 						Description: to.Ptr("Auto-approved"),
-		// 						ActionsRequired: to.Ptr("None"),
 		// 						Status: to.Ptr(armhorizondb.PrivateEndpointServiceConnectionStatusApproved),
+		// 						Description: to.Ptr("Approved for the production database network"),
+		// 						ActionsRequired: to.Ptr("None"),
 		// 					},
-		// 					ProvisioningState: to.Ptr(armhorizondb.PrivateEndpointConnectionProvisioningState("Ready")),
+		// 					ProvisioningState: to.Ptr(armhorizondb.PrivateEndpointConnectionProvisioningStateSucceeded),
 		// 				},
 		// 			},
 		// 			{
-		// 				Name: to.Ptr("exampleprivateendpointconnection2.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
+		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/example-resource-group/providers/Microsoft.HorizonDb/clusters/example-cluster/privateEndpointConnections/example-pool-private-endpoint-connection"),
+		// 				Name: to.Ptr("example-pool-private-endpoint-connection"),
 		// 				Type: to.Ptr("Microsoft.HorizonDb/clusters/privateEndpointConnections"),
-		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.HorizonDb/clusters/examplecluster/privateEndpointConnections/exampleprivateendpointconnection2.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
 		// 				Properties: &armhorizondb.PrivateEndpointConnectionProperties{
 		// 					GroupIDs: []*string{
-		// 						to.Ptr("postgresqlServer"),
+		// 						to.Ptr("example-pool"),
 		// 					},
 		// 					PrivateEndpoint: &armhorizondb.PrivateEndpoint{
-		// 						ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.Network/privateEndpoints/private-endpoint-name-2"),
+		// 						ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/network-resource-group/providers/Microsoft.Network/privateEndpoints/example-pool-private-endpoint"),
 		// 					},
 		// 					PrivateLinkServiceConnectionState: &armhorizondb.PrivateLinkServiceConnectionState{
-		// 						Description: to.Ptr("Auto-approved"),
-		// 						ActionsRequired: to.Ptr("None"),
 		// 						Status: to.Ptr(armhorizondb.PrivateEndpointServiceConnectionStatusApproved),
+		// 						Description: to.Ptr("Approved for read-only Pool access"),
+		// 						ActionsRequired: to.Ptr("None"),
 		// 					},
-		// 					ProvisioningState: to.Ptr(armhorizondb.PrivateEndpointConnectionProvisioningState("Ready")),
+		// 					ProvisioningState: to.Ptr(armhorizondb.PrivateEndpointConnectionProvisioningStateSucceeded),
 		// 				},
 		// 			},
 		// 		},
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-01-20-preview/PrivateEndpointConnections_Update.json
-func ExamplePrivateEndpointConnectionsClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armhorizondb.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewPrivateEndpointConnectionsClient().BeginUpdate(ctx, "exampleresourcegroup", "exampleprivateendpointconnection.1fa229cd-bf3f-47f0-8c49-afb36723997e", armhorizondb.PrivateEndpointConnectionUpdate{
-		Properties: &armhorizondb.OptionalPropertiesUpdateableProperties{
-			PrivateLinkServiceConnectionState: &armhorizondb.PrivateLinkServiceConnectionState{
-				Description: to.Ptr("Approved by johndoe@contoso.com"),
-				Status:      to.Ptr(armhorizondb.PrivateEndpointServiceConnectionStatusApproved),
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armhorizondb.PrivateEndpointConnectionsClientUpdateResponse{
-	// 	PrivateEndpointConnection: armhorizondb.PrivateEndpointConnection{
-	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.HorizonDb/clusters/examplecluster/privateEndpointConnections/exampleprivateendpointconnection.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
-	// 		Name: to.Ptr("exampleprivateendpointconnection.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
-	// 		Type: to.Ptr("Microsoft.HorizonDb/clusters/privateEndpointConnections"),
-	// 		Properties: &armhorizondb.PrivateEndpointConnectionProperties{
-	// 			PrivateEndpoint: &armhorizondb.PrivateEndpoint{
-	// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.Network/privateEndpoints/examplePrivateEndpoint"),
-	// 			},
-	// 			PrivateLinkServiceConnectionState: &armhorizondb.PrivateLinkServiceConnectionState{
-	// 				Status: to.Ptr(armhorizondb.PrivateEndpointServiceConnectionStatusApproved),
-	// 				Description: to.Ptr("Approved by johndoe@contoso.com"),
-	// 			},
-	// 			ProvisioningState: to.Ptr(armhorizondb.PrivateEndpointConnectionProvisioningStateSucceeded),
-	// 		},
-	// 	},
-	// }
 }

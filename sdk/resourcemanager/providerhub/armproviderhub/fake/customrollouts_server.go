@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/providerhub/armproviderhub/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/providerhub/armproviderhub/v4"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -114,7 +114,7 @@ func (c *CustomRolloutsServerTransport) dispatchBeginCreateOrUpdate(req *http.Re
 	}
 	beginCreateOrUpdate := c.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ProviderHub/providerRegistrations/(?P<providerNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/customRollouts/(?P<rolloutName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ProviderHub/providerRegistrations/(?P<providerNamespace>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/customRollouts/(?P<rolloutName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -160,7 +160,7 @@ func (c *CustomRolloutsServerTransport) dispatchDelete(req *http.Request) (*http
 	if c.srv.Delete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ProviderHub/providerRegistrations/(?P<providerNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/customRollouts/(?P<rolloutName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ProviderHub/providerRegistrations/(?P<providerNamespace>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/customRollouts/(?P<rolloutName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -193,7 +193,7 @@ func (c *CustomRolloutsServerTransport) dispatchGet(req *http.Request) (*http.Re
 	if c.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ProviderHub/providerRegistrations/(?P<providerNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/customRollouts/(?P<rolloutName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ProviderHub/providerRegistrations/(?P<providerNamespace>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/customRollouts/(?P<rolloutName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -228,7 +228,7 @@ func (c *CustomRolloutsServerTransport) dispatchNewListByProviderRegistrationPag
 	}
 	newListByProviderRegistrationPager := c.newListByProviderRegistrationPager.get(req)
 	if newListByProviderRegistrationPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ProviderHub/providerRegistrations/(?P<providerNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/customRollouts`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ProviderHub/providerRegistrations/(?P<providerNamespace>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/customRollouts`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -263,7 +263,7 @@ func (c *CustomRolloutsServerTransport) dispatchStop(req *http.Request) (*http.R
 	if c.srv.Stop == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Stop not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ProviderHub/providerRegistrations/(?P<providerNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/customRollouts/(?P<rolloutName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/stop`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ProviderHub/providerRegistrations/(?P<providerNamespace>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/customRollouts/(?P<rolloutName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/stop`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {

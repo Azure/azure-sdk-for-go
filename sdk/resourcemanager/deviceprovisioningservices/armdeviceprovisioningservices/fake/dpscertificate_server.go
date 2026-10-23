@@ -114,7 +114,7 @@ func (d *DpsCertificateServerTransport) dispatchCreateOrUpdate(req *http.Request
 	if d.srv.CreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Devices/provisioningServices/(?P<provisioningServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/certificates/(?P<certificateName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Devices/provisioningServices/(?P<provisioningServiceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/certificates/(?P<certificateName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -162,7 +162,7 @@ func (d *DpsCertificateServerTransport) dispatchDelete(req *http.Request) (*http
 	if d.srv.Delete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Devices/provisioningServices/(?P<provisioningServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/certificates/(?P<certificateName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Devices/provisioningServices/(?P<provisioningServiceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/certificates/(?P<certificateName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -236,7 +236,7 @@ func (d *DpsCertificateServerTransport) dispatchGenerateVerificationCode(req *ht
 	if d.srv.GenerateVerificationCode == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GenerateVerificationCode not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Devices/provisioningServices/(?P<provisioningServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/certificates/(?P<certificateName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/generateVerificationCode`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Devices/provisioningServices/(?P<provisioningServiceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/certificates/(?P<certificateName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/generateVerificationCode`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -310,7 +310,7 @@ func (d *DpsCertificateServerTransport) dispatchGet(req *http.Request) (*http.Re
 	if d.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Devices/provisioningServices/(?P<provisioningServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/certificates/(?P<certificateName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Devices/provisioningServices/(?P<provisioningServiceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/certificates/(?P<certificateName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -354,7 +354,7 @@ func (d *DpsCertificateServerTransport) dispatchList(req *http.Request) (*http.R
 	if d.srv.List == nil {
 		return nil, &nonRetriableError{errors.New("fake for method List not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Devices/provisioningServices/(?P<provisioningServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/certificates`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Devices/provisioningServices/(?P<provisioningServiceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/certificates`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -387,7 +387,7 @@ func (d *DpsCertificateServerTransport) dispatchVerifyCertificate(req *http.Requ
 	if d.srv.VerifyCertificate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method VerifyCertificate not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Devices/provisioningServices/(?P<provisioningServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/certificates/(?P<certificateName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/verify`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Devices/provisioningServices/(?P<provisioningServiceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/certificates/(?P<certificateName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/verify`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {

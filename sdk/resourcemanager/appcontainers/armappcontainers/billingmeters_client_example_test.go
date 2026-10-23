@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-10-02-preview/BillingMeters_Get.json
+// Generated from example definition: 2026-07-01/BillingMeters_Get.json
 func ExampleBillingMetersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

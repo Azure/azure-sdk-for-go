@@ -87,7 +87,7 @@ func (t *TroubleshootServerTransport) dispatchBeginTroubleshoot(req *http.Reques
 	}
 	beginTroubleshoot := t.beginTroubleshoot.get(req)
 	if beginTroubleshoot == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SqlVirtualMachine/sqlVirtualMachines/(?P<sqlVirtualMachineName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/troubleshoot`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.SqlVirtualMachine/sqlVirtualMachines/(?P<sqlVirtualMachineName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/troubleshoot`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {

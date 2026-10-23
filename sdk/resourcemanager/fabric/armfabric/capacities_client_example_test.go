@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-08-01-preview/FabricCapacities_CheckNameAvailability.json
+// Generated from example definition: 2026-09-01-preview/FabricCapacities_CheckNameAvailability.json
 func ExampleCapacitiesClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -40,7 +40,7 @@ func ExampleCapacitiesClient_CheckNameAvailability() {
 	// }
 }
 
-// Generated from example definition: 2026-08-01-preview/FabricCapacities_CreateOrUpdate.json
+// Generated from example definition: 2026-09-01-preview/FabricCapacities_CreateOrUpdate.json
 func ExampleCapacitiesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -111,7 +111,7 @@ func ExampleCapacitiesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-08-01-preview/FabricCapacities_Delete.json
+// Generated from example definition: 2026-09-01-preview/FabricCapacities_Delete.json
 func ExampleCapacitiesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -132,7 +132,7 @@ func ExampleCapacitiesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-08-01-preview/FabricCapacities_Get.json
+// Generated from example definition: 2026-09-01-preview/FabricCapacities_Get.json
 func ExampleCapacitiesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -180,7 +180,7 @@ func ExampleCapacitiesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-08-01-preview/FabricCapacities_ListByResourceGroup.json
+// Generated from example definition: 2026-09-01-preview/FabricCapacities_ListByResourceGroup.json
 func ExampleCapacitiesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -262,7 +262,7 @@ func ExampleCapacitiesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-08-01-preview/FabricCapacities_ListBySubscription.json
+// Generated from example definition: 2026-09-01-preview/FabricCapacities_ListBySubscription.json
 func ExampleCapacitiesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -344,7 +344,7 @@ func ExampleCapacitiesClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-08-01-preview/FabricCapacities_ListSkus.json
+// Generated from example definition: 2026-09-01-preview/FabricCapacities_ListSkus.json
 func ExampleCapacitiesClient_NewListSKUsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -403,7 +403,7 @@ func ExampleCapacitiesClient_NewListSKUsPager() {
 	}
 }
 
-// Generated from example definition: 2026-08-01-preview/FabricCapacities_ListSkusForCapacity.json
+// Generated from example definition: 2026-09-01-preview/FabricCapacities_ListSkusForCapacity.json
 func ExampleCapacitiesClient_NewListSKUsForCapacityPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -511,7 +511,7 @@ func ExampleCapacitiesClient_NewListSKUsForCapacityPager() {
 	}
 }
 
-// Generated from example definition: 2026-08-01-preview/FabricCapacities_ListUsagesBySubscription.json
+// Generated from example definition: 2026-09-01-preview/FabricCapacities_ListUsagesBySubscription.json
 func ExampleCapacitiesClient_NewListUsagesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -551,7 +551,7 @@ func ExampleCapacitiesClient_NewListUsagesPager() {
 	}
 }
 
-// Generated from example definition: 2026-08-01-preview/FabricCapacities_Resume.json
+// Generated from example definition: 2026-09-01-preview/FabricCapacities_Resume.json
 func ExampleCapacitiesClient_BeginResume() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -577,7 +577,7 @@ func ExampleCapacitiesClient_BeginResume() {
 	// }
 }
 
-// Generated from example definition: 2026-08-01-preview/FabricCapacities_Suspend.json
+// Generated from example definition: 2026-09-01-preview/FabricCapacities_Suspend.json
 func ExampleCapacitiesClient_BeginSuspend() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -603,7 +603,7 @@ func ExampleCapacitiesClient_BeginSuspend() {
 	// }
 }
 
-// Generated from example definition: 2026-08-01-preview/FabricCapacities_Update.json
+// Generated from example definition: 2026-09-01-preview/FabricCapacities_Update.json
 func ExampleCapacitiesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

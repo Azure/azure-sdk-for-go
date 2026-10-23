@@ -20,7 +20,7 @@ import (
 // AgentPoolsClient contains the methods for the AgentPools group.
 // Don't use this type directly, use NewAgentPoolsClient() instead.
 //
-// Generated from API version 2026-05-02-preview
+// Generated from API version 2026-08-02-preview
 type AgentPoolsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -31,6 +31,9 @@ type AgentPoolsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAgentPoolsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AgentPoolsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -70,7 +73,7 @@ func (client *AgentPoolsClient) BeginAbortLatestOperation(ctx context.Context, r
 	}
 }
 
-// AbortLatestOperation - Aborts last operation running on agent pool.
+// abortLatestOperation - Aborts last operation running on agent pool.
 //
 // Aborts the currently running operation on the agent pool. The Agent Pool will be moved to a Canceling state and eventually
 // to a Canceled state when cancellation finishes. If the operation completes before cancellation can take place, a 409 error
@@ -96,11 +99,11 @@ func (client *AgentPoolsClient) abortLatestOperation(ctx context.Context, resour
 	return httpResp, nil
 }
 
-// abortLatestOperationCreateRequest creates the AbortLatestOperation request.
+// abortLatestOperationCreateRequest creates the abortLatestOperation request.
 func (client *AgentPoolsClient) abortLatestOperationCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, _ *AgentPoolsClientBeginAbortLatestOperationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/agentPools/{agentPoolName}/abort"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -120,7 +123,7 @@ func (client *AgentPoolsClient) abortLatestOperationCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260502Preview)
+	reqQP.Set("api-version", version20260802Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -151,7 +154,7 @@ func (client *AgentPoolsClient) BeginCompleteUpgrade(ctx context.Context, resour
 	}
 }
 
-// CompleteUpgrade - Completes the upgrade of an agent pool.
+// completeUpgrade - Completes the upgrade of an agent pool.
 //
 // Completes the upgrade operation for the specified agent pool.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -175,11 +178,11 @@ func (client *AgentPoolsClient) completeUpgrade(ctx context.Context, resourceGro
 	return httpResp, nil
 }
 
-// completeUpgradeCreateRequest creates the CompleteUpgrade request.
+// completeUpgradeCreateRequest creates the completeUpgrade request.
 func (client *AgentPoolsClient) completeUpgradeCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, _ *AgentPoolsClientBeginCompleteUpgradeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/agentPools/{agentPoolName}/completeUpgrade"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -199,7 +202,7 @@ func (client *AgentPoolsClient) completeUpgradeCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260502Preview)
+	reqQP.Set("api-version", version20260802Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -229,7 +232,7 @@ func (client *AgentPoolsClient) BeginCreateOrUpdate(ctx context.Context, resourc
 	}
 }
 
-// CreateOrUpdate - Creates or updates an agent pool in the specified managed cluster.
+// createOrUpdate - Creates or updates an agent pool in the specified managed cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AgentPoolsClient) createOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, parameters AgentPool, options *AgentPoolsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -251,11 +254,11 @@ func (client *AgentPoolsClient) createOrUpdate(ctx context.Context, resourceGrou
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *AgentPoolsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, parameters AgentPool, options *AgentPoolsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/agentPools/{agentPoolName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -275,7 +278,7 @@ func (client *AgentPoolsClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260502Preview)
+	reqQP.Set("api-version", version20260802Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
@@ -314,7 +317,7 @@ func (client *AgentPoolsClient) BeginDelete(ctx context.Context, resourceGroupNa
 	}
 }
 
-// Delete - Deletes an agent pool in the specified managed cluster.
+// deleteOperation - Deletes an agent pool in the specified managed cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AgentPoolsClient) deleteOperation(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, options *AgentPoolsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -336,11 +339,11 @@ func (client *AgentPoolsClient) deleteOperation(ctx context.Context, resourceGro
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *AgentPoolsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, options *AgentPoolsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/agentPools/{agentPoolName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -360,7 +363,7 @@ func (client *AgentPoolsClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260502Preview)
+	reqQP.Set("api-version", version20260802Preview)
 	if options != nil && options.IgnorePodDisruptionBudget != nil {
 		reqQP.Set("ignore-pod-disruption-budget", strconv.FormatBool(*options.IgnorePodDisruptionBudget))
 	}
@@ -396,7 +399,7 @@ func (client *AgentPoolsClient) BeginDeleteMachines(ctx context.Context, resourc
 	}
 }
 
-// DeleteMachines - Deletes specific machines in an agent pool.
+// deleteMachines - Deletes specific machines in an agent pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AgentPoolsClient) deleteMachines(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, machines AgentPoolDeleteMachinesParameter, options *AgentPoolsClientBeginDeleteMachinesOptions) (*http.Response, error) {
 	var err error
@@ -418,11 +421,11 @@ func (client *AgentPoolsClient) deleteMachines(ctx context.Context, resourceGrou
 	return httpResp, nil
 }
 
-// deleteMachinesCreateRequest creates the DeleteMachines request.
+// deleteMachinesCreateRequest creates the deleteMachines request.
 func (client *AgentPoolsClient) deleteMachinesCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, machines AgentPoolDeleteMachinesParameter, _ *AgentPoolsClientBeginDeleteMachinesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/agentPools/{agentPoolName}/deleteMachines"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -442,12 +445,179 @@ func (client *AgentPoolsClient) deleteMachinesCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260502Preview)
+	reqQP.Set("api-version", version20260802Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, machines); err != nil {
 		return nil, err
 	}
+	return req, nil
+}
+
+// BeginUpdate - Updates an agent pool in the specified managed cluster. Visit https://aka.ms/aks/concurrent-node-operations
+// for more information.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - The name of the managed cluster resource.
+//   - agentPoolName - The name of the agent pool.
+//   - parameters - The resource properties to be updated.
+//   - options - AgentPoolsClientBeginUpdateOptions contains the optional parameters for the AgentPoolsClient.BeginUpdate method.
+func (client *AgentPoolsClient) BeginUpdate(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, parameters AgentPoolUpdate, options *AgentPoolsClientBeginUpdateOptions) (*runtime.Poller[AgentPoolsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, resourceName, agentPoolName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AgentPoolsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AgentPoolsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Updates an agent pool in the specified managed cluster. Visit https://aka.ms/aks/concurrent-node-operations for
+// more information.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *AgentPoolsClient) update(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, parameters AgentPoolUpdate, options *AgentPoolsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "AgentPoolsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, resourceName, agentPoolName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *AgentPoolsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, parameters AgentPoolUpdate, options *AgentPoolsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/agentPools/{agentPoolName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	if agentPoolName == "" {
+		return nil, errors.New("parameter agentPoolName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{agentPoolName}", url.PathEscape(agentPoolName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260802Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if options != nil && options.IfMatch != nil {
+		req.Raw().Header["if-match"] = []string{*options.IfMatch}
+	}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginUpgradeNodeImageVersion - Upgrades the node image version of an agent pool to the latest.
+//
+// Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS provides
+// one new image per week with the latest updates. For more details on node image versions, see: https://docs.microsoft.com/azure/aks/node-image-upgrade
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - The name of the managed cluster resource.
+//   - agentPoolName - The name of the agent pool.
+//   - options - AgentPoolsClientBeginUpgradeNodeImageVersionOptions contains the optional parameters for the AgentPoolsClient.BeginUpgradeNodeImageVersion
+//     method.
+func (client *AgentPoolsClient) BeginUpgradeNodeImageVersion(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, options *AgentPoolsClientBeginUpgradeNodeImageVersionOptions) (*runtime.Poller[AgentPoolsClientUpgradeNodeImageVersionResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.upgradeNodeImageVersion(ctx, resourceGroupName, resourceName, agentPoolName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AgentPoolsClientUpgradeNodeImageVersionResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AgentPoolsClientUpgradeNodeImageVersionResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// upgradeNodeImageVersion - Upgrades the node image version of an agent pool to the latest.
+//
+// Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS provides
+// one new image per week with the latest updates. For more details on node image versions, see: https://docs.microsoft.com/azure/aks/node-image-upgrade
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *AgentPoolsClient) upgradeNodeImageVersion(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, options *AgentPoolsClientBeginUpgradeNodeImageVersionOptions) (*http.Response, error) {
+	var err error
+	const operationName = "AgentPoolsClient.BeginUpgradeNodeImageVersion"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.upgradeNodeImageVersionCreateRequest(ctx, resourceGroupName, resourceName, agentPoolName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// upgradeNodeImageVersionCreateRequest creates the upgradeNodeImageVersion request.
+func (client *AgentPoolsClient) upgradeNodeImageVersionCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, _ *AgentPoolsClientBeginUpgradeNodeImageVersionOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/agentPools/{agentPoolName}/upgradeNodeImageVersion"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	if agentPoolName == "" {
+		return nil, errors.New("parameter agentPoolName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{agentPoolName}", url.PathEscape(agentPoolName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260802Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -478,7 +648,7 @@ func (client *AgentPoolsClient) Get(ctx context.Context, resourceGroupName strin
 func (client *AgentPoolsClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, _ *AgentPoolsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/agentPools/{agentPoolName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -498,7 +668,7 @@ func (client *AgentPoolsClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260502Preview)
+	reqQP.Set("api-version", version20260802Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -546,7 +716,7 @@ func (client *AgentPoolsClient) GetAvailableAgentPoolVersions(ctx context.Contex
 func (client *AgentPoolsClient) getAvailableAgentPoolVersionsCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, _ *AgentPoolsClientGetAvailableAgentPoolVersionsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/availableAgentPoolVersions"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -562,7 +732,7 @@ func (client *AgentPoolsClient) getAvailableAgentPoolVersionsCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260502Preview)
+	reqQP.Set("api-version", version20260802Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -608,7 +778,7 @@ func (client *AgentPoolsClient) GetUpgradeProfile(ctx context.Context, resourceG
 func (client *AgentPoolsClient) getUpgradeProfileCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, _ *AgentPoolsClientGetUpgradeProfileOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/agentPools/{agentPoolName}/upgradeProfiles/default"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -628,7 +798,7 @@ func (client *AgentPoolsClient) getUpgradeProfileCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260502Preview)
+	reqQP.Set("api-version", version20260802Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -642,6 +812,79 @@ func (client *AgentPoolsClient) getUpgradeProfileHandleResponse(resp *http.Respo
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AgentPoolUpgradeProfile); err != nil {
 		return AgentPoolsClientGetUpgradeProfileResponse{}, err
+	}
+	return result, nil
+}
+
+// ListBootstrapData - Lists bootstrap data for a FlexNode agent pool.
+//
+// Returns pool-level bootstrap configuration for FlexNode machines.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - The name of the managed cluster resource.
+//   - agentPoolName - The name of the agent pool.
+//   - body - The content of the action request
+//   - options - AgentPoolsClientListBootstrapDataOptions contains the optional parameters for the AgentPoolsClient.ListBootstrapData
+//     method.
+func (client *AgentPoolsClient) ListBootstrapData(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, body ListBootstrapDataRequest, options *AgentPoolsClientListBootstrapDataOptions) (AgentPoolsClientListBootstrapDataResponse, error) {
+	var err error
+	const operationName = "AgentPoolsClient.ListBootstrapData"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listBootstrapDataCreateRequest(ctx, resourceGroupName, resourceName, agentPoolName, body, options)
+	if err != nil {
+		return AgentPoolsClientListBootstrapDataResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return AgentPoolsClientListBootstrapDataResponse{}, err
+	}
+	return client.listBootstrapDataHandleResponse(httpResp, http.StatusOK)
+}
+
+// listBootstrapDataCreateRequest creates the ListBootstrapData request.
+func (client *AgentPoolsClient) listBootstrapDataCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, body ListBootstrapDataRequest, _ *AgentPoolsClientListBootstrapDataOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/agentPools/{agentPoolName}/listBootstrapData"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	if agentPoolName == "" {
+		return nil, errors.New("parameter agentPoolName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{agentPoolName}", url.PathEscape(agentPoolName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260802Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// listBootstrapDataHandleResponse handles the ListBootstrapData response.
+func (client *AgentPoolsClient) listBootstrapDataHandleResponse(resp *http.Response, successCodes ...int) (AgentPoolsClientListBootstrapDataResponse, error) {
+	result := AgentPoolsClientListBootstrapDataResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PoolBootstrapData); err != nil {
+		return AgentPoolsClientListBootstrapDataResponse{}, err
 	}
 	return result, nil
 }
@@ -683,7 +926,7 @@ func (client *AgentPoolsClient) listCreateRequest(ctx context.Context, resourceG
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/agentPools"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -703,7 +946,7 @@ func (client *AgentPoolsClient) listCreateRequest(ctx context.Context, resourceG
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260502Preview)
+		reqQP.Set("api-version", version20260802Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -720,159 +963,4 @@ func (client *AgentPoolsClient) listHandleResponse(resp *http.Response, successC
 		return AgentPoolsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// ListBootstrapData - Lists bootstrap data for a FlexNode agent pool.
-//
-// Returns pool-level bootstrap configuration for FlexNode machines.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - resourceName - The name of the managed cluster resource.
-//   - agentPoolName - The name of the agent pool.
-//   - body - The content of the action request
-//   - options - AgentPoolsClientListBootstrapDataOptions contains the optional parameters for the AgentPoolsClient.ListBootstrapData
-//     method.
-func (client *AgentPoolsClient) ListBootstrapData(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, body ListBootstrapDataRequest, options *AgentPoolsClientListBootstrapDataOptions) (AgentPoolsClientListBootstrapDataResponse, error) {
-	var err error
-	const operationName = "AgentPoolsClient.ListBootstrapData"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listBootstrapDataCreateRequest(ctx, resourceGroupName, resourceName, agentPoolName, body, options)
-	if err != nil {
-		return AgentPoolsClientListBootstrapDataResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return AgentPoolsClientListBootstrapDataResponse{}, err
-	}
-	return client.listBootstrapDataHandleResponse(httpResp, http.StatusOK)
-}
-
-// listBootstrapDataCreateRequest creates the ListBootstrapData request.
-func (client *AgentPoolsClient) listBootstrapDataCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, body ListBootstrapDataRequest, _ *AgentPoolsClientListBootstrapDataOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/agentPools/{agentPoolName}/listBootstrapData"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if resourceName == "" {
-		return nil, errors.New("parameter resourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	if agentPoolName == "" {
-		return nil, errors.New("parameter agentPoolName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{agentPoolName}", url.PathEscape(agentPoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260502Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// listBootstrapDataHandleResponse handles the ListBootstrapData response.
-func (client *AgentPoolsClient) listBootstrapDataHandleResponse(resp *http.Response, successCodes ...int) (AgentPoolsClientListBootstrapDataResponse, error) {
-	result := AgentPoolsClientListBootstrapDataResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.PoolBootstrapData); err != nil {
-		return AgentPoolsClientListBootstrapDataResponse{}, err
-	}
-	return result, nil
-}
-
-// BeginUpgradeNodeImageVersion - Upgrades the node image version of an agent pool to the latest.
-//
-// Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS provides
-// one new image per week with the latest updates. For more details on node image versions, see: https://docs.microsoft.com/azure/aks/node-image-upgrade
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - resourceName - The name of the managed cluster resource.
-//   - agentPoolName - The name of the agent pool.
-//   - options - AgentPoolsClientBeginUpgradeNodeImageVersionOptions contains the optional parameters for the AgentPoolsClient.BeginUpgradeNodeImageVersion
-//     method.
-func (client *AgentPoolsClient) BeginUpgradeNodeImageVersion(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, options *AgentPoolsClientBeginUpgradeNodeImageVersionOptions) (*runtime.Poller[AgentPoolsClientUpgradeNodeImageVersionResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.upgradeNodeImageVersion(ctx, resourceGroupName, resourceName, agentPoolName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AgentPoolsClientUpgradeNodeImageVersionResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AgentPoolsClientUpgradeNodeImageVersionResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// UpgradeNodeImageVersion - Upgrades the node image version of an agent pool to the latest.
-//
-// Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS provides
-// one new image per week with the latest updates. For more details on node image versions, see: https://docs.microsoft.com/azure/aks/node-image-upgrade
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *AgentPoolsClient) upgradeNodeImageVersion(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, options *AgentPoolsClientBeginUpgradeNodeImageVersionOptions) (*http.Response, error) {
-	var err error
-	const operationName = "AgentPoolsClient.BeginUpgradeNodeImageVersion"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.upgradeNodeImageVersionCreateRequest(ctx, resourceGroupName, resourceName, agentPoolName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// upgradeNodeImageVersionCreateRequest creates the UpgradeNodeImageVersion request.
-func (client *AgentPoolsClient) upgradeNodeImageVersionCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, _ *AgentPoolsClientBeginUpgradeNodeImageVersionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/agentPools/{agentPoolName}/upgradeNodeImageVersion"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if resourceName == "" {
-		return nil, errors.New("parameter resourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	if agentPoolName == "" {
-		return nil, errors.New("parameter agentPoolName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{agentPoolName}", url.PathEscape(agentPoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260502Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
 }

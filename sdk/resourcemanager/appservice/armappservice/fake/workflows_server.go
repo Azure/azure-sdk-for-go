@@ -87,7 +87,7 @@ func (w *WorkflowsServerTransport) dispatchRegenerateAccessKey(req *http.Request
 	if w.srv.RegenerateAccessKey == nil {
 		return nil, &nonRetriableError{errors.New("fake for method RegenerateAccessKey not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/sites/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/hostruntime/runtime/webhooks/workflow/api/management/workflows/(?P<workflowName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/regenerateAccessKey`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/hostruntime/runtime/webhooks/workflow/api/management/workflows/(?P<workflowName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/regenerateAccessKey`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -128,7 +128,7 @@ func (w *WorkflowsServerTransport) dispatchValidate(req *http.Request) (*http.Re
 	if w.srv.Validate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Validate not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/sites/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/hostruntime/runtime/webhooks/workflow/api/management/workflows/(?P<workflowName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validate`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/hostruntime/runtime/webhooks/workflow/api/management/workflows/(?P<workflowName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/validate`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {

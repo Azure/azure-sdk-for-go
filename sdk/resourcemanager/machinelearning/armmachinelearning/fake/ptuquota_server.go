@@ -100,7 +100,7 @@ func (p *PTUQuotaServerTransport) dispatchGetAvailable(req *http.Request) (*http
 	if p.srv.GetAvailable == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetAvailable not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.MachineLearningServices/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/availableQuota/default`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.MachineLearningServices/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/availableQuota/default`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -131,7 +131,7 @@ func (p *PTUQuotaServerTransport) dispatchNewListPager(req *http.Request) (*http
 	}
 	newListPager := p.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.MachineLearningServices/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/quotaAndUsage`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.MachineLearningServices/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/quotaAndUsage`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -176,7 +176,7 @@ func (p *PTUQuotaServerTransport) dispatchNewListAvailablePager(req *http.Reques
 	}
 	newListAvailablePager := p.newListAvailablePager.get(req)
 	if newListAvailablePager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.MachineLearningServices/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/availableQuota`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.MachineLearningServices/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/availableQuota`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {

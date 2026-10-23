@@ -287,6 +287,42 @@ type ApplicationSecurityGroupsClientUpdateTagsOptions struct {
 	// placeholder for future optional parameters
 }
 
+// AuthenticationPoliciesClientBeginCreateOrUpdateOptions contains the optional parameters for the AuthenticationPoliciesClient.BeginCreateOrUpdate
+// method.
+type AuthenticationPoliciesClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// AuthenticationPoliciesClientDeleteOptions contains the optional parameters for the AuthenticationPoliciesClient.Delete
+// method.
+type AuthenticationPoliciesClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AuthenticationPoliciesClientGetOptions contains the optional parameters for the AuthenticationPoliciesClient.Get method.
+type AuthenticationPoliciesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AuthenticationPoliciesClientListAllOptions contains the optional parameters for the AuthenticationPoliciesClient.NewListAllPager
+// method.
+type AuthenticationPoliciesClientListAllOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AuthenticationPoliciesClientListOptions contains the optional parameters for the AuthenticationPoliciesClient.NewListPager
+// method.
+type AuthenticationPoliciesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AuthenticationPoliciesClientUpdateOptions contains the optional parameters for the AuthenticationPoliciesClient.Update
+// method.
+type AuthenticationPoliciesClientUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
 // AvailableDelegationsClientListOptions contains the optional parameters for the AvailableDelegationsClient.NewListPager
 // method.
 type AvailableDelegationsClientListOptions struct {
@@ -407,8 +443,8 @@ type BastionHostsClientBeginDeleteOptions struct {
 	ResumeToken string
 }
 
-// BastionHostsClientBeginUpdateTagsOptions contains the optional parameters for the BastionHostsClient.BeginUpdateTags method.
-type BastionHostsClientBeginUpdateTagsOptions struct {
+// BastionHostsClientBeginUpdateOptions contains the optional parameters for the BastionHostsClient.BeginUpdate method.
+type BastionHostsClientBeginUpdateOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
@@ -754,6 +790,12 @@ type ExpressRouteCircuitAuthorizationsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
+// ExpressRouteCircuitAuthorizationsClientListKeysOptions contains the optional parameters for the ExpressRouteCircuitAuthorizationsClient.ListKeys
+// method.
+type ExpressRouteCircuitAuthorizationsClientListKeysOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ExpressRouteCircuitAuthorizationsClientListOptions contains the optional parameters for the ExpressRouteCircuitAuthorizationsClient.NewListPager
 // method.
 type ExpressRouteCircuitAuthorizationsClientListOptions struct {
@@ -966,9 +1008,23 @@ type ExpressRouteCrossConnectionPeeringsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// ExpressRouteCrossConnectionsClientBeginCommitCircuitMigrationOptions contains the optional parameters for the ExpressRouteCrossConnectionsClient.BeginCommitCircuitMigration
+// method.
+type ExpressRouteCrossConnectionsClientBeginCommitCircuitMigrationOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
 // ExpressRouteCrossConnectionsClientBeginCreateOrUpdateOptions contains the optional parameters for the ExpressRouteCrossConnectionsClient.BeginCreateOrUpdate
 // method.
 type ExpressRouteCrossConnectionsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ExpressRouteCrossConnectionsClientBeginGetCircuitMigrationInfoOptions contains the optional parameters for the ExpressRouteCrossConnectionsClient.BeginGetCircuitMigrationInfo
+// method.
+type ExpressRouteCrossConnectionsClientBeginGetCircuitMigrationInfoOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
@@ -990,6 +1046,48 @@ type ExpressRouteCrossConnectionsClientBeginListRoutesTableOptions struct {
 // ExpressRouteCrossConnectionsClientBeginListRoutesTableSummaryOptions contains the optional parameters for the ExpressRouteCrossConnectionsClient.BeginListRoutesTableSummary
 // method.
 type ExpressRouteCrossConnectionsClientBeginListRoutesTableSummaryOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ExpressRouteCrossConnectionsClientBeginMigrateCircuitOptions contains the optional parameters for the ExpressRouteCrossConnectionsClient.BeginMigrateCircuit
+// method.
+type ExpressRouteCrossConnectionsClientBeginMigrateCircuitOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ExpressRouteCrossConnectionsClientBeginPrepareCircuitMigrationOptions contains the optional parameters for the ExpressRouteCrossConnectionsClient.BeginPrepareCircuitMigration
+// method.
+type ExpressRouteCrossConnectionsClientBeginPrepareCircuitMigrationOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ExpressRouteCrossConnectionsClientBeginRestoreBgpForCircuitMigrationOptions contains the optional parameters for the ExpressRouteCrossConnectionsClient.BeginRestoreBgpForCircuitMigration
+// method.
+type ExpressRouteCrossConnectionsClientBeginRestoreBgpForCircuitMigrationOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ExpressRouteCrossConnectionsClientBeginRollbackCircuitMigrationOptions contains the optional parameters for the ExpressRouteCrossConnectionsClient.BeginRollbackCircuitMigration
+// method.
+type ExpressRouteCrossConnectionsClientBeginRollbackCircuitMigrationOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ExpressRouteCrossConnectionsClientBeginShutDownBgpForCircuitMigrationOptions contains the optional parameters for the ExpressRouteCrossConnectionsClient.BeginShutDownBgpForCircuitMigration
+// method.
+type ExpressRouteCrossConnectionsClientBeginShutDownBgpForCircuitMigrationOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ExpressRouteCrossConnectionsClientBeginValidateCircuitMigrationOptions contains the optional parameters for the ExpressRouteCrossConnectionsClient.BeginValidateCircuitMigration
+// method.
+type ExpressRouteCrossConnectionsClientBeginValidateCircuitMigrationOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
@@ -1111,6 +1209,38 @@ type ExpressRouteGatewaysClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
+// ExpressRouteLagAuthorizationsClientBeginCreateOrUpdateOptions contains the optional parameters for the ExpressRouteLagAuthorizationsClient.BeginCreateOrUpdate
+// method.
+type ExpressRouteLagAuthorizationsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ExpressRouteLagAuthorizationsClientBeginDeleteOptions contains the optional parameters for the ExpressRouteLagAuthorizationsClient.BeginDelete
+// method.
+type ExpressRouteLagAuthorizationsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ExpressRouteLagAuthorizationsClientGetOptions contains the optional parameters for the ExpressRouteLagAuthorizationsClient.Get
+// method.
+type ExpressRouteLagAuthorizationsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ExpressRouteLagAuthorizationsClientListKeysOptions contains the optional parameters for the ExpressRouteLagAuthorizationsClient.ListKeys
+// method.
+type ExpressRouteLagAuthorizationsClientListKeysOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ExpressRouteLagAuthorizationsClientListOptions contains the optional parameters for the ExpressRouteLagAuthorizationsClient.NewListPager
+// method.
+type ExpressRouteLagAuthorizationsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ExpressRouteLagsClientBeginCreateOrUpdateOptions contains the optional parameters for the ExpressRouteLagsClient.BeginCreateOrUpdate
 // method.
 type ExpressRouteLagsClientBeginCreateOrUpdateOptions struct {
@@ -1199,6 +1329,12 @@ type ExpressRoutePortAuthorizationsClientBeginDeleteOptions struct {
 // ExpressRoutePortAuthorizationsClientGetOptions contains the optional parameters for the ExpressRoutePortAuthorizationsClient.Get
 // method.
 type ExpressRoutePortAuthorizationsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ExpressRoutePortAuthorizationsClientListKeysOptions contains the optional parameters for the ExpressRoutePortAuthorizationsClient.ListKeys
+// method.
+type ExpressRoutePortAuthorizationsClientListKeysOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -4521,6 +4657,32 @@ type VirtualHubsClientListOptions struct {
 
 // VirtualHubsClientUpdateTagsOptions contains the optional parameters for the VirtualHubsClient.UpdateTags method.
 type VirtualHubsClientUpdateTagsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VirtualNetworkApplianceCapabilitiesClientBeginCreateOrUpdateOptions contains the optional parameters for the VirtualNetworkApplianceCapabilitiesClient.BeginCreateOrUpdate
+// method.
+type VirtualNetworkApplianceCapabilitiesClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// VirtualNetworkApplianceCapabilitiesClientBeginDeleteOptions contains the optional parameters for the VirtualNetworkApplianceCapabilitiesClient.BeginDelete
+// method.
+type VirtualNetworkApplianceCapabilitiesClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// VirtualNetworkApplianceCapabilitiesClientGetOptions contains the optional parameters for the VirtualNetworkApplianceCapabilitiesClient.Get
+// method.
+type VirtualNetworkApplianceCapabilitiesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VirtualNetworkApplianceCapabilitiesClientListOptions contains the optional parameters for the VirtualNetworkApplianceCapabilitiesClient.NewListPager
+// method.
+type VirtualNetworkApplianceCapabilitiesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 

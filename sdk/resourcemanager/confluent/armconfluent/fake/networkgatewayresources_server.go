@@ -110,7 +110,7 @@ func (n *NetworkGatewayResourcesServerTransport) dispatchBeginCreateOrReplace(re
 	}
 	beginCreateOrReplace := n.beginCreateOrReplace.get(req)
 	if beginCreateOrReplace == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Confluent/organizations/(?P<organizationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/environments/(?P<environmentId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/networkGateways/(?P<networkGatewayId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Confluent/organizations/(?P<organizationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/environments/(?P<environmentId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/networkGateways/(?P<networkGatewayId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -166,7 +166,7 @@ func (n *NetworkGatewayResourcesServerTransport) dispatchBeginDelete(req *http.R
 	}
 	beginDelete := n.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Confluent/organizations/(?P<organizationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/environments/(?P<environmentId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/networkGateways/(?P<networkGatewayId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Confluent/organizations/(?P<organizationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/environments/(?P<environmentId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/networkGateways/(?P<networkGatewayId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -216,7 +216,7 @@ func (n *NetworkGatewayResourcesServerTransport) dispatchGet(req *http.Request) 
 	if n.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Confluent/organizations/(?P<organizationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/environments/(?P<environmentId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/networkGateways/(?P<networkGatewayId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Confluent/organizations/(?P<organizationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/environments/(?P<environmentId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/networkGateways/(?P<networkGatewayId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -259,7 +259,7 @@ func (n *NetworkGatewayResourcesServerTransport) dispatchNewListPager(req *http.
 	}
 	newListPager := n.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Confluent/organizations/(?P<organizationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/environments/(?P<environmentId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/networkGateways`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Confluent/organizations/(?P<organizationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/environments/(?P<environmentId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/networkGateways`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {

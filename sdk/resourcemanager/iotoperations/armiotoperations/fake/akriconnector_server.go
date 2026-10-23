@@ -110,7 +110,7 @@ func (a *AkriConnectorServerTransport) dispatchBeginCreateOrUpdate(req *http.Req
 	}
 	beginCreateOrUpdate := a.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.IoTOperations/instances/(?P<instanceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/akriConnectorTemplates/(?P<akriConnectorTemplateName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/connectors/(?P<connectorName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.IoTOperations/instances/(?P<instanceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/akriConnectorTemplates/(?P<akriConnectorTemplateName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/connectors/(?P<connectorName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -166,7 +166,7 @@ func (a *AkriConnectorServerTransport) dispatchBeginDelete(req *http.Request) (*
 	}
 	beginDelete := a.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.IoTOperations/instances/(?P<instanceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/akriConnectorTemplates/(?P<akriConnectorTemplateName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/connectors/(?P<connectorName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.IoTOperations/instances/(?P<instanceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/akriConnectorTemplates/(?P<akriConnectorTemplateName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/connectors/(?P<connectorName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -216,7 +216,7 @@ func (a *AkriConnectorServerTransport) dispatchGet(req *http.Request) (*http.Res
 	if a.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.IoTOperations/instances/(?P<instanceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/akriConnectorTemplates/(?P<akriConnectorTemplateName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/connectors/(?P<connectorName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.IoTOperations/instances/(?P<instanceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/akriConnectorTemplates/(?P<akriConnectorTemplateName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/connectors/(?P<connectorName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -259,7 +259,7 @@ func (a *AkriConnectorServerTransport) dispatchNewListByTemplatePager(req *http.
 	}
 	newListByTemplatePager := a.newListByTemplatePager.get(req)
 	if newListByTemplatePager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.IoTOperations/instances/(?P<instanceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/akriConnectorTemplates/(?P<akriConnectorTemplateName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/connectors`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.IoTOperations/instances/(?P<instanceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/akriConnectorTemplates/(?P<akriConnectorTemplateName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/connectors`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {

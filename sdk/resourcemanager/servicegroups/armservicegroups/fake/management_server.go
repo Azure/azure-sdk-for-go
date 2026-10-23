@@ -103,7 +103,7 @@ func (m *ManagementServerTransport) dispatchBeginCreateOrUpdateServiceGroup(req 
 	}
 	beginCreateOrUpdateServiceGroup := m.beginCreateOrUpdateServiceGroup.get(req)
 	if beginCreateOrUpdateServiceGroup == nil {
-		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -147,7 +147,7 @@ func (m *ManagementServerTransport) dispatchBeginDeleteServiceGroup(req *http.Re
 	}
 	beginDeleteServiceGroup := m.beginDeleteServiceGroup.get(req)
 	if beginDeleteServiceGroup == nil {
-		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -187,7 +187,7 @@ func (m *ManagementServerTransport) dispatchBeginUpdateServiceGroup(req *http.Re
 	}
 	beginUpdateServiceGroup := m.beginUpdateServiceGroup.get(req)
 	if beginUpdateServiceGroup == nil {
-		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {

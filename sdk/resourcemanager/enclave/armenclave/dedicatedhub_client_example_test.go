@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01-preview/DedicatedHubs_CreateOrUpdate.json
+// Generated from example definition: 2026-04-01/DedicatedHubs_CreateOrUpdate.json
 func ExampleDedicatedHubClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -72,7 +72,7 @@ func ExampleDedicatedHubClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/DedicatedHubs_Delete.json
+// Generated from example definition: 2026-04-01/DedicatedHubs_Delete.json
 func ExampleDedicatedHubClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -93,7 +93,7 @@ func ExampleDedicatedHubClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/DedicatedHubs_Get.json
+// Generated from example definition: 2026-04-01/DedicatedHubs_Get.json
 func ExampleDedicatedHubClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -140,7 +140,7 @@ func ExampleDedicatedHubClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/DedicatedHubs_ListByCommunityResource.json
+// Generated from example definition: 2026-04-01/DedicatedHubs_ListByCommunityResource.json
 func ExampleDedicatedHubClient_NewListByCommunityResourcePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -221,7 +221,7 @@ func ExampleDedicatedHubClient_NewListByCommunityResourcePager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/DedicatedHubs_ListBySubscription.json
+// Generated from example definition: 2026-04-01/DedicatedHubs_ListBySubscription.json
 func ExampleDedicatedHubClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -302,7 +302,7 @@ func ExampleDedicatedHubClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/DedicatedHubs_Update.json
+// Generated from example definition: 2026-04-01/DedicatedHubs_Update.json
 func ExampleDedicatedHubClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

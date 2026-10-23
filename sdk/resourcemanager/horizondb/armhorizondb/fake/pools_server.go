@@ -21,6 +21,30 @@ import (
 
 // PoolsServer is a fake server for instances of the armhorizondb.PoolsClient type.
 type PoolsServer struct {
+	// BeginCreateOrReplace is the fake for method PoolsClient.BeginCreateOrReplace
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	BeginCreateOrReplace func(ctx context.Context, resourceGroupName string, clusterName string, poolName string, resource armhorizondb.Pool, options *armhorizondb.PoolsClientBeginCreateOrReplaceOptions) (resp azfake.PollerResponder[armhorizondb.PoolsClientCreateOrReplaceResponse], errResp azfake.ErrorResponder)
+
+	// BeginDelete is the fake for method PoolsClient.BeginDelete
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginDelete func(ctx context.Context, resourceGroupName string, clusterName string, poolName string, options *armhorizondb.PoolsClientBeginDeleteOptions) (resp azfake.PollerResponder[armhorizondb.PoolsClientDeleteResponse], errResp azfake.ErrorResponder)
+
+	// BeginRestart is the fake for method PoolsClient.BeginRestart
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginRestart func(ctx context.Context, resourceGroupName string, clusterName string, poolName string, options *armhorizondb.PoolsClientBeginRestartOptions) (resp azfake.PollerResponder[armhorizondb.PoolsClientRestartResponse], errResp azfake.ErrorResponder)
+
+	// BeginStart is the fake for method PoolsClient.BeginStart
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginStart func(ctx context.Context, resourceGroupName string, clusterName string, poolName string, options *armhorizondb.PoolsClientBeginStartOptions) (resp azfake.PollerResponder[armhorizondb.PoolsClientStartResponse], errResp azfake.ErrorResponder)
+
+	// BeginStop is the fake for method PoolsClient.BeginStop
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginStop func(ctx context.Context, resourceGroupName string, clusterName string, poolName string, options *armhorizondb.PoolsClientBeginStopOptions) (resp azfake.PollerResponder[armhorizondb.PoolsClientStopResponse], errResp azfake.ErrorResponder)
+
+	// BeginUpdate is the fake for method PoolsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, clusterName string, poolName string, properties armhorizondb.PoolForPatchUpdate, options *armhorizondb.PoolsClientBeginUpdateOptions) (resp azfake.PollerResponder[armhorizondb.PoolsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method PoolsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, clusterName string, poolName string, options *armhorizondb.PoolsClientGetOptions) (resp azfake.Responder[armhorizondb.PoolsClientGetResponse], errResp azfake.ErrorResponder)
@@ -35,16 +59,28 @@ type PoolsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewPoolsServerTransport(srv *PoolsServer) *PoolsServerTransport {
 	return &PoolsServerTransport{
-		srv:          srv,
-		newListPager: newTracker[azfake.PagerResponder[armhorizondb.PoolsClientListResponse]](),
+		srv:                  srv,
+		beginCreateOrReplace: newTracker[azfake.PollerResponder[armhorizondb.PoolsClientCreateOrReplaceResponse]](),
+		beginDelete:          newTracker[azfake.PollerResponder[armhorizondb.PoolsClientDeleteResponse]](),
+		beginRestart:         newTracker[azfake.PollerResponder[armhorizondb.PoolsClientRestartResponse]](),
+		beginStart:           newTracker[azfake.PollerResponder[armhorizondb.PoolsClientStartResponse]](),
+		beginStop:            newTracker[azfake.PollerResponder[armhorizondb.PoolsClientStopResponse]](),
+		beginUpdate:          newTracker[azfake.PollerResponder[armhorizondb.PoolsClientUpdateResponse]](),
+		newListPager:         newTracker[azfake.PagerResponder[armhorizondb.PoolsClientListResponse]](),
 	}
 }
 
 // PoolsServerTransport connects instances of armhorizondb.PoolsClient to instances of PoolsServer.
 // Don't use this type directly, use NewPoolsServerTransport instead.
 type PoolsServerTransport struct {
-	srv          *PoolsServer
-	newListPager *tracker[azfake.PagerResponder[armhorizondb.PoolsClientListResponse]]
+	srv                  *PoolsServer
+	beginCreateOrReplace *tracker[azfake.PollerResponder[armhorizondb.PoolsClientCreateOrReplaceResponse]]
+	beginDelete          *tracker[azfake.PollerResponder[armhorizondb.PoolsClientDeleteResponse]]
+	beginRestart         *tracker[azfake.PollerResponder[armhorizondb.PoolsClientRestartResponse]]
+	beginStart           *tracker[azfake.PollerResponder[armhorizondb.PoolsClientStartResponse]]
+	beginStop            *tracker[azfake.PollerResponder[armhorizondb.PoolsClientStopResponse]]
+	beginUpdate          *tracker[azfake.PollerResponder[armhorizondb.PoolsClientUpdateResponse]]
+	newListPager         *tracker[azfake.PagerResponder[armhorizondb.PoolsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for PoolsServerTransport.
@@ -68,6 +104,18 @@ func (p *PoolsServerTransport) dispatchToMethodFake(req *http.Request, method st
 		}
 		if !intercepted {
 			switch method {
+			case "PoolsClient.BeginCreateOrReplace":
+				res.resp, res.err = p.dispatchBeginCreateOrReplace(req)
+			case "PoolsClient.BeginDelete":
+				res.resp, res.err = p.dispatchBeginDelete(req)
+			case "PoolsClient.BeginRestart":
+				res.resp, res.err = p.dispatchBeginRestart(req)
+			case "PoolsClient.BeginStart":
+				res.resp, res.err = p.dispatchBeginStart(req)
+			case "PoolsClient.BeginStop":
+				res.resp, res.err = p.dispatchBeginStop(req)
+			case "PoolsClient.BeginUpdate":
+				res.resp, res.err = p.dispatchBeginUpdate(req)
 			case "PoolsClient.Get":
 				res.resp, res.err = p.dispatchGet(req)
 			case "PoolsClient.NewListPager":
@@ -88,11 +136,307 @@ func (p *PoolsServerTransport) dispatchToMethodFake(req *http.Request, method st
 	}
 }
 
+func (p *PoolsServerTransport) dispatchBeginCreateOrReplace(req *http.Request) (*http.Response, error) {
+	if p.srv.BeginCreateOrReplace == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrReplace not implemented")}
+	}
+	beginCreateOrReplace := p.beginCreateOrReplace.get(req)
+	if beginCreateOrReplace == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.HorizonDb/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/pools/(?P<poolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armhorizondb.Pool](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
+		if err != nil {
+			return nil, err
+		}
+		poolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("poolName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := p.srv.BeginCreateOrReplace(req.Context(), resourceGroupNameParam, clusterNameParam, poolNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginCreateOrReplace = &respr
+		p.beginCreateOrReplace.add(req, beginCreateOrReplace)
+	}
+
+	resp, err := server.PollerResponderNext(beginCreateOrReplace, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		p.beginCreateOrReplace.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginCreateOrReplace) {
+		p.beginCreateOrReplace.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (p *PoolsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
+	if p.srv.BeginDelete == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
+	}
+	beginDelete := p.beginDelete.get(req)
+	if beginDelete == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.HorizonDb/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/pools/(?P<poolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
+		if err != nil {
+			return nil, err
+		}
+		poolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("poolName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := p.srv.BeginDelete(req.Context(), resourceGroupNameParam, clusterNameParam, poolNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginDelete = &respr
+		p.beginDelete.add(req, beginDelete)
+	}
+
+	resp, err := server.PollerResponderNext(beginDelete, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		p.beginDelete.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginDelete) {
+		p.beginDelete.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (p *PoolsServerTransport) dispatchBeginRestart(req *http.Request) (*http.Response, error) {
+	if p.srv.BeginRestart == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginRestart not implemented")}
+	}
+	beginRestart := p.beginRestart.get(req)
+	if beginRestart == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.HorizonDb/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/pools/(?P<poolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/restart`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
+		if err != nil {
+			return nil, err
+		}
+		poolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("poolName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := p.srv.BeginRestart(req.Context(), resourceGroupNameParam, clusterNameParam, poolNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginRestart = &respr
+		p.beginRestart.add(req, beginRestart)
+	}
+
+	resp, err := server.PollerResponderNext(beginRestart, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		p.beginRestart.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginRestart) {
+		p.beginRestart.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (p *PoolsServerTransport) dispatchBeginStart(req *http.Request) (*http.Response, error) {
+	if p.srv.BeginStart == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginStart not implemented")}
+	}
+	beginStart := p.beginStart.get(req)
+	if beginStart == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.HorizonDb/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/pools/(?P<poolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/start`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
+		if err != nil {
+			return nil, err
+		}
+		poolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("poolName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := p.srv.BeginStart(req.Context(), resourceGroupNameParam, clusterNameParam, poolNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginStart = &respr
+		p.beginStart.add(req, beginStart)
+	}
+
+	resp, err := server.PollerResponderNext(beginStart, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		p.beginStart.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginStart) {
+		p.beginStart.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (p *PoolsServerTransport) dispatchBeginStop(req *http.Request) (*http.Response, error) {
+	if p.srv.BeginStop == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginStop not implemented")}
+	}
+	beginStop := p.beginStop.get(req)
+	if beginStop == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.HorizonDb/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/pools/(?P<poolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/stop`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
+		if err != nil {
+			return nil, err
+		}
+		poolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("poolName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := p.srv.BeginStop(req.Context(), resourceGroupNameParam, clusterNameParam, poolNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginStop = &respr
+		p.beginStop.add(req, beginStop)
+	}
+
+	resp, err := server.PollerResponderNext(beginStop, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		p.beginStop.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginStop) {
+		p.beginStop.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (p *PoolsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if p.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := p.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.HorizonDb/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/pools/(?P<poolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armhorizondb.PoolForPatchUpdate](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
+		if err != nil {
+			return nil, err
+		}
+		poolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("poolName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := p.srv.BeginUpdate(req.Context(), resourceGroupNameParam, clusterNameParam, poolNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		p.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		p.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		p.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (p *PoolsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if p.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.HorizonDb/clusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/pools/(?P<poolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.HorizonDb/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/pools/(?P<poolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -131,7 +475,7 @@ func (p *PoolsServerTransport) dispatchNewListPager(req *http.Request) (*http.Re
 	}
 	newListPager := p.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.HorizonDb/clusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/pools`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.HorizonDb/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/pools`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {

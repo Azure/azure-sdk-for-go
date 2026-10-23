@@ -29,6 +29,10 @@ type EdgeActionExecutionFiltersServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, edgeActionName string, executionFilter string, options *armedgeactions.EdgeActionExecutionFiltersClientBeginDeleteOptions) (resp azfake.PollerResponder[armedgeactions.EdgeActionExecutionFiltersClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method EdgeActionExecutionFiltersClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, edgeActionName string, executionFilter string, properties armedgeactions.EdgeActionExecutionFilterUpdate, options *armedgeactions.EdgeActionExecutionFiltersClientBeginUpdateOptions) (resp azfake.PollerResponder[armedgeactions.EdgeActionExecutionFiltersClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method EdgeActionExecutionFiltersClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, edgeActionName string, executionFilter string, options *armedgeactions.EdgeActionExecutionFiltersClientGetOptions) (resp azfake.Responder[armedgeactions.EdgeActionExecutionFiltersClientGetResponse], errResp azfake.ErrorResponder)
@@ -36,10 +40,6 @@ type EdgeActionExecutionFiltersServer struct {
 	// NewListByEdgeActionPager is the fake for method EdgeActionExecutionFiltersClient.NewListByEdgeActionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByEdgeActionPager func(resourceGroupName string, edgeActionName string, options *armedgeactions.EdgeActionExecutionFiltersClientListByEdgeActionOptions) (resp azfake.PagerResponder[armedgeactions.EdgeActionExecutionFiltersClientListByEdgeActionResponse])
-
-	// BeginUpdate is the fake for method EdgeActionExecutionFiltersClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, edgeActionName string, executionFilter string, properties armedgeactions.EdgeActionExecutionFilterUpdate, options *armedgeactions.EdgeActionExecutionFiltersClientBeginUpdateOptions) (resp azfake.PollerResponder[armedgeactions.EdgeActionExecutionFiltersClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewEdgeActionExecutionFiltersServerTransport creates a new instance of EdgeActionExecutionFiltersServerTransport with the provided implementation.
@@ -50,8 +50,8 @@ func NewEdgeActionExecutionFiltersServerTransport(srv *EdgeActionExecutionFilter
 		srv:                      srv,
 		beginCreate:              newTracker[azfake.PollerResponder[armedgeactions.EdgeActionExecutionFiltersClientCreateResponse]](),
 		beginDelete:              newTracker[azfake.PollerResponder[armedgeactions.EdgeActionExecutionFiltersClientDeleteResponse]](),
-		newListByEdgeActionPager: newTracker[azfake.PagerResponder[armedgeactions.EdgeActionExecutionFiltersClientListByEdgeActionResponse]](),
 		beginUpdate:              newTracker[azfake.PollerResponder[armedgeactions.EdgeActionExecutionFiltersClientUpdateResponse]](),
+		newListByEdgeActionPager: newTracker[azfake.PagerResponder[armedgeactions.EdgeActionExecutionFiltersClientListByEdgeActionResponse]](),
 	}
 }
 
@@ -61,8 +61,8 @@ type EdgeActionExecutionFiltersServerTransport struct {
 	srv                      *EdgeActionExecutionFiltersServer
 	beginCreate              *tracker[azfake.PollerResponder[armedgeactions.EdgeActionExecutionFiltersClientCreateResponse]]
 	beginDelete              *tracker[azfake.PollerResponder[armedgeactions.EdgeActionExecutionFiltersClientDeleteResponse]]
-	newListByEdgeActionPager *tracker[azfake.PagerResponder[armedgeactions.EdgeActionExecutionFiltersClientListByEdgeActionResponse]]
 	beginUpdate              *tracker[azfake.PollerResponder[armedgeactions.EdgeActionExecutionFiltersClientUpdateResponse]]
+	newListByEdgeActionPager *tracker[azfake.PagerResponder[armedgeactions.EdgeActionExecutionFiltersClientListByEdgeActionResponse]]
 }
 
 // Do implements the policy.Transporter interface for EdgeActionExecutionFiltersServerTransport.
@@ -90,12 +90,12 @@ func (e *EdgeActionExecutionFiltersServerTransport) dispatchToMethodFake(req *ht
 				res.resp, res.err = e.dispatchBeginCreate(req)
 			case "EdgeActionExecutionFiltersClient.BeginDelete":
 				res.resp, res.err = e.dispatchBeginDelete(req)
+			case "EdgeActionExecutionFiltersClient.BeginUpdate":
+				res.resp, res.err = e.dispatchBeginUpdate(req)
 			case "EdgeActionExecutionFiltersClient.Get":
 				res.resp, res.err = e.dispatchGet(req)
 			case "EdgeActionExecutionFiltersClient.NewListByEdgeActionPager":
 				res.resp, res.err = e.dispatchNewListByEdgeActionPager(req)
-			case "EdgeActionExecutionFiltersClient.BeginUpdate":
-				res.resp, res.err = e.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -118,7 +118,7 @@ func (e *EdgeActionExecutionFiltersServerTransport) dispatchBeginCreate(req *htt
 	}
 	beginCreate := e.beginCreate.get(req)
 	if beginCreate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Cdn/edgeActions/(?P<edgeActionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/executionFilters/(?P<executionFilter>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Cdn/edgeActions/(?P<edgeActionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/executionFilters/(?P<executionFilter>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -170,7 +170,7 @@ func (e *EdgeActionExecutionFiltersServerTransport) dispatchBeginDelete(req *htt
 	}
 	beginDelete := e.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Cdn/edgeActions/(?P<edgeActionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/executionFilters/(?P<executionFilter>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Cdn/edgeActions/(?P<edgeActionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/executionFilters/(?P<executionFilter>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -212,91 +212,13 @@ func (e *EdgeActionExecutionFiltersServerTransport) dispatchBeginDelete(req *htt
 	return resp, nil
 }
 
-func (e *EdgeActionExecutionFiltersServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if e.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Cdn/edgeActions/(?P<edgeActionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/executionFilters/(?P<executionFilter>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	edgeActionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("edgeActionName")])
-	if err != nil {
-		return nil, err
-	}
-	executionFilterParam, err := url.PathUnescape(matches[regex.SubexpIndex("executionFilter")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := e.srv.Get(req.Context(), resourceGroupNameParam, edgeActionNameParam, executionFilterParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).EdgeActionExecutionFilter, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (e *EdgeActionExecutionFiltersServerTransport) dispatchNewListByEdgeActionPager(req *http.Request) (*http.Response, error) {
-	if e.srv.NewListByEdgeActionPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByEdgeActionPager not implemented")}
-	}
-	newListByEdgeActionPager := e.newListByEdgeActionPager.get(req)
-	if newListByEdgeActionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Cdn/edgeActions/(?P<edgeActionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/executionFilters`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		edgeActionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("edgeActionName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := e.srv.NewListByEdgeActionPager(resourceGroupNameParam, edgeActionNameParam, nil)
-		newListByEdgeActionPager = &resp
-		e.newListByEdgeActionPager.add(req, newListByEdgeActionPager)
-		server.PagerResponderInjectNextLinks(newListByEdgeActionPager, req, func(page *armedgeactions.EdgeActionExecutionFiltersClientListByEdgeActionResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByEdgeActionPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		e.newListByEdgeActionPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByEdgeActionPager) {
-		e.newListByEdgeActionPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (e *EdgeActionExecutionFiltersServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
 	if e.srv.BeginUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
 	}
 	beginUpdate := e.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Cdn/edgeActions/(?P<edgeActionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/executionFilters/(?P<executionFilter>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Cdn/edgeActions/(?P<edgeActionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/executionFilters/(?P<executionFilter>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -339,6 +261,84 @@ func (e *EdgeActionExecutionFiltersServerTransport) dispatchBeginUpdate(req *htt
 		e.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (e *EdgeActionExecutionFiltersServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if e.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Cdn/edgeActions/(?P<edgeActionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/executionFilters/(?P<executionFilter>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	edgeActionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("edgeActionName")])
+	if err != nil {
+		return nil, err
+	}
+	executionFilterParam, err := url.PathUnescape(matches[regex.SubexpIndex("executionFilter")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := e.srv.Get(req.Context(), resourceGroupNameParam, edgeActionNameParam, executionFilterParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).EdgeActionExecutionFilter, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (e *EdgeActionExecutionFiltersServerTransport) dispatchNewListByEdgeActionPager(req *http.Request) (*http.Response, error) {
+	if e.srv.NewListByEdgeActionPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByEdgeActionPager not implemented")}
+	}
+	newListByEdgeActionPager := e.newListByEdgeActionPager.get(req)
+	if newListByEdgeActionPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Cdn/edgeActions/(?P<edgeActionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/executionFilters`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		edgeActionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("edgeActionName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := e.srv.NewListByEdgeActionPager(resourceGroupNameParam, edgeActionNameParam, nil)
+		newListByEdgeActionPager = &resp
+		e.newListByEdgeActionPager.add(req, newListByEdgeActionPager)
+		server.PagerResponderInjectNextLinks(newListByEdgeActionPager, req, func(page *armedgeactions.EdgeActionExecutionFiltersClientListByEdgeActionResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByEdgeActionPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		e.newListByEdgeActionPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByEdgeActionPager) {
+		e.newListByEdgeActionPager.remove(req)
+	}
 	return resp, nil
 }
 

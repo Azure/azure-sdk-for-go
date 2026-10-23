@@ -145,7 +145,7 @@ func (d *DefinitionsServerTransport) dispatchCreateOrUpdate(req *http.Request) (
 	if d.srv.CreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/policyDefinitions/(?P<policyDefinitionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Authorization/policyDefinitions/(?P<policyDefinitionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -178,7 +178,7 @@ func (d *DefinitionsServerTransport) dispatchCreateOrUpdateAtManagementGroup(req
 	if d.srv.CreateOrUpdateAtManagementGroup == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdateAtManagementGroup not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/policyDefinitions/(?P<policyDefinitionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Authorization/policyDefinitions/(?P<policyDefinitionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -215,7 +215,7 @@ func (d *DefinitionsServerTransport) dispatchDelete(req *http.Request) (*http.Re
 	if d.srv.Delete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/policyDefinitions/(?P<policyDefinitionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Authorization/policyDefinitions/(?P<policyDefinitionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -244,7 +244,7 @@ func (d *DefinitionsServerTransport) dispatchDeleteAtManagementGroup(req *http.R
 	if d.srv.DeleteAtManagementGroup == nil {
 		return nil, &nonRetriableError{errors.New("fake for method DeleteAtManagementGroup not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/policyDefinitions/(?P<policyDefinitionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Authorization/policyDefinitions/(?P<policyDefinitionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -277,7 +277,7 @@ func (d *DefinitionsServerTransport) dispatchGet(req *http.Request) (*http.Respo
 	if d.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/policyDefinitions/(?P<policyDefinitionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Authorization/policyDefinitions/(?P<policyDefinitionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -306,7 +306,7 @@ func (d *DefinitionsServerTransport) dispatchGetAtManagementGroup(req *http.Requ
 	if d.srv.GetAtManagementGroup == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetAtManagementGroup not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/policyDefinitions/(?P<policyDefinitionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Authorization/policyDefinitions/(?P<policyDefinitionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -339,7 +339,7 @@ func (d *DefinitionsServerTransport) dispatchGetBuiltIn(req *http.Request) (*htt
 	if d.srv.GetBuiltIn == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetBuiltIn not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Authorization/policyDefinitions/(?P<policyDefinitionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.Authorization/policyDefinitions/(?P<policyDefinitionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -370,7 +370,7 @@ func (d *DefinitionsServerTransport) dispatchNewListPager(req *http.Request) (*h
 	}
 	newListPager := d.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/policyDefinitions`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Authorization/policyDefinitions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -468,7 +468,7 @@ func (d *DefinitionsServerTransport) dispatchNewListByManagementGroupPager(req *
 	}
 	newListByManagementGroupPager := d.newListByManagementGroupPager.get(req)
 	if newListByManagementGroupPager == nil {
-		const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/policyDefinitions`
+		const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Authorization/policyDefinitions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {

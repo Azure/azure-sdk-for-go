@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15/mongoMIrbac/CosmosDBMongoMIRoleAssignmentCreateUpdate.json
+// Generated from example definition: 2026-04-01-preview/mongoMIrbac/CosmosDBMongoMIRoleAssignmentCreateUpdate.json
 func ExampleMongoMIResourcesClient_BeginCreateUpdateMongoMIRoleAssignment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,7 +54,7 @@ func ExampleMongoMIResourcesClient_BeginCreateUpdateMongoMIRoleAssignment() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15/mongoMIrbac/CosmosDBMongoMIRoleDefinitionCreateUpdate.json
+// Generated from example definition: 2026-04-01-preview/mongoMIrbac/CosmosDBMongoMIRoleDefinitionCreateUpdate.json
 func ExampleMongoMIResourcesClient_BeginCreateUpdateMongoMIRoleDefinition() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -119,7 +119,7 @@ func ExampleMongoMIResourcesClient_BeginCreateUpdateMongoMIRoleDefinition() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15/mongoMIrbac/CosmosDBMongoMIRoleAssignmentDelete.json
+// Generated from example definition: 2026-04-01-preview/mongoMIrbac/CosmosDBMongoMIRoleAssignmentDelete.json
 func ExampleMongoMIResourcesClient_BeginDeleteMongoMIRoleAssignment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -145,7 +145,7 @@ func ExampleMongoMIResourcesClient_BeginDeleteMongoMIRoleAssignment() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15/mongoMIrbac/CosmosDBMongoMIRoleDefinitionDelete.json
+// Generated from example definition: 2026-04-01-preview/mongoMIrbac/CosmosDBMongoMIRoleDefinitionDelete.json
 func ExampleMongoMIResourcesClient_BeginDeleteMongoMIRoleDefinition() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -171,7 +171,7 @@ func ExampleMongoMIResourcesClient_BeginDeleteMongoMIRoleDefinition() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15/mongoMIrbac/CosmosDBMongoMIRoleAssignmentGet.json
+// Generated from example definition: 2026-04-01-preview/mongoMIrbac/CosmosDBMongoMIRoleAssignmentGet.json
 func ExampleMongoMIResourcesClient_GetMongoMIRoleAssignment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -203,7 +203,7 @@ func ExampleMongoMIResourcesClient_GetMongoMIRoleAssignment() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15/mongoMIrbac/CosmosDBMongoMIRoleDefinitionGet.json
+// Generated from example definition: 2026-04-01-preview/mongoMIrbac/CosmosDBMongoMIRoleDefinitionGet.json
 func ExampleMongoMIResourcesClient_GetMongoMIRoleDefinition() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -248,7 +248,7 @@ func ExampleMongoMIResourcesClient_GetMongoMIRoleDefinition() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15/mongoMIrbac/CosmosDBMongoMIRoleAssignmentList.json
+// Generated from example definition: 2026-04-01-preview/mongoMIrbac/CosmosDBMongoMIRoleAssignmentList.json
 func ExampleMongoMIResourcesClient_NewListMongoMIRoleAssignmentsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -289,7 +289,7 @@ func ExampleMongoMIResourcesClient_NewListMongoMIRoleAssignmentsPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-15/mongoMIrbac/CosmosDBMongoMIRoleDefinitionList.json
+// Generated from example definition: 2026-04-01-preview/mongoMIrbac/CosmosDBMongoMIRoleDefinitionList.json
 func ExampleMongoMIResourcesClient_NewListMongoMIRoleDefinitionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

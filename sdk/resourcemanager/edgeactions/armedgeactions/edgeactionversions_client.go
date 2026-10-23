@@ -19,7 +19,7 @@ import (
 // EdgeActionVersionsClient contains the methods for the EdgeActionVersions group.
 // Don't use this type directly, use NewEdgeActionVersionsClient() instead.
 //
-// Generated from API version 2025-12-01-preview
+// Generated from API version 2026-10-01
 type EdgeActionVersionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type EdgeActionVersionsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewEdgeActionVersionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*EdgeActionVersionsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -66,7 +69,7 @@ func (client *EdgeActionVersionsClient) BeginCreate(ctx context.Context, resourc
 	}
 }
 
-// Create - Create a EdgeActionVersion
+// create - Create a EdgeActionVersion
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *EdgeActionVersionsClient) create(ctx context.Context, resourceGroupName string, edgeActionName string, version string, resource EdgeActionVersion, options *EdgeActionVersionsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
@@ -88,11 +91,11 @@ func (client *EdgeActionVersionsClient) create(ctx context.Context, resourceGrou
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *EdgeActionVersionsClient) createCreateRequest(ctx context.Context, resourceGroupName string, edgeActionName string, version string, resource EdgeActionVersion, _ *EdgeActionVersionsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}/versions/{version}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -112,7 +115,7 @@ func (client *EdgeActionVersionsClient) createCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251201Preview)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -131,7 +134,7 @@ func (client *EdgeActionVersionsClient) createCreateRequest(ctx context.Context,
 //     method.
 func (client *EdgeActionVersionsClient) BeginDelete(ctx context.Context, resourceGroupName string, edgeActionName string, version string, options *EdgeActionVersionsClientBeginDeleteOptions) (*runtime.Poller[EdgeActionVersionsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, edgeActionName, version, options)
+		resp, err := client.delete(ctx, resourceGroupName, edgeActionName, version, options)
 		if err != nil {
 			return nil, err
 		}
@@ -146,9 +149,9 @@ func (client *EdgeActionVersionsClient) BeginDelete(ctx context.Context, resourc
 	}
 }
 
-// Delete - Delete a EdgeActionVersion
+// delete - Delete a EdgeActionVersion
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *EdgeActionVersionsClient) deleteOperation(ctx context.Context, resourceGroupName string, edgeActionName string, version string, options *EdgeActionVersionsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *EdgeActionVersionsClient) delete(ctx context.Context, resourceGroupName string, edgeActionName string, version string, options *EdgeActionVersionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "EdgeActionVersionsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -168,11 +171,11 @@ func (client *EdgeActionVersionsClient) deleteOperation(ctx context.Context, res
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *EdgeActionVersionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, edgeActionName string, version string, _ *EdgeActionVersionsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}/versions/{version}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -192,11 +195,13 @@ func (client *EdgeActionVersionsClient) deleteCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251201Preview)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
+// BeginDeployVersionCode - A long-running resource action.
+// If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - edgeActionName - The name of the Edge Action
 //   - version - The name of the Edge Action version
@@ -220,7 +225,7 @@ func (client *EdgeActionVersionsClient) BeginDeployVersionCode(ctx context.Conte
 	}
 }
 
-// DeployVersionCode -
+// deployVersionCode - A long-running resource action.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *EdgeActionVersionsClient) deployVersionCode(ctx context.Context, resourceGroupName string, edgeActionName string, version string, body VersionCode, options *EdgeActionVersionsClientBeginDeployVersionCodeOptions) (*http.Response, error) {
 	var err error
@@ -242,11 +247,11 @@ func (client *EdgeActionVersionsClient) deployVersionCode(ctx context.Context, r
 	return httpResp, nil
 }
 
-// deployVersionCodeCreateRequest creates the DeployVersionCode request.
+// deployVersionCodeCreateRequest creates the deployVersionCode request.
 func (client *EdgeActionVersionsClient) deployVersionCodeCreateRequest(ctx context.Context, resourceGroupName string, edgeActionName string, version string, body VersionCode, _ *EdgeActionVersionsClientBeginDeployVersionCodeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}/versions/{version}/deployVersionCode"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -266,11 +271,247 @@ func (client *EdgeActionVersionsClient) deployVersionCodeCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251201Preview)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginGetVersionCode - Get the version code for the edge action version.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - edgeActionName - The name of the Edge Action
+//   - version - The name of the Edge Action version
+//   - options - EdgeActionVersionsClientBeginGetVersionCodeOptions contains the optional parameters for the EdgeActionVersionsClient.BeginGetVersionCode
+//     method.
+func (client *EdgeActionVersionsClient) BeginGetVersionCode(ctx context.Context, resourceGroupName string, edgeActionName string, version string, options *EdgeActionVersionsClientBeginGetVersionCodeOptions) (*runtime.Poller[EdgeActionVersionsClientGetVersionCodeResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.getVersionCode(ctx, resourceGroupName, edgeActionName, version, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[EdgeActionVersionsClientGetVersionCodeResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[EdgeActionVersionsClientGetVersionCodeResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// getVersionCode - Get the version code for the edge action version.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *EdgeActionVersionsClient) getVersionCode(ctx context.Context, resourceGroupName string, edgeActionName string, version string, options *EdgeActionVersionsClientBeginGetVersionCodeOptions) (*http.Response, error) {
+	var err error
+	const operationName = "EdgeActionVersionsClient.BeginGetVersionCode"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getVersionCodeCreateRequest(ctx, resourceGroupName, edgeActionName, version, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// getVersionCodeCreateRequest creates the getVersionCode request.
+func (client *EdgeActionVersionsClient) getVersionCodeCreateRequest(ctx context.Context, resourceGroupName string, edgeActionName string, version string, _ *EdgeActionVersionsClientBeginGetVersionCodeOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}/versions/{version}/getVersionCode"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if edgeActionName == "" {
+		return nil, errors.New("parameter edgeActionName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{edgeActionName}", url.PathEscape(edgeActionName))
+	if version == "" {
+		return nil, errors.New("parameter version cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{version}", url.PathEscape(version))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261001)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// BeginSwapDefault - Swap the default version for the edge action.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - edgeActionName - The name of the Edge Action
+//   - version - The name of the Edge Action version
+//   - options - EdgeActionVersionsClientBeginSwapDefaultOptions contains the optional parameters for the EdgeActionVersionsClient.BeginSwapDefault
+//     method.
+func (client *EdgeActionVersionsClient) BeginSwapDefault(ctx context.Context, resourceGroupName string, edgeActionName string, version string, options *EdgeActionVersionsClientBeginSwapDefaultOptions) (*runtime.Poller[EdgeActionVersionsClientSwapDefaultResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.swapDefault(ctx, resourceGroupName, edgeActionName, version, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[EdgeActionVersionsClientSwapDefaultResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[EdgeActionVersionsClientSwapDefaultResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// swapDefault - Swap the default version for the edge action.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *EdgeActionVersionsClient) swapDefault(ctx context.Context, resourceGroupName string, edgeActionName string, version string, options *EdgeActionVersionsClientBeginSwapDefaultOptions) (*http.Response, error) {
+	var err error
+	const operationName = "EdgeActionVersionsClient.BeginSwapDefault"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.swapDefaultCreateRequest(ctx, resourceGroupName, edgeActionName, version, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// swapDefaultCreateRequest creates the swapDefault request.
+func (client *EdgeActionVersionsClient) swapDefaultCreateRequest(ctx context.Context, resourceGroupName string, edgeActionName string, version string, _ *EdgeActionVersionsClientBeginSwapDefaultOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}/versions/{version}/swapDefault"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if edgeActionName == "" {
+		return nil, errors.New("parameter edgeActionName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{edgeActionName}", url.PathEscape(edgeActionName))
+	if version == "" {
+		return nil, errors.New("parameter version cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{version}", url.PathEscape(version))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261001)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - Updates the tags of an Edge Action version. Omitted tags are preserved, an empty tags object clears all tags,
+// and supplied tags replace the entire tag collection. Null tags are rejected. Version properties are not changed. If deploymentType
+// or isDefaultVersion is supplied, it must match the existing value; use swapDefault to change the default version.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - edgeActionName - The name of the Edge Action
+//   - version - The name of the Edge Action version
+//   - properties - The resource properties to be updated.
+//   - options - EdgeActionVersionsClientBeginUpdateOptions contains the optional parameters for the EdgeActionVersionsClient.BeginUpdate
+//     method.
+func (client *EdgeActionVersionsClient) BeginUpdate(ctx context.Context, resourceGroupName string, edgeActionName string, version string, properties EdgeActionVersionUpdate, options *EdgeActionVersionsClientBeginUpdateOptions) (*runtime.Poller[EdgeActionVersionsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, edgeActionName, version, properties, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[EdgeActionVersionsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[EdgeActionVersionsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Updates the tags of an Edge Action version. Omitted tags are preserved, an empty tags object clears all tags,
+// and supplied tags replace the entire tag collection. Null tags are rejected. Version properties are not changed. If deploymentType
+// or isDefaultVersion is supplied, it must match the existing value; use swapDefault to change the default version.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *EdgeActionVersionsClient) update(ctx context.Context, resourceGroupName string, edgeActionName string, version string, properties EdgeActionVersionUpdate, options *EdgeActionVersionsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "EdgeActionVersionsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, edgeActionName, version, properties, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *EdgeActionVersionsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, edgeActionName string, version string, properties EdgeActionVersionUpdate, _ *EdgeActionVersionsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}/versions/{version}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if edgeActionName == "" {
+		return nil, errors.New("parameter edgeActionName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{edgeActionName}", url.PathEscape(edgeActionName))
+	if version == "" {
+		return nil, errors.New("parameter version cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{version}", url.PathEscape(version))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261001)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, properties); err != nil {
 		return nil, err
 	}
 	return req, nil
@@ -303,7 +544,7 @@ func (client *EdgeActionVersionsClient) Get(ctx context.Context, resourceGroupNa
 func (client *EdgeActionVersionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, edgeActionName string, version string, _ *EdgeActionVersionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}/versions/{version}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -323,7 +564,7 @@ func (client *EdgeActionVersionsClient) getCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251201Preview)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -339,82 +580,6 @@ func (client *EdgeActionVersionsClient) getHandleResponse(resp *http.Response, s
 		return EdgeActionVersionsClientGetResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginGetVersionCode - Get the version code for the edge action version.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - edgeActionName - The name of the Edge Action
-//   - version - The name of the Edge Action version
-//   - options - EdgeActionVersionsClientBeginGetVersionCodeOptions contains the optional parameters for the EdgeActionVersionsClient.BeginGetVersionCode
-//     method.
-func (client *EdgeActionVersionsClient) BeginGetVersionCode(ctx context.Context, resourceGroupName string, edgeActionName string, version string, options *EdgeActionVersionsClientBeginGetVersionCodeOptions) (*runtime.Poller[EdgeActionVersionsClientGetVersionCodeResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.getVersionCode(ctx, resourceGroupName, edgeActionName, version, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[EdgeActionVersionsClientGetVersionCodeResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[EdgeActionVersionsClientGetVersionCodeResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// GetVersionCode - Get the version code for the edge action version.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *EdgeActionVersionsClient) getVersionCode(ctx context.Context, resourceGroupName string, edgeActionName string, version string, options *EdgeActionVersionsClientBeginGetVersionCodeOptions) (*http.Response, error) {
-	var err error
-	const operationName = "EdgeActionVersionsClient.BeginGetVersionCode"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.getVersionCodeCreateRequest(ctx, resourceGroupName, edgeActionName, version, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// getVersionCodeCreateRequest creates the GetVersionCode request.
-func (client *EdgeActionVersionsClient) getVersionCodeCreateRequest(ctx context.Context, resourceGroupName string, edgeActionName string, version string, _ *EdgeActionVersionsClientBeginGetVersionCodeOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}/versions/{version}/getVersionCode"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if edgeActionName == "" {
-		return nil, errors.New("parameter edgeActionName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{edgeActionName}", url.PathEscape(edgeActionName))
-	if version == "" {
-		return nil, errors.New("parameter version cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{version}", url.PathEscape(version))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251201Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
 }
 
 // NewListByEdgeActionPager - List EdgeActionVersion resources by EdgeAction
@@ -455,7 +620,7 @@ func (client *EdgeActionVersionsClient) listByEdgeActionCreateRequest(ctx contex
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}/versions"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -475,7 +640,7 @@ func (client *EdgeActionVersionsClient) listByEdgeActionCreateRequest(ctx contex
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20251201Preview)
+		reqQP.Set("api-version", version20261001)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -492,160 +657,4 @@ func (client *EdgeActionVersionsClient) listByEdgeActionHandleResponse(resp *htt
 		return EdgeActionVersionsClientListByEdgeActionResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginSwapDefault - Swap the default version for the edge action.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - edgeActionName - The name of the Edge Action
-//   - version - The name of the Edge Action version
-//   - options - EdgeActionVersionsClientBeginSwapDefaultOptions contains the optional parameters for the EdgeActionVersionsClient.BeginSwapDefault
-//     method.
-func (client *EdgeActionVersionsClient) BeginSwapDefault(ctx context.Context, resourceGroupName string, edgeActionName string, version string, options *EdgeActionVersionsClientBeginSwapDefaultOptions) (*runtime.Poller[EdgeActionVersionsClientSwapDefaultResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.swapDefault(ctx, resourceGroupName, edgeActionName, version, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[EdgeActionVersionsClientSwapDefaultResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[EdgeActionVersionsClientSwapDefaultResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// SwapDefault - Swap the default version for the edge action.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *EdgeActionVersionsClient) swapDefault(ctx context.Context, resourceGroupName string, edgeActionName string, version string, options *EdgeActionVersionsClientBeginSwapDefaultOptions) (*http.Response, error) {
-	var err error
-	const operationName = "EdgeActionVersionsClient.BeginSwapDefault"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.swapDefaultCreateRequest(ctx, resourceGroupName, edgeActionName, version, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// swapDefaultCreateRequest creates the SwapDefault request.
-func (client *EdgeActionVersionsClient) swapDefaultCreateRequest(ctx context.Context, resourceGroupName string, edgeActionName string, version string, _ *EdgeActionVersionsClientBeginSwapDefaultOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}/versions/{version}/swapDefault"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if edgeActionName == "" {
-		return nil, errors.New("parameter edgeActionName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{edgeActionName}", url.PathEscape(edgeActionName))
-	if version == "" {
-		return nil, errors.New("parameter version cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{version}", url.PathEscape(version))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251201Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
-}
-
-// BeginUpdate - Update a EdgeActionVersion
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - edgeActionName - The name of the Edge Action
-//   - version - The name of the Edge Action version
-//   - properties - The resource properties to be updated.
-//   - options - EdgeActionVersionsClientBeginUpdateOptions contains the optional parameters for the EdgeActionVersionsClient.BeginUpdate
-//     method.
-func (client *EdgeActionVersionsClient) BeginUpdate(ctx context.Context, resourceGroupName string, edgeActionName string, version string, properties EdgeActionVersionUpdate, options *EdgeActionVersionsClientBeginUpdateOptions) (*runtime.Poller[EdgeActionVersionsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, edgeActionName, version, properties, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[EdgeActionVersionsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[EdgeActionVersionsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update a EdgeActionVersion
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *EdgeActionVersionsClient) update(ctx context.Context, resourceGroupName string, edgeActionName string, version string, properties EdgeActionVersionUpdate, options *EdgeActionVersionsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "EdgeActionVersionsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, edgeActionName, version, properties, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *EdgeActionVersionsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, edgeActionName string, version string, properties EdgeActionVersionUpdate, _ *EdgeActionVersionsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}/versions/{version}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if edgeActionName == "" {
-		return nil, errors.New("parameter edgeActionName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{edgeActionName}", url.PathEscape(edgeActionName))
-	if version == "" {
-		return nil, errors.New("parameter version cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{version}", url.PathEscape(version))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251201Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

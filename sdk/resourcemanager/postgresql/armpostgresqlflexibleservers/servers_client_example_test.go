@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2026-04-01-preview/ServersClusterCreate.json
+// Generated from example definition: 2026-07-01-preview/ServersClusterCreate.json
 func ExampleServersClient_BeginCreateOrUpdate_createANewElasticCluster() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -31,6 +31,7 @@ func ExampleServersClient_BeginCreateOrUpdate_createANewElasticCluster() {
 			AdministratorLoginPassword: to.Ptr("examplepassword"),
 			Backup: &armpostgresqlflexibleservers.Backup{
 				BackupRetentionDays: to.Ptr[int32](7),
+				ImmutableBackup:     to.Ptr(armpostgresqlflexibleservers.ImmutableBackupEnabled),
 				GeoRedundantBackup:  to.Ptr(armpostgresqlflexibleservers.GeographicallyRedundantBackupDisabled),
 			},
 			Cluster: &armpostgresqlflexibleservers.Cluster{
@@ -65,7 +66,7 @@ func ExampleServersClient_BeginCreateOrUpdate_createANewElasticCluster() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/ServersCreateGeoRestoreWithDataEncryptionEnabled.json
+// Generated from example definition: 2026-07-01-preview/ServersCreateGeoRestoreWithDataEncryptionEnabled.json
 func ExampleServersClient_BeginCreateOrUpdate_createANewServerUsingARestoreOfAGeographicallyRedundantBackupOfAnExistingServerWithDataEncryptionBasedOnCustomerManagedKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -107,7 +108,7 @@ func ExampleServersClient_BeginCreateOrUpdate_createANewServerUsingARestoreOfAGe
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/ServersCreateGeoRestoreWithDataEncryptionEnabledAutoUpdate.json
+// Generated from example definition: 2026-07-01-preview/ServersCreateGeoRestoreWithDataEncryptionEnabledAutoUpdate.json
 func ExampleServersClient_BeginCreateOrUpdate_createANewServerUsingARestoreOfAGeographicallyRedundantBackupOfAnExistingServerWithDataEncryptionBasedOnCustomerManagedKeyWithAutomaticKeyVersionUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -149,7 +150,7 @@ func ExampleServersClient_BeginCreateOrUpdate_createANewServerUsingARestoreOfAGe
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/ServersCreateInMicrosoftOwnedVirtualNetworkWithZoneRedundantHighAvailability.json
+// Generated from example definition: 2026-07-01-preview/ServersCreateInMicrosoftOwnedVirtualNetworkWithZoneRedundantHighAvailability.json
 func ExampleServersClient_BeginCreateOrUpdate_createANewServerInMicrosoftOwnedVirtualNetworkWithZoneRedundantHighAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -168,6 +169,7 @@ func ExampleServersClient_BeginCreateOrUpdate_createANewServerInMicrosoftOwnedVi
 			AvailabilityZone:           to.Ptr("1"),
 			Backup: &armpostgresqlflexibleservers.Backup{
 				BackupRetentionDays: to.Ptr[int32](7),
+				ImmutableBackup:     to.Ptr(armpostgresqlflexibleservers.ImmutableBackupEnabled),
 				GeoRedundantBackup:  to.Ptr(armpostgresqlflexibleservers.GeographicallyRedundantBackupEnabled),
 			},
 			CreateMode: to.Ptr(armpostgresqlflexibleservers.CreateModeCreate),
@@ -202,7 +204,7 @@ func ExampleServersClient_BeginCreateOrUpdate_createANewServerInMicrosoftOwnedVi
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/ServersCreateInYourOwnVirtualNetworkWithSameZoneHighAvailability.json
+// Generated from example definition: 2026-07-01-preview/ServersCreateInYourOwnVirtualNetworkWithSameZoneHighAvailability.json
 func ExampleServersClient_BeginCreateOrUpdate_createANewServerInYourOwnVirtualNetworkWithSameZoneHighAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -221,6 +223,7 @@ func ExampleServersClient_BeginCreateOrUpdate_createANewServerInYourOwnVirtualNe
 			AvailabilityZone:           to.Ptr("1"),
 			Backup: &armpostgresqlflexibleservers.Backup{
 				BackupRetentionDays: to.Ptr[int32](7),
+				ImmutableBackup:     to.Ptr(armpostgresqlflexibleservers.ImmutableBackupEnabled),
 				GeoRedundantBackup:  to.Ptr(armpostgresqlflexibleservers.GeographicallyRedundantBackupEnabled),
 			},
 			CreateMode: to.Ptr(armpostgresqlflexibleservers.CreateModeCreate),
@@ -256,7 +259,7 @@ func ExampleServersClient_BeginCreateOrUpdate_createANewServerInYourOwnVirtualNe
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/ServersCreatePointInTimeRestore.json
+// Generated from example definition: 2026-07-01-preview/ServersCreatePointInTimeRestore.json
 func ExampleServersClient_BeginCreateOrUpdate_createANewServerUsingAPointInTimeRestoreOfABackupOfAnExistingServer() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -284,7 +287,7 @@ func ExampleServersClient_BeginCreateOrUpdate_createANewServerUsingAPointInTimeR
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/ServersCreateReplica.json
+// Generated from example definition: 2026-07-01-preview/ServersCreateReplica.json
 func ExampleServersClient_BeginCreateOrUpdate_createAReadReplicaOfAnExistingServer() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -324,7 +327,7 @@ func ExampleServersClient_BeginCreateOrUpdate_createAReadReplicaOfAnExistingServ
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/ServersCreateReviveDropped.json
+// Generated from example definition: 2026-07-01-preview/ServersCreateReviveDropped.json
 func ExampleServersClient_BeginCreateOrUpdate_createANewServerUsingABackupOfAServerThatWasDeletedOrDroppedRecently() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -352,7 +355,7 @@ func ExampleServersClient_BeginCreateOrUpdate_createANewServerUsingABackupOfASer
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/ServersCreateWithDataEncryptionEnabled.json
+// Generated from example definition: 2026-07-01-preview/ServersCreateWithDataEncryptionEnabled.json
 func ExampleServersClient_BeginCreateOrUpdate_createANewServerWithDataEncryptionBasedOnCustomerManagedKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -377,6 +380,7 @@ func ExampleServersClient_BeginCreateOrUpdate_createANewServerWithDataEncryption
 			AvailabilityZone:           to.Ptr("1"),
 			Backup: &armpostgresqlflexibleservers.Backup{
 				BackupRetentionDays: to.Ptr[int32](7),
+				ImmutableBackup:     to.Ptr(armpostgresqlflexibleservers.ImmutableBackupEnabled),
 				GeoRedundantBackup:  to.Ptr(armpostgresqlflexibleservers.GeographicallyRedundantBackupDisabled),
 			},
 			CreateMode: to.Ptr(armpostgresqlflexibleservers.CreateModeCreate),
@@ -415,7 +419,7 @@ func ExampleServersClient_BeginCreateOrUpdate_createANewServerWithDataEncryption
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/ServersCreateWithDataEncryptionEnabledAutoUpdate.json
+// Generated from example definition: 2026-07-01-preview/ServersCreateWithDataEncryptionEnabledAutoUpdate.json
 func ExampleServersClient_BeginCreateOrUpdate_createANewServerWithDataEncryptionBasedOnCustomerManagedKeyWithAutomaticKeyVersionUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -440,6 +444,7 @@ func ExampleServersClient_BeginCreateOrUpdate_createANewServerWithDataEncryption
 			AvailabilityZone:           to.Ptr("1"),
 			Backup: &armpostgresqlflexibleservers.Backup{
 				BackupRetentionDays: to.Ptr[int32](7),
+				ImmutableBackup:     to.Ptr(armpostgresqlflexibleservers.ImmutableBackupEnabled),
 				GeoRedundantBackup:  to.Ptr(armpostgresqlflexibleservers.GeographicallyRedundantBackupDisabled),
 			},
 			CreateMode: to.Ptr(armpostgresqlflexibleservers.CreateModeCreate),
@@ -478,7 +483,7 @@ func ExampleServersClient_BeginCreateOrUpdate_createANewServerWithDataEncryption
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/ServersCreateWithMicrosoftEntraEnabledInYourOwnVirtualNetworkWithoutHighAvailability.json
+// Generated from example definition: 2026-07-01-preview/ServersCreateWithMicrosoftEntraEnabledInYourOwnVirtualNetworkWithoutHighAvailability.json
 func ExampleServersClient_BeginCreateOrUpdate_createANewServerWithMicrosoftEntraAuthenticationEnabledInYourOwnVirtualNetworkAndWithoutHighAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -502,6 +507,7 @@ func ExampleServersClient_BeginCreateOrUpdate_createANewServerWithMicrosoftEntra
 			AvailabilityZone: to.Ptr("1"),
 			Backup: &armpostgresqlflexibleservers.Backup{
 				BackupRetentionDays: to.Ptr[int32](7),
+				ImmutableBackup:     to.Ptr(armpostgresqlflexibleservers.ImmutableBackupEnabled),
 				GeoRedundantBackup:  to.Ptr(armpostgresqlflexibleservers.GeographicallyRedundantBackupDisabled),
 			},
 			CreateMode: to.Ptr(armpostgresqlflexibleservers.CreateModeCreate),
@@ -536,7 +542,7 @@ func ExampleServersClient_BeginCreateOrUpdate_createANewServerWithMicrosoftEntra
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/ServersDelete.json
+// Generated from example definition: 2026-07-01-preview/ServersDelete.json
 func ExampleServersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -557,7 +563,7 @@ func ExampleServersClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/ServersGet.json
+// Generated from example definition: 2026-07-01-preview/ServersGet.json
 func ExampleServersClient_Get_getInformationAboutAnExistingServer() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -590,6 +596,7 @@ func ExampleServersClient_Get_getInformationAboutAnExistingServer() {
 	// 			AvailabilityZone: to.Ptr("1"),
 	// 			Backup: &armpostgresqlflexibleservers.Backup{
 	// 				BackupRetentionDays: to.Ptr[int32](7),
+	// 				ImmutableBackup: to.Ptr(armpostgresqlflexibleservers.ImmutableBackupEnabled),
 	// 				EarliestRestoreDate: to.Ptr(time.Date(2025, time.June, 1, 18, 35, 22, 123456000, time.UTC)),
 	// 				GeoRedundantBackup: to.Ptr(armpostgresqlflexibleservers.GeographicallyRedundantBackupEnabled),
 	// 			},
@@ -640,7 +647,7 @@ func ExampleServersClient_Get_getInformationAboutAnExistingServer() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/ServersGetWithPrivateEndpoints.json
+// Generated from example definition: 2026-07-01-preview/ServersGetWithPrivateEndpoints.json
 func ExampleServersClient_Get_getInformationAboutAnExistingServerThatIsnTIntegratedIntoAVirtualNetworkProvidedByCustomerAndHasPrivateEndpointConnections() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -673,6 +680,7 @@ func ExampleServersClient_Get_getInformationAboutAnExistingServerThatIsnTIntegra
 	// 			AvailabilityZone: to.Ptr("1"),
 	// 			Backup: &armpostgresqlflexibleservers.Backup{
 	// 				BackupRetentionDays: to.Ptr[int32](7),
+	// 				ImmutableBackup: to.Ptr(armpostgresqlflexibleservers.ImmutableBackupEnabled),
 	// 				EarliestRestoreDate: to.Ptr(time.Date(2025, time.June, 1, 18, 35, 22, 123456000, time.UTC)),
 	// 				GeoRedundantBackup: to.Ptr(armpostgresqlflexibleservers.GeographicallyRedundantBackupDisabled),
 	// 			},
@@ -729,7 +737,7 @@ func ExampleServersClient_Get_getInformationAboutAnExistingServerThatIsnTIntegra
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/ServersGetWithVnet.json
+// Generated from example definition: 2026-07-01-preview/ServersGetWithVnet.json
 func ExampleServersClient_Get_getInformationAboutAnExistingServerThatIsIntegratedIntoAVirtualNetworkProvidedByCustomer() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -762,6 +770,7 @@ func ExampleServersClient_Get_getInformationAboutAnExistingServerThatIsIntegrate
 	// 			AvailabilityZone: to.Ptr("1"),
 	// 			Backup: &armpostgresqlflexibleservers.Backup{
 	// 				BackupRetentionDays: to.Ptr[int32](7),
+	// 				ImmutableBackup: to.Ptr(armpostgresqlflexibleservers.ImmutableBackupEnabled),
 	// 				EarliestRestoreDate: to.Ptr(time.Date(2025, time.June, 1, 18, 35, 22, 123456000, time.UTC)),
 	// 				GeoRedundantBackup: to.Ptr(armpostgresqlflexibleservers.GeographicallyRedundantBackupEnabled),
 	// 			},
@@ -816,7 +825,7 @@ func ExampleServersClient_Get_getInformationAboutAnExistingServerThatIsIntegrate
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/ServersListByResourceGroup.json
+// Generated from example definition: 2026-07-01-preview/ServersListByResourceGroup.json
 func ExampleServersClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -840,7 +849,7 @@ func ExampleServersClient_NewListByResourceGroupPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armpostgresqlflexibleservers.ServersClientListByResourceGroupResponse{
 		// 	ServerList: armpostgresqlflexibleservers.ServerList{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBforPostgreSQL/flexibleServers?api-version=2026-04-01-preview&$skiptoken=skiptoken"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBforPostgreSQL/flexibleServers?api-version=2026-07-01-preview&$skiptoken=skiptoken"),
 		// 		Value: []*armpostgresqlflexibleservers.Server{
 		// 			{
 		// 				Name: to.Ptr("exampleserver1"),
@@ -857,6 +866,7 @@ func ExampleServersClient_NewListByResourceGroupPager() {
 		// 					AvailabilityZone: to.Ptr("1"),
 		// 					Backup: &armpostgresqlflexibleservers.Backup{
 		// 						BackupRetentionDays: to.Ptr[int32](7),
+		// 						ImmutableBackup: to.Ptr(armpostgresqlflexibleservers.ImmutableBackupEnabled),
 		// 						EarliestRestoreDate: to.Ptr(time.Date(2025, time.June, 1, 18, 35, 22, 123456000, time.UTC)),
 		// 						GeoRedundantBackup: to.Ptr(armpostgresqlflexibleservers.GeographicallyRedundantBackupEnabled),
 		// 					},
@@ -934,6 +944,7 @@ func ExampleServersClient_NewListByResourceGroupPager() {
 		// 					AvailabilityZone: to.Ptr("1"),
 		// 					Backup: &armpostgresqlflexibleservers.Backup{
 		// 						BackupRetentionDays: to.Ptr[int32](7),
+		// 						ImmutableBackup: to.Ptr(armpostgresqlflexibleservers.ImmutableBackupEnabled),
 		// 						EarliestRestoreDate: to.Ptr(time.Date(2025, time.June, 1, 19, 35, 22, 123456000, time.UTC)),
 		// 						GeoRedundantBackup: to.Ptr(armpostgresqlflexibleservers.GeographicallyRedundantBackupDisabled),
 		// 					},
@@ -992,7 +1003,7 @@ func ExampleServersClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/ServersListBySubscription.json
+// Generated from example definition: 2026-07-01-preview/ServersListBySubscription.json
 func ExampleServersClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1016,7 +1027,7 @@ func ExampleServersClient_NewListBySubscriptionPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armpostgresqlflexibleservers.ServersClientListBySubscriptionResponse{
 		// 	ServerList: armpostgresqlflexibleservers.ServerList{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/providers/Microsoft.DBforPostgreSQL/flexibleServers?api-version=2026-04-01-preview&$skiptoken=skiptoken"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/providers/Microsoft.DBforPostgreSQL/flexibleServers?api-version=2026-07-01-preview&$skiptoken=skiptoken"),
 		// 		Value: []*armpostgresqlflexibleservers.Server{
 		// 			{
 		// 				Name: to.Ptr("exampleserver1"),
@@ -1033,6 +1044,7 @@ func ExampleServersClient_NewListBySubscriptionPager() {
 		// 					AvailabilityZone: to.Ptr("1"),
 		// 					Backup: &armpostgresqlflexibleservers.Backup{
 		// 						BackupRetentionDays: to.Ptr[int32](7),
+		// 						ImmutableBackup: to.Ptr(armpostgresqlflexibleservers.ImmutableBackupEnabled),
 		// 						EarliestRestoreDate: to.Ptr(time.Date(2025, time.June, 1, 18, 35, 22, 123456000, time.UTC)),
 		// 						GeoRedundantBackup: to.Ptr(armpostgresqlflexibleservers.GeographicallyRedundantBackupEnabled),
 		// 					},
@@ -1099,6 +1111,7 @@ func ExampleServersClient_NewListBySubscriptionPager() {
 		// 					AvailabilityZone: to.Ptr("2"),
 		// 					Backup: &armpostgresqlflexibleservers.Backup{
 		// 						BackupRetentionDays: to.Ptr[int32](7),
+		// 						ImmutableBackup: to.Ptr(armpostgresqlflexibleservers.ImmutableBackupEnabled),
 		// 						EarliestRestoreDate: to.Ptr(time.Date(2025, time.June, 1, 19, 35, 22, 123456000, time.UTC)),
 		// 						GeoRedundantBackup: to.Ptr(armpostgresqlflexibleservers.GeographicallyRedundantBackupEnabled),
 		// 					},
@@ -1175,6 +1188,7 @@ func ExampleServersClient_NewListBySubscriptionPager() {
 		// 					AvailabilityZone: to.Ptr("1"),
 		// 					Backup: &armpostgresqlflexibleservers.Backup{
 		// 						BackupRetentionDays: to.Ptr[int32](7),
+		// 						ImmutableBackup: to.Ptr(armpostgresqlflexibleservers.ImmutableBackupEnabled),
 		// 						EarliestRestoreDate: to.Ptr(time.Date(2025, time.June, 1, 20, 35, 22, 123456000, time.UTC)),
 		// 						GeoRedundantBackup: to.Ptr(armpostgresqlflexibleservers.GeographicallyRedundantBackupDisabled),
 		// 					},
@@ -1241,6 +1255,7 @@ func ExampleServersClient_NewListBySubscriptionPager() {
 		// 					AvailabilityZone: to.Ptr("2"),
 		// 					Backup: &armpostgresqlflexibleservers.Backup{
 		// 						BackupRetentionDays: to.Ptr[int32](7),
+		// 						ImmutableBackup: to.Ptr(armpostgresqlflexibleservers.ImmutableBackupEnabled),
 		// 						EarliestRestoreDate: to.Ptr(time.Date(2025, time.June, 1, 21, 35, 22, 123456000, time.UTC)),
 		// 						GeoRedundantBackup: to.Ptr(armpostgresqlflexibleservers.GeographicallyRedundantBackupDisabled),
 		// 					},
@@ -1296,7 +1311,7 @@ func ExampleServersClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/ServersMigrateNetworkMode.json
+// Generated from example definition: 2026-07-01-preview/ServersMigrateNetworkMode.json
 func ExampleServersClient_BeginMigrateNetworkMode() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1327,7 +1342,7 @@ func ExampleServersClient_BeginMigrateNetworkMode() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/ServersRestart.json
+// Generated from example definition: 2026-07-01-preview/ServersRestart.json
 func ExampleServersClient_BeginRestart_restartPostgreSqlDatabaseEngineInAServer() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1348,7 +1363,7 @@ func ExampleServersClient_BeginRestart_restartPostgreSqlDatabaseEngineInAServer(
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/ServersRestartWithFailover.json
+// Generated from example definition: 2026-07-01-preview/ServersRestartWithFailover.json
 func ExampleServersClient_BeginRestart_restartPostgreSqlDatabaseEngineInAServerWithAForcedFailoverToStandbyServer() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1373,7 +1388,7 @@ func ExampleServersClient_BeginRestart_restartPostgreSqlDatabaseEngineInAServerW
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/ServersStart.json
+// Generated from example definition: 2026-07-01-preview/ServersStart.json
 func ExampleServersClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1394,7 +1409,7 @@ func ExampleServersClient_BeginStart() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/ServersStartMajorVersionUpgradePrecheck.json
+// Generated from example definition: 2026-07-01-preview/ServersStartMajorVersionUpgradePrecheck.json
 func ExampleServersClient_BeginStartMajorVersionUpgradePrecheck() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1427,7 +1442,7 @@ func ExampleServersClient_BeginStartMajorVersionUpgradePrecheck() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/ServersStop.json
+// Generated from example definition: 2026-07-01-preview/ServersStop.json
 func ExampleServersClient_BeginStop() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1448,7 +1463,7 @@ func ExampleServersClient_BeginStop() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/ServersPromoteReplicaAsForcedStandaloneServer.json
+// Generated from example definition: 2026-07-01-preview/ServersPromoteReplicaAsForcedStandaloneServer.json
 func ExampleServersClient_BeginUpdate_promoteAReadReplicaToAStandaloneServerWithForcedDataSynchronizationMeaningThatItDoesnTWaitForDataInTheReadReplicaToBeSynchronizedWithItsSourceServerBeforeItInitiatesThePromotionToAStandaloneServer() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1476,7 +1491,7 @@ func ExampleServersClient_BeginUpdate_promoteAReadReplicaToAStandaloneServerWith
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/ServersPromoteReplicaAsForcedSwitchover.json
+// Generated from example definition: 2026-07-01-preview/ServersPromoteReplicaAsForcedSwitchover.json
 func ExampleServersClient_BeginUpdate_switchOverAReadReplicaToPrimaryServerWithForcedDataSynchronizationMeaningThatItDoesnTWaitForDataInTheReadReplicaToBeSynchronizedWithItsSourceServerBeforeItInitiatesTheSwitchingOfRolesBetweenTheReadReplicaAndThePrimaryServer() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1493,6 +1508,7 @@ func ExampleServersClient_BeginUpdate_switchOverAReadReplicaToPrimaryServerWithF
 				PromoteMode:   to.Ptr(armpostgresqlflexibleservers.ReadReplicaPromoteModeSwitchover),
 				PromoteOption: to.Ptr(armpostgresqlflexibleservers.ReadReplicaPromoteOptionForced),
 			},
+			SourceServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/examplesourceserver"),
 		},
 	}, nil)
 	if err != nil {
@@ -1504,7 +1520,7 @@ func ExampleServersClient_BeginUpdate_switchOverAReadReplicaToPrimaryServerWithF
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/ServersPromoteReplicaAsPlannedStandaloneServer.json
+// Generated from example definition: 2026-07-01-preview/ServersPromoteReplicaAsPlannedStandaloneServer.json
 func ExampleServersClient_BeginUpdate_promoteAReadReplicaToAStandaloneServerWithPlannedDataSynchronizationMeaningThatItWaitsForDataInTheReadReplicaToBeFullySynchronizedWithItsSourceServerBeforeItInitiatesThePromotionToAStandaloneServer() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1532,7 +1548,7 @@ func ExampleServersClient_BeginUpdate_promoteAReadReplicaToAStandaloneServerWith
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/ServersPromoteReplicaAsPlannedSwitchover.json
+// Generated from example definition: 2026-07-01-preview/ServersPromoteReplicaAsPlannedSwitchover.json
 func ExampleServersClient_BeginUpdate_switchOverAReadReplicaToPrimaryServerWithPlannedDataSynchronizationMeaningThatItWaitsForDataInTheReadReplicaToBeFullySynchronizedWithItsSourceServerBeforeItInitiatesTheSwitchingOfRolesBetweenTheReadReplicaAndThePrimaryServer() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1549,6 +1565,7 @@ func ExampleServersClient_BeginUpdate_switchOverAReadReplicaToPrimaryServerWithP
 				PromoteMode:   to.Ptr(armpostgresqlflexibleservers.ReadReplicaPromoteModeSwitchover),
 				PromoteOption: to.Ptr(armpostgresqlflexibleservers.ReadReplicaPromoteOptionPlanned),
 			},
+			SourceServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/examplesourceserver"),
 		},
 	}, nil)
 	if err != nil {
@@ -1560,7 +1577,7 @@ func ExampleServersClient_BeginUpdate_switchOverAReadReplicaToPrimaryServerWithP
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/ServersUpdate.json
+// Generated from example definition: 2026-07-01-preview/ServersUpdate.json
 func ExampleServersClient_BeginUpdate_updateAnExistingServer() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1598,7 +1615,32 @@ func ExampleServersClient_BeginUpdate_updateAnExistingServer() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/ServersUpdateWithCustomMaintenanceWindow.json
+// Generated from example definition: 2026-07-01-preview/ServersUpdateFIPS.json
+func ExampleServersClient_BeginUpdate_enableOrDisableFipsModeOnAnExistingServer() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpostgresqlflexibleservers.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewServersClient().BeginUpdate(ctx, "exampleresourcegroup", "exampleserver", armpostgresqlflexibleservers.ServerForPatch{
+		Properties: &armpostgresqlflexibleservers.ServerPropertiesForPatch{
+			FipsMode: to.Ptr(armpostgresqlflexibleservers.FipsModeDisabled),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-07-01-preview/ServersUpdateWithCustomMaintenanceWindow.json
 func ExampleServersClient_BeginUpdate_updateAnExistingServerWithCustomMaintenanceWindow() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1629,7 +1671,7 @@ func ExampleServersClient_BeginUpdate_updateAnExistingServerWithCustomMaintenanc
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/ServersUpdateWithDataEncryptionEnabled.json
+// Generated from example definition: 2026-07-01-preview/ServersUpdateWithDataEncryptionEnabled.json
 func ExampleServersClient_BeginUpdate_updateAnExistingServerWithDataEncryptionBasedOnCustomerManagedKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1676,7 +1718,7 @@ func ExampleServersClient_BeginUpdate_updateAnExistingServerWithDataEncryptionBa
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/ServersUpdateWithDataEncryptionEnabledAutoUpdate.json
+// Generated from example definition: 2026-07-01-preview/ServersUpdateWithDataEncryptionEnabledAutoUpdate.json
 func ExampleServersClient_BeginUpdate_updateAnExistingServerWithDataEncryptionBasedOnCustomerManagedKeyWithAutomaticKeyVersionUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1723,7 +1765,7 @@ func ExampleServersClient_BeginUpdate_updateAnExistingServerWithDataEncryptionBa
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/ServersUpdateWithMajorVersionUpgrade.json
+// Generated from example definition: 2026-07-01-preview/ServersUpdateWithMajorVersionUpgrade.json
 func ExampleServersClient_BeginUpdate_updateAnExistingServerToUpgradeTheMajorVersionOfPostgreSqlDatabaseEngine() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1749,7 +1791,7 @@ func ExampleServersClient_BeginUpdate_updateAnExistingServerToUpgradeTheMajorVer
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/ServersUpdateWithMicrosoftEntraEnabled.json
+// Generated from example definition: 2026-07-01-preview/ServersUpdateWithMicrosoftEntraEnabled.json
 func ExampleServersClient_BeginUpdate_updateAnExistingServerWithMicrosoftEntraAuthenticationEnabled() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

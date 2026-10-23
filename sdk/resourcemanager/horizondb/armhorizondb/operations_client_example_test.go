@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-20-preview/Operations_List.json
+// Generated from example definition: 2026-10-01-preview/Operations_List.json
 func ExampleOperationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -38,36 +38,33 @@ func ExampleOperationsClient_NewListPager() {
 		// 		Value: []*armhorizondb.Operation{
 		// 			{
 		// 				Name: to.Ptr("Microsoft.HorizonDb/clusters/read"),
-		// 				IsDataAction: to.Ptr(false),
 		// 				Display: &armhorizondb.OperationDisplay{
-		// 					Provider: to.Ptr("Microsoft HorizonDb"),
-		// 					Resource: to.Ptr("HorizonDb Clusters"),
-		// 					Operation: to.Ptr("Get/List HorizonDb clusters"),
-		// 					Description: to.Ptr("Retrieves the properties of the specified HorizonDb clusters."),
+		// 					Provider: to.Ptr("Microsoft HorizonDB"),
+		// 					Resource: to.Ptr("HorizonDB cluster"),
+		// 					Operation: to.Ptr("Read HorizonDB clusters"),
+		// 					Description: to.Ptr("Reads or lists HorizonDB clusters."),
 		// 				},
-		// 				Origin: to.Ptr(armhorizondb.OriginUserSystem),
+		// 				IsDataAction: to.Ptr(false),
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("Microsoft.HorizonDb/clusters/write"),
-		// 				IsDataAction: to.Ptr(false),
 		// 				Display: &armhorizondb.OperationDisplay{
-		// 					Provider: to.Ptr("Microsoft HorizonDb"),
-		// 					Resource: to.Ptr("HorizonDb Clusters"),
-		// 					Operation: to.Ptr("Create/Update HorizonDb cluster"),
-		// 					Description: to.Ptr("Creates a new HorizonDb cluster or updates an existing one."),
+		// 					Provider: to.Ptr("Microsoft HorizonDB"),
+		// 					Resource: to.Ptr("HorizonDB cluster"),
+		// 					Operation: to.Ptr("Create or replace HorizonDB clusters"),
+		// 					Description: to.Ptr("Creates or replaces HorizonDB clusters."),
 		// 				},
-		// 				Origin: to.Ptr(armhorizondb.OriginUserSystem),
+		// 				IsDataAction: to.Ptr(false),
 		// 			},
 		// 			{
-		// 				Name: to.Ptr("Microsoft.HorizonDb/clusters/delete"),
-		// 				IsDataAction: to.Ptr(false),
+		// 				Name: to.Ptr("Microsoft.HorizonDb/clusters/pools/maintenanceEvents/reschedule/action"),
 		// 				Display: &armhorizondb.OperationDisplay{
-		// 					Provider: to.Ptr("Microsoft HorizonDb"),
-		// 					Resource: to.Ptr("HorizonDb Clusters"),
-		// 					Operation: to.Ptr("Delete HorizonDb cluster"),
-		// 					Description: to.Ptr("Deletes a HorizonDb cluster."),
+		// 					Provider: to.Ptr("Microsoft HorizonDB"),
+		// 					Resource: to.Ptr("HorizonDB maintenance event"),
+		// 					Operation: to.Ptr("Reschedule maintenance"),
+		// 					Description: to.Ptr("Reschedules a HorizonDB pool maintenance event."),
 		// 				},
-		// 				Origin: to.Ptr(armhorizondb.OriginUserSystem),
+		// 				IsDataAction: to.Ptr(false),
 		// 			},
 		// 		},
 		// 	},

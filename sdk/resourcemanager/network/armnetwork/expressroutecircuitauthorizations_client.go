@@ -19,7 +19,7 @@ import (
 // ExpressRouteCircuitAuthorizationsClient contains the methods for the ExpressRouteCircuitAuthorizations group.
 // Don't use this type directly, use NewExpressRouteCircuitAuthorizationsClient() instead.
 //
-// Generated from API version 2025-09-01
+// Generated from API version 2026-03-01
 type ExpressRouteCircuitAuthorizationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type ExpressRouteCircuitAuthorizationsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewExpressRouteCircuitAuthorizationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ExpressRouteCircuitAuthorizationsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -66,7 +69,7 @@ func (client *ExpressRouteCircuitAuthorizationsClient) BeginCreateOrUpdate(ctx c
 	}
 }
 
-// CreateOrUpdate - Creates or updates an authorization in the specified express route circuit.
+// createOrUpdate - Creates or updates an authorization in the specified express route circuit.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ExpressRouteCircuitAuthorizationsClient) createOrUpdate(ctx context.Context, resourceGroupName string, circuitName string, authorizationName string, authorizationParameters ExpressRouteCircuitAuthorization, options *ExpressRouteCircuitAuthorizationsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -88,11 +91,11 @@ func (client *ExpressRouteCircuitAuthorizationsClient) createOrUpdate(ctx contex
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ExpressRouteCircuitAuthorizationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, circuitName string, authorizationName string, authorizationParameters ExpressRouteCircuitAuthorization, _ *ExpressRouteCircuitAuthorizationsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits/{circuitName}/authorizations/{authorizationName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -112,7 +115,7 @@ func (client *ExpressRouteCircuitAuthorizationsClient) createOrUpdateCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -131,7 +134,7 @@ func (client *ExpressRouteCircuitAuthorizationsClient) createOrUpdateCreateReque
 //     method.
 func (client *ExpressRouteCircuitAuthorizationsClient) BeginDelete(ctx context.Context, resourceGroupName string, circuitName string, authorizationName string, options *ExpressRouteCircuitAuthorizationsClientBeginDeleteOptions) (*runtime.Poller[ExpressRouteCircuitAuthorizationsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, circuitName, authorizationName, options)
+		resp, err := client.delete(ctx, resourceGroupName, circuitName, authorizationName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -146,9 +149,9 @@ func (client *ExpressRouteCircuitAuthorizationsClient) BeginDelete(ctx context.C
 	}
 }
 
-// Delete - Deletes the specified authorization from the specified express route circuit.
+// delete - Deletes the specified authorization from the specified express route circuit.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *ExpressRouteCircuitAuthorizationsClient) deleteOperation(ctx context.Context, resourceGroupName string, circuitName string, authorizationName string, options *ExpressRouteCircuitAuthorizationsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *ExpressRouteCircuitAuthorizationsClient) delete(ctx context.Context, resourceGroupName string, circuitName string, authorizationName string, options *ExpressRouteCircuitAuthorizationsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ExpressRouteCircuitAuthorizationsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -168,11 +171,11 @@ func (client *ExpressRouteCircuitAuthorizationsClient) deleteOperation(ctx conte
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ExpressRouteCircuitAuthorizationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, circuitName string, authorizationName string, _ *ExpressRouteCircuitAuthorizationsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits/{circuitName}/authorizations/{authorizationName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -192,7 +195,7 @@ func (client *ExpressRouteCircuitAuthorizationsClient) deleteCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -225,7 +228,7 @@ func (client *ExpressRouteCircuitAuthorizationsClient) Get(ctx context.Context, 
 func (client *ExpressRouteCircuitAuthorizationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, circuitName string, authorizationName string, _ *ExpressRouteCircuitAuthorizationsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits/{circuitName}/authorizations/{authorizationName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -245,7 +248,7 @@ func (client *ExpressRouteCircuitAuthorizationsClient) getCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -259,6 +262,72 @@ func (client *ExpressRouteCircuitAuthorizationsClient) getHandleResponse(resp *h
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExpressRouteCircuitAuthorization); err != nil {
 		return ExpressRouteCircuitAuthorizationsClientGetResponse{}, err
+	}
+	return result, nil
+}
+
+// ListKeys - Gets the authorization key associated with the specified express route circuit authorization.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - circuitName - The name of express route circuit.
+//   - authorizationName - The name of the authorization.
+//   - options - ExpressRouteCircuitAuthorizationsClientListKeysOptions contains the optional parameters for the ExpressRouteCircuitAuthorizationsClient.ListKeys
+//     method.
+func (client *ExpressRouteCircuitAuthorizationsClient) ListKeys(ctx context.Context, resourceGroupName string, circuitName string, authorizationName string, options *ExpressRouteCircuitAuthorizationsClientListKeysOptions) (ExpressRouteCircuitAuthorizationsClientListKeysResponse, error) {
+	var err error
+	const operationName = "ExpressRouteCircuitAuthorizationsClient.ListKeys"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listKeysCreateRequest(ctx, resourceGroupName, circuitName, authorizationName, options)
+	if err != nil {
+		return ExpressRouteCircuitAuthorizationsClientListKeysResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ExpressRouteCircuitAuthorizationsClientListKeysResponse{}, err
+	}
+	return client.listKeysHandleResponse(httpResp, http.StatusOK)
+}
+
+// listKeysCreateRequest creates the ListKeys request.
+func (client *ExpressRouteCircuitAuthorizationsClient) listKeysCreateRequest(ctx context.Context, resourceGroupName string, circuitName string, authorizationName string, _ *ExpressRouteCircuitAuthorizationsClientListKeysOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits/{circuitName}/authorizations/{authorizationName}/listKeys"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if circuitName == "" {
+		return nil, errors.New("parameter circuitName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{circuitName}", url.PathEscape(circuitName))
+	if authorizationName == "" {
+		return nil, errors.New("parameter authorizationName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{authorizationName}", url.PathEscape(authorizationName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260301)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listKeysHandleResponse handles the ListKeys response.
+func (client *ExpressRouteCircuitAuthorizationsClient) listKeysHandleResponse(resp *http.Response, successCodes ...int) (ExpressRouteCircuitAuthorizationsClientListKeysResponse, error) {
+	result := ExpressRouteCircuitAuthorizationsClientListKeysResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ExpressRouteAuthorizationKey); err != nil {
+		return ExpressRouteCircuitAuthorizationsClientListKeysResponse{}, err
 	}
 	return result, nil
 }
@@ -301,7 +370,7 @@ func (client *ExpressRouteCircuitAuthorizationsClient) listCreateRequest(ctx con
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits/{circuitName}/authorizations"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -321,7 +390,7 @@ func (client *ExpressRouteCircuitAuthorizationsClient) listCreateRequest(ctx con
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250901)
+		reqQP.Set("api-version", version20260301)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

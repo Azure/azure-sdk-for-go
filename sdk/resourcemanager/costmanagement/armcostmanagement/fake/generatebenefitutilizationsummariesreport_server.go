@@ -127,7 +127,7 @@ func (g *GenerateBenefitUtilizationSummariesReportServerTransport) dispatchBegin
 	}
 	beginGenerateByBillingAccount := g.beginGenerateByBillingAccount.get(req)
 	if beginGenerateByBillingAccount == nil {
-		const regexStr = `/providers/microsoft\.Billing/billingAccounts/(?P<billingAccountId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CostManagement/generateBenefitUtilizationSummariesReport`
+		const regexStr = `/providers/microsoft\.Billing/billingAccounts/(?P<billingAccountId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CostManagement/generateBenefitUtilizationSummariesReport`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -171,7 +171,7 @@ func (g *GenerateBenefitUtilizationSummariesReportServerTransport) dispatchBegin
 	}
 	beginGenerateByBillingProfile := g.beginGenerateByBillingProfile.get(req)
 	if beginGenerateByBillingProfile == nil {
-		const regexStr = `/providers/microsoft\.Billing/billingAccounts/(?P<billingAccountId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CostManagement/generateBenefitUtilizationSummariesReport`
+		const regexStr = `/providers/microsoft\.Billing/billingAccounts/(?P<billingAccountId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/billingProfiles/(?P<billingProfileId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CostManagement/generateBenefitUtilizationSummariesReport`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -219,7 +219,7 @@ func (g *GenerateBenefitUtilizationSummariesReportServerTransport) dispatchBegin
 	}
 	beginGenerateByReservationID := g.beginGenerateByReservationID.get(req)
 	if beginGenerateByReservationID == nil {
-		const regexStr = `/providers/microsoft\.Capacity/reservationorders/(?P<reservationOrderId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/reservations/(?P<reservationId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CostManagement/generateBenefitUtilizationSummariesReport`
+		const regexStr = `/providers/microsoft\.Capacity/reservationorders/(?P<reservationOrderId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/reservations/(?P<reservationId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CostManagement/generateBenefitUtilizationSummariesReport`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -267,7 +267,7 @@ func (g *GenerateBenefitUtilizationSummariesReportServerTransport) dispatchBegin
 	}
 	beginGenerateByReservationOrderID := g.beginGenerateByReservationOrderID.get(req)
 	if beginGenerateByReservationOrderID == nil {
-		const regexStr = `/providers/microsoft\.Capacity/reservationorders/(?P<reservationOrderId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CostManagement/generateBenefitUtilizationSummariesReport`
+		const regexStr = `/providers/microsoft\.Capacity/reservationorders/(?P<reservationOrderId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CostManagement/generateBenefitUtilizationSummariesReport`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -311,7 +311,7 @@ func (g *GenerateBenefitUtilizationSummariesReportServerTransport) dispatchBegin
 	}
 	beginGenerateBySavingsPlanID := g.beginGenerateBySavingsPlanID.get(req)
 	if beginGenerateBySavingsPlanID == nil {
-		const regexStr = `/providers/microsoft\.BillingBenefits/savingsPlanOrders/(?P<savingsPlanOrderId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/savingsPlans/(?P<savingsPlanId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CostManagement/generateBenefitUtilizationSummariesReport`
+		const regexStr = `/providers/microsoft\.BillingBenefits/savingsPlanOrders/(?P<savingsPlanOrderId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/savingsPlans/(?P<savingsPlanId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CostManagement/generateBenefitUtilizationSummariesReport`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -359,7 +359,7 @@ func (g *GenerateBenefitUtilizationSummariesReportServerTransport) dispatchBegin
 	}
 	beginGenerateBySavingsPlanOrderID := g.beginGenerateBySavingsPlanOrderID.get(req)
 	if beginGenerateBySavingsPlanOrderID == nil {
-		const regexStr = `/providers/microsoft\.BillingBenefits/savingsPlanOrders/(?P<savingsPlanOrderId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CostManagement/generateBenefitUtilizationSummariesReport`
+		const regexStr = `/providers/microsoft\.BillingBenefits/savingsPlanOrders/(?P<savingsPlanOrderId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CostManagement/generateBenefitUtilizationSummariesReport`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/importJobs_CreateOrUpdate.json
+// Generated from example definition: 2026-08-01/importJobs_CreateOrUpdate.json
 func ExampleImportJobsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -80,7 +80,7 @@ func ExampleImportJobsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/importJobs_Delete.json
+// Generated from example definition: 2026-08-01/importJobs_Delete.json
 func ExampleImportJobsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -101,7 +101,7 @@ func ExampleImportJobsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/importJobs_Get.json
+// Generated from example definition: 2026-08-01/importJobs_Get.json
 func ExampleImportJobsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -122,8 +122,8 @@ func ExampleImportJobsClient_Get() {
 	// res = armstoragecache.ImportJobsClientGetResponse{
 	// 	ImportJob: armstoragecache.ImportJob{
 	// 		Name: to.Ptr("job1"),
-	// 		Type: to.Ptr("Microsoft.StorageCache/amlFilesystem/importJob"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.StorageCache/amlfilesystems/fs1/importJobs/job1"),
+	// 		Type: to.Ptr("Microsoft.StorageCache/amlFilesystems/importJobs"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.StorageCache/amlFilesystems/fs1/importJobs/job1"),
 	// 		Location: to.Ptr("eastus"),
 	// 		Properties: &armstoragecache.ImportJobProperties{
 	// 			AdminStatus: to.Ptr(armstoragecache.ImportJobAdminStatusActive),
@@ -156,7 +156,7 @@ func ExampleImportJobsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/importJobs_ListByAmlFilesystem.json
+// Generated from example definition: 2026-08-01/importJobs_ListByAmlFilesystem.json
 func ExampleImportJobsClient_NewListByAmlFilesystemPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -253,7 +253,7 @@ func ExampleImportJobsClient_NewListByAmlFilesystemPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/importJob_Update.json
+// Generated from example definition: 2026-08-01/importJob_Update.json
 func ExampleImportJobsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

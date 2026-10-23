@@ -15,26 +15,14 @@ import (
 
 // ServerFactory is a fake server for instances of the armappcontainers.ClientFactory type.
 type ServerFactory struct {
-	// AppResiliencyServer contains the fakes for client AppResiliencyClient
-	AppResiliencyServer AppResiliencyServer
+	// AvailableEnvironmentModesServer contains the fakes for client AvailableEnvironmentModesClient
+	AvailableEnvironmentModesServer AvailableEnvironmentModesServer
 
 	// AvailableWorkloadProfilesServer contains the fakes for client AvailableWorkloadProfilesClient
 	AvailableWorkloadProfilesServer AvailableWorkloadProfilesServer
 
 	// BillingMetersServer contains the fakes for client BillingMetersClient
 	BillingMetersServer BillingMetersServer
-
-	// BuildAuthTokenServer contains the fakes for client BuildAuthTokenClient
-	BuildAuthTokenServer BuildAuthTokenServer
-
-	// BuildersServer contains the fakes for client BuildersClient
-	BuildersServer BuildersServer
-
-	// BuildsByBuilderResourceServer contains the fakes for client BuildsByBuilderResourceClient
-	BuildsByBuilderResourceServer BuildsByBuilderResourceServer
-
-	// BuildsServer contains the fakes for client BuildsClient
-	BuildsServer BuildsServer
 
 	// CertificatesServer contains the fakes for client CertificatesClient
 	CertificatesServer CertificatesServer
@@ -51,17 +39,17 @@ type ServerFactory struct {
 	// ConnectedEnvironmentsStoragesServer contains the fakes for client ConnectedEnvironmentsStoragesClient
 	ConnectedEnvironmentsStoragesServer ConnectedEnvironmentsStoragesServer
 
+	// ContainerAppPrivateEndpointConnectionsServer contains the fakes for client ContainerAppPrivateEndpointConnectionsClient
+	ContainerAppPrivateEndpointConnectionsServer ContainerAppPrivateEndpointConnectionsServer
+
+	// ContainerAppPrivateLinkResourcesServer contains the fakes for client ContainerAppPrivateLinkResourcesClient
+	ContainerAppPrivateLinkResourcesServer ContainerAppPrivateLinkResourcesServer
+
 	// ContainerAppsAPIServer contains the fakes for client ContainerAppsAPIClient
 	ContainerAppsAPIServer ContainerAppsAPIServer
 
 	// ContainerAppsAuthConfigsServer contains the fakes for client ContainerAppsAuthConfigsClient
 	ContainerAppsAuthConfigsServer ContainerAppsAuthConfigsServer
-
-	// ContainerAppsBuildsByContainerAppServer contains the fakes for client ContainerAppsBuildsByContainerAppClient
-	ContainerAppsBuildsByContainerAppServer ContainerAppsBuildsByContainerAppServer
-
-	// ContainerAppsBuildsServer contains the fakes for client ContainerAppsBuildsClient
-	ContainerAppsBuildsServer ContainerAppsBuildsServer
 
 	// ContainerAppsServer contains the fakes for client ContainerAppsClient
 	ContainerAppsServer ContainerAppsServer
@@ -74,9 +62,6 @@ type ServerFactory struct {
 
 	// ContainerAppsLabelHistoryServer contains the fakes for client ContainerAppsLabelHistoryClient
 	ContainerAppsLabelHistoryServer ContainerAppsLabelHistoryServer
-
-	// ContainerAppsPatchesServer contains the fakes for client ContainerAppsPatchesClient
-	ContainerAppsPatchesServer ContainerAppsPatchesServer
 
 	// ContainerAppsRevisionFunctionsServer contains the fakes for client ContainerAppsRevisionFunctionsClient
 	ContainerAppsRevisionFunctionsServer ContainerAppsRevisionFunctionsServer
@@ -98,9 +83,6 @@ type ServerFactory struct {
 
 	// DaprComponentsServer contains the fakes for client DaprComponentsClient
 	DaprComponentsServer DaprComponentsServer
-
-	// DaprSubscriptionsServer contains the fakes for client DaprSubscriptionsClient
-	DaprSubscriptionsServer DaprSubscriptionsServer
 
 	// DotNetComponentsServer contains the fakes for client DotNetComponentsClient
 	DotNetComponentsServer DotNetComponentsServer
@@ -156,8 +138,14 @@ type ServerFactory struct {
 	// OperationsServer contains the fakes for client OperationsClient
 	OperationsServer OperationsServer
 
+	// SandboxGroupsServer contains the fakes for client SandboxGroupsClient
+	SandboxGroupsServer SandboxGroupsServer
+
 	// UsagesServer contains the fakes for client UsagesClient
 	UsagesServer UsagesServer
+
+	// VnetConnectionsServer contains the fakes for client VnetConnectionsClient
+	VnetConnectionsServer VnetConnectionsServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -174,27 +162,22 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 type ServerFactoryTransport struct {
 	srv                                                  *ServerFactory
 	trMu                                                 sync.Mutex
-	trAppResiliencyServer                                *AppResiliencyServerTransport
+	trAvailableEnvironmentModesServer                    *AvailableEnvironmentModesServerTransport
 	trAvailableWorkloadProfilesServer                    *AvailableWorkloadProfilesServerTransport
 	trBillingMetersServer                                *BillingMetersServerTransport
-	trBuildAuthTokenServer                               *BuildAuthTokenServerTransport
-	trBuildersServer                                     *BuildersServerTransport
-	trBuildsByBuilderResourceServer                      *BuildsByBuilderResourceServerTransport
-	trBuildsServer                                       *BuildsServerTransport
 	trCertificatesServer                                 *CertificatesServerTransport
 	trConnectedEnvironmentsCertificatesServer            *ConnectedEnvironmentsCertificatesServerTransport
 	trConnectedEnvironmentsServer                        *ConnectedEnvironmentsServerTransport
 	trConnectedEnvironmentsDaprComponentsServer          *ConnectedEnvironmentsDaprComponentsServerTransport
 	trConnectedEnvironmentsStoragesServer                *ConnectedEnvironmentsStoragesServerTransport
+	trContainerAppPrivateEndpointConnectionsServer       *ContainerAppPrivateEndpointConnectionsServerTransport
+	trContainerAppPrivateLinkResourcesServer             *ContainerAppPrivateLinkResourcesServerTransport
 	trContainerAppsAPIServer                             *ContainerAppsAPIServerTransport
 	trContainerAppsAuthConfigsServer                     *ContainerAppsAuthConfigsServerTransport
-	trContainerAppsBuildsByContainerAppServer            *ContainerAppsBuildsByContainerAppServerTransport
-	trContainerAppsBuildsServer                          *ContainerAppsBuildsServerTransport
 	trContainerAppsServer                                *ContainerAppsServerTransport
 	trContainerAppsDiagnosticsServer                     *ContainerAppsDiagnosticsServerTransport
 	trContainerAppsFunctionsServer                       *ContainerAppsFunctionsServerTransport
 	trContainerAppsLabelHistoryServer                    *ContainerAppsLabelHistoryServerTransport
-	trContainerAppsPatchesServer                         *ContainerAppsPatchesServerTransport
 	trContainerAppsRevisionFunctionsServer               *ContainerAppsRevisionFunctionsServerTransport
 	trContainerAppsRevisionReplicasServer                *ContainerAppsRevisionReplicasServerTransport
 	trContainerAppsRevisionsServer                       *ContainerAppsRevisionsServerTransport
@@ -202,7 +185,6 @@ type ServerFactoryTransport struct {
 	trContainerAppsSourceControlsServer                  *ContainerAppsSourceControlsServerTransport
 	trDaprComponentResiliencyPoliciesServer              *DaprComponentResiliencyPoliciesServerTransport
 	trDaprComponentsServer                               *DaprComponentsServerTransport
-	trDaprSubscriptionsServer                            *DaprSubscriptionsServerTransport
 	trDotNetComponentsServer                             *DotNetComponentsServerTransport
 	trFunctionsExtensionServer                           *FunctionsExtensionServerTransport
 	trHTTPRouteConfigServer                              *HTTPRouteConfigServerTransport
@@ -221,7 +203,9 @@ type ServerFactoryTransport struct {
 	trManagedEnvironmentsStoragesServer                  *ManagedEnvironmentsStoragesServerTransport
 	trNamespacesServer                                   *NamespacesServerTransport
 	trOperationsServer                                   *OperationsServerTransport
+	trSandboxGroupsServer                                *SandboxGroupsServerTransport
 	trUsagesServer                                       *UsagesServerTransport
+	trVnetConnectionsServer                              *VnetConnectionsServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -237,11 +221,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	var err error
 
 	switch client {
-	case "AppResiliencyClient":
-		initServer(&s.trMu, &s.trAppResiliencyServer, func() *AppResiliencyServerTransport {
-			return NewAppResiliencyServerTransport(&s.srv.AppResiliencyServer)
+	case "AvailableEnvironmentModesClient":
+		initServer(&s.trMu, &s.trAvailableEnvironmentModesServer, func() *AvailableEnvironmentModesServerTransport {
+			return NewAvailableEnvironmentModesServerTransport(&s.srv.AvailableEnvironmentModesServer)
 		})
-		resp, err = s.trAppResiliencyServer.Do(req)
+		resp, err = s.trAvailableEnvironmentModesServer.Do(req)
 	case "AvailableWorkloadProfilesClient":
 		initServer(&s.trMu, &s.trAvailableWorkloadProfilesServer, func() *AvailableWorkloadProfilesServerTransport {
 			return NewAvailableWorkloadProfilesServerTransport(&s.srv.AvailableWorkloadProfilesServer)
@@ -252,22 +236,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewBillingMetersServerTransport(&s.srv.BillingMetersServer)
 		})
 		resp, err = s.trBillingMetersServer.Do(req)
-	case "BuildAuthTokenClient":
-		initServer(&s.trMu, &s.trBuildAuthTokenServer, func() *BuildAuthTokenServerTransport {
-			return NewBuildAuthTokenServerTransport(&s.srv.BuildAuthTokenServer)
-		})
-		resp, err = s.trBuildAuthTokenServer.Do(req)
-	case "BuildersClient":
-		initServer(&s.trMu, &s.trBuildersServer, func() *BuildersServerTransport { return NewBuildersServerTransport(&s.srv.BuildersServer) })
-		resp, err = s.trBuildersServer.Do(req)
-	case "BuildsByBuilderResourceClient":
-		initServer(&s.trMu, &s.trBuildsByBuilderResourceServer, func() *BuildsByBuilderResourceServerTransport {
-			return NewBuildsByBuilderResourceServerTransport(&s.srv.BuildsByBuilderResourceServer)
-		})
-		resp, err = s.trBuildsByBuilderResourceServer.Do(req)
-	case "BuildsClient":
-		initServer(&s.trMu, &s.trBuildsServer, func() *BuildsServerTransport { return NewBuildsServerTransport(&s.srv.BuildsServer) })
-		resp, err = s.trBuildsServer.Do(req)
 	case "CertificatesClient":
 		initServer(&s.trMu, &s.trCertificatesServer, func() *CertificatesServerTransport { return NewCertificatesServerTransport(&s.srv.CertificatesServer) })
 		resp, err = s.trCertificatesServer.Do(req)
@@ -291,6 +259,16 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewConnectedEnvironmentsStoragesServerTransport(&s.srv.ConnectedEnvironmentsStoragesServer)
 		})
 		resp, err = s.trConnectedEnvironmentsStoragesServer.Do(req)
+	case "ContainerAppPrivateEndpointConnectionsClient":
+		initServer(&s.trMu, &s.trContainerAppPrivateEndpointConnectionsServer, func() *ContainerAppPrivateEndpointConnectionsServerTransport {
+			return NewContainerAppPrivateEndpointConnectionsServerTransport(&s.srv.ContainerAppPrivateEndpointConnectionsServer)
+		})
+		resp, err = s.trContainerAppPrivateEndpointConnectionsServer.Do(req)
+	case "ContainerAppPrivateLinkResourcesClient":
+		initServer(&s.trMu, &s.trContainerAppPrivateLinkResourcesServer, func() *ContainerAppPrivateLinkResourcesServerTransport {
+			return NewContainerAppPrivateLinkResourcesServerTransport(&s.srv.ContainerAppPrivateLinkResourcesServer)
+		})
+		resp, err = s.trContainerAppPrivateLinkResourcesServer.Do(req)
 	case "ContainerAppsAPIClient":
 		initServer(&s.trMu, &s.trContainerAppsAPIServer, func() *ContainerAppsAPIServerTransport {
 			return NewContainerAppsAPIServerTransport(&s.srv.ContainerAppsAPIServer)
@@ -301,16 +279,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewContainerAppsAuthConfigsServerTransport(&s.srv.ContainerAppsAuthConfigsServer)
 		})
 		resp, err = s.trContainerAppsAuthConfigsServer.Do(req)
-	case "ContainerAppsBuildsByContainerAppClient":
-		initServer(&s.trMu, &s.trContainerAppsBuildsByContainerAppServer, func() *ContainerAppsBuildsByContainerAppServerTransport {
-			return NewContainerAppsBuildsByContainerAppServerTransport(&s.srv.ContainerAppsBuildsByContainerAppServer)
-		})
-		resp, err = s.trContainerAppsBuildsByContainerAppServer.Do(req)
-	case "ContainerAppsBuildsClient":
-		initServer(&s.trMu, &s.trContainerAppsBuildsServer, func() *ContainerAppsBuildsServerTransport {
-			return NewContainerAppsBuildsServerTransport(&s.srv.ContainerAppsBuildsServer)
-		})
-		resp, err = s.trContainerAppsBuildsServer.Do(req)
 	case "ContainerAppsClient":
 		initServer(&s.trMu, &s.trContainerAppsServer, func() *ContainerAppsServerTransport {
 			return NewContainerAppsServerTransport(&s.srv.ContainerAppsServer)
@@ -331,11 +299,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewContainerAppsLabelHistoryServerTransport(&s.srv.ContainerAppsLabelHistoryServer)
 		})
 		resp, err = s.trContainerAppsLabelHistoryServer.Do(req)
-	case "ContainerAppsPatchesClient":
-		initServer(&s.trMu, &s.trContainerAppsPatchesServer, func() *ContainerAppsPatchesServerTransport {
-			return NewContainerAppsPatchesServerTransport(&s.srv.ContainerAppsPatchesServer)
-		})
-		resp, err = s.trContainerAppsPatchesServer.Do(req)
 	case "ContainerAppsRevisionFunctionsClient":
 		initServer(&s.trMu, &s.trContainerAppsRevisionFunctionsServer, func() *ContainerAppsRevisionFunctionsServerTransport {
 			return NewContainerAppsRevisionFunctionsServerTransport(&s.srv.ContainerAppsRevisionFunctionsServer)
@@ -371,11 +334,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewDaprComponentsServerTransport(&s.srv.DaprComponentsServer)
 		})
 		resp, err = s.trDaprComponentsServer.Do(req)
-	case "DaprSubscriptionsClient":
-		initServer(&s.trMu, &s.trDaprSubscriptionsServer, func() *DaprSubscriptionsServerTransport {
-			return NewDaprSubscriptionsServerTransport(&s.srv.DaprSubscriptionsServer)
-		})
-		resp, err = s.trDaprSubscriptionsServer.Do(req)
 	case "DotNetComponentsClient":
 		initServer(&s.trMu, &s.trDotNetComponentsServer, func() *DotNetComponentsServerTransport {
 			return NewDotNetComponentsServerTransport(&s.srv.DotNetComponentsServer)
@@ -458,9 +416,19 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "OperationsClient":
 		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
+	case "SandboxGroupsClient":
+		initServer(&s.trMu, &s.trSandboxGroupsServer, func() *SandboxGroupsServerTransport {
+			return NewSandboxGroupsServerTransport(&s.srv.SandboxGroupsServer)
+		})
+		resp, err = s.trSandboxGroupsServer.Do(req)
 	case "UsagesClient":
 		initServer(&s.trMu, &s.trUsagesServer, func() *UsagesServerTransport { return NewUsagesServerTransport(&s.srv.UsagesServer) })
 		resp, err = s.trUsagesServer.Do(req)
+	case "VnetConnectionsClient":
+		initServer(&s.trMu, &s.trVnetConnectionsServer, func() *VnetConnectionsServerTransport {
+			return NewVnetConnectionsServerTransport(&s.srv.VnetConnectionsServer)
+		})
+		resp, err = s.trVnetConnectionsServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
 	}

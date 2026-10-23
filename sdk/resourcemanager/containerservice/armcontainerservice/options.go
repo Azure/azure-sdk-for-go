@@ -4,6 +4,31 @@
 
 package armcontainerservice
 
+// AgentFabricMembershipsClientBeginCreateOrUpdateOptions contains the optional parameters for the AgentFabricMembershipsClient.BeginCreateOrUpdate
+// method.
+type AgentFabricMembershipsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// AgentFabricMembershipsClientBeginDeleteOptions contains the optional parameters for the AgentFabricMembershipsClient.BeginDelete
+// method.
+type AgentFabricMembershipsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// AgentFabricMembershipsClientGetOptions contains the optional parameters for the AgentFabricMembershipsClient.Get method.
+type AgentFabricMembershipsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AgentFabricMembershipsClientListByManagedClusterOptions contains the optional parameters for the AgentFabricMembershipsClient.NewListByManagedClusterPager
+// method.
+type AgentFabricMembershipsClientListByManagedClusterOptions struct {
+	// placeholder for future optional parameters
+}
+
 // AgentPoolsClientBeginAbortLatestOperationOptions contains the optional parameters for the AgentPoolsClient.BeginAbortLatestOperation
 // method.
 type AgentPoolsClientBeginAbortLatestOperationOptions struct {
@@ -45,6 +70,15 @@ type AgentPoolsClientBeginDeleteOptions struct {
 
 	// ignore-pod-disruption-budget=true to delete those pods on a node without considering Pod Disruption Budget
 	IgnorePodDisruptionBudget *bool
+
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// AgentPoolsClientBeginUpdateOptions contains the optional parameters for the AgentPoolsClient.BeginUpdate method.
+type AgentPoolsClientBeginUpdateOptions struct {
+	// The request should only proceed if an entity matches this string.
+	IfMatch *string
 
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
@@ -587,6 +621,13 @@ type OperationStatusResultClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
+// OperationStatusResultClientListByAgentPoolOptions contains the optional parameters for the OperationStatusResultClient.NewListByAgentPoolPager
+// method.
+type OperationStatusResultClientListByAgentPoolOptions struct {
+	// If true, only return operations that are currently active (not terminal).
+	ActiveOnly *bool
+}
+
 // OperationStatusResultClientListOptions contains the optional parameters for the OperationStatusResultClient.NewListPager
 // method.
 type OperationStatusResultClientListOptions struct {
@@ -693,6 +734,21 @@ type TrustedAccessRoleBindingsClientListOptions struct {
 
 // TrustedAccessRolesClientListOptions contains the optional parameters for the TrustedAccessRolesClient.NewListPager method.
 type TrustedAccessRolesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// UpgradeInsightsClientGenerateOptions contains the optional parameters for the UpgradeInsightsClient.Generate method.
+type UpgradeInsightsClientGenerateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// UpgradeInsightsClientGetOptions contains the optional parameters for the UpgradeInsightsClient.Get method.
+type UpgradeInsightsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// UpgradeInsightsClientListOptions contains the optional parameters for the UpgradeInsightsClient.NewListPager method.
+type UpgradeInsightsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 

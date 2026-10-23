@@ -4,6 +4,31 @@
 
 package armcontainerservice
 
+// AgentFabricMembershipsClientCreateOrUpdateResponse contains the response from method AgentFabricMembershipsClient.BeginCreateOrUpdate.
+type AgentFabricMembershipsClientCreateOrUpdateResponse struct {
+	// The AgentFabric membership of a managed cluster. A cluster may belong to at most one AgentFabric, so this resource always
+	// has the name 'default'. See https://aka.ms/aks/agentfabric-membership.
+	AgentFabricMembership
+}
+
+// AgentFabricMembershipsClientDeleteResponse contains the response from method AgentFabricMembershipsClient.BeginDelete.
+type AgentFabricMembershipsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// AgentFabricMembershipsClientGetResponse contains the response from method AgentFabricMembershipsClient.Get.
+type AgentFabricMembershipsClientGetResponse struct {
+	// The AgentFabric membership of a managed cluster. A cluster may belong to at most one AgentFabric, so this resource always
+	// has the name 'default'. See https://aka.ms/aks/agentfabric-membership.
+	AgentFabricMembership
+}
+
+// AgentFabricMembershipsClientListByManagedClusterResponse contains the response from method AgentFabricMembershipsClient.NewListByManagedClusterPager.
+type AgentFabricMembershipsClientListByManagedClusterResponse struct {
+	// The result of a request to list the AgentFabric memberships of a managed cluster.
+	AgentFabricMembershipsListResult
+}
+
 // AgentPoolsClientAbortLatestOperationResponse contains the response from method AgentPoolsClient.BeginAbortLatestOperation.
 type AgentPoolsClientAbortLatestOperationResponse struct {
 	// placeholder for future response values
@@ -58,6 +83,12 @@ type AgentPoolsClientListBootstrapDataResponse struct {
 type AgentPoolsClientListResponse struct {
 	// The response of a AgentPool list operation.
 	AgentPoolListResult
+}
+
+// AgentPoolsClientUpdateResponse contains the response from method AgentPoolsClient.BeginUpdate.
+type AgentPoolsClientUpdateResponse struct {
+	// Agent Pool.
+	AgentPool
 }
 
 // AgentPoolsClientUpgradeNodeImageVersionResponse contains the response from method AgentPoolsClient.BeginUpgradeNodeImageVersion.
@@ -541,6 +572,12 @@ type OperationStatusResultClientGetResponse struct {
 	OperationStatusResult
 }
 
+// OperationStatusResultClientListByAgentPoolResponse contains the response from method OperationStatusResultClient.NewListByAgentPoolPager.
+type OperationStatusResultClientListByAgentPoolResponse struct {
+	// The operations list. It contains an URL link to get the next set of results.
+	OperationStatusResultList
+}
+
 // OperationStatusResultClientListResponse contains the response from method OperationStatusResultClient.NewListPager.
 type OperationStatusResultClientListResponse struct {
 	// The operations list. It contains an URL link to get the next set of results.
@@ -650,6 +687,54 @@ type TrustedAccessRoleBindingsClientListResponse struct {
 type TrustedAccessRolesClientListResponse struct {
 	// List of trusted access roles
 	TrustedAccessRoleListResult
+}
+
+// UpgradeInsightsClientGenerateResponse contains the response from method UpgradeInsightsClient.Generate.
+type UpgradeInsightsClientGenerateResponse struct {
+	// An upgrade insight for a managed cluster: an on-demand readiness evaluation for an
+	// upgrade scope, produced by the generateUpgradeInsights action on the managed cluster
+	// and addressable by a server-generated name. The name identifies
+	// the scope and evaluated target —
+	// `controlPlane-<targetKubernetesVersion>` (for example `controlPlane-1.33.5`),
+	// `controlPlaneAndAgentPools-<targetKubernetesVersion>`,
+	// `agentPool-<agentPoolName>-<targetKubernetesVersion>` (for example
+	// `agentPool-nodepool1-1.33.5`), or
+	// `nodeImage-<agentPoolName>-<nodeImageVersion>` (for example
+	// `nodeImage-nodepool1-202607.01.0`). The node image segment contains only the numeric
+	// image version, while `properties.targetNodeImageVersion` returns the full image name.
+	// The resource itself
+	// is read-only: GET returns the stored evaluation and LIST returns the stored
+	// evaluations for the cluster. Evaluations are (re)generated via the managed cluster's
+	// generateUpgradeInsights action, whose response body is the same UpgradeInsight
+	// representation returned by GET.
+	UpgradeInsight
+}
+
+// UpgradeInsightsClientGetResponse contains the response from method UpgradeInsightsClient.Get.
+type UpgradeInsightsClientGetResponse struct {
+	// An upgrade insight for a managed cluster: an on-demand readiness evaluation for an
+	// upgrade scope, produced by the generateUpgradeInsights action on the managed cluster
+	// and addressable by a server-generated name. The name identifies
+	// the scope and evaluated target —
+	// `controlPlane-<targetKubernetesVersion>` (for example `controlPlane-1.33.5`),
+	// `controlPlaneAndAgentPools-<targetKubernetesVersion>`,
+	// `agentPool-<agentPoolName>-<targetKubernetesVersion>` (for example
+	// `agentPool-nodepool1-1.33.5`), or
+	// `nodeImage-<agentPoolName>-<nodeImageVersion>` (for example
+	// `nodeImage-nodepool1-202607.01.0`). The node image segment contains only the numeric
+	// image version, while `properties.targetNodeImageVersion` returns the full image name.
+	// The resource itself
+	// is read-only: GET returns the stored evaluation and LIST returns the stored
+	// evaluations for the cluster. Evaluations are (re)generated via the managed cluster's
+	// generateUpgradeInsights action, whose response body is the same UpgradeInsight
+	// representation returned by GET.
+	UpgradeInsight
+}
+
+// UpgradeInsightsClientListResponse contains the response from method UpgradeInsightsClient.NewListPager.
+type UpgradeInsightsClientListResponse struct {
+	// The response of a UpgradeInsight list operation.
+	UpgradeInsightListResult
 }
 
 // VMSKUsClientListResponse contains the response from method VMSKUsClient.NewListPager.

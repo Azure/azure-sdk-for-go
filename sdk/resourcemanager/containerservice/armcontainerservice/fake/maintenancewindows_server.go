@@ -33,13 +33,13 @@ type MaintenanceWindowsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, maintenanceWindowName string, options *armcontainerservice.MaintenanceWindowsClientGetOptions) (resp azfake.Responder[armcontainerservice.MaintenanceWindowsClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method MaintenanceWindowsClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, options *armcontainerservice.MaintenanceWindowsClientListOptions) (resp azfake.PagerResponder[armcontainerservice.MaintenanceWindowsClientListResponse])
-
 	// NewListBySubscriptionPager is the fake for method MaintenanceWindowsClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armcontainerservice.MaintenanceWindowsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armcontainerservice.MaintenanceWindowsClientListBySubscriptionResponse])
+
+	// NewListPager is the fake for method MaintenanceWindowsClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(resourceGroupName string, options *armcontainerservice.MaintenanceWindowsClientListOptions) (resp azfake.PagerResponder[armcontainerservice.MaintenanceWindowsClientListResponse])
 
 	// UpdateTags is the fake for method MaintenanceWindowsClient.UpdateTags
 	// HTTP status codes to indicate success: http.StatusOK
@@ -54,8 +54,8 @@ func NewMaintenanceWindowsServerTransport(srv *MaintenanceWindowsServer) *Mainte
 		srv:                        srv,
 		beginCreateOrUpdate:        newTracker[azfake.PollerResponder[armcontainerservice.MaintenanceWindowsClientCreateOrUpdateResponse]](),
 		beginDelete:                newTracker[azfake.PollerResponder[armcontainerservice.MaintenanceWindowsClientDeleteResponse]](),
-		newListPager:               newTracker[azfake.PagerResponder[armcontainerservice.MaintenanceWindowsClientListResponse]](),
 		newListBySubscriptionPager: newTracker[azfake.PagerResponder[armcontainerservice.MaintenanceWindowsClientListBySubscriptionResponse]](),
+		newListPager:               newTracker[azfake.PagerResponder[armcontainerservice.MaintenanceWindowsClientListResponse]](),
 	}
 }
 
@@ -65,8 +65,8 @@ type MaintenanceWindowsServerTransport struct {
 	srv                        *MaintenanceWindowsServer
 	beginCreateOrUpdate        *tracker[azfake.PollerResponder[armcontainerservice.MaintenanceWindowsClientCreateOrUpdateResponse]]
 	beginDelete                *tracker[azfake.PollerResponder[armcontainerservice.MaintenanceWindowsClientDeleteResponse]]
-	newListPager               *tracker[azfake.PagerResponder[armcontainerservice.MaintenanceWindowsClientListResponse]]
 	newListBySubscriptionPager *tracker[azfake.PagerResponder[armcontainerservice.MaintenanceWindowsClientListBySubscriptionResponse]]
+	newListPager               *tracker[azfake.PagerResponder[armcontainerservice.MaintenanceWindowsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for MaintenanceWindowsServerTransport.
@@ -96,10 +96,10 @@ func (m *MaintenanceWindowsServerTransport) dispatchToMethodFake(req *http.Reque
 				res.resp, res.err = m.dispatchBeginDelete(req)
 			case "MaintenanceWindowsClient.Get":
 				res.resp, res.err = m.dispatchGet(req)
-			case "MaintenanceWindowsClient.NewListPager":
-				res.resp, res.err = m.dispatchNewListPager(req)
 			case "MaintenanceWindowsClient.NewListBySubscriptionPager":
 				res.resp, res.err = m.dispatchNewListBySubscriptionPager(req)
+			case "MaintenanceWindowsClient.NewListPager":
+				res.resp, res.err = m.dispatchNewListPager(req)
 			case "MaintenanceWindowsClient.UpdateTags":
 				res.resp, res.err = m.dispatchUpdateTags(req)
 			default:
@@ -124,7 +124,7 @@ func (m *MaintenanceWindowsServerTransport) dispatchBeginCreateOrUpdate(req *htt
 	}
 	beginCreateOrUpdate := m.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/maintenanceWindows/(?P<maintenanceWindowName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/maintenanceWindows/(?P<maintenanceWindowName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -172,7 +172,7 @@ func (m *MaintenanceWindowsServerTransport) dispatchBeginDelete(req *http.Reques
 	}
 	beginDelete := m.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/maintenanceWindows/(?P<maintenanceWindowName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/maintenanceWindows/(?P<maintenanceWindowName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -214,7 +214,7 @@ func (m *MaintenanceWindowsServerTransport) dispatchGet(req *http.Request) (*htt
 	if m.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/maintenanceWindows/(?P<maintenanceWindowName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/maintenanceWindows/(?P<maintenanceWindowName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -243,13 +243,46 @@ func (m *MaintenanceWindowsServerTransport) dispatchGet(req *http.Request) (*htt
 	return resp, nil
 }
 
+func (m *MaintenanceWindowsServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
+	if m.srv.NewListBySubscriptionPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
+	}
+	newListBySubscriptionPager := m.newListBySubscriptionPager.get(req)
+	if newListBySubscriptionPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/maintenanceWindows`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := m.srv.NewListBySubscriptionPager(nil)
+		newListBySubscriptionPager = &resp
+		m.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
+		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armcontainerservice.MaintenanceWindowsClientListBySubscriptionResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		m.newListBySubscriptionPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListBySubscriptionPager) {
+		m.newListBySubscriptionPager.remove(req)
+	}
+	return resp, nil
+}
+
 func (m *MaintenanceWindowsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
 	if m.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
 	newListPager := m.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/maintenanceWindows`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/maintenanceWindows`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -280,44 +313,11 @@ func (m *MaintenanceWindowsServerTransport) dispatchNewListPager(req *http.Reque
 	return resp, nil
 }
 
-func (m *MaintenanceWindowsServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
-	if m.srv.NewListBySubscriptionPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
-	}
-	newListBySubscriptionPager := m.newListBySubscriptionPager.get(req)
-	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/maintenanceWindows`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := m.srv.NewListBySubscriptionPager(nil)
-		newListBySubscriptionPager = &resp
-		m.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
-		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armcontainerservice.MaintenanceWindowsClientListBySubscriptionResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		m.newListBySubscriptionPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListBySubscriptionPager) {
-		m.newListBySubscriptionPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (m *MaintenanceWindowsServerTransport) dispatchUpdateTags(req *http.Request) (*http.Response, error) {
 	if m.srv.UpdateTags == nil {
 		return nil, &nonRetriableError{errors.New("fake for method UpdateTags not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/maintenanceWindows/(?P<maintenanceWindowName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/maintenanceWindows/(?P<maintenanceWindowName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {

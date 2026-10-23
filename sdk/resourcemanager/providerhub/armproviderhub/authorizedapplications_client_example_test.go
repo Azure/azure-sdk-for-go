@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/providerhub/armproviderhub/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/providerhub/armproviderhub/v4"
 	"log"
 )
 
-// Generated from example definition: 2024-09-01/AuthorizedApplications_CreateOrUpdate.json
+// Generated from example definition: 2025-10-01/AuthorizedApplications_CreateOrUpdate.json
 func ExampleAuthorizedApplicationsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -25,17 +25,17 @@ func ExampleAuthorizedApplicationsClient_BeginCreateOrUpdate() {
 	}
 	poller, err := clientFactory.NewAuthorizedApplicationsClient().BeginCreateOrUpdate(ctx, "Microsoft.Contoso", "760505bf-dcfa-4311-b890-18da392a00b2", armproviderhub.AuthorizedApplication{
 		Properties: &armproviderhub.AuthorizedApplicationProperties{
+			ProviderAuthorization: &armproviderhub.ApplicationProviderAuthorization{
+				RoleDefinitionID:          to.Ptr("123456bf-gkur-2098-b890-98da392a00b2"),
+				ManagedByRoleDefinitionID: to.Ptr("1a3b5c7d-8e9f-10g1-1h12-i13j14k1"),
+			},
 			DataAuthorizations: []*armproviderhub.ApplicationDataAuthorization{
 				{
+					Role: to.Ptr(armproviderhub.RoleServiceOwner),
 					ResourceTypes: []*string{
 						to.Ptr("*"),
 					},
-					Role: to.Ptr(armproviderhub.RoleServiceOwner),
 				},
-			},
-			ProviderAuthorization: &armproviderhub.ApplicationProviderAuthorization{
-				ManagedByRoleDefinitionID: to.Ptr("1a3b5c7d-8e9f-10g1-1h12-i13j14k1"),
-				RoleDefinitionID:          to.Ptr("123456bf-gkur-2098-b890-98da392a00b2"),
 			},
 		},
 	}, nil)
@@ -51,37 +51,37 @@ func ExampleAuthorizedApplicationsClient_BeginCreateOrUpdate() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armproviderhub.AuthorizedApplicationsClientCreateOrUpdateResponse{
 	// 	AuthorizedApplication: armproviderhub.AuthorizedApplication{
+	// 		ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso/authorizedApplications/760505bf-dcfa-4311-b890-18da392a00b2"),
 	// 		Name: to.Ptr("Microsoft.Contoso/760505bf-dcfa-4311-b890-18da392a00b2"),
 	// 		Type: to.Ptr("Microsoft.ProviderHub/providerRegistrations/authorizedApplications"),
-	// 		ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso/authorizedApplications/760505bf-dcfa-4311-b890-18da392a00b2"),
 	// 		Properties: &armproviderhub.AuthorizedApplicationProperties{
+	// 			ProviderAuthorization: &armproviderhub.ApplicationProviderAuthorization{
+	// 				RoleDefinitionID: to.Ptr("123456bf-gkur-2098-b890-98da392a00b2"),
+	// 				ManagedByRoleDefinitionID: to.Ptr("1a3b5c7d-8e9f-10g1-1h12-i13j14k1"),
+	// 			},
 	// 			DataAuthorizations: []*armproviderhub.ApplicationDataAuthorization{
 	// 				{
+	// 					Role: to.Ptr(armproviderhub.RoleServiceOwner),
 	// 					ResourceTypes: []*string{
 	// 						to.Ptr("*"),
 	// 					},
-	// 					Role: to.Ptr(armproviderhub.RoleServiceOwner),
 	// 				},
-	// 			},
-	// 			ProviderAuthorization: &armproviderhub.ApplicationProviderAuthorization{
-	// 				ManagedByRoleDefinitionID: to.Ptr("1a3b5c7d-8e9f-10g1-1h12-i13j14k1"),
-	// 				RoleDefinitionID: to.Ptr("123456bf-gkur-2098-b890-98da392a00b2"),
 	// 			},
 	// 			ProvisioningState: to.Ptr(armproviderhub.ProvisioningStateSucceeded),
 	// 		},
 	// 		SystemData: &armproviderhub.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 			LastModifiedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2024-09-01/AuthorizedApplications_Delete.json
+// Generated from example definition: 2025-10-01/AuthorizedApplications_Delete.json
 func ExampleAuthorizedApplicationsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -103,7 +103,7 @@ func ExampleAuthorizedApplicationsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2024-09-01/AuthorizedApplications_Get.json
+// Generated from example definition: 2025-10-01/AuthorizedApplications_Get.json
 func ExampleAuthorizedApplicationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -123,37 +123,37 @@ func ExampleAuthorizedApplicationsClient_Get() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armproviderhub.AuthorizedApplicationsClientGetResponse{
 	// 	AuthorizedApplication: armproviderhub.AuthorizedApplication{
+	// 		ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso/authorizedApplications/760505bf-dcfa-4311-b890-18da392a00b2"),
 	// 		Name: to.Ptr("Microsoft.Contoso/760505bf-dcfa-4311-b890-18da392a00b2"),
 	// 		Type: to.Ptr("Microsoft.ProviderHub/providerRegistrations/authorizedApplications"),
-	// 		ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso/authorizedApplications/760505bf-dcfa-4311-b890-18da392a00b2"),
 	// 		Properties: &armproviderhub.AuthorizedApplicationProperties{
+	// 			ProviderAuthorization: &armproviderhub.ApplicationProviderAuthorization{
+	// 				RoleDefinitionID: to.Ptr("123456bf-gkur-2098-b890-98da392a00b2"),
+	// 				ManagedByRoleDefinitionID: to.Ptr("1a3b5c7d-8e9f-10g1-1h12-i13j14k1"),
+	// 			},
 	// 			DataAuthorizations: []*armproviderhub.ApplicationDataAuthorization{
 	// 				{
+	// 					Role: to.Ptr(armproviderhub.RoleServiceOwner),
 	// 					ResourceTypes: []*string{
 	// 						to.Ptr("*"),
 	// 					},
-	// 					Role: to.Ptr(armproviderhub.RoleServiceOwner),
 	// 				},
-	// 			},
-	// 			ProviderAuthorization: &armproviderhub.ApplicationProviderAuthorization{
-	// 				ManagedByRoleDefinitionID: to.Ptr("1a3b5c7d-8e9f-10g1-1h12-i13j14k1"),
-	// 				RoleDefinitionID: to.Ptr("123456bf-gkur-2098-b890-98da392a00b2"),
 	// 			},
 	// 			ProvisioningState: to.Ptr(armproviderhub.ProvisioningStateSucceeded),
 	// 		},
 	// 		SystemData: &armproviderhub.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 			LastModifiedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2024-09-01/AuthorizedApplications_List.json
+// Generated from example definition: 2025-10-01/AuthorizedApplications_List.json
 func ExampleAuthorizedApplicationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -179,31 +179,31 @@ func ExampleAuthorizedApplicationsClient_NewListPager() {
 		// 	AuthorizedApplicationArrayResponseWithContinuation: armproviderhub.AuthorizedApplicationArrayResponseWithContinuation{
 		// 		Value: []*armproviderhub.AuthorizedApplication{
 		// 			{
+		// 				ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso/authorizedApplications/760505bf-dcfa-4311-b890-18da392a00b2"),
 		// 				Name: to.Ptr("Microsoft.Contoso/760505bf-dcfa-4311-b890-18da392a00b2"),
 		// 				Type: to.Ptr("Microsoft.ProviderHub/providerRegistrations/authorizedApplications"),
-		// 				ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso/authorizedApplications/760505bf-dcfa-4311-b890-18da392a00b2"),
 		// 				Properties: &armproviderhub.AuthorizedApplicationProperties{
+		// 					ProviderAuthorization: &armproviderhub.ApplicationProviderAuthorization{
+		// 						RoleDefinitionID: to.Ptr("123456bf-gkur-2098-b890-98da392a00b2"),
+		// 						ManagedByRoleDefinitionID: to.Ptr("1a3b5c7d-8e9f-10g1-1h12-i13j14k1"),
+		// 					},
 		// 					DataAuthorizations: []*armproviderhub.ApplicationDataAuthorization{
 		// 						{
+		// 							Role: to.Ptr(armproviderhub.RoleServiceOwner),
 		// 							ResourceTypes: []*string{
 		// 								to.Ptr("*"),
 		// 							},
-		// 							Role: to.Ptr(armproviderhub.RoleServiceOwner),
 		// 						},
-		// 					},
-		// 					ProviderAuthorization: &armproviderhub.ApplicationProviderAuthorization{
-		// 						ManagedByRoleDefinitionID: to.Ptr("1a3b5c7d-8e9f-10g1-1h12-i13j14k1"),
-		// 						RoleDefinitionID: to.Ptr("123456bf-gkur-2098-b890-98da392a00b2"),
 		// 					},
 		// 					ProvisioningState: to.Ptr(armproviderhub.ProvisioningStateSucceeded),
 		// 				},
 		// 				SystemData: &armproviderhub.SystemData{
-		// 					CreatedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 		// 					CreatedBy: to.Ptr("string"),
 		// 					CreatedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
+		// 					CreatedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("string"),
 		// 					LastModifiedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 		// 				},
 		// 			},
 		// 		},

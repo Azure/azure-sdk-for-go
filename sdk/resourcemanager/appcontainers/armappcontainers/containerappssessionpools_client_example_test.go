@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-10-02-preview/SessionPools_LifecycleOnContainerExit_CreateOrUpdate.json
+// Generated from example definition: 2026-07-01/SessionPools_LifecycleOnContainerExit_CreateOrUpdate.json
 func ExampleContainerAppsSessionPoolsClient_BeginCreateOrUpdate_createOrUpdateSessionPoolWithLifecycleOnContainerExitTimed() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -66,7 +66,7 @@ func ExampleContainerAppsSessionPoolsClient_BeginCreateOrUpdate_createOrUpdateSe
 			ManagedIdentitySettings: []*armappcontainers.ManagedIdentitySetting{
 				{
 					Identity:  to.Ptr("system"),
-					Lifecycle: to.Ptr(armappcontainers.IdentitySettingsLifeCycleMain),
+					Lifecycle: to.Ptr(armappcontainers.SessionPoolIdentityLifeCycleMain),
 				},
 			},
 			PoolManagementType: to.Ptr(armappcontainers.PoolManagementTypeDynamic),
@@ -151,7 +151,7 @@ func ExampleContainerAppsSessionPoolsClient_BeginCreateOrUpdate_createOrUpdateSe
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/SessionPools_LifecycleTimed_CreateOrUpdate.json
+// Generated from example definition: 2026-07-01/SessionPools_LifecycleTimed_CreateOrUpdate.json
 func ExampleContainerAppsSessionPoolsClient_BeginCreateOrUpdate_createOrUpdateSessionPoolWithLifecycleTypeTimed() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -205,7 +205,7 @@ func ExampleContainerAppsSessionPoolsClient_BeginCreateOrUpdate_createOrUpdateSe
 			ManagedIdentitySettings: []*armappcontainers.ManagedIdentitySetting{
 				{
 					Identity:  to.Ptr("system"),
-					Lifecycle: to.Ptr(armappcontainers.IdentitySettingsLifeCycleMain),
+					Lifecycle: to.Ptr(armappcontainers.SessionPoolIdentityLifeCycleMain),
 				},
 			},
 			PoolManagementType: to.Ptr(armappcontainers.PoolManagementTypeDynamic),
@@ -290,7 +290,7 @@ func ExampleContainerAppsSessionPoolsClient_BeginCreateOrUpdate_createOrUpdateSe
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/SessionPools_McpServer_CreateOrUpdate.json
+// Generated from example definition: 2026-07-01/SessionPools_McpServer_CreateOrUpdate.json
 func ExampleContainerAppsSessionPoolsClient_BeginCreateOrUpdate_createOrUpdateSessionPoolWithMcpServer() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -304,16 +304,12 @@ func ExampleContainerAppsSessionPoolsClient_BeginCreateOrUpdate_createOrUpdateSe
 	poller, err := clientFactory.NewContainerAppsSessionPoolsClient().BeginCreateOrUpdate(ctx, "rg", "testsessionpool", armappcontainers.SessionPool{
 		Location: to.Ptr("East US"),
 		Properties: &armappcontainers.SessionPoolProperties{
-			ContainerType: to.Ptr(armappcontainers.ContainerTypeShell),
+			ContainerType: to.Ptr(armappcontainers.ContainerType("Shell")),
 			DynamicPoolConfiguration: &armappcontainers.DynamicPoolConfiguration{
 				LifecycleConfiguration: &armappcontainers.LifecycleConfiguration{
 					CooldownPeriodInSeconds: to.Ptr[int32](600),
 					LifecycleType:           to.Ptr(armappcontainers.LifecycleTypeTimed),
 				},
-			},
-			McpServerSettings: &armappcontainers.McpServerSettings{
-				IsMcpServerAPIKeyDisabled: to.Ptr(false),
-				IsMcpServerEnabled:        to.Ptr(true),
 			},
 			PoolManagementType: to.Ptr(armappcontainers.PoolManagementTypeDynamic),
 			ScaleConfiguration: &armappcontainers.ScaleConfiguration{
@@ -341,17 +337,12 @@ func ExampleContainerAppsSessionPoolsClient_BeginCreateOrUpdate_createOrUpdateSe
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/sessionPools/testsessionpool"),
 	// 		Location: to.Ptr("East US"),
 	// 		Properties: &armappcontainers.SessionPoolProperties{
-	// 			ContainerType: to.Ptr(armappcontainers.ContainerTypeShell),
+	// 			ContainerType: to.Ptr(armappcontainers.ContainerType("Shell")),
 	// 			DynamicPoolConfiguration: &armappcontainers.DynamicPoolConfiguration{
 	// 				LifecycleConfiguration: &armappcontainers.LifecycleConfiguration{
 	// 					CooldownPeriodInSeconds: to.Ptr[int32](600),
 	// 					LifecycleType: to.Ptr(armappcontainers.LifecycleTypeTimed),
 	// 				},
-	// 			},
-	// 			McpServerSettings: &armappcontainers.McpServerSettings{
-	// 				IsMcpServerAPIKeyDisabled: to.Ptr(false),
-	// 				IsMcpServerEnabled: to.Ptr(true),
-	// 				McpServerEndpoint: to.Ptr("https://eastus.dynamicsessions.io/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/sessionPools/testsessionpool/mcp"),
 	// 			},
 	// 			PoolManagementEndpoint: to.Ptr("https://eastus.dynamicsessions.io/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/sessionPools/testsessionpool"),
 	// 			PoolManagementType: to.Ptr(armappcontainers.PoolManagementTypeDynamic),
@@ -367,7 +358,7 @@ func ExampleContainerAppsSessionPoolsClient_BeginCreateOrUpdate_createOrUpdateSe
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/SessionPools_Delete.json
+// Generated from example definition: 2026-07-01/SessionPools_Delete.json
 func ExampleContainerAppsSessionPoolsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -388,32 +379,7 @@ func ExampleContainerAppsSessionPoolsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-10-02-preview/SessionPools_FetchMcpServerCredentials.json
-func ExampleContainerAppsSessionPoolsClient_FetchMcpServerCredentials() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappcontainers.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewContainerAppsSessionPoolsClient().FetchMcpServerCredentials(ctx, "rg", "testsessionpool", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armappcontainers.ContainerAppsSessionPoolsClientFetchMcpServerCredentialsResponse{
-	// 	McpServerCredential: armappcontainers.McpServerCredential{
-	// 		APIKey: to.Ptr("dummyapikey"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-10-02-preview/SessionPools_Get.json
+// Generated from example definition: 2026-07-01/SessionPools_Get.json
 func ExampleContainerAppsSessionPoolsClient_Get_getSessionPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -480,7 +446,7 @@ func ExampleContainerAppsSessionPoolsClient_Get_getSessionPool() {
 	// 			ManagedIdentitySettings: []*armappcontainers.ManagedIdentitySetting{
 	// 				{
 	// 					Identity: to.Ptr("system"),
-	// 					Lifecycle: to.Ptr(armappcontainers.IdentitySettingsLifeCycleMain),
+	// 					Lifecycle: to.Ptr(armappcontainers.SessionPoolIdentityLifeCycleMain),
 	// 				},
 	// 			},
 	// 			NodeCount: to.Ptr[int32](1),
@@ -494,46 +460,12 @@ func ExampleContainerAppsSessionPoolsClient_Get_getSessionPool() {
 	// 			SessionNetworkConfiguration: &armappcontainers.SessionNetworkConfiguration{
 	// 				Status: to.Ptr(armappcontainers.SessionNetworkStatusEgressEnabled),
 	// 			},
-	// 			TemplateUpdateStatus: &armappcontainers.TemplateUpdateStatus{
-	// 				ActiveTemplate: &armappcontainers.TemplateStatus{
-	// 					Containers: []*armappcontainers.SessionContainer{
-	// 						{
-	// 							Name: to.Ptr("testinitcontainer"),
-	// 							Args: []*string{
-	// 								to.Ptr("-c"),
-	// 								to.Ptr("while true; do echo hello; sleep 10;done"),
-	// 							},
-	// 							Command: []*string{
-	// 								to.Ptr("/bin/sh"),
-	// 							},
-	// 							Image: to.Ptr("repo/testcontainer:v4"),
-	// 							Resources: &armappcontainers.SessionContainerResources{
-	// 								CPU: to.Ptr[float64](0.25),
-	// 								Memory: to.Ptr("0.5Gi"),
-	// 							},
-	// 						},
-	// 					},
-	// 					CreatedTime: to.Ptr(time.Date(2025, time.October, 2, 0, 0, 0, 0, time.UTC)),
-	// 					Ingress: &armappcontainers.SessionIngress{
-	// 						TargetPort: to.Ptr[int32](80),
-	// 					},
-	// 					Status: &armappcontainers.TemplatePoolStatus{
-	// 						AllocatedCount: to.Ptr[int32](0),
-	// 						CrashCount: to.Ptr[int32](0),
-	// 						ExpectedCount: to.Ptr[int32](100),
-	// 						ImagePullFailCount: to.Ptr[int32](0),
-	// 						PendingCount: to.Ptr[int32](0),
-	// 						ReadyCount: to.Ptr[int32](100),
-	// 					},
-	// 					Details: to.Ptr("Running"),
-	// 				},
-	// 			},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/SessionPools_Get_InProgress.json
+// Generated from example definition: 2026-07-01/SessionPools_Get_InProgress.json
 func ExampleContainerAppsSessionPoolsClient_Get_getSessionPoolDuringUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -600,7 +532,7 @@ func ExampleContainerAppsSessionPoolsClient_Get_getSessionPoolDuringUpdate() {
 	// 			ManagedIdentitySettings: []*armappcontainers.ManagedIdentitySetting{
 	// 				{
 	// 					Identity: to.Ptr("system"),
-	// 					Lifecycle: to.Ptr(armappcontainers.IdentitySettingsLifeCycleMain),
+	// 					Lifecycle: to.Ptr(armappcontainers.SessionPoolIdentityLifeCycleMain),
 	// 				},
 	// 			},
 	// 			NodeCount: to.Ptr[int32](1),
@@ -614,78 +546,12 @@ func ExampleContainerAppsSessionPoolsClient_Get_getSessionPoolDuringUpdate() {
 	// 			SessionNetworkConfiguration: &armappcontainers.SessionNetworkConfiguration{
 	// 				Status: to.Ptr(armappcontainers.SessionNetworkStatusEgressEnabled),
 	// 			},
-	// 			TemplateUpdateStatus: &armappcontainers.TemplateUpdateStatus{
-	// 				ActiveTemplate: &armappcontainers.TemplateStatus{
-	// 					Containers: []*armappcontainers.SessionContainer{
-	// 						{
-	// 							Name: to.Ptr("testinitcontainer"),
-	// 							Args: []*string{
-	// 								to.Ptr("-c"),
-	// 								to.Ptr("while true; do echo hello; sleep 10;done"),
-	// 							},
-	// 							Command: []*string{
-	// 								to.Ptr("/bin/sh"),
-	// 							},
-	// 							Image: to.Ptr("repo/testcontainer:v4"),
-	// 							Resources: &armappcontainers.SessionContainerResources{
-	// 								CPU: to.Ptr[float64](0.25),
-	// 								Memory: to.Ptr("0.5Gi"),
-	// 							},
-	// 						},
-	// 					},
-	// 					CreatedTime: to.Ptr(time.Date(2025, time.October, 2, 0, 0, 0, 0, time.UTC)),
-	// 					Ingress: &armappcontainers.SessionIngress{
-	// 						TargetPort: to.Ptr[int32](80),
-	// 					},
-	// 					Status: &armappcontainers.TemplatePoolStatus{
-	// 						AllocatedCount: to.Ptr[int32](0),
-	// 						CrashCount: to.Ptr[int32](0),
-	// 						ExpectedCount: to.Ptr[int32](100),
-	// 						ImagePullFailCount: to.Ptr[int32](0),
-	// 						PendingCount: to.Ptr[int32](0),
-	// 						ReadyCount: to.Ptr[int32](100),
-	// 					},
-	// 					Details: to.Ptr("Running"),
-	// 				},
-	// 				DesiredTemplate: &armappcontainers.TemplateStatus{
-	// 					Containers: []*armappcontainers.SessionContainer{
-	// 						{
-	// 							Name: to.Ptr("testinitcontainer"),
-	// 							Args: []*string{
-	// 								to.Ptr("-c"),
-	// 								to.Ptr("while true; do echo hello; sleep 10;done"),
-	// 							},
-	// 							Command: []*string{
-	// 								to.Ptr("/bin/sh"),
-	// 							},
-	// 							Image: to.Ptr("repo/testcontainer:v5"),
-	// 							Resources: &armappcontainers.SessionContainerResources{
-	// 								CPU: to.Ptr[float64](0.25),
-	// 								Memory: to.Ptr("0.5Gi"),
-	// 							},
-	// 						},
-	// 					},
-	// 					CreatedTime: to.Ptr(time.Date(2025, time.October, 2, 5, 0, 0, 0, time.UTC)),
-	// 					Ingress: &armappcontainers.SessionIngress{
-	// 						TargetPort: to.Ptr[int32](80),
-	// 					},
-	// 					Status: &armappcontainers.TemplatePoolStatus{
-	// 						AllocatedCount: to.Ptr[int32](0),
-	// 						CrashCount: to.Ptr[int32](0),
-	// 						ExpectedCount: to.Ptr[int32](100),
-	// 						ImagePullFailCount: to.Ptr[int32](0),
-	// 						PendingCount: to.Ptr[int32](0),
-	// 						ReadyCount: to.Ptr[int32](0),
-	// 					},
-	// 					Details: to.Ptr("Updating"),
-	// 				},
-	// 			},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/SessionPools_ListByResourceGroup.json
+// Generated from example definition: 2026-07-01/SessionPools_ListByResourceGroup.json
 func ExampleContainerAppsSessionPoolsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -757,40 +623,6 @@ func ExampleContainerAppsSessionPoolsClient_NewListByResourceGroupPager() {
 		// 					SessionNetworkConfiguration: &armappcontainers.SessionNetworkConfiguration{
 		// 						Status: to.Ptr(armappcontainers.SessionNetworkStatusEgressEnabled),
 		// 					},
-		// 					TemplateUpdateStatus: &armappcontainers.TemplateUpdateStatus{
-		// 						ActiveTemplate: &armappcontainers.TemplateStatus{
-		// 							Containers: []*armappcontainers.SessionContainer{
-		// 								{
-		// 									Name: to.Ptr("testinitcontainer"),
-		// 									Args: []*string{
-		// 										to.Ptr("-c"),
-		// 										to.Ptr("while true; do echo hello; sleep 10;done"),
-		// 									},
-		// 									Command: []*string{
-		// 										to.Ptr("/bin/sh"),
-		// 									},
-		// 									Image: to.Ptr("repo/testcontainer:v4"),
-		// 									Resources: &armappcontainers.SessionContainerResources{
-		// 										CPU: to.Ptr[float64](0.25),
-		// 										Memory: to.Ptr("0.5Gi"),
-		// 									},
-		// 								},
-		// 							},
-		// 							CreatedTime: to.Ptr(time.Date(2025, time.October, 2, 0, 0, 0, 0, time.UTC)),
-		// 							Ingress: &armappcontainers.SessionIngress{
-		// 								TargetPort: to.Ptr[int32](80),
-		// 							},
-		// 							Status: &armappcontainers.TemplatePoolStatus{
-		// 								AllocatedCount: to.Ptr[int32](0),
-		// 								CrashCount: to.Ptr[int32](0),
-		// 								ExpectedCount: to.Ptr[int32](100),
-		// 								ImagePullFailCount: to.Ptr[int32](0),
-		// 								PendingCount: to.Ptr[int32](0),
-		// 								ReadyCount: to.Ptr[int32](100),
-		// 							},
-		// 							Details: to.Ptr("Running"),
-		// 						},
-		// 					},
 		// 				},
 		// 			},
 		// 		},
@@ -799,7 +631,7 @@ func ExampleContainerAppsSessionPoolsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-10-02-preview/SessionPools_ListBySubscription.json
+// Generated from example definition: 2026-07-01/SessionPools_ListBySubscription.json
 func ExampleContainerAppsSessionPoolsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -871,40 +703,6 @@ func ExampleContainerAppsSessionPoolsClient_NewListBySubscriptionPager() {
 		// 					SessionNetworkConfiguration: &armappcontainers.SessionNetworkConfiguration{
 		// 						Status: to.Ptr(armappcontainers.SessionNetworkStatusEgressEnabled),
 		// 					},
-		// 					TemplateUpdateStatus: &armappcontainers.TemplateUpdateStatus{
-		// 						ActiveTemplate: &armappcontainers.TemplateStatus{
-		// 							Containers: []*armappcontainers.SessionContainer{
-		// 								{
-		// 									Name: to.Ptr("testinitcontainer"),
-		// 									Args: []*string{
-		// 										to.Ptr("-c"),
-		// 										to.Ptr("while true; do echo hello; sleep 10;done"),
-		// 									},
-		// 									Command: []*string{
-		// 										to.Ptr("/bin/sh"),
-		// 									},
-		// 									Image: to.Ptr("repo/testcontainer:v4"),
-		// 									Resources: &armappcontainers.SessionContainerResources{
-		// 										CPU: to.Ptr[float64](0.25),
-		// 										Memory: to.Ptr("0.5Gi"),
-		// 									},
-		// 								},
-		// 							},
-		// 							CreatedTime: to.Ptr(time.Date(2025, time.October, 2, 0, 0, 0, 0, time.UTC)),
-		// 							Ingress: &armappcontainers.SessionIngress{
-		// 								TargetPort: to.Ptr[int32](80),
-		// 							},
-		// 							Status: &armappcontainers.TemplatePoolStatus{
-		// 								AllocatedCount: to.Ptr[int32](0),
-		// 								CrashCount: to.Ptr[int32](0),
-		// 								ExpectedCount: to.Ptr[int32](100),
-		// 								ImagePullFailCount: to.Ptr[int32](0),
-		// 								PendingCount: to.Ptr[int32](0),
-		// 								ReadyCount: to.Ptr[int32](100),
-		// 							},
-		// 							Details: to.Ptr("Running"),
-		// 						},
-		// 					},
 		// 				},
 		// 			},
 		// 		},
@@ -913,32 +711,7 @@ func ExampleContainerAppsSessionPoolsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2025-10-02-preview/SessionPools_RotateMcpServerCredentials.json
-func ExampleContainerAppsSessionPoolsClient_RotateMcpServerCredentials() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappcontainers.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewContainerAppsSessionPoolsClient().RotateMcpServerCredentials(ctx, "rg", "testsessionpool", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armappcontainers.ContainerAppsSessionPoolsClientRotateMcpServerCredentialsResponse{
-	// 	McpServerCredential: armappcontainers.McpServerCredential{
-	// 		APIKey: to.Ptr("dummyapikey"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-10-02-preview/SessionPools_Patch.json
+// Generated from example definition: 2026-07-01/SessionPools_Patch.json
 func ExampleContainerAppsSessionPoolsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

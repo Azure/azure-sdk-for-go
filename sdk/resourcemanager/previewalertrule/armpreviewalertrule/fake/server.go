@@ -81,7 +81,7 @@ func (s *ServerTransport) dispatchPreviewAlertRule(req *http.Request) (*http.Res
 	if s.srv.PreviewAlertRule == nil {
 		return nil, &nonRetriableError{errors.New("fake for method PreviewAlertRule not implemented")}
 	}
-	const regexStr = `/(?P<resourceId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/microsoft\.AlertsManagement/previewAlertRule`
+	const regexStr = `/(?P<resourceId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/microsoft\.AlertsManagement/previewAlertRule`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {

@@ -13,7 +13,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armconsumption/v2"
 	"net/http"
-	"net/url"
 	"regexp"
 	"slices"
 	"strconv"
@@ -88,17 +87,14 @@ func (m *MarketplacesServerTransport) dispatchNewListPager(req *http.Request) (*
 	}
 	newListPager := m.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Consumption/marketplaces`
+		const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.Consumption/marketplaces`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-		if err != nil {
-			return nil, err
-		}
+		scopeParam := matches[regex.SubexpIndex("scope")]
 		filterParam := getOptional(qp.Get("$filter"))
 		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
 			p, parseErr := strconv.ParseInt(v, 10, 32)

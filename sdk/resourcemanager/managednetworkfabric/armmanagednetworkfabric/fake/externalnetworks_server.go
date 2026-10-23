@@ -142,7 +142,7 @@ func (e *ExternalNetworksServerTransport) dispatchBeginCreate(req *http.Request)
 	}
 	beginCreate := e.beginCreate.get(req)
 	if beginCreate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ManagedNetworkFabric/l3IsolationDomains/(?P<l3IsolationDomainName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/externalNetworks/(?P<externalNetworkName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/l3IsolationDomains/(?P<l3IsolationDomainName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/externalNetworks/(?P<externalNetworkName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -194,7 +194,7 @@ func (e *ExternalNetworksServerTransport) dispatchBeginDelete(req *http.Request)
 	}
 	beginDelete := e.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ManagedNetworkFabric/l3IsolationDomains/(?P<l3IsolationDomainName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/externalNetworks/(?P<externalNetworkName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/l3IsolationDomains/(?P<l3IsolationDomainName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/externalNetworks/(?P<externalNetworkName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -240,7 +240,7 @@ func (e *ExternalNetworksServerTransport) dispatchGet(req *http.Request) (*http.
 	if e.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ManagedNetworkFabric/l3IsolationDomains/(?P<l3IsolationDomainName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/externalNetworks/(?P<externalNetworkName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/l3IsolationDomains/(?P<l3IsolationDomainName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/externalNetworks/(?P<externalNetworkName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -279,7 +279,7 @@ func (e *ExternalNetworksServerTransport) dispatchNewListByL3IsolationDomainPage
 	}
 	newListByL3IsolationDomainPager := e.newListByL3IsolationDomainPager.get(req)
 	if newListByL3IsolationDomainPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ManagedNetworkFabric/l3IsolationDomains/(?P<l3IsolationDomainName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/externalNetworks`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/l3IsolationDomains/(?P<l3IsolationDomainName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/externalNetworks`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -320,7 +320,7 @@ func (e *ExternalNetworksServerTransport) dispatchBeginUpdate(req *http.Request)
 	}
 	beginUpdate := e.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ManagedNetworkFabric/l3IsolationDomains/(?P<l3IsolationDomainName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/externalNetworks/(?P<externalNetworkName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/l3IsolationDomains/(?P<l3IsolationDomainName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/externalNetworks/(?P<externalNetworkName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -372,7 +372,7 @@ func (e *ExternalNetworksServerTransport) dispatchBeginUpdateAdministrativeState
 	}
 	beginUpdateAdministrativeState := e.beginUpdateAdministrativeState.get(req)
 	if beginUpdateAdministrativeState == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ManagedNetworkFabric/l3IsolationDomains/(?P<l3IsolationDomainName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/externalNetworks/(?P<externalNetworkName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/updateAdministrativeState`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/l3IsolationDomains/(?P<l3IsolationDomainName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/externalNetworks/(?P<externalNetworkName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/updateAdministrativeState`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -424,7 +424,7 @@ func (e *ExternalNetworksServerTransport) dispatchBeginUpdateBfdAdministrativeSt
 	}
 	beginUpdateBfdAdministrativeState := e.beginUpdateBfdAdministrativeState.get(req)
 	if beginUpdateBfdAdministrativeState == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ManagedNetworkFabric/l3IsolationDomains/(?P<l3IsolationDomainName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/externalNetworks/(?P<externalNetworkName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/updateBfdAdministrativeState`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/l3IsolationDomains/(?P<l3IsolationDomainName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/externalNetworks/(?P<externalNetworkName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/updateBfdAdministrativeState`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -476,7 +476,7 @@ func (e *ExternalNetworksServerTransport) dispatchBeginUpdateStaticRouteBfdAdmin
 	}
 	beginUpdateStaticRouteBfdAdministrativeState := e.beginUpdateStaticRouteBfdAdministrativeState.get(req)
 	if beginUpdateStaticRouteBfdAdministrativeState == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ManagedNetworkFabric/l3IsolationDomains/(?P<l3IsolationDomainName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/externalNetworks/(?P<externalNetworkName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/updateStaticRouteBfdAdministrativeState`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/l3IsolationDomains/(?P<l3IsolationDomainName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/externalNetworks/(?P<externalNetworkName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/updateStaticRouteBfdAdministrativeState`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {

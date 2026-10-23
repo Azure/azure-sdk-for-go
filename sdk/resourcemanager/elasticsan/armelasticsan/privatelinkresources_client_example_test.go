@@ -7,11 +7,11 @@ package armelasticsan_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elasticsan/armelasticsan"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elasticsan/armelasticsan/v2"
 	"log"
 )
 
-// Generated from example definition: 2025-09-01/PrivateLinkResources_ListByElasticSan_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/PrivateLinkResources_ListByElasticSan_MaximumSet_Gen.json
 func ExamplePrivateLinkResourcesClient_ListByElasticSan_privateLinkResourcesListByElasticSanMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -31,7 +31,7 @@ func ExamplePrivateLinkResourcesClient_ListByElasticSan_privateLinkResourcesList
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armelasticsan.PrivateLinkResourcesClientListByElasticSanResponse{
 	// 	PrivateLinkResourceListResult: armelasticsan.PrivateLinkResourceListResult{
-	// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/subscriptionid/resourceGroups/resourcegroupname/providers/Microsoft.ElasticSan/elasticSans/elasticsanname/privateLinkResources?api-version=2024-07-01-preview&%24skiptoken=mno345pqr678"),
+	// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/subscriptionid/resourceGroups/resourcegroupname/providers/Microsoft.ElasticSan/elasticSans/elasticsanname/privateLinkResources?api-version=2026-05-01-preview&%24skiptoken=mno345pqr678"),
 	// 		Value: []*armelasticsan.PrivateLinkResource{
 	// 			{
 	// 				Name: to.Ptr("ggbyptukibs"),
@@ -60,7 +60,7 @@ func ExamplePrivateLinkResourcesClient_ListByElasticSan_privateLinkResourcesList
 	// }
 }
 
-// Generated from example definition: 2025-09-01/PrivateLinkResources_ListByElasticSan_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/PrivateLinkResources_ListByElasticSan_MinimumSet_Gen.json
 func ExamplePrivateLinkResourcesClient_ListByElasticSan_privateLinkResourcesListByElasticSanMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

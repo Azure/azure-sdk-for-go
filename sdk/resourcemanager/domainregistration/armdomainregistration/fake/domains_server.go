@@ -185,7 +185,7 @@ func (d *DomainsServerTransport) dispatchCheckAvailability(req *http.Request) (*
 	if d.srv.CheckAvailability == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CheckAvailability not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DomainRegistration/checkDomainAvailability`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DomainRegistration/checkDomainAvailability`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -216,7 +216,7 @@ func (d *DomainsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) 
 	}
 	beginCreateOrUpdate := d.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DomainRegistration/domains/(?P<domainName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DomainRegistration/domains/(?P<domainName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -262,7 +262,7 @@ func (d *DomainsServerTransport) dispatchCreateOrUpdateOwnershipIdentifier(req *
 	if d.srv.CreateOrUpdateOwnershipIdentifier == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdateOwnershipIdentifier not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DomainRegistration/domains/(?P<domainName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/domainOwnershipIdentifiers/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DomainRegistration/domains/(?P<domainName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/domainOwnershipIdentifiers/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -303,7 +303,7 @@ func (d *DomainsServerTransport) dispatchDelete(req *http.Request) (*http.Respon
 	if d.srv.Delete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DomainRegistration/domains/(?P<domainName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DomainRegistration/domains/(?P<domainName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -347,7 +347,7 @@ func (d *DomainsServerTransport) dispatchDeleteOwnershipIdentifier(req *http.Req
 	if d.srv.DeleteOwnershipIdentifier == nil {
 		return nil, &nonRetriableError{errors.New("fake for method DeleteOwnershipIdentifier not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DomainRegistration/domains/(?P<domainName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/domainOwnershipIdentifiers/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DomainRegistration/domains/(?P<domainName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/domainOwnershipIdentifiers/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -384,7 +384,7 @@ func (d *DomainsServerTransport) dispatchGet(req *http.Request) (*http.Response,
 	if d.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DomainRegistration/domains/(?P<domainName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DomainRegistration/domains/(?P<domainName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -417,7 +417,7 @@ func (d *DomainsServerTransport) dispatchGetControlCenterSsoRequest(req *http.Re
 	if d.srv.GetControlCenterSsoRequest == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetControlCenterSsoRequest not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DomainRegistration/generateSsoRequest`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DomainRegistration/generateSsoRequest`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -442,7 +442,7 @@ func (d *DomainsServerTransport) dispatchGetOwnershipIdentifier(req *http.Reques
 	if d.srv.GetOwnershipIdentifier == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetOwnershipIdentifier not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DomainRegistration/domains/(?P<domainName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/domainOwnershipIdentifiers/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DomainRegistration/domains/(?P<domainName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/domainOwnershipIdentifiers/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -481,7 +481,7 @@ func (d *DomainsServerTransport) dispatchNewListPager(req *http.Request) (*http.
 	}
 	newListPager := d.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DomainRegistration/domains`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DomainRegistration/domains`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -514,7 +514,7 @@ func (d *DomainsServerTransport) dispatchNewListByResourceGroupPager(req *http.R
 	}
 	newListByResourceGroupPager := d.newListByResourceGroupPager.get(req)
 	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DomainRegistration/domains`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DomainRegistration/domains`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -551,7 +551,7 @@ func (d *DomainsServerTransport) dispatchNewListOwnershipIdentifiersPager(req *h
 	}
 	newListOwnershipIdentifiersPager := d.newListOwnershipIdentifiersPager.get(req)
 	if newListOwnershipIdentifiersPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DomainRegistration/domains/(?P<domainName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/domainOwnershipIdentifiers`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DomainRegistration/domains/(?P<domainName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/domainOwnershipIdentifiers`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -592,7 +592,7 @@ func (d *DomainsServerTransport) dispatchNewListRecommendationsPager(req *http.R
 	}
 	newListRecommendationsPager := d.newListRecommendationsPager.get(req)
 	if newListRecommendationsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DomainRegistration/listDomainRecommendations`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DomainRegistration/listDomainRecommendations`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -627,7 +627,7 @@ func (d *DomainsServerTransport) dispatchRenew(req *http.Request) (*http.Respons
 	if d.srv.Renew == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Renew not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DomainRegistration/domains/(?P<domainName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/renew`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DomainRegistration/domains/(?P<domainName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/renew`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -660,7 +660,7 @@ func (d *DomainsServerTransport) dispatchTransferOut(req *http.Request) (*http.R
 	if d.srv.TransferOut == nil {
 		return nil, &nonRetriableError{errors.New("fake for method TransferOut not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DomainRegistration/domains/(?P<domainName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/transferOut`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DomainRegistration/domains/(?P<domainName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/transferOut`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -693,7 +693,7 @@ func (d *DomainsServerTransport) dispatchUpdate(req *http.Request) (*http.Respon
 	if d.srv.Update == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Update not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DomainRegistration/domains/(?P<domainName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DomainRegistration/domains/(?P<domainName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -730,7 +730,7 @@ func (d *DomainsServerTransport) dispatchUpdateOwnershipIdentifier(req *http.Req
 	if d.srv.UpdateOwnershipIdentifier == nil {
 		return nil, &nonRetriableError{errors.New("fake for method UpdateOwnershipIdentifier not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DomainRegistration/domains/(?P<domainName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/domainOwnershipIdentifiers/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DomainRegistration/domains/(?P<domainName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/domainOwnershipIdentifiers/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {

@@ -81,7 +81,7 @@ func (c *CapabilitiesServerTransport) dispatchListByLocation(req *http.Request) 
 	if c.srv.ListByLocation == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListByLocation not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/capabilities`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/capabilities`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {

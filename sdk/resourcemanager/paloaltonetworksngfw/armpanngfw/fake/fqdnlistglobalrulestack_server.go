@@ -110,7 +110,7 @@ func (f *FqdnListGlobalRulestackServerTransport) dispatchBeginCreateOrUpdate(req
 	}
 	beginCreateOrUpdate := f.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/providers/PaloAltoNetworks\.Cloudngfw/globalRulestacks/(?P<globalRulestackName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/fqdnlists/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/providers/PaloAltoNetworks\.Cloudngfw/globalRulestacks/(?P<globalRulestackName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/fqdnlists/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -158,7 +158,7 @@ func (f *FqdnListGlobalRulestackServerTransport) dispatchBeginDelete(req *http.R
 	}
 	beginDelete := f.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/providers/PaloAltoNetworks\.Cloudngfw/globalRulestacks/(?P<globalRulestackName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/fqdnlists/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/providers/PaloAltoNetworks\.Cloudngfw/globalRulestacks/(?P<globalRulestackName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/fqdnlists/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -200,7 +200,7 @@ func (f *FqdnListGlobalRulestackServerTransport) dispatchGet(req *http.Request) 
 	if f.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/providers/PaloAltoNetworks\.Cloudngfw/globalRulestacks/(?P<globalRulestackName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/fqdnlists/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/PaloAltoNetworks\.Cloudngfw/globalRulestacks/(?P<globalRulestackName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/fqdnlists/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -235,7 +235,7 @@ func (f *FqdnListGlobalRulestackServerTransport) dispatchNewListPager(req *http.
 	}
 	newListPager := f.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/providers/PaloAltoNetworks\.Cloudngfw/globalRulestacks/(?P<globalRulestackName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/fqdnlists`
+		const regexStr = `/providers/PaloAltoNetworks\.Cloudngfw/globalRulestacks/(?P<globalRulestackName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/fqdnlists`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {

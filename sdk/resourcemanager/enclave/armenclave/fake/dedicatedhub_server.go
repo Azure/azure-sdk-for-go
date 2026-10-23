@@ -126,7 +126,7 @@ func (d *DedicatedHubServerTransport) dispatchBeginCreateOrUpdate(req *http.Requ
 	}
 	beginCreateOrUpdate := d.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Mission/communities/(?P<communityName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/dedicatedHubs/(?P<dedicatedHubName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Mission/communities/(?P<communityName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/dedicatedHubs/(?P<dedicatedHubName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -178,7 +178,7 @@ func (d *DedicatedHubServerTransport) dispatchBeginDelete(req *http.Request) (*h
 	}
 	beginDelete := d.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Mission/communities/(?P<communityName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/dedicatedHubs/(?P<dedicatedHubName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Mission/communities/(?P<communityName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/dedicatedHubs/(?P<dedicatedHubName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -224,7 +224,7 @@ func (d *DedicatedHubServerTransport) dispatchGet(req *http.Request) (*http.Resp
 	if d.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Mission/communities/(?P<communityName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/dedicatedHubs/(?P<dedicatedHubName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Mission/communities/(?P<communityName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/dedicatedHubs/(?P<dedicatedHubName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -263,7 +263,7 @@ func (d *DedicatedHubServerTransport) dispatchNewListByCommunityResourcePager(re
 	}
 	newListByCommunityResourcePager := d.newListByCommunityResourcePager.get(req)
 	if newListByCommunityResourcePager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Mission/communities/(?P<communityName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/dedicatedHubs`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Mission/communities/(?P<communityName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/dedicatedHubs`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -304,7 +304,7 @@ func (d *DedicatedHubServerTransport) dispatchNewListBySubscriptionPager(req *ht
 	}
 	newListBySubscriptionPager := d.newListBySubscriptionPager.get(req)
 	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Mission/communities/(?P<communityName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/dedicatedHubs`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Mission/communities/(?P<communityName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/dedicatedHubs`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -341,7 +341,7 @@ func (d *DedicatedHubServerTransport) dispatchBeginUpdate(req *http.Request) (*h
 	}
 	beginUpdate := d.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Mission/communities/(?P<communityName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/dedicatedHubs/(?P<dedicatedHubName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Mission/communities/(?P<communityName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/dedicatedHubs/(?P<dedicatedHubName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {

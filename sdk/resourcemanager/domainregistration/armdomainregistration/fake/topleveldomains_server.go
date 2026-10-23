@@ -100,7 +100,7 @@ func (t *TopLevelDomainsServerTransport) dispatchGet(req *http.Request) (*http.R
 	if t.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DomainRegistration/topLevelDomains/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DomainRegistration/topLevelDomains/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -131,7 +131,7 @@ func (t *TopLevelDomainsServerTransport) dispatchNewListPager(req *http.Request)
 	}
 	newListPager := t.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DomainRegistration/topLevelDomains`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DomainRegistration/topLevelDomains`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -164,7 +164,7 @@ func (t *TopLevelDomainsServerTransport) dispatchNewListAgreementsPager(req *htt
 	}
 	newListAgreementsPager := t.newListAgreementsPager.get(req)
 	if newListAgreementsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DomainRegistration/topLevelDomains/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listAgreements`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DomainRegistration/topLevelDomains/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listAgreements`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {

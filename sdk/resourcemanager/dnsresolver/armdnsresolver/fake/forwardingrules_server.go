@@ -111,7 +111,7 @@ func (f *ForwardingRulesServerTransport) dispatchCreateOrUpdate(req *http.Reques
 	if f.srv.CreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/dnsForwardingRulesets/(?P<dnsForwardingRulesetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/forwardingRules/(?P<forwardingRuleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/dnsForwardingRulesets/(?P<dnsForwardingRulesetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/forwardingRules/(?P<forwardingRuleName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -161,7 +161,7 @@ func (f *ForwardingRulesServerTransport) dispatchDelete(req *http.Request) (*htt
 	if f.srv.Delete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/dnsForwardingRulesets/(?P<dnsForwardingRulesetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/forwardingRules/(?P<forwardingRuleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/dnsForwardingRulesets/(?P<dnsForwardingRulesetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/forwardingRules/(?P<forwardingRuleName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -205,7 +205,7 @@ func (f *ForwardingRulesServerTransport) dispatchGet(req *http.Request) (*http.R
 	if f.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/dnsForwardingRulesets/(?P<dnsForwardingRulesetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/forwardingRules/(?P<forwardingRuleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/dnsForwardingRulesets/(?P<dnsForwardingRulesetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/forwardingRules/(?P<forwardingRuleName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -244,7 +244,7 @@ func (f *ForwardingRulesServerTransport) dispatchNewListPager(req *http.Request)
 	}
 	newListPager := f.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/dnsForwardingRulesets/(?P<dnsForwardingRulesetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/forwardingRules`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/dnsForwardingRulesets/(?P<dnsForwardingRulesetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/forwardingRules`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -300,7 +300,7 @@ func (f *ForwardingRulesServerTransport) dispatchUpdate(req *http.Request) (*htt
 	if f.srv.Update == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Update not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/dnsForwardingRulesets/(?P<dnsForwardingRulesetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/forwardingRules/(?P<forwardingRuleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/dnsForwardingRulesets/(?P<dnsForwardingRulesetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/forwardingRules/(?P<forwardingRuleName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {

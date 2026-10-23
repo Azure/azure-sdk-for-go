@@ -19,7 +19,7 @@ import (
 // ConfigurationAssignmentsForSubscriptionsClient contains the methods for the ConfigurationAssignmentsForSubscriptions group.
 // Don't use this type directly, use NewConfigurationAssignmentsForSubscriptionsClient() instead.
 //
-// Generated from API version 2023-10-01-preview
+// Generated from API version 2025-10-01-preview
 type ConfigurationAssignmentsForSubscriptionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type ConfigurationAssignmentsForSubscriptionsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewConfigurationAssignmentsForSubscriptionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ConfigurationAssignmentsForSubscriptionsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -68,7 +71,7 @@ func (client *ConfigurationAssignmentsForSubscriptionsClient) CreateOrUpdate(ctx
 func (client *ConfigurationAssignmentsForSubscriptionsClient) createOrUpdateCreateRequest(ctx context.Context, configurationAssignmentName string, configurationAssignment ConfigurationAssignment, _ *ConfigurationAssignmentsForSubscriptionsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Maintenance/configurationAssignments/{configurationAssignmentName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if configurationAssignmentName == "" {
@@ -80,7 +83,7 @@ func (client *ConfigurationAssignmentsForSubscriptionsClient) createOrUpdateCrea
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20231001Preview)
+	reqQP.Set("api-version", version20251001Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -128,7 +131,7 @@ func (client *ConfigurationAssignmentsForSubscriptionsClient) Delete(ctx context
 func (client *ConfigurationAssignmentsForSubscriptionsClient) deleteCreateRequest(ctx context.Context, configurationAssignmentName string, _ *ConfigurationAssignmentsForSubscriptionsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Maintenance/configurationAssignments/{configurationAssignmentName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if configurationAssignmentName == "" {
@@ -140,7 +143,7 @@ func (client *ConfigurationAssignmentsForSubscriptionsClient) deleteCreateReques
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20231001Preview)
+	reqQP.Set("api-version", version20251001Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -184,7 +187,7 @@ func (client *ConfigurationAssignmentsForSubscriptionsClient) Get(ctx context.Co
 func (client *ConfigurationAssignmentsForSubscriptionsClient) getCreateRequest(ctx context.Context, configurationAssignmentName string, _ *ConfigurationAssignmentsForSubscriptionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Maintenance/configurationAssignments/{configurationAssignmentName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if configurationAssignmentName == "" {
@@ -196,7 +199,7 @@ func (client *ConfigurationAssignmentsForSubscriptionsClient) getCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20231001Preview)
+	reqQP.Set("api-version", version20251001Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -241,7 +244,7 @@ func (client *ConfigurationAssignmentsForSubscriptionsClient) Update(ctx context
 func (client *ConfigurationAssignmentsForSubscriptionsClient) updateCreateRequest(ctx context.Context, configurationAssignmentName string, configurationAssignment ConfigurationAssignment, _ *ConfigurationAssignmentsForSubscriptionsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Maintenance/configurationAssignments/{configurationAssignmentName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if configurationAssignmentName == "" {
@@ -253,7 +256,7 @@ func (client *ConfigurationAssignmentsForSubscriptionsClient) updateCreateReques
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20231001Preview)
+	reqQP.Set("api-version", version20251001Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

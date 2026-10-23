@@ -23,10 +23,6 @@ type Server struct {
 	// Get is the fake for method Client.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, serviceGroupName string, options *armservicegroups.ClientGetOptions) (resp azfake.Responder[armservicegroups.ClientGetResponse], errResp azfake.ErrorResponder)
-
-	// ListAncestors is the fake for method Client.ListAncestors
-	// HTTP status codes to indicate success: http.StatusOK
-	ListAncestors func(ctx context.Context, serviceGroupName string, options *armservicegroups.ClientListAncestorsOptions) (resp azfake.Responder[armservicegroups.ClientListAncestorsResponse], errResp azfake.ErrorResponder)
 }
 
 // NewServerTransport creates a new instance of ServerTransport with the provided implementation.
@@ -65,8 +61,6 @@ func (s *ServerTransport) dispatchToMethodFake(req *http.Request, method string)
 			switch method {
 			case "Client.Get":
 				res.resp, res.err = s.dispatchGet(req)
-			case "Client.ListAncestors":
-				res.resp, res.err = s.dispatchListAncestors(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -106,35 +100,6 @@ func (s *ServerTransport) dispatchGet(req *http.Request) (*http.Response, error)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ServiceGroup, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (s *ServerTransport) dispatchListAncestors(req *http.Request) (*http.Response, error) {
-	if s.srv.ListAncestors == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListAncestors not implemented")}
-	}
-	const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listAncestors`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 2 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := s.srv.ListAncestors(req.Context(), serviceGroupNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ServiceGroupCollectionResponse, req)
 	if err != nil {
 		return nil, err
 	}

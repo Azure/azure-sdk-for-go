@@ -91,7 +91,7 @@ func (c *ClusterServerTransport) dispatchCreateOrUpdate(req *http.Request) (*htt
 	if c.srv.CreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Confluent/organizations/(?P<organizationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/environments/(?P<environmentId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/clusters/(?P<clusterId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Confluent/organizations/(?P<organizationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/environments/(?P<environmentId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/clusters/(?P<clusterId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -138,7 +138,7 @@ func (c *ClusterServerTransport) dispatchBeginDelete(req *http.Request) (*http.R
 	}
 	beginDelete := c.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Confluent/organizations/(?P<organizationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/environments/(?P<environmentId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/clusters/(?P<clusterId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Confluent/organizations/(?P<organizationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/environments/(?P<environmentId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/clusters/(?P<clusterId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {

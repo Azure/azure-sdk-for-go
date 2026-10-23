@@ -13,7 +13,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/costmanagement/armcostmanagement/v3"
 	"net/http"
-	"net/url"
 	"regexp"
 	"slices"
 )
@@ -87,7 +86,7 @@ func (b *BenefitRecommendationsServerTransport) dispatchNewListPager(req *http.R
 	}
 	newListPager := b.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/(?P<billingScope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CostManagement/benefitRecommendations`
+		const regexStr = `/(?P<billingScope>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.CostManagement/benefitRecommendations`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -97,10 +96,7 @@ func (b *BenefitRecommendationsServerTransport) dispatchNewListPager(req *http.R
 		filterParam := getOptional(qp.Get("$filter"))
 		orderbyParam := getOptional(qp.Get("$orderby"))
 		expandParam := getOptional(qp.Get("$expand"))
-		billingScopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingScope")])
-		if err != nil {
-			return nil, err
-		}
+		billingScopeParam := matches[regex.SubexpIndex("billingScope")]
 		var options *armcostmanagement.BenefitRecommendationsClientListOptions
 		if filterParam != nil || orderbyParam != nil || expandParam != nil {
 			options = &armcostmanagement.BenefitRecommendationsClientListOptions{

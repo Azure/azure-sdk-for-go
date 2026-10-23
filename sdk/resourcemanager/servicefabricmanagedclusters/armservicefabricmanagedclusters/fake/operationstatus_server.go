@@ -81,7 +81,7 @@ func (o *OperationStatusServerTransport) dispatchGet(req *http.Request) (*http.R
 	if o.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ServiceFabric/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/managedClusterOperations/(?P<operationId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ServiceFabric/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/managedClusterOperations/(?P<operationId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {

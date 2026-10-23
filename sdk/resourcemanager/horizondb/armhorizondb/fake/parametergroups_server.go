@@ -17,18 +17,21 @@ import (
 	"net/url"
 	"regexp"
 	"slices"
-	"strconv"
 )
 
 // ParameterGroupsServer is a fake server for instances of the armhorizondb.ParameterGroupsClient type.
 type ParameterGroupsServer struct {
-	// BeginCreateOrUpdate is the fake for method ParameterGroupsClient.BeginCreateOrUpdate
+	// BeginCreateOrReplace is the fake for method ParameterGroupsClient.BeginCreateOrReplace
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, parameterGroupName string, resource armhorizondb.ParameterGroup, options *armhorizondb.ParameterGroupsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armhorizondb.ParameterGroupsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	BeginCreateOrReplace func(ctx context.Context, resourceGroupName string, parameterGroupName string, resource armhorizondb.ParameterGroup, options *armhorizondb.ParameterGroupsClientBeginCreateOrReplaceOptions) (resp azfake.PollerResponder[armhorizondb.ParameterGroupsClientCreateOrReplaceResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method ParameterGroupsClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, parameterGroupName string, options *armhorizondb.ParameterGroupsClientBeginDeleteOptions) (resp azfake.PollerResponder[armhorizondb.ParameterGroupsClientDeleteResponse], errResp azfake.ErrorResponder)
+
+	// BeginUpdate is the fake for method ParameterGroupsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, parameterGroupName string, properties armhorizondb.ParameterGroupForPatchUpdate, options *armhorizondb.ParameterGroupsClientBeginUpdateOptions) (resp azfake.PollerResponder[armhorizondb.ParameterGroupsClientUpdateResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method ParameterGroupsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -45,14 +48,6 @@ type ParameterGroupsServer struct {
 	// NewListConnectionsPager is the fake for method ParameterGroupsClient.NewListConnectionsPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListConnectionsPager func(resourceGroupName string, parameterGroupName string, options *armhorizondb.ParameterGroupsClientListConnectionsOptions) (resp azfake.PagerResponder[armhorizondb.ParameterGroupsClientListConnectionsResponse])
-
-	// NewListVersionsPager is the fake for method ParameterGroupsClient.NewListVersionsPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListVersionsPager func(resourceGroupName string, parameterGroupName string, options *armhorizondb.ParameterGroupsClientListVersionsOptions) (resp azfake.PagerResponder[armhorizondb.ParameterGroupsClientListVersionsResponse])
-
-	// BeginUpdate is the fake for method ParameterGroupsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, parameterGroupName string, properties armhorizondb.ParameterGroupForPatchUpdate, options *armhorizondb.ParameterGroupsClientBeginUpdateOptions) (resp azfake.PollerResponder[armhorizondb.ParameterGroupsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewParameterGroupsServerTransport creates a new instance of ParameterGroupsServerTransport with the provided implementation.
@@ -61,13 +56,12 @@ type ParameterGroupsServer struct {
 func NewParameterGroupsServerTransport(srv *ParameterGroupsServer) *ParameterGroupsServerTransport {
 	return &ParameterGroupsServerTransport{
 		srv:                         srv,
-		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armhorizondb.ParameterGroupsClientCreateOrUpdateResponse]](),
+		beginCreateOrReplace:        newTracker[azfake.PollerResponder[armhorizondb.ParameterGroupsClientCreateOrReplaceResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armhorizondb.ParameterGroupsClientDeleteResponse]](),
+		beginUpdate:                 newTracker[azfake.PollerResponder[armhorizondb.ParameterGroupsClientUpdateResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armhorizondb.ParameterGroupsClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armhorizondb.ParameterGroupsClientListBySubscriptionResponse]](),
 		newListConnectionsPager:     newTracker[azfake.PagerResponder[armhorizondb.ParameterGroupsClientListConnectionsResponse]](),
-		newListVersionsPager:        newTracker[azfake.PagerResponder[armhorizondb.ParameterGroupsClientListVersionsResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armhorizondb.ParameterGroupsClientUpdateResponse]](),
 	}
 }
 
@@ -75,13 +69,12 @@ func NewParameterGroupsServerTransport(srv *ParameterGroupsServer) *ParameterGro
 // Don't use this type directly, use NewParameterGroupsServerTransport instead.
 type ParameterGroupsServerTransport struct {
 	srv                         *ParameterGroupsServer
-	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armhorizondb.ParameterGroupsClientCreateOrUpdateResponse]]
+	beginCreateOrReplace        *tracker[azfake.PollerResponder[armhorizondb.ParameterGroupsClientCreateOrReplaceResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armhorizondb.ParameterGroupsClientDeleteResponse]]
+	beginUpdate                 *tracker[azfake.PollerResponder[armhorizondb.ParameterGroupsClientUpdateResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armhorizondb.ParameterGroupsClientListByResourceGroupResponse]]
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armhorizondb.ParameterGroupsClientListBySubscriptionResponse]]
 	newListConnectionsPager     *tracker[azfake.PagerResponder[armhorizondb.ParameterGroupsClientListConnectionsResponse]]
-	newListVersionsPager        *tracker[azfake.PagerResponder[armhorizondb.ParameterGroupsClientListVersionsResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armhorizondb.ParameterGroupsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for ParameterGroupsServerTransport.
@@ -105,10 +98,12 @@ func (p *ParameterGroupsServerTransport) dispatchToMethodFake(req *http.Request,
 		}
 		if !intercepted {
 			switch method {
-			case "ParameterGroupsClient.BeginCreateOrUpdate":
-				res.resp, res.err = p.dispatchBeginCreateOrUpdate(req)
+			case "ParameterGroupsClient.BeginCreateOrReplace":
+				res.resp, res.err = p.dispatchBeginCreateOrReplace(req)
 			case "ParameterGroupsClient.BeginDelete":
 				res.resp, res.err = p.dispatchBeginDelete(req)
+			case "ParameterGroupsClient.BeginUpdate":
+				res.resp, res.err = p.dispatchBeginUpdate(req)
 			case "ParameterGroupsClient.Get":
 				res.resp, res.err = p.dispatchGet(req)
 			case "ParameterGroupsClient.NewListByResourceGroupPager":
@@ -117,10 +112,6 @@ func (p *ParameterGroupsServerTransport) dispatchToMethodFake(req *http.Request,
 				res.resp, res.err = p.dispatchNewListBySubscriptionPager(req)
 			case "ParameterGroupsClient.NewListConnectionsPager":
 				res.resp, res.err = p.dispatchNewListConnectionsPager(req)
-			case "ParameterGroupsClient.NewListVersionsPager":
-				res.resp, res.err = p.dispatchNewListVersionsPager(req)
-			case "ParameterGroupsClient.BeginUpdate":
-				res.resp, res.err = p.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -137,13 +128,13 @@ func (p *ParameterGroupsServerTransport) dispatchToMethodFake(req *http.Request,
 	}
 }
 
-func (p *ParameterGroupsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
-	if p.srv.BeginCreateOrUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
+func (p *ParameterGroupsServerTransport) dispatchBeginCreateOrReplace(req *http.Request) (*http.Response, error) {
+	if p.srv.BeginCreateOrReplace == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrReplace not implemented")}
 	}
-	beginCreateOrUpdate := p.beginCreateOrUpdate.get(req)
-	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.HorizonDb/parameterGroups/(?P<parameterGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	beginCreateOrReplace := p.beginCreateOrReplace.get(req)
+	if beginCreateOrReplace == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.HorizonDb/parameterGroups/(?P<parameterGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -161,25 +152,25 @@ func (p *ParameterGroupsServerTransport) dispatchBeginCreateOrUpdate(req *http.R
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := p.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, parameterGroupNameParam, body, nil)
+		respr, errRespr := p.srv.BeginCreateOrReplace(req.Context(), resourceGroupNameParam, parameterGroupNameParam, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		beginCreateOrUpdate = &respr
-		p.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
+		beginCreateOrReplace = &respr
+		p.beginCreateOrReplace.add(req, beginCreateOrReplace)
 	}
 
-	resp, err := server.PollerResponderNext(beginCreateOrUpdate, req)
+	resp, err := server.PollerResponderNext(beginCreateOrReplace, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
-		p.beginCreateOrUpdate.remove(req)
+		p.beginCreateOrReplace.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(beginCreateOrUpdate) {
-		p.beginCreateOrUpdate.remove(req)
+	if !server.PollerResponderMore(beginCreateOrReplace) {
+		p.beginCreateOrReplace.remove(req)
 	}
 
 	return resp, nil
@@ -191,7 +182,7 @@ func (p *ParameterGroupsServerTransport) dispatchBeginDelete(req *http.Request) 
 	}
 	beginDelete := p.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.HorizonDb/parameterGroups/(?P<parameterGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.HorizonDb/parameterGroups/(?P<parameterGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -229,215 +220,13 @@ func (p *ParameterGroupsServerTransport) dispatchBeginDelete(req *http.Request) 
 	return resp, nil
 }
 
-func (p *ParameterGroupsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if p.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.HorizonDb/parameterGroups/(?P<parameterGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	parameterGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("parameterGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := p.srv.Get(req.Context(), resourceGroupNameParam, parameterGroupNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ParameterGroup, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (p *ParameterGroupsServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
-	if p.srv.NewListByResourceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
-	}
-	newListByResourceGroupPager := p.newListByResourceGroupPager.get(req)
-	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.HorizonDb/parameterGroups`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := p.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
-		newListByResourceGroupPager = &resp
-		p.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armhorizondb.ParameterGroupsClientListByResourceGroupResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		p.newListByResourceGroupPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByResourceGroupPager) {
-		p.newListByResourceGroupPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (p *ParameterGroupsServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
-	if p.srv.NewListBySubscriptionPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
-	}
-	newListBySubscriptionPager := p.newListBySubscriptionPager.get(req)
-	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.HorizonDb/parameterGroups`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := p.srv.NewListBySubscriptionPager(nil)
-		newListBySubscriptionPager = &resp
-		p.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
-		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armhorizondb.ParameterGroupsClientListBySubscriptionResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		p.newListBySubscriptionPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListBySubscriptionPager) {
-		p.newListBySubscriptionPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (p *ParameterGroupsServerTransport) dispatchNewListConnectionsPager(req *http.Request) (*http.Response, error) {
-	if p.srv.NewListConnectionsPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListConnectionsPager not implemented")}
-	}
-	newListConnectionsPager := p.newListConnectionsPager.get(req)
-	if newListConnectionsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.HorizonDb/parameterGroups/(?P<parameterGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/connections`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		parameterGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("parameterGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := p.srv.NewListConnectionsPager(resourceGroupNameParam, parameterGroupNameParam, nil)
-		newListConnectionsPager = &resp
-		p.newListConnectionsPager.add(req, newListConnectionsPager)
-		server.PagerResponderInjectNextLinks(newListConnectionsPager, req, func(page *armhorizondb.ParameterGroupsClientListConnectionsResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListConnectionsPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		p.newListConnectionsPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListConnectionsPager) {
-		p.newListConnectionsPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (p *ParameterGroupsServerTransport) dispatchNewListVersionsPager(req *http.Request) (*http.Response, error) {
-	if p.srv.NewListVersionsPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListVersionsPager not implemented")}
-	}
-	newListVersionsPager := p.newListVersionsPager.get(req)
-	if newListVersionsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.HorizonDb/parameterGroups/(?P<parameterGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		parameterGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("parameterGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		versionParam, err := parseOptional(qp.Get("version"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
-		})
-		if err != nil {
-			return nil, err
-		}
-		var options *armhorizondb.ParameterGroupsClientListVersionsOptions
-		if versionParam != nil {
-			options = &armhorizondb.ParameterGroupsClientListVersionsOptions{
-				Version: versionParam,
-			}
-		}
-		resp := p.srv.NewListVersionsPager(resourceGroupNameParam, parameterGroupNameParam, options)
-		newListVersionsPager = &resp
-		p.newListVersionsPager.add(req, newListVersionsPager)
-		server.PagerResponderInjectNextLinks(newListVersionsPager, req, func(page *armhorizondb.ParameterGroupsClientListVersionsResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListVersionsPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		p.newListVersionsPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListVersionsPager) {
-		p.newListVersionsPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (p *ParameterGroupsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
 	if p.srv.BeginUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
 	}
 	beginUpdate := p.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.HorizonDb/parameterGroups/(?P<parameterGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.HorizonDb/parameterGroups/(?P<parameterGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -476,6 +265,150 @@ func (p *ParameterGroupsServerTransport) dispatchBeginUpdate(req *http.Request) 
 		p.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (p *ParameterGroupsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if p.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.HorizonDb/parameterGroups/(?P<parameterGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	parameterGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("parameterGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := p.srv.Get(req.Context(), resourceGroupNameParam, parameterGroupNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ParameterGroup, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (p *ParameterGroupsServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
+	if p.srv.NewListByResourceGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
+	}
+	newListByResourceGroupPager := p.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.HorizonDb/parameterGroups`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := p.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
+		newListByResourceGroupPager = &resp
+		p.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armhorizondb.ParameterGroupsClientListByResourceGroupResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		p.newListByResourceGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		p.newListByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (p *ParameterGroupsServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
+	if p.srv.NewListBySubscriptionPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
+	}
+	newListBySubscriptionPager := p.newListBySubscriptionPager.get(req)
+	if newListBySubscriptionPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.HorizonDb/parameterGroups`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := p.srv.NewListBySubscriptionPager(nil)
+		newListBySubscriptionPager = &resp
+		p.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
+		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armhorizondb.ParameterGroupsClientListBySubscriptionResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		p.newListBySubscriptionPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListBySubscriptionPager) {
+		p.newListBySubscriptionPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (p *ParameterGroupsServerTransport) dispatchNewListConnectionsPager(req *http.Request) (*http.Response, error) {
+	if p.srv.NewListConnectionsPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListConnectionsPager not implemented")}
+	}
+	newListConnectionsPager := p.newListConnectionsPager.get(req)
+	if newListConnectionsPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.HorizonDb/parameterGroups/(?P<parameterGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/connections`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		parameterGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("parameterGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := p.srv.NewListConnectionsPager(resourceGroupNameParam, parameterGroupNameParam, nil)
+		newListConnectionsPager = &resp
+		p.newListConnectionsPager.add(req, newListConnectionsPager)
+		server.PagerResponderInjectNextLinks(newListConnectionsPager, req, func(page *armhorizondb.ParameterGroupsClientListConnectionsResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListConnectionsPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		p.newListConnectionsPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListConnectionsPager) {
+		p.newListConnectionsPager.remove(req)
+	}
 	return resp, nil
 }
 

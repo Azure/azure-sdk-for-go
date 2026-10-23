@@ -126,7 +126,7 @@ func (a *ApprovalServerTransport) dispatchBeginCreateOrUpdate(req *http.Request)
 	}
 	beginCreateOrUpdate := a.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Mission/approvals/(?P<approvalName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/(?P<resourceUri>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.Mission/approvals/(?P<approvalName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -136,10 +136,7 @@ func (a *ApprovalServerTransport) dispatchBeginCreateOrUpdate(req *http.Request)
 		if err != nil {
 			return nil, err
 		}
-		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-		if err != nil {
-			return nil, err
-		}
+		resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 		approvalNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("approvalName")])
 		if err != nil {
 			return nil, err
@@ -174,16 +171,13 @@ func (a *ApprovalServerTransport) dispatchBeginDelete(req *http.Request) (*http.
 	}
 	beginDelete := a.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Mission/approvals/(?P<approvalName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/(?P<resourceUri>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.Mission/approvals/(?P<approvalName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-		if err != nil {
-			return nil, err
-		}
+		resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 		approvalNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("approvalName")])
 		if err != nil {
 			return nil, err
@@ -216,16 +210,13 @@ func (a *ApprovalServerTransport) dispatchGet(req *http.Request) (*http.Response
 	if a.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Mission/approvals/(?P<approvalName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/(?P<resourceUri>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.Mission/approvals/(?P<approvalName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-	if err != nil {
-		return nil, err
-	}
+	resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 	approvalNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("approvalName")])
 	if err != nil {
 		return nil, err
@@ -251,16 +242,13 @@ func (a *ApprovalServerTransport) dispatchNewListByParentPager(req *http.Request
 	}
 	newListByParentPager := a.newListByParentPager.get(req)
 	if newListByParentPager == nil {
-		const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Mission/approvals`
+		const regexStr = `/(?P<resourceUri>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.Mission/approvals`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-		if err != nil {
-			return nil, err
-		}
+		resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 		resp := a.srv.NewListByParentPager(resourceURIParam, nil)
 		newListByParentPager = &resp
 		a.newListByParentPager.add(req, newListByParentPager)
@@ -288,7 +276,7 @@ func (a *ApprovalServerTransport) dispatchBeginNotifyInitiator(req *http.Request
 	}
 	beginNotifyInitiator := a.beginNotifyInitiator.get(req)
 	if beginNotifyInitiator == nil {
-		const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Mission/approvals/(?P<approvalName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/notifyInitiator`
+		const regexStr = `/(?P<resourceUri>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.Mission/approvals/(?P<approvalName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/notifyInitiator`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -298,10 +286,7 @@ func (a *ApprovalServerTransport) dispatchBeginNotifyInitiator(req *http.Request
 		if err != nil {
 			return nil, err
 		}
-		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-		if err != nil {
-			return nil, err
-		}
+		resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 		approvalNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("approvalName")])
 		if err != nil {
 			return nil, err
@@ -336,7 +321,7 @@ func (a *ApprovalServerTransport) dispatchBeginUpdate(req *http.Request) (*http.
 	}
 	beginUpdate := a.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Mission/approvals/(?P<approvalName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/(?P<resourceUri>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.Mission/approvals/(?P<approvalName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -346,10 +331,7 @@ func (a *ApprovalServerTransport) dispatchBeginUpdate(req *http.Request) (*http.
 		if err != nil {
 			return nil, err
 		}
-		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-		if err != nil {
-			return nil, err
-		}
+		resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 		approvalNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("approvalName")])
 		if err != nil {
 			return nil, err

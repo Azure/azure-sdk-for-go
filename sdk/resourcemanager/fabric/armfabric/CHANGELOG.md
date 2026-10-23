@@ -1,5 +1,10 @@
 # Release History
 
+## 1.1.0-beta.2 (2026-09-16)
+### Other Changes
+
+- Updated the service API version to `2026-09-01-preview`.
+
 ## 1.1.0-beta.1 (2026-08-10)
 ### Features Added
 

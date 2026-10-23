@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/providerhub/armproviderhub/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/providerhub/armproviderhub/v4"
 	"log"
 )
 
-// Generated from example definition: 2024-09-01/DefaultRollouts_CreateOrUpdate.json
+// Generated from example definition: 2025-10-01/DefaultRollouts_CreateOrUpdate.json
 func ExampleDefaultRolloutsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -26,16 +26,23 @@ func ExampleDefaultRolloutsClient_BeginCreateOrUpdate() {
 	poller, err := clientFactory.NewDefaultRolloutsClient().BeginCreateOrUpdate(ctx, "Microsoft.Contoso", "2020week10", armproviderhub.DefaultRollout{
 		Properties: &armproviderhub.DefaultRolloutProperties{
 			Specification: &armproviderhub.DefaultRolloutPropertiesSpecification{
+				ExpeditedRollout: &armproviderhub.DefaultRolloutSpecificationExpeditedRollout{
+					Enabled: to.Ptr(true),
+				},
 				Canary: &armproviderhub.DefaultRolloutSpecificationCanary{
 					SkipRegions: []*string{
 						to.Ptr("eastus2euap"),
 					},
 				},
-				ExpeditedRollout: &armproviderhub.DefaultRolloutSpecificationExpeditedRollout{
-					Enabled: to.Ptr(true),
-				},
 				RestOfTheWorldGroupTwo: &armproviderhub.DefaultRolloutSpecificationRestOfTheWorldGroupTwo{
 					WaitDuration: to.Ptr("PT4H"),
+				},
+				ManifestCheckinSpecification: &armproviderhub.ManifestCheckinSpecification{
+					ManifestCheckinOption: to.Ptr(armproviderhub.ManifestCheckinOptionAttemptAutomaticManifestCheckin),
+					ManifestCheckinParams: &armproviderhub.CheckinManifestParams{
+						BaselineArmManifestLocation: to.Ptr("EastUS2EUAP"),
+						Environment:                 to.Ptr("Prod"),
+					},
 				},
 			},
 		},
@@ -52,9 +59,17 @@ func ExampleDefaultRolloutsClient_BeginCreateOrUpdate() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armproviderhub.DefaultRolloutsClientCreateOrUpdateResponse{
 	// 	DefaultRollout: armproviderhub.DefaultRollout{
+	// 		ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso/defaultRollouts/2020week10"),
 	// 		Name: to.Ptr("Microsoft.Contoso/2020week10"),
 	// 		Type: to.Ptr("Microsoft.ProviderHub/providerRegistrations/defaultRollouts"),
-	// 		ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso/defaultRollouts/2020week10"),
+	// 		SystemData: &armproviderhub.SystemData{
+	// 			CreatedBy: to.Ptr("string"),
+	// 			CreatedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("string"),
+	// 			LastModifiedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
+	// 		},
 	// 		Properties: &armproviderhub.DefaultRolloutProperties{
 	// 			ProvisioningState: to.Ptr(armproviderhub.ProvisioningStateRolloutInProgress),
 	// 			Specification: &armproviderhub.DefaultRolloutPropertiesSpecification{
@@ -64,13 +79,6 @@ func ExampleDefaultRolloutsClient_BeginCreateOrUpdate() {
 	// 						to.Ptr("eastus2euap"),
 	// 						to.Ptr("centraluseuap"),
 	// 					},
-	// 				},
-	// 				HighTraffic: &armproviderhub.DefaultRolloutSpecificationHighTraffic{
-	// 					Regions: []*string{
-	// 						to.Ptr("australiasoutheast"),
-	// 						to.Ptr("otherhightraficregions"),
-	// 					},
-	// 					WaitDuration: to.Ptr("PT24H"),
 	// 				},
 	// 				LowTraffic: &armproviderhub.DefaultRolloutSpecificationLowTraffic{
 	// 					Regions: []*string{
@@ -82,6 +90,13 @@ func ExampleDefaultRolloutsClient_BeginCreateOrUpdate() {
 	// 					Regions: []*string{
 	// 						to.Ptr("uksouth"),
 	// 						to.Ptr("indiawest"),
+	// 					},
+	// 					WaitDuration: to.Ptr("PT24H"),
+	// 				},
+	// 				HighTraffic: &armproviderhub.DefaultRolloutSpecificationHighTraffic{
+	// 					Regions: []*string{
+	// 						to.Ptr("australiasoutheast"),
+	// 						to.Ptr("otherhightraficregions"),
 	// 					},
 	// 					WaitDuration: to.Ptr("PT24H"),
 	// 				},
@@ -103,6 +118,13 @@ func ExampleDefaultRolloutsClient_BeginCreateOrUpdate() {
 	// 					},
 	// 					WaitDuration: to.Ptr("PT4H"),
 	// 				},
+	// 				ManifestCheckinSpecification: &armproviderhub.ManifestCheckinSpecification{
+	// 					ManifestCheckinOption: to.Ptr(armproviderhub.ManifestCheckinOptionAttemptAutomaticManifestCheckin),
+	// 					ManifestCheckinParams: &armproviderhub.CheckinManifestParams{
+	// 						BaselineArmManifestLocation: to.Ptr("EastUS2EUAP"),
+	// 						Environment: to.Ptr("Prod"),
+	// 					},
+	// 				},
 	// 			},
 	// 			Status: &armproviderhub.DefaultRolloutPropertiesStatus{
 	// 				CompletedRegions: []*string{
@@ -112,25 +134,17 @@ func ExampleDefaultRolloutsClient_BeginCreateOrUpdate() {
 	// 					to.Ptr("allcompletedregions"),
 	// 				},
 	// 				ManifestCheckinStatus: &armproviderhub.DefaultRolloutStatusManifestCheckinStatus{
-	// 					CommitID: to.Ptr("47317892d4edf22f08704f6b595105c4fd7a8db7"),
 	// 					IsCheckedIn: to.Ptr(true),
 	// 					StatusMessage: to.Ptr("Manifest is successfully merged. Use the Default/Custom rollout (http://aka.ms/rpaasrollout) to roll out the manifest in ARM."),
+	// 					CommitID: to.Ptr("47317892d4edf22f08704f6b595105c4fd7a8db7"),
 	// 				},
 	// 			},
-	// 		},
-	// 		SystemData: &armproviderhub.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
-	// 			CreatedBy: to.Ptr("string"),
-	// 			CreatedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("string"),
-	// 			LastModifiedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2024-09-01/DefaultRollouts_Delete.json
+// Generated from example definition: 2025-10-01/DefaultRollouts_Delete.json
 func ExampleDefaultRolloutsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -152,7 +166,7 @@ func ExampleDefaultRolloutsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2024-09-01/DefaultRollouts_Get.json
+// Generated from example definition: 2025-10-01/DefaultRollouts_Get.json
 func ExampleDefaultRolloutsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -172,12 +186,23 @@ func ExampleDefaultRolloutsClient_Get() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armproviderhub.DefaultRolloutsClientGetResponse{
 	// 	DefaultRollout: armproviderhub.DefaultRollout{
+	// 		ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso/defaultRollouts/2020week10"),
 	// 		Name: to.Ptr("Microsoft.Contoso/2020week10"),
 	// 		Type: to.Ptr("Microsoft.ProviderHub/providerRegistrations/defaultRollouts"),
-	// 		ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso/defaultRollouts/2020week10"),
+	// 		SystemData: &armproviderhub.SystemData{
+	// 			CreatedBy: to.Ptr("string"),
+	// 			CreatedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("string"),
+	// 			LastModifiedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
+	// 		},
 	// 		Properties: &armproviderhub.DefaultRolloutProperties{
 	// 			ProvisioningState: to.Ptr(armproviderhub.ProvisioningState("Cancelled")),
 	// 			Specification: &armproviderhub.DefaultRolloutPropertiesSpecification{
+	// 				ExpeditedRollout: &armproviderhub.DefaultRolloutSpecificationExpeditedRollout{
+	// 					Enabled: to.Ptr(true),
+	// 				},
 	// 				Canary: &armproviderhub.DefaultRolloutSpecificationCanary{
 	// 					Regions: []*string{
 	// 						to.Ptr("eastus2euap"),
@@ -186,16 +211,6 @@ func ExampleDefaultRolloutsClient_Get() {
 	// 					SkipRegions: []*string{
 	// 						to.Ptr("brazilus"),
 	// 					},
-	// 				},
-	// 				ExpeditedRollout: &armproviderhub.DefaultRolloutSpecificationExpeditedRollout{
-	// 					Enabled: to.Ptr(true),
-	// 				},
-	// 				HighTraffic: &armproviderhub.DefaultRolloutSpecificationHighTraffic{
-	// 					Regions: []*string{
-	// 						to.Ptr("australiasoutheast"),
-	// 						to.Ptr("otherhightraficregions"),
-	// 					},
-	// 					WaitDuration: to.Ptr("PT24H"),
 	// 				},
 	// 				LowTraffic: &armproviderhub.DefaultRolloutSpecificationLowTraffic{
 	// 					Regions: []*string{
@@ -210,41 +225,36 @@ func ExampleDefaultRolloutsClient_Get() {
 	// 					},
 	// 					WaitDuration: to.Ptr("PT24H"),
 	// 				},
+	// 				HighTraffic: &armproviderhub.DefaultRolloutSpecificationHighTraffic{
+	// 					Regions: []*string{
+	// 						to.Ptr("australiasoutheast"),
+	// 						to.Ptr("otherhightraficregions"),
+	// 					},
+	// 					WaitDuration: to.Ptr("PT24H"),
+	// 				},
+	// 				RestOfTheWorldGroupOne: &armproviderhub.DefaultRolloutSpecificationRestOfTheWorldGroupOne{
+	// 					Regions: []*string{
+	// 						to.Ptr("koreacentral"),
+	// 						to.Ptr("francecentral"),
+	// 						to.Ptr("australiacentral"),
+	// 						to.Ptr("westus"),
+	// 						to.Ptr("allotherregions"),
+	// 					},
+	// 					WaitDuration: to.Ptr("PT4H"),
+	// 				},
+	// 				RestOfTheWorldGroupTwo: &armproviderhub.DefaultRolloutSpecificationRestOfTheWorldGroupTwo{
+	// 					Regions: []*string{
+	// 						to.Ptr("germanynorth"),
+	// 						to.Ptr("norwayeast"),
+	// 						to.Ptr("allotherregions"),
+	// 					},
+	// 					WaitDuration: to.Ptr("PT4H"),
+	// 				},
 	// 				ProviderRegistration: &armproviderhub.DefaultRolloutSpecificationProviderRegistration{
+	// 					ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso"),
 	// 					Name: to.Ptr("Microsoft.Contoso"),
 	// 					Type: to.Ptr("Microsoft.ProviderHub/providerRegistrations"),
-	// 					ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso"),
 	// 					Properties: &armproviderhub.ProviderRegistrationProperties{
-	// 						Capabilities: []*armproviderhub.ResourceProviderCapabilities{
-	// 							{
-	// 								Effect: to.Ptr(armproviderhub.ResourceProviderCapabilitiesEffectAllow),
-	// 								QuotaID: to.Ptr("CSP_2015-05-01"),
-	// 							},
-	// 							{
-	// 								Effect: to.Ptr(armproviderhub.ResourceProviderCapabilitiesEffectAllow),
-	// 								QuotaID: to.Ptr("CSP_MG_2017-12-01"),
-	// 							},
-	// 						},
-	// 						Management: &armproviderhub.ResourceProviderManifestPropertiesManagement{
-	// 							AuthorizationOwners: []*string{
-	// 								to.Ptr("RPAAS-PlatformServiceAdministrator"),
-	// 							},
-	// 							IncidentContactEmail: to.Ptr("helpme@contoso.com"),
-	// 							IncidentRoutingService: to.Ptr(""),
-	// 							IncidentRoutingTeam: to.Ptr(""),
-	// 							ManifestOwners: []*string{
-	// 								to.Ptr("SPARTA-PlatformServiceAdministrator"),
-	// 							},
-	// 							ResourceAccessPolicy: to.Ptr(armproviderhub.ResourceAccessPolicyNotSpecified),
-	// 						},
-	// 						Metadata: nil,
-	// 						Namespace: to.Ptr("microsoft.contoso"),
-	// 						ProviderAuthorizations: []*armproviderhub.ResourceProviderAuthorization{
-	// 							{
-	// 								ApplicationID: to.Ptr("1a3b5c7d-8e9f-10g1-1h12-i13j14k1"),
-	// 								RoleDefinitionID: to.Ptr("123456bf-gkur-2098-b890-98da392a00b2"),
-	// 							},
-	// 						},
 	// 						ProviderHubMetadata: &armproviderhub.ProviderRegistrationPropertiesProviderHubMetadata{
 	// 							ProviderAuthentication: &armproviderhub.MetadataProviderAuthentication{
 	// 								AllowedAudiences: []*string{
@@ -252,19 +262,49 @@ func ExampleDefaultRolloutsClient_Get() {
 	// 								},
 	// 							},
 	// 						},
-	// 						ProviderType: to.Ptr(armproviderhub.ResourceProviderType("Internal, Hidden")),
-	// 						ProviderVersion: to.Ptr("2.0"),
 	// 						ProvisioningState: to.Ptr(armproviderhub.ProvisioningStateSucceeded),
+	// 						ProviderAuthorizations: []*armproviderhub.ResourceProviderAuthorization{
+	// 							{
+	// 								ApplicationID: to.Ptr("1a3b5c7d-8e9f-10g1-1h12-i13j14k1"),
+	// 								RoleDefinitionID: to.Ptr("123456bf-gkur-2098-b890-98da392a00b2"),
+	// 							},
+	// 						},
+	// 						Namespace: to.Ptr("microsoft.contoso"),
+	// 						ProviderVersion: to.Ptr("2.0"),
+	// 						ProviderType: to.Ptr(armproviderhub.ResourceProviderType("Internal, Hidden")),
+	// 						Management: &armproviderhub.ResourceProviderManifestPropertiesManagement{
+	// 							ManifestOwners: []*string{
+	// 								to.Ptr("Contoso-PlatformServiceAdministrator"),
+	// 							},
+	// 							AuthorizationOwners: []*string{
+	// 								to.Ptr("RPAAS-PlatformServiceAdministrator"),
+	// 							},
+	// 							IncidentRoutingService: to.Ptr(""),
+	// 							IncidentRoutingTeam: to.Ptr(""),
+	// 							IncidentContactEmail: to.Ptr("helpme@contoso.com"),
+	// 							ResourceAccessPolicy: to.Ptr(armproviderhub.ResourceAccessPolicyNotSpecified),
+	// 						},
+	// 						Capabilities: []*armproviderhub.ResourceProviderCapabilities{
+	// 							{
+	// 								QuotaID: to.Ptr("CSP_2015-05-01"),
+	// 								Effect: to.Ptr(armproviderhub.ResourceProviderCapabilitiesEffectAllow),
+	// 							},
+	// 							{
+	// 								QuotaID: to.Ptr("CSP_MG_2017-12-01"),
+	// 								Effect: to.Ptr(armproviderhub.ResourceProviderCapabilitiesEffectAllow),
+	// 							},
+	// 						},
+	// 						Metadata: nil,
 	// 					},
 	// 				},
 	// 				ResourceTypeRegistrations: []*armproviderhub.ResourceTypeRegistration{
 	// 					{
+	// 						ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso/resourceTypeRegistrations/employees"),
 	// 						Name: to.Ptr("Microsoft.Contoso/employees"),
 	// 						Type: to.Ptr("Microsoft.ProviderHub/providerRegistrations/resourceTypeRegistrations"),
-	// 						ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso/resourceTypeRegistrations/employees"),
 	// 						Properties: &armproviderhub.ResourceTypeRegistrationProperties{
-	// 							EnableAsyncOperation: to.Ptr(false),
-	// 							EnableThirdPartyS2S: to.Ptr(false),
+	// 							RoutingType: to.Ptr(armproviderhub.RoutingTypeDefault),
+	// 							Regionality: to.Ptr(armproviderhub.RegionalityRegional),
 	// 							Endpoints: []*armproviderhub.ResourceTypeEndpoint{
 	// 								{
 	// 									APIVersions: []*string{
@@ -289,9 +329,6 @@ func ExampleDefaultRolloutsClient_Get() {
 	// 									},
 	// 								},
 	// 							},
-	// 							ProvisioningState: to.Ptr(armproviderhub.ProvisioningStateSucceeded),
-	// 							Regionality: to.Ptr(armproviderhub.RegionalityRegional),
-	// 							RoutingType: to.Ptr(armproviderhub.RoutingTypeDefault),
 	// 							SwaggerSpecifications: []*armproviderhub.SwaggerSpecification{
 	// 								{
 	// 									APIVersions: []*string{
@@ -302,26 +339,18 @@ func ExampleDefaultRolloutsClient_Get() {
 	// 									SwaggerSpecFolderURI: to.Ptr("https://github.com/Azure/azure-rest-api-specs/blob/feature/azure/contoso/specification/contoso/resource-manager/Microsoft.SampleRP/"),
 	// 								},
 	// 							},
+	// 							EnableAsyncOperation: to.Ptr(false),
+	// 							ProvisioningState: to.Ptr(armproviderhub.ProvisioningStateSucceeded),
+	// 							EnableThirdPartyS2S: to.Ptr(false),
 	// 						},
 	// 					},
 	// 				},
-	// 				RestOfTheWorldGroupOne: &armproviderhub.DefaultRolloutSpecificationRestOfTheWorldGroupOne{
-	// 					Regions: []*string{
-	// 						to.Ptr("koreacentral"),
-	// 						to.Ptr("francecentral"),
-	// 						to.Ptr("australiacentral"),
-	// 						to.Ptr("westus"),
-	// 						to.Ptr("allotherregions"),
+	// 				ManifestCheckinSpecification: &armproviderhub.ManifestCheckinSpecification{
+	// 					ManifestCheckinOption: to.Ptr(armproviderhub.ManifestCheckinOptionAttemptAutomaticManifestCheckin),
+	// 					ManifestCheckinParams: &armproviderhub.CheckinManifestParams{
+	// 						BaselineArmManifestLocation: to.Ptr("EastUS2EUAP"),
+	// 						Environment: to.Ptr("Prod"),
 	// 					},
-	// 					WaitDuration: to.Ptr("PT4H"),
-	// 				},
-	// 				RestOfTheWorldGroupTwo: &armproviderhub.DefaultRolloutSpecificationRestOfTheWorldGroupTwo{
-	// 					Regions: []*string{
-	// 						to.Ptr("germanynorth"),
-	// 						to.Ptr("norwayeast"),
-	// 						to.Ptr("allotherregions"),
-	// 					},
-	// 					WaitDuration: to.Ptr("PT4H"),
 	// 				},
 	// 			},
 	// 			Status: &armproviderhub.DefaultRolloutPropertiesStatus{
@@ -337,27 +366,19 @@ func ExampleDefaultRolloutsClient_Get() {
 	// 						Message: to.Ptr("Rollout was explicitly stopped by the user."),
 	// 					},
 	// 				},
+	// 				SubscriptionReregistrationResult: to.Ptr(armproviderhub.SubscriptionReregistrationResultConditionalUpdate),
 	// 				ManifestCheckinStatus: &armproviderhub.DefaultRolloutStatusManifestCheckinStatus{
-	// 					CommitID: to.Ptr("47317892d4edf22f08704f6b595105c4fd7a8db7"),
 	// 					IsCheckedIn: to.Ptr(true),
 	// 					StatusMessage: to.Ptr("Manifest is successfully merged. Use the Default/Custom rollout (http://aka.ms/rpaasrollout) to roll out the manifest in ARM."),
+	// 					CommitID: to.Ptr("47317892d4edf22f08704f6b595105c4fd7a8db7"),
 	// 				},
-	// 				SubscriptionReregistrationResult: to.Ptr(armproviderhub.SubscriptionReregistrationResultConditionalUpdate),
 	// 			},
-	// 		},
-	// 		SystemData: &armproviderhub.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
-	// 			CreatedBy: to.Ptr("string"),
-	// 			CreatedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("string"),
-	// 			LastModifiedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2024-09-01/DefaultRollouts_ListByProviderRegistration.json
+// Generated from example definition: 2025-10-01/DefaultRollouts_ListByProviderRegistration.json
 func ExampleDefaultRolloutsClient_NewListByProviderRegistrationPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -383,28 +404,29 @@ func ExampleDefaultRolloutsClient_NewListByProviderRegistrationPager() {
 		// 	DefaultRolloutArrayResponseWithContinuation: armproviderhub.DefaultRolloutArrayResponseWithContinuation{
 		// 		Value: []*armproviderhub.DefaultRollout{
 		// 			{
+		// 				ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso/defaultRollouts/2020week01"),
 		// 				Name: to.Ptr("Microsoft.Contoso/2020week01"),
 		// 				Type: to.Ptr("Microsoft.ProviderHub/providerRegistrations/defaultRollouts"),
-		// 				ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso/defaultRollouts/2020week01"),
+		// 				SystemData: &armproviderhub.SystemData{
+		// 					CreatedBy: to.Ptr("string"),
+		// 					CreatedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
+		// 					CreatedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("string"),
+		// 					LastModifiedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
+		// 				},
 		// 				Properties: &armproviderhub.DefaultRolloutProperties{
 		// 					ProvisioningState: to.Ptr(armproviderhub.ProvisioningStateSucceeded),
 		// 					Specification: &armproviderhub.DefaultRolloutPropertiesSpecification{
+		// 						ExpeditedRollout: &armproviderhub.DefaultRolloutSpecificationExpeditedRollout{
+		// 							Enabled: to.Ptr(true),
+		// 						},
 		// 						Canary: &armproviderhub.DefaultRolloutSpecificationCanary{
 		// 							Regions: []*string{
 		// 								to.Ptr("brazilus"),
 		// 								to.Ptr("eastus2euap"),
 		// 								to.Ptr("centraluseuap"),
 		// 							},
-		// 						},
-		// 						ExpeditedRollout: &armproviderhub.DefaultRolloutSpecificationExpeditedRollout{
-		// 							Enabled: to.Ptr(true),
-		// 						},
-		// 						HighTraffic: &armproviderhub.DefaultRolloutSpecificationHighTraffic{
-		// 							Regions: []*string{
-		// 								to.Ptr("australiasoutheast"),
-		// 								to.Ptr("otherhightraficregions"),
-		// 							},
-		// 							WaitDuration: to.Ptr("PT24H"),
 		// 						},
 		// 						LowTraffic: &armproviderhub.DefaultRolloutSpecificationLowTraffic{
 		// 							Regions: []*string{
@@ -416,6 +438,13 @@ func ExampleDefaultRolloutsClient_NewListByProviderRegistrationPager() {
 		// 							Regions: []*string{
 		// 								to.Ptr("uksouth"),
 		// 								to.Ptr("indiawest"),
+		// 							},
+		// 							WaitDuration: to.Ptr("PT24H"),
+		// 						},
+		// 						HighTraffic: &armproviderhub.DefaultRolloutSpecificationHighTraffic{
+		// 							Regions: []*string{
+		// 								to.Ptr("australiasoutheast"),
+		// 								to.Ptr("otherhightraficregions"),
 		// 							},
 		// 							WaitDuration: to.Ptr("PT24H"),
 		// 						},
@@ -436,6 +465,13 @@ func ExampleDefaultRolloutsClient_NewListByProviderRegistrationPager() {
 		// 								to.Ptr("allotherregions"),
 		// 							},
 		// 							WaitDuration: to.Ptr("PT4H"),
+		// 						},
+		// 						ManifestCheckinSpecification: &armproviderhub.ManifestCheckinSpecification{
+		// 							ManifestCheckinOption: to.Ptr(armproviderhub.ManifestCheckinOptionAttemptAutomaticManifestCheckin),
+		// 							ManifestCheckinParams: &armproviderhub.CheckinManifestParams{
+		// 								BaselineArmManifestLocation: to.Ptr("EastUS2EUAP"),
+		// 								Environment: to.Ptr("Prod"),
+		// 							},
 		// 						},
 		// 					},
 		// 					Status: &armproviderhub.DefaultRolloutPropertiesStatus{
@@ -446,25 +482,25 @@ func ExampleDefaultRolloutsClient_NewListByProviderRegistrationPager() {
 		// 							to.Ptr("allcompletedregions"),
 		// 						},
 		// 						ManifestCheckinStatus: &armproviderhub.DefaultRolloutStatusManifestCheckinStatus{
-		// 							CommitID: to.Ptr("47317892d4edf22f08704f6b595105c4fd7a8db7"),
 		// 							IsCheckedIn: to.Ptr(true),
 		// 							StatusMessage: to.Ptr("Manifest is successfully merged. Use the Default/Custom rollout (http://aka.ms/rpaasrollout) to roll out the manifest in ARM."),
+		// 							CommitID: to.Ptr("47317892d4edf22f08704f6b595105c4fd7a8db7"),
 		// 						},
 		// 					},
 		// 				},
-		// 				SystemData: &armproviderhub.SystemData{
-		// 					CreatedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
-		// 					CreatedBy: to.Ptr("string"),
-		// 					CreatedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("string"),
-		// 					LastModifiedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
-		// 				},
 		// 			},
 		// 			{
+		// 				ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso/defaultRollouts/2020week10"),
 		// 				Name: to.Ptr("Microsoft.Contoso/2020week10"),
 		// 				Type: to.Ptr("Microsoft.ProviderHub/providerRegistrations/defaultRollouts"),
-		// 				ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso/defaultRollouts/2020week10"),
+		// 				SystemData: &armproviderhub.SystemData{
+		// 					CreatedBy: to.Ptr("string"),
+		// 					CreatedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
+		// 					CreatedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("string"),
+		// 					LastModifiedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
+		// 				},
 		// 				Properties: &armproviderhub.DefaultRolloutProperties{
 		// 					ProvisioningState: to.Ptr(armproviderhub.ProvisioningState("Cancelled")),
 		// 					Specification: &armproviderhub.DefaultRolloutPropertiesSpecification{
@@ -474,13 +510,6 @@ func ExampleDefaultRolloutsClient_NewListByProviderRegistrationPager() {
 		// 								to.Ptr("eastus2euap"),
 		// 								to.Ptr("centraluseuap"),
 		// 							},
-		// 						},
-		// 						HighTraffic: &armproviderhub.DefaultRolloutSpecificationHighTraffic{
-		// 							Regions: []*string{
-		// 								to.Ptr("australiasoutheast"),
-		// 								to.Ptr("otherhightraficregions"),
-		// 							},
-		// 							WaitDuration: to.Ptr("PT24H"),
 		// 						},
 		// 						LowTraffic: &armproviderhub.DefaultRolloutSpecificationLowTraffic{
 		// 							Regions: []*string{
@@ -492,6 +521,13 @@ func ExampleDefaultRolloutsClient_NewListByProviderRegistrationPager() {
 		// 							Regions: []*string{
 		// 								to.Ptr("uksouth"),
 		// 								to.Ptr("indiawest"),
+		// 							},
+		// 							WaitDuration: to.Ptr("PT24H"),
+		// 						},
+		// 						HighTraffic: &armproviderhub.DefaultRolloutSpecificationHighTraffic{
+		// 							Regions: []*string{
+		// 								to.Ptr("australiasoutheast"),
+		// 								to.Ptr("otherhightraficregions"),
 		// 							},
 		// 							WaitDuration: to.Ptr("PT24H"),
 		// 						},
@@ -512,6 +548,13 @@ func ExampleDefaultRolloutsClient_NewListByProviderRegistrationPager() {
 		// 								to.Ptr("allotherregions"),
 		// 							},
 		// 							WaitDuration: to.Ptr("PT4H"),
+		// 						},
+		// 						ManifestCheckinSpecification: &armproviderhub.ManifestCheckinSpecification{
+		// 							ManifestCheckinOption: to.Ptr(armproviderhub.ManifestCheckinOptionAttemptAutomaticManifestCheckin),
+		// 							ManifestCheckinParams: &armproviderhub.CheckinManifestParams{
+		// 								BaselineArmManifestLocation: to.Ptr("EastUS2EUAP"),
+		// 								Environment: to.Ptr("Prod"),
+		// 							},
 		// 						},
 		// 					},
 		// 					Status: &armproviderhub.DefaultRolloutPropertiesStatus{
@@ -528,19 +571,11 @@ func ExampleDefaultRolloutsClient_NewListByProviderRegistrationPager() {
 		// 							},
 		// 						},
 		// 						ManifestCheckinStatus: &armproviderhub.DefaultRolloutStatusManifestCheckinStatus{
-		// 							CommitID: to.Ptr("47317892d4edf22f08704f6b595105c4fd7a8db7"),
 		// 							IsCheckedIn: to.Ptr(true),
 		// 							StatusMessage: to.Ptr("Manifest is successfully merged. Use the Default/Custom rollout (http://aka.ms/rpaasrollout) to roll out the manifest in ARM."),
+		// 							CommitID: to.Ptr("47317892d4edf22f08704f6b595105c4fd7a8db7"),
 		// 						},
 		// 					},
-		// 				},
-		// 				SystemData: &armproviderhub.SystemData{
-		// 					CreatedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
-		// 					CreatedBy: to.Ptr("string"),
-		// 					CreatedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("string"),
-		// 					LastModifiedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
 		// 				},
 		// 			},
 		// 		},
@@ -549,7 +584,7 @@ func ExampleDefaultRolloutsClient_NewListByProviderRegistrationPager() {
 	}
 }
 
-// Generated from example definition: 2024-09-01/DefaultRollouts_Stop.json
+// Generated from example definition: 2025-10-01/DefaultRollouts_Stop.json
 func ExampleDefaultRolloutsClient_Stop() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

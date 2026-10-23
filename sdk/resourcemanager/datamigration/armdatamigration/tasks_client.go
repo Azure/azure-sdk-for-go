@@ -31,6 +31,9 @@ type TasksClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewTasksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TasksClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -73,7 +76,7 @@ func (client *TasksClient) Cancel(ctx context.Context, groupName string, service
 func (client *TasksClient) cancelCreateRequest(ctx context.Context, groupName string, serviceName string, projectName string, taskName string, _ *TasksClientCancelOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.DataMigration/services/{serviceName}/projects/{projectName}/tasks/{taskName}/cancel"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if groupName == "" {
@@ -147,7 +150,7 @@ func (client *TasksClient) Command(ctx context.Context, groupName string, servic
 func (client *TasksClient) commandCreateRequest(ctx context.Context, groupName string, serviceName string, projectName string, taskName string, parameters CommandPropertiesClassification, _ *TasksClientCommandOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.DataMigration/services/{serviceName}/projects/{projectName}/tasks/{taskName}/command"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if groupName == "" {
@@ -226,7 +229,7 @@ func (client *TasksClient) CreateOrUpdate(ctx context.Context, groupName string,
 func (client *TasksClient) createOrUpdateCreateRequest(ctx context.Context, groupName string, serviceName string, projectName string, taskName string, parameters ProjectTask, _ *TasksClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.DataMigration/services/{serviceName}/projects/{projectName}/tasks/{taskName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if groupName == "" {
@@ -306,7 +309,7 @@ func (client *TasksClient) Delete(ctx context.Context, groupName string, service
 func (client *TasksClient) deleteCreateRequest(ctx context.Context, groupName string, serviceName string, projectName string, taskName string, options *TasksClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.DataMigration/services/{serviceName}/projects/{projectName}/tasks/{taskName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if groupName == "" {
@@ -369,7 +372,7 @@ func (client *TasksClient) Get(ctx context.Context, groupName string, serviceNam
 func (client *TasksClient) getCreateRequest(ctx context.Context, groupName string, serviceName string, projectName string, taskName string, options *TasksClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.DataMigration/services/{serviceName}/projects/{projectName}/tasks/{taskName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if groupName == "" {
@@ -456,7 +459,7 @@ func (client *TasksClient) listCreateRequest(ctx context.Context, groupName stri
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.DataMigration/services/{serviceName}/projects/{projectName}/tasks"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if groupName == "" {
@@ -534,7 +537,7 @@ func (client *TasksClient) Update(ctx context.Context, groupName string, service
 func (client *TasksClient) updateCreateRequest(ctx context.Context, groupName string, serviceName string, projectName string, taskName string, parameters ProjectTask, _ *TasksClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.DataMigration/services/{serviceName}/projects/{projectName}/tasks/{taskName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if groupName == "" {

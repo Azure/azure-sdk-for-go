@@ -117,7 +117,7 @@ func (w *WhatIfResultsAtManagementGroupServerTransport) dispatchBeginCreateOrUpd
 	}
 	beginCreateOrUpdate := w.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deploymentStacksWhatIfResults/(?P<deploymentStacksWhatIfResultName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Resources/deploymentStacksWhatIfResults/(?P<deploymentStacksWhatIfResultName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -163,7 +163,7 @@ func (w *WhatIfResultsAtManagementGroupServerTransport) dispatchDelete(req *http
 	if w.srv.Delete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deploymentStacksWhatIfResults/(?P<deploymentStacksWhatIfResultName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Resources/deploymentStacksWhatIfResults/(?P<deploymentStacksWhatIfResultName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -215,7 +215,7 @@ func (w *WhatIfResultsAtManagementGroupServerTransport) dispatchGet(req *http.Re
 	if w.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deploymentStacksWhatIfResults/(?P<deploymentStacksWhatIfResultName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Resources/deploymentStacksWhatIfResults/(?P<deploymentStacksWhatIfResultName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -250,7 +250,7 @@ func (w *WhatIfResultsAtManagementGroupServerTransport) dispatchNewListPager(req
 	}
 	newListPager := w.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deploymentStacksWhatIfResults`
+		const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Resources/deploymentStacksWhatIfResults`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -287,7 +287,7 @@ func (w *WhatIfResultsAtManagementGroupServerTransport) dispatchBeginWhatIf(req 
 	}
 	beginWhatIf := w.beginWhatIf.get(req)
 	if beginWhatIf == nil {
-		const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deploymentStacksWhatIfResults/(?P<deploymentStacksWhatIfResultName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/whatIf`
+		const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Resources/deploymentStacksWhatIfResults/(?P<deploymentStacksWhatIfResultName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/whatIf`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {

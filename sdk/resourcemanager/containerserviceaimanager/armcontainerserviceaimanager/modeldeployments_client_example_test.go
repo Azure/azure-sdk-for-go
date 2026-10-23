@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-05-02-preview/ModelDeployments_CreateOrUpdate.json
+// Generated from example definition: 2026-09-02-preview/ModelDeployments_CreateOrUpdate.json
 func ExampleModelDeploymentsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -25,7 +25,7 @@ func ExampleModelDeploymentsClient_BeginCreateOrUpdate() {
 	}
 	poller, err := clientFactory.NewModelDeploymentsClient().BeginCreateOrUpdate(ctx, "rgaimanagers", "aimanager1", "namespace-1", "deployment-1", armcontainerserviceaimanager.ModelDeployment{
 		Properties: &armcontainerserviceaimanager.ModelDeploymentProperties{
-			ModelResourceID:       to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgaimanagers/providers/Microsoft.ContainerService/aiModels/9806f0c862fdd920"),
+			ModelResourceID:       to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ContainerService/locations/eastus/aiModels/9806f0c862fdd920"),
 			ModelSourceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgaimanagers/providers/Microsoft.ContainerService/aiManagers/aimanager1/modelSources/huggingface"),
 			PerformanceMode:       to.Ptr(armcontainerserviceaimanager.ModelDeploymentPerformanceModeBalanced),
 			VMSize:                to.Ptr("Standard_NC96ads_A100_v4"),
@@ -54,7 +54,7 @@ func ExampleModelDeploymentsClient_BeginCreateOrUpdate() {
 	// 	ModelDeployment: armcontainerserviceaimanager.ModelDeployment{
 	// 		Properties: &armcontainerserviceaimanager.ModelDeploymentProperties{
 	// 			ProvisioningState: to.Ptr(armcontainerserviceaimanager.ModelDeploymentProvisioningStateSucceeded),
-	// 			ModelResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgaimanagers/providers/Microsoft.ContainerService/aiModels/9806f0c862fdd920"),
+	// 			ModelResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ContainerService/locations/eastus/aiModels/9806f0c862fdd920"),
 	// 			ModelSourceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgaimanagers/providers/Microsoft.ContainerService/aiManagers/aimanager1/modelSources/huggingface"),
 	// 			PerformanceMode: to.Ptr(armcontainerserviceaimanager.ModelDeploymentPerformanceModeBalanced),
 	// 			VMSize: to.Ptr("Standard_NC96ads_A100_v4"),
@@ -83,16 +83,16 @@ func ExampleModelDeploymentsClient_BeginCreateOrUpdate() {
 	// 		SystemData: &armcontainerserviceaimanager.SystemData{
 	// 			CreatedBy: to.Ptr("user@example.com"),
 	// 			CreatedByType: to.Ptr(armcontainerserviceaimanager.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00.000Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@example.com"),
 	// 			LastModifiedByType: to.Ptr(armcontainerserviceaimanager.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00.000Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-05-02-preview/ModelDeployments_Delete.json
+// Generated from example definition: 2026-09-02-preview/ModelDeployments_Delete.json
 func ExampleModelDeploymentsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -114,7 +114,7 @@ func ExampleModelDeploymentsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-05-02-preview/ModelDeployments_Get.json
+// Generated from example definition: 2026-09-02-preview/ModelDeployments_Get.json
 func ExampleModelDeploymentsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -136,7 +136,7 @@ func ExampleModelDeploymentsClient_Get() {
 	// 	ModelDeployment: armcontainerserviceaimanager.ModelDeployment{
 	// 		Properties: &armcontainerserviceaimanager.ModelDeploymentProperties{
 	// 			ProvisioningState: to.Ptr(armcontainerserviceaimanager.ModelDeploymentProvisioningStateSucceeded),
-	// 			ModelResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgaimanagers/providers/Microsoft.ContainerService/aiModels/9806f0c862fdd920"),
+	// 			ModelResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ContainerService/locations/eastus/aiModels/9806f0c862fdd920"),
 	// 			ModelSourceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgaimanagers/providers/Microsoft.ContainerService/aiManagers/aimanager1/modelSources/huggingface"),
 	// 			PerformanceMode: to.Ptr(armcontainerserviceaimanager.ModelDeploymentPerformanceModeBalanced),
 	// 			VMSize: to.Ptr("Standard_NC96ads_A100_v4"),
@@ -165,16 +165,16 @@ func ExampleModelDeploymentsClient_Get() {
 	// 		SystemData: &armcontainerserviceaimanager.SystemData{
 	// 			CreatedBy: to.Ptr("user@example.com"),
 	// 			CreatedByType: to.Ptr(armcontainerserviceaimanager.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00.000Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@example.com"),
 	// 			LastModifiedByType: to.Ptr(armcontainerserviceaimanager.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00.000Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-05-02-preview/ModelDeployments_ListByAIManagerNamespace.json
+// Generated from example definition: 2026-09-02-preview/ModelDeployments_ListByAIManagerNamespace.json
 func ExampleModelDeploymentsClient_NewListByAIManagerNamespacePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -202,7 +202,7 @@ func ExampleModelDeploymentsClient_NewListByAIManagerNamespacePager() {
 		// 			{
 		// 				Properties: &armcontainerserviceaimanager.ModelDeploymentProperties{
 		// 					ProvisioningState: to.Ptr(armcontainerserviceaimanager.ModelDeploymentProvisioningStateSucceeded),
-		// 					ModelResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgaimanagers/providers/Microsoft.ContainerService/aiModels/9806f0c862fdd920"),
+		// 					ModelResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ContainerService/locations/eastus/aiModels/9806f0c862fdd920"),
 		// 					ModelSourceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgaimanagers/providers/Microsoft.ContainerService/aiManagers/aimanager1/modelSources/huggingface"),
 		// 					PerformanceMode: to.Ptr(armcontainerserviceaimanager.ModelDeploymentPerformanceModeBalanced),
 		// 					VMSize: to.Ptr("Standard_NC96ads_A100_v4"),
@@ -231,14 +231,14 @@ func ExampleModelDeploymentsClient_NewListByAIManagerNamespacePager() {
 		// 				SystemData: &armcontainerserviceaimanager.SystemData{
 		// 					CreatedBy: to.Ptr("user@example.com"),
 		// 					CreatedByType: to.Ptr(armcontainerserviceaimanager.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00.000Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("user@example.com"),
 		// 					LastModifiedByType: to.Ptr(armcontainerserviceaimanager.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00.000Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgaimanagers/providers/Microsoft.ContainerService/aiManagers/aimanager1/namespaces/namespace-1/modelDeployments?api-version=2026-05-02-preview&$skiptoken=token"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgaimanagers/providers/Microsoft.ContainerService/aiManagers/aimanager1/namespaces/namespace-1/modelDeployments?api-version=2026-09-02-preview&$skiptoken=token"),
 		// 	},
 		// }
 	}

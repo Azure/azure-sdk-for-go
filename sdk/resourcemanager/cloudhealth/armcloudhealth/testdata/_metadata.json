@@ -1,6 +1,6 @@
 {
   "apiVersions": {
-    "Microsoft.CloudHealth": "2026-05-01-preview"
+    "Microsoft.CloudHealth": "2026-11-01"
   },
-  "emitterVersion": "0.16.0"
+  "emitterVersion": "0.17.6"
 }

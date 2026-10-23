@@ -155,6 +155,22 @@ type DatabasesClientListByServerOptions struct {
 	// placeholder for future optional parameters
 }
 
+// DbAgentsClientBeginCreateOrUpdateOptions contains the optional parameters for the DbAgentsClient.BeginCreateOrUpdate method.
+type DbAgentsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// DbAgentsClientGetOptions contains the optional parameters for the DbAgentsClient.Get method.
+type DbAgentsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DbAgentsClientListOptions contains the optional parameters for the DbAgentsClient.NewListPager method.
+type DbAgentsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // FirewallRulesClientBeginCreateOrUpdateOptions contains the optional parameters for the FirewallRulesClient.BeginCreateOrUpdate
 // method.
 type FirewallRulesClientBeginCreateOrUpdateOptions struct {

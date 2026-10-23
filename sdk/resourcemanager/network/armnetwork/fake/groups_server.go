@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v12"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -22,13 +22,13 @@ import (
 
 // GroupsServer is a fake server for instances of the armnetwork.GroupsClient type.
 type GroupsServer struct {
-	// CreateOrUpdate is the fake for method GroupsClient.CreateOrUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	CreateOrUpdate func(ctx context.Context, resourceGroupName string, networkManagerName string, networkGroupName string, parameters armnetwork.Group, options *armnetwork.GroupsClientCreateOrUpdateOptions) (resp azfake.Responder[armnetwork.GroupsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
-
 	// BeginDelete is the fake for method GroupsClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, networkManagerName string, networkGroupName string, options *armnetwork.GroupsClientBeginDeleteOptions) (resp azfake.PollerResponder[armnetwork.GroupsClientDeleteResponse], errResp azfake.ErrorResponder)
+
+	// CreateOrUpdate is the fake for method GroupsClient.CreateOrUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	CreateOrUpdate func(ctx context.Context, resourceGroupName string, networkManagerName string, networkGroupName string, parameters armnetwork.Group, options *armnetwork.GroupsClientCreateOrUpdateOptions) (resp azfake.Responder[armnetwork.GroupsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method GroupsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -79,10 +79,10 @@ func (g *GroupsServerTransport) dispatchToMethodFake(req *http.Request, method s
 		}
 		if !intercepted {
 			switch method {
-			case "GroupsClient.CreateOrUpdate":
-				res.resp, res.err = g.dispatchCreateOrUpdate(req)
 			case "GroupsClient.BeginDelete":
 				res.resp, res.err = g.dispatchBeginDelete(req)
+			case "GroupsClient.CreateOrUpdate":
+				res.resp, res.err = g.dispatchCreateOrUpdate(req)
 			case "GroupsClient.Get":
 				res.resp, res.err = g.dispatchGet(req)
 			case "GroupsClient.NewListPager":
@@ -103,64 +103,13 @@ func (g *GroupsServerTransport) dispatchToMethodFake(req *http.Request, method s
 	}
 }
 
-func (g *GroupsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
-	if g.srv.CreateOrUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/networkManagers/(?P<networkManagerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/networkGroups/(?P<networkGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armnetwork.Group](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	networkManagerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkManagerName")])
-	if err != nil {
-		return nil, err
-	}
-	networkGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
-	var options *armnetwork.GroupsClientCreateOrUpdateOptions
-	if ifMatchParam != nil {
-		options = &armnetwork.GroupsClientCreateOrUpdateOptions{
-			IfMatch: ifMatchParam,
-		}
-	}
-	respr, errRespr := g.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, networkManagerNameParam, networkGroupNameParam, body, options)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Group, req)
-	if err != nil {
-		return nil, err
-	}
-	if val := server.GetResponse(respr).ETag; val != nil {
-		resp.Header.Set("Etag", *val)
-	}
-	return resp, nil
-}
-
 func (g *GroupsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
 	if g.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
 	beginDelete := g.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/networkManagers/(?P<networkManagerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/networkGroups/(?P<networkGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkManagers/(?P<networkManagerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/networkGroups/(?P<networkGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -213,11 +162,62 @@ func (g *GroupsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Re
 	return resp, nil
 }
 
+func (g *GroupsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
+	if g.srv.CreateOrUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkManagers/(?P<networkManagerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/networkGroups/(?P<networkGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armnetwork.Group](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	networkManagerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkManagerName")])
+	if err != nil {
+		return nil, err
+	}
+	networkGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
+	var options *armnetwork.GroupsClientCreateOrUpdateOptions
+	if ifMatchParam != nil {
+		options = &armnetwork.GroupsClientCreateOrUpdateOptions{
+			IfMatch: ifMatchParam,
+		}
+	}
+	respr, errRespr := g.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, networkManagerNameParam, networkGroupNameParam, body, options)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Group, req)
+	if err != nil {
+		return nil, err
+	}
+	if val := server.GetResponse(respr).ETag; val != nil {
+		resp.Header.Set("Etag", *val)
+	}
+	return resp, nil
+}
+
 func (g *GroupsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if g.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/networkManagers/(?P<networkManagerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/networkGroups/(?P<networkGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkManagers/(?P<networkManagerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/networkGroups/(?P<networkGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -256,7 +256,7 @@ func (g *GroupsServerTransport) dispatchNewListPager(req *http.Request) (*http.R
 	}
 	newListPager := g.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/networkManagers/(?P<networkManagerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/networkGroups`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkManagers/(?P<networkManagerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/networkGroups`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {

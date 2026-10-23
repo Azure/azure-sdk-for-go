@@ -92,7 +92,7 @@ func (d *DataPolicyManifestsServerTransport) dispatchGetByPolicyMode(req *http.R
 	if d.srv.GetByPolicyMode == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetByPolicyMode not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Authorization/dataPolicyManifests/(?P<policyMode>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.Authorization/dataPolicyManifests/(?P<policyMode>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {

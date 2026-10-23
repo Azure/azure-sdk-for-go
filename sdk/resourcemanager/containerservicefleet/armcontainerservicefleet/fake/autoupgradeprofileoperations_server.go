@@ -87,7 +87,7 @@ func (a *AutoUpgradeProfileOperationsServerTransport) dispatchBeginGenerateUpdat
 	}
 	beginGenerateUpdateRun := a.beginGenerateUpdateRun.get(req)
 	if beginGenerateUpdateRun == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/fleets/(?P<fleetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/autoUpgradeProfiles/(?P<autoUpgradeProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/generateUpdateRun`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/fleets/(?P<fleetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/autoUpgradeProfiles/(?P<autoUpgradeProfileName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/generateUpdateRun`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {

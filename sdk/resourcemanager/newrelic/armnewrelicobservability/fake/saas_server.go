@@ -80,7 +80,7 @@ func (s *SaaSServerTransport) dispatchActivateResource(req *http.Request) (*http
 	if s.srv.ActivateResource == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ActivateResource not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/NewRelic\.Observability/activateSaaS`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/NewRelic\.Observability/activateSaaS`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {

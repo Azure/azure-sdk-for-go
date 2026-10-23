@@ -5,14 +5,30 @@ package perf
 
 import (
 	"fmt"
+	"math/rand"
 	"sort"
 	"sync"
+	"sync/atomic"
 	"time"
 )
+
+const defaultMaxLatencySamples = 100_000
+
+var latencyCollectorSeed int64
 
 type latencyCollector struct {
 	mu        sync.Mutex
 	durations []time.Duration
+	max       int
+	seen      int64
+	rng       *rand.Rand
+}
+
+func newLatencyCollector(max int) *latencyCollector {
+	return &latencyCollector{
+		max: max,
+		rng: rand.New(rand.NewSource(time.Now().UnixNano() + atomic.AddInt64(&latencyCollectorSeed, 1))),
+	}
 }
 
 func (l *latencyCollector) Add(d time.Duration) {
@@ -22,7 +38,19 @@ func (l *latencyCollector) Add(d time.Duration) {
 		return
 	}
 	l.mu.Lock()
-	l.durations = append(l.durations, d)
+	l.seen++
+	if l.max < 0 {
+		l.mu.Unlock()
+		return
+	}
+	if l.max == 0 || len(l.durations) < l.max {
+		l.durations = append(l.durations, d)
+	} else {
+		index := l.rng.Int63n(l.seen)
+		if index < int64(l.max) {
+			l.durations[index] = d
+		}
+	}
 	l.mu.Unlock()
 }
 
@@ -35,10 +63,14 @@ func (l *latencyCollector) MergeFrom(other *latencyCollector) {
 	}
 	other.mu.Lock()
 	samples := append([]time.Duration(nil), other.durations...)
+	otherSeen := other.seen
 	other.mu.Unlock()
 
 	l.mu.Lock()
-	l.durations = append(l.durations, samples...)
+	if l.rng == nil {
+		l.rng = rand.New(rand.NewSource(time.Now().UnixNano() + atomic.AddInt64(&latencyCollectorSeed, 1)))
+	}
+	l.durations, l.seen = mergeReservoirs(l.durations, l.seen, samples, otherSeen, l.max, l.rng)
 	l.mu.Unlock()
 }
 

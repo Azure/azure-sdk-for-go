@@ -87,7 +87,7 @@ func (s *SbomComponentsServerTransport) dispatchNewListByFirmwarePager(req *http
 	}
 	newListByFirmwarePager := s.newListByFirmwarePager.get(req)
 	if newListByFirmwarePager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.IoTFirmwareDefense/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/firmwares/(?P<firmwareId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sbomComponents`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.IoTFirmwareDefense/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/firmwares/(?P<firmwareId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sbomComponents`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {

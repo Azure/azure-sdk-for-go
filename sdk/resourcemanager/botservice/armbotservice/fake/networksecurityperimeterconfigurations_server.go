@@ -100,7 +100,7 @@ func (n *NetworkSecurityPerimeterConfigurationsServerTransport) dispatchGet(req 
 	if n.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.BotService/botServices/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/networkSecurityPerimeterConfigurations/(?P<networkSecurityPerimeterConfigurationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.BotService/botServices/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/networkSecurityPerimeterConfigurations/(?P<networkSecurityPerimeterConfigurationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -139,7 +139,7 @@ func (n *NetworkSecurityPerimeterConfigurationsServerTransport) dispatchNewListP
 	}
 	newListPager := n.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.BotService/botServices/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/networkSecurityPerimeterConfigurations`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.BotService/botServices/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/networkSecurityPerimeterConfigurations`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -180,7 +180,7 @@ func (n *NetworkSecurityPerimeterConfigurationsServerTransport) dispatchBeginRec
 	}
 	beginReconcile := n.beginReconcile.get(req)
 	if beginReconcile == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.BotService/botServices/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/networkSecurityPerimeterConfigurations/(?P<networkSecurityPerimeterConfigurationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/reconcile`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.BotService/botServices/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/networkSecurityPerimeterConfigurations/(?P<networkSecurityPerimeterConfigurationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/reconcile`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {

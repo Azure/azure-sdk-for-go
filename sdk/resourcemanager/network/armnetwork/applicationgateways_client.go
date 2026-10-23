@@ -19,7 +19,7 @@ import (
 // ApplicationGatewaysClient contains the methods for the ApplicationGateways group.
 // Don't use this type directly, use NewApplicationGatewaysClient() instead.
 //
-// Generated from API version 2025-09-01
+// Generated from API version 2026-03-01
 type ApplicationGatewaysClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type ApplicationGatewaysClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewApplicationGatewaysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ApplicationGatewaysClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -64,7 +67,7 @@ func (client *ApplicationGatewaysClient) BeginBackendHealth(ctx context.Context,
 	}
 }
 
-// BackendHealth - Gets the backend health of the specified application gateway in a resource group.
+// backendHealth - Gets the backend health of the specified application gateway in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ApplicationGatewaysClient) backendHealth(ctx context.Context, resourceGroupName string, applicationGatewayName string, options *ApplicationGatewaysClientBeginBackendHealthOptions) (*http.Response, error) {
 	var err error
@@ -86,11 +89,11 @@ func (client *ApplicationGatewaysClient) backendHealth(ctx context.Context, reso
 	return httpResp, nil
 }
 
-// backendHealthCreateRequest creates the BackendHealth request.
+// backendHealthCreateRequest creates the backendHealth request.
 func (client *ApplicationGatewaysClient) backendHealthCreateRequest(ctx context.Context, resourceGroupName string, applicationGatewayName string, options *ApplicationGatewaysClientBeginBackendHealthOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}/backendhealth"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -109,7 +112,7 @@ func (client *ApplicationGatewaysClient) backendHealthCreateRequest(ctx context.
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
-	reqQP.Set("api-version", version20250901)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -140,7 +143,7 @@ func (client *ApplicationGatewaysClient) BeginBackendHealthOnDemand(ctx context.
 	}
 }
 
-// BackendHealthOnDemand - Gets the backend health for given combination of backend pool and http setting of the specified
+// backendHealthOnDemand - Gets the backend health for given combination of backend pool and http setting of the specified
 // application gateway in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ApplicationGatewaysClient) backendHealthOnDemand(ctx context.Context, resourceGroupName string, applicationGatewayName string, probeRequest ApplicationGatewayOnDemandProbe, options *ApplicationGatewaysClientBeginBackendHealthOnDemandOptions) (*http.Response, error) {
@@ -163,11 +166,11 @@ func (client *ApplicationGatewaysClient) backendHealthOnDemand(ctx context.Conte
 	return httpResp, nil
 }
 
-// backendHealthOnDemandCreateRequest creates the BackendHealthOnDemand request.
+// backendHealthOnDemandCreateRequest creates the backendHealthOnDemand request.
 func (client *ApplicationGatewaysClient) backendHealthOnDemandCreateRequest(ctx context.Context, resourceGroupName string, applicationGatewayName string, probeRequest ApplicationGatewayOnDemandProbe, options *ApplicationGatewaysClientBeginBackendHealthOnDemandOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}/getBackendHealthOnDemand"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -186,7 +189,7 @@ func (client *ApplicationGatewaysClient) backendHealthOnDemandCreateRequest(ctx 
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
-	reqQP.Set("api-version", version20250901)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -220,7 +223,7 @@ func (client *ApplicationGatewaysClient) BeginCreateOrUpdate(ctx context.Context
 	}
 }
 
-// CreateOrUpdate - Creates or updates the specified application gateway.
+// createOrUpdate - Creates or updates the specified application gateway.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ApplicationGatewaysClient) createOrUpdate(ctx context.Context, resourceGroupName string, applicationGatewayName string, parameters ApplicationGateway, options *ApplicationGatewaysClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -242,11 +245,11 @@ func (client *ApplicationGatewaysClient) createOrUpdate(ctx context.Context, res
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ApplicationGatewaysClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, applicationGatewayName string, parameters ApplicationGateway, _ *ApplicationGatewaysClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -262,7 +265,7 @@ func (client *ApplicationGatewaysClient) createOrUpdateCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -280,7 +283,7 @@ func (client *ApplicationGatewaysClient) createOrUpdateCreateRequest(ctx context
 //     method.
 func (client *ApplicationGatewaysClient) BeginDelete(ctx context.Context, resourceGroupName string, applicationGatewayName string, options *ApplicationGatewaysClientBeginDeleteOptions) (*runtime.Poller[ApplicationGatewaysClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, applicationGatewayName, options)
+		resp, err := client.delete(ctx, resourceGroupName, applicationGatewayName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -295,9 +298,9 @@ func (client *ApplicationGatewaysClient) BeginDelete(ctx context.Context, resour
 	}
 }
 
-// Delete - Deletes the specified application gateway.
+// delete - Deletes the specified application gateway.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *ApplicationGatewaysClient) deleteOperation(ctx context.Context, resourceGroupName string, applicationGatewayName string, options *ApplicationGatewaysClientBeginDeleteOptions) (*http.Response, error) {
+func (client *ApplicationGatewaysClient) delete(ctx context.Context, resourceGroupName string, applicationGatewayName string, options *ApplicationGatewaysClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ApplicationGatewaysClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -317,11 +320,11 @@ func (client *ApplicationGatewaysClient) deleteOperation(ctx context.Context, re
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ApplicationGatewaysClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, applicationGatewayName string, _ *ApplicationGatewaysClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -337,7 +340,147 @@ func (client *ApplicationGatewaysClient) deleteCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
+	reqQP.Set("api-version", version20260301)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginStart - Starts the specified application gateway.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - applicationGatewayName - The name of the application gateway.
+//   - options - ApplicationGatewaysClientBeginStartOptions contains the optional parameters for the ApplicationGatewaysClient.BeginStart
+//     method.
+func (client *ApplicationGatewaysClient) BeginStart(ctx context.Context, resourceGroupName string, applicationGatewayName string, options *ApplicationGatewaysClientBeginStartOptions) (*runtime.Poller[ApplicationGatewaysClientStartResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.start(ctx, resourceGroupName, applicationGatewayName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ApplicationGatewaysClientStartResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ApplicationGatewaysClientStartResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// start - Starts the specified application gateway.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ApplicationGatewaysClient) start(ctx context.Context, resourceGroupName string, applicationGatewayName string, options *ApplicationGatewaysClientBeginStartOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ApplicationGatewaysClient.BeginStart"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.startCreateRequest(ctx, resourceGroupName, applicationGatewayName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// startCreateRequest creates the start request.
+func (client *ApplicationGatewaysClient) startCreateRequest(ctx context.Context, resourceGroupName string, applicationGatewayName string, _ *ApplicationGatewaysClientBeginStartOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}/start"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if applicationGatewayName == "" {
+		return nil, errors.New("parameter applicationGatewayName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{applicationGatewayName}", url.PathEscape(applicationGatewayName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260301)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginStop - Stops the specified application gateway in a resource group.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - applicationGatewayName - The name of the application gateway.
+//   - options - ApplicationGatewaysClientBeginStopOptions contains the optional parameters for the ApplicationGatewaysClient.BeginStop
+//     method.
+func (client *ApplicationGatewaysClient) BeginStop(ctx context.Context, resourceGroupName string, applicationGatewayName string, options *ApplicationGatewaysClientBeginStopOptions) (*runtime.Poller[ApplicationGatewaysClientStopResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.stop(ctx, resourceGroupName, applicationGatewayName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ApplicationGatewaysClientStopResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ApplicationGatewaysClientStopResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// stop - Stops the specified application gateway in a resource group.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ApplicationGatewaysClient) stop(ctx context.Context, resourceGroupName string, applicationGatewayName string, options *ApplicationGatewaysClientBeginStopOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ApplicationGatewaysClient.BeginStop"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.stopCreateRequest(ctx, resourceGroupName, applicationGatewayName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// stopCreateRequest creates the stop request.
+func (client *ApplicationGatewaysClient) stopCreateRequest(ctx context.Context, resourceGroupName string, applicationGatewayName string, _ *ApplicationGatewaysClientBeginStopOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}/stop"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if applicationGatewayName == "" {
+		return nil, errors.New("parameter applicationGatewayName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{applicationGatewayName}", url.PathEscape(applicationGatewayName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -368,7 +511,7 @@ func (client *ApplicationGatewaysClient) Get(ctx context.Context, resourceGroupN
 func (client *ApplicationGatewaysClient) getCreateRequest(ctx context.Context, resourceGroupName string, applicationGatewayName string, _ *ApplicationGatewaysClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -384,7 +527,7 @@ func (client *ApplicationGatewaysClient) getCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -428,7 +571,7 @@ func (client *ApplicationGatewaysClient) GetSSLPredefinedPolicy(ctx context.Cont
 func (client *ApplicationGatewaysClient) getSSLPredefinedPolicyCreateRequest(ctx context.Context, predefinedPolicyName string, _ *ApplicationGatewaysClientGetSSLPredefinedPolicyOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/applicationGatewayAvailableSslOptions/default/predefinedPolicies/{predefinedPolicyName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if predefinedPolicyName == "" {
@@ -440,7 +583,7 @@ func (client *ApplicationGatewaysClient) getSSLPredefinedPolicyCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -454,145 +597,6 @@ func (client *ApplicationGatewaysClient) getSSLPredefinedPolicyHandleResponse(re
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationGatewaySSLPredefinedPolicy); err != nil {
 		return ApplicationGatewaysClientGetSSLPredefinedPolicyResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListPager - Lists all application gateways in a resource group.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - options - ApplicationGatewaysClientListOptions contains the optional parameters for the ApplicationGatewaysClient.NewListPager
-//     method.
-func (client *ApplicationGatewaysClient) NewListPager(resourceGroupName string, options *ApplicationGatewaysClientListOptions) *runtime.Pager[ApplicationGatewaysClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ApplicationGatewaysClientListResponse]{
-		More: func(page ApplicationGatewaysClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *ApplicationGatewaysClientListResponse) (ApplicationGatewaysClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ApplicationGatewaysClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listCreateRequest(ctx, resourceGroupName, nextLink, options)
-			if err != nil {
-				return ApplicationGatewaysClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ApplicationGatewaysClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *ApplicationGatewaysClient) listCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *ApplicationGatewaysClientListOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		if resourceGroupName == "" {
-			return nil, errors.New("parameter resourceGroupName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250901)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *ApplicationGatewaysClient) listHandleResponse(resp *http.Response, successCodes ...int) (ApplicationGatewaysClientListResponse, error) {
-	result := ApplicationGatewaysClientListResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationGatewayListResult); err != nil {
-		return ApplicationGatewaysClientListResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListAllPager - Gets all the application gateways in a subscription.
-//   - options - ApplicationGatewaysClientListAllOptions contains the optional parameters for the ApplicationGatewaysClient.NewListAllPager
-//     method.
-func (client *ApplicationGatewaysClient) NewListAllPager(options *ApplicationGatewaysClientListAllOptions) *runtime.Pager[ApplicationGatewaysClientListAllResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ApplicationGatewaysClientListAllResponse]{
-		More: func(page ApplicationGatewaysClientListAllResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *ApplicationGatewaysClientListAllResponse) (ApplicationGatewaysClientListAllResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ApplicationGatewaysClient.NewListAllPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listAllCreateRequest(ctx, nextLink, options)
-			if err != nil {
-				return ApplicationGatewaysClientListAllResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ApplicationGatewaysClientListAllResponse{}, err
-			}
-			return client.listAllHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listAllCreateRequest creates the ListAll request.
-func (client *ApplicationGatewaysClient) listAllCreateRequest(ctx context.Context, nextLink string, _ *ApplicationGatewaysClientListAllOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/applicationGateways"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250901)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listAllHandleResponse handles the ListAll response.
-func (client *ApplicationGatewaysClient) listAllHandleResponse(resp *http.Response, successCodes ...int) (ApplicationGatewaysClientListAllResponse, error) {
-	result := ApplicationGatewaysClientListAllResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationGatewayListResult); err != nil {
-		return ApplicationGatewaysClientListAllResponse{}, err
 	}
 	return result, nil
 }
@@ -622,7 +626,7 @@ func (client *ApplicationGatewaysClient) ListAvailableRequestHeaders(ctx context
 func (client *ApplicationGatewaysClient) listAvailableRequestHeadersCreateRequest(ctx context.Context, _ *ApplicationGatewaysClientListAvailableRequestHeadersOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/applicationGatewayAvailableRequestHeaders"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
@@ -630,7 +634,7 @@ func (client *ApplicationGatewaysClient) listAvailableRequestHeadersCreateReques
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -673,7 +677,7 @@ func (client *ApplicationGatewaysClient) ListAvailableResponseHeaders(ctx contex
 func (client *ApplicationGatewaysClient) listAvailableResponseHeadersCreateRequest(ctx context.Context, _ *ApplicationGatewaysClientListAvailableResponseHeadersOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/applicationGatewayAvailableResponseHeaders"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
@@ -681,7 +685,7 @@ func (client *ApplicationGatewaysClient) listAvailableResponseHeadersCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -724,7 +728,7 @@ func (client *ApplicationGatewaysClient) ListAvailableSSLOptions(ctx context.Con
 func (client *ApplicationGatewaysClient) listAvailableSSLOptionsCreateRequest(ctx context.Context, _ *ApplicationGatewaysClientListAvailableSSLOptionsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/applicationGatewayAvailableSslOptions/default"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
@@ -732,7 +736,7 @@ func (client *ApplicationGatewaysClient) listAvailableSSLOptionsCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -746,73 +750,6 @@ func (client *ApplicationGatewaysClient) listAvailableSSLOptionsHandleResponse(r
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationGatewayAvailableSSLOptions); err != nil {
 		return ApplicationGatewaysClientListAvailableSSLOptionsResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListAvailableSSLPredefinedPoliciesPager - Lists all SSL predefined policies for configuring Ssl policy.
-//   - options - ApplicationGatewaysClientListAvailableSSLPredefinedPoliciesOptions contains the optional parameters for the ApplicationGatewaysClient.NewListAvailableSSLPredefinedPoliciesPager
-//     method.
-func (client *ApplicationGatewaysClient) NewListAvailableSSLPredefinedPoliciesPager(options *ApplicationGatewaysClientListAvailableSSLPredefinedPoliciesOptions) *runtime.Pager[ApplicationGatewaysClientListAvailableSSLPredefinedPoliciesResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ApplicationGatewaysClientListAvailableSSLPredefinedPoliciesResponse]{
-		More: func(page ApplicationGatewaysClientListAvailableSSLPredefinedPoliciesResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *ApplicationGatewaysClientListAvailableSSLPredefinedPoliciesResponse) (ApplicationGatewaysClientListAvailableSSLPredefinedPoliciesResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ApplicationGatewaysClient.NewListAvailableSSLPredefinedPoliciesPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listAvailableSSLPredefinedPoliciesCreateRequest(ctx, nextLink, options)
-			if err != nil {
-				return ApplicationGatewaysClientListAvailableSSLPredefinedPoliciesResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ApplicationGatewaysClientListAvailableSSLPredefinedPoliciesResponse{}, err
-			}
-			return client.listAvailableSSLPredefinedPoliciesHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listAvailableSSLPredefinedPoliciesCreateRequest creates the ListAvailableSSLPredefinedPolicies request.
-func (client *ApplicationGatewaysClient) listAvailableSSLPredefinedPoliciesCreateRequest(ctx context.Context, nextLink string, _ *ApplicationGatewaysClientListAvailableSSLPredefinedPoliciesOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/applicationGatewayAvailableSslOptions/default/predefinedPolicies"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250901)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listAvailableSSLPredefinedPoliciesHandleResponse handles the ListAvailableSSLPredefinedPolicies response.
-func (client *ApplicationGatewaysClient) listAvailableSSLPredefinedPoliciesHandleResponse(resp *http.Response, successCodes ...int) (ApplicationGatewaysClientListAvailableSSLPredefinedPoliciesResponse, error) {
-	result := ApplicationGatewaysClientListAvailableSSLPredefinedPoliciesResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationGatewayAvailableSSLPredefinedPolicies); err != nil {
-		return ApplicationGatewaysClientListAvailableSSLPredefinedPoliciesResponse{}, err
 	}
 	return result, nil
 }
@@ -842,7 +779,7 @@ func (client *ApplicationGatewaysClient) ListAvailableServerVariables(ctx contex
 func (client *ApplicationGatewaysClient) listAvailableServerVariablesCreateRequest(ctx context.Context, _ *ApplicationGatewaysClientListAvailableServerVariablesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/applicationGatewayAvailableServerVariables"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
@@ -850,7 +787,7 @@ func (client *ApplicationGatewaysClient) listAvailableServerVariablesCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -893,7 +830,7 @@ func (client *ApplicationGatewaysClient) ListAvailableWafRuleSets(ctx context.Co
 func (client *ApplicationGatewaysClient) listAvailableWafRuleSetsCreateRequest(ctx context.Context, _ *ApplicationGatewaysClientListAvailableWafRuleSetsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/applicationGatewayAvailableWafRuleSets"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
@@ -901,7 +838,7 @@ func (client *ApplicationGatewaysClient) listAvailableWafRuleSetsCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -919,144 +856,210 @@ func (client *ApplicationGatewaysClient) listAvailableWafRuleSetsHandleResponse(
 	return result, nil
 }
 
-// BeginStart - Starts the specified application gateway.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - applicationGatewayName - The name of the application gateway.
-//   - options - ApplicationGatewaysClientBeginStartOptions contains the optional parameters for the ApplicationGatewaysClient.BeginStart
+// NewListAllPager - Gets all the application gateways in a subscription.
+//   - options - ApplicationGatewaysClientListAllOptions contains the optional parameters for the ApplicationGatewaysClient.NewListAllPager
 //     method.
-func (client *ApplicationGatewaysClient) BeginStart(ctx context.Context, resourceGroupName string, applicationGatewayName string, options *ApplicationGatewaysClientBeginStartOptions) (*runtime.Poller[ApplicationGatewaysClientStartResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.start(ctx, resourceGroupName, applicationGatewayName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ApplicationGatewaysClientStartResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ApplicationGatewaysClientStartResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
+func (client *ApplicationGatewaysClient) NewListAllPager(options *ApplicationGatewaysClientListAllOptions) *runtime.Pager[ApplicationGatewaysClientListAllResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ApplicationGatewaysClientListAllResponse]{
+		More: func(page ApplicationGatewaysClientListAllResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *ApplicationGatewaysClientListAllResponse) (ApplicationGatewaysClientListAllResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ApplicationGatewaysClient.NewListAllPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listAllCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return ApplicationGatewaysClientListAllResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ApplicationGatewaysClientListAllResponse{}, err
+			}
+			return client.listAllHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
 }
 
-// Start - Starts the specified application gateway.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ApplicationGatewaysClient) start(ctx context.Context, resourceGroupName string, applicationGatewayName string, options *ApplicationGatewaysClientBeginStartOptions) (*http.Response, error) {
+// listAllCreateRequest creates the ListAll request.
+func (client *ApplicationGatewaysClient) listAllCreateRequest(ctx context.Context, nextLink string, _ *ApplicationGatewaysClientListAllOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
 	var err error
-	const operationName = "ApplicationGatewaysClient.BeginStart"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.startCreateRequest(ctx, resourceGroupName, applicationGatewayName, options)
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/applicationGateways"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
 	if err != nil {
 		return nil, err
 	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260301)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// startCreateRequest creates the Start request.
-func (client *ApplicationGatewaysClient) startCreateRequest(ctx context.Context, resourceGroupName string, applicationGatewayName string, _ *ApplicationGatewaysClientBeginStartOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}/start"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if applicationGatewayName == "" {
-		return nil, errors.New("parameter applicationGatewayName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{applicationGatewayName}", url.PathEscape(applicationGatewayName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
-// BeginStop - Stops the specified application gateway in a resource group.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - applicationGatewayName - The name of the application gateway.
-//   - options - ApplicationGatewaysClientBeginStopOptions contains the optional parameters for the ApplicationGatewaysClient.BeginStop
+// listAllHandleResponse handles the ListAll response.
+func (client *ApplicationGatewaysClient) listAllHandleResponse(resp *http.Response, successCodes ...int) (ApplicationGatewaysClientListAllResponse, error) {
+	result := ApplicationGatewaysClientListAllResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationGatewayListResult); err != nil {
+		return ApplicationGatewaysClientListAllResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListAvailableSSLPredefinedPoliciesPager - Lists all SSL predefined policies for configuring Ssl policy.
+//   - options - ApplicationGatewaysClientListAvailableSSLPredefinedPoliciesOptions contains the optional parameters for the ApplicationGatewaysClient.NewListAvailableSSLPredefinedPoliciesPager
 //     method.
-func (client *ApplicationGatewaysClient) BeginStop(ctx context.Context, resourceGroupName string, applicationGatewayName string, options *ApplicationGatewaysClientBeginStopOptions) (*runtime.Poller[ApplicationGatewaysClientStopResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.stop(ctx, resourceGroupName, applicationGatewayName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ApplicationGatewaysClientStopResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ApplicationGatewaysClientStopResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
+func (client *ApplicationGatewaysClient) NewListAvailableSSLPredefinedPoliciesPager(options *ApplicationGatewaysClientListAvailableSSLPredefinedPoliciesOptions) *runtime.Pager[ApplicationGatewaysClientListAvailableSSLPredefinedPoliciesResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ApplicationGatewaysClientListAvailableSSLPredefinedPoliciesResponse]{
+		More: func(page ApplicationGatewaysClientListAvailableSSLPredefinedPoliciesResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *ApplicationGatewaysClientListAvailableSSLPredefinedPoliciesResponse) (ApplicationGatewaysClientListAvailableSSLPredefinedPoliciesResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ApplicationGatewaysClient.NewListAvailableSSLPredefinedPoliciesPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listAvailableSSLPredefinedPoliciesCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return ApplicationGatewaysClientListAvailableSSLPredefinedPoliciesResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ApplicationGatewaysClientListAvailableSSLPredefinedPoliciesResponse{}, err
+			}
+			return client.listAvailableSSLPredefinedPoliciesHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
 }
 
-// Stop - Stops the specified application gateway in a resource group.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ApplicationGatewaysClient) stop(ctx context.Context, resourceGroupName string, applicationGatewayName string, options *ApplicationGatewaysClientBeginStopOptions) (*http.Response, error) {
+// listAvailableSSLPredefinedPoliciesCreateRequest creates the ListAvailableSSLPredefinedPolicies request.
+func (client *ApplicationGatewaysClient) listAvailableSSLPredefinedPoliciesCreateRequest(ctx context.Context, nextLink string, _ *ApplicationGatewaysClientListAvailableSSLPredefinedPoliciesOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
 	var err error
-	const operationName = "ApplicationGatewaysClient.BeginStop"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.stopCreateRequest(ctx, resourceGroupName, applicationGatewayName, options)
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/applicationGatewayAvailableSslOptions/default/predefinedPolicies"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
 	if err != nil {
 		return nil, err
 	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260301)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
+	return req, nil
 }
 
-// stopCreateRequest creates the Stop request.
-func (client *ApplicationGatewaysClient) stopCreateRequest(ctx context.Context, resourceGroupName string, applicationGatewayName string, _ *ApplicationGatewaysClientBeginStopOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}/stop"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+// listAvailableSSLPredefinedPoliciesHandleResponse handles the ListAvailableSSLPredefinedPolicies response.
+func (client *ApplicationGatewaysClient) listAvailableSSLPredefinedPoliciesHandleResponse(resp *http.Response, successCodes ...int) (ApplicationGatewaysClientListAvailableSSLPredefinedPoliciesResponse, error) {
+	result := ApplicationGatewaysClientListAvailableSSLPredefinedPoliciesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationGatewayAvailableSSLPredefinedPolicies); err != nil {
+		return ApplicationGatewaysClientListAvailableSSLPredefinedPoliciesResponse{}, err
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if applicationGatewayName == "" {
-		return nil, errors.New("parameter applicationGatewayName cannot be empty")
+	return result, nil
+}
+
+// NewListPager - Lists all application gateways in a resource group.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - options - ApplicationGatewaysClientListOptions contains the optional parameters for the ApplicationGatewaysClient.NewListPager
+//     method.
+func (client *ApplicationGatewaysClient) NewListPager(resourceGroupName string, options *ApplicationGatewaysClientListOptions) *runtime.Pager[ApplicationGatewaysClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ApplicationGatewaysClientListResponse]{
+		More: func(page ApplicationGatewaysClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *ApplicationGatewaysClientListResponse) (ApplicationGatewaysClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ApplicationGatewaysClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, resourceGroupName, nextLink, options)
+			if err != nil {
+				return ApplicationGatewaysClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ApplicationGatewaysClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listCreateRequest creates the List request.
+func (client *ApplicationGatewaysClient) listCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *ApplicationGatewaysClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{applicationGatewayName}", url.PathEscape(applicationGatewayName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260301)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
+}
+
+// listHandleResponse handles the List response.
+func (client *ApplicationGatewaysClient) listHandleResponse(resp *http.Response, successCodes ...int) (ApplicationGatewaysClientListResponse, error) {
+	result := ApplicationGatewaysClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationGatewayListResult); err != nil {
+		return ApplicationGatewaysClientListResponse{}, err
+	}
+	return result, nil
 }
 
 // UpdateTags - Updates the specified application gateway tags.
@@ -1087,7 +1090,7 @@ func (client *ApplicationGatewaysClient) UpdateTags(ctx context.Context, resourc
 func (client *ApplicationGatewaysClient) updateTagsCreateRequest(ctx context.Context, resourceGroupName string, applicationGatewayName string, parameters TagsObject, _ *ApplicationGatewaysClientUpdateTagsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1103,7 +1106,7 @@ func (client *ApplicationGatewaysClient) updateTagsCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

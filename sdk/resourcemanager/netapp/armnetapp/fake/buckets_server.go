@@ -33,6 +33,14 @@ type BucketsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginGenerateAkvCredentials func(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, bucketName string, body armnetapp.BucketCredentialsExpiry, options *armnetapp.BucketsClientBeginGenerateAkvCredentialsOptions) (resp azfake.PollerResponder[armnetapp.BucketsClientGenerateAkvCredentialsResponse], errResp azfake.ErrorResponder)
 
+	// BeginRefreshCertificate is the fake for method BucketsClient.BeginRefreshCertificate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginRefreshCertificate func(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, bucketName string, options *armnetapp.BucketsClientBeginRefreshCertificateOptions) (resp azfake.PollerResponder[armnetapp.BucketsClientRefreshCertificateResponse], errResp azfake.ErrorResponder)
+
+	// BeginUpdate is the fake for method BucketsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, bucketName string, body armnetapp.BucketPatch, options *armnetapp.BucketsClientBeginUpdateOptions) (resp azfake.PollerResponder[armnetapp.BucketsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// GenerateCredentials is the fake for method BucketsClient.GenerateCredentials
 	// HTTP status codes to indicate success: http.StatusOK
 	GenerateCredentials func(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, bucketName string, body armnetapp.BucketCredentialsExpiry, options *armnetapp.BucketsClientGenerateCredentialsOptions) (resp azfake.Responder[armnetapp.BucketsClientGenerateCredentialsResponse], errResp azfake.ErrorResponder)
@@ -44,14 +52,6 @@ type BucketsServer struct {
 	// NewListPager is the fake for method BucketsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(resourceGroupName string, accountName string, poolName string, volumeName string, options *armnetapp.BucketsClientListOptions) (resp azfake.PagerResponder[armnetapp.BucketsClientListResponse])
-
-	// BeginRefreshCertificate is the fake for method BucketsClient.BeginRefreshCertificate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginRefreshCertificate func(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, bucketName string, options *armnetapp.BucketsClientBeginRefreshCertificateOptions) (resp azfake.PollerResponder[armnetapp.BucketsClientRefreshCertificateResponse], errResp azfake.ErrorResponder)
-
-	// BeginUpdate is the fake for method BucketsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, bucketName string, body armnetapp.BucketPatch, options *armnetapp.BucketsClientBeginUpdateOptions) (resp azfake.PollerResponder[armnetapp.BucketsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewBucketsServerTransport creates a new instance of BucketsServerTransport with the provided implementation.
@@ -63,9 +63,9 @@ func NewBucketsServerTransport(srv *BucketsServer) *BucketsServerTransport {
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armnetapp.BucketsClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armnetapp.BucketsClientDeleteResponse]](),
 		beginGenerateAkvCredentials: newTracker[azfake.PollerResponder[armnetapp.BucketsClientGenerateAkvCredentialsResponse]](),
-		newListPager:                newTracker[azfake.PagerResponder[armnetapp.BucketsClientListResponse]](),
 		beginRefreshCertificate:     newTracker[azfake.PollerResponder[armnetapp.BucketsClientRefreshCertificateResponse]](),
 		beginUpdate:                 newTracker[azfake.PollerResponder[armnetapp.BucketsClientUpdateResponse]](),
+		newListPager:                newTracker[azfake.PagerResponder[armnetapp.BucketsClientListResponse]](),
 	}
 }
 
@@ -76,9 +76,9 @@ type BucketsServerTransport struct {
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armnetapp.BucketsClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armnetapp.BucketsClientDeleteResponse]]
 	beginGenerateAkvCredentials *tracker[azfake.PollerResponder[armnetapp.BucketsClientGenerateAkvCredentialsResponse]]
-	newListPager                *tracker[azfake.PagerResponder[armnetapp.BucketsClientListResponse]]
 	beginRefreshCertificate     *tracker[azfake.PollerResponder[armnetapp.BucketsClientRefreshCertificateResponse]]
 	beginUpdate                 *tracker[azfake.PollerResponder[armnetapp.BucketsClientUpdateResponse]]
+	newListPager                *tracker[azfake.PagerResponder[armnetapp.BucketsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for BucketsServerTransport.
@@ -108,16 +108,16 @@ func (b *BucketsServerTransport) dispatchToMethodFake(req *http.Request, method 
 				res.resp, res.err = b.dispatchBeginDelete(req)
 			case "BucketsClient.BeginGenerateAkvCredentials":
 				res.resp, res.err = b.dispatchBeginGenerateAkvCredentials(req)
+			case "BucketsClient.BeginRefreshCertificate":
+				res.resp, res.err = b.dispatchBeginRefreshCertificate(req)
+			case "BucketsClient.BeginUpdate":
+				res.resp, res.err = b.dispatchBeginUpdate(req)
 			case "BucketsClient.GenerateCredentials":
 				res.resp, res.err = b.dispatchGenerateCredentials(req)
 			case "BucketsClient.Get":
 				res.resp, res.err = b.dispatchGet(req)
 			case "BucketsClient.NewListPager":
 				res.resp, res.err = b.dispatchNewListPager(req)
-			case "BucketsClient.BeginRefreshCertificate":
-				res.resp, res.err = b.dispatchBeginRefreshCertificate(req)
-			case "BucketsClient.BeginUpdate":
-				res.resp, res.err = b.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -140,7 +140,7 @@ func (b *BucketsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) 
 	}
 	beginCreateOrUpdate := b.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/capacityPools/(?P<poolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/volumes/(?P<volumeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/buckets/(?P<bucketName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/capacityPools/(?P<poolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumes/(?P<volumeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/buckets/(?P<bucketName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 7 {
@@ -200,7 +200,7 @@ func (b *BucketsServerTransport) dispatchBeginDelete(req *http.Request) (*http.R
 	}
 	beginDelete := b.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/capacityPools/(?P<poolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/volumes/(?P<volumeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/buckets/(?P<bucketName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/capacityPools/(?P<poolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumes/(?P<volumeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/buckets/(?P<bucketName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 7 {
@@ -256,7 +256,7 @@ func (b *BucketsServerTransport) dispatchBeginGenerateAkvCredentials(req *http.R
 	}
 	beginGenerateAkvCredentials := b.beginGenerateAkvCredentials.get(req)
 	if beginGenerateAkvCredentials == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/capacityPools/(?P<poolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/volumes/(?P<volumeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/buckets/(?P<bucketName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/generateAkvCredentials`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/capacityPools/(?P<poolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumes/(?P<volumeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/buckets/(?P<bucketName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/generateAkvCredentials`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 7 {
@@ -310,156 +310,13 @@ func (b *BucketsServerTransport) dispatchBeginGenerateAkvCredentials(req *http.R
 	return resp, nil
 }
 
-func (b *BucketsServerTransport) dispatchGenerateCredentials(req *http.Request) (*http.Response, error) {
-	if b.srv.GenerateCredentials == nil {
-		return nil, &nonRetriableError{errors.New("fake for method GenerateCredentials not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/capacityPools/(?P<poolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/volumes/(?P<volumeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/buckets/(?P<bucketName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/generateCredentials`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 7 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armnetapp.BucketCredentialsExpiry](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-	if err != nil {
-		return nil, err
-	}
-	poolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("poolName")])
-	if err != nil {
-		return nil, err
-	}
-	volumeNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("volumeName")])
-	if err != nil {
-		return nil, err
-	}
-	bucketNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("bucketName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := b.srv.GenerateCredentials(req.Context(), resourceGroupNameParam, accountNameParam, poolNameParam, volumeNameParam, bucketNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).BucketGenerateCredentials, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (b *BucketsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if b.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/capacityPools/(?P<poolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/volumes/(?P<volumeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/buckets/(?P<bucketName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 7 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-	if err != nil {
-		return nil, err
-	}
-	poolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("poolName")])
-	if err != nil {
-		return nil, err
-	}
-	volumeNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("volumeName")])
-	if err != nil {
-		return nil, err
-	}
-	bucketNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("bucketName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := b.srv.Get(req.Context(), resourceGroupNameParam, accountNameParam, poolNameParam, volumeNameParam, bucketNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Bucket, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (b *BucketsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if b.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := b.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/capacityPools/(?P<poolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/volumes/(?P<volumeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/buckets`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 6 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-		if err != nil {
-			return nil, err
-		}
-		poolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("poolName")])
-		if err != nil {
-			return nil, err
-		}
-		volumeNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("volumeName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := b.srv.NewListPager(resourceGroupNameParam, accountNameParam, poolNameParam, volumeNameParam, nil)
-		newListPager = &resp
-		b.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetapp.BucketsClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		b.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		b.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (b *BucketsServerTransport) dispatchBeginRefreshCertificate(req *http.Request) (*http.Response, error) {
 	if b.srv.BeginRefreshCertificate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginRefreshCertificate not implemented")}
 	}
 	beginRefreshCertificate := b.beginRefreshCertificate.get(req)
 	if beginRefreshCertificate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/capacityPools/(?P<poolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/volumes/(?P<volumeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/buckets/(?P<bucketName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/refreshCertificate`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/capacityPools/(?P<poolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumes/(?P<volumeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/buckets/(?P<bucketName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/refreshCertificate`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 7 {
@@ -515,7 +372,7 @@ func (b *BucketsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.R
 	}
 	beginUpdate := b.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/capacityPools/(?P<poolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/volumes/(?P<volumeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/buckets/(?P<bucketName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/capacityPools/(?P<poolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumes/(?P<volumeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/buckets/(?P<bucketName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 7 {
@@ -566,6 +423,149 @@ func (b *BucketsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.R
 		b.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (b *BucketsServerTransport) dispatchGenerateCredentials(req *http.Request) (*http.Response, error) {
+	if b.srv.GenerateCredentials == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GenerateCredentials not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/capacityPools/(?P<poolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumes/(?P<volumeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/buckets/(?P<bucketName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/generateCredentials`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 7 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armnetapp.BucketCredentialsExpiry](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+	if err != nil {
+		return nil, err
+	}
+	poolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("poolName")])
+	if err != nil {
+		return nil, err
+	}
+	volumeNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("volumeName")])
+	if err != nil {
+		return nil, err
+	}
+	bucketNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("bucketName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := b.srv.GenerateCredentials(req.Context(), resourceGroupNameParam, accountNameParam, poolNameParam, volumeNameParam, bucketNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).BucketGenerateCredentials, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (b *BucketsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if b.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/capacityPools/(?P<poolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumes/(?P<volumeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/buckets/(?P<bucketName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 7 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+	if err != nil {
+		return nil, err
+	}
+	poolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("poolName")])
+	if err != nil {
+		return nil, err
+	}
+	volumeNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("volumeName")])
+	if err != nil {
+		return nil, err
+	}
+	bucketNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("bucketName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := b.srv.Get(req.Context(), resourceGroupNameParam, accountNameParam, poolNameParam, volumeNameParam, bucketNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Bucket, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (b *BucketsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if b.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := b.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/capacityPools/(?P<poolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumes/(?P<volumeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/buckets`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 6 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		poolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("poolName")])
+		if err != nil {
+			return nil, err
+		}
+		volumeNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("volumeName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := b.srv.NewListPager(resourceGroupNameParam, accountNameParam, poolNameParam, volumeNameParam, nil)
+		newListPager = &resp
+		b.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetapp.BucketsClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		b.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		b.newListPager.remove(req)
+	}
 	return resp, nil
 }
 

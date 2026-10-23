@@ -29,18 +29,6 @@ type CachesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, accountName string, poolName string, cacheName string, options *armnetapp.CachesClientBeginDeleteOptions) (resp azfake.PollerResponder[armnetapp.CachesClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method CachesClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, accountName string, poolName string, cacheName string, options *armnetapp.CachesClientGetOptions) (resp azfake.Responder[armnetapp.CachesClientGetResponse], errResp azfake.ErrorResponder)
-
-	// NewListPager is the fake for method CachesClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, accountName string, poolName string, options *armnetapp.CachesClientListOptions) (resp azfake.PagerResponder[armnetapp.CachesClientListResponse])
-
-	// ListPeeringPassphrases is the fake for method CachesClient.ListPeeringPassphrases
-	// HTTP status codes to indicate success: http.StatusOK
-	ListPeeringPassphrases func(ctx context.Context, resourceGroupName string, accountName string, poolName string, cacheName string, options *armnetapp.CachesClientListPeeringPassphrasesOptions) (resp azfake.Responder[armnetapp.CachesClientListPeeringPassphrasesResponse], errResp azfake.ErrorResponder)
-
 	// BeginPoolChange is the fake for method CachesClient.BeginPoolChange
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginPoolChange func(ctx context.Context, resourceGroupName string, accountName string, poolName string, cacheName string, body armnetapp.PoolChangeRequest, options *armnetapp.CachesClientBeginPoolChangeOptions) (resp azfake.PollerResponder[armnetapp.CachesClientPoolChangeResponse], errResp azfake.ErrorResponder)
@@ -52,6 +40,18 @@ type CachesServer struct {
 	// BeginUpdate is the fake for method CachesClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, resourceGroupName string, accountName string, poolName string, cacheName string, body armnetapp.CacheUpdate, options *armnetapp.CachesClientBeginUpdateOptions) (resp azfake.PollerResponder[armnetapp.CachesClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method CachesClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, accountName string, poolName string, cacheName string, options *armnetapp.CachesClientGetOptions) (resp azfake.Responder[armnetapp.CachesClientGetResponse], errResp azfake.ErrorResponder)
+
+	// ListPeeringPassphrases is the fake for method CachesClient.ListPeeringPassphrases
+	// HTTP status codes to indicate success: http.StatusOK
+	ListPeeringPassphrases func(ctx context.Context, resourceGroupName string, accountName string, poolName string, cacheName string, options *armnetapp.CachesClientListPeeringPassphrasesOptions) (resp azfake.Responder[armnetapp.CachesClientListPeeringPassphrasesResponse], errResp azfake.ErrorResponder)
+
+	// NewListPager is the fake for method CachesClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(resourceGroupName string, accountName string, poolName string, options *armnetapp.CachesClientListOptions) (resp azfake.PagerResponder[armnetapp.CachesClientListResponse])
 }
 
 // NewCachesServerTransport creates a new instance of CachesServerTransport with the provided implementation.
@@ -62,10 +62,10 @@ func NewCachesServerTransport(srv *CachesServer) *CachesServerTransport {
 		srv:                   srv,
 		beginCreateOrUpdate:   newTracker[azfake.PollerResponder[armnetapp.CachesClientCreateOrUpdateResponse]](),
 		beginDelete:           newTracker[azfake.PollerResponder[armnetapp.CachesClientDeleteResponse]](),
-		newListPager:          newTracker[azfake.PagerResponder[armnetapp.CachesClientListResponse]](),
 		beginPoolChange:       newTracker[azfake.PollerResponder[armnetapp.CachesClientPoolChangeResponse]](),
 		beginResetSmbPassword: newTracker[azfake.PollerResponder[armnetapp.CachesClientResetSmbPasswordResponse]](),
 		beginUpdate:           newTracker[azfake.PollerResponder[armnetapp.CachesClientUpdateResponse]](),
+		newListPager:          newTracker[azfake.PagerResponder[armnetapp.CachesClientListResponse]](),
 	}
 }
 
@@ -75,10 +75,10 @@ type CachesServerTransport struct {
 	srv                   *CachesServer
 	beginCreateOrUpdate   *tracker[azfake.PollerResponder[armnetapp.CachesClientCreateOrUpdateResponse]]
 	beginDelete           *tracker[azfake.PollerResponder[armnetapp.CachesClientDeleteResponse]]
-	newListPager          *tracker[azfake.PagerResponder[armnetapp.CachesClientListResponse]]
 	beginPoolChange       *tracker[azfake.PollerResponder[armnetapp.CachesClientPoolChangeResponse]]
 	beginResetSmbPassword *tracker[azfake.PollerResponder[armnetapp.CachesClientResetSmbPasswordResponse]]
 	beginUpdate           *tracker[azfake.PollerResponder[armnetapp.CachesClientUpdateResponse]]
+	newListPager          *tracker[azfake.PagerResponder[armnetapp.CachesClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for CachesServerTransport.
@@ -106,18 +106,18 @@ func (c *CachesServerTransport) dispatchToMethodFake(req *http.Request, method s
 				res.resp, res.err = c.dispatchBeginCreateOrUpdate(req)
 			case "CachesClient.BeginDelete":
 				res.resp, res.err = c.dispatchBeginDelete(req)
-			case "CachesClient.Get":
-				res.resp, res.err = c.dispatchGet(req)
-			case "CachesClient.NewListPager":
-				res.resp, res.err = c.dispatchNewListPager(req)
-			case "CachesClient.ListPeeringPassphrases":
-				res.resp, res.err = c.dispatchListPeeringPassphrases(req)
 			case "CachesClient.BeginPoolChange":
 				res.resp, res.err = c.dispatchBeginPoolChange(req)
 			case "CachesClient.BeginResetSmbPassword":
 				res.resp, res.err = c.dispatchBeginResetSmbPassword(req)
 			case "CachesClient.BeginUpdate":
 				res.resp, res.err = c.dispatchBeginUpdate(req)
+			case "CachesClient.Get":
+				res.resp, res.err = c.dispatchGet(req)
+			case "CachesClient.ListPeeringPassphrases":
+				res.resp, res.err = c.dispatchListPeeringPassphrases(req)
+			case "CachesClient.NewListPager":
+				res.resp, res.err = c.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -140,7 +140,7 @@ func (c *CachesServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (
 	}
 	beginCreateOrUpdate := c.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/capacityPools/(?P<poolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/caches/(?P<cacheName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/capacityPools/(?P<poolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/caches/(?P<cacheName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -196,7 +196,7 @@ func (c *CachesServerTransport) dispatchBeginDelete(req *http.Request) (*http.Re
 	}
 	beginDelete := c.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/capacityPools/(?P<poolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/caches/(?P<cacheName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/capacityPools/(?P<poolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/caches/(?P<cacheName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -242,140 +242,13 @@ func (c *CachesServerTransport) dispatchBeginDelete(req *http.Request) (*http.Re
 	return resp, nil
 }
 
-func (c *CachesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if c.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/capacityPools/(?P<poolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/caches/(?P<cacheName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 6 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-	if err != nil {
-		return nil, err
-	}
-	poolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("poolName")])
-	if err != nil {
-		return nil, err
-	}
-	cacheNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("cacheName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := c.srv.Get(req.Context(), resourceGroupNameParam, accountNameParam, poolNameParam, cacheNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Cache, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (c *CachesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if c.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := c.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/capacityPools/(?P<poolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/caches`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-		if err != nil {
-			return nil, err
-		}
-		poolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("poolName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := c.srv.NewListPager(resourceGroupNameParam, accountNameParam, poolNameParam, nil)
-		newListPager = &resp
-		c.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetapp.CachesClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		c.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		c.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (c *CachesServerTransport) dispatchListPeeringPassphrases(req *http.Request) (*http.Response, error) {
-	if c.srv.ListPeeringPassphrases == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListPeeringPassphrases not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/capacityPools/(?P<poolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/caches/(?P<cacheName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listPeeringPassphrases`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 6 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-	if err != nil {
-		return nil, err
-	}
-	poolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("poolName")])
-	if err != nil {
-		return nil, err
-	}
-	cacheNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("cacheName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := c.srv.ListPeeringPassphrases(req.Context(), resourceGroupNameParam, accountNameParam, poolNameParam, cacheNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).PeeringPassphrases, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (c *CachesServerTransport) dispatchBeginPoolChange(req *http.Request) (*http.Response, error) {
 	if c.srv.BeginPoolChange == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginPoolChange not implemented")}
 	}
 	beginPoolChange := c.beginPoolChange.get(req)
 	if beginPoolChange == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/capacityPools/(?P<poolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/caches/(?P<cacheName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/poolChange`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/capacityPools/(?P<poolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/caches/(?P<cacheName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/poolChange`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -431,7 +304,7 @@ func (c *CachesServerTransport) dispatchBeginResetSmbPassword(req *http.Request)
 	}
 	beginResetSmbPassword := c.beginResetSmbPassword.get(req)
 	if beginResetSmbPassword == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/capacityPools/(?P<poolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/caches/(?P<cacheName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resetSmbPassword`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/capacityPools/(?P<poolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/caches/(?P<cacheName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resetSmbPassword`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -483,7 +356,7 @@ func (c *CachesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Re
 	}
 	beginUpdate := c.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/capacityPools/(?P<poolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/caches/(?P<cacheName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/capacityPools/(?P<poolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/caches/(?P<cacheName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -530,6 +403,133 @@ func (c *CachesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Re
 		c.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (c *CachesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if c.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/capacityPools/(?P<poolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/caches/(?P<cacheName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 6 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+	if err != nil {
+		return nil, err
+	}
+	poolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("poolName")])
+	if err != nil {
+		return nil, err
+	}
+	cacheNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("cacheName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := c.srv.Get(req.Context(), resourceGroupNameParam, accountNameParam, poolNameParam, cacheNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Cache, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (c *CachesServerTransport) dispatchListPeeringPassphrases(req *http.Request) (*http.Response, error) {
+	if c.srv.ListPeeringPassphrases == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListPeeringPassphrases not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/capacityPools/(?P<poolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/caches/(?P<cacheName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listPeeringPassphrases`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 6 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+	if err != nil {
+		return nil, err
+	}
+	poolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("poolName")])
+	if err != nil {
+		return nil, err
+	}
+	cacheNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("cacheName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := c.srv.ListPeeringPassphrases(req.Context(), resourceGroupNameParam, accountNameParam, poolNameParam, cacheNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).PeeringPassphrases, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (c *CachesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if c.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := c.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/capacityPools/(?P<poolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/caches`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		poolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("poolName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := c.srv.NewListPager(resourceGroupNameParam, accountNameParam, poolNameParam, nil)
+		newListPager = &resp
+		c.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetapp.CachesClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		c.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		c.newListPager.remove(req)
+	}
 	return resp, nil
 }
 

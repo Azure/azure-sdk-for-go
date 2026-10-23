@@ -29,6 +29,10 @@ type BackupsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, accountName string, backupVaultName string, backupName string, options *armnetapp.BackupsClientBeginDeleteOptions) (resp azfake.PollerResponder[armnetapp.BackupsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method BackupsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, accountName string, backupVaultName string, backupName string, body armnetapp.BackupPatch, options *armnetapp.BackupsClientBeginUpdateOptions) (resp azfake.PollerResponder[armnetapp.BackupsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method BackupsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, accountName string, backupVaultName string, backupName string, options *armnetapp.BackupsClientGetOptions) (resp azfake.Responder[armnetapp.BackupsClientGetResponse], errResp azfake.ErrorResponder)
@@ -44,10 +48,6 @@ type BackupsServer struct {
 	// NewListByVaultPager is the fake for method BackupsClient.NewListByVaultPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByVaultPager func(resourceGroupName string, accountName string, backupVaultName string, options *armnetapp.BackupsClientListByVaultOptions) (resp azfake.PagerResponder[armnetapp.BackupsClientListByVaultResponse])
-
-	// BeginUpdate is the fake for method BackupsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, accountName string, backupVaultName string, backupName string, body armnetapp.BackupPatch, options *armnetapp.BackupsClientBeginUpdateOptions) (resp azfake.PollerResponder[armnetapp.BackupsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewBackupsServerTransport creates a new instance of BackupsServerTransport with the provided implementation.
@@ -58,8 +58,8 @@ func NewBackupsServerTransport(srv *BackupsServer) *BackupsServerTransport {
 		srv:                 srv,
 		beginCreate:         newTracker[azfake.PollerResponder[armnetapp.BackupsClientCreateResponse]](),
 		beginDelete:         newTracker[azfake.PollerResponder[armnetapp.BackupsClientDeleteResponse]](),
-		newListByVaultPager: newTracker[azfake.PagerResponder[armnetapp.BackupsClientListByVaultResponse]](),
 		beginUpdate:         newTracker[azfake.PollerResponder[armnetapp.BackupsClientUpdateResponse]](),
+		newListByVaultPager: newTracker[azfake.PagerResponder[armnetapp.BackupsClientListByVaultResponse]](),
 	}
 }
 
@@ -69,8 +69,8 @@ type BackupsServerTransport struct {
 	srv                 *BackupsServer
 	beginCreate         *tracker[azfake.PollerResponder[armnetapp.BackupsClientCreateResponse]]
 	beginDelete         *tracker[azfake.PollerResponder[armnetapp.BackupsClientDeleteResponse]]
-	newListByVaultPager *tracker[azfake.PagerResponder[armnetapp.BackupsClientListByVaultResponse]]
 	beginUpdate         *tracker[azfake.PollerResponder[armnetapp.BackupsClientUpdateResponse]]
+	newListByVaultPager *tracker[azfake.PagerResponder[armnetapp.BackupsClientListByVaultResponse]]
 }
 
 // Do implements the policy.Transporter interface for BackupsServerTransport.
@@ -98,6 +98,8 @@ func (b *BackupsServerTransport) dispatchToMethodFake(req *http.Request, method 
 				res.resp, res.err = b.dispatchBeginCreate(req)
 			case "BackupsClient.BeginDelete":
 				res.resp, res.err = b.dispatchBeginDelete(req)
+			case "BackupsClient.BeginUpdate":
+				res.resp, res.err = b.dispatchBeginUpdate(req)
 			case "BackupsClient.Get":
 				res.resp, res.err = b.dispatchGet(req)
 			case "BackupsClient.GetLatestStatus":
@@ -106,8 +108,6 @@ func (b *BackupsServerTransport) dispatchToMethodFake(req *http.Request, method 
 				res.resp, res.err = b.dispatchGetVolumeLatestRestoreStatus(req)
 			case "BackupsClient.NewListByVaultPager":
 				res.resp, res.err = b.dispatchNewListByVaultPager(req)
-			case "BackupsClient.BeginUpdate":
-				res.resp, res.err = b.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -130,7 +130,7 @@ func (b *BackupsServerTransport) dispatchBeginCreate(req *http.Request) (*http.R
 	}
 	beginCreate := b.beginCreate.get(req)
 	if beginCreate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/backupVaults/(?P<backupVaultName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/backups/(?P<backupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/backupVaults/(?P<backupVaultName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/backups/(?P<backupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -186,7 +186,7 @@ func (b *BackupsServerTransport) dispatchBeginDelete(req *http.Request) (*http.R
 	}
 	beginDelete := b.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/backupVaults/(?P<backupVaultName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/backups/(?P<backupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/backupVaults/(?P<backupVaultName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/backups/(?P<backupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -232,189 +232,13 @@ func (b *BackupsServerTransport) dispatchBeginDelete(req *http.Request) (*http.R
 	return resp, nil
 }
 
-func (b *BackupsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if b.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/backupVaults/(?P<backupVaultName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/backups/(?P<backupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 6 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-	if err != nil {
-		return nil, err
-	}
-	backupVaultNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("backupVaultName")])
-	if err != nil {
-		return nil, err
-	}
-	backupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("backupName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := b.srv.Get(req.Context(), resourceGroupNameParam, accountNameParam, backupVaultNameParam, backupNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Backup, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (b *BackupsServerTransport) dispatchGetLatestStatus(req *http.Request) (*http.Response, error) {
-	if b.srv.GetLatestStatus == nil {
-		return nil, &nonRetriableError{errors.New("fake for method GetLatestStatus not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/capacityPools/(?P<poolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/volumes/(?P<volumeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/latestBackupStatus/current`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 6 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-	if err != nil {
-		return nil, err
-	}
-	poolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("poolName")])
-	if err != nil {
-		return nil, err
-	}
-	volumeNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("volumeName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := b.srv.GetLatestStatus(req.Context(), resourceGroupNameParam, accountNameParam, poolNameParam, volumeNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).BackupStatus, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (b *BackupsServerTransport) dispatchGetVolumeLatestRestoreStatus(req *http.Request) (*http.Response, error) {
-	if b.srv.GetVolumeLatestRestoreStatus == nil {
-		return nil, &nonRetriableError{errors.New("fake for method GetVolumeLatestRestoreStatus not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/capacityPools/(?P<poolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/volumes/(?P<volumeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/latestRestoreStatus/current`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 6 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-	if err != nil {
-		return nil, err
-	}
-	poolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("poolName")])
-	if err != nil {
-		return nil, err
-	}
-	volumeNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("volumeName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := b.srv.GetVolumeLatestRestoreStatus(req.Context(), resourceGroupNameParam, accountNameParam, poolNameParam, volumeNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RestoreStatus, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (b *BackupsServerTransport) dispatchNewListByVaultPager(req *http.Request) (*http.Response, error) {
-	if b.srv.NewListByVaultPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByVaultPager not implemented")}
-	}
-	newListByVaultPager := b.newListByVaultPager.get(req)
-	if newListByVaultPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/backupVaults/(?P<backupVaultName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/backups`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-		if err != nil {
-			return nil, err
-		}
-		backupVaultNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("backupVaultName")])
-		if err != nil {
-			return nil, err
-		}
-		filterParam := getOptional(qp.Get("$filter"))
-		var options *armnetapp.BackupsClientListByVaultOptions
-		if filterParam != nil {
-			options = &armnetapp.BackupsClientListByVaultOptions{
-				Filter: filterParam,
-			}
-		}
-		resp := b.srv.NewListByVaultPager(resourceGroupNameParam, accountNameParam, backupVaultNameParam, options)
-		newListByVaultPager = &resp
-		b.newListByVaultPager.add(req, newListByVaultPager)
-		server.PagerResponderInjectNextLinks(newListByVaultPager, req, func(page *armnetapp.BackupsClientListByVaultResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByVaultPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		b.newListByVaultPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByVaultPager) {
-		b.newListByVaultPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (b *BackupsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
 	if b.srv.BeginUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
 	}
 	beginUpdate := b.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/backupVaults/(?P<backupVaultName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/backups/(?P<backupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/backupVaults/(?P<backupVaultName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/backups/(?P<backupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -461,6 +285,182 @@ func (b *BackupsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.R
 		b.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (b *BackupsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if b.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/backupVaults/(?P<backupVaultName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/backups/(?P<backupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 6 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+	if err != nil {
+		return nil, err
+	}
+	backupVaultNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("backupVaultName")])
+	if err != nil {
+		return nil, err
+	}
+	backupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("backupName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := b.srv.Get(req.Context(), resourceGroupNameParam, accountNameParam, backupVaultNameParam, backupNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Backup, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (b *BackupsServerTransport) dispatchGetLatestStatus(req *http.Request) (*http.Response, error) {
+	if b.srv.GetLatestStatus == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetLatestStatus not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/capacityPools/(?P<poolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumes/(?P<volumeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/latestBackupStatus/current`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 6 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+	if err != nil {
+		return nil, err
+	}
+	poolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("poolName")])
+	if err != nil {
+		return nil, err
+	}
+	volumeNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("volumeName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := b.srv.GetLatestStatus(req.Context(), resourceGroupNameParam, accountNameParam, poolNameParam, volumeNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).BackupStatus, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (b *BackupsServerTransport) dispatchGetVolumeLatestRestoreStatus(req *http.Request) (*http.Response, error) {
+	if b.srv.GetVolumeLatestRestoreStatus == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetVolumeLatestRestoreStatus not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/capacityPools/(?P<poolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumes/(?P<volumeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/latestRestoreStatus/current`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 6 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+	if err != nil {
+		return nil, err
+	}
+	poolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("poolName")])
+	if err != nil {
+		return nil, err
+	}
+	volumeNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("volumeName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := b.srv.GetVolumeLatestRestoreStatus(req.Context(), resourceGroupNameParam, accountNameParam, poolNameParam, volumeNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RestoreStatus, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (b *BackupsServerTransport) dispatchNewListByVaultPager(req *http.Request) (*http.Response, error) {
+	if b.srv.NewListByVaultPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByVaultPager not implemented")}
+	}
+	newListByVaultPager := b.newListByVaultPager.get(req)
+	if newListByVaultPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/backupVaults/(?P<backupVaultName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/backups`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		backupVaultNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("backupVaultName")])
+		if err != nil {
+			return nil, err
+		}
+		filterParam := getOptional(qp.Get("$filter"))
+		var options *armnetapp.BackupsClientListByVaultOptions
+		if filterParam != nil {
+			options = &armnetapp.BackupsClientListByVaultOptions{
+				Filter: filterParam,
+			}
+		}
+		resp := b.srv.NewListByVaultPager(resourceGroupNameParam, accountNameParam, backupVaultNameParam, options)
+		newListByVaultPager = &resp
+		b.newListByVaultPager.add(req, newListByVaultPager)
+		server.PagerResponderInjectNextLinks(newListByVaultPager, req, func(page *armnetapp.BackupsClientListByVaultResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByVaultPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		b.newListByVaultPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByVaultPager) {
+		b.newListByVaultPager.remove(req)
+	}
 	return resp, nil
 }
 

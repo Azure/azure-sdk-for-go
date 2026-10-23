@@ -19,7 +19,7 @@ import (
 // DaprComponentResiliencyPoliciesClient contains the methods for the DaprComponentResiliencyPolicies group.
 // Don't use this type directly, use NewDaprComponentResiliencyPoliciesClient() instead.
 //
-// Generated from API version 2025-10-02-preview
+// Generated from API version 2026-07-01
 type DaprComponentResiliencyPoliciesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type DaprComponentResiliencyPoliciesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewDaprComponentResiliencyPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DaprComponentResiliencyPoliciesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -73,7 +76,7 @@ func (client *DaprComponentResiliencyPoliciesClient) CreateOrUpdate(ctx context.
 func (client *DaprComponentResiliencyPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, environmentName string, componentName string, name string, daprComponentResiliencyPolicyEnvelope DaprComponentResiliencyPolicy, _ *DaprComponentResiliencyPoliciesClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/daprComponents/{componentName}/resiliencyPolicies/{name}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -97,7 +100,7 @@ func (client *DaprComponentResiliencyPoliciesClient) createOrUpdateCreateRequest
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251002Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -153,7 +156,7 @@ func (client *DaprComponentResiliencyPoliciesClient) Delete(ctx context.Context,
 func (client *DaprComponentResiliencyPoliciesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, environmentName string, componentName string, name string, _ *DaprComponentResiliencyPoliciesClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/daprComponents/{componentName}/resiliencyPolicies/{name}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -177,14 +180,14 @@ func (client *DaprComponentResiliencyPoliciesClient) deleteCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251002Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get a Dapr component resiliency policy.
 //
-// Get a Dapr component resiliency policy.
+// Gets the details of a resiliency policy for a Dapr component.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - environmentName - Name of the managed environment.
@@ -213,7 +216,7 @@ func (client *DaprComponentResiliencyPoliciesClient) Get(ctx context.Context, re
 func (client *DaprComponentResiliencyPoliciesClient) getCreateRequest(ctx context.Context, resourceGroupName string, environmentName string, componentName string, name string, _ *DaprComponentResiliencyPoliciesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/daprComponents/{componentName}/resiliencyPolicies/{name}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -237,7 +240,7 @@ func (client *DaprComponentResiliencyPoliciesClient) getCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251002Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -257,7 +260,7 @@ func (client *DaprComponentResiliencyPoliciesClient) getHandleResponse(resp *htt
 
 // NewListPager - Get the resiliency policies for a Dapr component.
 //
-// Get the resiliency policies for a Dapr component.
+// Lists the resiliency policies configured for a Dapr component.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - environmentName - Name of the managed environment.
 //   - componentName - Name of the Dapr Component.
@@ -296,7 +299,7 @@ func (client *DaprComponentResiliencyPoliciesClient) listCreateRequest(ctx conte
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/daprComponents/{componentName}/resiliencyPolicies"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -320,7 +323,7 @@ func (client *DaprComponentResiliencyPoliciesClient) listCreateRequest(ctx conte
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20251002Preview)
+		reqQP.Set("api-version", version20260701)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

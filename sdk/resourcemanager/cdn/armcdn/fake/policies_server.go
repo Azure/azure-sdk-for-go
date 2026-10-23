@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v4"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -25,6 +25,10 @@ type PoliciesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated, http.StatusAccepted
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, policyName string, cdnWebApplicationFirewallPolicy armcdn.WebApplicationFirewallPolicy, options *armcdn.PoliciesClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armcdn.PoliciesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method PoliciesClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, policyName string, cdnWebApplicationFirewallPolicyPatchParameters armcdn.WebApplicationFirewallPolicyPatchParameters, options *armcdn.PoliciesClientBeginUpdateOptions) (resp azfake.PollerResponder[armcdn.PoliciesClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Delete is the fake for method PoliciesClient.Delete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
 	Delete func(ctx context.Context, resourceGroupName string, policyName string, options *armcdn.PoliciesClientDeleteOptions) (resp azfake.Responder[armcdn.PoliciesClientDeleteResponse], errResp azfake.ErrorResponder)
@@ -36,10 +40,6 @@ type PoliciesServer struct {
 	// NewListPager is the fake for method PoliciesClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(resourceGroupName string, options *armcdn.PoliciesClientListOptions) (resp azfake.PagerResponder[armcdn.PoliciesClientListResponse])
-
-	// BeginUpdate is the fake for method PoliciesClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, policyName string, cdnWebApplicationFirewallPolicyPatchParameters armcdn.WebApplicationFirewallPolicyPatchParameters, options *armcdn.PoliciesClientBeginUpdateOptions) (resp azfake.PollerResponder[armcdn.PoliciesClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewPoliciesServerTransport creates a new instance of PoliciesServerTransport with the provided implementation.
@@ -49,8 +49,8 @@ func NewPoliciesServerTransport(srv *PoliciesServer) *PoliciesServerTransport {
 	return &PoliciesServerTransport{
 		srv:                 srv,
 		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armcdn.PoliciesClientCreateOrUpdateResponse]](),
-		newListPager:        newTracker[azfake.PagerResponder[armcdn.PoliciesClientListResponse]](),
 		beginUpdate:         newTracker[azfake.PollerResponder[armcdn.PoliciesClientUpdateResponse]](),
+		newListPager:        newTracker[azfake.PagerResponder[armcdn.PoliciesClientListResponse]](),
 	}
 }
 
@@ -59,8 +59,8 @@ func NewPoliciesServerTransport(srv *PoliciesServer) *PoliciesServerTransport {
 type PoliciesServerTransport struct {
 	srv                 *PoliciesServer
 	beginCreateOrUpdate *tracker[azfake.PollerResponder[armcdn.PoliciesClientCreateOrUpdateResponse]]
-	newListPager        *tracker[azfake.PagerResponder[armcdn.PoliciesClientListResponse]]
 	beginUpdate         *tracker[azfake.PollerResponder[armcdn.PoliciesClientUpdateResponse]]
+	newListPager        *tracker[azfake.PagerResponder[armcdn.PoliciesClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for PoliciesServerTransport.
@@ -86,14 +86,14 @@ func (p *PoliciesServerTransport) dispatchToMethodFake(req *http.Request, method
 			switch method {
 			case "PoliciesClient.BeginCreateOrUpdate":
 				res.resp, res.err = p.dispatchBeginCreateOrUpdate(req)
+			case "PoliciesClient.BeginUpdate":
+				res.resp, res.err = p.dispatchBeginUpdate(req)
 			case "PoliciesClient.Delete":
 				res.resp, res.err = p.dispatchDelete(req)
 			case "PoliciesClient.Get":
 				res.resp, res.err = p.dispatchGet(req)
 			case "PoliciesClient.NewListPager":
 				res.resp, res.err = p.dispatchNewListPager(req)
-			case "PoliciesClient.BeginUpdate":
-				res.resp, res.err = p.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -153,6 +153,54 @@ func (p *PoliciesServerTransport) dispatchBeginCreateOrUpdate(req *http.Request)
 	}
 	if !server.PollerResponderMore(beginCreateOrUpdate) {
 		p.beginCreateOrUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (p *PoliciesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if p.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := p.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Cdn/cdnWebApplicationFirewallPolicies/(?P<policyName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armcdn.WebApplicationFirewallPolicyPatchParameters](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		policyNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("policyName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := p.srv.BeginUpdate(req.Context(), resourceGroupNameParam, policyNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		p.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		p.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		p.beginUpdate.remove(req)
 	}
 
 	return resp, nil
@@ -258,54 +306,6 @@ func (p *PoliciesServerTransport) dispatchNewListPager(req *http.Request) (*http
 	if !server.PagerResponderMore(newListPager) {
 		p.newListPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (p *PoliciesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if p.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := p.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Cdn/cdnWebApplicationFirewallPolicies/(?P<policyName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcdn.WebApplicationFirewallPolicyPatchParameters](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		policyNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("policyName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := p.srv.BeginUpdate(req.Context(), resourceGroupNameParam, policyNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		p.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		p.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		p.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

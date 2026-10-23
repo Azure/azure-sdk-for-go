@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v4"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -29,14 +29,6 @@ type AFDCustomDomainsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, profileName string, customDomainName string, options *armcdn.AFDCustomDomainsClientBeginDeleteOptions) (resp azfake.PollerResponder[armcdn.AFDCustomDomainsClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method AFDCustomDomainsClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, profileName string, customDomainName string, options *armcdn.AFDCustomDomainsClientGetOptions) (resp azfake.Responder[armcdn.AFDCustomDomainsClientGetResponse], errResp azfake.ErrorResponder)
-
-	// NewListByProfilePager is the fake for method AFDCustomDomainsClient.NewListByProfilePager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByProfilePager func(resourceGroupName string, profileName string, options *armcdn.AFDCustomDomainsClientListByProfileOptions) (resp azfake.PagerResponder[armcdn.AFDCustomDomainsClientListByProfileResponse])
-
 	// BeginRefreshValidationToken is the fake for method AFDCustomDomainsClient.BeginRefreshValidationToken
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginRefreshValidationToken func(ctx context.Context, resourceGroupName string, profileName string, customDomainName string, options *armcdn.AFDCustomDomainsClientBeginRefreshValidationTokenOptions) (resp azfake.PollerResponder[armcdn.AFDCustomDomainsClientRefreshValidationTokenResponse], errResp azfake.ErrorResponder)
@@ -44,6 +36,14 @@ type AFDCustomDomainsServer struct {
 	// BeginUpdate is the fake for method AFDCustomDomainsClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, resourceGroupName string, profileName string, customDomainName string, customDomainUpdateProperties armcdn.AFDDomainUpdateParameters, options *armcdn.AFDCustomDomainsClientBeginUpdateOptions) (resp azfake.PollerResponder[armcdn.AFDCustomDomainsClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method AFDCustomDomainsClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, profileName string, customDomainName string, options *armcdn.AFDCustomDomainsClientGetOptions) (resp azfake.Responder[armcdn.AFDCustomDomainsClientGetResponse], errResp azfake.ErrorResponder)
+
+	// NewListByProfilePager is the fake for method AFDCustomDomainsClient.NewListByProfilePager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByProfilePager func(resourceGroupName string, profileName string, options *armcdn.AFDCustomDomainsClientListByProfileOptions) (resp azfake.PagerResponder[armcdn.AFDCustomDomainsClientListByProfileResponse])
 }
 
 // NewAFDCustomDomainsServerTransport creates a new instance of AFDCustomDomainsServerTransport with the provided implementation.
@@ -54,9 +54,9 @@ func NewAFDCustomDomainsServerTransport(srv *AFDCustomDomainsServer) *AFDCustomD
 		srv:                         srv,
 		beginCreate:                 newTracker[azfake.PollerResponder[armcdn.AFDCustomDomainsClientCreateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armcdn.AFDCustomDomainsClientDeleteResponse]](),
-		newListByProfilePager:       newTracker[azfake.PagerResponder[armcdn.AFDCustomDomainsClientListByProfileResponse]](),
 		beginRefreshValidationToken: newTracker[azfake.PollerResponder[armcdn.AFDCustomDomainsClientRefreshValidationTokenResponse]](),
 		beginUpdate:                 newTracker[azfake.PollerResponder[armcdn.AFDCustomDomainsClientUpdateResponse]](),
+		newListByProfilePager:       newTracker[azfake.PagerResponder[armcdn.AFDCustomDomainsClientListByProfileResponse]](),
 	}
 }
 
@@ -66,9 +66,9 @@ type AFDCustomDomainsServerTransport struct {
 	srv                         *AFDCustomDomainsServer
 	beginCreate                 *tracker[azfake.PollerResponder[armcdn.AFDCustomDomainsClientCreateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armcdn.AFDCustomDomainsClientDeleteResponse]]
-	newListByProfilePager       *tracker[azfake.PagerResponder[armcdn.AFDCustomDomainsClientListByProfileResponse]]
 	beginRefreshValidationToken *tracker[azfake.PollerResponder[armcdn.AFDCustomDomainsClientRefreshValidationTokenResponse]]
 	beginUpdate                 *tracker[azfake.PollerResponder[armcdn.AFDCustomDomainsClientUpdateResponse]]
+	newListByProfilePager       *tracker[azfake.PagerResponder[armcdn.AFDCustomDomainsClientListByProfileResponse]]
 }
 
 // Do implements the policy.Transporter interface for AFDCustomDomainsServerTransport.
@@ -96,14 +96,14 @@ func (a *AFDCustomDomainsServerTransport) dispatchToMethodFake(req *http.Request
 				res.resp, res.err = a.dispatchBeginCreate(req)
 			case "AFDCustomDomainsClient.BeginDelete":
 				res.resp, res.err = a.dispatchBeginDelete(req)
-			case "AFDCustomDomainsClient.Get":
-				res.resp, res.err = a.dispatchGet(req)
-			case "AFDCustomDomainsClient.NewListByProfilePager":
-				res.resp, res.err = a.dispatchNewListByProfilePager(req)
 			case "AFDCustomDomainsClient.BeginRefreshValidationToken":
 				res.resp, res.err = a.dispatchBeginRefreshValidationToken(req)
 			case "AFDCustomDomainsClient.BeginUpdate":
 				res.resp, res.err = a.dispatchBeginUpdate(req)
+			case "AFDCustomDomainsClient.Get":
+				res.resp, res.err = a.dispatchGet(req)
+			case "AFDCustomDomainsClient.NewListByProfilePager":
+				res.resp, res.err = a.dispatchNewListByProfilePager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -220,84 +220,6 @@ func (a *AFDCustomDomainsServerTransport) dispatchBeginDelete(req *http.Request)
 	return resp, nil
 }
 
-func (a *AFDCustomDomainsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if a.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Cdn/profiles/(?P<profileName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/customDomains/(?P<customDomainName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	profileNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("profileName")])
-	if err != nil {
-		return nil, err
-	}
-	customDomainNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("customDomainName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := a.srv.Get(req.Context(), resourceGroupNameParam, profileNameParam, customDomainNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AFDDomain, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (a *AFDCustomDomainsServerTransport) dispatchNewListByProfilePager(req *http.Request) (*http.Response, error) {
-	if a.srv.NewListByProfilePager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByProfilePager not implemented")}
-	}
-	newListByProfilePager := a.newListByProfilePager.get(req)
-	if newListByProfilePager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Cdn/profiles/(?P<profileName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/customDomains`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		profileNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("profileName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := a.srv.NewListByProfilePager(resourceGroupNameParam, profileNameParam, nil)
-		newListByProfilePager = &resp
-		a.newListByProfilePager.add(req, newListByProfilePager)
-		server.PagerResponderInjectNextLinks(newListByProfilePager, req, func(page *armcdn.AFDCustomDomainsClientListByProfileResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByProfilePager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		a.newListByProfilePager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByProfilePager) {
-		a.newListByProfilePager.remove(req)
-	}
-	return resp, nil
-}
-
 func (a *AFDCustomDomainsServerTransport) dispatchBeginRefreshValidationToken(req *http.Request) (*http.Response, error) {
 	if a.srv.BeginRefreshValidationToken == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginRefreshValidationToken not implemented")}
@@ -395,6 +317,84 @@ func (a *AFDCustomDomainsServerTransport) dispatchBeginUpdate(req *http.Request)
 		a.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (a *AFDCustomDomainsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if a.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Cdn/profiles/(?P<profileName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/customDomains/(?P<customDomainName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	profileNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("profileName")])
+	if err != nil {
+		return nil, err
+	}
+	customDomainNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("customDomainName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := a.srv.Get(req.Context(), resourceGroupNameParam, profileNameParam, customDomainNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AFDDomain, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (a *AFDCustomDomainsServerTransport) dispatchNewListByProfilePager(req *http.Request) (*http.Response, error) {
+	if a.srv.NewListByProfilePager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByProfilePager not implemented")}
+	}
+	newListByProfilePager := a.newListByProfilePager.get(req)
+	if newListByProfilePager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Cdn/profiles/(?P<profileName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/customDomains`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		profileNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("profileName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := a.srv.NewListByProfilePager(resourceGroupNameParam, profileNameParam, nil)
+		newListByProfilePager = &resp
+		a.newListByProfilePager.add(req, newListByProfilePager)
+		server.PagerResponderInjectNextLinks(newListByProfilePager, req, func(page *armcdn.AFDCustomDomainsClientListByProfileResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByProfilePager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		a.newListByProfilePager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByProfilePager) {
+		a.newListByProfilePager.remove(req)
+	}
 	return resp, nil
 }
 

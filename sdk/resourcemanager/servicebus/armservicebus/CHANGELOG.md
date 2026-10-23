@@ -1,5 +1,16 @@
 # Release History
 
+## 2.0.0-beta.5 (2026-07-22)
+### Breaking Changes
+
+- Field `ClusterArmID` of struct `NamespaceReplicaLocation` has been removed
+
+### Features Added
+
+- New enum type `IPAddressType` with values `IPAddressTypeDualStack`, `IPAddressTypeIPv4`
+- New field `IPAddressType` in struct `SBNamespaceProperties`
+
+
 ## 2.0.0-beta.4 (2026-05-25)
 ### Breaking Changes
 

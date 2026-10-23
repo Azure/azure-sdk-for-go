@@ -1,5 +1,7 @@
 # Release History
 
+<!-- cspell:ignore azcertificates francescomari -->
+
 ## 1.6.0 (2026-10-23)
 ### Features Added
 
@@ -198,13 +200,13 @@
 
 ### Breaking Changes
 * Requires Go 1.18
-* Fixed a misspelling of `CerificateKeyUsage`, changed to `CertificateKeyUsage`
+* Fixed a misspelling of `CertificateKeyUsage`
 * Removed all `ToPtr` methods from constants
 * Renamed `CertificateOperation` to `Operation`
 * Renamed `Operation.Csr` to `Operation.CSR`
 * Renamed `KeyVaultCertificateWithPolicy` to `CertificateWithPolicy`
 * Abbreviated `EmailAddress` to `Email`
-* Changed `Upns` to `UserPrincipalNames`
+* Changed `UPNs` to `UserPrincipalNames`
 * Removed the `Trigger` struct and elevated it to the `LifetimeAction`
 * Renamed `DeletedDate` to `DeletedOn` and `Expires` to `ExpiresOn`
 

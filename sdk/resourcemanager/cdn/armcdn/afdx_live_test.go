@@ -192,7 +192,20 @@ func (testsuite *AfdxTestSuite) Prepare() {
 	fmt.Println("Call operation: RuleSets_Create")
 	ruleSetsClient, err := armcdn.NewRuleSetsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
-	_, err = ruleSetsClient.Create(testsuite.ctx, testsuite.resourceGroupName, testsuite.profileName, testsuite.ruleSetName, nil)
+	// Older recordings have no request body for rule set creation; the new API requires an empty resource.
+	err = recording.SetDefaultMatcher(testsuite.T(), &recording.SetDefaultMatcherOptions{
+		CompareBodies:          to.Ptr(false),
+		ExcludedHeaders:        []string{"Content-Type"},
+		IgnoredQueryParameters: []string{"api-version"},
+	})
+	testsuite.Require().NoError(err)
+	ruleSetsClientCreateResponsePoller, err := ruleSetsClient.BeginCreate(testsuite.ctx, testsuite.resourceGroupName, testsuite.profileName, testsuite.ruleSetName, armcdn.RuleSet{}, nil)
+	testsuite.Require().NoError(err)
+	_, err = testutil.PollForTest(testsuite.ctx, ruleSetsClientCreateResponsePoller)
+	testsuite.Require().NoError(err)
+	err = recording.SetDefaultMatcher(testsuite.T(), &recording.SetDefaultMatcherOptions{
+		IgnoredQueryParameters: []string{"api-version"},
+	})
 	testsuite.Require().NoError(err)
 }
 

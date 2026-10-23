@@ -1,9 +1,5 @@
 # Release History
 
-## 8.0.21 (Unreleased)
-### Other Changes
-* Added changelog tracking entry for server version 8.0.21.
-
 ## 2.0.0 (2026-06-10)
 ### Breaking Changes
 

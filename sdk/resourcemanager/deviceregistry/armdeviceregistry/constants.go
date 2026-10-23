@@ -5,7 +5,7 @@
 package armdeviceregistry
 
 const (
-	version20260301Preview string = "2026-03-01-preview"
+	version20261101 string = "2026-11-01"
 )
 
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -44,26 +44,75 @@ func PossibleAuthenticationMethodValues() []AuthenticationMethod {
 	}
 }
 
-// BringYourOwnRootStatus - Status of the Bring Your Own Root configuration.
-type BringYourOwnRootStatus string
+// CertificateAuthorityIssuerType - The issuer type for an intermediate Certificate Authority.
+type CertificateAuthorityIssuerType string
 
 const (
-	// BringYourOwnRootStatusActive - The signed certificate has been successfully uploaded and validated, and the CA is active.
-	BringYourOwnRootStatusActive BringYourOwnRootStatus = "Active"
-	// BringYourOwnRootStatusActiveButPendingRenewal - The certificate is nearing expiration (within renewal window) or has expired.
-	// A new CSR has been generated and is waiting for the customer to provide a new signed certificate.
-	BringYourOwnRootStatusActiveButPendingRenewal BringYourOwnRootStatus = "ActiveButPendingRenewal"
-	// BringYourOwnRootStatusPendingActivation - The CSR has been generated and is waiting for the customer to provide the signed
-	// certificate.
-	BringYourOwnRootStatusPendingActivation BringYourOwnRootStatus = "PendingActivation"
+	// CertificateAuthorityIssuerTypeExternal - The intermediate Certificate Authority is issued by an external Certificate Authority.
+	CertificateAuthorityIssuerTypeExternal CertificateAuthorityIssuerType = "External"
+	// CertificateAuthorityIssuerTypeMicrosoft - The intermediate Certificate Authority is issued by Microsoft.
+	CertificateAuthorityIssuerTypeMicrosoft CertificateAuthorityIssuerType = "Microsoft"
 )
 
-// PossibleBringYourOwnRootStatusValues returns the possible values for the BringYourOwnRootStatus const type.
-func PossibleBringYourOwnRootStatusValues() []BringYourOwnRootStatus {
-	return []BringYourOwnRootStatus{
-		BringYourOwnRootStatusActive,
-		BringYourOwnRootStatusActiveButPendingRenewal,
-		BringYourOwnRootStatusPendingActivation,
+// PossibleCertificateAuthorityIssuerTypeValues returns the possible values for the CertificateAuthorityIssuerType const type.
+func PossibleCertificateAuthorityIssuerTypeValues() []CertificateAuthorityIssuerType {
+	return []CertificateAuthorityIssuerType{
+		CertificateAuthorityIssuerTypeExternal,
+		CertificateAuthorityIssuerTypeMicrosoft,
+	}
+}
+
+// CertificateAuthorityKeyType - Supported Certificate Authority key types.
+type CertificateAuthorityKeyType string
+
+const (
+	// CertificateAuthorityKeyTypeECC - Indicate the ECC key type.
+	CertificateAuthorityKeyTypeECC CertificateAuthorityKeyType = "ECC"
+)
+
+// PossibleCertificateAuthorityKeyTypeValues returns the possible values for the CertificateAuthorityKeyType const type.
+func PossibleCertificateAuthorityKeyTypeValues() []CertificateAuthorityKeyType {
+	return []CertificateAuthorityKeyType{
+		CertificateAuthorityKeyTypeECC,
+	}
+}
+
+// CertificateAuthorityStatus - Status of the Certificate Authority certificate lifecycle.
+type CertificateAuthorityStatus string
+
+const (
+	// CertificateAuthorityStatusActive - The Certificate Authority is active.
+	CertificateAuthorityStatusActive CertificateAuthorityStatus = "Active"
+	// CertificateAuthorityStatusActiveButPendingRenewal - The Certificate Authority is active but requires renewal.
+	CertificateAuthorityStatusActiveButPendingRenewal CertificateAuthorityStatus = "ActiveButPendingRenewal"
+	// CertificateAuthorityStatusPendingActivation - The CSR has been generated and is waiting for activation.
+	CertificateAuthorityStatusPendingActivation CertificateAuthorityStatus = "PendingActivation"
+)
+
+// PossibleCertificateAuthorityStatusValues returns the possible values for the CertificateAuthorityStatus const type.
+func PossibleCertificateAuthorityStatusValues() []CertificateAuthorityStatus {
+	return []CertificateAuthorityStatus{
+		CertificateAuthorityStatusActive,
+		CertificateAuthorityStatusActiveButPendingRenewal,
+		CertificateAuthorityStatusPendingActivation,
+	}
+}
+
+// CertificateAuthorityType - Supported Certificate Authority types.
+type CertificateAuthorityType string
+
+const (
+	// CertificateAuthorityTypeICA - Intermediate Certificate Authority signed by another Certificate Authority.
+	CertificateAuthorityTypeICA CertificateAuthorityType = "ICA"
+	// CertificateAuthorityTypeRoot - Self-signed, service-managed root Certificate Authority.
+	CertificateAuthorityTypeRoot CertificateAuthorityType = "Root"
+)
+
+// PossibleCertificateAuthorityTypeValues returns the possible values for the CertificateAuthorityType const type.
+func PossibleCertificateAuthorityTypeValues() []CertificateAuthorityType {
+	return []CertificateAuthorityType{
+		CertificateAuthorityTypeICA,
+		CertificateAuthorityTypeRoot,
 	}
 }
 
@@ -181,6 +230,8 @@ type Format string
 const (
 	// FormatDelta10 - Delta format
 	FormatDelta10 Format = "Delta/1.0"
+	// FormatJSONLD11 - W3C Web of Things JSON-LD format
+	FormatJSONLD11 Format = "JsonLD/1.1"
 	// FormatJSONSchemaDraft7 - JSON Schema version draft 7 format
 	FormatJSONSchemaDraft7 Format = "JsonSchema/draft-07"
 )
@@ -189,7 +240,74 @@ const (
 func PossibleFormatValues() []Format {
 	return []Format{
 		FormatDelta10,
+		FormatJSONLD11,
 		FormatJSONSchemaDraft7,
+	}
+}
+
+// HealthStatus - Defines the health state of the resource.
+type HealthStatus string
+
+const (
+	// HealthStatusAvailable - Resource is Available and functioning as expected.
+	HealthStatusAvailable HealthStatus = "Available"
+	// HealthStatusDegraded - Resource health is degraded.
+	HealthStatusDegraded HealthStatus = "Degraded"
+	// HealthStatusUnavailable - Resource is not functioning as expected.
+	HealthStatusUnavailable HealthStatus = "Unavailable"
+	// HealthStatusUnknown - Resource state is unknown.
+	HealthStatusUnknown HealthStatus = "Unknown"
+)
+
+// PossibleHealthStatusValues returns the possible values for the HealthStatus const type.
+func PossibleHealthStatusValues() []HealthStatus {
+	return []HealthStatus{
+		HealthStatusAvailable,
+		HealthStatusDegraded,
+		HealthStatusUnavailable,
+		HealthStatusUnknown,
+	}
+}
+
+// InboundCallerIdentityType - The type of identity used for inbound calls to the ADR namespace.
+type InboundCallerIdentityType string
+
+const (
+	// InboundCallerIdentityTypeSystemAssigned - System-assigned managed identity.
+	InboundCallerIdentityTypeSystemAssigned InboundCallerIdentityType = "SystemAssigned"
+	// InboundCallerIdentityTypeUserAssigned - User-assigned managed identity.
+	InboundCallerIdentityTypeUserAssigned InboundCallerIdentityType = "UserAssigned"
+)
+
+// PossibleInboundCallerIdentityTypeValues returns the possible values for the InboundCallerIdentityType const type.
+func PossibleInboundCallerIdentityTypeValues() []InboundCallerIdentityType {
+	return []InboundCallerIdentityType{
+		InboundCallerIdentityTypeSystemAssigned,
+		InboundCallerIdentityTypeUserAssigned,
+	}
+}
+
+// ManagedServiceIdentityType - Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).
+type ManagedServiceIdentityType string
+
+const (
+	// ManagedServiceIdentityTypeNone - No managed identity.
+	ManagedServiceIdentityTypeNone ManagedServiceIdentityType = "None"
+	// ManagedServiceIdentityTypeSystemAssigned - System assigned managed identity.
+	ManagedServiceIdentityTypeSystemAssigned ManagedServiceIdentityType = "SystemAssigned"
+	// ManagedServiceIdentityTypeSystemAssignedUserAssigned - System and user assigned managed identity.
+	ManagedServiceIdentityTypeSystemAssignedUserAssigned ManagedServiceIdentityType = "SystemAssigned,UserAssigned"
+	// ManagedServiceIdentityTypeUserAssigned - User assigned managed identity.
+	ManagedServiceIdentityTypeUserAssigned ManagedServiceIdentityType = "UserAssigned"
+)
+
+// PossibleManagedServiceIdentityTypeValues returns the possible values for the ManagedServiceIdentityType const type.
+func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
+	return []ManagedServiceIdentityType{
+		ManagedServiceIdentityTypeNone,
+		ManagedServiceIdentityTypeSystemAssigned,
+		ManagedServiceIdentityTypeSystemAssignedUserAssigned,
+		ManagedServiceIdentityTypeUserAssigned,
 	}
 }
 
@@ -211,6 +329,24 @@ func PossibleManagementActionTypeValues() []ManagementActionType {
 		ManagementActionTypeCall,
 		ManagementActionTypeRead,
 		ManagementActionTypeWrite,
+	}
+}
+
+// MessagingEndpointAvailability - The availability status of a messaging endpoint.
+type MessagingEndpointAvailability string
+
+const (
+	// MessagingEndpointAvailabilityAvailable - The messaging endpoint is available.
+	MessagingEndpointAvailabilityAvailable MessagingEndpointAvailability = "Available"
+	// MessagingEndpointAvailabilityDisabled - The messaging endpoint is disabled.
+	MessagingEndpointAvailabilityDisabled MessagingEndpointAvailability = "Disabled"
+)
+
+// PossibleMessagingEndpointAvailabilityValues returns the possible values for the MessagingEndpointAvailability const type.
+func PossibleMessagingEndpointAvailabilityValues() []MessagingEndpointAvailability {
+	return []MessagingEndpointAvailability{
+		MessagingEndpointAvailabilityAvailable,
+		MessagingEndpointAvailabilityDisabled,
 	}
 }
 
@@ -253,6 +389,27 @@ func PossibleNamespaceDiscoveredManagementActionTypeValues() []NamespaceDiscover
 	}
 }
 
+// NamespaceLinkingStateValue - The linking state values for namespace endpoint entries.
+type NamespaceLinkingStateValue string
+
+const (
+	// NamespaceLinkingStateValueFailed - Linking failed.
+	NamespaceLinkingStateValueFailed NamespaceLinkingStateValue = "Failed"
+	// NamespaceLinkingStateValueInProgress - Linking is in progress.
+	NamespaceLinkingStateValueInProgress NamespaceLinkingStateValue = "InProgress"
+	// NamespaceLinkingStateValueSucceeded - Linking succeeded.
+	NamespaceLinkingStateValueSucceeded NamespaceLinkingStateValue = "Succeeded"
+)
+
+// PossibleNamespaceLinkingStateValueValues returns the possible values for the NamespaceLinkingStateValue const type.
+func PossibleNamespaceLinkingStateValueValues() []NamespaceLinkingStateValue {
+	return []NamespaceLinkingStateValue{
+		NamespaceLinkingStateValueFailed,
+		NamespaceLinkingStateValueInProgress,
+		NamespaceLinkingStateValueSucceeded,
+	}
+}
+
 // Origin - The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
 // value is "user,system"
 type Origin string
@@ -272,6 +429,39 @@ func PossibleOriginValues() []Origin {
 		OriginSystem,
 		OriginUser,
 		OriginUserSystem,
+	}
+}
+
+// OutboundIdentityType - The type of identity used for outbound calls from the ADR namespace.
+type OutboundIdentityType string
+
+const (
+	// OutboundIdentityTypeSystemAssigned - System-assigned managed identity.
+	OutboundIdentityTypeSystemAssigned OutboundIdentityType = "SystemAssigned"
+	// OutboundIdentityTypeUserAssigned - User-assigned managed identity.
+	OutboundIdentityTypeUserAssigned OutboundIdentityType = "UserAssigned"
+)
+
+// PossibleOutboundIdentityTypeValues returns the possible values for the OutboundIdentityType const type.
+func PossibleOutboundIdentityTypeValues() []OutboundIdentityType {
+	return []OutboundIdentityType{
+		OutboundIdentityTypeSystemAssigned,
+		OutboundIdentityTypeUserAssigned,
+	}
+}
+
+// ProvisioningEndpointType - The type of provisioning resource that can be linked to a namespace.
+type ProvisioningEndpointType string
+
+const (
+	// ProvisioningEndpointTypeDPS - Azure Device Provisioning Service.
+	ProvisioningEndpointTypeDPS ProvisioningEndpointType = "Microsoft.Devices/provisioningServices"
+)
+
+// PossibleProvisioningEndpointTypeValues returns the possible values for the ProvisioningEndpointType const type.
+func PossibleProvisioningEndpointTypeValues() []ProvisioningEndpointType {
+	return []ProvisioningEndpointType{
+		ProvisioningEndpointTypeDPS,
 	}
 }
 
@@ -302,18 +492,43 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 	}
 }
 
+// RegistryDeviceEnablementState - Represents the enablement state of a device.
+type RegistryDeviceEnablementState string
+
+const (
+	// RegistryDeviceEnablementStateDisabled - The device is disabled. All PUT/PATCH/POST APIs on the child resources will be
+	// blocked.
+	RegistryDeviceEnablementStateDisabled RegistryDeviceEnablementState = "Disabled"
+	// RegistryDeviceEnablementStateEnabled - The device is enabled.
+	RegistryDeviceEnablementStateEnabled RegistryDeviceEnablementState = "Enabled"
+)
+
+// PossibleRegistryDeviceEnablementStateValues returns the possible values for the RegistryDeviceEnablementState const type.
+func PossibleRegistryDeviceEnablementStateValues() []RegistryDeviceEnablementState {
+	return []RegistryDeviceEnablementState{
+		RegistryDeviceEnablementStateDisabled,
+		RegistryDeviceEnablementStateEnabled,
+	}
+}
+
 // SchemaType - Defines the schema type.
 type SchemaType string
 
 const (
 	// SchemaTypeMessageSchema - Message Schema schema type
 	SchemaTypeMessageSchema SchemaType = "MessageSchema"
+	// SchemaTypeThingDescription - W3C Web of Things Thing Description document
+	SchemaTypeThingDescription SchemaType = "ThingDescription"
+	// SchemaTypeThingModel - W3C Web of Things Thing Model document
+	SchemaTypeThingModel SchemaType = "ThingModel"
 )
 
 // PossibleSchemaTypeValues returns the possible values for the SchemaType const type.
 func PossibleSchemaTypeValues() []SchemaType {
 	return []SchemaType{
 		SchemaTypeMessageSchema,
+		SchemaTypeThingDescription,
+		SchemaTypeThingModel,
 	}
 }
 
@@ -347,39 +562,6 @@ func PossibleStreamDestinationTargetValues() []StreamDestinationTarget {
 	return []StreamDestinationTarget{
 		StreamDestinationTargetMqtt,
 		StreamDestinationTargetStorage,
-	}
-}
-
-// SupportedKeyType - Supported key types.
-type SupportedKeyType string
-
-const (
-	// SupportedKeyTypeECC - Indicates the ECC key type.
-	SupportedKeyTypeECC SupportedKeyType = "ECC"
-)
-
-// PossibleSupportedKeyTypeValues returns the possible values for the SupportedKeyType const type.
-func PossibleSupportedKeyTypeValues() []SupportedKeyType {
-	return []SupportedKeyType{
-		SupportedKeyTypeECC,
-	}
-}
-
-// SystemAssignedServiceIdentityType - Type of managed service identity (either system assigned, or none).
-type SystemAssignedServiceIdentityType string
-
-const (
-	// SystemAssignedServiceIdentityTypeNone - No managed system identity.
-	SystemAssignedServiceIdentityTypeNone SystemAssignedServiceIdentityType = "None"
-	// SystemAssignedServiceIdentityTypeSystemAssigned - System assigned managed system identity.
-	SystemAssignedServiceIdentityTypeSystemAssigned SystemAssignedServiceIdentityType = "SystemAssigned"
-)
-
-// PossibleSystemAssignedServiceIdentityTypeValues returns the possible values for the SystemAssignedServiceIdentityType const type.
-func PossibleSystemAssignedServiceIdentityTypeValues() []SystemAssignedServiceIdentityType {
-	return []SystemAssignedServiceIdentityType{
-		SystemAssignedServiceIdentityTypeNone,
-		SystemAssignedServiceIdentityTypeSystemAssigned,
 	}
 }
 

@@ -1,5 +1,113 @@
 # Release History
 
+## 3.0.0 (2026-09-10)
+### Breaking Changes
+
+- Type of `Namespace.Identity` has been changed from `*SystemAssignedServiceIdentity` to `*ManagedServiceIdentity`
+- Type of `NamespaceUpdate.Identity` has been changed from `*SystemAssignedServiceIdentity` to `*ManagedServiceIdentity`
+- Type of `SchemaRegistry.Identity` has been changed from `*SystemAssignedServiceIdentity` to `*ManagedServiceIdentity`
+- Type of `SchemaRegistryUpdate.Identity` has been changed from `*SystemAssignedServiceIdentity` to `*ManagedServiceIdentity`
+- Enum `SystemAssignedServiceIdentityType` has been removed
+- Function `*NamespaceAssetsClient.NewListByResourceGroupPager` has been removed
+- Function `*NamespaceDevicesClient.NewListByResourceGroupPager` has been removed
+- Function `*NamespaceDiscoveredAssetsClient.NewListByResourceGroupPager` has been removed
+- Function `*NamespaceDiscoveredDevicesClient.NewListByResourceGroupPager` has been removed
+- Struct `SystemAssignedServiceIdentity` has been removed
+
+### Features Added
+
+- New value `FormatJSONLD11` added to enum type `Format`
+- New value `SchemaTypeThingDescription`, `SchemaTypeThingModel` added to enum type `SchemaType`
+- New enum type `CertificateAuthorityIssuerType` with values `CertificateAuthorityIssuerTypeExternal`, `CertificateAuthorityIssuerTypeMicrosoft`
+- New enum type `CertificateAuthorityKeyType` with values `CertificateAuthorityKeyTypeECC`
+- New enum type `CertificateAuthorityStatus` with values `CertificateAuthorityStatusActive`, `CertificateAuthorityStatusActiveButPendingRenewal`, `CertificateAuthorityStatusPendingActivation`
+- New enum type `CertificateAuthorityType` with values `CertificateAuthorityTypeICA`, `CertificateAuthorityTypeRoot`
+- New enum type `HealthStatus` with values `HealthStatusAvailable`, `HealthStatusDegraded`, `HealthStatusUnavailable`, `HealthStatusUnknown`
+- New enum type `InboundCallerIdentityType` with values `InboundCallerIdentityTypeSystemAssigned`, `InboundCallerIdentityTypeUserAssigned`
+- New enum type `ManagedServiceIdentityType` with values `ManagedServiceIdentityTypeNone`, `ManagedServiceIdentityTypeSystemAssigned`, `ManagedServiceIdentityTypeSystemAssignedUserAssigned`, `ManagedServiceIdentityTypeUserAssigned`
+- New enum type `MessagingEndpointAvailability` with values `MessagingEndpointAvailabilityAvailable`, `MessagingEndpointAvailabilityDisabled`
+- New enum type `NamespaceLinkingStateValue` with values `NamespaceLinkingStateValueFailed`, `NamespaceLinkingStateValueInProgress`, `NamespaceLinkingStateValueSucceeded`
+- New enum type `OutboundIdentityType` with values `OutboundIdentityTypeSystemAssigned`, `OutboundIdentityTypeUserAssigned`
+- New enum type `ProvisioningEndpointType` with values `ProvisioningEndpointTypeDPS`
+- New enum type `RegistryDeviceEnablementState` with values `RegistryDeviceEnablementStateDisabled`, `RegistryDeviceEnablementStateEnabled`
+- New function `NewAsyncOperationStatusClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AsyncOperationStatusClient, error)`
+- New function `*AsyncOperationStatusClient.Get(ctx context.Context, location string, operationID string, options *AsyncOperationStatusClientGetOptions) (AsyncOperationStatusClientGetResponse, error)`
+- New function `NewCertificateAuthoritiesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CertificateAuthoritiesClient, error)`
+- New function `*CertificateAuthoritiesClient.BeginActivate(ctx context.Context, resourceGroupName string, namespaceName string, certificateAuthorityName string, body ActivateCertificateAuthorityRequest, options *CertificateAuthoritiesClientBeginActivateOptions) (*runtime.Poller[CertificateAuthoritiesClientActivateResponse], error)`
+- New function `*CertificateAuthoritiesClient.BeginCreateOrReplace(ctx context.Context, resourceGroupName string, namespaceName string, certificateAuthorityName string, resource CertificateAuthority, options *CertificateAuthoritiesClientBeginCreateOrReplaceOptions) (*runtime.Poller[CertificateAuthoritiesClientCreateOrReplaceResponse], error)`
+- New function `*CertificateAuthoritiesClient.BeginDelete(ctx context.Context, resourceGroupName string, namespaceName string, certificateAuthorityName string, options *CertificateAuthoritiesClientBeginDeleteOptions) (*runtime.Poller[CertificateAuthoritiesClientDeleteResponse], error)`
+- New function `*CertificateAuthoritiesClient.Get(ctx context.Context, resourceGroupName string, namespaceName string, certificateAuthorityName string, options *CertificateAuthoritiesClientGetOptions) (CertificateAuthoritiesClientGetResponse, error)`
+- New function `*CertificateAuthoritiesClient.NewListByNamespacePager(resourceGroupName string, namespaceName string, options *CertificateAuthoritiesClientListByNamespaceOptions) *runtime.Pager[CertificateAuthoritiesClientListByNamespaceResponse]`
+- New function `*CertificateAuthoritiesClient.BeginRevokeAndRotate(ctx context.Context, resourceGroupName string, namespaceName string, certificateAuthorityName string, options *CertificateAuthoritiesClientBeginRevokeAndRotateOptions) (*runtime.Poller[CertificateAuthoritiesClientRevokeAndRotateResponse], error)`
+- New function `*CertificateAuthoritiesClient.BeginUpdate(ctx context.Context, resourceGroupName string, namespaceName string, certificateAuthorityName string, properties CertificateAuthorityUpdate, options *CertificateAuthoritiesClientBeginUpdateOptions) (*runtime.Poller[CertificateAuthoritiesClientUpdateResponse], error)`
+- New function `*CertificateAuthorityIssuer.GetCertificateAuthorityIssuer() *CertificateAuthorityIssuer`
+- New function `*CertificateAuthorityProperties.GetCertificateAuthorityProperties() *CertificateAuthorityProperties`
+- New function `NewCertificatePoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CertificatePoliciesClient, error)`
+- New function `*CertificatePoliciesClient.BeginCreateOrReplace(ctx context.Context, resourceGroupName string, namespaceName string, certificateAuthorityName string, certificatePolicyName string, resource CertificatePolicy, options *CertificatePoliciesClientBeginCreateOrReplaceOptions) (*runtime.Poller[CertificatePoliciesClientCreateOrReplaceResponse], error)`
+- New function `*CertificatePoliciesClient.BeginDelete(ctx context.Context, resourceGroupName string, namespaceName string, certificateAuthorityName string, certificatePolicyName string, options *CertificatePoliciesClientBeginDeleteOptions) (*runtime.Poller[CertificatePoliciesClientDeleteResponse], error)`
+- New function `*CertificatePoliciesClient.Get(ctx context.Context, resourceGroupName string, namespaceName string, certificateAuthorityName string, certificatePolicyName string, options *CertificatePoliciesClientGetOptions) (CertificatePoliciesClientGetResponse, error)`
+- New function `*CertificatePoliciesClient.NewListByCertificateAuthorityPager(resourceGroupName string, namespaceName string, certificateAuthorityName string, options *CertificatePoliciesClientListByCertificateAuthorityOptions) *runtime.Pager[CertificatePoliciesClientListByCertificateAuthorityResponse]`
+- New function `*CertificatePoliciesClient.BeginUpdate(ctx context.Context, resourceGroupName string, namespaceName string, certificateAuthorityName string, certificatePolicyName string, properties CertificatePolicyUpdate, options *CertificatePoliciesClientBeginUpdateOptions) (*runtime.Poller[CertificatePoliciesClientUpdateResponse], error)`
+- New function `*ClientFactory.NewAsyncOperationStatusClient() *AsyncOperationStatusClient`
+- New function `*ClientFactory.NewCertificateAuthoritiesClient() *CertificateAuthoritiesClient`
+- New function `*ClientFactory.NewCertificatePoliciesClient() *CertificatePoliciesClient`
+- New function `*ClientFactory.NewRegistryDevicesClient() *RegistryDevicesClient`
+- New function `*ExternalCertificateAuthorityIssuer.GetCertificateAuthorityIssuer() *CertificateAuthorityIssuer`
+- New function `*IntermediateCertificateAuthorityProperties.GetCertificateAuthorityProperties() *CertificateAuthorityProperties`
+- New function `*MicrosoftCertificateAuthorityIssuer.GetCertificateAuthorityIssuer() *CertificateAuthorityIssuer`
+- New function `NewRegistryDevicesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RegistryDevicesClient, error)`
+- New function `*RegistryDevicesClient.BeginCreateOrReplace(ctx context.Context, resourceGroupName string, namespaceName string, registryDeviceName string, resource RegistryDevice, options *RegistryDevicesClientBeginCreateOrReplaceOptions) (*runtime.Poller[RegistryDevicesClientCreateOrReplaceResponse], error)`
+- New function `*RegistryDevicesClient.BeginDelete(ctx context.Context, resourceGroupName string, namespaceName string, registryDeviceName string, options *RegistryDevicesClientBeginDeleteOptions) (*runtime.Poller[RegistryDevicesClientDeleteResponse], error)`
+- New function `*RegistryDevicesClient.Get(ctx context.Context, resourceGroupName string, namespaceName string, registryDeviceName string, options *RegistryDevicesClientGetOptions) (RegistryDevicesClientGetResponse, error)`
+- New function `*RegistryDevicesClient.NewListByNamespacePager(resourceGroupName string, namespaceName string, options *RegistryDevicesClientListByNamespaceOptions) *runtime.Pager[RegistryDevicesClientListByNamespaceResponse]`
+- New function `*RegistryDevicesClient.BeginUpdate(ctx context.Context, resourceGroupName string, namespaceName string, registryDeviceName string, properties RegistryDeviceUpdate, options *RegistryDevicesClientBeginUpdateOptions) (*runtime.Poller[RegistryDevicesClientUpdateResponse], error)`
+- New function `*RootCertificateAuthorityProperties.GetCertificateAuthorityProperties() *CertificateAuthorityProperties`
+- New function `*NamespaceAssetsClient.BeginExecuteAction(ctx context.Context, resourceGroupName string, namespaceName string, assetName string, body NamespaceAssetExecuteActionRequest, options *NamespaceAssetsClientBeginExecuteActionOptions) (*runtime.Poller[NamespaceAssetsClientExecuteActionResponse], error)`
+- New function `*NamespaceAssetsClient.NewListByNamespacePager(resourceGroupName string, namespaceName string, options *NamespaceAssetsClientListByNamespaceOptions) *runtime.Pager[NamespaceAssetsClientListByNamespaceResponse]`
+- New function `*NamespaceDevicesClient.NewListByNamespacePager(resourceGroupName string, namespaceName string, options *NamespaceDevicesClientListByNamespaceOptions) *runtime.Pager[NamespaceDevicesClientListByNamespaceResponse]`
+- New function `*NamespaceDiscoveredAssetsClient.NewListByNamespacePager(resourceGroupName string, namespaceName string, options *NamespaceDiscoveredAssetsClientListByNamespaceOptions) *runtime.Pager[NamespaceDiscoveredAssetsClientListByNamespaceResponse]`
+- New function `*NamespaceDiscoveredDevicesClient.NewListByNamespacePager(resourceGroupName string, namespaceName string, options *NamespaceDiscoveredDevicesClientListByNamespaceOptions) *runtime.Pager[NamespaceDiscoveredDevicesClientListByNamespaceResponse]`
+- New struct `ActivateCertificateAuthorityRequest`
+- New struct `CertificateAuthority`
+- New struct `CertificateAuthorityListResult`
+- New struct `CertificateAuthorityUpdate`
+- New struct `CertificatePolicy`
+- New struct `CertificatePolicyConfiguration`
+- New struct `CertificatePolicyListResult`
+- New struct `CertificatePolicyProperties`
+- New struct `CertificatePolicyUpdate`
+- New struct `CertificatePolicyUpdateProperties`
+- New struct `ExternalCertificateAuthorityIssuer`
+- New struct `HealthState`
+- New struct `InboundCallerIdentity`
+- New struct `IntermediateCertificateAuthorityProperties`
+- New struct `ManagedServiceIdentity`
+- New struct `Management`
+- New struct `ManagementEndpoint`
+- New struct `MessagingEndpointProvisioning`
+- New struct `MicrosoftCertificateAuthorityIssuer`
+- New struct `NamespaceAssetExecuteActionRequest`
+- New struct `NamespaceLinkingError`
+- New struct `NamespaceProvisioning`
+- New struct `OptionalPropertiesCertificatePolicyConfiguration`
+- New struct `OutboundIdentity`
+- New struct `ProvisioningEndpoint`
+- New struct `RegistryDevice`
+- New struct `RegistryDeviceListResult`
+- New struct `RegistryDeviceProperties`
+- New struct `RegistryDeviceUpdate`
+- New struct `RegistryDeviceUpdateProperties`
+- New struct `RootCertificateAuthorityProperties`
+- New struct `UserAssignedIdentity`
+- New field `HealthState` in struct `DeviceStatusEndpoint`
+- New field `DeviceAddress`, `InboundCallerIdentity`, `LinkingError`, `LinkingState`, `Provisioning` in struct `MessagingEndpoint`
+- New field `HealthState` in struct `NamespaceAssetStatus`
+- New field `Management`, `OutboundIdentity`, `Provisioning` in struct `NamespaceProperties`
+- New field `Management`, `OutboundIdentity`, `Provisioning` in struct `NamespaceUpdateProperties`
+- New field `OutboundIdentity` in struct `SchemaRegistryProperties`
+- New field `OutboundIdentity` in struct `SchemaRegistryUpdateProperties`
+
+
 ## 2.1.0-beta.1 (2026-03-27)
 ### Features Added
 

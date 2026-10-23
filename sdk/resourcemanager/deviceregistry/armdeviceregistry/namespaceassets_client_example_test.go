@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/deviceregistry/armdeviceregistry/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/deviceregistry/armdeviceregistry/v3"
 	"log"
 )
 
-// Generated from example definition: 2026-03-01-preview/CreateOrReplace_NamespaceAsset.json
+// Generated from example definition: 2026-11-01/CreateOrReplace_NamespaceAsset.json
 func ExampleNamespaceAssetsClient_BeginCreateOrReplace() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -39,7 +39,6 @@ func ExampleNamespaceAssetsClient_BeginCreateOrReplace() {
 			},
 			AssetTypeRefs: []*string{
 				to.Ptr("myAssetTypeRef1"),
-				to.Ptr("myAssetTypeRef2"),
 			},
 			Enabled:          to.Ptr(true),
 			ExternalAssetID:  to.Ptr("8ZBA6LRHU0A458969"),
@@ -111,11 +110,29 @@ func ExampleNamespaceAssetsClient_BeginCreateOrReplace() {
 							DataPointConfiguration: to.Ptr("{\"publishingInterval\":8,\"samplingInterval\":8,\"queueSize\":4}"),
 							TypeRef:                to.Ptr("dataset1DataPoint1TypeRef"),
 						},
+					},
+				},
+			},
+			EventGroups: []*armdeviceregistry.NamespaceEventGroup{
+				{
+					Name: to.Ptr("default"),
+					Events: []*armdeviceregistry.NamespaceEvent{
 						{
-							Name:                   to.Ptr("dataset1DataPoint2"),
-							DataSource:             to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt4"),
-							DataPointConfiguration: to.Ptr("{\"publishingInterval\":8,\"samplingInterval\":8,\"queueSize\":4}"),
-							TypeRef:                to.Ptr("dataset1DataPoint2TypeRef"),
+							Name:               to.Ptr("event1"),
+							DataSource:         to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt5"),
+							EventConfiguration: to.Ptr("{\"publishingInterval\":7,\"samplingInterval\":1,\"queueSize\":8}"),
+							Destinations: []armdeviceregistry.EventDestinationClassification{
+								&armdeviceregistry.EventMqttDestination{
+									Target: to.Ptr(armdeviceregistry.EventDestinationTargetMqtt),
+									Configuration: &armdeviceregistry.MqttDestinationConfiguration{
+										Topic:  to.Ptr("/contoso/testEvent1"),
+										Retain: to.Ptr(armdeviceregistry.TopicRetainTypeKeep),
+										Qos:    to.Ptr(armdeviceregistry.MqttDestinationQosQos0),
+										TTL:    to.Ptr[int64](7200),
+									},
+								},
+							},
+							TypeRef: to.Ptr("event1Ref"),
 						},
 					},
 				},
@@ -130,22 +147,6 @@ func ExampleNamespaceAssetsClient_BeginCreateOrReplace() {
 							Target: to.Ptr(armdeviceregistry.StreamDestinationTargetStorage),
 							Configuration: &armdeviceregistry.StorageDestinationConfiguration{
 								Path: to.Ptr("/tmp/stream1"),
-							},
-						},
-					},
-				},
-				{
-					Name:                to.Ptr("stream2"),
-					StreamConfiguration: to.Ptr("{\"publishingInterval\":8,\"samplingInterval\":8,\"queueSize\":4}"),
-					TypeRef:             to.Ptr("stream2TypeRef"),
-					Destinations: []armdeviceregistry.StreamDestinationClassification{
-						&armdeviceregistry.StreamMqttDestination{
-							Target: to.Ptr(armdeviceregistry.StreamDestinationTargetMqtt),
-							Configuration: &armdeviceregistry.MqttDestinationConfiguration{
-								Topic:  to.Ptr("/contoso/testStream2"),
-								Retain: to.Ptr(armdeviceregistry.TopicRetainTypeNever),
-								Qos:    to.Ptr(armdeviceregistry.MqttDestinationQosQos0),
-								TTL:    to.Ptr[int64](7200),
 							},
 						},
 					},
@@ -165,15 +166,6 @@ func ExampleNamespaceAssetsClient_BeginCreateOrReplace() {
 							TargetURI:           to.Ptr("/onvif/device_service?ONVIFProfile=Profile1"),
 							Topic:               to.Ptr("/contoso/managementGroup1/action1"),
 							TypeRef:             to.Ptr("action1TypeRef"),
-							ActionType:          to.Ptr(armdeviceregistry.ManagementActionTypeCall),
-							TimeoutInSeconds:    to.Ptr[int32](60),
-						},
-						{
-							Name:                to.Ptr("action2"),
-							ActionConfiguration: to.Ptr("{\"retryCount\":5,\"retryBackoffInterval\":5}"),
-							TargetURI:           to.Ptr("/onvif/device_service?ONVIFProfile=Profile2"),
-							Topic:               to.Ptr("/contoso/managementGroup1/action2"),
-							TypeRef:             to.Ptr("action2TypeRef"),
 							ActionType:          to.Ptr(armdeviceregistry.ManagementActionTypeCall),
 							TimeoutInSeconds:    to.Ptr[int32](60),
 						},
@@ -197,14 +189,6 @@ func ExampleNamespaceAssetsClient_BeginCreateOrReplace() {
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.DeviceRegistry/namespaces/my-namespace-1/assets/my-asset-1"),
 	// 		Name: to.Ptr("my-asset-1"),
 	// 		Type: to.Ptr("Microsoft.DeviceRegistry/namespaces/assets"),
-	// 		SystemData: &armdeviceregistry.SystemData{
-	// 			CreatedBy: to.Ptr("00003442-0000-0000-0000-494059220000"),
-	// 			CreatedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-	// 			CreatedAt: to.Ptr(time.Date(2024, time.September, 13, 19, 38, 9, 528395800, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("00003442-0000-0000-0000-494059220000"),
-	// 			LastModifiedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.September, 13, 19, 38, 16, 663426300, time.UTC)),
-	// 		},
 	// 		Location: to.Ptr("West Europe"),
 	// 		ExtendedLocation: &armdeviceregistry.ExtendedLocation{
 	// 			Type: to.Ptr("CustomLocation"),
@@ -213,15 +197,21 @@ func ExampleNamespaceAssetsClient_BeginCreateOrReplace() {
 	// 		Tags: map[string]*string{
 	// 			"site": to.Ptr("building-1"),
 	// 		},
+	// 		SystemData: &armdeviceregistry.SystemData{
+	// 			CreatedBy: to.Ptr("00003442-0000-0000-0000-494059220000"),
+	// 			CreatedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.September, 13, 19, 38, 9, 528395800, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("00003442-0000-0000-0000-494059220000"),
+	// 			LastModifiedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.September, 13, 19, 38, 16, 663426300, time.UTC)),
+	// 		},
 	// 		Properties: &armdeviceregistry.NamespaceAssetProperties{
-	// 			UUID: to.Ptr("1824a74f-21e1-4458-ae07-604d3a241d2e"),
 	// 			DeviceRef: &armdeviceregistry.DeviceRef{
 	// 				DeviceName: to.Ptr("device1"),
 	// 				EndpointName: to.Ptr("8ZBA6LRHU0A458969"),
 	// 			},
 	// 			AssetTypeRefs: []*string{
 	// 				to.Ptr("myAssetTypeRef1"),
-	// 				to.Ptr("myAssetTypeRef2"),
 	// 			},
 	// 			Enabled: to.Ptr(true),
 	// 			ExternalAssetID: to.Ptr("8ZBA6LRHU0A458969"),
@@ -295,11 +285,29 @@ func ExampleNamespaceAssetsClient_BeginCreateOrReplace() {
 	// 							DataPointConfiguration: to.Ptr("{\"publishingInterval\":8,\"samplingInterval\":8,\"queueSize\":4}"),
 	// 							TypeRef: to.Ptr("dataset1DataPoint1TypeRef"),
 	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 			EventGroups: []*armdeviceregistry.NamespaceEventGroup{
+	// 				{
+	// 					Name: to.Ptr("default"),
+	// 					Events: []*armdeviceregistry.NamespaceEvent{
 	// 						{
-	// 							Name: to.Ptr("dataset1DataPoint2"),
-	// 							DataSource: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt4"),
-	// 							DataPointConfiguration: to.Ptr("{\"publishingInterval\":8,\"samplingInterval\":8,\"queueSize\":4}"),
-	// 							TypeRef: to.Ptr("dataset1DataPoint2TypeRef"),
+	// 							Name: to.Ptr("event1"),
+	// 							DataSource: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt3"),
+	// 							EventConfiguration: to.Ptr("{\"publishingInterval\":7,\"samplingInterval\":1,\"queueSize\":8}"),
+	// 							Destinations: []armdeviceregistry.EventDestinationClassification{
+	// 								&armdeviceregistry.EventMqttDestination{
+	// 									Target: to.Ptr(armdeviceregistry.EventDestinationTargetMqtt),
+	// 									Configuration: &armdeviceregistry.MqttDestinationConfiguration{
+	// 										Topic: to.Ptr("/contoso/testEvent1"),
+	// 										Retain: to.Ptr(armdeviceregistry.TopicRetainTypeKeep),
+	// 										Qos: to.Ptr(armdeviceregistry.MqttDestinationQosQos0),
+	// 										TTL: to.Ptr[int64](7200),
+	// 									},
+	// 								},
+	// 							},
+	// 							TypeRef: to.Ptr("event1Ref"),
 	// 						},
 	// 					},
 	// 				},
@@ -314,22 +322,6 @@ func ExampleNamespaceAssetsClient_BeginCreateOrReplace() {
 	// 							Target: to.Ptr(armdeviceregistry.StreamDestinationTargetStorage),
 	// 							Configuration: &armdeviceregistry.StorageDestinationConfiguration{
 	// 								Path: to.Ptr("/tmp/stream1"),
-	// 							},
-	// 						},
-	// 					},
-	// 				},
-	// 				{
-	// 					Name: to.Ptr("stream2"),
-	// 					StreamConfiguration: to.Ptr("{\"publishingInterval\":8,\"samplingInterval\":8,\"queueSize\":4}"),
-	// 					TypeRef: to.Ptr("stream2TypeRef"),
-	// 					Destinations: []armdeviceregistry.StreamDestinationClassification{
-	// 						&armdeviceregistry.StreamMqttDestination{
-	// 							Target: to.Ptr(armdeviceregistry.StreamDestinationTargetMqtt),
-	// 							Configuration: &armdeviceregistry.MqttDestinationConfiguration{
-	// 								Topic: to.Ptr("/contoso/testStream2"),
-	// 								Retain: to.Ptr(armdeviceregistry.TopicRetainTypeNever),
-	// 								Qos: to.Ptr(armdeviceregistry.MqttDestinationQosQos0),
-	// 								TTL: to.Ptr[int64](7200),
 	// 							},
 	// 						},
 	// 					},
@@ -352,19 +344,16 @@ func ExampleNamespaceAssetsClient_BeginCreateOrReplace() {
 	// 							ActionType: to.Ptr(armdeviceregistry.ManagementActionTypeCall),
 	// 							TimeoutInSeconds: to.Ptr[int32](60),
 	// 						},
-	// 						{
-	// 							Name: to.Ptr("action2"),
-	// 							ActionConfiguration: to.Ptr("{\"retryCount\":5,\"retryBackoffInterval\":5}"),
-	// 							TargetURI: to.Ptr("/onvif/device_service?ONVIFProfile=Profile2"),
-	// 							Topic: to.Ptr("/contoso/managementGroup1/action2"),
-	// 							TypeRef: to.Ptr("action2TypeRef"),
-	// 							ActionType: to.Ptr(armdeviceregistry.ManagementActionTypeCall),
-	// 							TimeoutInSeconds: to.Ptr[int32](60),
-	// 						},
 	// 					},
 	// 				},
 	// 			},
 	// 			Status: &armdeviceregistry.NamespaceAssetStatus{
+	// 				HealthState: &armdeviceregistry.HealthState{
+	// 					Status: to.Ptr(armdeviceregistry.HealthStatusDegraded),
+	// 					LastTransitionTime: to.Ptr("2025-11-03T08:10:12Z"),
+	// 					Message: to.Ptr("Broker experiencing backpressure. Client id with maximum queue size: client-123 (1200 messages)."),
+	// 					ReasonCode: to.Ptr("BrokerRateLimited"),
+	// 				},
 	// 				Config: &armdeviceregistry.StatusConfig{
 	// 					Version: to.Ptr[int64](9),
 	// 					LastTransitionTime: to.Ptr(time.Date(2025, time.March, 11, 2, 19, 16, 489000000, time.UTC)),
@@ -403,85 +392,6 @@ func ExampleNamespaceAssetsClient_BeginCreateOrReplace() {
 	// 						},
 	// 					},
 	// 				},
-	// 				Streams: []*armdeviceregistry.NamespaceAssetStatusStream{
-	// 					{
-	// 						Name: to.Ptr("stream1"),
-	// 						MessageSchemaReference: &armdeviceregistry.NamespaceMessageSchemaReference{
-	// 							SchemaRegistryNamespace: to.Ptr("liagdwhnvlhcptvmufws"),
-	// 							SchemaName: to.Ptr("lytgdlsvivtcrtuvje"),
-	// 							SchemaVersion: to.Ptr("1"),
-	// 						},
-	// 						Error: &armdeviceregistry.StatusError{
-	// 							Code: to.Ptr("400"),
-	// 							Message: to.Ptr("Error"),
-	// 							Details: []*armdeviceregistry.ErrorDetails{
-	// 								{
-	// 									Code: to.Ptr("400.123.456.789"),
-	// 									Message: to.Ptr("Validation error"),
-	// 									Info: to.Ptr("Property is not valid."),
-	// 									CorrelationID: to.Ptr("xqoettlcdlxchoscv"),
-	// 								},
-	// 							},
-	// 						},
-	// 					},
-	// 				},
-	// 				ManagementGroups: []*armdeviceregistry.NamespaceAssetStatusManagementGroup{
-	// 					{
-	// 						Name: to.Ptr("managementGroup1"),
-	// 						Actions: []*armdeviceregistry.NamespaceAssetStatusManagementAction{
-	// 							{
-	// 								Name: to.Ptr("action1"),
-	// 								RequestMessageSchemaReference: &armdeviceregistry.NamespaceMessageSchemaReference{
-	// 									SchemaRegistryNamespace: to.Ptr("liagdwhnvlhcptvmufws"),
-	// 									SchemaName: to.Ptr("lytgdlsvivtcrtuvje"),
-	// 									SchemaVersion: to.Ptr("1"),
-	// 								},
-	// 								ResponseMessageSchemaReference: &armdeviceregistry.NamespaceMessageSchemaReference{
-	// 									SchemaRegistryNamespace: to.Ptr("liagdwhnvlhcptvmufws"),
-	// 									SchemaName: to.Ptr("lytgdlsvivtcrtuvje"),
-	// 									SchemaVersion: to.Ptr("1"),
-	// 								},
-	// 								Error: &armdeviceregistry.StatusError{
-	// 									Code: to.Ptr("400"),
-	// 									Message: to.Ptr("Error"),
-	// 									Details: []*armdeviceregistry.ErrorDetails{
-	// 										{
-	// 											Code: to.Ptr("400.123.456.789"),
-	// 											Message: to.Ptr("Validation error"),
-	// 											Info: to.Ptr("Property is not valid."),
-	// 											CorrelationID: to.Ptr("xqoettlcdlxchoscv"),
-	// 										},
-	// 									},
-	// 								},
-	// 							},
-	// 							{
-	// 								Name: to.Ptr("action2"),
-	// 								RequestMessageSchemaReference: &armdeviceregistry.NamespaceMessageSchemaReference{
-	// 									SchemaRegistryNamespace: to.Ptr("liagdwhnvlhcptvmufws"),
-	// 									SchemaName: to.Ptr("lytgdlsvivtcrtuvje"),
-	// 									SchemaVersion: to.Ptr("1"),
-	// 								},
-	// 								ResponseMessageSchemaReference: &armdeviceregistry.NamespaceMessageSchemaReference{
-	// 									SchemaRegistryNamespace: to.Ptr("liagdwhnvlhcptvmufws"),
-	// 									SchemaName: to.Ptr("lytgdlsvivtcrtuvje"),
-	// 									SchemaVersion: to.Ptr("1"),
-	// 								},
-	// 								Error: &armdeviceregistry.StatusError{
-	// 									Code: to.Ptr("400"),
-	// 									Message: to.Ptr("Error"),
-	// 									Details: []*armdeviceregistry.ErrorDetails{
-	// 										{
-	// 											Code: to.Ptr("400.123.456.789"),
-	// 											Message: to.Ptr("Validation error"),
-	// 											Info: to.Ptr("Property is not valid."),
-	// 											CorrelationID: to.Ptr("xqoettlcdlxchoscv"),
-	// 										},
-	// 									},
-	// 								},
-	// 							},
-	// 						},
-	// 					},
-	// 				},
 	// 			},
 	// 			ProvisioningState: to.Ptr(armdeviceregistry.ProvisioningStateSucceeded),
 	// 		},
@@ -489,7 +399,7 @@ func ExampleNamespaceAssetsClient_BeginCreateOrReplace() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/Delete_NamespaceAsset.json
+// Generated from example definition: 2026-11-01/Delete_NamespaceAsset.json
 func ExampleNamespaceAssetsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -510,7 +420,44 @@ func ExampleNamespaceAssetsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/Get_NamespaceAsset.json
+// Generated from example definition: 2026-11-01/ExecuteAction_Assets_Namespace.json
+func ExampleNamespaceAssetsClient_BeginExecuteAction() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdeviceregistry.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewNamespaceAssetsClient().BeginExecuteAction(ctx, "myResourceGroup", "my-namespace-1", "my-asset-1", armdeviceregistry.NamespaceAssetExecuteActionRequest{
+		ManagementActionName: to.Ptr("my-asset-action-1"),
+		ManagementGroupName:  to.Ptr("my-asset-group-1"),
+		Payload: map[string]any{
+			"prop1": "value1",
+			"prop2": "123",
+			"prop3": true,
+			"prop4": map[string]any{
+				"subProp1": "subValue1",
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdeviceregistry.NamespaceAssetsClientExecuteActionResponse{
+	// }
+}
+
+// Generated from example definition: 2026-11-01/Get_NamespaceAsset.json
 func ExampleNamespaceAssetsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -550,7 +497,6 @@ func ExampleNamespaceAssetsClient_Get() {
 	// 			LastModifiedAt: to.Ptr(time.Date(2022, time.November, 16, 1, 37, 16, 92279300, time.UTC)),
 	// 		},
 	// 		Properties: &armdeviceregistry.NamespaceAssetProperties{
-	// 			UUID: to.Ptr("1824a74f-21e1-4458-ae07-604d3a241d2e"),
 	// 			DeviceRef: &armdeviceregistry.DeviceRef{
 	// 				DeviceName: to.Ptr("device1"),
 	// 				EndpointName: to.Ptr("8ZBA6LRHU0A458969"),
@@ -701,6 +647,12 @@ func ExampleNamespaceAssetsClient_Get() {
 	// 				},
 	// 			},
 	// 			Status: &armdeviceregistry.NamespaceAssetStatus{
+	// 				HealthState: &armdeviceregistry.HealthState{
+	// 					Status: to.Ptr(armdeviceregistry.HealthStatusDegraded),
+	// 					LastTransitionTime: to.Ptr("2025-11-03T08:10:12Z"),
+	// 					Message: to.Ptr("Broker experiencing backpressure. Client id with maximum queue size: client-123 (1200 messages)."),
+	// 					ReasonCode: to.Ptr("BrokerRateLimited"),
+	// 				},
 	// 				Config: &armdeviceregistry.StatusConfig{
 	// 					Version: to.Ptr[int64](9),
 	// 					LastTransitionTime: to.Ptr(time.Date(2025, time.March, 11, 2, 19, 16, 489000000, time.UTC)),
@@ -852,8 +804,8 @@ func ExampleNamespaceAssetsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/List_NamespaceAssets_ByResourceGroup.json
-func ExampleNamespaceAssetsClient_NewListByResourceGroupPager() {
+// Generated from example definition: 2026-11-01/List_NamespaceAssets_ByNamespace.json
+func ExampleNamespaceAssetsClient_NewListByNamespacePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -863,7 +815,7 @@ func ExampleNamespaceAssetsClient_NewListByResourceGroupPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewNamespaceAssetsClient().NewListByResourceGroupPager("myResourceGroup", "adr-namespace-gbk0925-n01", nil)
+	pager := clientFactory.NewNamespaceAssetsClient().NewListByNamespacePager("myResourceGroup", "adr-namespace-gbk0925-n01", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -874,7 +826,7 @@ func ExampleNamespaceAssetsClient_NewListByResourceGroupPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armdeviceregistry.NamespaceAssetsClientListByResourceGroupResponse{
+		// page = armdeviceregistry.NamespaceAssetsClientListByNamespaceResponse{
 		// 	NamespaceAssetListResult: armdeviceregistry.NamespaceAssetListResult{
 		// 		Value: []*armdeviceregistry.NamespaceAsset{
 		// 			{
@@ -940,6 +892,23 @@ func ExampleNamespaceAssetsClient_NewListByResourceGroupPager() {
 		// 									Name: to.Ptr("dataPoint2"),
 		// 									DataSource: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt2"),
 		// 									DataPointConfiguration: to.Ptr("{\"publishingInterval\":4,\"samplingInterval\":4,\"queueSize\":7}"),
+		// 								},
+		// 							},
+		// 						},
+		// 					},
+		// 					EventGroups: []*armdeviceregistry.NamespaceEventGroup{
+		// 						{
+		// 							Name: to.Ptr("default"),
+		// 							Events: []*armdeviceregistry.NamespaceEvent{
+		// 								{
+		// 									Name: to.Ptr("event1"),
+		// 									DataSource: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt3"),
+		// 									EventConfiguration: to.Ptr("{\"publishingInterval\":7,\"samplingInterval\":1,\"queueSize\":8}"),
+		// 								},
+		// 								{
+		// 									Name: to.Ptr("event2"),
+		// 									DataSource: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt4"),
+		// 									EventConfiguration: to.Ptr("{\"publishingInterval\":7,\"samplingInterval\":8,\"queueSize\":4}"),
 		// 								},
 		// 							},
 		// 						},
@@ -1013,7 +982,7 @@ func ExampleNamespaceAssetsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/Update_NamespaceAsset.json
+// Generated from example definition: 2026-11-01/Update_NamespaceAsset.json
 func ExampleNamespaceAssetsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1063,7 +1032,6 @@ func ExampleNamespaceAssetsClient_BeginUpdate() {
 	// 			LastModifiedAt: to.Ptr(time.Date(2022, time.November, 16, 1, 37, 16, 92279300, time.UTC)),
 	// 		},
 	// 		Properties: &armdeviceregistry.NamespaceAssetProperties{
-	// 			UUID: to.Ptr("1824a74f-21e1-4458-ae07-604d3a241d2e"),
 	// 			DeviceRef: &armdeviceregistry.DeviceRef{
 	// 				DeviceName: to.Ptr("device1"),
 	// 				EndpointName: to.Ptr("8ZBA6LRHU0A458969"),
@@ -1214,6 +1182,12 @@ func ExampleNamespaceAssetsClient_BeginUpdate() {
 	// 				},
 	// 			},
 	// 			Status: &armdeviceregistry.NamespaceAssetStatus{
+	// 				HealthState: &armdeviceregistry.HealthState{
+	// 					Status: to.Ptr(armdeviceregistry.HealthStatusDegraded),
+	// 					LastTransitionTime: to.Ptr("2025-11-03T08:10:12Z"),
+	// 					Message: to.Ptr("Broker experiencing backpressure. Client id with maximum queue size: client-123 (1200 messages)."),
+	// 					ReasonCode: to.Ptr("BrokerRateLimited"),
+	// 				},
 	// 				Config: &armdeviceregistry.StatusConfig{
 	// 					Version: to.Ptr[int64](9),
 	// 					LastTransitionTime: to.Ptr(time.Date(2025, time.March, 11, 2, 19, 16, 489000000, time.UTC)),

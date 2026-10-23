@@ -55,12 +55,7 @@ func (client *LiveTokenClient) Get(ctx context.Context, resourceURI string, opti
 	if err != nil {
 		return LiveTokenClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return LiveTokenClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -82,8 +77,11 @@ func (client *LiveTokenClient) getCreateRequest(ctx context.Context, resourceURI
 }
 
 // getHandleResponse handles the Get response.
-func (client *LiveTokenClient) getHandleResponse(resp *http.Response) (LiveTokenClientGetResponse, error) {
+func (client *LiveTokenClient) getHandleResponse(resp *http.Response, successCodes ...int) (LiveTokenClientGetResponse, error) {
 	result := LiveTokenClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LiveTokenResponse); err != nil {
 		return LiveTokenClientGetResponse{}, err
 	}

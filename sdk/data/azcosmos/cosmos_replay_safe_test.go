@@ -10,6 +10,7 @@ import (
 	"io"
 	"net"
 	"net/http"
+	"syscall"
 	"testing"
 	"time"
 
@@ -394,7 +395,7 @@ func TestReplaySafeWriteDownstreamVeto(t *testing.T) {
 }
 
 func TestReplaySafeWriteTerminalResponse(t *testing.T) {
-	for _, status := range []int{http.StatusNotFound, http.StatusConflict, http.StatusPreconditionFailed, http.StatusServiceUnavailable} {
+	for _, status := range []int{http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusNotFound, http.StatusConflict, http.StatusPreconditionFailed, http.StatusNotImplemented} {
 		t.Run(http.StatusText(status), func(t *testing.T) {
 			sends := 0
 			transport := retryPolicyTransportFunc(func(req *http.Request) (*http.Response, error) {
@@ -408,5 +409,186 @@ func TestReplaySafeWriteTerminalResponse(t *testing.T) {
 			assert.Equal(t, status, responseErr.StatusCode)
 			assert.Equal(t, 1, sends)
 		})
+	}
+
+}
+
+func TestNotSentWriteAttemptTimeout(t *testing.T) {
+	for _, optIn := range []string{"nil", "false", "true"} {
+		for _, failure := range []string{"transport timeout", "dial timeout", "backoff timeout", "bounded exhaustion", "ambiguous next attempt"} {
+			t.Run(optIn+"/"+failure, func(t *testing.T) {
+				t.Parallel()
+				var bodies, hosts []string
+				var notSent error = &net.DNSError{Err: "unreachable"}
+				if failure == "dial timeout" {
+					notSent = &net.OpError{Op: "dial", Err: syscall.ETIMEDOUT}
+				}
+				transport := retryPolicyTransportFunc(func(req *http.Request) (*http.Response, error) {
+					hosts = append(hosts, req.URL.Host)
+					body, err := io.ReadAll(req.Body)
+					require.NoError(t, err)
+					bodies = append(bodies, string(body))
+					if len(hosts) == 1 || failure == "bounded exhaustion" {
+						if failure == "transport timeout" || failure == "dial timeout" {
+							<-req.Context().Done()
+						}
+						return nil, notSent
+					}
+					if failure == "ambiguous next attempt" {
+						return nil, io.EOF
+					}
+					return readAttemptTimeoutResponse(req, http.StatusOK), nil
+				})
+				container, lc := newReplaySafeTestContainer(t, transport, policy.RetryOptions{
+					MaxRetries: 1, RetryDelay: time.Millisecond, TryTimeout: 20 * time.Millisecond,
+				}, false, true)
+				var options *ItemOptions
+				if optIn != "nil" {
+					options = &ItemOptions{ReplaySafe: optIn == "true"}
+				}
+				_, err := container.UpsertItem(context.Background(), NewPartitionKeyString("pk"), []byte(`{"id":"item"}`), options)
+				switch failure {
+				case "bounded exhaustion":
+					require.Error(t, err)
+					assert.ErrorIs(t, err, context.DeadlineExceeded)
+				case "ambiguous next attempt":
+					require.ErrorIs(t, err, io.EOF)
+					var nonRetriable errorinfo.NonRetriable
+					assert.Equal(t, optIn != "true", errors.As(err, &nonRetriable), "a prior NotSent must not make a later ambiguous send safe")
+				default:
+					require.NoError(t, err, "proven pre-send failures must retry without ReplaySafe")
+				}
+				assert.Equal(t, []string{"write-a.test", "write-a.test"}, hosts)
+				require.Len(t, bodies, 2)
+				assert.Equal(t, bodies[0], bodies[1])
+				assert.Empty(t, lc.locationUnavailabilityInfoMap)
+			})
+		}
+	}
+}
+
+func TestNotSentWriteCallerCancellation(t *testing.T) {
+	for _, optIn := range []bool{false, true} {
+		t.Run(fmt.Sprintf("ReplaySafe=%t", optIn), func(t *testing.T) {
+			ctx, cancel := context.WithCancel(context.Background())
+			defer cancel()
+			sends := 0
+			transport := retryPolicyTransportFunc(func(req *http.Request) (*http.Response, error) {
+				sends++
+				cancel()
+				return nil, &net.DNSError{Err: "unreachable"}
+			})
+			container, _ := newReplaySafeTestContainer(t, transport, policy.RetryOptions{
+				MaxRetries: 3, RetryDelay: time.Millisecond, TryTimeout: time.Second,
+			}, false, true)
+			_, err := container.UpsertItem(ctx, NewPartitionKeyString("pk"), []byte(`{"id":"item"}`), &ItemOptions{ReplaySafe: optIn})
+			assert.ErrorIs(t, err, context.Canceled)
+			assert.Equal(t, 1, sends)
+		})
+	}
+
+}
+
+func TestNotSentWriteAfterResponseRemainsAmbiguous(t *testing.T) {
+	for _, optIn := range []bool{false, true} {
+		t.Run(fmt.Sprintf("ReplaySafe=%t", optIn), func(t *testing.T) {
+			var hosts []string
+			transport := retryPolicyTransportFunc(func(req *http.Request) (*http.Response, error) {
+				hosts = append(hosts, req.URL.Host)
+				switch len(hosts) {
+				case 1:
+					return readAttemptTimeoutResponse(req, http.StatusServiceUnavailable), nil
+				case 2:
+					return nil, &net.DNSError{Err: "unreachable"}
+				default:
+					return readAttemptTimeoutResponse(req, http.StatusOK), nil
+				}
+			})
+			container, _ := newReplaySafeTestContainer(t, transport, policy.RetryOptions{
+				MaxRetries: 1, RetryDelay: time.Millisecond, TryTimeout: 20 * time.Millisecond,
+			}, true, true)
+			_, err := container.UpsertItem(context.Background(), NewPartitionKeyString("pk"), []byte(`{"id":"item"}`), &ItemOptions{ReplaySafe: optIn})
+			want := []string{"write-a.test", "write-b.test"}
+			if optIn {
+				require.NoError(t, err)
+				want = append(want, "write-a.test")
+			} else {
+				require.ErrorIs(t, err, context.DeadlineExceeded)
+				var nonRetriable errorinfo.NonRetriable
+				assert.ErrorAs(t, err, &nonRetriable, "last NotSent does not prove earlier attempts were unsent")
+			}
+			assert.Equal(t, want, hosts)
+		})
+	}
+}
+
+func TestReplaySafeWriteAmbiguousTimeouts(t *testing.T) {
+	for _, transportErr := range []error{
+		syscall.ETIMEDOUT,
+		&net.OpError{Op: "read", Err: syscall.ETIMEDOUT},
+		&net.OpError{Op: "write", Err: syscall.ETIMEDOUT},
+		context.DeadlineExceeded,
+	} {
+		for _, optIn := range []bool{false, true} {
+			t.Run(fmt.Sprintf("%s/ReplaySafe=%t", transportErr, optIn), func(t *testing.T) {
+				t.Parallel()
+				sends := 0
+				transport := retryPolicyTransportFunc(func(req *http.Request) (*http.Response, error) {
+					sends++
+					<-req.Context().Done()
+					return nil, transportErr
+				})
+				container, _ := newReplaySafeTestContainer(t, transport, policy.RetryOptions{
+					MaxRetries: 1, RetryDelay: time.Millisecond, TryTimeout: 20 * time.Millisecond,
+				}, false, true)
+				_, err := container.UpsertItem(context.Background(), NewPartitionKeyString("pk"), []byte(`{"id":"item"}`), &ItemOptions{ReplaySafe: optIn})
+				require.Error(t, err)
+				wantSends := 1
+				if optIn {
+					wantSends = 2
+				}
+				assert.Equal(t, wantSends, sends, "only dial-phase evidence permits unflagged timeout replays")
+			})
+		}
+	}
+}
+
+func TestReplaySafeWriteServiceUnavailableGuard(t *testing.T) {
+	for _, optIn := range []bool{false, true} {
+		for _, crossRegion := range []bool{false, true} {
+			for _, maxRetries := range []int32{-1, 1} {
+				t.Run(fmt.Sprintf("ReplaySafe=%t/crossRegion=%t/MaxRetries=%d", optIn, crossRegion, maxRetries), func(t *testing.T) {
+					t.Parallel()
+					var hosts []string
+					callbacks := 0
+					transport := retryPolicyTransportFunc(func(req *http.Request) (*http.Response, error) {
+						hosts = append(hosts, req.URL.Host)
+						return readAttemptTimeoutResponse(req, http.StatusServiceUnavailable), nil
+					})
+					container, lc := newReplaySafeTestContainer(t, transport, policy.RetryOptions{
+						MaxRetries: maxRetries, RetryDelay: time.Millisecond,
+						ShouldRetry: func(resp *http.Response, err error) bool {
+							callbacks++
+							require.NoError(t, err)
+							assert.Equal(t, http.StatusServiceUnavailable, resp.StatusCode)
+							return true
+						},
+					}, false, crossRegion)
+					_, err := container.UpsertItem(context.Background(), NewPartitionKeyString("pk"), []byte(`{"id":"item"}`), &ItemOptions{ReplaySafe: optIn})
+					require.Error(t, err)
+					want := []string{"write-a.test"}
+					if optIn && crossRegion {
+						if maxRetries > 0 {
+							want = append(want, "write-a.test")
+						}
+						assert.Equal(t, len(want), callbacks, "bypass the write-specific single-region veto, not routing")
+					} else {
+						assert.Zero(t, callbacks, "retain independent cross-region-disabled veto and unsafe-write default")
+					}
+					assert.Equal(t, want, hosts)
+					assert.Empty(t, lc.locationUnavailabilityInfoMap)
+				})
+			}
+		}
 	}
 }

@@ -88,14 +88,22 @@ response, err := container.PatchItem(ctx, pk, id, patch, &azcosmos.ItemOptions{
 handle(err)
 ```
 
-The flag passes ambiguous connection failures, attempt timeouts, and HTTP
-408/500/502/504 responses to the existing outer azcore retry policy. Its
-`RetryOptions` control whether to retry, `MaxRetries`, delays, status codes,
-`Retry-After`, and attempt timeouts; caller cancellation still stops retries.
-There is no new policy or loop, and Cosmos regional retry logic and write
-endpoint routing are unchanged. Disabling cross-region retries does not disable
-these outer retries. Existing Cosmos recovery for other failures, including
-requests known not to have been sent, remains unchanged.
+The flag bypasses guards whose reason is write replay safety, leaving the existing
+outer azcore policy to decide whether to retry. This includes transport failures,
+attempt timeouts, HTTP 408/500/502/504, and the single-write-region HTTP 503 guard
+when Cosmos's independent cross-region settings and retry budget permit recovery.
+Responses and transport errors are passed through, not converted to success.
+`RetryOptions` control `MaxRetries`, delays, status checks, `ShouldRetry`,
+`Retry-After`, and attempt timeouts; parent cancellation still stops retries.
+Independent vetoes, including downstream non-retriable errors and exhausted
+Cosmos recovery budgets, still apply. Terminal statuses are not automatically retried.
+
+There is no new policy, loop, or regional retry logic. Requests retain their write
+classification and never gain permission to target read-only regions. Existing
+safe-before-send, endpoint, and session recovery remain in place.
+Separately, proven pre-send failures can use outer retries when their attempt
+expires, including during Cosmos backoff, without requiring `ReplaySafe`.
+An expired context alone is not evidence that a write was never sent.
 
 Replay safety is an application assertion, not exactly-once execution. A lost response
 may mean the first write committed. Replaying a create, delete, or ETag-conditional write

@@ -193,6 +193,7 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 	}
 
 	retryContext := retryContext{}
+	writeResponseReceived := false
 	for {
 		// Update the retry context with the latest retry values
 		req.SetOperationValue(retryContext)
@@ -216,8 +217,9 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 			if errors.As(err, new(errorinfo.NonRetriable)) {
 				return nil, err
 			}
+			kind := classifyNetworkError(err)
 			if ctxErr := req.Raw().Context().Err(); ctxErr != nil {
-				if !o.isWriteOperation || o.replaySafe {
+				if !o.isWriteOperation || o.replaySafe || (kind == connectionErrorNotSent && !writeResponseReceived) {
 					// A send or body read failed with a done request context
 					// (attempt timeout or caller cancellation/deadline). Let
 					// azcore check the caller and decide on a fresh attempt.
@@ -225,8 +227,7 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 				}
 				return nil, errorinfo.NonRetriableError(fmt.Errorf("%w: underlying transport error: %v", ctxErr, err))
 			}
-			kind := classifyNetworkError(err)
-			if o.isWriteOperation && o.replaySafe && kind == connectionErrorAmbiguous {
+			if o.isWriteOperation && o.replaySafe && kind != connectionErrorNotSent {
 				// Let azcore apply the configured retry budget and backoff.
 				return nil, err
 			}
@@ -234,8 +235,9 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 				shouldRetry, errRetry := p.attemptRetryOnNetworkError(req, kind, o.isWriteOperation, err, &retryContext)
 				if errRetry != nil {
 					// The internal retry wait may have been interrupted by context expiry.
-					// Let azcore decide whether another read attempt is allowed.
-					if !o.isWriteOperation {
+					// Do not infer an unsent operation from just the last attempt.
+					if !o.isWriteOperation || (req.Raw().Context().Err() != nil &&
+						(o.replaySafe || (kind == connectionErrorNotSent && !writeResponseReceived))) {
 						return nil, errRetry
 					}
 					return nil, errorinfo.NonRetriableError(errRetry)
@@ -251,15 +253,9 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 			}
 			return nil, err
 		}
+		writeResponseReceived = o.isWriteOperation
 		if state := requestDiagnosticsStateFromContext(req.Raw().Context()); state != nil && state.clientSideStats != nil {
 			state.clientSideStats.recordHTTPResponse(attemptStartTime, response, o.resourceType, regionName.String())
-		}
-		if o.isWriteOperation && o.replaySafe {
-			switch response.StatusCode {
-			case http.StatusRequestTimeout, http.StatusInternalServerError, http.StatusBadGateway, http.StatusGatewayTimeout:
-				// Preserve the response for azcore's status checks and Retry-After handling.
-				return response, nil
-			}
 		}
 		subStatus := response.Header.Get(cosmosHeaderSubstatus)
 		if p.shouldRetryStatus(response.StatusCode, subStatus) {
@@ -283,10 +279,18 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 					return nil, errorinfo.NonRetriableError(azruntime.NewResponseErrorWithErrorCode(response, response.Status))
 				}
 			case http.StatusServiceUnavailable:
+				if o.isWriteOperation && o.replaySafe && !p.gem.CanUseMultipleWriteLocations() &&
+					p.gem.locationCache.enableCrossRegionRetries && retryContext.preferredLocationIndex < len(p.gem.preferredLocations) {
+					// Replay permission does not grant cross-region write capability.
+					return response, nil
+				}
 				if !p.attemptRetryOnServiceUnavailable(o.isWriteOperation, &retryContext) {
 					return nil, errorinfo.NonRetriableError(azruntime.NewResponseErrorWithErrorCode(response, response.Status))
 				}
 			case http.StatusRequestTimeout:
+				if o.isWriteOperation && o.replaySafe {
+					return response, nil
+				}
 				shouldRetry, err := p.attemptRetryOnRequestTimeout(req, o.isWriteOperation, &retryContext)
 				if err != nil {
 					// The HTTP 408 retry wait was interrupted by context expiry.
@@ -300,6 +304,9 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 					return nil, errorinfo.NonRetriableError(azruntime.NewResponseErrorWithErrorCode(response, response.Status))
 				}
 			case http.StatusInternalServerError, http.StatusBadGateway, http.StatusGatewayTimeout:
+				if o.isWriteOperation && o.replaySafe {
+					return response, nil
+				}
 				shouldRetry, inRegion := p.attemptRetryOnServerError(o.isWriteOperation, &retryContext)
 				if !shouldRetry {
 					return nil, errorinfo.NonRetriableError(azruntime.NewResponseErrorWithErrorCode(response, response.Status))
@@ -641,15 +648,21 @@ func classifyNetworkError(err error) connectionErrorKind {
 		return connectionErrorNotSent
 	}
 
-	// OS-level "connection could not be established" signals. ETIMEDOUT
-	// here covers TCP connect timeouts (kernel SYN timeout) — we treat
-	// those as not-sent because no application bytes were ever written.
+	// The operation phase takes precedence over an underlying syscall error.
+	var opErr *net.OpError
+	if errors.As(err, &opErr) {
+		if opErr.Op == "dial" {
+			return connectionErrorNotSent
+		}
+		return connectionErrorAmbiguous
+	}
+
+	// OS-level "connection could not be established" signals.
 	switch {
 	case errors.Is(err, syscall.ECONNREFUSED),
 		errors.Is(err, syscall.EHOSTUNREACH),
 		errors.Is(err, syscall.ENETUNREACH),
-		errors.Is(err, syscall.ENETDOWN),
-		errors.Is(err, syscall.ETIMEDOUT):
+		errors.Is(err, syscall.ENETDOWN):
 		return connectionErrorNotSent
 	}
 
@@ -658,27 +671,15 @@ func classifyNetworkError(err error) connectionErrorKind {
 	case errors.Is(err, io.EOF),
 		errors.Is(err, io.ErrUnexpectedEOF),
 		errors.Is(err, syscall.ECONNRESET),
-		errors.Is(err, syscall.EPIPE):
+		errors.Is(err, syscall.EPIPE),
+		errors.Is(err, syscall.ETIMEDOUT):
 		return connectionErrorAmbiguous
 	}
 
 	// Transport-level deadlines (e.g. http.Transport.ResponseHeaderTimeout)
 	// surface as context.DeadlineExceeded but without the caller's context
-	// being done; the caller-context check is performed by the retry loop
-	// before this function is called.
+	// being done; the caller-context check is performed separately by the retry loop.
 	if errors.Is(err, context.DeadlineExceeded) {
-		return connectionErrorAmbiguous
-	}
-
-	// net.OpError covers dial / read / write / accept failures. A "dial"
-	// failure proves the request never left this host. Any other
-	// OpError happened after the connection was established and is
-	// therefore ambiguous.
-	var opErr *net.OpError
-	if errors.As(err, &opErr) {
-		if opErr.Op == "dial" {
-			return connectionErrorNotSent
-		}
 		return connectionErrorAmbiguous
 	}
 

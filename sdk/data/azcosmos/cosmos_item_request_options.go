@@ -12,8 +12,9 @@ import (
 
 // ItemOptions includes options for operations on items.
 type ItemOptions struct {
-	// ReplaySafe allows the existing outer azcore retry policy to replay this item write after
-	// an ambiguous transport failure, an attempt timeout, or an HTTP 408/500/502/504.
+	// ReplaySafe permits bypassing write-safety retry guards for this item operation.
+	// The existing outer azcore retry policy decides whether and when to replay it.
+	// Independent retry vetoes, Cosmos recovery, and write endpoint routing still apply.
 	// The default is false. It has no effect on reads.
 	// Set this only when repeating the entire write, including any triggers, is safe.
 	// A previous attempt may already have committed; this does not provide exactly-once

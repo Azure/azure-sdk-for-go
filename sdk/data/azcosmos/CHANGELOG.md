@@ -6,11 +6,14 @@
 
 ### Features Added
 
-* Added `ItemOptions.ReplaySafe` to pass ambiguous transport failures, attempt timeouts, and HTTP 408/500/502/504 responses from individual item writes to the existing outer azcore retry policy. The default remains false; Cosmos regional retry logic is unchanged.
+* Added `ItemOptions.ReplaySafe` to bypass write-safety retry guards and defer replay decisions to the existing outer azcore retry policy. The default remains false; independent retry vetoes, Cosmos recovery, and write routing are preserved.
 
 ### Breaking Changes
 
 ### Bugs Fixed
+
+* Fixed proven pre-send write failures being blocked from outer retries when their attempt timeout expires, including during Cosmos retry backoff. This fix does not require `ReplaySafe`.
+* Fixed transport timeout classification to require dial-phase evidence before treating a timeout as a pre-send failure.
 
 ### Other Changes
 

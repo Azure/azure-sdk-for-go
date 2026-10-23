@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-15-preview/PermissionBindings_CreateOrUpdate.json
+// Generated from example definition: 2026-06-15-preview/PermissionBindings_CreateOrUpdate.json
 func ExamplePermissionBindingsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -55,7 +55,7 @@ func ExamplePermissionBindingsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/PermissionBindings_Delete.json
+// Generated from example definition: 2026-06-15-preview/PermissionBindings_Delete.json
 func ExamplePermissionBindingsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -81,7 +81,7 @@ func ExamplePermissionBindingsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/PermissionBindings_Get.json
+// Generated from example definition: 2026-06-15-preview/PermissionBindings_Get.json
 func ExamplePermissionBindingsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -114,7 +114,7 @@ func ExamplePermissionBindingsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/PermissionBindings_ListByNamespace.json
+// Generated from example definition: 2026-06-15-preview/PermissionBindings_ListByNamespace.json
 func ExamplePermissionBindingsClient_NewListByNamespacePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

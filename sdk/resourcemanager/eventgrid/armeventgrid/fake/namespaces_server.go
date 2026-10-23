@@ -30,22 +30,6 @@ type NamespacesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, namespaceName string, options *armeventgrid.NamespacesClientBeginDeleteOptions) (resp azfake.PollerResponder[armeventgrid.NamespacesClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method NamespacesClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, namespaceName string, options *armeventgrid.NamespacesClientGetOptions) (resp azfake.Responder[armeventgrid.NamespacesClientGetResponse], errResp azfake.ErrorResponder)
-
-	// NewListByResourceGroupPager is the fake for method NamespacesClient.NewListByResourceGroupPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupPager func(resourceGroupName string, options *armeventgrid.NamespacesClientListByResourceGroupOptions) (resp azfake.PagerResponder[armeventgrid.NamespacesClientListByResourceGroupResponse])
-
-	// NewListBySubscriptionPager is the fake for method NamespacesClient.NewListBySubscriptionPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListBySubscriptionPager func(options *armeventgrid.NamespacesClientListBySubscriptionOptions) (resp azfake.PagerResponder[armeventgrid.NamespacesClientListBySubscriptionResponse])
-
-	// ListSharedAccessKeys is the fake for method NamespacesClient.ListSharedAccessKeys
-	// HTTP status codes to indicate success: http.StatusOK
-	ListSharedAccessKeys func(ctx context.Context, resourceGroupName string, namespaceName string, options *armeventgrid.NamespacesClientListSharedAccessKeysOptions) (resp azfake.Responder[armeventgrid.NamespacesClientListSharedAccessKeysResponse], errResp azfake.ErrorResponder)
-
 	// BeginRegenerateKey is the fake for method NamespacesClient.BeginRegenerateKey
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginRegenerateKey func(ctx context.Context, resourceGroupName string, namespaceName string, regenerateKeyRequest armeventgrid.NamespaceRegenerateKeyRequest, options *armeventgrid.NamespacesClientBeginRegenerateKeyOptions) (resp azfake.PollerResponder[armeventgrid.NamespacesClientRegenerateKeyResponse], errResp azfake.ErrorResponder)
@@ -57,6 +41,22 @@ type NamespacesServer struct {
 	// BeginValidateCustomDomainOwnership is the fake for method NamespacesClient.BeginValidateCustomDomainOwnership
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginValidateCustomDomainOwnership func(ctx context.Context, resourceGroupName string, namespaceName string, options *armeventgrid.NamespacesClientBeginValidateCustomDomainOwnershipOptions) (resp azfake.PollerResponder[armeventgrid.NamespacesClientValidateCustomDomainOwnershipResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method NamespacesClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, namespaceName string, options *armeventgrid.NamespacesClientGetOptions) (resp azfake.Responder[armeventgrid.NamespacesClientGetResponse], errResp azfake.ErrorResponder)
+
+	// ListSharedAccessKeys is the fake for method NamespacesClient.ListSharedAccessKeys
+	// HTTP status codes to indicate success: http.StatusOK
+	ListSharedAccessKeys func(ctx context.Context, resourceGroupName string, namespaceName string, options *armeventgrid.NamespacesClientListSharedAccessKeysOptions) (resp azfake.Responder[armeventgrid.NamespacesClientListSharedAccessKeysResponse], errResp azfake.ErrorResponder)
+
+	// NewListByResourceGroupPager is the fake for method NamespacesClient.NewListByResourceGroupPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByResourceGroupPager func(resourceGroupName string, options *armeventgrid.NamespacesClientListByResourceGroupOptions) (resp azfake.PagerResponder[armeventgrid.NamespacesClientListByResourceGroupResponse])
+
+	// NewListBySubscriptionPager is the fake for method NamespacesClient.NewListBySubscriptionPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListBySubscriptionPager func(options *armeventgrid.NamespacesClientListBySubscriptionOptions) (resp azfake.PagerResponder[armeventgrid.NamespacesClientListBySubscriptionResponse])
 }
 
 // NewNamespacesServerTransport creates a new instance of NamespacesServerTransport with the provided implementation.
@@ -67,11 +67,11 @@ func NewNamespacesServerTransport(srv *NamespacesServer) *NamespacesServerTransp
 		srv:                                srv,
 		beginCreateOrUpdate:                newTracker[azfake.PollerResponder[armeventgrid.NamespacesClientCreateOrUpdateResponse]](),
 		beginDelete:                        newTracker[azfake.PollerResponder[armeventgrid.NamespacesClientDeleteResponse]](),
-		newListByResourceGroupPager:        newTracker[azfake.PagerResponder[armeventgrid.NamespacesClientListByResourceGroupResponse]](),
-		newListBySubscriptionPager:         newTracker[azfake.PagerResponder[armeventgrid.NamespacesClientListBySubscriptionResponse]](),
 		beginRegenerateKey:                 newTracker[azfake.PollerResponder[armeventgrid.NamespacesClientRegenerateKeyResponse]](),
 		beginUpdate:                        newTracker[azfake.PollerResponder[armeventgrid.NamespacesClientUpdateResponse]](),
 		beginValidateCustomDomainOwnership: newTracker[azfake.PollerResponder[armeventgrid.NamespacesClientValidateCustomDomainOwnershipResponse]](),
+		newListByResourceGroupPager:        newTracker[azfake.PagerResponder[armeventgrid.NamespacesClientListByResourceGroupResponse]](),
+		newListBySubscriptionPager:         newTracker[azfake.PagerResponder[armeventgrid.NamespacesClientListBySubscriptionResponse]](),
 	}
 }
 
@@ -81,11 +81,11 @@ type NamespacesServerTransport struct {
 	srv                                *NamespacesServer
 	beginCreateOrUpdate                *tracker[azfake.PollerResponder[armeventgrid.NamespacesClientCreateOrUpdateResponse]]
 	beginDelete                        *tracker[azfake.PollerResponder[armeventgrid.NamespacesClientDeleteResponse]]
-	newListByResourceGroupPager        *tracker[azfake.PagerResponder[armeventgrid.NamespacesClientListByResourceGroupResponse]]
-	newListBySubscriptionPager         *tracker[azfake.PagerResponder[armeventgrid.NamespacesClientListBySubscriptionResponse]]
 	beginRegenerateKey                 *tracker[azfake.PollerResponder[armeventgrid.NamespacesClientRegenerateKeyResponse]]
 	beginUpdate                        *tracker[azfake.PollerResponder[armeventgrid.NamespacesClientUpdateResponse]]
 	beginValidateCustomDomainOwnership *tracker[azfake.PollerResponder[armeventgrid.NamespacesClientValidateCustomDomainOwnershipResponse]]
+	newListByResourceGroupPager        *tracker[azfake.PagerResponder[armeventgrid.NamespacesClientListByResourceGroupResponse]]
+	newListBySubscriptionPager         *tracker[azfake.PagerResponder[armeventgrid.NamespacesClientListBySubscriptionResponse]]
 }
 
 // Do implements the policy.Transporter interface for NamespacesServerTransport.
@@ -113,20 +113,20 @@ func (n *NamespacesServerTransport) dispatchToMethodFake(req *http.Request, meth
 				res.resp, res.err = n.dispatchBeginCreateOrUpdate(req)
 			case "NamespacesClient.BeginDelete":
 				res.resp, res.err = n.dispatchBeginDelete(req)
-			case "NamespacesClient.Get":
-				res.resp, res.err = n.dispatchGet(req)
-			case "NamespacesClient.NewListByResourceGroupPager":
-				res.resp, res.err = n.dispatchNewListByResourceGroupPager(req)
-			case "NamespacesClient.NewListBySubscriptionPager":
-				res.resp, res.err = n.dispatchNewListBySubscriptionPager(req)
-			case "NamespacesClient.ListSharedAccessKeys":
-				res.resp, res.err = n.dispatchListSharedAccessKeys(req)
 			case "NamespacesClient.BeginRegenerateKey":
 				res.resp, res.err = n.dispatchBeginRegenerateKey(req)
 			case "NamespacesClient.BeginUpdate":
 				res.resp, res.err = n.dispatchBeginUpdate(req)
 			case "NamespacesClient.BeginValidateCustomDomainOwnership":
 				res.resp, res.err = n.dispatchBeginValidateCustomDomainOwnership(req)
+			case "NamespacesClient.Get":
+				res.resp, res.err = n.dispatchGet(req)
+			case "NamespacesClient.ListSharedAccessKeys":
+				res.resp, res.err = n.dispatchListSharedAccessKeys(req)
+			case "NamespacesClient.NewListByResourceGroupPager":
+				res.resp, res.err = n.dispatchNewListByResourceGroupPager(req)
+			case "NamespacesClient.NewListBySubscriptionPager":
+				res.resp, res.err = n.dispatchNewListBySubscriptionPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -232,180 +232,6 @@ func (n *NamespacesServerTransport) dispatchBeginDelete(req *http.Request) (*htt
 		n.beginDelete.remove(req)
 	}
 
-	return resp, nil
-}
-
-func (n *NamespacesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if n.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventGrid/namespaces/(?P<namespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	namespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("namespaceName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := n.srv.Get(req.Context(), resourceGroupNameParam, namespaceNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Namespace, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (n *NamespacesServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
-	if n.srv.NewListByResourceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
-	}
-	newListByResourceGroupPager := n.newListByResourceGroupPager.get(req)
-	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventGrid/namespaces`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		filterParam := getOptional(qp.Get("$filter"))
-		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
-		})
-		if err != nil {
-			return nil, err
-		}
-		var options *armeventgrid.NamespacesClientListByResourceGroupOptions
-		if filterParam != nil || topParam != nil {
-			options = &armeventgrid.NamespacesClientListByResourceGroupOptions{
-				Filter: filterParam,
-				Top:    topParam,
-			}
-		}
-		resp := n.srv.NewListByResourceGroupPager(resourceGroupNameParam, options)
-		newListByResourceGroupPager = &resp
-		n.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armeventgrid.NamespacesClientListByResourceGroupResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		n.newListByResourceGroupPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByResourceGroupPager) {
-		n.newListByResourceGroupPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (n *NamespacesServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
-	if n.srv.NewListBySubscriptionPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
-	}
-	newListBySubscriptionPager := n.newListBySubscriptionPager.get(req)
-	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventGrid/namespaces`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		filterParam := getOptional(qp.Get("$filter"))
-		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
-		})
-		if err != nil {
-			return nil, err
-		}
-		var options *armeventgrid.NamespacesClientListBySubscriptionOptions
-		if filterParam != nil || topParam != nil {
-			options = &armeventgrid.NamespacesClientListBySubscriptionOptions{
-				Filter: filterParam,
-				Top:    topParam,
-			}
-		}
-		resp := n.srv.NewListBySubscriptionPager(options)
-		newListBySubscriptionPager = &resp
-		n.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
-		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armeventgrid.NamespacesClientListBySubscriptionResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		n.newListBySubscriptionPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListBySubscriptionPager) {
-		n.newListBySubscriptionPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (n *NamespacesServerTransport) dispatchListSharedAccessKeys(req *http.Request) (*http.Response, error) {
-	if n.srv.ListSharedAccessKeys == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListSharedAccessKeys not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventGrid/namespaces/(?P<namespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listKeys`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	namespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("namespaceName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := n.srv.ListSharedAccessKeys(req.Context(), resourceGroupNameParam, namespaceNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).NamespaceSharedAccessKeys, req)
-	if err != nil {
-		return nil, err
-	}
 	return resp, nil
 }
 
@@ -546,6 +372,180 @@ func (n *NamespacesServerTransport) dispatchBeginValidateCustomDomainOwnership(r
 		n.beginValidateCustomDomainOwnership.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (n *NamespacesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if n.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventGrid/namespaces/(?P<namespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	namespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("namespaceName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := n.srv.Get(req.Context(), resourceGroupNameParam, namespaceNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Namespace, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (n *NamespacesServerTransport) dispatchListSharedAccessKeys(req *http.Request) (*http.Response, error) {
+	if n.srv.ListSharedAccessKeys == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListSharedAccessKeys not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventGrid/namespaces/(?P<namespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listKeys`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	namespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("namespaceName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := n.srv.ListSharedAccessKeys(req.Context(), resourceGroupNameParam, namespaceNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).NamespaceSharedAccessKeys, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (n *NamespacesServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
+	if n.srv.NewListByResourceGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
+	}
+	newListByResourceGroupPager := n.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventGrid/namespaces`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		filterParam := getOptional(qp.Get("$filter"))
+		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		var options *armeventgrid.NamespacesClientListByResourceGroupOptions
+		if filterParam != nil || topParam != nil {
+			options = &armeventgrid.NamespacesClientListByResourceGroupOptions{
+				Filter: filterParam,
+				Top:    topParam,
+			}
+		}
+		resp := n.srv.NewListByResourceGroupPager(resourceGroupNameParam, options)
+		newListByResourceGroupPager = &resp
+		n.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armeventgrid.NamespacesClientListByResourceGroupResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		n.newListByResourceGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		n.newListByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (n *NamespacesServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
+	if n.srv.NewListBySubscriptionPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
+	}
+	newListBySubscriptionPager := n.newListBySubscriptionPager.get(req)
+	if newListBySubscriptionPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventGrid/namespaces`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		filterParam := getOptional(qp.Get("$filter"))
+		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		var options *armeventgrid.NamespacesClientListBySubscriptionOptions
+		if filterParam != nil || topParam != nil {
+			options = &armeventgrid.NamespacesClientListBySubscriptionOptions{
+				Filter: filterParam,
+				Top:    topParam,
+			}
+		}
+		resp := n.srv.NewListBySubscriptionPager(options)
+		newListBySubscriptionPager = &resp
+		n.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
+		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armeventgrid.NamespacesClientListBySubscriptionResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		n.newListBySubscriptionPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListBySubscriptionPager) {
+		n.newListBySubscriptionPager.remove(req)
+	}
 	return resp, nil
 }
 

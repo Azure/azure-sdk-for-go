@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-15-preview/VerifiedPartners_Get.json
+// Generated from example definition: 2026-06-15-preview/VerifiedPartners_Get.json
 func ExampleVerifiedPartnersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -53,7 +53,7 @@ func ExampleVerifiedPartnersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/VerifiedPartners_List.json
+// Generated from example definition: 2026-06-15-preview/VerifiedPartners_List.json
 func ExampleVerifiedPartnersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

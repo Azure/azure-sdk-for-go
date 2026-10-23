@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-08-02/Cves_ListByFirmware_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01-preview/Cves_ListByFirmware_MaximumSet_Gen.json
 func ExampleCvesClient_NewListByFirmwarePager_cvesListByFirmwareMaximumSetGenGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -51,12 +51,21 @@ func ExampleCvesClient_NewListByFirmwarePager_cvesListByFirmwareMaximumSetGenGen
 		// 					},
 		// 					ProvisioningState: to.Ptr(armiotfirmwaredefense.ProvisioningStateSucceeded),
 		// 					CveName: to.Ptr("CVE-2000-00001"),
-		// 					EffectiveCvssScore: to.Ptr[float32](7.4),
-		// 					EffectiveCvssVersion: to.Ptr[int32](3),
+		// 					EffectiveCvssScore: to.Ptr[float32](7.6),
+		// 					EffectiveCvssVersion: to.Ptr[int32](4),
+		// 					EffectiveVectorString: to.Ptr("CVSS:4.0/AV:A/AC:L/AT:N/PR:L/UI:N/VC:L/VI:L/VA:L/SC:N/SI:N/SA:N"),
+		// 					EffectiveExploitMaturity: to.Ptr(armiotfirmwaredefense.ExploitMaturityLevelProofOfConcept),
 		// 					CvssScores: []*armiotfirmwaredefense.CvssScore{
 		// 						{
 		// 							Version: to.Ptr[int32](3),
 		// 							Score: to.Ptr[float32](7.4),
+		// 							VectorString: to.Ptr("CVSS:3.0/AV:A/AC:L/AT:N/PR:L/UI:N/VC:L/VI:L/VA:L/SC:N/SI:N/SA:N"),
+		// 						},
+		// 						{
+		// 							Version: to.Ptr[int32](4),
+		// 							Score: to.Ptr[float32](7.6),
+		// 							VectorString: to.Ptr("CVSS:4.0/AV:A/AC:L/AT:N/PR:L/UI:N/VC:L/VI:L/VA:L/SC:N/SI:N/SA:N"),
+		// 							ExploitMaturity: to.Ptr(armiotfirmwaredefense.ExploitMaturityLevelProofOfConcept),
 		// 						},
 		// 					},
 		// 					Component: &armiotfirmwaredefense.CveComponent{
@@ -69,6 +78,27 @@ func ExampleCvesClient_NewListByFirmwarePager_cvesListByFirmwareMaximumSetGenGen
 		// 					CvssV3Score: to.Ptr("7.4"),
 		// 					CvssVersion: to.Ptr("3"),
 		// 					Description: to.Ptr("This is a sample description of the vulnerability."),
+		// 					FixedInVersions: []*string{
+		// 						to.Ptr("1.0.1"),
+		// 						to.Ptr("1.0.3"),
+		// 					},
+		// 					Epss: &armiotfirmwaredefense.EpssProperties{
+		// 						Score: to.Ptr[float32](0.00206),
+		// 						Percentile: to.Ptr[float32](0.3871),
+		// 					},
+		// 					Cwes: []*armiotfirmwaredefense.CweProperties{
+		// 						{
+		// 							CweID: to.Ptr("CWE-74"),
+		// 							CweName: to.Ptr("Improper Neutralization of Special Elements in Output Used by a Downstream Component ('Injection')"),
+		// 							Description: to.Ptr("The product constructs all or part of a command using externally-influenced input from an upstream component, but it does not neutralize or incorrectly neutralizes special elements that could modify the intended command when it is sent to a downstream component."),
+		// 						},
+		// 					},
+		// 					Kev: &armiotfirmwaredefense.KevProperties{
+		// 						KnownRansomwareCampaignUse: to.Ptr(armiotfirmwaredefense.RansomwareCampaignUseUnknown),
+		// 						DateAdded: to.Ptr(time.Date(2025, time.November, 1, 0, 0, 0, 0, time.UTC)),
+		// 						RemediationDueDate: to.Ptr(time.Date(2026, time.January, 1, 0, 0, 0, 0, time.UTC)),
+		// 						RequiredAction: to.Ptr("If at all possible, use library calls rather than external processes to recreate the desired functionality."),
+		// 					},
 		// 				},
 		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ResourceGroupName/providers/Microsoft.IoTFirmwareDefense/workspaces/WorkspaceName/firmwares/00000000-0000-0000-0000-000000000000/cves/00000000-0000-0000-0000-000000000000"),
 		// 				Name: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -89,7 +119,7 @@ func ExampleCvesClient_NewListByFirmwarePager_cvesListByFirmwareMaximumSetGenGen
 	}
 }
 
-// Generated from example definition: 2025-08-02/Cves_ListByFirmware_MinimumSet_Gen.json
+// Generated from example definition: 2026-06-01-preview/Cves_ListByFirmware_MinimumSet_Gen.json
 func ExampleCvesClient_NewListByFirmwarePager_cvesListByFirmwareMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

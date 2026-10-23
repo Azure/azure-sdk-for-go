@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-08-02/PasswordHashes_ListByFirmware_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01-preview/PasswordHashes_ListByFirmware_MaximumSet_Gen.json
 func ExamplePasswordHashesClient_NewListByFirmwarePager_passwordHashesListByFirmwareMaximumSetGenGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -66,7 +66,7 @@ func ExamplePasswordHashesClient_NewListByFirmwarePager_passwordHashesListByFirm
 	}
 }
 
-// Generated from example definition: 2025-08-02/PasswordHashes_ListByFirmware_MinimumSet_Gen.json
+// Generated from example definition: 2026-06-01-preview/PasswordHashes_ListByFirmware_MinimumSet_Gen.json
 func ExamplePasswordHashesClient_NewListByFirmwarePager_passwordHashesListByFirmwareMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

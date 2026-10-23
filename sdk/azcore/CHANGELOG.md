@@ -1,10 +1,11 @@
 # Release History
 
-## 1.23.4-beta.1 (Unreleased)
+## 1.24.0 (Unreleased)
 
 ### Features Added
 
 * Added `tracing.WrapTracer` to decorate a tracer while preserving attribute override ordering.
+* Added supporting infrastructure for SSE responses.  This includes streaming types, runtime support, and fakes.
 
 ### Breaking Changes
 

@@ -96,7 +96,11 @@ func (p *logPolicy) Do(req *policy.Request) (*http.Response, error) {
 			// skip frames runtime.Callers() and runtime.StackTrace()
 			b.WriteString(diag.StackTrace(2, 32))
 		} else if p.includeBody {
-			err = writeRespBody(response, b)
+			if shouldSkipBodyDownload(req, response) {
+				fmt.Fprintln(b, "   Skip logging body for streaming response")
+			} else {
+				err = writeRespBody(response, b)
+			}
 		}
 		log.Write(log.EventResponse, b.String())
 	}

@@ -1,5 +1,16 @@
 # Release History
 
+## 1.3.0 (2026-10-02)
+### Features Added
+
+- New enum type `DataflowGraphDestinationSchemaSerializationFormat` with values `DataflowGraphDestinationSchemaSerializationFormatDelta`, `DataflowGraphDestinationSchemaSerializationFormatParquet`
+- New enum type `InstanceSKUName` with values `InstanceSKUNameEssentials`, `InstanceSKUNameStandard`
+- New struct `DataflowGraphDestinationSchemaSettings`
+- New struct `InstanceSKU`
+- New field `OutputSchemaSettings` in struct `DataflowGraphDestinationNodeSettings`
+- New field `SKU` in struct `InstanceResource`
+
+
 ## 1.2.0 (2026-07-28)
 ### Features Added
 

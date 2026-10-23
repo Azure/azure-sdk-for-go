@@ -1,6 +1,6 @@
 # Release History
 
-## 2.0.0 (2026-10-13)
+## 2.0.0 (2026-11-01)
 ### Breaking Changes
 
 - For migration help on parameter-group updates, see [SDK Breaking Changes Migration Guide - Parameter Group Changes](https://aka.ms/azsdk/go/breakingchanges/migration/parameter-group).

@@ -114,7 +114,12 @@ func startTest(t *testing.T) *azsecrets.Client {
 	})
 	transport, err := recording.NewRecordingHTTPClient(t, nil)
 	require.NoError(t, err)
-	opts := &azsecrets.ClientOptions{ClientOptions: azcore.ClientOptions{Transport: transport}}
+	opts := &azsecrets.ClientOptions{
+		ClientOptions: azcore.ClientOptions{
+			Transport:  transport,
+			APIVersion: "2025-07-01",
+		},
+	}
 	client, err := azsecrets.NewClient(vaultURL, credential, opts)
 	require.NoError(t, err)
 	return client

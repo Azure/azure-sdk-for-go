@@ -60,12 +60,7 @@ func (client *TenantActionGroupsClient) CreateOrUpdate(ctx context.Context, mana
 	if err != nil {
 		return TenantActionGroupsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return TenantActionGroupsClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -96,8 +91,11 @@ func (client *TenantActionGroupsClient) createOrUpdateCreateRequest(ctx context.
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *TenantActionGroupsClient) createOrUpdateHandleResponse(resp *http.Response) (TenantActionGroupsClientCreateOrUpdateResponse, error) {
+func (client *TenantActionGroupsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (TenantActionGroupsClientCreateOrUpdateResponse, error) {
 	result := TenantActionGroupsClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TenantActionGroupResource); err != nil {
 		return TenantActionGroupsClientCreateOrUpdateResponse{}, err
 	}
@@ -126,8 +124,7 @@ func (client *TenantActionGroupsClient) Delete(ctx context.Context, managementGr
 		return TenantActionGroupsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return TenantActionGroupsClientDeleteResponse{}, err
+		return TenantActionGroupsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return TenantActionGroupsClientDeleteResponse{}, nil
 }
@@ -174,12 +171,7 @@ func (client *TenantActionGroupsClient) Get(ctx context.Context, managementGroup
 	if err != nil {
 		return TenantActionGroupsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return TenantActionGroupsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -206,8 +198,11 @@ func (client *TenantActionGroupsClient) getCreateRequest(ctx context.Context, ma
 }
 
 // getHandleResponse handles the Get response.
-func (client *TenantActionGroupsClient) getHandleResponse(resp *http.Response) (TenantActionGroupsClientGetResponse, error) {
+func (client *TenantActionGroupsClient) getHandleResponse(resp *http.Response, successCodes ...int) (TenantActionGroupsClientGetResponse, error) {
 	result := TenantActionGroupsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TenantActionGroupResource); err != nil {
 		return TenantActionGroupsClientGetResponse{}, err
 	}
@@ -230,40 +225,54 @@ func (client *TenantActionGroupsClient) NewListByManagementGroupIDPager(manageme
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByManagementGroupIDCreateRequest(ctx, managementGroupID, xmsClientTenantID, options)
-			}, nil)
+			req, err := client.listByManagementGroupIDCreateRequest(ctx, managementGroupID, xmsClientTenantID, nextLink, options)
 			if err != nil {
 				return TenantActionGroupsClientListByManagementGroupIDResponse{}, err
 			}
-			return client.listByManagementGroupIDHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return TenantActionGroupsClientListByManagementGroupIDResponse{}, err
+			}
+			return client.listByManagementGroupIDHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByManagementGroupIDCreateRequest creates the ListByManagementGroupID request.
-func (client *TenantActionGroupsClient) listByManagementGroupIDCreateRequest(ctx context.Context, managementGroupID string, xmsClientTenantID string, _ *TenantActionGroupsClientListByManagementGroupIDOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Insights/tenantActionGroups"
-	if managementGroupID == "" {
-		return nil, errors.New("parameter managementGroupID cannot be empty")
+func (client *TenantActionGroupsClient) listByManagementGroupIDCreateRequest(ctx context.Context, managementGroupID string, xmsClientTenantID string, nextLink string, _ *TenantActionGroupsClientListByManagementGroupIDOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Insights/tenantActionGroups"
+		if managementGroupID == "" {
+			return nil, errors.New("parameter managementGroupID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{managementGroupId}", url.PathEscape(managementGroupID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{managementGroupId}", url.PathEscape(managementGroupID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20230501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["x-ms-client-tenant-id"] = []string{xmsClientTenantID}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20230501Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+		req.Raw().Header["x-ms-client-tenant-id"] = []string{xmsClientTenantID}
+	}
 	return req, nil
 }
 
 // listByManagementGroupIDHandleResponse handles the ListByManagementGroupID response.
-func (client *TenantActionGroupsClient) listByManagementGroupIDHandleResponse(resp *http.Response) (TenantActionGroupsClientListByManagementGroupIDResponse, error) {
+func (client *TenantActionGroupsClient) listByManagementGroupIDHandleResponse(resp *http.Response, successCodes ...int) (TenantActionGroupsClientListByManagementGroupIDResponse, error) {
 	result := TenantActionGroupsClientListByManagementGroupIDResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TenantActionGroupList); err != nil {
 		return TenantActionGroupsClientListByManagementGroupIDResponse{}, err
 	}
@@ -292,12 +301,7 @@ func (client *TenantActionGroupsClient) Update(ctx context.Context, managementGr
 	if err != nil {
 		return TenantActionGroupsClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return TenantActionGroupsClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
@@ -328,8 +332,11 @@ func (client *TenantActionGroupsClient) updateCreateRequest(ctx context.Context,
 }
 
 // updateHandleResponse handles the Update response.
-func (client *TenantActionGroupsClient) updateHandleResponse(resp *http.Response) (TenantActionGroupsClientUpdateResponse, error) {
+func (client *TenantActionGroupsClient) updateHandleResponse(resp *http.Response, successCodes ...int) (TenantActionGroupsClientUpdateResponse, error) {
 	result := TenantActionGroupsClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TenantActionGroupResource); err != nil {
 		return TenantActionGroupsClientUpdateResponse{}, err
 	}

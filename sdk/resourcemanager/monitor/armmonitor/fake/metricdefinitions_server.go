@@ -13,20 +13,19 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor"
 	"net/http"
-	"net/url"
 	"regexp"
 	"slices"
 )
 
 // MetricDefinitionsServer is a fake server for instances of the armmonitor.MetricDefinitionsClient type.
 type MetricDefinitionsServer struct {
-	// NewListPager is the fake for method MetricDefinitionsClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceURI string, options *armmonitor.MetricDefinitionsClientListOptions) (resp azfake.PagerResponder[armmonitor.MetricDefinitionsClientListResponse])
-
 	// NewListAtSubscriptionScopePager is the fake for method MetricDefinitionsClient.NewListAtSubscriptionScopePager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListAtSubscriptionScopePager func(region string, options *armmonitor.MetricDefinitionsClientListAtSubscriptionScopeOptions) (resp azfake.PagerResponder[armmonitor.MetricDefinitionsClientListAtSubscriptionScopeResponse])
+
+	// NewListPager is the fake for method MetricDefinitionsClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(resourceURI string, options *armmonitor.MetricDefinitionsClientListOptions) (resp azfake.PagerResponder[armmonitor.MetricDefinitionsClientListResponse])
 }
 
 // NewMetricDefinitionsServerTransport creates a new instance of MetricDefinitionsServerTransport with the provided implementation.
@@ -35,8 +34,8 @@ type MetricDefinitionsServer struct {
 func NewMetricDefinitionsServerTransport(srv *MetricDefinitionsServer) *MetricDefinitionsServerTransport {
 	return &MetricDefinitionsServerTransport{
 		srv:                             srv,
-		newListPager:                    newTracker[azfake.PagerResponder[armmonitor.MetricDefinitionsClientListResponse]](),
 		newListAtSubscriptionScopePager: newTracker[azfake.PagerResponder[armmonitor.MetricDefinitionsClientListAtSubscriptionScopeResponse]](),
+		newListPager:                    newTracker[azfake.PagerResponder[armmonitor.MetricDefinitionsClientListResponse]](),
 	}
 }
 
@@ -44,8 +43,8 @@ func NewMetricDefinitionsServerTransport(srv *MetricDefinitionsServer) *MetricDe
 // Don't use this type directly, use NewMetricDefinitionsServerTransport instead.
 type MetricDefinitionsServerTransport struct {
 	srv                             *MetricDefinitionsServer
-	newListPager                    *tracker[azfake.PagerResponder[armmonitor.MetricDefinitionsClientListResponse]]
 	newListAtSubscriptionScopePager *tracker[azfake.PagerResponder[armmonitor.MetricDefinitionsClientListAtSubscriptionScopeResponse]]
+	newListPager                    *tracker[azfake.PagerResponder[armmonitor.MetricDefinitionsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for MetricDefinitionsServerTransport.
@@ -69,10 +68,10 @@ func (m *MetricDefinitionsServerTransport) dispatchToMethodFake(req *http.Reques
 		}
 		if !intercepted {
 			switch method {
-			case "MetricDefinitionsClient.NewListPager":
-				res.resp, res.err = m.dispatchNewListPager(req)
 			case "MetricDefinitionsClient.NewListAtSubscriptionScopePager":
 				res.resp, res.err = m.dispatchNewListAtSubscriptionScopePager(req)
+			case "MetricDefinitionsClient.NewListPager":
+				res.resp, res.err = m.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -89,58 +88,13 @@ func (m *MetricDefinitionsServerTransport) dispatchToMethodFake(req *http.Reques
 	}
 }
 
-func (m *MetricDefinitionsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if m.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := m.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Insights/metricDefinitions`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-		if err != nil {
-			return nil, err
-		}
-		metricnamespaceParam := getOptional(qp.Get("metricnamespace"))
-		var options *armmonitor.MetricDefinitionsClientListOptions
-		if metricnamespaceParam != nil {
-			options = &armmonitor.MetricDefinitionsClientListOptions{
-				Metricnamespace: metricnamespaceParam,
-			}
-		}
-		resp := m.srv.NewListPager(resourceURIParam, options)
-		newListPager = &resp
-		m.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armmonitor.MetricDefinitionsClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		m.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		m.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (m *MetricDefinitionsServerTransport) dispatchNewListAtSubscriptionScopePager(req *http.Request) (*http.Response, error) {
 	if m.srv.NewListAtSubscriptionScopePager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListAtSubscriptionScopePager not implemented")}
 	}
 	newListAtSubscriptionScopePager := m.newListAtSubscriptionScopePager.get(req)
 	if newListAtSubscriptionScopePager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Insights/metricDefinitions`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Insights/metricDefinitions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -171,6 +125,48 @@ func (m *MetricDefinitionsServerTransport) dispatchNewListAtSubscriptionScopePag
 	}
 	if !server.PagerResponderMore(newListAtSubscriptionScopePager) {
 		m.newListAtSubscriptionScopePager.remove(req)
+	}
+	return resp, nil
+}
+
+func (m *MetricDefinitionsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if m.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := m.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/(?P<resourceUri>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.Insights/metricDefinitions`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
+		metricnamespaceParam := getOptional(qp.Get("metricnamespace"))
+		var options *armmonitor.MetricDefinitionsClientListOptions
+		if metricnamespaceParam != nil {
+			options = &armmonitor.MetricDefinitionsClientListOptions{
+				Metricnamespace: metricnamespaceParam,
+			}
+		}
+		resp := m.srv.NewListPager(resourceURIParam, options)
+		newListPager = &resp
+		m.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armmonitor.MetricDefinitionsClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		m.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		m.newListPager.remove(req)
 	}
 	return resp, nil
 }

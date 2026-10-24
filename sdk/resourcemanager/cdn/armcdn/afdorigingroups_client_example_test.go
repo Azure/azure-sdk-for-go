@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v4"
 	"log"
 )
 
-// Generated from example definition: 2025-06-01/AFDOriginGroups_Create.json
+// Generated from example definition: 2026-07-01/AFDOriginGroups_Create.json
 func ExampleAFDOriginGroupsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -88,7 +88,7 @@ func ExampleAFDOriginGroupsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/AFDOriginGroups_Delete.json
+// Generated from example definition: 2026-07-01/AFDOriginGroups_Delete.json
 func ExampleAFDOriginGroupsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -114,7 +114,7 @@ func ExampleAFDOriginGroupsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/AFDOriginGroups_Get.json
+// Generated from example definition: 2026-07-01/AFDOriginGroups_Get.json
 func ExampleAFDOriginGroupsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -164,7 +164,7 @@ func ExampleAFDOriginGroupsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/AFDOriginGroups_ListByProfile.json
+// Generated from example definition: 2026-07-01/AFDOriginGroups_ListByProfile.json
 func ExampleAFDOriginGroupsClient_NewListByProfilePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -223,7 +223,7 @@ func ExampleAFDOriginGroupsClient_NewListByProfilePager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/AFDOriginGroups_ListResourceUsage.json
+// Generated from example definition: 2026-07-01/AFDOriginGroups_ListResourceUsage.json
 func ExampleAFDOriginGroupsClient_NewListResourceUsagePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -264,7 +264,7 @@ func ExampleAFDOriginGroupsClient_NewListResourceUsagePager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/AFDOriginGroups_Update.json
+// Generated from example definition: 2026-07-01/AFDOriginGroups_Update.json
 func ExampleAFDOriginGroupsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -4,6 +4,16 @@
 
 package armcdn
 
+// AFDDomainMtlsParametersClassification provides polymorphic access to related types.
+// Call the interface's GetAFDDomainMtlsParameters() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *AFDDomainMtlsParameters, *ClientCertificateRequiredAndOriginValidatesAdvancedSettings, *ClientCertificateRequiredAndValidatedAdvancedSettings,
+// - *ClientCertificateValidatedIfPresentedAdvancedSettings, *CompleteMtlsPassthroughToOriginAdvancedSettings
+type AFDDomainMtlsParametersClassification interface {
+	// GetAFDDomainMtlsParameters returns the AFDDomainMtlsParameters content of the underlying type.
+	GetAFDDomainMtlsParameters() *AFDDomainMtlsParameters
+}
+
 // CertificateSourceParametersBaseClassification provides polymorphic access to related types.
 // Call the interface's GetCertificateSourceParametersBase() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -25,9 +35,9 @@ type CustomDomainHTTPSParametersClassification interface {
 // DeliveryRuleActionClassification provides polymorphic access to related types.
 // Call the interface's GetDeliveryRuleAction() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *DeliveryRuleAction, *DeliveryRuleCacheExpirationAction, *DeliveryRuleCacheKeyQueryStringAction, *DeliveryRuleRequestHeaderAction,
-// - *DeliveryRuleResponseHeaderAction, *DeliveryRuleRouteConfigurationOverrideAction, *OriginGroupOverrideAction, *URLRedirectAction,
-// - *URLRewriteAction, *URLSigningAction
+// - *AfdURLSigningAction, *DeliveryRuleAction, *DeliveryRuleCacheExpirationAction, *DeliveryRuleCacheKeyQueryStringAction,
+// - *DeliveryRuleRequestHeaderAction, *DeliveryRuleResponseHeaderAction, *DeliveryRuleRouteConfigurationOverrideAction, *EdgeAction,
+// - *OriginGroupOverrideAction, *URLRedirectAction, *URLRewriteAction, *URLSigningAction
 type DeliveryRuleActionClassification interface {
 	// GetDeliveryRuleAction returns the DeliveryRuleAction content of the underlying type.
 	GetDeliveryRuleAction() *DeliveryRuleAction
@@ -36,9 +46,9 @@ type DeliveryRuleActionClassification interface {
 // DeliveryRuleActionParametersClassification provides polymorphic access to related types.
 // Call the interface's GetDeliveryRuleActionParameters() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *CacheExpirationActionParameters, *CacheKeyQueryStringActionParameters, *DeliveryRuleActionParameters, *HeaderActionParameters,
-// - *OriginGroupOverrideActionParameters, *RouteConfigurationOverrideActionParameters, *URLRedirectActionParameters, *URLRewriteActionParameters,
-// - *URLSigningActionParameters
+// - *CacheExpirationActionParameters, *CacheKeyQueryStringActionParameters, *DeliveryRuleActionParameters, *DeliveryRuleEdgeActionParameters,
+// - *HeaderActionParameters, *OriginGroupOverrideActionParameters, *RouteConfigurationOverrideActionParameters, *URLRedirectActionParameters,
+// - *URLRewriteActionParameters, *URLSigningActionParameters
 type DeliveryRuleActionParametersClassification interface {
 	// GetDeliveryRuleActionParameters returns the DeliveryRuleActionParameters content of the underlying type.
 	GetDeliveryRuleActionParameters() *DeliveryRuleActionParameters
@@ -74,8 +84,8 @@ type DeliveryRuleConditionParametersClassification interface {
 // SecretParametersClassification provides polymorphic access to related types.
 // Call the interface's GetSecretParameters() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *AzureFirstPartyManagedCertificateParameters, *CustomerCertificateParameters, *ManagedCertificateParameters, *SecretParameters,
-// - *URLSigningKeyParameters
+// - *AfdSecretMtlsCertificateChain, *AzureFirstPartyManagedCertificateParameters, *CustomerCertificateParameters, *ManagedCertificateParameters,
+// - *SecretParameters, *URLSigningKeyParameters
 type SecretParametersClassification interface {
 	// GetSecretParameters returns the SecretParameters content of the underlying type.
 	GetSecretParameters() *SecretParameters

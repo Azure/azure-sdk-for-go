@@ -8,12 +8,12 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v4"
 	"log"
 )
 
-// Generated from example definition: 2025-06-01/Secrets_Create.json
-func ExampleSecretsClient_BeginCreate() {
+// Generated from example definition: 2026-07-01/Secrets_Create.json
+func ExampleSecretsClient_BeginCreate_secretsCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -74,7 +74,123 @@ func ExampleSecretsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/Secrets_Delete.json
+// Generated from example definition: 2026-07-01/Secrets_CreateCustomerCertificateType.json
+func ExampleSecretsClient_BeginCreate_secretsCreateCustomerCertificateType() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcdn.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewSecretsClient().BeginCreate(ctx, "RG", "profile1", "secret1", armcdn.Secret{
+		Properties: &armcdn.SecretProperties{
+			Parameters: &armcdn.CustomerCertificateParameters{
+				Type: to.Ptr(armcdn.SecretTypeCustomerCertificate),
+				SecretSource: &armcdn.ResourceReference{
+					ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.KeyVault/vault/kvName/secrets/certificatename"),
+				},
+				SecretVersion:    to.Ptr("abcdef1234578900abcdef1234567890"),
+				UseLatestVersion: to.Ptr(false),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcdn.SecretsClientCreateResponse{
+	// 	Secret: armcdn.Secret{
+	// 		Name: to.Ptr("secret1"),
+	// 		Type: to.Ptr("Microsoft.Cdn/profiles/secrets"),
+	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/secrets/secret1"),
+	// 		Properties: &armcdn.SecretProperties{
+	// 			DeploymentStatus: to.Ptr(armcdn.DeploymentStatusNotStarted),
+	// 			Parameters: &armcdn.CustomerCertificateParameters{
+	// 				Type: to.Ptr(armcdn.SecretTypeCustomerCertificate),
+	// 				CertificateAuthority: to.Ptr("Symantec"),
+	// 				ExpirationDate: to.Ptr("2025-01-01T00:00:00-00:00"),
+	// 				SecretSource: &armcdn.ResourceReference{
+	// 					ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.KeyVault/vaults/keyvaultname/secrets/certificatename"),
+	// 				},
+	// 				SecretVersion: to.Ptr("abcdef1234578900abcdef1234567890"),
+	// 				Subject: to.Ptr("*.contoso.com"),
+	// 				SubjectAlternativeNames: []*string{
+	// 					to.Ptr("foo.contoso.com"),
+	// 					to.Ptr("www3.foo.contoso.com"),
+	// 				},
+	// 				Thumbprint: to.Ptr("ABCDEF1234567890ABCDEF1234567890ABCDEF12"),
+	// 				UseLatestVersion: to.Ptr(true),
+	// 			},
+	// 			ProvisioningState: to.Ptr(armcdn.AfdProvisioningStateSucceeded),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-07-01/Secrets_CreateUrlSigningKeyType.json
+func ExampleSecretsClient_BeginCreate_secretsCreateUrlSigningKeyType() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcdn.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewSecretsClient().BeginCreate(ctx, "RG", "profile1", "secret1", armcdn.Secret{
+		Properties: &armcdn.SecretProperties{
+			Parameters: &armcdn.URLSigningKeyParameters{
+				Type:  to.Ptr(armcdn.SecretTypeURLSigningKey),
+				KeyID: to.Ptr("customKeyId"),
+				SecretSource: &armcdn.ResourceReference{
+					ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.KeyVault/vault/kvName/secrets/urlsigningkeyname"),
+				},
+				SecretVersion: to.Ptr("abcdef1234578900abcdef1234567890"),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcdn.SecretsClientCreateResponse{
+	// 	Secret: armcdn.Secret{
+	// 		Name: to.Ptr("secret1"),
+	// 		Type: to.Ptr("Microsoft.Cdn/profiles/secrets"),
+	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/secrets/secret1"),
+	// 		Properties: &armcdn.SecretProperties{
+	// 			DeploymentStatus: to.Ptr(armcdn.DeploymentStatusNotStarted),
+	// 			Parameters: &armcdn.URLSigningKeyParameters{
+	// 				Type: to.Ptr(armcdn.SecretTypeURLSigningKey),
+	// 				KeyID: to.Ptr("customKeyId"),
+	// 				SecretSource: &armcdn.ResourceReference{
+	// 					ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.KeyVault/vault/kvName/secrets/urlsigningkeyname"),
+	// 				},
+	// 				SecretVersion: to.Ptr("abcdef1234578900abcdef1234567890"),
+	// 			},
+	// 			ProvisioningState: to.Ptr(armcdn.AfdProvisioningStateSucceeded),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-07-01/Secrets_Delete.json
 func ExampleSecretsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -100,7 +216,7 @@ func ExampleSecretsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/Secrets_Get.json
+// Generated from example definition: 2026-07-01/Secrets_Get.json
 func ExampleSecretsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -147,7 +263,7 @@ func ExampleSecretsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/Secrets_ListByProfile.json
+// Generated from example definition: 2026-07-01/Secrets_ListByProfile.json
 func ExampleSecretsClient_NewListByProfilePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

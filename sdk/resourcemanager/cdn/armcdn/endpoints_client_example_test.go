@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v4"
 	"log"
 )
 
-// Generated from example definition: 2025-06-01/Endpoints_Create.json
+// Generated from example definition: 2026-07-01/Endpoints_Create.json
 func ExampleEndpointsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -295,7 +295,7 @@ func ExampleEndpointsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/Endpoints_Delete.json
+// Generated from example definition: 2026-07-01/Endpoints_Delete.json
 func ExampleEndpointsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -321,7 +321,7 @@ func ExampleEndpointsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/Endpoints_Get.json
+// Generated from example definition: 2026-07-01/Endpoints_Get.json
 func ExampleEndpointsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -410,7 +410,7 @@ func ExampleEndpointsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/Endpoints_ListByProfile.json
+// Generated from example definition: 2026-07-01/Endpoints_ListByProfile.json
 func ExampleEndpointsClient_NewListByProfilePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -512,7 +512,7 @@ func ExampleEndpointsClient_NewListByProfilePager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/Endpoints_ListResourceUsage.json
+// Generated from example definition: 2026-07-01/Endpoints_ListResourceUsage.json
 func ExampleEndpointsClient_NewListResourceUsagePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -555,7 +555,7 @@ func ExampleEndpointsClient_NewListResourceUsagePager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/Endpoints_LoadContent.json
+// Generated from example definition: 2026-07-01/Endpoints_LoadContent.json
 func ExampleEndpointsClient_BeginLoadContent() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -585,7 +585,7 @@ func ExampleEndpointsClient_BeginLoadContent() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/Endpoints_PurgeContent.json
+// Generated from example definition: 2026-07-01/Endpoints_PurgeContent.json
 func ExampleEndpointsClient_BeginPurgeContent() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -615,7 +615,7 @@ func ExampleEndpointsClient_BeginPurgeContent() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/Endpoints_Start.json
+// Generated from example definition: 2026-07-01/Endpoints_Start.json
 func ExampleEndpointsClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -676,7 +676,7 @@ func ExampleEndpointsClient_BeginStart() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/Endpoints_Stop.json
+// Generated from example definition: 2026-07-01/Endpoints_Stop.json
 func ExampleEndpointsClient_BeginStop() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -737,7 +737,7 @@ func ExampleEndpointsClient_BeginStop() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/Endpoints_Update.json
+// Generated from example definition: 2026-07-01/Endpoints_Update.json
 func ExampleEndpointsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -824,7 +824,7 @@ func ExampleEndpointsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/Endpoints_ValidateCustomDomain.json
+// Generated from example definition: 2026-07-01/Endpoints_ValidateCustomDomain.json
 func ExampleEndpointsClient_ValidateCustomDomain() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -30,6 +30,9 @@ type MetricAlertsStatusClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewMetricAlertsStatusClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MetricAlertsStatusClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -60,19 +63,14 @@ func (client *MetricAlertsStatusClient) List(ctx context.Context, resourceGroupN
 	if err != nil {
 		return MetricAlertsStatusClientListResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return MetricAlertsStatusClientListResponse{}, err
-	}
-	resp, err := client.listHandleResponse(httpResp)
-	return resp, err
+	return client.listHandleResponse(httpResp, http.StatusOK)
 }
 
 // listCreateRequest creates the List request.
 func (client *MetricAlertsStatusClient) listCreateRequest(ctx context.Context, resourceGroupName string, ruleName string, _ *MetricAlertsStatusClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Insights/metricAlerts/{ruleName}/status"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -95,8 +93,11 @@ func (client *MetricAlertsStatusClient) listCreateRequest(ctx context.Context, r
 }
 
 // listHandleResponse handles the List response.
-func (client *MetricAlertsStatusClient) listHandleResponse(resp *http.Response) (MetricAlertsStatusClientListResponse, error) {
+func (client *MetricAlertsStatusClient) listHandleResponse(resp *http.Response, successCodes ...int) (MetricAlertsStatusClientListResponse, error) {
 	result := MetricAlertsStatusClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MetricAlertStatusCollection); err != nil {
 		return MetricAlertsStatusClientListResponse{}, err
 	}
@@ -124,19 +125,14 @@ func (client *MetricAlertsStatusClient) ListByName(ctx context.Context, resource
 	if err != nil {
 		return MetricAlertsStatusClientListByNameResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return MetricAlertsStatusClientListByNameResponse{}, err
-	}
-	resp, err := client.listByNameHandleResponse(httpResp)
-	return resp, err
+	return client.listByNameHandleResponse(httpResp, http.StatusOK)
 }
 
 // listByNameCreateRequest creates the ListByName request.
 func (client *MetricAlertsStatusClient) listByNameCreateRequest(ctx context.Context, resourceGroupName string, ruleName string, statusName string, _ *MetricAlertsStatusClientListByNameOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/metricAlerts/{ruleName}/status/{statusName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -163,8 +159,11 @@ func (client *MetricAlertsStatusClient) listByNameCreateRequest(ctx context.Cont
 }
 
 // listByNameHandleResponse handles the ListByName response.
-func (client *MetricAlertsStatusClient) listByNameHandleResponse(resp *http.Response) (MetricAlertsStatusClientListByNameResponse, error) {
+func (client *MetricAlertsStatusClient) listByNameHandleResponse(resp *http.Response, successCodes ...int) (MetricAlertsStatusClientListByNameResponse, error) {
 	result := MetricAlertsStatusClientListByNameResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MetricAlertStatusCollection); err != nil {
 		return MetricAlertsStatusClientListByNameResponse{}, err
 	}

@@ -1,5 +1,13 @@
 # Release History
 
+## 0.14.0 (2026-10-24)
+### Features Added
+
+- New field `Identity` in struct `AutoscaleSettingResource`
+- New field `Identity` in struct `AutoscaleSettingResourcePatch`
+- New field `GroupIDs` in struct `PrivateEndpointConnectionProperties`
+
+
 ## 0.13.0 (2026-07-15)
 ### Features Added
 

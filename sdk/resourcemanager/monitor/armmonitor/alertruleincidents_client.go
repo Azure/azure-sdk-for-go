@@ -30,6 +30,9 @@ type AlertRuleIncidentsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAlertRuleIncidentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AlertRuleIncidentsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -61,19 +64,14 @@ func (client *AlertRuleIncidentsClient) Get(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return AlertRuleIncidentsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AlertRuleIncidentsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *AlertRuleIncidentsClient) getCreateRequest(ctx context.Context, resourceGroupName string, ruleName string, incidentName string, _ *AlertRuleIncidentsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/microsoft.insights/alertrules/{ruleName}/incidents/{incidentName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -100,8 +98,11 @@ func (client *AlertRuleIncidentsClient) getCreateRequest(ctx context.Context, re
 }
 
 // getHandleResponse handles the Get response.
-func (client *AlertRuleIncidentsClient) getHandleResponse(resp *http.Response) (AlertRuleIncidentsClientGetResponse, error) {
+func (client *AlertRuleIncidentsClient) getHandleResponse(resp *http.Response, successCodes ...int) (AlertRuleIncidentsClientGetResponse, error) {
 	result := AlertRuleIncidentsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Incident); err != nil {
 		return AlertRuleIncidentsClientGetResponse{}, err
 	}
@@ -124,47 +125,61 @@ func (client *AlertRuleIncidentsClient) NewListByAlertRulePager(resourceGroupNam
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByAlertRuleCreateRequest(ctx, resourceGroupName, ruleName, options)
-			}, nil)
+			req, err := client.listByAlertRuleCreateRequest(ctx, resourceGroupName, ruleName, nextLink, options)
 			if err != nil {
 				return AlertRuleIncidentsClientListByAlertRuleResponse{}, err
 			}
-			return client.listByAlertRuleHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return AlertRuleIncidentsClientListByAlertRuleResponse{}, err
+			}
+			return client.listByAlertRuleHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByAlertRuleCreateRequest creates the ListByAlertRule request.
-func (client *AlertRuleIncidentsClient) listByAlertRuleCreateRequest(ctx context.Context, resourceGroupName string, ruleName string, _ *AlertRuleIncidentsClientListByAlertRuleOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Insights/alertrules/{ruleName}/incidents"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *AlertRuleIncidentsClient) listByAlertRuleCreateRequest(ctx context.Context, resourceGroupName string, ruleName string, nextLink string, _ *AlertRuleIncidentsClientListByAlertRuleOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Insights/alertrules/{ruleName}/incidents"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if ruleName == "" {
+			return nil, errors.New("parameter ruleName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{ruleName}", url.PathEscape(ruleName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if ruleName == "" {
-		return nil, errors.New("parameter ruleName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{ruleName}", url.PathEscape(ruleName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20160301)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20160301)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByAlertRuleHandleResponse handles the ListByAlertRule response.
-func (client *AlertRuleIncidentsClient) listByAlertRuleHandleResponse(resp *http.Response) (AlertRuleIncidentsClientListByAlertRuleResponse, error) {
+func (client *AlertRuleIncidentsClient) listByAlertRuleHandleResponse(resp *http.Response, successCodes ...int) (AlertRuleIncidentsClientListByAlertRuleResponse, error) {
 	result := AlertRuleIncidentsClientListByAlertRuleResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IncidentListResult); err != nil {
 		return AlertRuleIncidentsClientListByAlertRuleResponse{}, err
 	}

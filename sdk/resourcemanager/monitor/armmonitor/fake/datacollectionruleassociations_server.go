@@ -121,7 +121,7 @@ func (d *DataCollectionRuleAssociationsServerTransport) dispatchCreate(req *http
 	if d.srv.Create == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Create not implemented")}
 	}
-	const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Insights/dataCollectionRuleAssociations/(?P<associationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/(?P<resourceUri>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.Insights/dataCollectionRuleAssociations/(?P<associationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -131,10 +131,7 @@ func (d *DataCollectionRuleAssociationsServerTransport) dispatchCreate(req *http
 	if err != nil {
 		return nil, err
 	}
-	resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-	if err != nil {
-		return nil, err
-	}
+	resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 	associationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("associationName")])
 	if err != nil {
 		return nil, err
@@ -158,16 +155,13 @@ func (d *DataCollectionRuleAssociationsServerTransport) dispatchDelete(req *http
 	if d.srv.Delete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
 	}
-	const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Insights/dataCollectionRuleAssociations/(?P<associationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/(?P<resourceUri>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.Insights/dataCollectionRuleAssociations/(?P<associationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-	if err != nil {
-		return nil, err
-	}
+	resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 	associationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("associationName")])
 	if err != nil {
 		return nil, err
@@ -191,16 +185,13 @@ func (d *DataCollectionRuleAssociationsServerTransport) dispatchGet(req *http.Re
 	if d.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Insights/dataCollectionRuleAssociations/(?P<associationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/(?P<resourceUri>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.Insights/dataCollectionRuleAssociations/(?P<associationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-	if err != nil {
-		return nil, err
-	}
+	resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 	associationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("associationName")])
 	if err != nil {
 		return nil, err
@@ -226,7 +217,7 @@ func (d *DataCollectionRuleAssociationsServerTransport) dispatchNewListByDataCol
 	}
 	newListByDataCollectionEndpointPager := d.newListByDataCollectionEndpointPager.get(req)
 	if newListByDataCollectionEndpointPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Insights/dataCollectionEndpoints/(?P<dataCollectionEndpointName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/associations`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcegroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Insights/dataCollectionEndpoints/(?P<dataCollectionEndpointName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/associations`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -267,16 +258,13 @@ func (d *DataCollectionRuleAssociationsServerTransport) dispatchNewListByResourc
 	}
 	newListByResourcePager := d.newListByResourcePager.get(req)
 	if newListByResourcePager == nil {
-		const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Insights/dataCollectionRuleAssociations`
+		const regexStr = `/(?P<resourceUri>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.Insights/dataCollectionRuleAssociations`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-		if err != nil {
-			return nil, err
-		}
+		resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 		resp := d.srv.NewListByResourcePager(resourceURIParam, nil)
 		newListByResourcePager = &resp
 		d.newListByResourcePager.add(req, newListByResourcePager)
@@ -304,7 +292,7 @@ func (d *DataCollectionRuleAssociationsServerTransport) dispatchNewListByRulePag
 	}
 	newListByRulePager := d.newListByRulePager.get(req)
 	if newListByRulePager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Insights/dataCollectionRules/(?P<dataCollectionRuleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/associations`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcegroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Insights/dataCollectionRules/(?P<dataCollectionRuleName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/associations`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {

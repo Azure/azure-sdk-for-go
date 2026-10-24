@@ -58,12 +58,7 @@ func (client *ServiceDiagnosticSettingsClient) CreateOrUpdate(ctx context.Contex
 	if err != nil {
 		return ServiceDiagnosticSettingsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ServiceDiagnosticSettingsClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -89,8 +84,11 @@ func (client *ServiceDiagnosticSettingsClient) createOrUpdateCreateRequest(ctx c
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *ServiceDiagnosticSettingsClient) createOrUpdateHandleResponse(resp *http.Response) (ServiceDiagnosticSettingsClientCreateOrUpdateResponse, error) {
+func (client *ServiceDiagnosticSettingsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (ServiceDiagnosticSettingsClientCreateOrUpdateResponse, error) {
 	result := ServiceDiagnosticSettingsClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceDiagnosticSettingsResource); err != nil {
 		return ServiceDiagnosticSettingsClientCreateOrUpdateResponse{}, err
 	}
@@ -117,12 +115,7 @@ func (client *ServiceDiagnosticSettingsClient) Get(ctx context.Context, resource
 	if err != nil {
 		return ServiceDiagnosticSettingsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ServiceDiagnosticSettingsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -144,8 +137,11 @@ func (client *ServiceDiagnosticSettingsClient) getCreateRequest(ctx context.Cont
 }
 
 // getHandleResponse handles the Get response.
-func (client *ServiceDiagnosticSettingsClient) getHandleResponse(resp *http.Response) (ServiceDiagnosticSettingsClientGetResponse, error) {
+func (client *ServiceDiagnosticSettingsClient) getHandleResponse(resp *http.Response, successCodes ...int) (ServiceDiagnosticSettingsClientGetResponse, error) {
 	result := ServiceDiagnosticSettingsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceDiagnosticSettingsResource); err != nil {
 		return ServiceDiagnosticSettingsClientGetResponse{}, err
 	}
@@ -173,12 +169,7 @@ func (client *ServiceDiagnosticSettingsClient) Update(ctx context.Context, resou
 	if err != nil {
 		return ServiceDiagnosticSettingsClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ServiceDiagnosticSettingsClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
@@ -204,8 +195,11 @@ func (client *ServiceDiagnosticSettingsClient) updateCreateRequest(ctx context.C
 }
 
 // updateHandleResponse handles the Update response.
-func (client *ServiceDiagnosticSettingsClient) updateHandleResponse(resp *http.Response) (ServiceDiagnosticSettingsClientUpdateResponse, error) {
+func (client *ServiceDiagnosticSettingsClient) updateHandleResponse(resp *http.Response, successCodes ...int) (ServiceDiagnosticSettingsClientUpdateResponse, error) {
 	result := ServiceDiagnosticSettingsClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceDiagnosticSettingsResource); err != nil {
 		return ServiceDiagnosticSettingsClientUpdateResponse{}, err
 	}

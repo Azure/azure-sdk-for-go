@@ -12,6 +12,121 @@ import (
 	"log"
 )
 
+// Generated from example definition: 2025-12-01-preview/SavingsPlanUpdate.json
+func ExampleSavingsPlanClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbillingbenefits.NewClientFactory(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewSavingsPlanClient().BeginUpdate(ctx, "20000000-0000-0000-0000-000000000000", "30000000-0000-0000-0000-000000000000", armbillingbenefits.SavingsPlanUpdateRequest{
+		Properties: &armbillingbenefits.SavingsPlanUpdateRequestProperties{
+			AppliedScopeProperties: &armbillingbenefits.AppliedScopeProperties{
+				ResourceGroupID: to.Ptr("/subscriptions/10000000-0000-0000-0000-000000000000/resourceGroups/testrg"),
+			},
+			AppliedScopeType: to.Ptr(armbillingbenefits.AppliedScopeTypeSingle),
+			DisplayName:      to.Ptr("TestDisplayName"),
+			Renew:            to.Ptr(true),
+			RenewProperties: &armbillingbenefits.RenewProperties{
+				PurchaseProperties: &armbillingbenefits.PurchaseRequest{
+					Properties: &armbillingbenefits.PurchaseRequestProperties{
+						AppliedScopeProperties: &armbillingbenefits.AppliedScopeProperties{
+							ResourceGroupID: to.Ptr("/subscriptions/10000000-0000-0000-0000-000000000000/resourceGroups/testrg"),
+						},
+						AppliedScopeType: to.Ptr(armbillingbenefits.AppliedScopeTypeSingle),
+						BillingPlan:      to.Ptr(armbillingbenefits.BillingPlanP1M),
+						BillingScopeID:   to.Ptr("/subscriptions/10000000-0000-0000-0000-000000000000"),
+						Commitment: &armbillingbenefits.Commitment{
+							Amount:       to.Ptr[float64](15.23),
+							CurrencyCode: to.Ptr("USD"),
+							Grain:        to.Ptr(armbillingbenefits.CommitmentGrainHourly),
+						},
+						DisplayName: to.Ptr("TestDisplayName_renewed"),
+						Renew:       to.Ptr(false),
+						Term:        to.Ptr(armbillingbenefits.TermP1Y),
+					},
+					SKU: &armbillingbenefits.ResourceSKU{
+						Name: to.Ptr("Compute_Savings_Plan"),
+					},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armbillingbenefits.SavingsPlanClientUpdateResponse{
+	// 	SavingsPlanModel: armbillingbenefits.SavingsPlanModel{
+	// 		Name: to.Ptr("30000000-0000-0000-0000-000000000000"),
+	// 		Type: to.Ptr("microsoft.billingbenefits/savingsPlanOrders/savingsPlans"),
+	// 		ID: to.Ptr("/providers/microsoft.billingbenefits/savingsPlanOrders/20000000-0000-0000-0000-000000000000/savingsPlans/30000000-0000-0000-0000-000000000000"),
+	// 		Properties: &armbillingbenefits.SavingsPlanModelProperties{
+	// 			AppliedScopeProperties: &armbillingbenefits.AppliedScopeProperties{
+	// 				DisplayName: to.Ptr("Azure subscription 1"),
+	// 				SubscriptionID: to.Ptr("/subscriptions/10000000-0000-0000-0000-000000000000"),
+	// 			},
+	// 			AppliedScopeType: to.Ptr(armbillingbenefits.AppliedScopeTypeSingle),
+	// 			BenefitStartTime: to.Ptr(time.Date(2022, time.October, 27, 0, 34, 33, 669760000, time.UTC)),
+	// 			BillingAccountID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/20000000-1000-0000-0000-000000000000:20000000-0000-3000-0000-000000000000_2019-05-31"),
+	// 			BillingPlan: to.Ptr(armbillingbenefits.BillingPlanP1M),
+	// 			BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/20000000-1000-0000-0000-000000000000:20000000-0000-3000-0000-000000000000_2019-05-31/billingProfiles/KPSV-DWNE-BG7-TGB"),
+	// 			BillingScopeID: to.Ptr("/subscriptions/10000000-0000-0000-0000-000000000000"),
+	// 			Commitment: &armbillingbenefits.Commitment{
+	// 				Amount: to.Ptr[float64](0.001),
+	// 				CurrencyCode: to.Ptr("USD"),
+	// 				Grain: to.Ptr(armbillingbenefits.CommitmentGrainHourly),
+	// 			},
+	// 			DisplayName: to.Ptr("riName"),
+	// 			DisplayProvisioningState: to.Ptr("Succeeded"),
+	// 			EffectiveDateTime: to.Ptr(time.Date(2022, time.November, 10, 0, 12, 54, 549373000, time.UTC)),
+	// 			ExpiryDateTime: to.Ptr(time.Date(2025, time.October, 27, 0, 34, 33, 669760000, time.UTC)),
+	// 			ProvisioningState: to.Ptr(armbillingbenefits.ProvisioningStateSucceeded),
+	// 			PurchaseDateTime: to.Ptr(time.Date(2022, time.October, 27, 0, 32, 45, 582348600, time.UTC)),
+	// 			Renew: to.Ptr(true),
+	// 			Term: to.Ptr(armbillingbenefits.TermP3Y),
+	// 			UserFriendlyAppliedScopeType: to.Ptr("Single"),
+	// 			Utilization: &armbillingbenefits.Utilization{
+	// 				Aggregates: []*armbillingbenefits.UtilizationAggregates{
+	// 					{
+	// 						Grain: to.Ptr[float32](1),
+	// 						GrainUnit: to.Ptr("days"),
+	// 						Value: to.Ptr[float32](100),
+	// 						ValueUnit: to.Ptr("percentage"),
+	// 					},
+	// 					{
+	// 						Grain: to.Ptr[float32](7),
+	// 						GrainUnit: to.Ptr("days"),
+	// 						Value: to.Ptr[float32](37),
+	// 						ValueUnit: to.Ptr("percentage"),
+	// 					},
+	// 					{
+	// 						Grain: to.Ptr[float32](30),
+	// 						GrainUnit: to.Ptr("days"),
+	// 						Value: to.Ptr[float32](53.85),
+	// 						ValueUnit: to.Ptr("percentage"),
+	// 					},
+	// 				},
+	// 				Trend: to.Ptr("DOWN"),
+	// 			},
+	// 		},
+	// 		SKU: &armbillingbenefits.ResourceSKU{
+	// 			Name: to.Ptr("Compute_Savings_Plan"),
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2025-12-01-preview/SavingsPlanItemExpandedGet.json
 func ExampleSavingsPlanClient_Get_savingsPlanItemWithExpandedRenewPropertiesGet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -180,91 +295,6 @@ func ExampleSavingsPlanClient_Get_savingsPlanItemGet() {
 	// }
 }
 
-// Generated from example definition: 2025-12-01-preview/SavingsPlansInOrderList.json
-func ExampleSavingsPlanClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armbillingbenefits.NewClientFactory(cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewSavingsPlanClient().NewListPager("20000000-0000-0000-0000-000000000000", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armbillingbenefits.SavingsPlanClientListResponse{
-		// 	SavingsPlanModelList: armbillingbenefits.SavingsPlanModelList{
-		// 		Value: []*armbillingbenefits.SavingsPlanModel{
-		// 			{
-		// 				Name: to.Ptr("20000000-0000-0000-0000-000000000000/30000000-0000-0000-0000-000000000000"),
-		// 				Type: to.Ptr("Microsoft.BillingBenefits/savingsPlanOrders/savingsPlans"),
-		// 				ID: to.Ptr("/providers/microsoft.billingbenefits/savingsPlanOrders/20000000-0000-0000-0000-000000000000/savingsPlans/30000000-0000-0000-0000-000000000000"),
-		// 				Properties: &armbillingbenefits.SavingsPlanModelProperties{
-		// 					AppliedScopeProperties: &armbillingbenefits.AppliedScopeProperties{
-		// 						ResourceGroupID: to.Ptr("/subscriptions/eef82110-c91b-4395-9420-fcfcbefc5a47/resourcegroups/3ppRG"),
-		// 					},
-		// 					AppliedScopeType: to.Ptr(armbillingbenefits.AppliedScopeTypeSingle),
-		// 					BillingAccountID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/20000000-1000-0000-0000-000000000000:20000000-0000-3000-0000-000000000000_2019-05-31"),
-		// 					BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/20000000-1000-0000-0000-000000000000:20000000-0000-3000-0000-000000000000_2019-05-31/billingProfiles/KPSV-DWNE-BG7-TGB"),
-		// 					BillingScopeID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/20000000-1000-0000-0000-000000000009"),
-		// 					Commitment: &armbillingbenefits.Commitment{
-		// 						Amount: to.Ptr[float64](0.002),
-		// 						CurrencyCode: to.Ptr("USD"),
-		// 						Grain: to.Ptr(armbillingbenefits.CommitmentGrainHourly),
-		// 					},
-		// 					DisplayName: to.Ptr("Compute_SavingsPlan_10-24-2022_15-44"),
-		// 					DisplayProvisioningState: to.Ptr("Succeeded"),
-		// 					EffectiveDateTime: to.Ptr(time.Date(2022, time.October, 24, 22, 47, 4, 853949300, time.UTC)),
-		// 					ExpiryDateTime: to.Ptr(time.Date(2023, time.October, 24, 22, 47, 4, 619663500, time.UTC)),
-		// 					ProvisioningState: to.Ptr(armbillingbenefits.ProvisioningStateSucceeded),
-		// 					PurchaseDateTime: to.Ptr(time.Date(2022, time.October, 24, 22, 45, 13, 620248600, time.UTC)),
-		// 					Renew: to.Ptr(false),
-		// 					Term: to.Ptr(armbillingbenefits.TermP1Y),
-		// 					UserFriendlyAppliedScopeType: to.Ptr("ResourceGroup"),
-		// 					Utilization: &armbillingbenefits.Utilization{
-		// 						Aggregates: []*armbillingbenefits.UtilizationAggregates{
-		// 							{
-		// 								Grain: to.Ptr[float32](1),
-		// 								GrainUnit: to.Ptr("days"),
-		// 								Value: to.Ptr[float32](0),
-		// 								ValueUnit: to.Ptr("percentage"),
-		// 							},
-		// 							{
-		// 								Grain: to.Ptr[float32](7),
-		// 								GrainUnit: to.Ptr("days"),
-		// 								Value: to.Ptr[float32](0),
-		// 								ValueUnit: to.Ptr("percentage"),
-		// 							},
-		// 							{
-		// 								Grain: to.Ptr[float32](30),
-		// 								GrainUnit: to.Ptr("days"),
-		// 								Value: to.Ptr[float32](0),
-		// 								ValueUnit: to.Ptr("percentage"),
-		// 							},
-		// 						},
-		// 						Trend: to.Ptr(""),
-		// 					},
-		// 				},
-		// 				SKU: &armbillingbenefits.ResourceSKU{
-		// 					Name: to.Ptr("Compute_Savings_Plan"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
 // Generated from example definition: 2025-12-01-preview/SavingsPlansList.json
 func ExampleSavingsPlanClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -371,8 +401,8 @@ func ExampleSavingsPlanClient_NewListAllPager() {
 	}
 }
 
-// Generated from example definition: 2025-12-01-preview/SavingsPlanUpdate.json
-func ExampleSavingsPlanClient_BeginUpdate() {
+// Generated from example definition: 2025-12-01-preview/SavingsPlansInOrderList.json
+func ExampleSavingsPlanClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -382,108 +412,78 @@ func ExampleSavingsPlanClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSavingsPlanClient().BeginUpdate(ctx, "20000000-0000-0000-0000-000000000000", "30000000-0000-0000-0000-000000000000", armbillingbenefits.SavingsPlanUpdateRequest{
-		Properties: &armbillingbenefits.SavingsPlanUpdateRequestProperties{
-			AppliedScopeProperties: &armbillingbenefits.AppliedScopeProperties{
-				ResourceGroupID: to.Ptr("/subscriptions/10000000-0000-0000-0000-000000000000/resourceGroups/testrg"),
-			},
-			AppliedScopeType: to.Ptr(armbillingbenefits.AppliedScopeTypeSingle),
-			DisplayName:      to.Ptr("TestDisplayName"),
-			Renew:            to.Ptr(true),
-			RenewProperties: &armbillingbenefits.RenewProperties{
-				PurchaseProperties: &armbillingbenefits.PurchaseRequest{
-					Properties: &armbillingbenefits.PurchaseRequestProperties{
-						AppliedScopeProperties: &armbillingbenefits.AppliedScopeProperties{
-							ResourceGroupID: to.Ptr("/subscriptions/10000000-0000-0000-0000-000000000000/resourceGroups/testrg"),
-						},
-						AppliedScopeType: to.Ptr(armbillingbenefits.AppliedScopeTypeSingle),
-						BillingPlan:      to.Ptr(armbillingbenefits.BillingPlanP1M),
-						BillingScopeID:   to.Ptr("/subscriptions/10000000-0000-0000-0000-000000000000"),
-						Commitment: &armbillingbenefits.Commitment{
-							Amount:       to.Ptr[float64](15.23),
-							CurrencyCode: to.Ptr("USD"),
-							Grain:        to.Ptr(armbillingbenefits.CommitmentGrainHourly),
-						},
-						DisplayName: to.Ptr("TestDisplayName_renewed"),
-						Renew:       to.Ptr(false),
-						Term:        to.Ptr(armbillingbenefits.TermP1Y),
-					},
-					SKU: &armbillingbenefits.ResourceSKU{
-						Name: to.Ptr("Compute_Savings_Plan"),
-					},
-				},
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
+	pager := clientFactory.NewSavingsPlanClient().NewListPager("20000000-0000-0000-0000-000000000000", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armbillingbenefits.SavingsPlanClientListResponse{
+		// 	SavingsPlanModelList: armbillingbenefits.SavingsPlanModelList{
+		// 		Value: []*armbillingbenefits.SavingsPlanModel{
+		// 			{
+		// 				Name: to.Ptr("20000000-0000-0000-0000-000000000000/30000000-0000-0000-0000-000000000000"),
+		// 				Type: to.Ptr("Microsoft.BillingBenefits/savingsPlanOrders/savingsPlans"),
+		// 				ID: to.Ptr("/providers/microsoft.billingbenefits/savingsPlanOrders/20000000-0000-0000-0000-000000000000/savingsPlans/30000000-0000-0000-0000-000000000000"),
+		// 				Properties: &armbillingbenefits.SavingsPlanModelProperties{
+		// 					AppliedScopeProperties: &armbillingbenefits.AppliedScopeProperties{
+		// 						ResourceGroupID: to.Ptr("/subscriptions/eef82110-c91b-4395-9420-fcfcbefc5a47/resourcegroups/3ppRG"),
+		// 					},
+		// 					AppliedScopeType: to.Ptr(armbillingbenefits.AppliedScopeTypeSingle),
+		// 					BillingAccountID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/20000000-1000-0000-0000-000000000000:20000000-0000-3000-0000-000000000000_2019-05-31"),
+		// 					BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/20000000-1000-0000-0000-000000000000:20000000-0000-3000-0000-000000000000_2019-05-31/billingProfiles/KPSV-DWNE-BG7-TGB"),
+		// 					BillingScopeID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/20000000-1000-0000-0000-000000000009"),
+		// 					Commitment: &armbillingbenefits.Commitment{
+		// 						Amount: to.Ptr[float64](0.002),
+		// 						CurrencyCode: to.Ptr("USD"),
+		// 						Grain: to.Ptr(armbillingbenefits.CommitmentGrainHourly),
+		// 					},
+		// 					DisplayName: to.Ptr("Compute_SavingsPlan_10-24-2022_15-44"),
+		// 					DisplayProvisioningState: to.Ptr("Succeeded"),
+		// 					EffectiveDateTime: to.Ptr(time.Date(2022, time.October, 24, 22, 47, 4, 853949300, time.UTC)),
+		// 					ExpiryDateTime: to.Ptr(time.Date(2023, time.October, 24, 22, 47, 4, 619663500, time.UTC)),
+		// 					ProvisioningState: to.Ptr(armbillingbenefits.ProvisioningStateSucceeded),
+		// 					PurchaseDateTime: to.Ptr(time.Date(2022, time.October, 24, 22, 45, 13, 620248600, time.UTC)),
+		// 					Renew: to.Ptr(false),
+		// 					Term: to.Ptr(armbillingbenefits.TermP1Y),
+		// 					UserFriendlyAppliedScopeType: to.Ptr("ResourceGroup"),
+		// 					Utilization: &armbillingbenefits.Utilization{
+		// 						Aggregates: []*armbillingbenefits.UtilizationAggregates{
+		// 							{
+		// 								Grain: to.Ptr[float32](1),
+		// 								GrainUnit: to.Ptr("days"),
+		// 								Value: to.Ptr[float32](0),
+		// 								ValueUnit: to.Ptr("percentage"),
+		// 							},
+		// 							{
+		// 								Grain: to.Ptr[float32](7),
+		// 								GrainUnit: to.Ptr("days"),
+		// 								Value: to.Ptr[float32](0),
+		// 								ValueUnit: to.Ptr("percentage"),
+		// 							},
+		// 							{
+		// 								Grain: to.Ptr[float32](30),
+		// 								GrainUnit: to.Ptr("days"),
+		// 								Value: to.Ptr[float32](0),
+		// 								ValueUnit: to.Ptr("percentage"),
+		// 							},
+		// 						},
+		// 						Trend: to.Ptr(""),
+		// 					},
+		// 				},
+		// 				SKU: &armbillingbenefits.ResourceSKU{
+		// 					Name: to.Ptr("Compute_Savings_Plan"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
 	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armbillingbenefits.SavingsPlanClientUpdateResponse{
-	// 	SavingsPlanModel: armbillingbenefits.SavingsPlanModel{
-	// 		Name: to.Ptr("30000000-0000-0000-0000-000000000000"),
-	// 		Type: to.Ptr("microsoft.billingbenefits/savingsPlanOrders/savingsPlans"),
-	// 		ID: to.Ptr("/providers/microsoft.billingbenefits/savingsPlanOrders/20000000-0000-0000-0000-000000000000/savingsPlans/30000000-0000-0000-0000-000000000000"),
-	// 		Properties: &armbillingbenefits.SavingsPlanModelProperties{
-	// 			AppliedScopeProperties: &armbillingbenefits.AppliedScopeProperties{
-	// 				DisplayName: to.Ptr("Azure subscription 1"),
-	// 				SubscriptionID: to.Ptr("/subscriptions/10000000-0000-0000-0000-000000000000"),
-	// 			},
-	// 			AppliedScopeType: to.Ptr(armbillingbenefits.AppliedScopeTypeSingle),
-	// 			BenefitStartTime: to.Ptr(time.Date(2022, time.October, 27, 0, 34, 33, 669760000, time.UTC)),
-	// 			BillingAccountID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/20000000-1000-0000-0000-000000000000:20000000-0000-3000-0000-000000000000_2019-05-31"),
-	// 			BillingPlan: to.Ptr(armbillingbenefits.BillingPlanP1M),
-	// 			BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/20000000-1000-0000-0000-000000000000:20000000-0000-3000-0000-000000000000_2019-05-31/billingProfiles/KPSV-DWNE-BG7-TGB"),
-	// 			BillingScopeID: to.Ptr("/subscriptions/10000000-0000-0000-0000-000000000000"),
-	// 			Commitment: &armbillingbenefits.Commitment{
-	// 				Amount: to.Ptr[float64](0.001),
-	// 				CurrencyCode: to.Ptr("USD"),
-	// 				Grain: to.Ptr(armbillingbenefits.CommitmentGrainHourly),
-	// 			},
-	// 			DisplayName: to.Ptr("riName"),
-	// 			DisplayProvisioningState: to.Ptr("Succeeded"),
-	// 			EffectiveDateTime: to.Ptr(time.Date(2022, time.November, 10, 0, 12, 54, 549373000, time.UTC)),
-	// 			ExpiryDateTime: to.Ptr(time.Date(2025, time.October, 27, 0, 34, 33, 669760000, time.UTC)),
-	// 			ProvisioningState: to.Ptr(armbillingbenefits.ProvisioningStateSucceeded),
-	// 			PurchaseDateTime: to.Ptr(time.Date(2022, time.October, 27, 0, 32, 45, 582348600, time.UTC)),
-	// 			Renew: to.Ptr(true),
-	// 			Term: to.Ptr(armbillingbenefits.TermP3Y),
-	// 			UserFriendlyAppliedScopeType: to.Ptr("Single"),
-	// 			Utilization: &armbillingbenefits.Utilization{
-	// 				Aggregates: []*armbillingbenefits.UtilizationAggregates{
-	// 					{
-	// 						Grain: to.Ptr[float32](1),
-	// 						GrainUnit: to.Ptr("days"),
-	// 						Value: to.Ptr[float32](100),
-	// 						ValueUnit: to.Ptr("percentage"),
-	// 					},
-	// 					{
-	// 						Grain: to.Ptr[float32](7),
-	// 						GrainUnit: to.Ptr("days"),
-	// 						Value: to.Ptr[float32](37),
-	// 						ValueUnit: to.Ptr("percentage"),
-	// 					},
-	// 					{
-	// 						Grain: to.Ptr[float32](30),
-	// 						GrainUnit: to.Ptr("days"),
-	// 						Value: to.Ptr[float32](53.85),
-	// 						ValueUnit: to.Ptr("percentage"),
-	// 					},
-	// 				},
-	// 				Trend: to.Ptr("DOWN"),
-	// 			},
-	// 		},
-	// 		SKU: &armbillingbenefits.ResourceSKU{
-	// 			Name: to.Ptr("Compute_Savings_Plan"),
-	// 		},
-	// 	},
-	// }
 }
 
 // Generated from example definition: 2025-12-01-preview/SavingsPlanValidateUpdate.json

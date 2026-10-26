@@ -134,7 +134,7 @@ func (client *EdgeActionExecutionFiltersClient) createCreateRequest(ctx context.
 //     method.
 func (client *EdgeActionExecutionFiltersClient) BeginDelete(ctx context.Context, resourceGroupName string, edgeActionName string, executionFilter string, options *EdgeActionExecutionFiltersClientBeginDeleteOptions) (*runtime.Poller[EdgeActionExecutionFiltersClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, edgeActionName, executionFilter, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, edgeActionName, executionFilter, options)
 		if err != nil {
 			return nil, err
 		}
@@ -149,9 +149,9 @@ func (client *EdgeActionExecutionFiltersClient) BeginDelete(ctx context.Context,
 	}
 }
 
-// delete - Delete a EdgeActionExecutionFilter
+// deleteOperation - Delete a EdgeActionExecutionFilter
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *EdgeActionExecutionFiltersClient) delete(ctx context.Context, resourceGroupName string, edgeActionName string, executionFilter string, options *EdgeActionExecutionFiltersClientBeginDeleteOptions) (*http.Response, error) {
+func (client *EdgeActionExecutionFiltersClient) deleteOperation(ctx context.Context, resourceGroupName string, edgeActionName string, executionFilter string, options *EdgeActionExecutionFiltersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "EdgeActionExecutionFiltersClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)

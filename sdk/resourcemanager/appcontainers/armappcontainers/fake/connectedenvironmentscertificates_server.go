@@ -29,6 +29,10 @@ type ConnectedEnvironmentsCertificatesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, connectedEnvironmentName string, certificateName string, options *armappcontainers.ConnectedEnvironmentsCertificatesClientBeginDeleteOptions) (resp azfake.PollerResponder[armappcontainers.ConnectedEnvironmentsCertificatesClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method ConnectedEnvironmentsCertificatesClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, connectedEnvironmentName string, certificateName string, certificateEnvelope armappcontainers.CertificatePatch, options *armappcontainers.ConnectedEnvironmentsCertificatesClientBeginUpdateOptions) (resp azfake.PollerResponder[armappcontainers.ConnectedEnvironmentsCertificatesClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method ConnectedEnvironmentsCertificatesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, connectedEnvironmentName string, certificateName string, options *armappcontainers.ConnectedEnvironmentsCertificatesClientGetOptions) (resp azfake.Responder[armappcontainers.ConnectedEnvironmentsCertificatesClientGetResponse], errResp azfake.ErrorResponder)
@@ -36,10 +40,6 @@ type ConnectedEnvironmentsCertificatesServer struct {
 	// NewListPager is the fake for method ConnectedEnvironmentsCertificatesClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(resourceGroupName string, connectedEnvironmentName string, options *armappcontainers.ConnectedEnvironmentsCertificatesClientListOptions) (resp azfake.PagerResponder[armappcontainers.ConnectedEnvironmentsCertificatesClientListResponse])
-
-	// BeginUpdate is the fake for method ConnectedEnvironmentsCertificatesClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, connectedEnvironmentName string, certificateName string, certificateEnvelope armappcontainers.CertificatePatch, options *armappcontainers.ConnectedEnvironmentsCertificatesClientBeginUpdateOptions) (resp azfake.PollerResponder[armappcontainers.ConnectedEnvironmentsCertificatesClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewConnectedEnvironmentsCertificatesServerTransport creates a new instance of ConnectedEnvironmentsCertificatesServerTransport with the provided implementation.
@@ -50,8 +50,8 @@ func NewConnectedEnvironmentsCertificatesServerTransport(srv *ConnectedEnvironme
 		srv:                 srv,
 		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armappcontainers.ConnectedEnvironmentsCertificatesClientCreateOrUpdateResponse]](),
 		beginDelete:         newTracker[azfake.PollerResponder[armappcontainers.ConnectedEnvironmentsCertificatesClientDeleteResponse]](),
-		newListPager:        newTracker[azfake.PagerResponder[armappcontainers.ConnectedEnvironmentsCertificatesClientListResponse]](),
 		beginUpdate:         newTracker[azfake.PollerResponder[armappcontainers.ConnectedEnvironmentsCertificatesClientUpdateResponse]](),
+		newListPager:        newTracker[azfake.PagerResponder[armappcontainers.ConnectedEnvironmentsCertificatesClientListResponse]](),
 	}
 }
 
@@ -61,8 +61,8 @@ type ConnectedEnvironmentsCertificatesServerTransport struct {
 	srv                 *ConnectedEnvironmentsCertificatesServer
 	beginCreateOrUpdate *tracker[azfake.PollerResponder[armappcontainers.ConnectedEnvironmentsCertificatesClientCreateOrUpdateResponse]]
 	beginDelete         *tracker[azfake.PollerResponder[armappcontainers.ConnectedEnvironmentsCertificatesClientDeleteResponse]]
-	newListPager        *tracker[azfake.PagerResponder[armappcontainers.ConnectedEnvironmentsCertificatesClientListResponse]]
 	beginUpdate         *tracker[azfake.PollerResponder[armappcontainers.ConnectedEnvironmentsCertificatesClientUpdateResponse]]
+	newListPager        *tracker[azfake.PagerResponder[armappcontainers.ConnectedEnvironmentsCertificatesClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for ConnectedEnvironmentsCertificatesServerTransport.
@@ -90,12 +90,12 @@ func (c *ConnectedEnvironmentsCertificatesServerTransport) dispatchToMethodFake(
 				res.resp, res.err = c.dispatchBeginCreateOrUpdate(req)
 			case "ConnectedEnvironmentsCertificatesClient.BeginDelete":
 				res.resp, res.err = c.dispatchBeginDelete(req)
+			case "ConnectedEnvironmentsCertificatesClient.BeginUpdate":
+				res.resp, res.err = c.dispatchBeginUpdate(req)
 			case "ConnectedEnvironmentsCertificatesClient.Get":
 				res.resp, res.err = c.dispatchGet(req)
 			case "ConnectedEnvironmentsCertificatesClient.NewListPager":
 				res.resp, res.err = c.dispatchNewListPager(req)
-			case "ConnectedEnvironmentsCertificatesClient.BeginUpdate":
-				res.resp, res.err = c.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -212,6 +212,58 @@ func (c *ConnectedEnvironmentsCertificatesServerTransport) dispatchBeginDelete(r
 	return resp, nil
 }
 
+func (c *ConnectedEnvironmentsCertificatesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if c.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := c.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.App/connectedEnvironments/(?P<connectedEnvironmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/certificates/(?P<certificateName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armappcontainers.CertificatePatch](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		connectedEnvironmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("connectedEnvironmentName")])
+		if err != nil {
+			return nil, err
+		}
+		certificateNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("certificateName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := c.srv.BeginUpdate(req.Context(), resourceGroupNameParam, connectedEnvironmentNameParam, certificateNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		c.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		c.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		c.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (c *ConnectedEnvironmentsCertificatesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if c.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -287,58 +339,6 @@ func (c *ConnectedEnvironmentsCertificatesServerTransport) dispatchNewListPager(
 	if !server.PagerResponderMore(newListPager) {
 		c.newListPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (c *ConnectedEnvironmentsCertificatesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if c.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := c.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.App/connectedEnvironments/(?P<connectedEnvironmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/certificates/(?P<certificateName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armappcontainers.CertificatePatch](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		connectedEnvironmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("connectedEnvironmentName")])
-		if err != nil {
-			return nil, err
-		}
-		certificateNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("certificateName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := c.srv.BeginUpdate(req.Context(), resourceGroupNameParam, connectedEnvironmentNameParam, certificateNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		c.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		c.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		c.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

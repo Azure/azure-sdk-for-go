@@ -72,7 +72,7 @@ func (client *ConnectionClient) BeginCreateOrUpdateDeployment(ctx context.Contex
 	}
 }
 
-// CreateOrUpdateDeployment - Create or update Azure OpenAI connection deployment resource with the specified parameters
+// createOrUpdateDeployment - Create or update Azure OpenAI connection deployment resource with the specified parameters
 //
 // Create or update Azure OpenAI connection deployment resource with the specified parameters
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -96,7 +96,7 @@ func (client *ConnectionClient) createOrUpdateDeployment(ctx context.Context, re
 	return httpResp, nil
 }
 
-// createOrUpdateDeploymentCreateRequest creates the CreateOrUpdateDeployment request.
+// createOrUpdateDeploymentCreateRequest creates the createOrUpdateDeployment request.
 func (client *ConnectionClient) createOrUpdateDeploymentCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, connectionName string, deploymentName string, body EndpointDeploymentResourcePropertiesBasicResource, options *ConnectionClientBeginCreateOrUpdateDeploymentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/connections/{connectionName}/deployments/{deploymentName}"
 	if client.subscriptionID == "" {
@@ -164,7 +164,7 @@ func (client *ConnectionClient) BeginDeleteDeployment(ctx context.Context, resou
 	}
 }
 
-// DeleteDeployment - Delete Azure OpenAI connection deployment resource by name
+// deleteDeployment - Delete Azure OpenAI connection deployment resource by name
 //
 // Delete Azure OpenAI connection deployment resource by name
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -188,7 +188,7 @@ func (client *ConnectionClient) deleteDeployment(ctx context.Context, resourceGr
 	return httpResp, nil
 }
 
-// deleteDeploymentCreateRequest creates the DeleteDeployment request.
+// deleteDeploymentCreateRequest creates the deleteDeployment request.
 func (client *ConnectionClient) deleteDeploymentCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, connectionName string, deploymentName string, options *ConnectionClientBeginDeleteDeploymentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/connections/{connectionName}/deployments/{deploymentName}"
 	if client.subscriptionID == "" {

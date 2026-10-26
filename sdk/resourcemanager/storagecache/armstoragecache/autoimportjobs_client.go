@@ -70,7 +70,7 @@ func (client *AutoImportJobsClient) BeginCreateOrUpdate(ctx context.Context, res
 	}
 }
 
-// CreateOrUpdate - Create or update an auto import job.
+// createOrUpdate - Create or update an auto import job.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AutoImportJobsClient) createOrUpdate(ctx context.Context, resourceGroupName string, amlFilesystemName string, autoImportJobName string, autoImportJob AutoImportJob, options *AutoImportJobsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -92,7 +92,7 @@ func (client *AutoImportJobsClient) createOrUpdate(ctx context.Context, resource
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *AutoImportJobsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, amlFilesystemName string, autoImportJobName string, autoImportJob AutoImportJob, _ *AutoImportJobsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}/autoImportJobs/{autoImportJobName}"
 	if client.subscriptionID == "" {
@@ -150,7 +150,7 @@ func (client *AutoImportJobsClient) BeginDelete(ctx context.Context, resourceGro
 	}
 }
 
-// Delete - Schedules an auto import job for deletion.
+// deleteOperation - Schedules an auto import job for deletion.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AutoImportJobsClient) deleteOperation(ctx context.Context, resourceGroupName string, amlFilesystemName string, autoImportJobName string, options *AutoImportJobsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -172,7 +172,7 @@ func (client *AutoImportJobsClient) deleteOperation(ctx context.Context, resourc
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *AutoImportJobsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, amlFilesystemName string, autoImportJobName string, _ *AutoImportJobsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}/autoImportJobs/{autoImportJobName}"
 	if client.subscriptionID == "" {
@@ -198,6 +198,89 @@ func (client *AutoImportJobsClient) deleteCreateRequest(ctx context.Context, res
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20260801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - Update an auto import job instance.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - amlFilesystemName - Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and end with alphanumeric.
+//   - autoImportJobName - Name for the auto import job. Allows alphanumerics, underscores, and hyphens. Start and end with alphanumeric.
+//   - autoImportJob - Object containing the user-selectable properties of the auto import job. If read-only properties are included,
+//     they must match the existing values of those properties.
+//   - options - AutoImportJobsClientBeginUpdateOptions contains the optional parameters for the AutoImportJobsClient.BeginUpdate
+//     method.
+func (client *AutoImportJobsClient) BeginUpdate(ctx context.Context, resourceGroupName string, amlFilesystemName string, autoImportJobName string, autoImportJob AutoImportJobUpdate, options *AutoImportJobsClientBeginUpdateOptions) (*runtime.Poller[AutoImportJobsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, amlFilesystemName, autoImportJobName, autoImportJob, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AutoImportJobsClientUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AutoImportJobsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update an auto import job instance.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *AutoImportJobsClient) update(ctx context.Context, resourceGroupName string, amlFilesystemName string, autoImportJobName string, autoImportJob AutoImportJobUpdate, options *AutoImportJobsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "AutoImportJobsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, amlFilesystemName, autoImportJobName, autoImportJob, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *AutoImportJobsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, amlFilesystemName string, autoImportJobName string, autoImportJob AutoImportJobUpdate, _ *AutoImportJobsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}/autoImportJobs/{autoImportJobName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if amlFilesystemName == "" {
+		return nil, errors.New("parameter amlFilesystemName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{amlFilesystemName}", url.PathEscape(amlFilesystemName))
+	if autoImportJobName == "" {
+		return nil, errors.New("parameter autoImportJobName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{autoImportJobName}", url.PathEscape(autoImportJobName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, autoImportJob); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -341,87 +424,4 @@ func (client *AutoImportJobsClient) listByAmlFilesystemHandleResponse(resp *http
 		return AutoImportJobsClientListByAmlFilesystemResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Update an auto import job instance.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - amlFilesystemName - Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and end with alphanumeric.
-//   - autoImportJobName - Name for the auto import job. Allows alphanumerics, underscores, and hyphens. Start and end with alphanumeric.
-//   - autoImportJob - Object containing the user-selectable properties of the auto import job. If read-only properties are included,
-//     they must match the existing values of those properties.
-//   - options - AutoImportJobsClientBeginUpdateOptions contains the optional parameters for the AutoImportJobsClient.BeginUpdate
-//     method.
-func (client *AutoImportJobsClient) BeginUpdate(ctx context.Context, resourceGroupName string, amlFilesystemName string, autoImportJobName string, autoImportJob AutoImportJobUpdate, options *AutoImportJobsClientBeginUpdateOptions) (*runtime.Poller[AutoImportJobsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, amlFilesystemName, autoImportJobName, autoImportJob, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AutoImportJobsClientUpdateResponse]{
-			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
-			Tracer:        client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AutoImportJobsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update an auto import job instance.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *AutoImportJobsClient) update(ctx context.Context, resourceGroupName string, amlFilesystemName string, autoImportJobName string, autoImportJob AutoImportJobUpdate, options *AutoImportJobsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "AutoImportJobsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, amlFilesystemName, autoImportJobName, autoImportJob, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *AutoImportJobsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, amlFilesystemName string, autoImportJobName string, autoImportJob AutoImportJobUpdate, _ *AutoImportJobsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}/autoImportJobs/{autoImportJobName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if amlFilesystemName == "" {
-		return nil, errors.New("parameter amlFilesystemName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{amlFilesystemName}", url.PathEscape(amlFilesystemName))
-	if autoImportJobName == "" {
-		return nil, errors.New("parameter autoImportJobName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{autoImportJobName}", url.PathEscape(autoImportJobName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, autoImportJob); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

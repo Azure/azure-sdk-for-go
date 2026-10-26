@@ -68,7 +68,7 @@ func (client *TroubleshootClient) BeginTroubleshoot(ctx context.Context, resourc
 	}
 }
 
-// Troubleshoot - Starts SQL virtual machine troubleshooting.
+// troubleshoot - Starts SQL virtual machine troubleshooting.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *TroubleshootClient) troubleshoot(ctx context.Context, resourceGroupName string, sqlVirtualMachineName string, parameters SQLVMTroubleshooting, options *TroubleshootClientBeginTroubleshootOptions) (*http.Response, error) {
 	var err error
@@ -90,7 +90,7 @@ func (client *TroubleshootClient) troubleshoot(ctx context.Context, resourceGrou
 	return httpResp, nil
 }
 
-// troubleshootCreateRequest creates the Troubleshoot request.
+// troubleshootCreateRequest creates the troubleshoot request.
 func (client *TroubleshootClient) troubleshootCreateRequest(ctx context.Context, resourceGroupName string, sqlVirtualMachineName string, parameters SQLVMTroubleshooting, _ *TroubleshootClientBeginTroubleshootOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines/{sqlVirtualMachineName}/troubleshoot"
 	if client.subscriptionID == "" {

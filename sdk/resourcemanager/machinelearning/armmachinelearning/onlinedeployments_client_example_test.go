@@ -370,6 +370,235 @@ func ExampleOnlineDeploymentsClient_BeginDelete() {
 	// }
 }
 
+// Generated from example definition: 2026-03-15-preview/OnlineDeployment/KubernetesOnlineDeployment/update.json
+func ExampleOnlineDeploymentsClient_BeginUpdate_updateKubernetesOnlineDeployment() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmachinelearning.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewOnlineDeploymentsClient().BeginUpdate(ctx, "test-rg", "my-aml-workspace", "testEndpointName", "testDeploymentName", armmachinelearning.PartialMinimalTrackedResourceWithSKU{
+		SKU: &armmachinelearning.PartialSKU{
+			Name:     to.Ptr("string"),
+			Capacity: to.Ptr[int32](1),
+			Family:   to.Ptr("string"),
+			Size:     to.Ptr("string"),
+			Tier:     to.Ptr(armmachinelearning.SKUTierFree),
+		},
+		Tags: map[string]*string{},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armmachinelearning.OnlineDeploymentsClientUpdateResponse{
+	// 	OnlineDeployment: armmachinelearning.OnlineDeployment{
+	// 		Name: to.Ptr("string"),
+	// 		Type: to.Ptr("string"),
+	// 		ID: to.Ptr("string"),
+	// 		Identity: &armmachinelearning.ManagedServiceIdentity{
+	// 			Type: to.Ptr(armmachinelearning.ManagedServiceIdentityTypeSystemAssigned),
+	// 			PrincipalID: to.Ptr("00000000-1111-2222-3333-444444444444"),
+	// 			TenantID: to.Ptr("00000000-1111-2222-3333-444444444444"),
+	// 			UserAssignedIdentities: map[string]*armmachinelearning.UserAssignedIdentity{
+	// 				"string": &armmachinelearning.UserAssignedIdentity{
+	// 					ClientID: to.Ptr("00000000-1111-2222-3333-444444444444"),
+	// 					PrincipalID: to.Ptr("00000000-1111-2222-3333-444444444444"),
+	// 				},
+	// 			},
+	// 		},
+	// 		Kind: to.Ptr("string"),
+	// 		Location: to.Ptr("string"),
+	// 		Properties: &armmachinelearning.KubernetesOnlineDeployment{
+	// 			Description: to.Ptr("string"),
+	// 			AppInsightsEnabled: to.Ptr(false),
+	// 			CodeConfiguration: &armmachinelearning.CodeConfiguration{
+	// 				CodeID: to.Ptr("string"),
+	// 				ScoringScript: to.Ptr("string"),
+	// 			},
+	// 			ContainerResourceRequirements: &armmachinelearning.ContainerResourceRequirements{
+	// 				ContainerResourceLimits: &armmachinelearning.ContainerResourceSettings{
+	// 					CPU: to.Ptr("\"1\""),
+	// 					Gpu: to.Ptr("\"1\""),
+	// 					Memory: to.Ptr("\"2Gi\""),
+	// 				},
+	// 				ContainerResourceRequests: &armmachinelearning.ContainerResourceSettings{
+	// 					CPU: to.Ptr("\"1\""),
+	// 					Gpu: to.Ptr("\"1\""),
+	// 					Memory: to.Ptr("\"2Gi\""),
+	// 				},
+	// 			},
+	// 			EndpointComputeType: to.Ptr(armmachinelearning.EndpointComputeTypeKubernetes),
+	// 			EnvironmentID: to.Ptr("string"),
+	// 			EnvironmentVariables: map[string]*string{
+	// 				"string": to.Ptr("string"),
+	// 			},
+	// 			InstanceType: to.Ptr("string"),
+	// 			LivenessProbe: &armmachinelearning.ProbeSettings{
+	// 				FailureThreshold: to.Ptr[int32](1),
+	// 				InitialDelay: to.Ptr("PT5M"),
+	// 				Period: to.Ptr("PT5M"),
+	// 				SuccessThreshold: to.Ptr[int32](1),
+	// 				Timeout: to.Ptr("PT5M"),
+	// 			},
+	// 			Model: to.Ptr("string"),
+	// 			ModelMountPath: to.Ptr("string"),
+	// 			Properties: map[string]*string{
+	// 				"string": to.Ptr("string"),
+	// 			},
+	// 			ProvisioningState: to.Ptr(armmachinelearning.DeploymentProvisioningStateCreating),
+	// 			RequestSettings: &armmachinelearning.OnlineRequestSettings{
+	// 				MaxConcurrentRequestsPerInstance: to.Ptr[int32](1),
+	// 				MaxQueueWait: to.Ptr("PT5M"),
+	// 				RequestTimeout: to.Ptr("PT5M"),
+	// 			},
+	// 			ScaleSettings: &armmachinelearning.DefaultScaleSettings{
+	// 				ScaleType: to.Ptr(armmachinelearning.ScaleTypeDefault),
+	// 			},
+	// 		},
+	// 		SKU: &armmachinelearning.SKU{
+	// 			Name: to.Ptr("string"),
+	// 			Capacity: to.Ptr[int32](1),
+	// 			Family: to.Ptr("string"),
+	// 			Size: to.Ptr("string"),
+	// 			Tier: to.Ptr(armmachinelearning.SKUTierFree),
+	// 		},
+	// 		SystemData: &armmachinelearning.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 12, 34, 56, 999000000, time.UTC)),
+	// 			CreatedBy: to.Ptr("string"),
+	// 			CreatedByType: to.Ptr(armmachinelearning.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.January, 1, 12, 34, 56, 999000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("string"),
+	// 			LastModifiedByType: to.Ptr(armmachinelearning.CreatedByTypeUser),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-03-15-preview/OnlineDeployment/ManagedOnlineDeployment/update.json
+func ExampleOnlineDeploymentsClient_BeginUpdate_updateManagedOnlineDeployment() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmachinelearning.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewOnlineDeploymentsClient().BeginUpdate(ctx, "test-rg", "my-aml-workspace", "testEndpointName", "testDeploymentName", armmachinelearning.PartialMinimalTrackedResourceWithSKU{
+		SKU: &armmachinelearning.PartialSKU{
+			Name:     to.Ptr("string"),
+			Capacity: to.Ptr[int32](1),
+			Family:   to.Ptr("string"),
+			Size:     to.Ptr("string"),
+			Tier:     to.Ptr(armmachinelearning.SKUTierFree),
+		},
+		Tags: map[string]*string{},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armmachinelearning.OnlineDeploymentsClientUpdateResponse{
+	// 	OnlineDeployment: armmachinelearning.OnlineDeployment{
+	// 		Name: to.Ptr("string"),
+	// 		Type: to.Ptr("string"),
+	// 		ID: to.Ptr("string"),
+	// 		Identity: &armmachinelearning.ManagedServiceIdentity{
+	// 			Type: to.Ptr(armmachinelearning.ManagedServiceIdentityTypeSystemAssigned),
+	// 			PrincipalID: to.Ptr("00000000-1111-2222-3333-444444444444"),
+	// 			TenantID: to.Ptr("00000000-1111-2222-3333-444444444444"),
+	// 			UserAssignedIdentities: map[string]*armmachinelearning.UserAssignedIdentity{
+	// 				"string": &armmachinelearning.UserAssignedIdentity{
+	// 					ClientID: to.Ptr("00000000-1111-2222-3333-444444444444"),
+	// 					PrincipalID: to.Ptr("00000000-1111-2222-3333-444444444444"),
+	// 				},
+	// 			},
+	// 		},
+	// 		Kind: to.Ptr("string"),
+	// 		Location: to.Ptr("string"),
+	// 		Properties: &armmachinelearning.ManagedOnlineDeployment{
+	// 			Description: to.Ptr("string"),
+	// 			AppInsightsEnabled: to.Ptr(false),
+	// 			CodeConfiguration: &armmachinelearning.CodeConfiguration{
+	// 				CodeID: to.Ptr("string"),
+	// 				ScoringScript: to.Ptr("string"),
+	// 			},
+	// 			EndpointComputeType: to.Ptr(armmachinelearning.EndpointComputeTypeManaged),
+	// 			EnvironmentID: to.Ptr("string"),
+	// 			EnvironmentVariables: map[string]*string{
+	// 				"string": to.Ptr("string"),
+	// 			},
+	// 			InstanceType: to.Ptr("string"),
+	// 			LivenessProbe: &armmachinelearning.ProbeSettings{
+	// 				FailureThreshold: to.Ptr[int32](1),
+	// 				InitialDelay: to.Ptr("PT5M"),
+	// 				Period: to.Ptr("PT5M"),
+	// 				SuccessThreshold: to.Ptr[int32](1),
+	// 				Timeout: to.Ptr("PT5M"),
+	// 			},
+	// 			Model: to.Ptr("string"),
+	// 			ModelMountPath: to.Ptr("string"),
+	// 			Properties: map[string]*string{
+	// 				"string": to.Ptr("string"),
+	// 			},
+	// 			ProvisioningState: to.Ptr(armmachinelearning.DeploymentProvisioningStateCreating),
+	// 			ReadinessProbe: &armmachinelearning.ProbeSettings{
+	// 				FailureThreshold: to.Ptr[int32](30),
+	// 				InitialDelay: to.Ptr("PT1S"),
+	// 				Period: to.Ptr("PT10S"),
+	// 				SuccessThreshold: to.Ptr[int32](1),
+	// 				Timeout: to.Ptr("PT2S"),
+	// 			},
+	// 			RequestSettings: &armmachinelearning.OnlineRequestSettings{
+	// 				MaxConcurrentRequestsPerInstance: to.Ptr[int32](1),
+	// 				MaxQueueWait: to.Ptr("PT5M"),
+	// 				RequestTimeout: to.Ptr("PT5M"),
+	// 			},
+	// 			ScaleSettings: &armmachinelearning.DefaultScaleSettings{
+	// 				ScaleType: to.Ptr(armmachinelearning.ScaleTypeDefault),
+	// 			},
+	// 		},
+	// 		SKU: &armmachinelearning.SKU{
+	// 			Name: to.Ptr("string"),
+	// 			Capacity: to.Ptr[int32](1),
+	// 			Family: to.Ptr("string"),
+	// 			Size: to.Ptr("string"),
+	// 			Tier: to.Ptr(armmachinelearning.SKUTierFree),
+	// 		},
+	// 		SystemData: &armmachinelearning.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 12, 34, 56, 999000000, time.UTC)),
+	// 			CreatedBy: to.Ptr("string"),
+	// 			CreatedByType: to.Ptr(armmachinelearning.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.January, 1, 12, 34, 56, 999000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("string"),
+	// 			LastModifiedByType: to.Ptr(armmachinelearning.CreatedByTypeUser),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2026-03-15-preview/OnlineDeployment/KubernetesOnlineDeployment/get.json
 func ExampleOnlineDeploymentsClient_Get_getKubernetesOnlineDeployment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -807,233 +1036,4 @@ func ExampleOnlineDeploymentsClient_NewListSKUsPager_listManagedOnlineDeployment
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-03-15-preview/OnlineDeployment/KubernetesOnlineDeployment/update.json
-func ExampleOnlineDeploymentsClient_BeginUpdate_updateKubernetesOnlineDeployment() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmachinelearning.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewOnlineDeploymentsClient().BeginUpdate(ctx, "test-rg", "my-aml-workspace", "testEndpointName", "testDeploymentName", armmachinelearning.PartialMinimalTrackedResourceWithSKU{
-		SKU: &armmachinelearning.PartialSKU{
-			Name:     to.Ptr("string"),
-			Capacity: to.Ptr[int32](1),
-			Family:   to.Ptr("string"),
-			Size:     to.Ptr("string"),
-			Tier:     to.Ptr(armmachinelearning.SKUTierFree),
-		},
-		Tags: map[string]*string{},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armmachinelearning.OnlineDeploymentsClientUpdateResponse{
-	// 	OnlineDeployment: armmachinelearning.OnlineDeployment{
-	// 		Name: to.Ptr("string"),
-	// 		Type: to.Ptr("string"),
-	// 		ID: to.Ptr("string"),
-	// 		Identity: &armmachinelearning.ManagedServiceIdentity{
-	// 			Type: to.Ptr(armmachinelearning.ManagedServiceIdentityTypeSystemAssigned),
-	// 			PrincipalID: to.Ptr("00000000-1111-2222-3333-444444444444"),
-	// 			TenantID: to.Ptr("00000000-1111-2222-3333-444444444444"),
-	// 			UserAssignedIdentities: map[string]*armmachinelearning.UserAssignedIdentity{
-	// 				"string": &armmachinelearning.UserAssignedIdentity{
-	// 					ClientID: to.Ptr("00000000-1111-2222-3333-444444444444"),
-	// 					PrincipalID: to.Ptr("00000000-1111-2222-3333-444444444444"),
-	// 				},
-	// 			},
-	// 		},
-	// 		Kind: to.Ptr("string"),
-	// 		Location: to.Ptr("string"),
-	// 		Properties: &armmachinelearning.KubernetesOnlineDeployment{
-	// 			Description: to.Ptr("string"),
-	// 			AppInsightsEnabled: to.Ptr(false),
-	// 			CodeConfiguration: &armmachinelearning.CodeConfiguration{
-	// 				CodeID: to.Ptr("string"),
-	// 				ScoringScript: to.Ptr("string"),
-	// 			},
-	// 			ContainerResourceRequirements: &armmachinelearning.ContainerResourceRequirements{
-	// 				ContainerResourceLimits: &armmachinelearning.ContainerResourceSettings{
-	// 					CPU: to.Ptr("\"1\""),
-	// 					Gpu: to.Ptr("\"1\""),
-	// 					Memory: to.Ptr("\"2Gi\""),
-	// 				},
-	// 				ContainerResourceRequests: &armmachinelearning.ContainerResourceSettings{
-	// 					CPU: to.Ptr("\"1\""),
-	// 					Gpu: to.Ptr("\"1\""),
-	// 					Memory: to.Ptr("\"2Gi\""),
-	// 				},
-	// 			},
-	// 			EndpointComputeType: to.Ptr(armmachinelearning.EndpointComputeTypeKubernetes),
-	// 			EnvironmentID: to.Ptr("string"),
-	// 			EnvironmentVariables: map[string]*string{
-	// 				"string": to.Ptr("string"),
-	// 			},
-	// 			InstanceType: to.Ptr("string"),
-	// 			LivenessProbe: &armmachinelearning.ProbeSettings{
-	// 				FailureThreshold: to.Ptr[int32](1),
-	// 				InitialDelay: to.Ptr("PT5M"),
-	// 				Period: to.Ptr("PT5M"),
-	// 				SuccessThreshold: to.Ptr[int32](1),
-	// 				Timeout: to.Ptr("PT5M"),
-	// 			},
-	// 			Model: to.Ptr("string"),
-	// 			ModelMountPath: to.Ptr("string"),
-	// 			Properties: map[string]*string{
-	// 				"string": to.Ptr("string"),
-	// 			},
-	// 			ProvisioningState: to.Ptr(armmachinelearning.DeploymentProvisioningStateCreating),
-	// 			RequestSettings: &armmachinelearning.OnlineRequestSettings{
-	// 				MaxConcurrentRequestsPerInstance: to.Ptr[int32](1),
-	// 				MaxQueueWait: to.Ptr("PT5M"),
-	// 				RequestTimeout: to.Ptr("PT5M"),
-	// 			},
-	// 			ScaleSettings: &armmachinelearning.DefaultScaleSettings{
-	// 				ScaleType: to.Ptr(armmachinelearning.ScaleTypeDefault),
-	// 			},
-	// 		},
-	// 		SKU: &armmachinelearning.SKU{
-	// 			Name: to.Ptr("string"),
-	// 			Capacity: to.Ptr[int32](1),
-	// 			Family: to.Ptr("string"),
-	// 			Size: to.Ptr("string"),
-	// 			Tier: to.Ptr(armmachinelearning.SKUTierFree),
-	// 		},
-	// 		SystemData: &armmachinelearning.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 12, 34, 56, 999000000, time.UTC)),
-	// 			CreatedBy: to.Ptr("string"),
-	// 			CreatedByType: to.Ptr(armmachinelearning.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.January, 1, 12, 34, 56, 999000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("string"),
-	// 			LastModifiedByType: to.Ptr(armmachinelearning.CreatedByTypeUser),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-03-15-preview/OnlineDeployment/ManagedOnlineDeployment/update.json
-func ExampleOnlineDeploymentsClient_BeginUpdate_updateManagedOnlineDeployment() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmachinelearning.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewOnlineDeploymentsClient().BeginUpdate(ctx, "test-rg", "my-aml-workspace", "testEndpointName", "testDeploymentName", armmachinelearning.PartialMinimalTrackedResourceWithSKU{
-		SKU: &armmachinelearning.PartialSKU{
-			Name:     to.Ptr("string"),
-			Capacity: to.Ptr[int32](1),
-			Family:   to.Ptr("string"),
-			Size:     to.Ptr("string"),
-			Tier:     to.Ptr(armmachinelearning.SKUTierFree),
-		},
-		Tags: map[string]*string{},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armmachinelearning.OnlineDeploymentsClientUpdateResponse{
-	// 	OnlineDeployment: armmachinelearning.OnlineDeployment{
-	// 		Name: to.Ptr("string"),
-	// 		Type: to.Ptr("string"),
-	// 		ID: to.Ptr("string"),
-	// 		Identity: &armmachinelearning.ManagedServiceIdentity{
-	// 			Type: to.Ptr(armmachinelearning.ManagedServiceIdentityTypeSystemAssigned),
-	// 			PrincipalID: to.Ptr("00000000-1111-2222-3333-444444444444"),
-	// 			TenantID: to.Ptr("00000000-1111-2222-3333-444444444444"),
-	// 			UserAssignedIdentities: map[string]*armmachinelearning.UserAssignedIdentity{
-	// 				"string": &armmachinelearning.UserAssignedIdentity{
-	// 					ClientID: to.Ptr("00000000-1111-2222-3333-444444444444"),
-	// 					PrincipalID: to.Ptr("00000000-1111-2222-3333-444444444444"),
-	// 				},
-	// 			},
-	// 		},
-	// 		Kind: to.Ptr("string"),
-	// 		Location: to.Ptr("string"),
-	// 		Properties: &armmachinelearning.ManagedOnlineDeployment{
-	// 			Description: to.Ptr("string"),
-	// 			AppInsightsEnabled: to.Ptr(false),
-	// 			CodeConfiguration: &armmachinelearning.CodeConfiguration{
-	// 				CodeID: to.Ptr("string"),
-	// 				ScoringScript: to.Ptr("string"),
-	// 			},
-	// 			EndpointComputeType: to.Ptr(armmachinelearning.EndpointComputeTypeManaged),
-	// 			EnvironmentID: to.Ptr("string"),
-	// 			EnvironmentVariables: map[string]*string{
-	// 				"string": to.Ptr("string"),
-	// 			},
-	// 			InstanceType: to.Ptr("string"),
-	// 			LivenessProbe: &armmachinelearning.ProbeSettings{
-	// 				FailureThreshold: to.Ptr[int32](1),
-	// 				InitialDelay: to.Ptr("PT5M"),
-	// 				Period: to.Ptr("PT5M"),
-	// 				SuccessThreshold: to.Ptr[int32](1),
-	// 				Timeout: to.Ptr("PT5M"),
-	// 			},
-	// 			Model: to.Ptr("string"),
-	// 			ModelMountPath: to.Ptr("string"),
-	// 			Properties: map[string]*string{
-	// 				"string": to.Ptr("string"),
-	// 			},
-	// 			ProvisioningState: to.Ptr(armmachinelearning.DeploymentProvisioningStateCreating),
-	// 			ReadinessProbe: &armmachinelearning.ProbeSettings{
-	// 				FailureThreshold: to.Ptr[int32](30),
-	// 				InitialDelay: to.Ptr("PT1S"),
-	// 				Period: to.Ptr("PT10S"),
-	// 				SuccessThreshold: to.Ptr[int32](1),
-	// 				Timeout: to.Ptr("PT2S"),
-	// 			},
-	// 			RequestSettings: &armmachinelearning.OnlineRequestSettings{
-	// 				MaxConcurrentRequestsPerInstance: to.Ptr[int32](1),
-	// 				MaxQueueWait: to.Ptr("PT5M"),
-	// 				RequestTimeout: to.Ptr("PT5M"),
-	// 			},
-	// 			ScaleSettings: &armmachinelearning.DefaultScaleSettings{
-	// 				ScaleType: to.Ptr(armmachinelearning.ScaleTypeDefault),
-	// 			},
-	// 		},
-	// 		SKU: &armmachinelearning.SKU{
-	// 			Name: to.Ptr("string"),
-	// 			Capacity: to.Ptr[int32](1),
-	// 			Family: to.Ptr("string"),
-	// 			Size: to.Ptr("string"),
-	// 			Tier: to.Ptr(armmachinelearning.SKUTierFree),
-	// 		},
-	// 		SystemData: &armmachinelearning.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 12, 34, 56, 999000000, time.UTC)),
-	// 			CreatedBy: to.Ptr("string"),
-	// 			CreatedByType: to.Ptr(armmachinelearning.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.January, 1, 12, 34, 56, 999000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("string"),
-	// 			LastModifiedByType: to.Ptr(armmachinelearning.CreatedByTypeUser),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 		},
-	// 	},
-	// }
 }

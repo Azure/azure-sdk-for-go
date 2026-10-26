@@ -21,13 +21,13 @@ import (
 
 // PaymentHsmClusterPrivateEndpointConnectionsServer is a fake server for instances of the armhardwaresecuritymodules.PaymentHsmClusterPrivateEndpointConnectionsClient type.
 type PaymentHsmClusterPrivateEndpointConnectionsServer struct {
-	// Create is the fake for method PaymentHsmClusterPrivateEndpointConnectionsClient.Create
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	Create func(ctx context.Context, resourceGroupName string, paymentHsmClusterName string, peConnectionName string, properties armhardwaresecuritymodules.PaymentHsmClusterPrivateEndpointConnection, options *armhardwaresecuritymodules.PaymentHsmClusterPrivateEndpointConnectionsClientCreateOptions) (resp azfake.Responder[armhardwaresecuritymodules.PaymentHsmClusterPrivateEndpointConnectionsClientCreateResponse], errResp azfake.ErrorResponder)
-
 	// BeginDelete is the fake for method PaymentHsmClusterPrivateEndpointConnectionsClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, paymentHsmClusterName string, peConnectionName string, options *armhardwaresecuritymodules.PaymentHsmClusterPrivateEndpointConnectionsClientBeginDeleteOptions) (resp azfake.PollerResponder[armhardwaresecuritymodules.PaymentHsmClusterPrivateEndpointConnectionsClientDeleteResponse], errResp azfake.ErrorResponder)
+
+	// Create is the fake for method PaymentHsmClusterPrivateEndpointConnectionsClient.Create
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	Create func(ctx context.Context, resourceGroupName string, paymentHsmClusterName string, peConnectionName string, properties armhardwaresecuritymodules.PaymentHsmClusterPrivateEndpointConnection, options *armhardwaresecuritymodules.PaymentHsmClusterPrivateEndpointConnectionsClientCreateOptions) (resp azfake.Responder[armhardwaresecuritymodules.PaymentHsmClusterPrivateEndpointConnectionsClientCreateResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method PaymentHsmClusterPrivateEndpointConnectionsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -78,10 +78,10 @@ func (p *PaymentHsmClusterPrivateEndpointConnectionsServerTransport) dispatchToM
 		}
 		if !intercepted {
 			switch method {
-			case "PaymentHsmClusterPrivateEndpointConnectionsClient.Create":
-				res.resp, res.err = p.dispatchCreate(req)
 			case "PaymentHsmClusterPrivateEndpointConnectionsClient.BeginDelete":
 				res.resp, res.err = p.dispatchBeginDelete(req)
+			case "PaymentHsmClusterPrivateEndpointConnectionsClient.Create":
+				res.resp, res.err = p.dispatchCreate(req)
 			case "PaymentHsmClusterPrivateEndpointConnectionsClient.Get":
 				res.resp, res.err = p.dispatchGet(req)
 			case "PaymentHsmClusterPrivateEndpointConnectionsClient.NewListByPaymentHsmClusterPager":
@@ -100,47 +100,6 @@ func (p *PaymentHsmClusterPrivateEndpointConnectionsServerTransport) dispatchToM
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (p *PaymentHsmClusterPrivateEndpointConnectionsServerTransport) dispatchCreate(req *http.Request) (*http.Response, error) {
-	if p.srv.Create == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Create not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.HardwareSecurityModules/paymentHsmClusters/(?P<paymentHsmClusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/privateEndpointConnections/(?P<peConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armhardwaresecuritymodules.PaymentHsmClusterPrivateEndpointConnection](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	paymentHsmClusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("paymentHsmClusterName")])
-	if err != nil {
-		return nil, err
-	}
-	peConnectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("peConnectionName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := p.srv.Create(req.Context(), resourceGroupNameParam, paymentHsmClusterNameParam, peConnectionNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).PaymentHsmClusterPrivateEndpointConnection, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (p *PaymentHsmClusterPrivateEndpointConnectionsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
@@ -188,6 +147,47 @@ func (p *PaymentHsmClusterPrivateEndpointConnectionsServerTransport) dispatchBeg
 		p.beginDelete.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (p *PaymentHsmClusterPrivateEndpointConnectionsServerTransport) dispatchCreate(req *http.Request) (*http.Response, error) {
+	if p.srv.Create == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Create not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.HardwareSecurityModules/paymentHsmClusters/(?P<paymentHsmClusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/privateEndpointConnections/(?P<peConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armhardwaresecuritymodules.PaymentHsmClusterPrivateEndpointConnection](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	paymentHsmClusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("paymentHsmClusterName")])
+	if err != nil {
+		return nil, err
+	}
+	peConnectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("peConnectionName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := p.srv.Create(req.Context(), resourceGroupNameParam, paymentHsmClusterNameParam, peConnectionNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).PaymentHsmClusterPrivateEndpointConnection, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 

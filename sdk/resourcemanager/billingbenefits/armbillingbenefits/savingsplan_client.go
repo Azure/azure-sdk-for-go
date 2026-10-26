@@ -39,6 +39,77 @@ func NewSavingsPlanClient(credential azcore.TokenCredential, options *arm.Client
 	return client, nil
 }
 
+// BeginUpdate - Update savings plan.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - savingsPlanOrderID - Order ID of the savings plan
+//   - savingsPlanID - ID of the savings plan
+//   - body - Request body for patching a savings plan order alias
+//   - options - SavingsPlanClientBeginUpdateOptions contains the optional parameters for the SavingsPlanClient.BeginUpdate method.
+func (client *SavingsPlanClient) BeginUpdate(ctx context.Context, savingsPlanOrderID string, savingsPlanID string, body SavingsPlanUpdateRequest, options *SavingsPlanClientBeginUpdateOptions) (*runtime.Poller[SavingsPlanClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, savingsPlanOrderID, savingsPlanID, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SavingsPlanClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SavingsPlanClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update savings plan.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *SavingsPlanClient) update(ctx context.Context, savingsPlanOrderID string, savingsPlanID string, body SavingsPlanUpdateRequest, options *SavingsPlanClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "SavingsPlanClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, savingsPlanOrderID, savingsPlanID, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *SavingsPlanClient) updateCreateRequest(ctx context.Context, savingsPlanOrderID string, savingsPlanID string, body SavingsPlanUpdateRequest, _ *SavingsPlanClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.BillingBenefits/savingsPlanOrders/{savingsPlanOrderId}/savingsPlans/{savingsPlanId}"
+	if savingsPlanOrderID == "" {
+		return nil, errors.New("parameter savingsPlanOrderID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{savingsPlanOrderId}", url.PathEscape(savingsPlanOrderID))
+	if savingsPlanID == "" {
+		return nil, errors.New("parameter savingsPlanID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{savingsPlanId}", url.PathEscape(savingsPlanID))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20251201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
 // Get - Get savings plan.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - savingsPlanOrderID - Order ID of the savings plan
@@ -94,73 +165,6 @@ func (client *SavingsPlanClient) getHandleResponse(resp *http.Response, successC
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SavingsPlanModel); err != nil {
 		return SavingsPlanClientGetResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListPager - List savings plans in an order.
-//   - savingsPlanOrderID - Order ID of the savings plan
-//   - options - SavingsPlanClientListOptions contains the optional parameters for the SavingsPlanClient.NewListPager method.
-func (client *SavingsPlanClient) NewListPager(savingsPlanOrderID string, options *SavingsPlanClientListOptions) *runtime.Pager[SavingsPlanClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[SavingsPlanClientListResponse]{
-		More: func(page SavingsPlanClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *SavingsPlanClientListResponse) (SavingsPlanClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SavingsPlanClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listCreateRequest(ctx, savingsPlanOrderID, nextLink, options)
-			if err != nil {
-				return SavingsPlanClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return SavingsPlanClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *SavingsPlanClient) listCreateRequest(ctx context.Context, savingsPlanOrderID string, nextLink string, _ *SavingsPlanClientListOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/providers/Microsoft.BillingBenefits/savingsPlanOrders/{savingsPlanOrderId}/savingsPlans"
-		if savingsPlanOrderID == "" {
-			return nil, errors.New("parameter savingsPlanOrderID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{savingsPlanOrderId}", url.PathEscape(savingsPlanOrderID))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20251201Preview)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *SavingsPlanClient) listHandleResponse(resp *http.Response, successCodes ...int) (SavingsPlanClientListResponse, error) {
-	result := SavingsPlanClientListResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.SavingsPlanModelList); err != nil {
-		return SavingsPlanClientListResponse{}, err
 	}
 	return result, nil
 }
@@ -245,75 +249,71 @@ func (client *SavingsPlanClient) listAllHandleResponse(resp *http.Response, succ
 	return result, nil
 }
 
-// BeginUpdate - Update savings plan.
-// If the operation fails it returns an *azcore.ResponseError type.
+// NewListPager - List savings plans in an order.
 //   - savingsPlanOrderID - Order ID of the savings plan
-//   - savingsPlanID - ID of the savings plan
-//   - body - Request body for patching a savings plan order alias
-//   - options - SavingsPlanClientBeginUpdateOptions contains the optional parameters for the SavingsPlanClient.BeginUpdate method.
-func (client *SavingsPlanClient) BeginUpdate(ctx context.Context, savingsPlanOrderID string, savingsPlanID string, body SavingsPlanUpdateRequest, options *SavingsPlanClientBeginUpdateOptions) (*runtime.Poller[SavingsPlanClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, savingsPlanOrderID, savingsPlanID, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SavingsPlanClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SavingsPlanClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
+//   - options - SavingsPlanClientListOptions contains the optional parameters for the SavingsPlanClient.NewListPager method.
+func (client *SavingsPlanClient) NewListPager(savingsPlanOrderID string, options *SavingsPlanClientListOptions) *runtime.Pager[SavingsPlanClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[SavingsPlanClientListResponse]{
+		More: func(page SavingsPlanClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *SavingsPlanClientListResponse) (SavingsPlanClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SavingsPlanClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, savingsPlanOrderID, nextLink, options)
+			if err != nil {
+				return SavingsPlanClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return SavingsPlanClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
 }
 
-// Update - Update savings plan.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *SavingsPlanClient) update(ctx context.Context, savingsPlanOrderID string, savingsPlanID string, body SavingsPlanUpdateRequest, options *SavingsPlanClientBeginUpdateOptions) (*http.Response, error) {
+// listCreateRequest creates the List request.
+func (client *SavingsPlanClient) listCreateRequest(ctx context.Context, savingsPlanOrderID string, nextLink string, _ *SavingsPlanClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
 	var err error
-	const operationName = "SavingsPlanClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, savingsPlanOrderID, savingsPlanID, body, options)
+	if firstPage {
+		urlPath := "/providers/Microsoft.BillingBenefits/savingsPlanOrders/{savingsPlanOrderId}/savingsPlans"
+		if savingsPlanOrderID == "" {
+			return nil, errors.New("parameter savingsPlanOrderID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{savingsPlanOrderId}", url.PathEscape(savingsPlanOrderID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
 	if err != nil {
 		return nil, err
 	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *SavingsPlanClient) updateCreateRequest(ctx context.Context, savingsPlanOrderID string, savingsPlanID string, body SavingsPlanUpdateRequest, _ *SavingsPlanClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.BillingBenefits/savingsPlanOrders/{savingsPlanOrderId}/savingsPlans/{savingsPlanId}"
-	if savingsPlanOrderID == "" {
-		return nil, errors.New("parameter savingsPlanOrderID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{savingsPlanOrderId}", url.PathEscape(savingsPlanOrderID))
-	if savingsPlanID == "" {
-		return nil, errors.New("parameter savingsPlanID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{savingsPlanId}", url.PathEscape(savingsPlanID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251201Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20251201Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
 	return req, nil
+}
+
+// listHandleResponse handles the List response.
+func (client *SavingsPlanClient) listHandleResponse(resp *http.Response, successCodes ...int) (SavingsPlanClientListResponse, error) {
+	result := SavingsPlanClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SavingsPlanModelList); err != nil {
+		return SavingsPlanClientListResponse{}, err
+	}
+	return result, nil
 }
 
 // ValidateUpdate - Validate savings plan patch.

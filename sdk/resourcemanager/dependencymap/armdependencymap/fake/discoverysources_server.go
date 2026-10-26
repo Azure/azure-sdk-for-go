@@ -29,6 +29,10 @@ type DiscoverySourcesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, mapName string, sourceName string, options *armdependencymap.DiscoverySourcesClientBeginDeleteOptions) (resp azfake.PollerResponder[armdependencymap.DiscoverySourcesClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method DiscoverySourcesClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, mapName string, sourceName string, properties armdependencymap.DiscoverySourceResourceTagsUpdate, options *armdependencymap.DiscoverySourcesClientBeginUpdateOptions) (resp azfake.PollerResponder[armdependencymap.DiscoverySourcesClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method DiscoverySourcesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, mapName string, sourceName string, options *armdependencymap.DiscoverySourcesClientGetOptions) (resp azfake.Responder[armdependencymap.DiscoverySourcesClientGetResponse], errResp azfake.ErrorResponder)
@@ -36,10 +40,6 @@ type DiscoverySourcesServer struct {
 	// NewListByMapsResourcePager is the fake for method DiscoverySourcesClient.NewListByMapsResourcePager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByMapsResourcePager func(resourceGroupName string, mapName string, options *armdependencymap.DiscoverySourcesClientListByMapsResourceOptions) (resp azfake.PagerResponder[armdependencymap.DiscoverySourcesClientListByMapsResourceResponse])
-
-	// BeginUpdate is the fake for method DiscoverySourcesClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, mapName string, sourceName string, properties armdependencymap.DiscoverySourceResourceTagsUpdate, options *armdependencymap.DiscoverySourcesClientBeginUpdateOptions) (resp azfake.PollerResponder[armdependencymap.DiscoverySourcesClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewDiscoverySourcesServerTransport creates a new instance of DiscoverySourcesServerTransport with the provided implementation.
@@ -50,8 +50,8 @@ func NewDiscoverySourcesServerTransport(srv *DiscoverySourcesServer) *DiscoveryS
 		srv:                        srv,
 		beginCreateOrUpdate:        newTracker[azfake.PollerResponder[armdependencymap.DiscoverySourcesClientCreateOrUpdateResponse]](),
 		beginDelete:                newTracker[azfake.PollerResponder[armdependencymap.DiscoverySourcesClientDeleteResponse]](),
-		newListByMapsResourcePager: newTracker[azfake.PagerResponder[armdependencymap.DiscoverySourcesClientListByMapsResourceResponse]](),
 		beginUpdate:                newTracker[azfake.PollerResponder[armdependencymap.DiscoverySourcesClientUpdateResponse]](),
+		newListByMapsResourcePager: newTracker[azfake.PagerResponder[armdependencymap.DiscoverySourcesClientListByMapsResourceResponse]](),
 	}
 }
 
@@ -61,8 +61,8 @@ type DiscoverySourcesServerTransport struct {
 	srv                        *DiscoverySourcesServer
 	beginCreateOrUpdate        *tracker[azfake.PollerResponder[armdependencymap.DiscoverySourcesClientCreateOrUpdateResponse]]
 	beginDelete                *tracker[azfake.PollerResponder[armdependencymap.DiscoverySourcesClientDeleteResponse]]
-	newListByMapsResourcePager *tracker[azfake.PagerResponder[armdependencymap.DiscoverySourcesClientListByMapsResourceResponse]]
 	beginUpdate                *tracker[azfake.PollerResponder[armdependencymap.DiscoverySourcesClientUpdateResponse]]
+	newListByMapsResourcePager *tracker[azfake.PagerResponder[armdependencymap.DiscoverySourcesClientListByMapsResourceResponse]]
 }
 
 // Do implements the policy.Transporter interface for DiscoverySourcesServerTransport.
@@ -90,12 +90,12 @@ func (d *DiscoverySourcesServerTransport) dispatchToMethodFake(req *http.Request
 				res.resp, res.err = d.dispatchBeginCreateOrUpdate(req)
 			case "DiscoverySourcesClient.BeginDelete":
 				res.resp, res.err = d.dispatchBeginDelete(req)
+			case "DiscoverySourcesClient.BeginUpdate":
+				res.resp, res.err = d.dispatchBeginUpdate(req)
 			case "DiscoverySourcesClient.Get":
 				res.resp, res.err = d.dispatchGet(req)
 			case "DiscoverySourcesClient.NewListByMapsResourcePager":
 				res.resp, res.err = d.dispatchNewListByMapsResourcePager(req)
-			case "DiscoverySourcesClient.BeginUpdate":
-				res.resp, res.err = d.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -212,6 +212,58 @@ func (d *DiscoverySourcesServerTransport) dispatchBeginDelete(req *http.Request)
 	return resp, nil
 }
 
+func (d *DiscoverySourcesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if d.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := d.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DependencyMap/maps/(?P<mapName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/discoverySources/(?P<sourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armdependencymap.DiscoverySourceResourceTagsUpdate](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		mapNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("mapName")])
+		if err != nil {
+			return nil, err
+		}
+		sourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("sourceName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := d.srv.BeginUpdate(req.Context(), resourceGroupNameParam, mapNameParam, sourceNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		d.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		d.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		d.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (d *DiscoverySourcesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if d.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -287,58 +339,6 @@ func (d *DiscoverySourcesServerTransport) dispatchNewListByMapsResourcePager(req
 	if !server.PagerResponderMore(newListByMapsResourcePager) {
 		d.newListByMapsResourcePager.remove(req)
 	}
-	return resp, nil
-}
-
-func (d *DiscoverySourcesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if d.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := d.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DependencyMap/maps/(?P<mapName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/discoverySources/(?P<sourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armdependencymap.DiscoverySourceResourceTagsUpdate](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		mapNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("mapName")])
-		if err != nil {
-			return nil, err
-		}
-		sourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("sourceName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := d.srv.BeginUpdate(req.Context(), resourceGroupNameParam, mapNameParam, sourceNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		d.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		d.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		d.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

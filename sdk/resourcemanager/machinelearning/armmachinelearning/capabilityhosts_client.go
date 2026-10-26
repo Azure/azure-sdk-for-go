@@ -72,7 +72,7 @@ func (client *CapabilityHostsClient) BeginCreateOrUpdate(ctx context.Context, re
 	}
 }
 
-// CreateOrUpdate - Create or update capabilityHost.
+// createOrUpdate - Create or update capabilityHost.
 //
 // Create or update capabilityHost.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -96,7 +96,7 @@ func (client *CapabilityHostsClient) createOrUpdate(ctx context.Context, resourc
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *CapabilityHostsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, name string, body CapabilityHost, _ *CapabilityHostsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/capabilityHosts/{name}"
 	if client.subscriptionID == "" {
@@ -156,7 +156,7 @@ func (client *CapabilityHostsClient) BeginDelete(ctx context.Context, resourceGr
 	}
 }
 
-// Delete - Delete capabilityHost.
+// deleteOperation - Delete capabilityHost.
 //
 // Delete capabilityHost.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -180,7 +180,7 @@ func (client *CapabilityHostsClient) deleteOperation(ctx context.Context, resour
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *CapabilityHostsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, name string, _ *CapabilityHostsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/capabilityHosts/{name}"
 	if client.subscriptionID == "" {

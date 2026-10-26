@@ -29,6 +29,10 @@ type TokensServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, registryName string, tokenName string, options *armcontainerregistry.TokensClientBeginDeleteOptions) (resp azfake.PollerResponder[armcontainerregistry.TokensClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method TokensClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	BeginUpdate func(ctx context.Context, resourceGroupName string, registryName string, tokenName string, tokenUpdateParameters armcontainerregistry.TokenUpdateParameters, options *armcontainerregistry.TokensClientBeginUpdateOptions) (resp azfake.PollerResponder[armcontainerregistry.TokensClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method TokensClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, registryName string, tokenName string, options *armcontainerregistry.TokensClientGetOptions) (resp azfake.Responder[armcontainerregistry.TokensClientGetResponse], errResp azfake.ErrorResponder)
@@ -36,10 +40,6 @@ type TokensServer struct {
 	// NewListPager is the fake for method TokensClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(resourceGroupName string, registryName string, options *armcontainerregistry.TokensClientListOptions) (resp azfake.PagerResponder[armcontainerregistry.TokensClientListResponse])
-
-	// BeginUpdate is the fake for method TokensClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginUpdate func(ctx context.Context, resourceGroupName string, registryName string, tokenName string, tokenUpdateParameters armcontainerregistry.TokenUpdateParameters, options *armcontainerregistry.TokensClientBeginUpdateOptions) (resp azfake.PollerResponder[armcontainerregistry.TokensClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewTokensServerTransport creates a new instance of TokensServerTransport with the provided implementation.
@@ -50,8 +50,8 @@ func NewTokensServerTransport(srv *TokensServer) *TokensServerTransport {
 		srv:          srv,
 		beginCreate:  newTracker[azfake.PollerResponder[armcontainerregistry.TokensClientCreateResponse]](),
 		beginDelete:  newTracker[azfake.PollerResponder[armcontainerregistry.TokensClientDeleteResponse]](),
-		newListPager: newTracker[azfake.PagerResponder[armcontainerregistry.TokensClientListResponse]](),
 		beginUpdate:  newTracker[azfake.PollerResponder[armcontainerregistry.TokensClientUpdateResponse]](),
+		newListPager: newTracker[azfake.PagerResponder[armcontainerregistry.TokensClientListResponse]](),
 	}
 }
 
@@ -61,8 +61,8 @@ type TokensServerTransport struct {
 	srv          *TokensServer
 	beginCreate  *tracker[azfake.PollerResponder[armcontainerregistry.TokensClientCreateResponse]]
 	beginDelete  *tracker[azfake.PollerResponder[armcontainerregistry.TokensClientDeleteResponse]]
-	newListPager *tracker[azfake.PagerResponder[armcontainerregistry.TokensClientListResponse]]
 	beginUpdate  *tracker[azfake.PollerResponder[armcontainerregistry.TokensClientUpdateResponse]]
+	newListPager *tracker[azfake.PagerResponder[armcontainerregistry.TokensClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for TokensServerTransport.
@@ -90,12 +90,12 @@ func (t *TokensServerTransport) dispatchToMethodFake(req *http.Request, method s
 				res.resp, res.err = t.dispatchBeginCreate(req)
 			case "TokensClient.BeginDelete":
 				res.resp, res.err = t.dispatchBeginDelete(req)
+			case "TokensClient.BeginUpdate":
+				res.resp, res.err = t.dispatchBeginUpdate(req)
 			case "TokensClient.Get":
 				res.resp, res.err = t.dispatchGet(req)
 			case "TokensClient.NewListPager":
 				res.resp, res.err = t.dispatchNewListPager(req)
-			case "TokensClient.BeginUpdate":
-				res.resp, res.err = t.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -212,6 +212,58 @@ func (t *TokensServerTransport) dispatchBeginDelete(req *http.Request) (*http.Re
 	return resp, nil
 }
 
+func (t *TokensServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if t.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := t.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerRegistry/registries/(?P<registryName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/tokens/(?P<tokenName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armcontainerregistry.TokenUpdateParameters](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		registryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
+		if err != nil {
+			return nil, err
+		}
+		tokenNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("tokenName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := t.srv.BeginUpdate(req.Context(), resourceGroupNameParam, registryNameParam, tokenNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		t.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		t.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		t.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (t *TokensServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if t.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -287,58 +339,6 @@ func (t *TokensServerTransport) dispatchNewListPager(req *http.Request) (*http.R
 	if !server.PagerResponderMore(newListPager) {
 		t.newListPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (t *TokensServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if t.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := t.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerRegistry/registries/(?P<registryName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/tokens/(?P<tokenName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcontainerregistry.TokenUpdateParameters](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		registryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
-		if err != nil {
-			return nil, err
-		}
-		tokenNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("tokenName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := t.srv.BeginUpdate(req.Context(), resourceGroupNameParam, registryNameParam, tokenNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		t.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
-		t.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		t.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

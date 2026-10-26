@@ -29,6 +29,10 @@ type SolutionVersionsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, targetName string, solutionName string, solutionVersionName string, options *armworkloadorchestration.SolutionVersionsClientBeginDeleteOptions) (resp azfake.PollerResponder[armworkloadorchestration.SolutionVersionsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method SolutionVersionsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, targetName string, solutionName string, solutionVersionName string, properties armworkloadorchestration.SolutionVersion, options *armworkloadorchestration.SolutionVersionsClientBeginUpdateOptions) (resp azfake.PollerResponder[armworkloadorchestration.SolutionVersionsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method SolutionVersionsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, targetName string, solutionName string, solutionVersionName string, options *armworkloadorchestration.SolutionVersionsClientGetOptions) (resp azfake.Responder[armworkloadorchestration.SolutionVersionsClientGetResponse], errResp azfake.ErrorResponder)
@@ -36,10 +40,6 @@ type SolutionVersionsServer struct {
 	// NewListBySolutionPager is the fake for method SolutionVersionsClient.NewListBySolutionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySolutionPager func(resourceGroupName string, targetName string, solutionName string, options *armworkloadorchestration.SolutionVersionsClientListBySolutionOptions) (resp azfake.PagerResponder[armworkloadorchestration.SolutionVersionsClientListBySolutionResponse])
-
-	// BeginUpdate is the fake for method SolutionVersionsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, targetName string, solutionName string, solutionVersionName string, properties armworkloadorchestration.SolutionVersion, options *armworkloadorchestration.SolutionVersionsClientBeginUpdateOptions) (resp azfake.PollerResponder[armworkloadorchestration.SolutionVersionsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewSolutionVersionsServerTransport creates a new instance of SolutionVersionsServerTransport with the provided implementation.
@@ -50,8 +50,8 @@ func NewSolutionVersionsServerTransport(srv *SolutionVersionsServer) *SolutionVe
 		srv:                    srv,
 		beginCreateOrUpdate:    newTracker[azfake.PollerResponder[armworkloadorchestration.SolutionVersionsClientCreateOrUpdateResponse]](),
 		beginDelete:            newTracker[azfake.PollerResponder[armworkloadorchestration.SolutionVersionsClientDeleteResponse]](),
-		newListBySolutionPager: newTracker[azfake.PagerResponder[armworkloadorchestration.SolutionVersionsClientListBySolutionResponse]](),
 		beginUpdate:            newTracker[azfake.PollerResponder[armworkloadorchestration.SolutionVersionsClientUpdateResponse]](),
+		newListBySolutionPager: newTracker[azfake.PagerResponder[armworkloadorchestration.SolutionVersionsClientListBySolutionResponse]](),
 	}
 }
 
@@ -61,8 +61,8 @@ type SolutionVersionsServerTransport struct {
 	srv                    *SolutionVersionsServer
 	beginCreateOrUpdate    *tracker[azfake.PollerResponder[armworkloadorchestration.SolutionVersionsClientCreateOrUpdateResponse]]
 	beginDelete            *tracker[azfake.PollerResponder[armworkloadorchestration.SolutionVersionsClientDeleteResponse]]
-	newListBySolutionPager *tracker[azfake.PagerResponder[armworkloadorchestration.SolutionVersionsClientListBySolutionResponse]]
 	beginUpdate            *tracker[azfake.PollerResponder[armworkloadorchestration.SolutionVersionsClientUpdateResponse]]
+	newListBySolutionPager *tracker[azfake.PagerResponder[armworkloadorchestration.SolutionVersionsClientListBySolutionResponse]]
 }
 
 // Do implements the policy.Transporter interface for SolutionVersionsServerTransport.
@@ -90,12 +90,12 @@ func (s *SolutionVersionsServerTransport) dispatchToMethodFake(req *http.Request
 				res.resp, res.err = s.dispatchBeginCreateOrUpdate(req)
 			case "SolutionVersionsClient.BeginDelete":
 				res.resp, res.err = s.dispatchBeginDelete(req)
+			case "SolutionVersionsClient.BeginUpdate":
+				res.resp, res.err = s.dispatchBeginUpdate(req)
 			case "SolutionVersionsClient.Get":
 				res.resp, res.err = s.dispatchGet(req)
 			case "SolutionVersionsClient.NewListBySolutionPager":
 				res.resp, res.err = s.dispatchNewListBySolutionPager(req)
-			case "SolutionVersionsClient.BeginUpdate":
-				res.resp, res.err = s.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -220,6 +220,62 @@ func (s *SolutionVersionsServerTransport) dispatchBeginDelete(req *http.Request)
 	return resp, nil
 }
 
+func (s *SolutionVersionsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if s.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := s.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Edge/targets/(?P<targetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/solutions/(?P<solutionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/versions/(?P<solutionVersionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 6 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armworkloadorchestration.SolutionVersion](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		targetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("targetName")])
+		if err != nil {
+			return nil, err
+		}
+		solutionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("solutionName")])
+		if err != nil {
+			return nil, err
+		}
+		solutionVersionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("solutionVersionName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := s.srv.BeginUpdate(req.Context(), resourceGroupNameParam, targetNameParam, solutionNameParam, solutionVersionNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		s.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		s.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		s.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (s *SolutionVersionsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if s.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -303,62 +359,6 @@ func (s *SolutionVersionsServerTransport) dispatchNewListBySolutionPager(req *ht
 	if !server.PagerResponderMore(newListBySolutionPager) {
 		s.newListBySolutionPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (s *SolutionVersionsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if s.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := s.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Edge/targets/(?P<targetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/solutions/(?P<solutionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/versions/(?P<solutionVersionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 6 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armworkloadorchestration.SolutionVersion](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		targetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("targetName")])
-		if err != nil {
-			return nil, err
-		}
-		solutionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("solutionName")])
-		if err != nil {
-			return nil, err
-		}
-		solutionVersionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("solutionVersionName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := s.srv.BeginUpdate(req.Context(), resourceGroupNameParam, targetNameParam, solutionNameParam, solutionVersionNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		s.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		s.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		s.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

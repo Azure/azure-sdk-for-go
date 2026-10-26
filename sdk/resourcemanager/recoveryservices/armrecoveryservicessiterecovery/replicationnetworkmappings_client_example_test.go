@@ -85,6 +85,58 @@ func ExampleReplicationNetworkMappingsClient_BeginDelete() {
 	}
 }
 
+// Generated from example definition: 2025-08-01/ReplicationNetworkMappings_Update.json
+func ExampleReplicationNetworkMappingsClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armrecoveryservicessiterecovery.NewClientFactory("9112a37f-0f3e-46ec-9c00-060c6edca071", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewReplicationNetworkMappingsClient().BeginUpdate(ctx, "srcBvte2a14C27", "srce2avaultbvtaC27", "b0cef6e9a4437b81803d0b55ada4f700ab66caae59c35d62723a1589c0cd13ac", "e2267b5c-2650-49bd-ab3f-d66aae694c06", "corpe2amap", armrecoveryservicessiterecovery.UpdateNetworkMappingInput{
+		Properties: &armrecoveryservicessiterecovery.UpdateNetworkMappingInputProperties{
+			FabricSpecificDetails: &armrecoveryservicessiterecovery.VmmToAzureUpdateNetworkMappingInput{
+				InstanceType: to.Ptr("VmmToAzure"),
+			},
+			RecoveryFabricName: to.Ptr("Microsoft Azure"),
+			RecoveryNetworkID:  to.Ptr("/subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/siterecoveryProd1/providers/Microsoft.Network/virtualNetworks/vnetavrai2"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armrecoveryservicessiterecovery.ReplicationNetworkMappingsClientUpdateResponse{
+	// 	NetworkMapping: armrecoveryservicessiterecovery.NetworkMapping{
+	// 		Name: to.Ptr("corpe2amap"),
+	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/replicationFabrics/replicationNetworks/replicationNetworkMappings"),
+	// 		ID: to.Ptr("/Subscriptions/9112a37f-0f3e-46ec-9c00-060c6edca071/resourceGroups/srcBvte2a14C27/providers/Microsoft.RecoveryServices/vaults/srce2avaultbvtaC27/replicationFabrics/b0cef6e9a4437b81803d0b55ada4f700ab66caae59c35d62723a1589c0cd13ac/replicationNetworks/e2267b5c-2650-49bd-ab3f-d66aae694c06/replicationNetworkMappings/corpe2amap"),
+	// 		Properties: &armrecoveryservicessiterecovery.NetworkMappingProperties{
+	// 			FabricSpecificSettings: &armrecoveryservicessiterecovery.VmmToAzureNetworkMappingSettings{
+	// 				InstanceType: to.Ptr("VmmToAzure"),
+	// 			},
+	// 			PrimaryFabricFriendlyName: to.Ptr("CP-B3L30108-01.ntdev.corp.microsoft.com"),
+	// 			PrimaryNetworkFriendlyName: to.Ptr("corp"),
+	// 			PrimaryNetworkID: to.Ptr("/Subscriptions/9112a37f-0f3e-46ec-9c00-060c6edca071/resourceGroups/srcBvte2a14C27/providers/Microsoft.RecoveryServices/vaults/srce2avaultbvtaC27/replicationFabrics/d49858f157601230a6ac5862fbbc6e63bf38d23ecd96cf953767945d457fe9d5/replicationNetworks/e2267b5c-2650-49bd-ab3f-d66aae694c06"),
+	// 			RecoveryFabricArmID: to.Ptr("/Subscriptions/9112a37f-0f3e-46ec-9c00-060c6edca071/resourceGroups/srcBvte2a14C27/providers/Microsoft.RecoveryServices/vaults/srce2avaultbvtaC27/replicationFabrics/d49858f157601230a6ac5862fbbc6e63bf38d23ecd96cf953767945d457fe9d5"),
+	// 			RecoveryFabricFriendlyName: to.Ptr("Microsoft Azure"),
+	// 			RecoveryNetworkFriendlyName: to.Ptr("vnetavrai2"),
+	// 			RecoveryNetworkID: to.Ptr("/subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/siterecoveryProd1/providers/Microsoft.Network/virtualNetworks/vnetavrai2"),
+	// 			State: to.Ptr("Paired"),
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2025-08-01/ReplicationNetworkMappings_Get.json
 func ExampleReplicationNetworkMappingsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -123,55 +175,6 @@ func ExampleReplicationNetworkMappingsClient_Get() {
 	// 		},
 	// 	},
 	// }
-}
-
-// Generated from example definition: 2025-08-01/ReplicationNetworkMappings_List.json
-func ExampleReplicationNetworkMappingsClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armrecoveryservicessiterecovery.NewClientFactory("9112a37f-0f3e-46ec-9c00-060c6edca071", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewReplicationNetworkMappingsClient().NewListPager("srcBvte2a14C27", "srce2avaultbvtaC27", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armrecoveryservicessiterecovery.ReplicationNetworkMappingsClientListResponse{
-		// 	NetworkMappingCollection: armrecoveryservicessiterecovery.NetworkMappingCollection{
-		// 		Value: []*armrecoveryservicessiterecovery.NetworkMapping{
-		// 			{
-		// 				Name: to.Ptr("corpe2amap"),
-		// 				Type: to.Ptr("Microsoft.RecoveryServicesBVTD2/vaults/replicationFabrics/replicationNetworks/replicationNetworkMappings"),
-		// 				ID: to.Ptr("/Subscriptions/9112a37f-0f3e-46ec-9c00-060c6edca071/resourceGroups/srcBvte2a14C27/providers/Microsoft.RecoveryServicesBVTD2/vaults/srce2avaultbvtaC27/replicationFabrics/b0cef6e9a4437b81803d0b55ada4f700ab66caae59c35d62723a1589c0cd13ac/replicationNetworks/e2267b5c-2650-49bd-ab3f-d66aae694c06/replicationNetworkMappings/corpe2amap"),
-		// 				Properties: &armrecoveryservicessiterecovery.NetworkMappingProperties{
-		// 					FabricSpecificSettings: &armrecoveryservicessiterecovery.VmmToAzureNetworkMappingSettings{
-		// 						InstanceType: to.Ptr("VmmToAzure"),
-		// 					},
-		// 					PrimaryFabricFriendlyName: to.Ptr("CP-B3L30108-01.ntdev.corp.microsoft.com"),
-		// 					PrimaryNetworkFriendlyName: to.Ptr("corp"),
-		// 					PrimaryNetworkID: to.Ptr("/Subscriptions/9112a37f-0f3e-46ec-9c00-060c6edca071/resourceGroups/srcBvte2a14C27/providers/Microsoft.RecoveryServicesBVTD2/vaults/srce2avaultbvtaC27/replicationFabrics/d49858f157601230a6ac5862fbbc6e63bf38d23ecd96cf953767945d457fe9d5/replicationNetworks/e2267b5c-2650-49bd-ab3f-d66aae694c06"),
-		// 					RecoveryFabricArmID: to.Ptr("/Subscriptions/9112a37f-0f3e-46ec-9c00-060c6edca071/resourceGroups/srcBvte2a14C27/providers/Microsoft.RecoveryServicesBVTD2/vaults/srce2avaultbvtaC27/replicationFabrics/d49858f157601230a6ac5862fbbc6e63bf38d23ecd96cf953767945d457fe9d5"),
-		// 					RecoveryFabricFriendlyName: to.Ptr("Microsoft Azure"),
-		// 					RecoveryNetworkFriendlyName: to.Ptr("vnetavrai"),
-		// 					RecoveryNetworkID: to.Ptr("/subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/siterecoveryProd1/providers/Microsoft.Network/virtualNetworks/vnetavrai"),
-		// 					State: to.Ptr("Paired"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
 }
 
 // Generated from example definition: 2025-08-01/ReplicationNetworkMappings_ListByReplicationNetworks.json
@@ -223,8 +226,8 @@ func ExampleReplicationNetworkMappingsClient_NewListByReplicationNetworksPager()
 	}
 }
 
-// Generated from example definition: 2025-08-01/ReplicationNetworkMappings_Update.json
-func ExampleReplicationNetworkMappingsClient_BeginUpdate() {
+// Generated from example definition: 2025-08-01/ReplicationNetworkMappings_List.json
+func ExampleReplicationNetworkMappingsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -234,43 +237,40 @@ func ExampleReplicationNetworkMappingsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewReplicationNetworkMappingsClient().BeginUpdate(ctx, "srcBvte2a14C27", "srce2avaultbvtaC27", "b0cef6e9a4437b81803d0b55ada4f700ab66caae59c35d62723a1589c0cd13ac", "e2267b5c-2650-49bd-ab3f-d66aae694c06", "corpe2amap", armrecoveryservicessiterecovery.UpdateNetworkMappingInput{
-		Properties: &armrecoveryservicessiterecovery.UpdateNetworkMappingInputProperties{
-			FabricSpecificDetails: &armrecoveryservicessiterecovery.VmmToAzureUpdateNetworkMappingInput{
-				InstanceType: to.Ptr("VmmToAzure"),
-			},
-			RecoveryFabricName: to.Ptr("Microsoft Azure"),
-			RecoveryNetworkID:  to.Ptr("/subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/siterecoveryProd1/providers/Microsoft.Network/virtualNetworks/vnetavrai2"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
+	pager := clientFactory.NewReplicationNetworkMappingsClient().NewListPager("srcBvte2a14C27", "srce2avaultbvtaC27", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armrecoveryservicessiterecovery.ReplicationNetworkMappingsClientListResponse{
+		// 	NetworkMappingCollection: armrecoveryservicessiterecovery.NetworkMappingCollection{
+		// 		Value: []*armrecoveryservicessiterecovery.NetworkMapping{
+		// 			{
+		// 				Name: to.Ptr("corpe2amap"),
+		// 				Type: to.Ptr("Microsoft.RecoveryServicesBVTD2/vaults/replicationFabrics/replicationNetworks/replicationNetworkMappings"),
+		// 				ID: to.Ptr("/Subscriptions/9112a37f-0f3e-46ec-9c00-060c6edca071/resourceGroups/srcBvte2a14C27/providers/Microsoft.RecoveryServicesBVTD2/vaults/srce2avaultbvtaC27/replicationFabrics/b0cef6e9a4437b81803d0b55ada4f700ab66caae59c35d62723a1589c0cd13ac/replicationNetworks/e2267b5c-2650-49bd-ab3f-d66aae694c06/replicationNetworkMappings/corpe2amap"),
+		// 				Properties: &armrecoveryservicessiterecovery.NetworkMappingProperties{
+		// 					FabricSpecificSettings: &armrecoveryservicessiterecovery.VmmToAzureNetworkMappingSettings{
+		// 						InstanceType: to.Ptr("VmmToAzure"),
+		// 					},
+		// 					PrimaryFabricFriendlyName: to.Ptr("CP-B3L30108-01.ntdev.corp.microsoft.com"),
+		// 					PrimaryNetworkFriendlyName: to.Ptr("corp"),
+		// 					PrimaryNetworkID: to.Ptr("/Subscriptions/9112a37f-0f3e-46ec-9c00-060c6edca071/resourceGroups/srcBvte2a14C27/providers/Microsoft.RecoveryServicesBVTD2/vaults/srce2avaultbvtaC27/replicationFabrics/d49858f157601230a6ac5862fbbc6e63bf38d23ecd96cf953767945d457fe9d5/replicationNetworks/e2267b5c-2650-49bd-ab3f-d66aae694c06"),
+		// 					RecoveryFabricArmID: to.Ptr("/Subscriptions/9112a37f-0f3e-46ec-9c00-060c6edca071/resourceGroups/srcBvte2a14C27/providers/Microsoft.RecoveryServicesBVTD2/vaults/srce2avaultbvtaC27/replicationFabrics/d49858f157601230a6ac5862fbbc6e63bf38d23ecd96cf953767945d457fe9d5"),
+		// 					RecoveryFabricFriendlyName: to.Ptr("Microsoft Azure"),
+		// 					RecoveryNetworkFriendlyName: to.Ptr("vnetavrai"),
+		// 					RecoveryNetworkID: to.Ptr("/subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/siterecoveryProd1/providers/Microsoft.Network/virtualNetworks/vnetavrai"),
+		// 					State: to.Ptr("Paired"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
 	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armrecoveryservicessiterecovery.ReplicationNetworkMappingsClientUpdateResponse{
-	// 	NetworkMapping: armrecoveryservicessiterecovery.NetworkMapping{
-	// 		Name: to.Ptr("corpe2amap"),
-	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/replicationFabrics/replicationNetworks/replicationNetworkMappings"),
-	// 		ID: to.Ptr("/Subscriptions/9112a37f-0f3e-46ec-9c00-060c6edca071/resourceGroups/srcBvte2a14C27/providers/Microsoft.RecoveryServices/vaults/srce2avaultbvtaC27/replicationFabrics/b0cef6e9a4437b81803d0b55ada4f700ab66caae59c35d62723a1589c0cd13ac/replicationNetworks/e2267b5c-2650-49bd-ab3f-d66aae694c06/replicationNetworkMappings/corpe2amap"),
-	// 		Properties: &armrecoveryservicessiterecovery.NetworkMappingProperties{
-	// 			FabricSpecificSettings: &armrecoveryservicessiterecovery.VmmToAzureNetworkMappingSettings{
-	// 				InstanceType: to.Ptr("VmmToAzure"),
-	// 			},
-	// 			PrimaryFabricFriendlyName: to.Ptr("CP-B3L30108-01.ntdev.corp.microsoft.com"),
-	// 			PrimaryNetworkFriendlyName: to.Ptr("corp"),
-	// 			PrimaryNetworkID: to.Ptr("/Subscriptions/9112a37f-0f3e-46ec-9c00-060c6edca071/resourceGroups/srcBvte2a14C27/providers/Microsoft.RecoveryServices/vaults/srce2avaultbvtaC27/replicationFabrics/d49858f157601230a6ac5862fbbc6e63bf38d23ecd96cf953767945d457fe9d5/replicationNetworks/e2267b5c-2650-49bd-ab3f-d66aae694c06"),
-	// 			RecoveryFabricArmID: to.Ptr("/Subscriptions/9112a37f-0f3e-46ec-9c00-060c6edca071/resourceGroups/srcBvte2a14C27/providers/Microsoft.RecoveryServices/vaults/srce2avaultbvtaC27/replicationFabrics/d49858f157601230a6ac5862fbbc6e63bf38d23ecd96cf953767945d457fe9d5"),
-	// 			RecoveryFabricFriendlyName: to.Ptr("Microsoft Azure"),
-	// 			RecoveryNetworkFriendlyName: to.Ptr("vnetavrai2"),
-	// 			RecoveryNetworkID: to.Ptr("/subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/siterecoveryProd1/providers/Microsoft.Network/virtualNetworks/vnetavrai2"),
-	// 			State: to.Ptr("Paired"),
-	// 		},
-	// 	},
-	// }
 }

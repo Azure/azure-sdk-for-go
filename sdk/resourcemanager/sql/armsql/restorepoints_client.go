@@ -69,7 +69,7 @@ func (client *RestorePointsClient) BeginCreate(ctx context.Context, resourceGrou
 	}
 }
 
-// Create - Creates a restore point for a data warehouse.
+// create - Creates a restore point for a data warehouse.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *RestorePointsClient) create(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters CreateDatabaseRestorePointDefinition, options *RestorePointsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *RestorePointsClient) create(ctx context.Context, resourceGroupName
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *RestorePointsClient) createCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters CreateDatabaseRestorePointDefinition, _ *RestorePointsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/restorePoints"
 	if client.subscriptionID == "" {

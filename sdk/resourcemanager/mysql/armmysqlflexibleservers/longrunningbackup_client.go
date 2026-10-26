@@ -70,7 +70,7 @@ func (client *LongRunningBackupClient) BeginCreate(ctx context.Context, resource
 	}
 }
 
-// Create - Create backup for a given server with specified backup name.
+// create - Create backup for a given server with specified backup name.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *LongRunningBackupClient) create(ctx context.Context, resourceGroupName string, serverName string, backupName string, parameters ServerBackupV2, options *LongRunningBackupClientBeginCreateOptions) (*http.Response, error) {
 	var err error
@@ -92,7 +92,7 @@ func (client *LongRunningBackupClient) create(ctx context.Context, resourceGroup
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *LongRunningBackupClient) createCreateRequest(ctx context.Context, resourceGroupName string, serverName string, backupName string, parameters ServerBackupV2, _ *LongRunningBackupClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/flexibleServers/{serverName}/backupsV2/{backupName}"
 	if client.subscriptionID == "" {

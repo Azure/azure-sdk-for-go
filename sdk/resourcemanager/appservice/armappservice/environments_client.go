@@ -71,7 +71,7 @@ func (client *EnvironmentsClient) BeginApproveOrRejectPrivateEndpointConnection(
 	}
 }
 
-// ApproveOrRejectPrivateEndpointConnection - Approves or rejects a private endpoint connection
+// approveOrRejectPrivateEndpointConnection - Approves or rejects a private endpoint connection
 //
 // Description for Approves or rejects a private endpoint connection
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -95,7 +95,7 @@ func (client *EnvironmentsClient) approveOrRejectPrivateEndpointConnection(ctx c
 	return httpResp, nil
 }
 
-// approveOrRejectPrivateEndpointConnectionCreateRequest creates the ApproveOrRejectPrivateEndpointConnection request.
+// approveOrRejectPrivateEndpointConnectionCreateRequest creates the approveOrRejectPrivateEndpointConnection request.
 func (client *EnvironmentsClient) approveOrRejectPrivateEndpointConnectionCreateRequest(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, privateEndpointWrapper RemotePrivateEndpointConnectionARMResource, _ *EnvironmentsClientBeginApproveOrRejectPrivateEndpointConnectionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if client.subscriptionID == "" {
@@ -174,7 +174,7 @@ func (client *EnvironmentsClient) BeginChangeVnet(ctx context.Context, resourceG
 	}
 }
 
-// ChangeVnet - Move an App Service Environment to a different VNET.
+// changeVnet - Move an App Service Environment to a different VNET.
 //
 // Description for Move an App Service Environment to a different VNET.
 func (client *EnvironmentsClient) changeVnet(ctx context.Context, resourceGroupName string, name string, vnetInfo VirtualNetworkProfile, options *EnvironmentsClientBeginChangeVnetOptions) (*http.Response, error) {
@@ -197,7 +197,7 @@ func (client *EnvironmentsClient) changeVnet(ctx context.Context, resourceGroupN
 	return httpResp, nil
 }
 
-// changeVnetCreateRequest creates the ChangeVnet request.
+// changeVnetCreateRequest creates the changeVnet request.
 func (client *EnvironmentsClient) changeVnetCreateRequest(ctx context.Context, resourceGroupName string, name string, vnetInfo VirtualNetworkProfile, nextLink string, _ *EnvironmentsClientBeginChangeVnetOptions) (*policy.Request, error) {
 	firstPage := nextLink == ""
 	var req *policy.Request
@@ -236,7 +236,7 @@ func (client *EnvironmentsClient) changeVnetCreateRequest(ctx context.Context, r
 	return req, nil
 }
 
-// changeVnetHandleResponse handles the ChangeVnet response.
+// changeVnetHandleResponse handles the changeVnet response.
 func (client *EnvironmentsClient) changeVnetHandleResponse(resp *http.Response, successCodes ...int) (EnvironmentsClientChangeVnetResponse, error) {
 	result := EnvironmentsClientChangeVnetResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
@@ -274,7 +274,7 @@ func (client *EnvironmentsClient) BeginCreateOrUpdate(ctx context.Context, resou
 	}
 }
 
-// CreateOrUpdate - Create or update an App Service Environment.
+// createOrUpdate - Create or update an App Service Environment.
 //
 // Description for Create or update an App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -298,7 +298,7 @@ func (client *EnvironmentsClient) createOrUpdate(ctx context.Context, resourceGr
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *EnvironmentsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, name string, hostingEnvironmentEnvelope EnvironmentResource, _ *EnvironmentsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}"
 	if client.subscriptionID == "" {
@@ -354,7 +354,7 @@ func (client *EnvironmentsClient) BeginCreateOrUpdateMultiRolePool(ctx context.C
 	}
 }
 
-// CreateOrUpdateMultiRolePool - Create or update a multi-role pool.
+// createOrUpdateMultiRolePool - Create or update a multi-role pool.
 //
 // Description for Create or update a multi-role pool.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -378,7 +378,7 @@ func (client *EnvironmentsClient) createOrUpdateMultiRolePool(ctx context.Contex
 	return httpResp, nil
 }
 
-// createOrUpdateMultiRolePoolCreateRequest creates the CreateOrUpdateMultiRolePool request.
+// createOrUpdateMultiRolePoolCreateRequest creates the createOrUpdateMultiRolePool request.
 func (client *EnvironmentsClient) createOrUpdateMultiRolePoolCreateRequest(ctx context.Context, resourceGroupName string, name string, multiRolePoolEnvelope WorkerPoolResource, _ *EnvironmentsClientBeginCreateOrUpdateMultiRolePoolOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/multiRolePools/default"
 	if client.subscriptionID == "" {
@@ -435,7 +435,7 @@ func (client *EnvironmentsClient) BeginCreateOrUpdateWorkerPool(ctx context.Cont
 	}
 }
 
-// CreateOrUpdateWorkerPool - Create or update a worker pool.
+// createOrUpdateWorkerPool - Create or update a worker pool.
 //
 // Description for Create or update a worker pool.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -459,7 +459,7 @@ func (client *EnvironmentsClient) createOrUpdateWorkerPool(ctx context.Context, 
 	return httpResp, nil
 }
 
-// createOrUpdateWorkerPoolCreateRequest creates the CreateOrUpdateWorkerPool request.
+// createOrUpdateWorkerPoolCreateRequest creates the createOrUpdateWorkerPool request.
 func (client *EnvironmentsClient) createOrUpdateWorkerPoolCreateRequest(ctx context.Context, resourceGroupName string, name string, workerPoolName string, workerPoolEnvelope WorkerPoolResource, _ *EnvironmentsClientBeginCreateOrUpdateWorkerPoolOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/workerPools/{workerPoolName}"
 	if client.subscriptionID == "" {
@@ -518,7 +518,7 @@ func (client *EnvironmentsClient) BeginDelete(ctx context.Context, resourceGroup
 	}
 }
 
-// Delete - Delete an App Service Environment.
+// deleteOperation - Delete an App Service Environment.
 //
 // Description for Delete an App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -542,7 +542,7 @@ func (client *EnvironmentsClient) deleteOperation(ctx context.Context, resourceG
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *EnvironmentsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, name string, options *EnvironmentsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}"
 	if client.subscriptionID == "" {
@@ -566,6 +566,388 @@ func (client *EnvironmentsClient) deleteCreateRequest(ctx context.Context, resou
 	if options != nil && options.ForceDelete != nil {
 		reqQP.Set("forceDelete", strconv.FormatBool(*options.ForceDelete))
 	}
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginDeletePrivateEndpointConnection - Deletes a private endpoint connection
+//
+// Description for Deletes a private endpoint connection
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - name - Name of the App Service Environment.
+//   - privateEndpointConnectionName - Name of the private endpoint connection.
+//   - options - EnvironmentsClientBeginDeletePrivateEndpointConnectionOptions contains the optional parameters for the EnvironmentsClient.BeginDeletePrivateEndpointConnection
+//     method.
+func (client *EnvironmentsClient) BeginDeletePrivateEndpointConnection(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, options *EnvironmentsClientBeginDeletePrivateEndpointConnectionOptions) (*runtime.Poller[EnvironmentsClientDeletePrivateEndpointConnectionResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deletePrivateEndpointConnection(ctx, resourceGroupName, name, privateEndpointConnectionName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[EnvironmentsClientDeletePrivateEndpointConnectionResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[EnvironmentsClientDeletePrivateEndpointConnectionResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// deletePrivateEndpointConnection - Deletes a private endpoint connection
+//
+// Description for Deletes a private endpoint connection
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *EnvironmentsClient) deletePrivateEndpointConnection(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, options *EnvironmentsClientBeginDeletePrivateEndpointConnectionOptions) (*http.Response, error) {
+	var err error
+	const operationName = "EnvironmentsClient.BeginDeletePrivateEndpointConnection"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.deletePrivateEndpointConnectionCreateRequest(ctx, resourceGroupName, name, privateEndpointConnectionName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// deletePrivateEndpointConnectionCreateRequest creates the deletePrivateEndpointConnection request.
+func (client *EnvironmentsClient) deletePrivateEndpointConnectionCreateRequest(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, _ *EnvironmentsClientBeginDeletePrivateEndpointConnectionOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/privateEndpointConnections/{privateEndpointConnectionName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if name == "" {
+		return nil, errors.New("parameter name cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+	if privateEndpointConnectionName == "" {
+		return nil, errors.New("parameter privateEndpointConnectionName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{privateEndpointConnectionName}", url.PathEscape(privateEndpointConnectionName))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250501)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// BeginResume - Resume an App Service Environment.
+//
+// Description for Resume an App Service Environment.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - name - Name of the App Service Environment.
+//   - options - EnvironmentsClientBeginResumeOptions contains the optional parameters for the EnvironmentsClient.BeginResume
+//     method.
+func (client *EnvironmentsClient) BeginResume(ctx context.Context, resourceGroupName string, name string, options *EnvironmentsClientBeginResumeOptions) (*runtime.Poller[*runtime.Pager[EnvironmentsClientResumeResponse]], error) {
+	pager := runtime.NewPager(runtime.PagingHandler[EnvironmentsClientResumeResponse]{
+		More: func(page EnvironmentsClientResumeResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *EnvironmentsClientResumeResponse) (EnvironmentsClientResumeResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "EnvironmentsClient.BeginResume")
+			req, err := client.resumeCreateRequest(ctx, resourceGroupName, name, *page.NextLink, options)
+			if err != nil {
+				return EnvironmentsClientResumeResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return EnvironmentsClientResumeResponse{}, err
+			}
+			return client.resumeHandleResponse(resp, http.StatusOK, http.StatusAccepted)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.resume(ctx, resourceGroupName, name, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[*runtime.Pager[EnvironmentsClientResumeResponse]]{
+			Response: &pager,
+			Tracer:   client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[*runtime.Pager[EnvironmentsClientResumeResponse]]{
+			Response: &pager,
+			Tracer:   client.internal.Tracer(),
+		})
+	}
+}
+
+// resume - Resume an App Service Environment.
+//
+// Description for Resume an App Service Environment.
+func (client *EnvironmentsClient) resume(ctx context.Context, resourceGroupName string, name string, options *EnvironmentsClientBeginResumeOptions) (*http.Response, error) {
+	var err error
+	const operationName = "EnvironmentsClient.BeginResume"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.resumeCreateRequest(ctx, resourceGroupName, name, "", options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// resumeCreateRequest creates the resume request.
+func (client *EnvironmentsClient) resumeCreateRequest(ctx context.Context, resourceGroupName string, name string, nextLink string, _ *EnvironmentsClientBeginResumeOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/resume"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		req, err = runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// resumeHandleResponse handles the resume response.
+func (client *EnvironmentsClient) resumeHandleResponse(resp *http.Response, successCodes ...int) (EnvironmentsClientResumeResponse, error) {
+	result := EnvironmentsClientResumeResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.WebAppCollection); err != nil {
+		return EnvironmentsClientResumeResponse{}, err
+	}
+	return result, nil
+}
+
+// BeginSuspend - Suspend an App Service Environment.
+//
+// Description for Suspend an App Service Environment.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - name - Name of the App Service Environment.
+//   - options - EnvironmentsClientBeginSuspendOptions contains the optional parameters for the EnvironmentsClient.BeginSuspend
+//     method.
+func (client *EnvironmentsClient) BeginSuspend(ctx context.Context, resourceGroupName string, name string, options *EnvironmentsClientBeginSuspendOptions) (*runtime.Poller[*runtime.Pager[EnvironmentsClientSuspendResponse]], error) {
+	pager := runtime.NewPager(runtime.PagingHandler[EnvironmentsClientSuspendResponse]{
+		More: func(page EnvironmentsClientSuspendResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *EnvironmentsClientSuspendResponse) (EnvironmentsClientSuspendResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "EnvironmentsClient.BeginSuspend")
+			req, err := client.suspendCreateRequest(ctx, resourceGroupName, name, *page.NextLink, options)
+			if err != nil {
+				return EnvironmentsClientSuspendResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return EnvironmentsClientSuspendResponse{}, err
+			}
+			return client.suspendHandleResponse(resp, http.StatusOK, http.StatusAccepted)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.suspend(ctx, resourceGroupName, name, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[*runtime.Pager[EnvironmentsClientSuspendResponse]]{
+			Response: &pager,
+			Tracer:   client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[*runtime.Pager[EnvironmentsClientSuspendResponse]]{
+			Response: &pager,
+			Tracer:   client.internal.Tracer(),
+		})
+	}
+}
+
+// suspend - Suspend an App Service Environment.
+//
+// Description for Suspend an App Service Environment.
+func (client *EnvironmentsClient) suspend(ctx context.Context, resourceGroupName string, name string, options *EnvironmentsClientBeginSuspendOptions) (*http.Response, error) {
+	var err error
+	const operationName = "EnvironmentsClient.BeginSuspend"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.suspendCreateRequest(ctx, resourceGroupName, name, "", options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// suspendCreateRequest creates the suspend request.
+func (client *EnvironmentsClient) suspendCreateRequest(ctx context.Context, resourceGroupName string, name string, nextLink string, _ *EnvironmentsClientBeginSuspendOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/suspend"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		req, err = runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// suspendHandleResponse handles the suspend response.
+func (client *EnvironmentsClient) suspendHandleResponse(resp *http.Response, successCodes ...int) (EnvironmentsClientSuspendResponse, error) {
+	result := EnvironmentsClientSuspendResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.WebAppCollection); err != nil {
+		return EnvironmentsClientSuspendResponse{}, err
+	}
+	return result, nil
+}
+
+// BeginUpgrade - Initiate an upgrade of an App Service Environment if one is available.
+//
+// Description for Initiate an upgrade of an App Service Environment if one is available.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - name - Name of the App Service Environment.
+//   - options - EnvironmentsClientBeginUpgradeOptions contains the optional parameters for the EnvironmentsClient.BeginUpgrade
+//     method.
+func (client *EnvironmentsClient) BeginUpgrade(ctx context.Context, resourceGroupName string, name string, options *EnvironmentsClientBeginUpgradeOptions) (*runtime.Poller[EnvironmentsClientUpgradeResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.upgrade(ctx, resourceGroupName, name, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[EnvironmentsClientUpgradeResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[EnvironmentsClientUpgradeResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// upgrade - Initiate an upgrade of an App Service Environment if one is available.
+//
+// Description for Initiate an upgrade of an App Service Environment if one is available.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *EnvironmentsClient) upgrade(ctx context.Context, resourceGroupName string, name string, options *EnvironmentsClientBeginUpgradeOptions) (*http.Response, error) {
+	var err error
+	const operationName = "EnvironmentsClient.BeginUpgrade"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.upgradeCreateRequest(ctx, resourceGroupName, name, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// upgradeCreateRequest creates the upgrade request.
+func (client *EnvironmentsClient) upgradeCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *EnvironmentsClientBeginUpgradeOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/upgrade"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if name == "" {
+		return nil, errors.New("parameter name cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250501)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -631,86 +1013,6 @@ func (client *EnvironmentsClient) deleteAseCustomDNSSuffixConfigurationHandleRes
 		return EnvironmentsClientDeleteAseCustomDNSSuffixConfigurationResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginDeletePrivateEndpointConnection - Deletes a private endpoint connection
-//
-// Description for Deletes a private endpoint connection
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - name - Name of the App Service Environment.
-//   - privateEndpointConnectionName - Name of the private endpoint connection.
-//   - options - EnvironmentsClientBeginDeletePrivateEndpointConnectionOptions contains the optional parameters for the EnvironmentsClient.BeginDeletePrivateEndpointConnection
-//     method.
-func (client *EnvironmentsClient) BeginDeletePrivateEndpointConnection(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, options *EnvironmentsClientBeginDeletePrivateEndpointConnectionOptions) (*runtime.Poller[EnvironmentsClientDeletePrivateEndpointConnectionResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deletePrivateEndpointConnection(ctx, resourceGroupName, name, privateEndpointConnectionName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[EnvironmentsClientDeletePrivateEndpointConnectionResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[EnvironmentsClientDeletePrivateEndpointConnectionResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// DeletePrivateEndpointConnection - Deletes a private endpoint connection
-//
-// Description for Deletes a private endpoint connection
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *EnvironmentsClient) deletePrivateEndpointConnection(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, options *EnvironmentsClientBeginDeletePrivateEndpointConnectionOptions) (*http.Response, error) {
-	var err error
-	const operationName = "EnvironmentsClient.BeginDeletePrivateEndpointConnection"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.deletePrivateEndpointConnectionCreateRequest(ctx, resourceGroupName, name, privateEndpointConnectionName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// deletePrivateEndpointConnectionCreateRequest creates the DeletePrivateEndpointConnection request.
-func (client *EnvironmentsClient) deletePrivateEndpointConnectionCreateRequest(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, _ *EnvironmentsClientBeginDeletePrivateEndpointConnectionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/privateEndpointConnections/{privateEndpointConnectionName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	if privateEndpointConnectionName == "" {
-		return nil, errors.New("parameter privateEndpointConnectionName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{privateEndpointConnectionName}", url.PathEscape(privateEndpointConnectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
 }
 
 // Get - Get the properties of an App Service Environment.
@@ -968,86 +1270,6 @@ func (client *EnvironmentsClient) getDiagnosticsItemHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// NewGetInboundNetworkDependenciesEndpointsPager - Get the network endpoints of all inbound dependencies of an App Service
-// Environment.
-//
-// Description for Get the network endpoints of all inbound dependencies of an App Service Environment.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - name - Name of the App Service Environment.
-//   - options - EnvironmentsClientGetInboundNetworkDependenciesEndpointsOptions contains the optional parameters for the EnvironmentsClient.NewGetInboundNetworkDependenciesEndpointsPager
-//     method.
-func (client *EnvironmentsClient) NewGetInboundNetworkDependenciesEndpointsPager(resourceGroupName string, name string, options *EnvironmentsClientGetInboundNetworkDependenciesEndpointsOptions) *runtime.Pager[EnvironmentsClientGetInboundNetworkDependenciesEndpointsResponse] {
-	return runtime.NewPager(runtime.PagingHandler[EnvironmentsClientGetInboundNetworkDependenciesEndpointsResponse]{
-		More: func(page EnvironmentsClientGetInboundNetworkDependenciesEndpointsResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *EnvironmentsClientGetInboundNetworkDependenciesEndpointsResponse) (EnvironmentsClientGetInboundNetworkDependenciesEndpointsResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "EnvironmentsClient.NewGetInboundNetworkDependenciesEndpointsPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.getInboundNetworkDependenciesEndpointsCreateRequest(ctx, resourceGroupName, name, nextLink, options)
-			if err != nil {
-				return EnvironmentsClientGetInboundNetworkDependenciesEndpointsResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return EnvironmentsClientGetInboundNetworkDependenciesEndpointsResponse{}, err
-			}
-			return client.getInboundNetworkDependenciesEndpointsHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// getInboundNetworkDependenciesEndpointsCreateRequest creates the GetInboundNetworkDependenciesEndpoints request.
-func (client *EnvironmentsClient) getInboundNetworkDependenciesEndpointsCreateRequest(ctx context.Context, resourceGroupName string, name string, nextLink string, _ *EnvironmentsClientGetInboundNetworkDependenciesEndpointsOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/inboundNetworkDependenciesEndpoints"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		if resourceGroupName == "" {
-			return nil, errors.New("parameter resourceGroupName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-		if name == "" {
-			return nil, errors.New("parameter name cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250501)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// getInboundNetworkDependenciesEndpointsHandleResponse handles the GetInboundNetworkDependenciesEndpoints response.
-func (client *EnvironmentsClient) getInboundNetworkDependenciesEndpointsHandleResponse(resp *http.Response, successCodes ...int) (EnvironmentsClientGetInboundNetworkDependenciesEndpointsResponse, error) {
-	result := EnvironmentsClientGetInboundNetworkDependenciesEndpointsResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.InboundEnvironmentEndpointCollection); err != nil {
-		return EnvironmentsClientGetInboundNetworkDependenciesEndpointsResponse{}, err
-	}
-	return result, nil
-}
-
 // GetMultiRolePool - Get properties of a multi-role pool.
 //
 // Description for Get properties of a multi-role pool.
@@ -1107,86 +1329,6 @@ func (client *EnvironmentsClient) getMultiRolePoolHandleResponse(resp *http.Resp
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkerPoolResource); err != nil {
 		return EnvironmentsClientGetMultiRolePoolResponse{}, err
-	}
-	return result, nil
-}
-
-// NewGetOutboundNetworkDependenciesEndpointsPager - Get the network endpoints of all outbound dependencies of an App Service
-// Environment.
-//
-// Description for Get the network endpoints of all outbound dependencies of an App Service Environment.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - name - Name of the App Service Environment.
-//   - options - EnvironmentsClientGetOutboundNetworkDependenciesEndpointsOptions contains the optional parameters for the EnvironmentsClient.NewGetOutboundNetworkDependenciesEndpointsPager
-//     method.
-func (client *EnvironmentsClient) NewGetOutboundNetworkDependenciesEndpointsPager(resourceGroupName string, name string, options *EnvironmentsClientGetOutboundNetworkDependenciesEndpointsOptions) *runtime.Pager[EnvironmentsClientGetOutboundNetworkDependenciesEndpointsResponse] {
-	return runtime.NewPager(runtime.PagingHandler[EnvironmentsClientGetOutboundNetworkDependenciesEndpointsResponse]{
-		More: func(page EnvironmentsClientGetOutboundNetworkDependenciesEndpointsResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *EnvironmentsClientGetOutboundNetworkDependenciesEndpointsResponse) (EnvironmentsClientGetOutboundNetworkDependenciesEndpointsResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "EnvironmentsClient.NewGetOutboundNetworkDependenciesEndpointsPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.getOutboundNetworkDependenciesEndpointsCreateRequest(ctx, resourceGroupName, name, nextLink, options)
-			if err != nil {
-				return EnvironmentsClientGetOutboundNetworkDependenciesEndpointsResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return EnvironmentsClientGetOutboundNetworkDependenciesEndpointsResponse{}, err
-			}
-			return client.getOutboundNetworkDependenciesEndpointsHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// getOutboundNetworkDependenciesEndpointsCreateRequest creates the GetOutboundNetworkDependenciesEndpoints request.
-func (client *EnvironmentsClient) getOutboundNetworkDependenciesEndpointsCreateRequest(ctx context.Context, resourceGroupName string, name string, nextLink string, _ *EnvironmentsClientGetOutboundNetworkDependenciesEndpointsOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/outboundNetworkDependenciesEndpoints"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		if resourceGroupName == "" {
-			return nil, errors.New("parameter resourceGroupName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-		if name == "" {
-			return nil, errors.New("parameter name cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250501)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// getOutboundNetworkDependenciesEndpointsHandleResponse handles the GetOutboundNetworkDependenciesEndpoints response.
-func (client *EnvironmentsClient) getOutboundNetworkDependenciesEndpointsHandleResponse(resp *http.Response, successCodes ...int) (EnvironmentsClientGetOutboundNetworkDependenciesEndpointsResponse, error) {
-	result := EnvironmentsClientGetOutboundNetworkDependenciesEndpointsResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.OutboundEnvironmentEndpointCollection); err != nil {
-		return EnvironmentsClientGetOutboundNetworkDependenciesEndpointsResponse{}, err
 	}
 	return result, nil
 }
@@ -1255,85 +1397,6 @@ func (client *EnvironmentsClient) getPrivateEndpointConnectionHandleResponse(res
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RemotePrivateEndpointConnectionARMResource); err != nil {
 		return EnvironmentsClientGetPrivateEndpointConnectionResponse{}, err
-	}
-	return result, nil
-}
-
-// NewGetPrivateEndpointConnectionListPager - Gets the list of private endpoints associated with a hosting environment
-//
-// Description for Gets the list of private endpoints associated with a hosting environment
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - name - Name of the App Service Environment.
-//   - options - EnvironmentsClientGetPrivateEndpointConnectionListOptions contains the optional parameters for the EnvironmentsClient.NewGetPrivateEndpointConnectionListPager
-//     method.
-func (client *EnvironmentsClient) NewGetPrivateEndpointConnectionListPager(resourceGroupName string, name string, options *EnvironmentsClientGetPrivateEndpointConnectionListOptions) *runtime.Pager[EnvironmentsClientGetPrivateEndpointConnectionListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[EnvironmentsClientGetPrivateEndpointConnectionListResponse]{
-		More: func(page EnvironmentsClientGetPrivateEndpointConnectionListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *EnvironmentsClientGetPrivateEndpointConnectionListResponse) (EnvironmentsClientGetPrivateEndpointConnectionListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "EnvironmentsClient.NewGetPrivateEndpointConnectionListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.getPrivateEndpointConnectionListCreateRequest(ctx, resourceGroupName, name, nextLink, options)
-			if err != nil {
-				return EnvironmentsClientGetPrivateEndpointConnectionListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return EnvironmentsClientGetPrivateEndpointConnectionListResponse{}, err
-			}
-			return client.getPrivateEndpointConnectionListHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// getPrivateEndpointConnectionListCreateRequest creates the GetPrivateEndpointConnectionList request.
-func (client *EnvironmentsClient) getPrivateEndpointConnectionListCreateRequest(ctx context.Context, resourceGroupName string, name string, nextLink string, _ *EnvironmentsClientGetPrivateEndpointConnectionListOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/privateEndpointConnections"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		if resourceGroupName == "" {
-			return nil, errors.New("parameter resourceGroupName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-		if name == "" {
-			return nil, errors.New("parameter name cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250501)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// getPrivateEndpointConnectionListHandleResponse handles the GetPrivateEndpointConnectionList response.
-func (client *EnvironmentsClient) getPrivateEndpointConnectionListHandleResponse(resp *http.Response, successCodes ...int) (EnvironmentsClientGetPrivateEndpointConnectionListResponse, error) {
-	result := EnvironmentsClientGetPrivateEndpointConnectionListResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnectionCollection); err != nil {
-		return EnvironmentsClientGetPrivateEndpointConnectionListResponse{}, err
 	}
 	return result, nil
 }
@@ -1531,46 +1594,184 @@ func (client *EnvironmentsClient) getWorkerPoolHandleResponse(resp *http.Respons
 	return result, nil
 }
 
-// NewListPager - Get all App Service Environments for a subscription.
+// ListDiagnostics - Get diagnostic information for an App Service Environment.
 //
-// Description for Get all App Service Environments for a subscription.
-//   - options - EnvironmentsClientListOptions contains the optional parameters for the EnvironmentsClient.NewListPager method.
-func (client *EnvironmentsClient) NewListPager(options *EnvironmentsClientListOptions) *runtime.Pager[EnvironmentsClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[EnvironmentsClientListResponse]{
-		More: func(page EnvironmentsClientListResponse) bool {
+// Description for Get diagnostic information for an App Service Environment.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - name - Name of the App Service Environment.
+//   - options - EnvironmentsClientListDiagnosticsOptions contains the optional parameters for the EnvironmentsClient.ListDiagnostics
+//     method.
+func (client *EnvironmentsClient) ListDiagnostics(ctx context.Context, resourceGroupName string, name string, options *EnvironmentsClientListDiagnosticsOptions) (EnvironmentsClientListDiagnosticsResponse, error) {
+	var err error
+	const operationName = "EnvironmentsClient.ListDiagnostics"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listDiagnosticsCreateRequest(ctx, resourceGroupName, name, options)
+	if err != nil {
+		return EnvironmentsClientListDiagnosticsResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return EnvironmentsClientListDiagnosticsResponse{}, err
+	}
+	return client.listDiagnosticsHandleResponse(httpResp, http.StatusOK)
+}
+
+// listDiagnosticsCreateRequest creates the ListDiagnostics request.
+func (client *EnvironmentsClient) listDiagnosticsCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *EnvironmentsClientListDiagnosticsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/diagnostics"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if name == "" {
+		return nil, errors.New("parameter name cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250501)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listDiagnosticsHandleResponse handles the ListDiagnostics response.
+func (client *EnvironmentsClient) listDiagnosticsHandleResponse(resp *http.Response, successCodes ...int) (EnvironmentsClientListDiagnosticsResponse, error) {
+	result := EnvironmentsClientListDiagnosticsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.HostingEnvironmentDiagnosticsArray); err != nil {
+		return EnvironmentsClientListDiagnosticsResponse{}, err
+	}
+	return result, nil
+}
+
+// ListOperations - List all currently running operations on the App Service Environment.
+//
+// Description for List all currently running operations on the App Service Environment.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - name - Name of the App Service Environment.
+//   - options - EnvironmentsClientListOperationsOptions contains the optional parameters for the EnvironmentsClient.ListOperations
+//     method.
+func (client *EnvironmentsClient) ListOperations(ctx context.Context, resourceGroupName string, name string, options *EnvironmentsClientListOperationsOptions) (EnvironmentsClientListOperationsResponse, error) {
+	var err error
+	const operationName = "EnvironmentsClient.ListOperations"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listOperationsCreateRequest(ctx, resourceGroupName, name, options)
+	if err != nil {
+		return EnvironmentsClientListOperationsResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return EnvironmentsClientListOperationsResponse{}, err
+	}
+	return client.listOperationsHandleResponse(httpResp, http.StatusOK)
+}
+
+// listOperationsCreateRequest creates the ListOperations request.
+func (client *EnvironmentsClient) listOperationsCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *EnvironmentsClientListOperationsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/operations"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if name == "" {
+		return nil, errors.New("parameter name cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250501)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listOperationsHandleResponse handles the ListOperations response.
+func (client *EnvironmentsClient) listOperationsHandleResponse(resp *http.Response, successCodes ...int) (EnvironmentsClientListOperationsResponse, error) {
+	result := EnvironmentsClientListOperationsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.OperationArray); err != nil {
+		return EnvironmentsClientListOperationsResponse{}, err
+	}
+	return result, nil
+}
+
+// NewGetInboundNetworkDependenciesEndpointsPager - Get the network endpoints of all inbound dependencies of an App Service
+// Environment.
+//
+// Description for Get the network endpoints of all inbound dependencies of an App Service Environment.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - name - Name of the App Service Environment.
+//   - options - EnvironmentsClientGetInboundNetworkDependenciesEndpointsOptions contains the optional parameters for the EnvironmentsClient.NewGetInboundNetworkDependenciesEndpointsPager
+//     method.
+func (client *EnvironmentsClient) NewGetInboundNetworkDependenciesEndpointsPager(resourceGroupName string, name string, options *EnvironmentsClientGetInboundNetworkDependenciesEndpointsOptions) *runtime.Pager[EnvironmentsClientGetInboundNetworkDependenciesEndpointsResponse] {
+	return runtime.NewPager(runtime.PagingHandler[EnvironmentsClientGetInboundNetworkDependenciesEndpointsResponse]{
+		More: func(page EnvironmentsClientGetInboundNetworkDependenciesEndpointsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *EnvironmentsClientListResponse) (EnvironmentsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "EnvironmentsClient.NewListPager")
+		Fetcher: func(ctx context.Context, page *EnvironmentsClientGetInboundNetworkDependenciesEndpointsResponse) (EnvironmentsClientGetInboundNetworkDependenciesEndpointsResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "EnvironmentsClient.NewGetInboundNetworkDependenciesEndpointsPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			req, err := client.listCreateRequest(ctx, nextLink, options)
+			req, err := client.getInboundNetworkDependenciesEndpointsCreateRequest(ctx, resourceGroupName, name, nextLink, options)
 			if err != nil {
-				return EnvironmentsClientListResponse{}, err
+				return EnvironmentsClientGetInboundNetworkDependenciesEndpointsResponse{}, err
 			}
 			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
-				return EnvironmentsClientListResponse{}, err
+				return EnvironmentsClientGetInboundNetworkDependenciesEndpointsResponse{}, err
 			}
-			return client.listHandleResponse(resp, http.StatusOK)
+			return client.getInboundNetworkDependenciesEndpointsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
-// listCreateRequest creates the List request.
-func (client *EnvironmentsClient) listCreateRequest(ctx context.Context, nextLink string, _ *EnvironmentsClientListOptions) (*policy.Request, error) {
+// getInboundNetworkDependenciesEndpointsCreateRequest creates the GetInboundNetworkDependenciesEndpoints request.
+func (client *EnvironmentsClient) getInboundNetworkDependenciesEndpointsCreateRequest(ctx context.Context, resourceGroupName string, name string, nextLink string, _ *EnvironmentsClientGetInboundNetworkDependenciesEndpointsOptions) (*policy.Request, error) {
 	firstPage := nextLink == ""
 	var req *policy.Request
 	var err error
 	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Web/hostingEnvironments"
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/inboundNetworkDependenciesEndpoints"
 		if client.subscriptionID == "" {
 			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
 		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	} else {
 		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
@@ -1587,14 +1788,173 @@ func (client *EnvironmentsClient) listCreateRequest(ctx context.Context, nextLin
 	return req, nil
 }
 
-// listHandleResponse handles the List response.
-func (client *EnvironmentsClient) listHandleResponse(resp *http.Response, successCodes ...int) (EnvironmentsClientListResponse, error) {
-	result := EnvironmentsClientListResponse{}
+// getInboundNetworkDependenciesEndpointsHandleResponse handles the GetInboundNetworkDependenciesEndpoints response.
+func (client *EnvironmentsClient) getInboundNetworkDependenciesEndpointsHandleResponse(resp *http.Response, successCodes ...int) (EnvironmentsClientGetInboundNetworkDependenciesEndpointsResponse, error) {
+	result := EnvironmentsClientGetInboundNetworkDependenciesEndpointsResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.EnvironmentCollection); err != nil {
-		return EnvironmentsClientListResponse{}, err
+	if err := runtime.UnmarshalAsJSON(resp, &result.InboundEnvironmentEndpointCollection); err != nil {
+		return EnvironmentsClientGetInboundNetworkDependenciesEndpointsResponse{}, err
+	}
+	return result, nil
+}
+
+// NewGetOutboundNetworkDependenciesEndpointsPager - Get the network endpoints of all outbound dependencies of an App Service
+// Environment.
+//
+// Description for Get the network endpoints of all outbound dependencies of an App Service Environment.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - name - Name of the App Service Environment.
+//   - options - EnvironmentsClientGetOutboundNetworkDependenciesEndpointsOptions contains the optional parameters for the EnvironmentsClient.NewGetOutboundNetworkDependenciesEndpointsPager
+//     method.
+func (client *EnvironmentsClient) NewGetOutboundNetworkDependenciesEndpointsPager(resourceGroupName string, name string, options *EnvironmentsClientGetOutboundNetworkDependenciesEndpointsOptions) *runtime.Pager[EnvironmentsClientGetOutboundNetworkDependenciesEndpointsResponse] {
+	return runtime.NewPager(runtime.PagingHandler[EnvironmentsClientGetOutboundNetworkDependenciesEndpointsResponse]{
+		More: func(page EnvironmentsClientGetOutboundNetworkDependenciesEndpointsResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *EnvironmentsClientGetOutboundNetworkDependenciesEndpointsResponse) (EnvironmentsClientGetOutboundNetworkDependenciesEndpointsResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "EnvironmentsClient.NewGetOutboundNetworkDependenciesEndpointsPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.getOutboundNetworkDependenciesEndpointsCreateRequest(ctx, resourceGroupName, name, nextLink, options)
+			if err != nil {
+				return EnvironmentsClientGetOutboundNetworkDependenciesEndpointsResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return EnvironmentsClientGetOutboundNetworkDependenciesEndpointsResponse{}, err
+			}
+			return client.getOutboundNetworkDependenciesEndpointsHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// getOutboundNetworkDependenciesEndpointsCreateRequest creates the GetOutboundNetworkDependenciesEndpoints request.
+func (client *EnvironmentsClient) getOutboundNetworkDependenciesEndpointsCreateRequest(ctx context.Context, resourceGroupName string, name string, nextLink string, _ *EnvironmentsClientGetOutboundNetworkDependenciesEndpointsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/outboundNetworkDependenciesEndpoints"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// getOutboundNetworkDependenciesEndpointsHandleResponse handles the GetOutboundNetworkDependenciesEndpoints response.
+func (client *EnvironmentsClient) getOutboundNetworkDependenciesEndpointsHandleResponse(resp *http.Response, successCodes ...int) (EnvironmentsClientGetOutboundNetworkDependenciesEndpointsResponse, error) {
+	result := EnvironmentsClientGetOutboundNetworkDependenciesEndpointsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.OutboundEnvironmentEndpointCollection); err != nil {
+		return EnvironmentsClientGetOutboundNetworkDependenciesEndpointsResponse{}, err
+	}
+	return result, nil
+}
+
+// NewGetPrivateEndpointConnectionListPager - Gets the list of private endpoints associated with a hosting environment
+//
+// Description for Gets the list of private endpoints associated with a hosting environment
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - name - Name of the App Service Environment.
+//   - options - EnvironmentsClientGetPrivateEndpointConnectionListOptions contains the optional parameters for the EnvironmentsClient.NewGetPrivateEndpointConnectionListPager
+//     method.
+func (client *EnvironmentsClient) NewGetPrivateEndpointConnectionListPager(resourceGroupName string, name string, options *EnvironmentsClientGetPrivateEndpointConnectionListOptions) *runtime.Pager[EnvironmentsClientGetPrivateEndpointConnectionListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[EnvironmentsClientGetPrivateEndpointConnectionListResponse]{
+		More: func(page EnvironmentsClientGetPrivateEndpointConnectionListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *EnvironmentsClientGetPrivateEndpointConnectionListResponse) (EnvironmentsClientGetPrivateEndpointConnectionListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "EnvironmentsClient.NewGetPrivateEndpointConnectionListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.getPrivateEndpointConnectionListCreateRequest(ctx, resourceGroupName, name, nextLink, options)
+			if err != nil {
+				return EnvironmentsClientGetPrivateEndpointConnectionListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return EnvironmentsClientGetPrivateEndpointConnectionListResponse{}, err
+			}
+			return client.getPrivateEndpointConnectionListHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// getPrivateEndpointConnectionListCreateRequest creates the GetPrivateEndpointConnectionList request.
+func (client *EnvironmentsClient) getPrivateEndpointConnectionListCreateRequest(ctx context.Context, resourceGroupName string, name string, nextLink string, _ *EnvironmentsClientGetPrivateEndpointConnectionListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/privateEndpointConnections"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// getPrivateEndpointConnectionListHandleResponse handles the GetPrivateEndpointConnectionList response.
+func (client *EnvironmentsClient) getPrivateEndpointConnectionListHandleResponse(resp *http.Response, successCodes ...int) (EnvironmentsClientGetPrivateEndpointConnectionListResponse, error) {
+	result := EnvironmentsClientGetPrivateEndpointConnectionListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnectionCollection); err != nil {
+		return EnvironmentsClientGetPrivateEndpointConnectionListResponse{}, err
 	}
 	return result, nil
 }
@@ -1827,69 +2187,6 @@ func (client *EnvironmentsClient) listCapacitiesHandleResponse(resp *http.Respon
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StampCapacityCollection); err != nil {
 		return EnvironmentsClientListCapacitiesResponse{}, err
-	}
-	return result, nil
-}
-
-// ListDiagnostics - Get diagnostic information for an App Service Environment.
-//
-// Description for Get diagnostic information for an App Service Environment.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - name - Name of the App Service Environment.
-//   - options - EnvironmentsClientListDiagnosticsOptions contains the optional parameters for the EnvironmentsClient.ListDiagnostics
-//     method.
-func (client *EnvironmentsClient) ListDiagnostics(ctx context.Context, resourceGroupName string, name string, options *EnvironmentsClientListDiagnosticsOptions) (EnvironmentsClientListDiagnosticsResponse, error) {
-	var err error
-	const operationName = "EnvironmentsClient.ListDiagnostics"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listDiagnosticsCreateRequest(ctx, resourceGroupName, name, options)
-	if err != nil {
-		return EnvironmentsClientListDiagnosticsResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return EnvironmentsClientListDiagnosticsResponse{}, err
-	}
-	return client.listDiagnosticsHandleResponse(httpResp, http.StatusOK)
-}
-
-// listDiagnosticsCreateRequest creates the ListDiagnostics request.
-func (client *EnvironmentsClient) listDiagnosticsCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *EnvironmentsClientListDiagnosticsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/diagnostics"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listDiagnosticsHandleResponse handles the ListDiagnostics response.
-func (client *EnvironmentsClient) listDiagnosticsHandleResponse(resp *http.Response, successCodes ...int) (EnvironmentsClientListDiagnosticsResponse, error) {
-	result := EnvironmentsClientListDiagnosticsResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.HostingEnvironmentDiagnosticsArray); err != nil {
-		return EnvironmentsClientListDiagnosticsResponse{}, err
 	}
 	return result, nil
 }
@@ -2295,65 +2592,70 @@ func (client *EnvironmentsClient) listMultiRoleUsagesHandleResponse(resp *http.R
 	return result, nil
 }
 
-// ListOperations - List all currently running operations on the App Service Environment.
+// NewListPager - Get all App Service Environments for a subscription.
 //
-// Description for List all currently running operations on the App Service Environment.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - name - Name of the App Service Environment.
-//   - options - EnvironmentsClientListOperationsOptions contains the optional parameters for the EnvironmentsClient.ListOperations
-//     method.
-func (client *EnvironmentsClient) ListOperations(ctx context.Context, resourceGroupName string, name string, options *EnvironmentsClientListOperationsOptions) (EnvironmentsClientListOperationsResponse, error) {
-	var err error
-	const operationName = "EnvironmentsClient.ListOperations"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listOperationsCreateRequest(ctx, resourceGroupName, name, options)
-	if err != nil {
-		return EnvironmentsClientListOperationsResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return EnvironmentsClientListOperationsResponse{}, err
-	}
-	return client.listOperationsHandleResponse(httpResp, http.StatusOK)
+// Description for Get all App Service Environments for a subscription.
+//   - options - EnvironmentsClientListOptions contains the optional parameters for the EnvironmentsClient.NewListPager method.
+func (client *EnvironmentsClient) NewListPager(options *EnvironmentsClientListOptions) *runtime.Pager[EnvironmentsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[EnvironmentsClientListResponse]{
+		More: func(page EnvironmentsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *EnvironmentsClientListResponse) (EnvironmentsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "EnvironmentsClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return EnvironmentsClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return EnvironmentsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
 }
 
-// listOperationsCreateRequest creates the ListOperations request.
-func (client *EnvironmentsClient) listOperationsCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *EnvironmentsClientListOperationsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/operations"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
+// listCreateRequest creates the List request.
+func (client *EnvironmentsClient) listCreateRequest(ctx context.Context, nextLink string, _ *EnvironmentsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Web/hostingEnvironments"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
-// listOperationsHandleResponse handles the ListOperations response.
-func (client *EnvironmentsClient) listOperationsHandleResponse(resp *http.Response, successCodes ...int) (EnvironmentsClientListOperationsResponse, error) {
-	result := EnvironmentsClientListOperationsResponse{}
+// listHandleResponse handles the List response.
+func (client *EnvironmentsClient) listHandleResponse(resp *http.Response, successCodes ...int) (EnvironmentsClientListResponse, error) {
+	result := EnvironmentsClientListResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.OperationArray); err != nil {
-		return EnvironmentsClientListOperationsResponse{}, err
+	if err := runtime.UnmarshalAsJSON(resp, &result.EnvironmentCollection); err != nil {
+		return EnvironmentsClientListResponse{}, err
 	}
 	return result, nil
 }
@@ -2995,234 +3297,6 @@ func (client *EnvironmentsClient) rebootCreateRequest(ctx context.Context, resou
 	return req, nil
 }
 
-// BeginResume - Resume an App Service Environment.
-//
-// Description for Resume an App Service Environment.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - name - Name of the App Service Environment.
-//   - options - EnvironmentsClientBeginResumeOptions contains the optional parameters for the EnvironmentsClient.BeginResume
-//     method.
-func (client *EnvironmentsClient) BeginResume(ctx context.Context, resourceGroupName string, name string, options *EnvironmentsClientBeginResumeOptions) (*runtime.Poller[*runtime.Pager[EnvironmentsClientResumeResponse]], error) {
-	pager := runtime.NewPager(runtime.PagingHandler[EnvironmentsClientResumeResponse]{
-		More: func(page EnvironmentsClientResumeResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *EnvironmentsClientResumeResponse) (EnvironmentsClientResumeResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "EnvironmentsClient.BeginResume")
-			req, err := client.resumeCreateRequest(ctx, resourceGroupName, name, *page.NextLink, options)
-			if err != nil {
-				return EnvironmentsClientResumeResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return EnvironmentsClientResumeResponse{}, err
-			}
-			return client.resumeHandleResponse(resp, http.StatusOK, http.StatusAccepted)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.resume(ctx, resourceGroupName, name, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[*runtime.Pager[EnvironmentsClientResumeResponse]]{
-			Response: &pager,
-			Tracer:   client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[*runtime.Pager[EnvironmentsClientResumeResponse]]{
-			Response: &pager,
-			Tracer:   client.internal.Tracer(),
-		})
-	}
-}
-
-// Resume - Resume an App Service Environment.
-//
-// Description for Resume an App Service Environment.
-func (client *EnvironmentsClient) resume(ctx context.Context, resourceGroupName string, name string, options *EnvironmentsClientBeginResumeOptions) (*http.Response, error) {
-	var err error
-	const operationName = "EnvironmentsClient.BeginResume"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.resumeCreateRequest(ctx, resourceGroupName, name, "", options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// resumeCreateRequest creates the Resume request.
-func (client *EnvironmentsClient) resumeCreateRequest(ctx context.Context, resourceGroupName string, name string, nextLink string, _ *EnvironmentsClientBeginResumeOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/resume"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		if resourceGroupName == "" {
-			return nil, errors.New("parameter resourceGroupName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-		if name == "" {
-			return nil, errors.New("parameter name cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-		req, err = runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250501)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// resumeHandleResponse handles the Resume response.
-func (client *EnvironmentsClient) resumeHandleResponse(resp *http.Response, successCodes ...int) (EnvironmentsClientResumeResponse, error) {
-	result := EnvironmentsClientResumeResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.WebAppCollection); err != nil {
-		return EnvironmentsClientResumeResponse{}, err
-	}
-	return result, nil
-}
-
-// BeginSuspend - Suspend an App Service Environment.
-//
-// Description for Suspend an App Service Environment.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - name - Name of the App Service Environment.
-//   - options - EnvironmentsClientBeginSuspendOptions contains the optional parameters for the EnvironmentsClient.BeginSuspend
-//     method.
-func (client *EnvironmentsClient) BeginSuspend(ctx context.Context, resourceGroupName string, name string, options *EnvironmentsClientBeginSuspendOptions) (*runtime.Poller[*runtime.Pager[EnvironmentsClientSuspendResponse]], error) {
-	pager := runtime.NewPager(runtime.PagingHandler[EnvironmentsClientSuspendResponse]{
-		More: func(page EnvironmentsClientSuspendResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *EnvironmentsClientSuspendResponse) (EnvironmentsClientSuspendResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "EnvironmentsClient.BeginSuspend")
-			req, err := client.suspendCreateRequest(ctx, resourceGroupName, name, *page.NextLink, options)
-			if err != nil {
-				return EnvironmentsClientSuspendResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return EnvironmentsClientSuspendResponse{}, err
-			}
-			return client.suspendHandleResponse(resp, http.StatusOK, http.StatusAccepted)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.suspend(ctx, resourceGroupName, name, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[*runtime.Pager[EnvironmentsClientSuspendResponse]]{
-			Response: &pager,
-			Tracer:   client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[*runtime.Pager[EnvironmentsClientSuspendResponse]]{
-			Response: &pager,
-			Tracer:   client.internal.Tracer(),
-		})
-	}
-}
-
-// Suspend - Suspend an App Service Environment.
-//
-// Description for Suspend an App Service Environment.
-func (client *EnvironmentsClient) suspend(ctx context.Context, resourceGroupName string, name string, options *EnvironmentsClientBeginSuspendOptions) (*http.Response, error) {
-	var err error
-	const operationName = "EnvironmentsClient.BeginSuspend"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.suspendCreateRequest(ctx, resourceGroupName, name, "", options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// suspendCreateRequest creates the Suspend request.
-func (client *EnvironmentsClient) suspendCreateRequest(ctx context.Context, resourceGroupName string, name string, nextLink string, _ *EnvironmentsClientBeginSuspendOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/suspend"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		if resourceGroupName == "" {
-			return nil, errors.New("parameter resourceGroupName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-		if name == "" {
-			return nil, errors.New("parameter name cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-		req, err = runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250501)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// suspendHandleResponse handles the Suspend response.
-func (client *EnvironmentsClient) suspendHandleResponse(resp *http.Response, successCodes ...int) (EnvironmentsClientSuspendResponse, error) {
-	result := EnvironmentsClientSuspendResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.WebAppCollection); err != nil {
-		return EnvironmentsClientSuspendResponse{}, err
-	}
-	return result, nil
-}
-
 // TestUpgradeAvailableNotification - Send a test notification that an upgrade is available for this App Service Environment.
 //
 // Send a test notification that an upgrade is available for this App Service Environment.
@@ -3616,78 +3690,4 @@ func (client *EnvironmentsClient) updateWorkerPoolHandleResponse(resp *http.Resp
 		return EnvironmentsClientUpdateWorkerPoolResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpgrade - Initiate an upgrade of an App Service Environment if one is available.
-//
-// Description for Initiate an upgrade of an App Service Environment if one is available.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - name - Name of the App Service Environment.
-//   - options - EnvironmentsClientBeginUpgradeOptions contains the optional parameters for the EnvironmentsClient.BeginUpgrade
-//     method.
-func (client *EnvironmentsClient) BeginUpgrade(ctx context.Context, resourceGroupName string, name string, options *EnvironmentsClientBeginUpgradeOptions) (*runtime.Poller[EnvironmentsClientUpgradeResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.upgrade(ctx, resourceGroupName, name, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[EnvironmentsClientUpgradeResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[EnvironmentsClientUpgradeResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Upgrade - Initiate an upgrade of an App Service Environment if one is available.
-//
-// Description for Initiate an upgrade of an App Service Environment if one is available.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *EnvironmentsClient) upgrade(ctx context.Context, resourceGroupName string, name string, options *EnvironmentsClientBeginUpgradeOptions) (*http.Response, error) {
-	var err error
-	const operationName = "EnvironmentsClient.BeginUpgrade"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.upgradeCreateRequest(ctx, resourceGroupName, name, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// upgradeCreateRequest creates the Upgrade request.
-func (client *EnvironmentsClient) upgradeCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *EnvironmentsClientBeginUpgradeOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/upgrade"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
 }

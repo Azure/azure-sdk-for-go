@@ -29,18 +29,6 @@ type HcpOpenShiftClustersServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, hcpOpenShiftClusterName string, options *armredhatopenshifthcp.HcpOpenShiftClustersClientBeginDeleteOptions) (resp azfake.PollerResponder[armredhatopenshifthcp.HcpOpenShiftClustersClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method HcpOpenShiftClustersClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, hcpOpenShiftClusterName string, options *armredhatopenshifthcp.HcpOpenShiftClustersClientGetOptions) (resp azfake.Responder[armredhatopenshifthcp.HcpOpenShiftClustersClientGetResponse], errResp azfake.ErrorResponder)
-
-	// NewListByResourceGroupPager is the fake for method HcpOpenShiftClustersClient.NewListByResourceGroupPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupPager func(resourceGroupName string, options *armredhatopenshifthcp.HcpOpenShiftClustersClientListByResourceGroupOptions) (resp azfake.PagerResponder[armredhatopenshifthcp.HcpOpenShiftClustersClientListByResourceGroupResponse])
-
-	// NewListBySubscriptionPager is the fake for method HcpOpenShiftClustersClient.NewListBySubscriptionPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListBySubscriptionPager func(options *armredhatopenshifthcp.HcpOpenShiftClustersClientListBySubscriptionOptions) (resp azfake.PagerResponder[armredhatopenshifthcp.HcpOpenShiftClustersClientListBySubscriptionResponse])
-
 	// BeginRequestAdminCredential is the fake for method HcpOpenShiftClustersClient.BeginRequestAdminCredential
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginRequestAdminCredential func(ctx context.Context, resourceGroupName string, hcpOpenShiftClusterName string, body armredhatopenshifthcp.HcpOpenShiftClusterAdminCredentialRequest, options *armredhatopenshifthcp.HcpOpenShiftClustersClientBeginRequestAdminCredentialOptions) (resp azfake.PollerResponder[armredhatopenshifthcp.HcpOpenShiftClustersClientRequestAdminCredentialResponse], errResp azfake.ErrorResponder)
@@ -52,6 +40,18 @@ type HcpOpenShiftClustersServer struct {
 	// BeginUpdate is the fake for method HcpOpenShiftClustersClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, resourceGroupName string, hcpOpenShiftClusterName string, properties armredhatopenshifthcp.HcpOpenShiftCluster, options *armredhatopenshifthcp.HcpOpenShiftClustersClientBeginUpdateOptions) (resp azfake.PollerResponder[armredhatopenshifthcp.HcpOpenShiftClustersClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method HcpOpenShiftClustersClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, hcpOpenShiftClusterName string, options *armredhatopenshifthcp.HcpOpenShiftClustersClientGetOptions) (resp azfake.Responder[armredhatopenshifthcp.HcpOpenShiftClustersClientGetResponse], errResp azfake.ErrorResponder)
+
+	// NewListByResourceGroupPager is the fake for method HcpOpenShiftClustersClient.NewListByResourceGroupPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByResourceGroupPager func(resourceGroupName string, options *armredhatopenshifthcp.HcpOpenShiftClustersClientListByResourceGroupOptions) (resp azfake.PagerResponder[armredhatopenshifthcp.HcpOpenShiftClustersClientListByResourceGroupResponse])
+
+	// NewListBySubscriptionPager is the fake for method HcpOpenShiftClustersClient.NewListBySubscriptionPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListBySubscriptionPager func(options *armredhatopenshifthcp.HcpOpenShiftClustersClientListBySubscriptionOptions) (resp azfake.PagerResponder[armredhatopenshifthcp.HcpOpenShiftClustersClientListBySubscriptionResponse])
 }
 
 // NewHcpOpenShiftClustersServerTransport creates a new instance of HcpOpenShiftClustersServerTransport with the provided implementation.
@@ -62,11 +62,11 @@ func NewHcpOpenShiftClustersServerTransport(srv *HcpOpenShiftClustersServer) *Hc
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armredhatopenshifthcp.HcpOpenShiftClustersClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armredhatopenshifthcp.HcpOpenShiftClustersClientDeleteResponse]](),
-		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armredhatopenshifthcp.HcpOpenShiftClustersClientListByResourceGroupResponse]](),
-		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armredhatopenshifthcp.HcpOpenShiftClustersClientListBySubscriptionResponse]](),
 		beginRequestAdminCredential: newTracker[azfake.PollerResponder[armredhatopenshifthcp.HcpOpenShiftClustersClientRequestAdminCredentialResponse]](),
 		beginRevokeCredentials:      newTracker[azfake.PollerResponder[armredhatopenshifthcp.HcpOpenShiftClustersClientRevokeCredentialsResponse]](),
 		beginUpdate:                 newTracker[azfake.PollerResponder[armredhatopenshifthcp.HcpOpenShiftClustersClientUpdateResponse]](),
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armredhatopenshifthcp.HcpOpenShiftClustersClientListByResourceGroupResponse]](),
+		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armredhatopenshifthcp.HcpOpenShiftClustersClientListBySubscriptionResponse]](),
 	}
 }
 
@@ -76,11 +76,11 @@ type HcpOpenShiftClustersServerTransport struct {
 	srv                         *HcpOpenShiftClustersServer
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armredhatopenshifthcp.HcpOpenShiftClustersClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armredhatopenshifthcp.HcpOpenShiftClustersClientDeleteResponse]]
-	newListByResourceGroupPager *tracker[azfake.PagerResponder[armredhatopenshifthcp.HcpOpenShiftClustersClientListByResourceGroupResponse]]
-	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armredhatopenshifthcp.HcpOpenShiftClustersClientListBySubscriptionResponse]]
 	beginRequestAdminCredential *tracker[azfake.PollerResponder[armredhatopenshifthcp.HcpOpenShiftClustersClientRequestAdminCredentialResponse]]
 	beginRevokeCredentials      *tracker[azfake.PollerResponder[armredhatopenshifthcp.HcpOpenShiftClustersClientRevokeCredentialsResponse]]
 	beginUpdate                 *tracker[azfake.PollerResponder[armredhatopenshifthcp.HcpOpenShiftClustersClientUpdateResponse]]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armredhatopenshifthcp.HcpOpenShiftClustersClientListByResourceGroupResponse]]
+	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armredhatopenshifthcp.HcpOpenShiftClustersClientListBySubscriptionResponse]]
 }
 
 // Do implements the policy.Transporter interface for HcpOpenShiftClustersServerTransport.
@@ -108,18 +108,18 @@ func (h *HcpOpenShiftClustersServerTransport) dispatchToMethodFake(req *http.Req
 				res.resp, res.err = h.dispatchBeginCreateOrUpdate(req)
 			case "HcpOpenShiftClustersClient.BeginDelete":
 				res.resp, res.err = h.dispatchBeginDelete(req)
-			case "HcpOpenShiftClustersClient.Get":
-				res.resp, res.err = h.dispatchGet(req)
-			case "HcpOpenShiftClustersClient.NewListByResourceGroupPager":
-				res.resp, res.err = h.dispatchNewListByResourceGroupPager(req)
-			case "HcpOpenShiftClustersClient.NewListBySubscriptionPager":
-				res.resp, res.err = h.dispatchNewListBySubscriptionPager(req)
 			case "HcpOpenShiftClustersClient.BeginRequestAdminCredential":
 				res.resp, res.err = h.dispatchBeginRequestAdminCredential(req)
 			case "HcpOpenShiftClustersClient.BeginRevokeCredentials":
 				res.resp, res.err = h.dispatchBeginRevokeCredentials(req)
 			case "HcpOpenShiftClustersClient.BeginUpdate":
 				res.resp, res.err = h.dispatchBeginUpdate(req)
+			case "HcpOpenShiftClustersClient.Get":
+				res.resp, res.err = h.dispatchGet(req)
+			case "HcpOpenShiftClustersClient.NewListByResourceGroupPager":
+				res.resp, res.err = h.dispatchNewListByResourceGroupPager(req)
+			case "HcpOpenShiftClustersClient.NewListBySubscriptionPager":
+				res.resp, res.err = h.dispatchNewListBySubscriptionPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -225,109 +225,6 @@ func (h *HcpOpenShiftClustersServerTransport) dispatchBeginDelete(req *http.Requ
 		h.beginDelete.remove(req)
 	}
 
-	return resp, nil
-}
-
-func (h *HcpOpenShiftClustersServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if h.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.RedHatOpenShift/hcpOpenShiftClusters/(?P<hcpOpenShiftClusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	hcpOpenShiftClusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("hcpOpenShiftClusterName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := h.srv.Get(req.Context(), resourceGroupNameParam, hcpOpenShiftClusterNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).HcpOpenShiftCluster, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (h *HcpOpenShiftClustersServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
-	if h.srv.NewListByResourceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
-	}
-	newListByResourceGroupPager := h.newListByResourceGroupPager.get(req)
-	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.RedHatOpenShift/hcpOpenShiftClusters`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := h.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
-		newListByResourceGroupPager = &resp
-		h.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armredhatopenshifthcp.HcpOpenShiftClustersClientListByResourceGroupResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		h.newListByResourceGroupPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByResourceGroupPager) {
-		h.newListByResourceGroupPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (h *HcpOpenShiftClustersServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
-	if h.srv.NewListBySubscriptionPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
-	}
-	newListBySubscriptionPager := h.newListBySubscriptionPager.get(req)
-	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.RedHatOpenShift/hcpOpenShiftClusters`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := h.srv.NewListBySubscriptionPager(nil)
-		newListBySubscriptionPager = &resp
-		h.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
-		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armredhatopenshifthcp.HcpOpenShiftClustersClientListBySubscriptionResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		h.newListBySubscriptionPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListBySubscriptionPager) {
-		h.newListBySubscriptionPager.remove(req)
-	}
 	return resp, nil
 }
 
@@ -468,6 +365,109 @@ func (h *HcpOpenShiftClustersServerTransport) dispatchBeginUpdate(req *http.Requ
 		h.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (h *HcpOpenShiftClustersServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if h.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.RedHatOpenShift/hcpOpenShiftClusters/(?P<hcpOpenShiftClusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	hcpOpenShiftClusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("hcpOpenShiftClusterName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := h.srv.Get(req.Context(), resourceGroupNameParam, hcpOpenShiftClusterNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).HcpOpenShiftCluster, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (h *HcpOpenShiftClustersServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
+	if h.srv.NewListByResourceGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
+	}
+	newListByResourceGroupPager := h.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.RedHatOpenShift/hcpOpenShiftClusters`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := h.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
+		newListByResourceGroupPager = &resp
+		h.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armredhatopenshifthcp.HcpOpenShiftClustersClientListByResourceGroupResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		h.newListByResourceGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		h.newListByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (h *HcpOpenShiftClustersServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
+	if h.srv.NewListBySubscriptionPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
+	}
+	newListBySubscriptionPager := h.newListBySubscriptionPager.get(req)
+	if newListBySubscriptionPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.RedHatOpenShift/hcpOpenShiftClusters`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := h.srv.NewListBySubscriptionPager(nil)
+		newListBySubscriptionPager = &resp
+		h.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
+		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armredhatopenshifthcp.HcpOpenShiftClustersClientListBySubscriptionResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		h.newListBySubscriptionPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListBySubscriptionPager) {
+		h.newListBySubscriptionPager.remove(req)
+	}
 	return resp, nil
 }
 

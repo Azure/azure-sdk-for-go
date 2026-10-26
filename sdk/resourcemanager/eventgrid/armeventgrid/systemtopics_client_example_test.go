@@ -135,6 +135,49 @@ func ExampleSystemTopicsClient_BeginDelete() {
 	// }
 }
 
+// Generated from example definition: 2025-07-15-preview/SystemTopics_Update.json
+func ExampleSystemTopicsClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armeventgrid.NewClientFactory("8f6b6269-84f2-4d09-9e31-1127efcd1e40", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewSystemTopicsClient().BeginUpdate(ctx, "examplerg", "exampleSystemTopic1", armeventgrid.SystemTopicUpdateParameters{
+		Tags: map[string]*string{
+			"tag1": to.Ptr("value1"),
+			"tag2": to.Ptr("value2"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armeventgrid.SystemTopicsClientUpdateResponse{
+	// 	SystemTopic: armeventgrid.SystemTopic{
+	// 		Name: to.Ptr("exampleSystemTopic2"),
+	// 		Type: to.Ptr("Microsoft.EventGrid/systemTopics"),
+	// 		ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/systemTopics/exampleSystemTopic2"),
+	// 		Location: to.Ptr("centraluseuap"),
+	// 		Properties: &armeventgrid.SystemTopicProperties{
+	// 			MetricResourceID: to.Ptr("183c0fb1-17ff-47b6-ac77-5a47420ab01e"),
+	// 			ProvisioningState: to.Ptr(armeventgrid.ResourceProvisioningStateSucceeded),
+	// 			Source: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/azureeventgridrunnerrgcentraluseuap/providers/microsoft.storage/storageaccounts/pubstgrunnerb71cd29e"),
+	// 			TopicType: to.Ptr("microsoft.storage.storageaccounts"),
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2025-07-15-preview/SystemTopics_Get.json
 func ExampleSystemTopicsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -280,47 +323,4 @@ func ExampleSystemTopicsClient_NewListBySubscriptionPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2025-07-15-preview/SystemTopics_Update.json
-func ExampleSystemTopicsClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armeventgrid.NewClientFactory("8f6b6269-84f2-4d09-9e31-1127efcd1e40", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewSystemTopicsClient().BeginUpdate(ctx, "examplerg", "exampleSystemTopic1", armeventgrid.SystemTopicUpdateParameters{
-		Tags: map[string]*string{
-			"tag1": to.Ptr("value1"),
-			"tag2": to.Ptr("value2"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armeventgrid.SystemTopicsClientUpdateResponse{
-	// 	SystemTopic: armeventgrid.SystemTopic{
-	// 		Name: to.Ptr("exampleSystemTopic2"),
-	// 		Type: to.Ptr("Microsoft.EventGrid/systemTopics"),
-	// 		ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/systemTopics/exampleSystemTopic2"),
-	// 		Location: to.Ptr("centraluseuap"),
-	// 		Properties: &armeventgrid.SystemTopicProperties{
-	// 			MetricResourceID: to.Ptr("183c0fb1-17ff-47b6-ac77-5a47420ab01e"),
-	// 			ProvisioningState: to.Ptr(armeventgrid.ResourceProvisioningStateSucceeded),
-	// 			Source: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/azureeventgridrunnerrgcentraluseuap/providers/microsoft.storage/storageaccounts/pubstgrunnerb71cd29e"),
-	// 			TopicType: to.Ptr("microsoft.storage.storageaccounts"),
-	// 		},
-	// 	},
-	// }
 }

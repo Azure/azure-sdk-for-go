@@ -70,7 +70,7 @@ func (client *DNSSecurityRulesClient) BeginCreateOrUpdate(ctx context.Context, r
 	}
 }
 
-// CreateOrUpdate - Creates or updates a DNS security rule for a DNS resolver policy.
+// createOrUpdate - Creates or updates a DNS security rule for a DNS resolver policy.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *DNSSecurityRulesClient) createOrUpdate(ctx context.Context, resourceGroupName string, dnsResolverPolicyName string, dnsSecurityRuleName string, parameters DNSSecurityRule, options *DNSSecurityRulesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -92,7 +92,7 @@ func (client *DNSSecurityRulesClient) createOrUpdate(ctx context.Context, resour
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *DNSSecurityRulesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, dnsResolverPolicyName string, dnsSecurityRuleName string, parameters DNSSecurityRule, options *DNSSecurityRulesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsResolverPolicies/{dnsResolverPolicyName}/dnsSecurityRules/{dnsSecurityRuleName}"
 	if client.subscriptionID == "" {
@@ -156,7 +156,7 @@ func (client *DNSSecurityRulesClient) BeginDelete(ctx context.Context, resourceG
 	}
 }
 
-// Delete - Deletes a DNS security rule for a DNS resolver policy. WARNING: This operation cannot be undone.
+// deleteOperation - Deletes a DNS security rule for a DNS resolver policy. WARNING: This operation cannot be undone.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *DNSSecurityRulesClient) deleteOperation(ctx context.Context, resourceGroupName string, dnsResolverPolicyName string, dnsSecurityRuleName string, options *DNSSecurityRulesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -178,7 +178,7 @@ func (client *DNSSecurityRulesClient) deleteOperation(ctx context.Context, resou
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *DNSSecurityRulesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, dnsResolverPolicyName string, dnsSecurityRuleName string, options *DNSSecurityRulesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsResolverPolicies/{dnsResolverPolicyName}/dnsSecurityRules/{dnsSecurityRuleName}"
 	if client.subscriptionID == "" {
@@ -206,6 +206,90 @@ func (client *DNSSecurityRulesClient) deleteCreateRequest(ctx context.Context, r
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["if-match"] = []string{*options.IfMatch}
+	}
+	return req, nil
+}
+
+// BeginUpdate - Updates a DNS security rule.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - dnsResolverPolicyName - The name of the DNS resolver policy.
+//   - dnsSecurityRuleName - The name of the DNS security rule.
+//   - parameters - Parameters supplied to the Update operation.
+//   - options - DNSSecurityRulesClientBeginUpdateOptions contains the optional parameters for the DNSSecurityRulesClient.BeginUpdate
+//     method.
+func (client *DNSSecurityRulesClient) BeginUpdate(ctx context.Context, resourceGroupName string, dnsResolverPolicyName string, dnsSecurityRuleName string, parameters DNSSecurityRulePatch, options *DNSSecurityRulesClientBeginUpdateOptions) (*runtime.Poller[DNSSecurityRulesClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, dnsResolverPolicyName, dnsSecurityRuleName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DNSSecurityRulesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DNSSecurityRulesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Updates a DNS security rule.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *DNSSecurityRulesClient) update(ctx context.Context, resourceGroupName string, dnsResolverPolicyName string, dnsSecurityRuleName string, parameters DNSSecurityRulePatch, options *DNSSecurityRulesClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "DNSSecurityRulesClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, dnsResolverPolicyName, dnsSecurityRuleName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *DNSSecurityRulesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, dnsResolverPolicyName string, dnsSecurityRuleName string, parameters DNSSecurityRulePatch, options *DNSSecurityRulesClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsResolverPolicies/{dnsResolverPolicyName}/dnsSecurityRules/{dnsSecurityRuleName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if dnsResolverPolicyName == "" {
+		return nil, errors.New("parameter dnsResolverPolicyName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{dnsResolverPolicyName}", url.PathEscape(dnsResolverPolicyName))
+	if dnsSecurityRuleName == "" {
+		return nil, errors.New("parameter dnsSecurityRuleName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{dnsSecurityRuleName}", url.PathEscape(dnsSecurityRuleName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20251001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if options != nil && options.IfMatch != nil {
+		req.Raw().Header["if-match"] = []string{*options.IfMatch}
+	}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
 	}
 	return req, nil
 }
@@ -353,88 +437,4 @@ func (client *DNSSecurityRulesClient) listHandleResponse(resp *http.Response, su
 		return DNSSecurityRulesClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Updates a DNS security rule.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - dnsResolverPolicyName - The name of the DNS resolver policy.
-//   - dnsSecurityRuleName - The name of the DNS security rule.
-//   - parameters - Parameters supplied to the Update operation.
-//   - options - DNSSecurityRulesClientBeginUpdateOptions contains the optional parameters for the DNSSecurityRulesClient.BeginUpdate
-//     method.
-func (client *DNSSecurityRulesClient) BeginUpdate(ctx context.Context, resourceGroupName string, dnsResolverPolicyName string, dnsSecurityRuleName string, parameters DNSSecurityRulePatch, options *DNSSecurityRulesClientBeginUpdateOptions) (*runtime.Poller[DNSSecurityRulesClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, dnsResolverPolicyName, dnsSecurityRuleName, parameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DNSSecurityRulesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DNSSecurityRulesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Updates a DNS security rule.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *DNSSecurityRulesClient) update(ctx context.Context, resourceGroupName string, dnsResolverPolicyName string, dnsSecurityRuleName string, parameters DNSSecurityRulePatch, options *DNSSecurityRulesClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "DNSSecurityRulesClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, dnsResolverPolicyName, dnsSecurityRuleName, parameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *DNSSecurityRulesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, dnsResolverPolicyName string, dnsSecurityRuleName string, parameters DNSSecurityRulePatch, options *DNSSecurityRulesClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsResolverPolicies/{dnsResolverPolicyName}/dnsSecurityRules/{dnsSecurityRuleName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if dnsResolverPolicyName == "" {
-		return nil, errors.New("parameter dnsResolverPolicyName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{dnsResolverPolicyName}", url.PathEscape(dnsResolverPolicyName))
-	if dnsSecurityRuleName == "" {
-		return nil, errors.New("parameter dnsSecurityRuleName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{dnsSecurityRuleName}", url.PathEscape(dnsSecurityRuleName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251001Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["if-match"] = []string{*options.IfMatch}
-	}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

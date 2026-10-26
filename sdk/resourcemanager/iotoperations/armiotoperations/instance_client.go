@@ -68,7 +68,7 @@ func (client *InstanceClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 	}
 }
 
-// CreateOrUpdate - Create a InstanceResource
+// createOrUpdate - Create a InstanceResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *InstanceClient) createOrUpdate(ctx context.Context, resourceGroupName string, instanceName string, resource InstanceResource, options *InstanceClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -90,7 +90,7 @@ func (client *InstanceClient) createOrUpdate(ctx context.Context, resourceGroupN
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *InstanceClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, instanceName string, resource InstanceResource, _ *InstanceClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}"
 	if client.subscriptionID == "" {
@@ -142,7 +142,7 @@ func (client *InstanceClient) BeginDelete(ctx context.Context, resourceGroupName
 	}
 }
 
-// Delete - Delete a InstanceResource
+// deleteOperation - Delete a InstanceResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *InstanceClient) deleteOperation(ctx context.Context, resourceGroupName string, instanceName string, options *InstanceClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -164,7 +164,7 @@ func (client *InstanceClient) deleteOperation(ctx context.Context, resourceGroup
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *InstanceClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, instanceName string, _ *InstanceClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}"
 	if client.subscriptionID == "" {

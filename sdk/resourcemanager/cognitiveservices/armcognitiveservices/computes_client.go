@@ -132,7 +132,7 @@ func (client *ComputesClient) createOrUpdateCreateRequest(ctx context.Context, r
 //   - options - ComputesClientBeginDeleteOptions contains the optional parameters for the ComputesClient.BeginDelete method.
 func (client *ComputesClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, computeName string, options *ComputesClientBeginDeleteOptions) (*runtime.Poller[ComputesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, accountName, computeName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, computeName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -147,9 +147,9 @@ func (client *ComputesClient) BeginDelete(ctx context.Context, resourceGroupName
 	}
 }
 
-// delete - Deletes the specified compute associated with the Cognitive Services account.
+// deleteOperation - Deletes the specified compute associated with the Cognitive Services account.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *ComputesClient) delete(ctx context.Context, resourceGroupName string, accountName string, computeName string, options *ComputesClientBeginDeleteOptions) (*http.Response, error) {
+func (client *ComputesClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, computeName string, options *ComputesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ComputesClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)

@@ -21,10 +21,6 @@ import (
 
 // ManagedPrivateEndpointsServer is a fake server for instances of the armkusto.ManagedPrivateEndpointsClient type.
 type ManagedPrivateEndpointsServer struct {
-	// CheckNameAvailability is the fake for method ManagedPrivateEndpointsClient.CheckNameAvailability
-	// HTTP status codes to indicate success: http.StatusOK
-	CheckNameAvailability func(ctx context.Context, resourceGroupName string, clusterName string, resourceName armkusto.ManagedPrivateEndpointsCheckNameRequest, options *armkusto.ManagedPrivateEndpointsClientCheckNameAvailabilityOptions) (resp azfake.Responder[armkusto.ManagedPrivateEndpointsClientCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
-
 	// BeginCreateOrUpdate is the fake for method ManagedPrivateEndpointsClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated, http.StatusAccepted
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, clusterName string, managedPrivateEndpointName string, parameters armkusto.ManagedPrivateEndpoint, options *armkusto.ManagedPrivateEndpointsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armkusto.ManagedPrivateEndpointsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -33,6 +29,14 @@ type ManagedPrivateEndpointsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, clusterName string, managedPrivateEndpointName string, options *armkusto.ManagedPrivateEndpointsClientBeginDeleteOptions) (resp azfake.PollerResponder[armkusto.ManagedPrivateEndpointsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method ManagedPrivateEndpointsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, clusterName string, managedPrivateEndpointName string, parameters armkusto.ManagedPrivateEndpoint, options *armkusto.ManagedPrivateEndpointsClientBeginUpdateOptions) (resp azfake.PollerResponder[armkusto.ManagedPrivateEndpointsClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// CheckNameAvailability is the fake for method ManagedPrivateEndpointsClient.CheckNameAvailability
+	// HTTP status codes to indicate success: http.StatusOK
+	CheckNameAvailability func(ctx context.Context, resourceGroupName string, clusterName string, resourceName armkusto.ManagedPrivateEndpointsCheckNameRequest, options *armkusto.ManagedPrivateEndpointsClientCheckNameAvailabilityOptions) (resp azfake.Responder[armkusto.ManagedPrivateEndpointsClientCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method ManagedPrivateEndpointsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, clusterName string, managedPrivateEndpointName string, options *armkusto.ManagedPrivateEndpointsClientGetOptions) (resp azfake.Responder[armkusto.ManagedPrivateEndpointsClientGetResponse], errResp azfake.ErrorResponder)
@@ -40,10 +44,6 @@ type ManagedPrivateEndpointsServer struct {
 	// NewListPager is the fake for method ManagedPrivateEndpointsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(resourceGroupName string, clusterName string, options *armkusto.ManagedPrivateEndpointsClientListOptions) (resp azfake.PagerResponder[armkusto.ManagedPrivateEndpointsClientListResponse])
-
-	// BeginUpdate is the fake for method ManagedPrivateEndpointsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, clusterName string, managedPrivateEndpointName string, parameters armkusto.ManagedPrivateEndpoint, options *armkusto.ManagedPrivateEndpointsClientBeginUpdateOptions) (resp azfake.PollerResponder[armkusto.ManagedPrivateEndpointsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewManagedPrivateEndpointsServerTransport creates a new instance of ManagedPrivateEndpointsServerTransport with the provided implementation.
@@ -54,8 +54,8 @@ func NewManagedPrivateEndpointsServerTransport(srv *ManagedPrivateEndpointsServe
 		srv:                 srv,
 		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armkusto.ManagedPrivateEndpointsClientCreateOrUpdateResponse]](),
 		beginDelete:         newTracker[azfake.PollerResponder[armkusto.ManagedPrivateEndpointsClientDeleteResponse]](),
-		newListPager:        newTracker[azfake.PagerResponder[armkusto.ManagedPrivateEndpointsClientListResponse]](),
 		beginUpdate:         newTracker[azfake.PollerResponder[armkusto.ManagedPrivateEndpointsClientUpdateResponse]](),
+		newListPager:        newTracker[azfake.PagerResponder[armkusto.ManagedPrivateEndpointsClientListResponse]](),
 	}
 }
 
@@ -65,8 +65,8 @@ type ManagedPrivateEndpointsServerTransport struct {
 	srv                 *ManagedPrivateEndpointsServer
 	beginCreateOrUpdate *tracker[azfake.PollerResponder[armkusto.ManagedPrivateEndpointsClientCreateOrUpdateResponse]]
 	beginDelete         *tracker[azfake.PollerResponder[armkusto.ManagedPrivateEndpointsClientDeleteResponse]]
-	newListPager        *tracker[azfake.PagerResponder[armkusto.ManagedPrivateEndpointsClientListResponse]]
 	beginUpdate         *tracker[azfake.PollerResponder[armkusto.ManagedPrivateEndpointsClientUpdateResponse]]
+	newListPager        *tracker[azfake.PagerResponder[armkusto.ManagedPrivateEndpointsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for ManagedPrivateEndpointsServerTransport.
@@ -90,18 +90,18 @@ func (m *ManagedPrivateEndpointsServerTransport) dispatchToMethodFake(req *http.
 		}
 		if !intercepted {
 			switch method {
-			case "ManagedPrivateEndpointsClient.CheckNameAvailability":
-				res.resp, res.err = m.dispatchCheckNameAvailability(req)
 			case "ManagedPrivateEndpointsClient.BeginCreateOrUpdate":
 				res.resp, res.err = m.dispatchBeginCreateOrUpdate(req)
 			case "ManagedPrivateEndpointsClient.BeginDelete":
 				res.resp, res.err = m.dispatchBeginDelete(req)
+			case "ManagedPrivateEndpointsClient.BeginUpdate":
+				res.resp, res.err = m.dispatchBeginUpdate(req)
+			case "ManagedPrivateEndpointsClient.CheckNameAvailability":
+				res.resp, res.err = m.dispatchCheckNameAvailability(req)
 			case "ManagedPrivateEndpointsClient.Get":
 				res.resp, res.err = m.dispatchGet(req)
 			case "ManagedPrivateEndpointsClient.NewListPager":
 				res.resp, res.err = m.dispatchNewListPager(req)
-			case "ManagedPrivateEndpointsClient.BeginUpdate":
-				res.resp, res.err = m.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -116,43 +116,6 @@ func (m *ManagedPrivateEndpointsServerTransport) dispatchToMethodFake(req *http.
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (m *ManagedPrivateEndpointsServerTransport) dispatchCheckNameAvailability(req *http.Request) (*http.Response, error) {
-	if m.srv.CheckNameAvailability == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CheckNameAvailability not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Kusto/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/managedPrivateEndpointsCheckNameAvailability`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armkusto.ManagedPrivateEndpointsCheckNameRequest](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := m.srv.CheckNameAvailability(req.Context(), resourceGroupNameParam, clusterNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CheckNameResult, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (m *ManagedPrivateEndpointsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -255,6 +218,95 @@ func (m *ManagedPrivateEndpointsServerTransport) dispatchBeginDelete(req *http.R
 	return resp, nil
 }
 
+func (m *ManagedPrivateEndpointsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if m.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := m.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Kusto/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/managedPrivateEndpoints/(?P<managedPrivateEndpointName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armkusto.ManagedPrivateEndpoint](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
+		if err != nil {
+			return nil, err
+		}
+		managedPrivateEndpointNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("managedPrivateEndpointName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := m.srv.BeginUpdate(req.Context(), resourceGroupNameParam, clusterNameParam, managedPrivateEndpointNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		m.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		m.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		m.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (m *ManagedPrivateEndpointsServerTransport) dispatchCheckNameAvailability(req *http.Request) (*http.Response, error) {
+	if m.srv.CheckNameAvailability == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CheckNameAvailability not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Kusto/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/managedPrivateEndpointsCheckNameAvailability`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armkusto.ManagedPrivateEndpointsCheckNameRequest](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := m.srv.CheckNameAvailability(req.Context(), resourceGroupNameParam, clusterNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CheckNameResult, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (m *ManagedPrivateEndpointsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if m.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -330,58 +382,6 @@ func (m *ManagedPrivateEndpointsServerTransport) dispatchNewListPager(req *http.
 	if !server.PagerResponderMore(newListPager) {
 		m.newListPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (m *ManagedPrivateEndpointsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if m.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := m.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Kusto/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/managedPrivateEndpoints/(?P<managedPrivateEndpointName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armkusto.ManagedPrivateEndpoint](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
-		if err != nil {
-			return nil, err
-		}
-		managedPrivateEndpointNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("managedPrivateEndpointName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := m.srv.BeginUpdate(req.Context(), resourceGroupNameParam, clusterNameParam, managedPrivateEndpointNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		m.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		m.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		m.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

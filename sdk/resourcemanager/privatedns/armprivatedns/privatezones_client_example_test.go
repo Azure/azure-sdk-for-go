@@ -88,6 +88,55 @@ func ExamplePrivateZonesClient_BeginDelete() {
 	// }
 }
 
+// Generated from example definition: 2024-06-01/PrivateZonePatch.json
+func ExamplePrivateZonesClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armprivatedns.NewClientFactory("subscriptionId", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewPrivateZonesClient().BeginUpdate(ctx, "resourceGroup1", "privatezone1.com", armprivatedns.PrivateZone{
+		Tags: map[string]*string{
+			"key2": to.Ptr("value2"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armprivatedns.PrivateZonesClientUpdateResponse{
+	// 	PrivateZone: armprivatedns.PrivateZone{
+	// 		Name: to.Ptr("privatezone1.com"),
+	// 		Type: to.Ptr("Microsoft.Network/privateDnsZones"),
+	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 		ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroup1/providers/Microsoft.Network/privateDnsZones/privatezone1.com"),
+	// 		Location: to.Ptr("global"),
+	// 		Properties: &armprivatedns.PrivateZoneProperties{
+	// 			MaxNumberOfRecordSets: to.Ptr[int64](5000),
+	// 			MaxNumberOfVirtualNetworkLinks: to.Ptr[int64](100),
+	// 			MaxNumberOfVirtualNetworkLinksWithRegistration: to.Ptr[int64](50),
+	// 			NumberOfRecordSets: to.Ptr[int64](1),
+	// 			NumberOfVirtualNetworkLinks: to.Ptr[int64](0),
+	// 			NumberOfVirtualNetworkLinksWithRegistration: to.Ptr[int64](0),
+	// 			ProvisioningState: to.Ptr(armprivatedns.ProvisioningStateSucceeded),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"key2": to.Ptr("value2"),
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2024-06-01/PrivateZoneGet.json
 func ExamplePrivateZonesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -127,73 +176,6 @@ func ExamplePrivateZonesClient_Get() {
 	// 		},
 	// 	},
 	// }
-}
-
-// Generated from example definition: 2024-06-01/PrivateZoneListInSubscription.json
-func ExamplePrivateZonesClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armprivatedns.NewClientFactory("subscriptionId", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewPrivateZonesClient().NewListPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armprivatedns.PrivateZonesClientListResponse{
-		// 	PrivateZoneListResult: armprivatedns.PrivateZoneListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/subscriptionId/providers/Microsoft.Network/privateDnsZones?api-version=2024-06-01&$skipToken=skipToken"),
-		// 		Value: []*armprivatedns.PrivateZone{
-		// 			{
-		// 				Name: to.Ptr("privatezone1.com"),
-		// 				Type: to.Ptr("Microsoft.Network/privateDnsZones"),
-		// 				Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroup1/providers/Microsoft.Network/privateDnsZones/privatezone1.com"),
-		// 				Location: to.Ptr("global"),
-		// 				Properties: &armprivatedns.PrivateZoneProperties{
-		// 					MaxNumberOfRecordSets: to.Ptr[int64](5000),
-		// 					MaxNumberOfVirtualNetworkLinks: to.Ptr[int64](100),
-		// 					MaxNumberOfVirtualNetworkLinksWithRegistration: to.Ptr[int64](50),
-		// 					NumberOfRecordSets: to.Ptr[int64](1),
-		// 					NumberOfVirtualNetworkLinks: to.Ptr[int64](0),
-		// 					NumberOfVirtualNetworkLinksWithRegistration: to.Ptr[int64](0),
-		// 					ProvisioningState: to.Ptr(armprivatedns.ProvisioningStateSucceeded),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 					"key1": to.Ptr("value1"),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("privatezone2.com"),
-		// 				Type: to.Ptr("Microsoft.Network/privateDnsZones"),
-		// 				Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroup2/providers/Microsoft.Network/privateDnsZones/privatezone2.com"),
-		// 				Location: to.Ptr("global"),
-		// 				Properties: &armprivatedns.PrivateZoneProperties{
-		// 					MaxNumberOfRecordSets: to.Ptr[int64](5000),
-		// 					MaxNumberOfVirtualNetworkLinks: to.Ptr[int64](100),
-		// 					MaxNumberOfVirtualNetworkLinksWithRegistration: to.Ptr[int64](50),
-		// 					NumberOfRecordSets: to.Ptr[int64](1),
-		// 					NumberOfVirtualNetworkLinks: to.Ptr[int64](0),
-		// 					NumberOfVirtualNetworkLinksWithRegistration: to.Ptr[int64](0),
-		// 					ProvisioningState: to.Ptr(armprivatedns.ProvisioningStateSucceeded),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
 }
 
 // Generated from example definition: 2024-06-01/PrivateZoneListInResourceGroup.json
@@ -263,8 +245,8 @@ func ExamplePrivateZonesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2024-06-01/PrivateZonePatch.json
-func ExamplePrivateZonesClient_BeginUpdate() {
+// Generated from example definition: 2024-06-01/PrivateZoneListInSubscription.json
+func ExamplePrivateZonesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -274,40 +256,58 @@ func ExamplePrivateZonesClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewPrivateZonesClient().BeginUpdate(ctx, "resourceGroup1", "privatezone1.com", armprivatedns.PrivateZone{
-		Tags: map[string]*string{
-			"key2": to.Ptr("value2"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
+	pager := clientFactory.NewPrivateZonesClient().NewListPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armprivatedns.PrivateZonesClientListResponse{
+		// 	PrivateZoneListResult: armprivatedns.PrivateZoneListResult{
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/subscriptionId/providers/Microsoft.Network/privateDnsZones?api-version=2024-06-01&$skipToken=skipToken"),
+		// 		Value: []*armprivatedns.PrivateZone{
+		// 			{
+		// 				Name: to.Ptr("privatezone1.com"),
+		// 				Type: to.Ptr("Microsoft.Network/privateDnsZones"),
+		// 				Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 				ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroup1/providers/Microsoft.Network/privateDnsZones/privatezone1.com"),
+		// 				Location: to.Ptr("global"),
+		// 				Properties: &armprivatedns.PrivateZoneProperties{
+		// 					MaxNumberOfRecordSets: to.Ptr[int64](5000),
+		// 					MaxNumberOfVirtualNetworkLinks: to.Ptr[int64](100),
+		// 					MaxNumberOfVirtualNetworkLinksWithRegistration: to.Ptr[int64](50),
+		// 					NumberOfRecordSets: to.Ptr[int64](1),
+		// 					NumberOfVirtualNetworkLinks: to.Ptr[int64](0),
+		// 					NumberOfVirtualNetworkLinksWithRegistration: to.Ptr[int64](0),
+		// 					ProvisioningState: to.Ptr(armprivatedns.ProvisioningStateSucceeded),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"key1": to.Ptr("value1"),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("privatezone2.com"),
+		// 				Type: to.Ptr("Microsoft.Network/privateDnsZones"),
+		// 				Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 				ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroup2/providers/Microsoft.Network/privateDnsZones/privatezone2.com"),
+		// 				Location: to.Ptr("global"),
+		// 				Properties: &armprivatedns.PrivateZoneProperties{
+		// 					MaxNumberOfRecordSets: to.Ptr[int64](5000),
+		// 					MaxNumberOfVirtualNetworkLinks: to.Ptr[int64](100),
+		// 					MaxNumberOfVirtualNetworkLinksWithRegistration: to.Ptr[int64](50),
+		// 					NumberOfRecordSets: to.Ptr[int64](1),
+		// 					NumberOfVirtualNetworkLinks: to.Ptr[int64](0),
+		// 					NumberOfVirtualNetworkLinksWithRegistration: to.Ptr[int64](0),
+		// 					ProvisioningState: to.Ptr(armprivatedns.ProvisioningStateSucceeded),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
 	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armprivatedns.PrivateZonesClientUpdateResponse{
-	// 	PrivateZone: armprivatedns.PrivateZone{
-	// 		Name: to.Ptr("privatezone1.com"),
-	// 		Type: to.Ptr("Microsoft.Network/privateDnsZones"),
-	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
-	// 		ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroup1/providers/Microsoft.Network/privateDnsZones/privatezone1.com"),
-	// 		Location: to.Ptr("global"),
-	// 		Properties: &armprivatedns.PrivateZoneProperties{
-	// 			MaxNumberOfRecordSets: to.Ptr[int64](5000),
-	// 			MaxNumberOfVirtualNetworkLinks: to.Ptr[int64](100),
-	// 			MaxNumberOfVirtualNetworkLinksWithRegistration: to.Ptr[int64](50),
-	// 			NumberOfRecordSets: to.Ptr[int64](1),
-	// 			NumberOfVirtualNetworkLinks: to.Ptr[int64](0),
-	// 			NumberOfVirtualNetworkLinksWithRegistration: to.Ptr[int64](0),
-	// 			ProvisioningState: to.Ptr(armprivatedns.ProvisioningStateSucceeded),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"key2": to.Ptr("value2"),
-	// 		},
-	// 	},
-	// }
 }

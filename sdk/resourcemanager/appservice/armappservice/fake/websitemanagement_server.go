@@ -38,6 +38,14 @@ type WebSiteManagementServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetSubscriptionDeploymentLocations func(ctx context.Context, options *armappservice.WebSiteManagementClientGetSubscriptionDeploymentLocationsOptions) (resp azfake.Responder[armappservice.WebSiteManagementClientGetSubscriptionDeploymentLocationsResponse], errResp azfake.ErrorResponder)
 
+	// ListSKUs is the fake for method WebSiteManagementClient.ListSKUs
+	// HTTP status codes to indicate success: http.StatusOK
+	ListSKUs func(ctx context.Context, options *armappservice.WebSiteManagementClientListSKUsOptions) (resp azfake.Responder[armappservice.WebSiteManagementClientListSKUsResponse], errResp azfake.ErrorResponder)
+
+	// Move is the fake for method WebSiteManagementClient.Move
+	// HTTP status codes to indicate success: http.StatusNoContent
+	Move func(ctx context.Context, resourceGroupName string, moveResourceEnvelope armappservice.CsmMoveResourceEnvelope, options *armappservice.WebSiteManagementClientMoveOptions) (resp azfake.Responder[armappservice.WebSiteManagementClientMoveResponse], errResp azfake.ErrorResponder)
+
 	// NewListAseRegionsPager is the fake for method WebSiteManagementClient.NewListAseRegionsPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListAseRegionsPager func(options *armappservice.WebSiteManagementClientListAseRegionsOptions) (resp azfake.PagerResponder[armappservice.WebSiteManagementClientListAseRegionsResponse])
@@ -58,10 +66,6 @@ type WebSiteManagementServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPremierAddOnOffersPager func(options *armappservice.WebSiteManagementClientListPremierAddOnOffersOptions) (resp azfake.PagerResponder[armappservice.WebSiteManagementClientListPremierAddOnOffersResponse])
 
-	// ListSKUs is the fake for method WebSiteManagementClient.ListSKUs
-	// HTTP status codes to indicate success: http.StatusOK
-	ListSKUs func(ctx context.Context, options *armappservice.WebSiteManagementClientListSKUsOptions) (resp azfake.Responder[armappservice.WebSiteManagementClientListSKUsResponse], errResp azfake.ErrorResponder)
-
 	// NewListSiteIdentifiersAssignedToHostNamePager is the fake for method WebSiteManagementClient.NewListSiteIdentifiersAssignedToHostNamePager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListSiteIdentifiersAssignedToHostNamePager func(nameIdentifier armappservice.NameIdentifier, options *armappservice.WebSiteManagementClientListSiteIdentifiersAssignedToHostNameOptions) (resp azfake.PagerResponder[armappservice.WebSiteManagementClientListSiteIdentifiersAssignedToHostNameResponse])
@@ -69,10 +73,6 @@ type WebSiteManagementServer struct {
 	// NewListSourceControlsPager is the fake for method WebSiteManagementClient.NewListSourceControlsPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListSourceControlsPager func(options *armappservice.WebSiteManagementClientListSourceControlsOptions) (resp azfake.PagerResponder[armappservice.WebSiteManagementClientListSourceControlsResponse])
-
-	// Move is the fake for method WebSiteManagementClient.Move
-	// HTTP status codes to indicate success: http.StatusNoContent
-	Move func(ctx context.Context, resourceGroupName string, moveResourceEnvelope armappservice.CsmMoveResourceEnvelope, options *armappservice.WebSiteManagementClientMoveOptions) (resp azfake.Responder[armappservice.WebSiteManagementClientMoveResponse], errResp azfake.ErrorResponder)
 
 	// RegionalCheckNameAvailability is the fake for method WebSiteManagementClient.RegionalCheckNameAvailability
 	// HTTP status codes to indicate success: http.StatusOK
@@ -157,6 +157,10 @@ func (w *WebSiteManagementServerTransport) dispatchToMethodFake(req *http.Reques
 				res.resp, res.err = w.dispatchGetSourceControl(req)
 			case "WebSiteManagementClient.GetSubscriptionDeploymentLocations":
 				res.resp, res.err = w.dispatchGetSubscriptionDeploymentLocations(req)
+			case "WebSiteManagementClient.ListSKUs":
+				res.resp, res.err = w.dispatchListSKUs(req)
+			case "WebSiteManagementClient.Move":
+				res.resp, res.err = w.dispatchMove(req)
 			case "WebSiteManagementClient.NewListAseRegionsPager":
 				res.resp, res.err = w.dispatchNewListAseRegionsPager(req)
 			case "WebSiteManagementClient.NewListBillingMetersPager":
@@ -167,14 +171,10 @@ func (w *WebSiteManagementServerTransport) dispatchToMethodFake(req *http.Reques
 				res.resp, res.err = w.dispatchNewListGeoRegionsPager(req)
 			case "WebSiteManagementClient.NewListPremierAddOnOffersPager":
 				res.resp, res.err = w.dispatchNewListPremierAddOnOffersPager(req)
-			case "WebSiteManagementClient.ListSKUs":
-				res.resp, res.err = w.dispatchListSKUs(req)
 			case "WebSiteManagementClient.NewListSiteIdentifiersAssignedToHostNamePager":
 				res.resp, res.err = w.dispatchNewListSiteIdentifiersAssignedToHostNamePager(req)
 			case "WebSiteManagementClient.NewListSourceControlsPager":
 				res.resp, res.err = w.dispatchNewListSourceControlsPager(req)
-			case "WebSiteManagementClient.Move":
-				res.resp, res.err = w.dispatchMove(req)
 			case "WebSiteManagementClient.RegionalCheckNameAvailability":
 				res.resp, res.err = w.dispatchRegionalCheckNameAvailability(req)
 			case "WebSiteManagementClient.UpdatePublishingUser":
@@ -299,6 +299,64 @@ func (w *WebSiteManagementServerTransport) dispatchGetSubscriptionDeploymentLoca
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DeploymentLocations, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (w *WebSiteManagementServerTransport) dispatchListSKUs(req *http.Request) (*http.Response, error) {
+	if w.srv.ListSKUs == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListSKUs not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/skus`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	respr, errRespr := w.srv.ListSKUs(req.Context(), nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SKUInfos, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (w *WebSiteManagementServerTransport) dispatchMove(req *http.Request) (*http.Response, error) {
+	if w.srv.Move == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Move not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/moveResources`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armappservice.CsmMoveResourceEnvelope](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := w.srv.Move(req.Context(), resourceGroupNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusNoContent}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusNoContent", respContent.HTTPStatus)}
+	}
+	resp, err := server.NewResponse(respContent, req, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -516,31 +574,6 @@ func (w *WebSiteManagementServerTransport) dispatchNewListPremierAddOnOffersPage
 	return resp, nil
 }
 
-func (w *WebSiteManagementServerTransport) dispatchListSKUs(req *http.Request) (*http.Response, error) {
-	if w.srv.ListSKUs == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListSKUs not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/skus`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 2 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	respr, errRespr := w.srv.ListSKUs(req.Context(), nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SKUInfos, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (w *WebSiteManagementServerTransport) dispatchNewListSiteIdentifiersAssignedToHostNamePager(req *http.Request) (*http.Response, error) {
 	if w.srv.NewListSiteIdentifiersAssignedToHostNamePager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListSiteIdentifiersAssignedToHostNamePager not implemented")}
@@ -601,39 +634,6 @@ func (w *WebSiteManagementServerTransport) dispatchNewListSourceControlsPager(re
 	}
 	if !server.PagerResponderMore(newListSourceControlsPager) {
 		w.newListSourceControlsPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (w *WebSiteManagementServerTransport) dispatchMove(req *http.Request) (*http.Response, error) {
-	if w.srv.Move == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Move not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/moveResources`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armappservice.CsmMoveResourceEnvelope](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := w.srv.Move(req.Context(), resourceGroupNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusNoContent}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusNoContent", respContent.HTTPStatus)}
-	}
-	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
 	}
 	return resp, nil
 }

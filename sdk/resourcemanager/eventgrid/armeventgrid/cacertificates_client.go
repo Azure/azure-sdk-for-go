@@ -72,7 +72,7 @@ func (client *CaCertificatesClient) BeginCreateOrUpdate(ctx context.Context, res
 	}
 }
 
-// CreateOrUpdate - Create or update a CA certificate.
+// createOrUpdate - Create or update a CA certificate.
 //
 // Create or update a CA certificate with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -96,7 +96,7 @@ func (client *CaCertificatesClient) createOrUpdate(ctx context.Context, resource
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *CaCertificatesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, caCertificateName string, caCertificateInfo CaCertificate, _ *CaCertificatesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/namespaces/{namespaceName}/caCertificates/{caCertificateName}"
 	if client.subscriptionID == "" {
@@ -156,7 +156,7 @@ func (client *CaCertificatesClient) BeginDelete(ctx context.Context, resourceGro
 	}
 }
 
-// Delete - Delete a CA certificate.
+// deleteOperation - Delete a CA certificate.
 //
 // Delete an existing CA certificate.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -180,7 +180,7 @@ func (client *CaCertificatesClient) deleteOperation(ctx context.Context, resourc
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *CaCertificatesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, caCertificateName string, _ *CaCertificatesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/namespaces/{namespaceName}/caCertificates/{caCertificateName}"
 	if client.subscriptionID == "" {

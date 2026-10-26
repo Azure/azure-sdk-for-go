@@ -29,6 +29,10 @@ type ToolsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, toolName string, options *armdiscovery.ToolsClientBeginDeleteOptions) (resp azfake.PollerResponder[armdiscovery.ToolsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method ToolsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, toolName string, properties armdiscovery.Tool, options *armdiscovery.ToolsClientBeginUpdateOptions) (resp azfake.PollerResponder[armdiscovery.ToolsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method ToolsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, toolName string, options *armdiscovery.ToolsClientGetOptions) (resp azfake.Responder[armdiscovery.ToolsClientGetResponse], errResp azfake.ErrorResponder)
@@ -40,10 +44,6 @@ type ToolsServer struct {
 	// NewListBySubscriptionPager is the fake for method ToolsClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armdiscovery.ToolsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armdiscovery.ToolsClientListBySubscriptionResponse])
-
-	// BeginUpdate is the fake for method ToolsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, toolName string, properties armdiscovery.Tool, options *armdiscovery.ToolsClientBeginUpdateOptions) (resp azfake.PollerResponder[armdiscovery.ToolsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewToolsServerTransport creates a new instance of ToolsServerTransport with the provided implementation.
@@ -54,9 +54,9 @@ func NewToolsServerTransport(srv *ToolsServer) *ToolsServerTransport {
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armdiscovery.ToolsClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armdiscovery.ToolsClientDeleteResponse]](),
+		beginUpdate:                 newTracker[azfake.PollerResponder[armdiscovery.ToolsClientUpdateResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armdiscovery.ToolsClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armdiscovery.ToolsClientListBySubscriptionResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armdiscovery.ToolsClientUpdateResponse]](),
 	}
 }
 
@@ -66,9 +66,9 @@ type ToolsServerTransport struct {
 	srv                         *ToolsServer
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armdiscovery.ToolsClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armdiscovery.ToolsClientDeleteResponse]]
+	beginUpdate                 *tracker[azfake.PollerResponder[armdiscovery.ToolsClientUpdateResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armdiscovery.ToolsClientListByResourceGroupResponse]]
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armdiscovery.ToolsClientListBySubscriptionResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armdiscovery.ToolsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for ToolsServerTransport.
@@ -96,14 +96,14 @@ func (t *ToolsServerTransport) dispatchToMethodFake(req *http.Request, method st
 				res.resp, res.err = t.dispatchBeginCreateOrUpdate(req)
 			case "ToolsClient.BeginDelete":
 				res.resp, res.err = t.dispatchBeginDelete(req)
+			case "ToolsClient.BeginUpdate":
+				res.resp, res.err = t.dispatchBeginUpdate(req)
 			case "ToolsClient.Get":
 				res.resp, res.err = t.dispatchGet(req)
 			case "ToolsClient.NewListByResourceGroupPager":
 				res.resp, res.err = t.dispatchNewListByResourceGroupPager(req)
 			case "ToolsClient.NewListBySubscriptionPager":
 				res.resp, res.err = t.dispatchNewListBySubscriptionPager(req)
-			case "ToolsClient.BeginUpdate":
-				res.resp, res.err = t.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -212,6 +212,54 @@ func (t *ToolsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Res
 	return resp, nil
 }
 
+func (t *ToolsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if t.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := t.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Discovery/tools/(?P<toolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armdiscovery.Tool](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		toolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("toolName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := t.srv.BeginUpdate(req.Context(), resourceGroupNameParam, toolNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		t.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		t.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		t.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (t *ToolsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if t.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -312,54 +360,6 @@ func (t *ToolsServerTransport) dispatchNewListBySubscriptionPager(req *http.Requ
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		t.newListBySubscriptionPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (t *ToolsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if t.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := t.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Discovery/tools/(?P<toolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armdiscovery.Tool](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		toolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("toolName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := t.srv.BeginUpdate(req.Context(), resourceGroupNameParam, toolNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		t.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		t.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		t.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

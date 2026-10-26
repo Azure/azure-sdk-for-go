@@ -68,7 +68,7 @@ func (client *FabricAgentClient) BeginCreate(ctx context.Context, resourceGroupN
 	}
 }
 
-// Create - Creates the fabric agent.
+// create - Creates the fabric agent.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *FabricAgentClient) create(ctx context.Context, resourceGroupName string, fabricName string, fabricAgentName string, resource FabricAgentModel, options *FabricAgentClientBeginCreateOptions) (*http.Response, error) {
 	var err error
@@ -90,7 +90,7 @@ func (client *FabricAgentClient) create(ctx context.Context, resourceGroupName s
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *FabricAgentClient) createCreateRequest(ctx context.Context, resourceGroupName string, fabricName string, fabricAgentName string, resource FabricAgentModel, _ *FabricAgentClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationFabrics/{fabricName}/fabricAgents/{fabricAgentName}"
 	if client.subscriptionID == "" {
@@ -147,7 +147,7 @@ func (client *FabricAgentClient) BeginDelete(ctx context.Context, resourceGroupN
 	}
 }
 
-// Delete - Deletes fabric agent.
+// deleteOperation - Deletes fabric agent.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *FabricAgentClient) deleteOperation(ctx context.Context, resourceGroupName string, fabricName string, fabricAgentName string, options *FabricAgentClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -169,7 +169,7 @@ func (client *FabricAgentClient) deleteOperation(ctx context.Context, resourceGr
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *FabricAgentClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, fabricName string, fabricAgentName string, _ *FabricAgentClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationFabrics/{fabricName}/fabricAgents/{fabricAgentName}"
 	if client.subscriptionID == "" {

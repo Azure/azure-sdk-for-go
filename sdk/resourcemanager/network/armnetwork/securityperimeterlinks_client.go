@@ -54,7 +54,7 @@ func NewSecurityPerimeterLinksClient(subscriptionID string, credential azcore.To
 //     method.
 func (client *SecurityPerimeterLinksClient) BeginDelete(ctx context.Context, resourceGroupName string, networkSecurityPerimeterName string, linkName string, options *SecurityPerimeterLinksClientBeginDeleteOptions) (*runtime.Poller[SecurityPerimeterLinksClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, networkSecurityPerimeterName, linkName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, networkSecurityPerimeterName, linkName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -69,9 +69,9 @@ func (client *SecurityPerimeterLinksClient) BeginDelete(ctx context.Context, res
 	}
 }
 
-// delete - Deletes an NSP Link resource.
+// deleteOperation - Deletes an NSP Link resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *SecurityPerimeterLinksClient) delete(ctx context.Context, resourceGroupName string, networkSecurityPerimeterName string, linkName string, options *SecurityPerimeterLinksClientBeginDeleteOptions) (*http.Response, error) {
+func (client *SecurityPerimeterLinksClient) deleteOperation(ctx context.Context, resourceGroupName string, networkSecurityPerimeterName string, linkName string, options *SecurityPerimeterLinksClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SecurityPerimeterLinksClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)

@@ -543,6 +543,424 @@ func ExampleEventSubscriptionsClient_BeginDelete_eventSubscriptionsDeleteForSubs
 	// }
 }
 
+// Generated from example definition: 2025-07-15-preview/EventSubscriptions_UpdateForCustomTopic.json
+func ExampleEventSubscriptionsClient_BeginUpdate_eventSubscriptionsUpdateForCustomTopic() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armeventgrid.NewClientFactory("<subscriptionID>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewEventSubscriptionsClient().BeginUpdate(ctx, "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2", "examplesubscription1", armeventgrid.EventSubscriptionUpdateParameters{
+		Destination: &armeventgrid.WebHookEventSubscriptionDestination{
+			EndpointType: to.Ptr(armeventgrid.EndpointTypeWebHook),
+			Properties: &armeventgrid.WebHookEventSubscriptionDestinationProperties{
+				EndpointURL: to.Ptr("https://requestb.in/15ksip71"),
+			},
+		},
+		Filter: &armeventgrid.EventSubscriptionFilter{
+			IsSubjectCaseSensitive: to.Ptr(true),
+			SubjectBeginsWith:      to.Ptr("existingPrefix"),
+			SubjectEndsWith:        to.Ptr("newSuffix"),
+		},
+		Labels: []*string{
+			to.Ptr("label1"),
+			to.Ptr("label2"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2025-07-15-preview/EventSubscriptions_UpdateForCustomTopic_AzureFunctionDestination.json
+func ExampleEventSubscriptionsClient_BeginUpdate_eventSubscriptionsUpdateForCustomTopicAzureFunctionDestination() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armeventgrid.NewClientFactory("<subscriptionID>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewEventSubscriptionsClient().BeginUpdate(ctx, "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic1", "examplesubscription1", armeventgrid.EventSubscriptionUpdateParameters{
+		DeadLetterDestination: &armeventgrid.StorageBlobDeadLetterDestination{
+			EndpointType: to.Ptr(armeventgrid.DeadLetterEndPointTypeStorageBlob),
+			Properties: &armeventgrid.StorageBlobDeadLetterDestinationProperties{
+				BlobContainerName: to.Ptr("contosocontainer"),
+				ResourceID:        to.Ptr("/subscriptions/55f3dcd4-cac7-43b4-990b-a139d62a1eb2/resourceGroups/TestRG/providers/Microsoft.Storage/storageAccounts/contosostg"),
+			},
+		},
+		Destination: &armeventgrid.AzureFunctionEventSubscriptionDestination{
+			EndpointType: to.Ptr(armeventgrid.EndpointTypeAzureFunction),
+			Properties: &armeventgrid.AzureFunctionEventSubscriptionDestinationProperties{
+				ResourceID: to.Ptr("/subscriptions/55f3dcd4-cac7-43b4-990b-a139d62a1eb2/resourceGroups/TestRG/providers/Microsoft.Web/sites/ContosoSite/funtions/ContosoFunc"),
+			},
+		},
+		Filter: &armeventgrid.EventSubscriptionFilter{
+			IsSubjectCaseSensitive: to.Ptr(false),
+			SubjectBeginsWith:      to.Ptr("ExamplePrefix"),
+			SubjectEndsWith:        to.Ptr("ExampleSuffix"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2025-07-15-preview/EventSubscriptions_UpdateForCustomTopic_EventHubDestination.json
+func ExampleEventSubscriptionsClient_BeginUpdate_eventSubscriptionsUpdateForCustomTopicEventHubDestination() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armeventgrid.NewClientFactory("<subscriptionID>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewEventSubscriptionsClient().BeginUpdate(ctx, "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2", "examplesubscription1", armeventgrid.EventSubscriptionUpdateParameters{
+		Destination: &armeventgrid.EventHubEventSubscriptionDestination{
+			EndpointType: to.Ptr(armeventgrid.EndpointTypeEventHub),
+			Properties: &armeventgrid.EventHubEventSubscriptionDestinationProperties{
+				ResourceID: to.Ptr("/subscriptions/55f3dcd4-cac7-43b4-990b-a139d62a1eb2/resourceGroups/TestRG/providers/Microsoft.EventHub/namespaces/ContosoNamespace/eventhubs/EH1"),
+			},
+		},
+		Filter: &armeventgrid.EventSubscriptionFilter{
+			IsSubjectCaseSensitive: to.Ptr(true),
+			SubjectBeginsWith:      to.Ptr("existingPrefix"),
+			SubjectEndsWith:        to.Ptr("newSuffix"),
+		},
+		Labels: []*string{
+			to.Ptr("label1"),
+			to.Ptr("label2"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2025-07-15-preview/EventSubscriptions_UpdateForCustomTopic_HybridConnectionDestination.json
+func ExampleEventSubscriptionsClient_BeginUpdate_eventSubscriptionsUpdateForCustomTopicHybridConnectionDestination() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armeventgrid.NewClientFactory("<subscriptionID>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewEventSubscriptionsClient().BeginUpdate(ctx, "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2", "examplesubscription1", armeventgrid.EventSubscriptionUpdateParameters{
+		Destination: &armeventgrid.HybridConnectionEventSubscriptionDestination{
+			EndpointType: to.Ptr(armeventgrid.EndpointTypeHybridConnection),
+			Properties: &armeventgrid.HybridConnectionEventSubscriptionDestinationProperties{
+				ResourceID: to.Ptr("/subscriptions/d33c5f7a-02ea-40f4-bf52-07f17e84d6a8/resourceGroups/TestRG/providers/Microsoft.Relay/namespaces/ContosoNamespace/hybridConnections/HC1"),
+			},
+		},
+		Filter: &armeventgrid.EventSubscriptionFilter{
+			IsSubjectCaseSensitive: to.Ptr(true),
+			SubjectBeginsWith:      to.Ptr("existingPrefix"),
+			SubjectEndsWith:        to.Ptr("newSuffix"),
+		},
+		Labels: []*string{
+			to.Ptr("label1"),
+			to.Ptr("label2"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2025-07-15-preview/EventSubscriptions_UpdateForCustomTopic_ServiceBusQueueDestination.json
+func ExampleEventSubscriptionsClient_BeginUpdate_eventSubscriptionsUpdateForCustomTopicServiceBusQueueDestination() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armeventgrid.NewClientFactory("<subscriptionID>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewEventSubscriptionsClient().BeginUpdate(ctx, "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic1", "examplesubscription1", armeventgrid.EventSubscriptionUpdateParameters{
+		DeadLetterDestination: &armeventgrid.StorageBlobDeadLetterDestination{
+			EndpointType: to.Ptr(armeventgrid.DeadLetterEndPointTypeStorageBlob),
+			Properties: &armeventgrid.StorageBlobDeadLetterDestinationProperties{
+				BlobContainerName: to.Ptr("contosocontainer"),
+				ResourceID:        to.Ptr("/subscriptions/55f3dcd4-cac7-43b4-990b-a139d62a1eb2/resourceGroups/TestRG/providers/Microsoft.Storage/storageAccounts/contosostg"),
+			},
+		},
+		Destination: &armeventgrid.ServiceBusQueueEventSubscriptionDestination{
+			EndpointType: to.Ptr(armeventgrid.EndpointTypeServiceBusQueue),
+			Properties: &armeventgrid.ServiceBusQueueEventSubscriptionDestinationProperties{
+				ResourceID: to.Ptr("/subscriptions/55f3dcd4-cac7-43b4-990b-a139d62a1eb2/resourceGroups/TestRG/providers/Microsoft.ServiceBus/namespaces/ContosoNamespace/queues/SBQ"),
+			},
+		},
+		Filter: &armeventgrid.EventSubscriptionFilter{
+			IsSubjectCaseSensitive: to.Ptr(false),
+			SubjectBeginsWith:      to.Ptr("ExamplePrefix"),
+			SubjectEndsWith:        to.Ptr("ExampleSuffix"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2025-07-15-preview/EventSubscriptions_UpdateForCustomTopic_ServiceBusTopicDestination.json
+func ExampleEventSubscriptionsClient_BeginUpdate_eventSubscriptionsUpdateForCustomTopicServiceBusTopicDestination() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armeventgrid.NewClientFactory("<subscriptionID>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewEventSubscriptionsClient().BeginUpdate(ctx, "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2", "examplesubscription1", armeventgrid.EventSubscriptionUpdateParameters{
+		Destination: &armeventgrid.ServiceBusTopicEventSubscriptionDestination{
+			EndpointType: to.Ptr(armeventgrid.EndpointTypeServiceBusTopic),
+			Properties: &armeventgrid.ServiceBusTopicEventSubscriptionDestinationProperties{
+				ResourceID: to.Ptr("/subscriptions/55f3dcd4-cac7-43b4-990b-a139d62a1eb2/resourceGroups/TestRG/providers/Microsoft.ServiceBus/namespaces/ContosoNamespace/topics/SBT"),
+			},
+		},
+		Filter: &armeventgrid.EventSubscriptionFilter{
+			IsSubjectCaseSensitive: to.Ptr(true),
+			SubjectBeginsWith:      to.Ptr("existingPrefix"),
+			SubjectEndsWith:        to.Ptr("newSuffix"),
+		},
+		Labels: []*string{
+			to.Ptr("label1"),
+			to.Ptr("label2"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2025-07-15-preview/EventSubscriptions_UpdateForCustomTopic_StorageQueueDestination.json
+func ExampleEventSubscriptionsClient_BeginUpdate_eventSubscriptionsUpdateForCustomTopicStorageQueueDestination() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armeventgrid.NewClientFactory("<subscriptionID>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewEventSubscriptionsClient().BeginUpdate(ctx, "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic1", "examplesubscription1", armeventgrid.EventSubscriptionUpdateParameters{
+		DeadLetterDestination: &armeventgrid.StorageBlobDeadLetterDestination{
+			EndpointType: to.Ptr(armeventgrid.DeadLetterEndPointTypeStorageBlob),
+			Properties: &armeventgrid.StorageBlobDeadLetterDestinationProperties{
+				BlobContainerName: to.Ptr("contosocontainer"),
+				ResourceID:        to.Ptr("/subscriptions/55f3dcd4-cac7-43b4-990b-a139d62a1eb2/resourceGroups/TestRG/providers/Microsoft.Storage/storageAccounts/contosostg"),
+			},
+		},
+		Destination: &armeventgrid.StorageQueueEventSubscriptionDestination{
+			EndpointType: to.Ptr(armeventgrid.EndpointTypeStorageQueue),
+			Properties: &armeventgrid.StorageQueueEventSubscriptionDestinationProperties{
+				QueueMessageTimeToLiveInSeconds: to.Ptr[int64](300),
+				QueueName:                       to.Ptr("queue1"),
+				ResourceID:                      to.Ptr("/subscriptions/d33c5f7a-02ea-40f4-bf52-07f17e84d6a8/resourceGroups/TestRG/providers/Microsoft.Storage/storageAccounts/contosostg"),
+			},
+		},
+		Filter: &armeventgrid.EventSubscriptionFilter{
+			IsSubjectCaseSensitive: to.Ptr(false),
+			SubjectBeginsWith:      to.Ptr("ExamplePrefix"),
+			SubjectEndsWith:        to.Ptr("ExampleSuffix"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2025-07-15-preview/EventSubscriptions_UpdateForCustomTopic_WebhookDestination.json
+func ExampleEventSubscriptionsClient_BeginUpdate_eventSubscriptionsUpdateForCustomTopicWebhookDestination() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armeventgrid.NewClientFactory("<subscriptionID>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewEventSubscriptionsClient().BeginUpdate(ctx, "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2", "examplesubscription1", armeventgrid.EventSubscriptionUpdateParameters{
+		Destination: &armeventgrid.WebHookEventSubscriptionDestination{
+			EndpointType: to.Ptr(armeventgrid.EndpointTypeWebHook),
+			Properties: &armeventgrid.WebHookEventSubscriptionDestinationProperties{
+				EndpointURL: to.Ptr("https://requestb.in/15ksip71"),
+			},
+		},
+		Filter: &armeventgrid.EventSubscriptionFilter{
+			IsSubjectCaseSensitive: to.Ptr(true),
+			SubjectBeginsWith:      to.Ptr("existingPrefix"),
+			SubjectEndsWith:        to.Ptr("newSuffix"),
+		},
+		Labels: []*string{
+			to.Ptr("label1"),
+			to.Ptr("label2"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2025-07-15-preview/EventSubscriptions_UpdateForResource.json
+func ExampleEventSubscriptionsClient_BeginUpdate_eventSubscriptionsUpdateForResource() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armeventgrid.NewClientFactory("<subscriptionID>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewEventSubscriptionsClient().BeginUpdate(ctx, "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventHub/namespaces/examplenamespace1", "examplesubscription1", armeventgrid.EventSubscriptionUpdateParameters{
+		Destination: &armeventgrid.WebHookEventSubscriptionDestination{
+			EndpointType: to.Ptr(armeventgrid.EndpointTypeWebHook),
+			Properties: &armeventgrid.WebHookEventSubscriptionDestinationProperties{
+				EndpointURL: to.Ptr("https://requestb.in/15ksip71"),
+			},
+		},
+		Filter: &armeventgrid.EventSubscriptionFilter{
+			IsSubjectCaseSensitive: to.Ptr(true),
+			SubjectBeginsWith:      to.Ptr("existingPrefix"),
+			SubjectEndsWith:        to.Ptr("newSuffix"),
+		},
+		Labels: []*string{
+			to.Ptr("label1"),
+			to.Ptr("label2"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2025-07-15-preview/EventSubscriptions_UpdateForResourceGroup.json
+func ExampleEventSubscriptionsClient_BeginUpdate_eventSubscriptionsUpdateForResourceGroup() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armeventgrid.NewClientFactory("<subscriptionID>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewEventSubscriptionsClient().BeginUpdate(ctx, "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg", "examplesubscription2", armeventgrid.EventSubscriptionUpdateParameters{
+		Destination: &armeventgrid.EventHubEventSubscriptionDestination{
+			EndpointType: to.Ptr(armeventgrid.EndpointTypeEventHub),
+			Properties: &armeventgrid.EventHubEventSubscriptionDestinationProperties{
+				ResourceID: to.Ptr("/subscriptions/55f3dcd4-cac7-43b4-990b-a139d62a1eb2/resourceGroups/TestRG/providers/Microsoft.EventHub/namespaces/ContosoNamespace/eventhubs/EH1"),
+			},
+		},
+		Filter: &armeventgrid.EventSubscriptionFilter{
+			IsSubjectCaseSensitive: to.Ptr(true),
+			SubjectBeginsWith:      to.Ptr("existingPrefix"),
+			SubjectEndsWith:        to.Ptr("newSuffix"),
+		},
+		Labels: []*string{
+			to.Ptr("label1"),
+			to.Ptr("label2"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2025-07-15-preview/EventSubscriptions_UpdateForSubscription.json
+func ExampleEventSubscriptionsClient_BeginUpdate_eventSubscriptionsUpdateForSubscription() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armeventgrid.NewClientFactory("<subscriptionID>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewEventSubscriptionsClient().BeginUpdate(ctx, "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40", "examplesubscription3", armeventgrid.EventSubscriptionUpdateParameters{
+		Destination: &armeventgrid.WebHookEventSubscriptionDestination{
+			EndpointType: to.Ptr(armeventgrid.EndpointTypeWebHook),
+			Properties: &armeventgrid.WebHookEventSubscriptionDestinationProperties{
+				EndpointURL: to.Ptr("https://requestb.in/15ksip71"),
+			},
+		},
+		Filter: &armeventgrid.EventSubscriptionFilter{
+			IsSubjectCaseSensitive: to.Ptr(true),
+			SubjectBeginsWith:      to.Ptr("existingPrefix"),
+			SubjectEndsWith:        to.Ptr("newSuffix"),
+		},
+		Labels: []*string{
+			to.Ptr("label1"),
+			to.Ptr("label2"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
 // Generated from example definition: 2025-07-15-preview/EventSubscriptions_GetForCustomTopic.json
 func ExampleEventSubscriptionsClient_Get_eventSubscriptionsGetForCustomTopic() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -1386,6 +1804,61 @@ func ExampleEventSubscriptionsClient_NewListByResourcePager() {
 	}
 }
 
+// Generated from example definition: 2025-07-15-preview/EventSubscriptions_ListGlobalByResourceGroupForTopicType.json
+func ExampleEventSubscriptionsClient_NewListGlobalByResourceGroupForTopicTypePager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armeventgrid.NewClientFactory("8f6b6269-84f2-4d09-9e31-1127efcd1e40", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewEventSubscriptionsClient().NewListGlobalByResourceGroupForTopicTypePager("examplerg", "Microsoft.Resources.ResourceGroups", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armeventgrid.EventSubscriptionsClientListGlobalByResourceGroupForTopicTypeResponse{
+		// 	EventSubscriptionsListResult: armeventgrid.EventSubscriptionsListResult{
+		// 		Value: []*armeventgrid.EventSubscription{
+		// 			{
+		// 				Name: to.Ptr("examplesubscription3"),
+		// 				Type: to.Ptr("Microsoft.EventGrid/eventSubscriptions"),
+		// 				ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/eventSubscriptions/examplesubscription3"),
+		// 				Properties: &armeventgrid.EventSubscriptionProperties{
+		// 					Destination: &armeventgrid.WebHookEventSubscriptionDestination{
+		// 						EndpointType: to.Ptr(armeventgrid.EndpointTypeWebHook),
+		// 						Properties: &armeventgrid.WebHookEventSubscriptionDestinationProperties{
+		// 							EndpointBaseURL: to.Ptr("https://requestb.in/15ksip71"),
+		// 						},
+		// 					},
+		// 					Filter: &armeventgrid.EventSubscriptionFilter{
+		// 						IsSubjectCaseSensitive: to.Ptr(false),
+		// 						SubjectBeginsWith: to.Ptr("ExamplePrefix"),
+		// 						SubjectEndsWith: to.Ptr("ExampleSuffix"),
+		// 					},
+		// 					Labels: []*string{
+		// 						to.Ptr("Finance"),
+		// 						to.Ptr("HR"),
+		// 					},
+		// 					ProvisioningState: to.Ptr(armeventgrid.EventSubscriptionProvisioningStateSucceeded),
+		// 					Topic: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
 // Generated from example definition: 2025-07-15-preview/EventSubscriptions_ListGlobalByResourceGroup.json
 func ExampleEventSubscriptionsClient_NewListGlobalByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -1457,8 +1930,8 @@ func ExampleEventSubscriptionsClient_NewListGlobalByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-15-preview/EventSubscriptions_ListGlobalByResourceGroupForTopicType.json
-func ExampleEventSubscriptionsClient_NewListGlobalByResourceGroupForTopicTypePager() {
+// Generated from example definition: 2025-07-15-preview/EventSubscriptions_ListGlobalBySubscriptionForTopicType.json
+func ExampleEventSubscriptionsClient_NewListGlobalBySubscriptionForTopicTypePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1468,7 +1941,7 @@ func ExampleEventSubscriptionsClient_NewListGlobalByResourceGroupForTopicTypePag
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewEventSubscriptionsClient().NewListGlobalByResourceGroupForTopicTypePager("examplerg", "Microsoft.Resources.ResourceGroups", nil)
+	pager := clientFactory.NewEventSubscriptionsClient().NewListGlobalBySubscriptionForTopicTypePager("Microsoft.Resources.Subscriptions", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -1479,13 +1952,13 @@ func ExampleEventSubscriptionsClient_NewListGlobalByResourceGroupForTopicTypePag
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armeventgrid.EventSubscriptionsClientListGlobalByResourceGroupForTopicTypeResponse{
+		// page = armeventgrid.EventSubscriptionsClientListGlobalBySubscriptionForTopicTypeResponse{
 		// 	EventSubscriptionsListResult: armeventgrid.EventSubscriptionsListResult{
 		// 		Value: []*armeventgrid.EventSubscription{
 		// 			{
 		// 				Name: to.Ptr("examplesubscription3"),
 		// 				Type: to.Ptr("Microsoft.EventGrid/eventSubscriptions"),
-		// 				ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/eventSubscriptions/examplesubscription3"),
+		// 				ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/providers/Microsoft.EventGrid/eventSubscriptions/examplesubscription3"),
 		// 				Properties: &armeventgrid.EventSubscriptionProperties{
 		// 					Destination: &armeventgrid.WebHookEventSubscriptionDestination{
 		// 						EndpointType: to.Ptr(armeventgrid.EndpointTypeWebHook),
@@ -1503,7 +1976,7 @@ func ExampleEventSubscriptionsClient_NewListGlobalByResourceGroupForTopicTypePag
 		// 						to.Ptr("HR"),
 		// 					},
 		// 					ProvisioningState: to.Ptr(armeventgrid.EventSubscriptionProvisioningStateSucceeded),
-		// 					Topic: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg"),
+		// 					Topic: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40"),
 		// 				},
 		// 			},
 		// 		},
@@ -1583,8 +2056,8 @@ func ExampleEventSubscriptionsClient_NewListGlobalBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-15-preview/EventSubscriptions_ListGlobalBySubscriptionForTopicType.json
-func ExampleEventSubscriptionsClient_NewListGlobalBySubscriptionForTopicTypePager() {
+// Generated from example definition: 2025-07-15-preview/EventSubscriptions_ListRegionalByResourceGroupForTopicType.json
+func ExampleEventSubscriptionsClient_NewListRegionalByResourceGroupForTopicTypePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1594,7 +2067,7 @@ func ExampleEventSubscriptionsClient_NewListGlobalBySubscriptionForTopicTypePage
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewEventSubscriptionsClient().NewListGlobalBySubscriptionForTopicTypePager("Microsoft.Resources.Subscriptions", nil)
+	pager := clientFactory.NewEventSubscriptionsClient().NewListRegionalByResourceGroupForTopicTypePager("examplerg", "westus2", "Microsoft.EventHub.namespaces", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -1605,13 +2078,13 @@ func ExampleEventSubscriptionsClient_NewListGlobalBySubscriptionForTopicTypePage
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armeventgrid.EventSubscriptionsClientListGlobalBySubscriptionForTopicTypeResponse{
+		// page = armeventgrid.EventSubscriptionsClientListRegionalByResourceGroupForTopicTypeResponse{
 		// 	EventSubscriptionsListResult: armeventgrid.EventSubscriptionsListResult{
 		// 		Value: []*armeventgrid.EventSubscription{
 		// 			{
-		// 				Name: to.Ptr("examplesubscription3"),
+		// 				Name: to.Ptr("examplesubscription10"),
 		// 				Type: to.Ptr("Microsoft.EventGrid/eventSubscriptions"),
-		// 				ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/providers/Microsoft.EventGrid/eventSubscriptions/examplesubscription3"),
+		// 				ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventHub/namespaces/examplenamespace1/providers/Microsoft.EventGrid/eventSubscriptions/examplesubscription10"),
 		// 				Properties: &armeventgrid.EventSubscriptionProperties{
 		// 					Destination: &armeventgrid.WebHookEventSubscriptionDestination{
 		// 						EndpointType: to.Ptr(armeventgrid.EndpointTypeWebHook),
@@ -1629,7 +2102,31 @@ func ExampleEventSubscriptionsClient_NewListGlobalBySubscriptionForTopicTypePage
 		// 						to.Ptr("HR"),
 		// 					},
 		// 					ProvisioningState: to.Ptr(armeventgrid.EventSubscriptionProvisioningStateSucceeded),
-		// 					Topic: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40"),
+		// 					Topic: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/microsoft.eventhub/namespaces/examplenamespace1"),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("examplesubscription11"),
+		// 				Type: to.Ptr("Microsoft.EventGrid/eventSubscriptions"),
+		// 				ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventHub/namespaces/examplenamespace1/providers/Microsoft.EventGrid/eventSubscriptions/examplesubscription11"),
+		// 				Properties: &armeventgrid.EventSubscriptionProperties{
+		// 					Destination: &armeventgrid.WebHookEventSubscriptionDestination{
+		// 						EndpointType: to.Ptr(armeventgrid.EndpointTypeWebHook),
+		// 						Properties: &armeventgrid.WebHookEventSubscriptionDestinationProperties{
+		// 							EndpointBaseURL: to.Ptr("https://requestb.in/15ksip71"),
+		// 						},
+		// 					},
+		// 					Filter: &armeventgrid.EventSubscriptionFilter{
+		// 						IsSubjectCaseSensitive: to.Ptr(false),
+		// 						SubjectBeginsWith: to.Ptr("ExamplePrefix"),
+		// 						SubjectEndsWith: to.Ptr("ExampleSuffix"),
+		// 					},
+		// 					Labels: []*string{
+		// 						to.Ptr("Finance"),
+		// 						to.Ptr("HR"),
+		// 					},
+		// 					ProvisioningState: to.Ptr(armeventgrid.EventSubscriptionProvisioningStateSucceeded),
+		// 					Topic: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/microsoft.eventhub/namespaces/examplenamespace1"),
 		// 				},
 		// 			},
 		// 		},
@@ -1717,8 +2214,8 @@ func ExampleEventSubscriptionsClient_NewListRegionalByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-15-preview/EventSubscriptions_ListRegionalByResourceGroupForTopicType.json
-func ExampleEventSubscriptionsClient_NewListRegionalByResourceGroupForTopicTypePager() {
+// Generated from example definition: 2025-07-15-preview/EventSubscriptions_ListRegionalBySubscriptionForTopicType.json
+func ExampleEventSubscriptionsClient_NewListRegionalBySubscriptionForTopicTypePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1728,7 +2225,7 @@ func ExampleEventSubscriptionsClient_NewListRegionalByResourceGroupForTopicTypeP
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewEventSubscriptionsClient().NewListRegionalByResourceGroupForTopicTypePager("examplerg", "westus2", "Microsoft.EventHub.namespaces", nil)
+	pager := clientFactory.NewEventSubscriptionsClient().NewListRegionalBySubscriptionForTopicTypePager("westus2", "Microsoft.EventHub.namespaces", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -1739,7 +2236,7 @@ func ExampleEventSubscriptionsClient_NewListRegionalByResourceGroupForTopicTypeP
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armeventgrid.EventSubscriptionsClientListRegionalByResourceGroupForTopicTypeResponse{
+		// page = armeventgrid.EventSubscriptionsClientListRegionalBySubscriptionForTopicTypeResponse{
 		// 	EventSubscriptionsListResult: armeventgrid.EventSubscriptionsListResult{
 		// 		Value: []*armeventgrid.EventSubscription{
 		// 			{
@@ -1872,502 +2369,5 @@ func ExampleEventSubscriptionsClient_NewListRegionalBySubscriptionPager() {
 		// 		},
 		// 	},
 		// }
-	}
-}
-
-// Generated from example definition: 2025-07-15-preview/EventSubscriptions_ListRegionalBySubscriptionForTopicType.json
-func ExampleEventSubscriptionsClient_NewListRegionalBySubscriptionForTopicTypePager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armeventgrid.NewClientFactory("8f6b6269-84f2-4d09-9e31-1127efcd1e40", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewEventSubscriptionsClient().NewListRegionalBySubscriptionForTopicTypePager("westus2", "Microsoft.EventHub.namespaces", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armeventgrid.EventSubscriptionsClientListRegionalBySubscriptionForTopicTypeResponse{
-		// 	EventSubscriptionsListResult: armeventgrid.EventSubscriptionsListResult{
-		// 		Value: []*armeventgrid.EventSubscription{
-		// 			{
-		// 				Name: to.Ptr("examplesubscription10"),
-		// 				Type: to.Ptr("Microsoft.EventGrid/eventSubscriptions"),
-		// 				ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventHub/namespaces/examplenamespace1/providers/Microsoft.EventGrid/eventSubscriptions/examplesubscription10"),
-		// 				Properties: &armeventgrid.EventSubscriptionProperties{
-		// 					Destination: &armeventgrid.WebHookEventSubscriptionDestination{
-		// 						EndpointType: to.Ptr(armeventgrid.EndpointTypeWebHook),
-		// 						Properties: &armeventgrid.WebHookEventSubscriptionDestinationProperties{
-		// 							EndpointBaseURL: to.Ptr("https://requestb.in/15ksip71"),
-		// 						},
-		// 					},
-		// 					Filter: &armeventgrid.EventSubscriptionFilter{
-		// 						IsSubjectCaseSensitive: to.Ptr(false),
-		// 						SubjectBeginsWith: to.Ptr("ExamplePrefix"),
-		// 						SubjectEndsWith: to.Ptr("ExampleSuffix"),
-		// 					},
-		// 					Labels: []*string{
-		// 						to.Ptr("Finance"),
-		// 						to.Ptr("HR"),
-		// 					},
-		// 					ProvisioningState: to.Ptr(armeventgrid.EventSubscriptionProvisioningStateSucceeded),
-		// 					Topic: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/microsoft.eventhub/namespaces/examplenamespace1"),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("examplesubscription11"),
-		// 				Type: to.Ptr("Microsoft.EventGrid/eventSubscriptions"),
-		// 				ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventHub/namespaces/examplenamespace1/providers/Microsoft.EventGrid/eventSubscriptions/examplesubscription11"),
-		// 				Properties: &armeventgrid.EventSubscriptionProperties{
-		// 					Destination: &armeventgrid.WebHookEventSubscriptionDestination{
-		// 						EndpointType: to.Ptr(armeventgrid.EndpointTypeWebHook),
-		// 						Properties: &armeventgrid.WebHookEventSubscriptionDestinationProperties{
-		// 							EndpointBaseURL: to.Ptr("https://requestb.in/15ksip71"),
-		// 						},
-		// 					},
-		// 					Filter: &armeventgrid.EventSubscriptionFilter{
-		// 						IsSubjectCaseSensitive: to.Ptr(false),
-		// 						SubjectBeginsWith: to.Ptr("ExamplePrefix"),
-		// 						SubjectEndsWith: to.Ptr("ExampleSuffix"),
-		// 					},
-		// 					Labels: []*string{
-		// 						to.Ptr("Finance"),
-		// 						to.Ptr("HR"),
-		// 					},
-		// 					ProvisioningState: to.Ptr(armeventgrid.EventSubscriptionProvisioningStateSucceeded),
-		// 					Topic: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/microsoft.eventhub/namespaces/examplenamespace1"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2025-07-15-preview/EventSubscriptions_UpdateForCustomTopic.json
-func ExampleEventSubscriptionsClient_BeginUpdate_eventSubscriptionsUpdateForCustomTopic() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armeventgrid.NewClientFactory("<subscriptionID>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewEventSubscriptionsClient().BeginUpdate(ctx, "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2", "examplesubscription1", armeventgrid.EventSubscriptionUpdateParameters{
-		Destination: &armeventgrid.WebHookEventSubscriptionDestination{
-			EndpointType: to.Ptr(armeventgrid.EndpointTypeWebHook),
-			Properties: &armeventgrid.WebHookEventSubscriptionDestinationProperties{
-				EndpointURL: to.Ptr("https://requestb.in/15ksip71"),
-			},
-		},
-		Filter: &armeventgrid.EventSubscriptionFilter{
-			IsSubjectCaseSensitive: to.Ptr(true),
-			SubjectBeginsWith:      to.Ptr("existingPrefix"),
-			SubjectEndsWith:        to.Ptr("newSuffix"),
-		},
-		Labels: []*string{
-			to.Ptr("label1"),
-			to.Ptr("label2"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2025-07-15-preview/EventSubscriptions_UpdateForCustomTopic_AzureFunctionDestination.json
-func ExampleEventSubscriptionsClient_BeginUpdate_eventSubscriptionsUpdateForCustomTopicAzureFunctionDestination() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armeventgrid.NewClientFactory("<subscriptionID>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewEventSubscriptionsClient().BeginUpdate(ctx, "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic1", "examplesubscription1", armeventgrid.EventSubscriptionUpdateParameters{
-		DeadLetterDestination: &armeventgrid.StorageBlobDeadLetterDestination{
-			EndpointType: to.Ptr(armeventgrid.DeadLetterEndPointTypeStorageBlob),
-			Properties: &armeventgrid.StorageBlobDeadLetterDestinationProperties{
-				BlobContainerName: to.Ptr("contosocontainer"),
-				ResourceID:        to.Ptr("/subscriptions/55f3dcd4-cac7-43b4-990b-a139d62a1eb2/resourceGroups/TestRG/providers/Microsoft.Storage/storageAccounts/contosostg"),
-			},
-		},
-		Destination: &armeventgrid.AzureFunctionEventSubscriptionDestination{
-			EndpointType: to.Ptr(armeventgrid.EndpointTypeAzureFunction),
-			Properties: &armeventgrid.AzureFunctionEventSubscriptionDestinationProperties{
-				ResourceID: to.Ptr("/subscriptions/55f3dcd4-cac7-43b4-990b-a139d62a1eb2/resourceGroups/TestRG/providers/Microsoft.Web/sites/ContosoSite/funtions/ContosoFunc"),
-			},
-		},
-		Filter: &armeventgrid.EventSubscriptionFilter{
-			IsSubjectCaseSensitive: to.Ptr(false),
-			SubjectBeginsWith:      to.Ptr("ExamplePrefix"),
-			SubjectEndsWith:        to.Ptr("ExampleSuffix"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2025-07-15-preview/EventSubscriptions_UpdateForCustomTopic_EventHubDestination.json
-func ExampleEventSubscriptionsClient_BeginUpdate_eventSubscriptionsUpdateForCustomTopicEventHubDestination() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armeventgrid.NewClientFactory("<subscriptionID>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewEventSubscriptionsClient().BeginUpdate(ctx, "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2", "examplesubscription1", armeventgrid.EventSubscriptionUpdateParameters{
-		Destination: &armeventgrid.EventHubEventSubscriptionDestination{
-			EndpointType: to.Ptr(armeventgrid.EndpointTypeEventHub),
-			Properties: &armeventgrid.EventHubEventSubscriptionDestinationProperties{
-				ResourceID: to.Ptr("/subscriptions/55f3dcd4-cac7-43b4-990b-a139d62a1eb2/resourceGroups/TestRG/providers/Microsoft.EventHub/namespaces/ContosoNamespace/eventhubs/EH1"),
-			},
-		},
-		Filter: &armeventgrid.EventSubscriptionFilter{
-			IsSubjectCaseSensitive: to.Ptr(true),
-			SubjectBeginsWith:      to.Ptr("existingPrefix"),
-			SubjectEndsWith:        to.Ptr("newSuffix"),
-		},
-		Labels: []*string{
-			to.Ptr("label1"),
-			to.Ptr("label2"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2025-07-15-preview/EventSubscriptions_UpdateForCustomTopic_HybridConnectionDestination.json
-func ExampleEventSubscriptionsClient_BeginUpdate_eventSubscriptionsUpdateForCustomTopicHybridConnectionDestination() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armeventgrid.NewClientFactory("<subscriptionID>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewEventSubscriptionsClient().BeginUpdate(ctx, "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2", "examplesubscription1", armeventgrid.EventSubscriptionUpdateParameters{
-		Destination: &armeventgrid.HybridConnectionEventSubscriptionDestination{
-			EndpointType: to.Ptr(armeventgrid.EndpointTypeHybridConnection),
-			Properties: &armeventgrid.HybridConnectionEventSubscriptionDestinationProperties{
-				ResourceID: to.Ptr("/subscriptions/d33c5f7a-02ea-40f4-bf52-07f17e84d6a8/resourceGroups/TestRG/providers/Microsoft.Relay/namespaces/ContosoNamespace/hybridConnections/HC1"),
-			},
-		},
-		Filter: &armeventgrid.EventSubscriptionFilter{
-			IsSubjectCaseSensitive: to.Ptr(true),
-			SubjectBeginsWith:      to.Ptr("existingPrefix"),
-			SubjectEndsWith:        to.Ptr("newSuffix"),
-		},
-		Labels: []*string{
-			to.Ptr("label1"),
-			to.Ptr("label2"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2025-07-15-preview/EventSubscriptions_UpdateForCustomTopic_ServiceBusQueueDestination.json
-func ExampleEventSubscriptionsClient_BeginUpdate_eventSubscriptionsUpdateForCustomTopicServiceBusQueueDestination() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armeventgrid.NewClientFactory("<subscriptionID>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewEventSubscriptionsClient().BeginUpdate(ctx, "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic1", "examplesubscription1", armeventgrid.EventSubscriptionUpdateParameters{
-		DeadLetterDestination: &armeventgrid.StorageBlobDeadLetterDestination{
-			EndpointType: to.Ptr(armeventgrid.DeadLetterEndPointTypeStorageBlob),
-			Properties: &armeventgrid.StorageBlobDeadLetterDestinationProperties{
-				BlobContainerName: to.Ptr("contosocontainer"),
-				ResourceID:        to.Ptr("/subscriptions/55f3dcd4-cac7-43b4-990b-a139d62a1eb2/resourceGroups/TestRG/providers/Microsoft.Storage/storageAccounts/contosostg"),
-			},
-		},
-		Destination: &armeventgrid.ServiceBusQueueEventSubscriptionDestination{
-			EndpointType: to.Ptr(armeventgrid.EndpointTypeServiceBusQueue),
-			Properties: &armeventgrid.ServiceBusQueueEventSubscriptionDestinationProperties{
-				ResourceID: to.Ptr("/subscriptions/55f3dcd4-cac7-43b4-990b-a139d62a1eb2/resourceGroups/TestRG/providers/Microsoft.ServiceBus/namespaces/ContosoNamespace/queues/SBQ"),
-			},
-		},
-		Filter: &armeventgrid.EventSubscriptionFilter{
-			IsSubjectCaseSensitive: to.Ptr(false),
-			SubjectBeginsWith:      to.Ptr("ExamplePrefix"),
-			SubjectEndsWith:        to.Ptr("ExampleSuffix"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2025-07-15-preview/EventSubscriptions_UpdateForCustomTopic_ServiceBusTopicDestination.json
-func ExampleEventSubscriptionsClient_BeginUpdate_eventSubscriptionsUpdateForCustomTopicServiceBusTopicDestination() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armeventgrid.NewClientFactory("<subscriptionID>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewEventSubscriptionsClient().BeginUpdate(ctx, "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2", "examplesubscription1", armeventgrid.EventSubscriptionUpdateParameters{
-		Destination: &armeventgrid.ServiceBusTopicEventSubscriptionDestination{
-			EndpointType: to.Ptr(armeventgrid.EndpointTypeServiceBusTopic),
-			Properties: &armeventgrid.ServiceBusTopicEventSubscriptionDestinationProperties{
-				ResourceID: to.Ptr("/subscriptions/55f3dcd4-cac7-43b4-990b-a139d62a1eb2/resourceGroups/TestRG/providers/Microsoft.ServiceBus/namespaces/ContosoNamespace/topics/SBT"),
-			},
-		},
-		Filter: &armeventgrid.EventSubscriptionFilter{
-			IsSubjectCaseSensitive: to.Ptr(true),
-			SubjectBeginsWith:      to.Ptr("existingPrefix"),
-			SubjectEndsWith:        to.Ptr("newSuffix"),
-		},
-		Labels: []*string{
-			to.Ptr("label1"),
-			to.Ptr("label2"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2025-07-15-preview/EventSubscriptions_UpdateForCustomTopic_StorageQueueDestination.json
-func ExampleEventSubscriptionsClient_BeginUpdate_eventSubscriptionsUpdateForCustomTopicStorageQueueDestination() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armeventgrid.NewClientFactory("<subscriptionID>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewEventSubscriptionsClient().BeginUpdate(ctx, "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic1", "examplesubscription1", armeventgrid.EventSubscriptionUpdateParameters{
-		DeadLetterDestination: &armeventgrid.StorageBlobDeadLetterDestination{
-			EndpointType: to.Ptr(armeventgrid.DeadLetterEndPointTypeStorageBlob),
-			Properties: &armeventgrid.StorageBlobDeadLetterDestinationProperties{
-				BlobContainerName: to.Ptr("contosocontainer"),
-				ResourceID:        to.Ptr("/subscriptions/55f3dcd4-cac7-43b4-990b-a139d62a1eb2/resourceGroups/TestRG/providers/Microsoft.Storage/storageAccounts/contosostg"),
-			},
-		},
-		Destination: &armeventgrid.StorageQueueEventSubscriptionDestination{
-			EndpointType: to.Ptr(armeventgrid.EndpointTypeStorageQueue),
-			Properties: &armeventgrid.StorageQueueEventSubscriptionDestinationProperties{
-				QueueMessageTimeToLiveInSeconds: to.Ptr[int64](300),
-				QueueName:                       to.Ptr("queue1"),
-				ResourceID:                      to.Ptr("/subscriptions/d33c5f7a-02ea-40f4-bf52-07f17e84d6a8/resourceGroups/TestRG/providers/Microsoft.Storage/storageAccounts/contosostg"),
-			},
-		},
-		Filter: &armeventgrid.EventSubscriptionFilter{
-			IsSubjectCaseSensitive: to.Ptr(false),
-			SubjectBeginsWith:      to.Ptr("ExamplePrefix"),
-			SubjectEndsWith:        to.Ptr("ExampleSuffix"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2025-07-15-preview/EventSubscriptions_UpdateForCustomTopic_WebhookDestination.json
-func ExampleEventSubscriptionsClient_BeginUpdate_eventSubscriptionsUpdateForCustomTopicWebhookDestination() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armeventgrid.NewClientFactory("<subscriptionID>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewEventSubscriptionsClient().BeginUpdate(ctx, "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2", "examplesubscription1", armeventgrid.EventSubscriptionUpdateParameters{
-		Destination: &armeventgrid.WebHookEventSubscriptionDestination{
-			EndpointType: to.Ptr(armeventgrid.EndpointTypeWebHook),
-			Properties: &armeventgrid.WebHookEventSubscriptionDestinationProperties{
-				EndpointURL: to.Ptr("https://requestb.in/15ksip71"),
-			},
-		},
-		Filter: &armeventgrid.EventSubscriptionFilter{
-			IsSubjectCaseSensitive: to.Ptr(true),
-			SubjectBeginsWith:      to.Ptr("existingPrefix"),
-			SubjectEndsWith:        to.Ptr("newSuffix"),
-		},
-		Labels: []*string{
-			to.Ptr("label1"),
-			to.Ptr("label2"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2025-07-15-preview/EventSubscriptions_UpdateForResource.json
-func ExampleEventSubscriptionsClient_BeginUpdate_eventSubscriptionsUpdateForResource() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armeventgrid.NewClientFactory("<subscriptionID>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewEventSubscriptionsClient().BeginUpdate(ctx, "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventHub/namespaces/examplenamespace1", "examplesubscription1", armeventgrid.EventSubscriptionUpdateParameters{
-		Destination: &armeventgrid.WebHookEventSubscriptionDestination{
-			EndpointType: to.Ptr(armeventgrid.EndpointTypeWebHook),
-			Properties: &armeventgrid.WebHookEventSubscriptionDestinationProperties{
-				EndpointURL: to.Ptr("https://requestb.in/15ksip71"),
-			},
-		},
-		Filter: &armeventgrid.EventSubscriptionFilter{
-			IsSubjectCaseSensitive: to.Ptr(true),
-			SubjectBeginsWith:      to.Ptr("existingPrefix"),
-			SubjectEndsWith:        to.Ptr("newSuffix"),
-		},
-		Labels: []*string{
-			to.Ptr("label1"),
-			to.Ptr("label2"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2025-07-15-preview/EventSubscriptions_UpdateForResourceGroup.json
-func ExampleEventSubscriptionsClient_BeginUpdate_eventSubscriptionsUpdateForResourceGroup() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armeventgrid.NewClientFactory("<subscriptionID>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewEventSubscriptionsClient().BeginUpdate(ctx, "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg", "examplesubscription2", armeventgrid.EventSubscriptionUpdateParameters{
-		Destination: &armeventgrid.EventHubEventSubscriptionDestination{
-			EndpointType: to.Ptr(armeventgrid.EndpointTypeEventHub),
-			Properties: &armeventgrid.EventHubEventSubscriptionDestinationProperties{
-				ResourceID: to.Ptr("/subscriptions/55f3dcd4-cac7-43b4-990b-a139d62a1eb2/resourceGroups/TestRG/providers/Microsoft.EventHub/namespaces/ContosoNamespace/eventhubs/EH1"),
-			},
-		},
-		Filter: &armeventgrid.EventSubscriptionFilter{
-			IsSubjectCaseSensitive: to.Ptr(true),
-			SubjectBeginsWith:      to.Ptr("existingPrefix"),
-			SubjectEndsWith:        to.Ptr("newSuffix"),
-		},
-		Labels: []*string{
-			to.Ptr("label1"),
-			to.Ptr("label2"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2025-07-15-preview/EventSubscriptions_UpdateForSubscription.json
-func ExampleEventSubscriptionsClient_BeginUpdate_eventSubscriptionsUpdateForSubscription() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armeventgrid.NewClientFactory("<subscriptionID>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewEventSubscriptionsClient().BeginUpdate(ctx, "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40", "examplesubscription3", armeventgrid.EventSubscriptionUpdateParameters{
-		Destination: &armeventgrid.WebHookEventSubscriptionDestination{
-			EndpointType: to.Ptr(armeventgrid.EndpointTypeWebHook),
-			Properties: &armeventgrid.WebHookEventSubscriptionDestinationProperties{
-				EndpointURL: to.Ptr("https://requestb.in/15ksip71"),
-			},
-		},
-		Filter: &armeventgrid.EventSubscriptionFilter{
-			IsSubjectCaseSensitive: to.Ptr(true),
-			SubjectBeginsWith:      to.Ptr("existingPrefix"),
-			SubjectEndsWith:        to.Ptr("newSuffix"),
-		},
-		Labels: []*string{
-			to.Ptr("label1"),
-			to.Ptr("label2"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
 	}
 }

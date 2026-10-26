@@ -13,55 +13,6 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2025-07-01/BookShipmentPickupPost.json
-func ExampleJobsClient_BookShipmentPickUp() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdatabox.NewClientFactory("YourSubscriptionId", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewJobsClient().BookShipmentPickUp(ctx, "YourResourceGroupName", "TestJobName1", armdatabox.ShipmentPickUpRequest{
-		EndTime:          to.Ptr(time.Date(2019, time.September, 22, 18, 30, 0, 0, time.UTC)),
-		ShipmentLocation: to.Ptr("Front desk"),
-		StartTime:        to.Ptr(time.Date(2019, time.September, 20, 18, 30, 0, 0, time.UTC)),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdatabox.JobsClientBookShipmentPickUpResponse{
-	// 	ShipmentPickUpResponse: armdatabox.ShipmentPickUpResponse{
-	// 		ConfirmationNumber: to.Ptr("XXXXXXXXXXX"),
-	// 		ReadyByTime: to.Ptr(time.Date(2019, time.September, 20, 18, 30, 0, 0, time.UTC)),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-07-01/JobsCancelPost.json
-func ExampleJobsClient_Cancel() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdatabox.NewClientFactory("YourSubscriptionId", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	_, err = clientFactory.NewJobsClient().Cancel(ctx, "YourResourceGroupName", "TestJobName1", armdatabox.CancellationReason{
-		Reason: to.Ptr("CancelTest"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-}
-
 // Generated from example definition: 2025-07-01/JobsCreate.json
 func ExampleJobsClient_BeginCreate_jobsCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -1026,6 +977,245 @@ func ExampleJobsClient_BeginDelete() {
 	// }
 }
 
+// Generated from example definition: 2025-07-01/JobsPatch.json
+func ExampleJobsClient_BeginUpdate_jobsPatch() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdatabox.NewClientFactory("YourSubscriptionId", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewJobsClient().BeginUpdate(ctx, "YourResourceGroupName", "TestJobName1", armdatabox.JobResourceUpdateParameter{
+		Properties: &armdatabox.UpdateJobProperties{
+			Details: &armdatabox.UpdateJobDetails{
+				ContactDetails: &armdatabox.ContactDetails{
+					ContactName: to.Ptr("XXXX XXXX"),
+					EmailList: []*string{
+						to.Ptr("xxxx@xxxx.xxx"),
+					},
+					Phone:          to.Ptr("0000000000"),
+					PhoneExtension: to.Ptr(""),
+				},
+				ShippingAddress: &armdatabox.ShippingAddress{
+					AddressType:     to.Ptr(armdatabox.AddressTypeCommercial),
+					City:            to.Ptr("XXXX XXXX"),
+					CompanyName:     to.Ptr("XXXX XXXX"),
+					Country:         to.Ptr("XX"),
+					PostalCode:      to.Ptr("00000"),
+					StateOrProvince: to.Ptr("XX"),
+					StreetAddress1:  to.Ptr("XXXX XXXX"),
+					StreetAddress2:  to.Ptr("XXXX XXXX"),
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdatabox.JobsClientUpdateResponse{
+	// 	JobResource: armdatabox.JobResource{
+	// 		Name: to.Ptr("TestJobName1"),
+	// 		Type: to.Ptr("Microsoft.DataBox/jobs"),
+	// 		ID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.DataBox/jobs/TestJobName1"),
+	// 		Location: to.Ptr("westus"),
+	// 		Properties: &armdatabox.JobProperties{
+	// 			IsCancellable: to.Ptr(true),
+	// 			IsShippingAddressEditable: to.Ptr(true),
+	// 			StartTime: to.Ptr(time.Date(2018, time.April, 13, 10, 58, 38, 999979300, time.UTC)),
+	// 			Status: to.Ptr(armdatabox.StageNameDeviceOrdered),
+	// 			TransferType: to.Ptr(armdatabox.TransferTypeImportToAzure),
+	// 		},
+	// 		SKU: &armdatabox.SKU{
+	// 			Name: to.Ptr(armdatabox.SKUNameDataBox),
+	// 			Model: to.Ptr(armdatabox.ModelNameDataBox),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-07-01/JobsPatchCmk.json
+func ExampleJobsClient_BeginUpdate_jobsPatchCmk() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdatabox.NewClientFactory("YourSubscriptionId", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewJobsClient().BeginUpdate(ctx, "YourResourceGroupName", "TestJobName1", armdatabox.JobResourceUpdateParameter{
+		Properties: &armdatabox.UpdateJobProperties{
+			Details: &armdatabox.UpdateJobDetails{
+				KeyEncryptionKey: &armdatabox.KeyEncryptionKey{
+					KekType:            to.Ptr(armdatabox.KekTypeCustomerManaged),
+					KekURL:             to.Ptr("https://xxx.xxx.xx"),
+					KekVaultResourceID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.KeyVault/vaults/YourKeyVaultName"),
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdatabox.JobsClientUpdateResponse{
+	// 	JobResource: armdatabox.JobResource{
+	// 		Name: to.Ptr("TestJobName1"),
+	// 		Type: to.Ptr("Microsoft.DataBox/jobs"),
+	// 		ID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.DataBox/jobs/TestJobName1"),
+	// 		Location: to.Ptr("westus"),
+	// 		Properties: &armdatabox.JobProperties{
+	// 			IsCancellable: to.Ptr(true),
+	// 			IsShippingAddressEditable: to.Ptr(true),
+	// 			StartTime: to.Ptr(time.Date(2018, time.April, 13, 10, 58, 38, 999979300, time.UTC)),
+	// 			Status: to.Ptr(armdatabox.StageNameDeviceOrdered),
+	// 			TransferType: to.Ptr(armdatabox.TransferTypeImportToAzure),
+	// 		},
+	// 		SKU: &armdatabox.SKU{
+	// 			Name: to.Ptr(armdatabox.SKUNameDataBox),
+	// 			Model: to.Ptr(armdatabox.ModelNameDataBox),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-07-01/JobsPatchSystemAssignedToUserAssigned.json
+func ExampleJobsClient_BeginUpdate_jobsPatchSystemAssignedToUserAssigned() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdatabox.NewClientFactory("YourSubscriptionId", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewJobsClient().BeginUpdate(ctx, "YourResourceGroupName", "TestJobName1", armdatabox.JobResourceUpdateParameter{
+		Identity: &armdatabox.ResourceIdentity{
+			Type: to.Ptr("SystemAssigned,UserAssigned"),
+			UserAssignedIdentities: map[string]*armdatabox.UserAssignedIdentity{
+				"/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testIdentity": {},
+			},
+		},
+		Properties: &armdatabox.UpdateJobProperties{
+			Details: &armdatabox.UpdateJobDetails{
+				KeyEncryptionKey: &armdatabox.KeyEncryptionKey{
+					IdentityProperties: &armdatabox.IdentityProperties{
+						Type: to.Ptr("UserAssigned"),
+						UserAssigned: &armdatabox.UserAssignedProperties{
+							ResourceID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testIdentity"),
+						},
+					},
+					KekType:            to.Ptr(armdatabox.KekTypeCustomerManaged),
+					KekURL:             to.Ptr("https://xxx.xxx.xx"),
+					KekVaultResourceID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.KeyVault/vaults/YourKeyVaultName"),
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdatabox.JobsClientUpdateResponse{
+	// 	JobResource: armdatabox.JobResource{
+	// 		Name: to.Ptr("TestJobName1"),
+	// 		Type: to.Ptr("Microsoft.DataBox/jobs"),
+	// 		ID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.DataBox/jobs/TestJobName1"),
+	// 		Location: to.Ptr("westus"),
+	// 		Properties: &armdatabox.JobProperties{
+	// 			IsCancellable: to.Ptr(true),
+	// 			IsShippingAddressEditable: to.Ptr(true),
+	// 			StartTime: to.Ptr(time.Date(2018, time.April, 13, 10, 58, 38, 999979300, time.UTC)),
+	// 			Status: to.Ptr(armdatabox.StageNameDeviceOrdered),
+	// 			TransferType: to.Ptr(armdatabox.TransferTypeImportToAzure),
+	// 		},
+	// 		SKU: &armdatabox.SKU{
+	// 			Name: to.Ptr(armdatabox.SKUNameDataBox),
+	// 			Model: to.Ptr(armdatabox.ModelNameDataBox),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-07-01/BookShipmentPickupPost.json
+func ExampleJobsClient_BookShipmentPickUp() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdatabox.NewClientFactory("YourSubscriptionId", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewJobsClient().BookShipmentPickUp(ctx, "YourResourceGroupName", "TestJobName1", armdatabox.ShipmentPickUpRequest{
+		EndTime:          to.Ptr(time.Date(2019, time.September, 22, 18, 30, 0, 0, time.UTC)),
+		ShipmentLocation: to.Ptr("Front desk"),
+		StartTime:        to.Ptr(time.Date(2019, time.September, 20, 18, 30, 0, 0, time.UTC)),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdatabox.JobsClientBookShipmentPickUpResponse{
+	// 	ShipmentPickUpResponse: armdatabox.ShipmentPickUpResponse{
+	// 		ConfirmationNumber: to.Ptr("XXXXXXXXXXX"),
+	// 		ReadyByTime: to.Ptr(time.Date(2019, time.September, 20, 18, 30, 0, 0, time.UTC)),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-07-01/JobsCancelPost.json
+func ExampleJobsClient_Cancel() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdatabox.NewClientFactory("YourSubscriptionId", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	_, err = clientFactory.NewJobsClient().Cancel(ctx, "YourResourceGroupName", "TestJobName1", armdatabox.CancellationReason{
+		Reason: to.Ptr("CancelTest"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+}
+
 // Generated from example definition: 2025-07-01/JobsGet.json
 func ExampleJobsClient_Get_jobsGet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -1960,8 +2150,8 @@ func ExampleJobsClient_Get_jobsGetWaitingForAction() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/JobsList.json
-func ExampleJobsClient_NewListPager() {
+// Generated from example definition: 2025-07-01/MarkDevicesShipped.json
+func ExampleJobsClient_MarkDevicesShipped() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1971,84 +2161,14 @@ func ExampleJobsClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewJobsClient().NewListPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armdatabox.JobsClientListResponse{
-		// 	JobResourceList: armdatabox.JobResourceList{
-		// 		NextLink: to.Ptr("https://xxx.xxx.xx"),
-		// 		Value: []*armdatabox.JobResource{
-		// 			{
-		// 				Name: to.Ptr("TestJobName1"),
-		// 				Type: to.Ptr("Microsoft.DataBox/jobs"),
-		// 				ID: to.Ptr("/subscriptions/YourSubscriptionId/resourcegroups/TestResourceGroupName/providers/Microsoft.DataBox/jobs/TestJobName1"),
-		// 				Identity: &armdatabox.ResourceIdentity{
-		// 					Type: to.Ptr("None"),
-		// 				},
-		// 				Location: to.Ptr("australiaeast"),
-		// 				Properties: &armdatabox.JobProperties{
-		// 					CancellationReason: to.Ptr("Old job which is still in ordered state cancelled by the service"),
-		// 					DeliveryInfo: &armdatabox.JobDeliveryInfo{
-		// 						ScheduledDateTime: to.Ptr(time.Date(1901, time.January, 1, 0, 0, 0, 0, time.UTC)),
-		// 					},
-		// 					DeliveryType: to.Ptr(armdatabox.JobDeliveryTypeNonScheduled),
-		// 					IsCancellable: to.Ptr(false),
-		// 					IsCancellableWithoutFee: to.Ptr(false),
-		// 					IsDeletable: to.Ptr(true),
-		// 					IsPrepareToShipEnabled: to.Ptr(false),
-		// 					IsShippingAddressEditable: to.Ptr(false),
-		// 					StartTime: to.Ptr(time.Date(2018, time.August, 30, 9, 14, 39, 774010000, time.UTC)),
-		// 					Status: to.Ptr(armdatabox.StageNameCancelled),
-		// 					TransferType: to.Ptr(armdatabox.TransferTypeImportToAzure),
-		// 				},
-		// 				SKU: &armdatabox.SKU{
-		// 					Name: to.Ptr(armdatabox.SKUNameDataBoxDisk),
-		// 					Model: to.Ptr(armdatabox.ModelNameDataBoxDisk),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("TestJobName2"),
-		// 				Type: to.Ptr("Microsoft.DataBox/jobs"),
-		// 				ID: to.Ptr("/subscriptions/YourSubscriptionId/resourcegroups/TestResourceGroupName/providers/Microsoft.DataBox/jobs/TestJobName2"),
-		// 				Identity: &armdatabox.ResourceIdentity{
-		// 					Type: to.Ptr("None"),
-		// 				},
-		// 				Location: to.Ptr("australiaeast"),
-		// 				Properties: &armdatabox.JobProperties{
-		// 					CancellationReason: to.Ptr("Old job which is still in ordered state cancelled by the service"),
-		// 					DeliveryInfo: &armdatabox.JobDeliveryInfo{
-		// 						ScheduledDateTime: to.Ptr(time.Date(1901, time.January, 1, 0, 0, 0, 0, time.UTC)),
-		// 					},
-		// 					DeliveryType: to.Ptr(armdatabox.JobDeliveryTypeNonScheduled),
-		// 					IsCancellable: to.Ptr(false),
-		// 					IsCancellableWithoutFee: to.Ptr(false),
-		// 					IsDeletable: to.Ptr(true),
-		// 					IsPrepareToShipEnabled: to.Ptr(false),
-		// 					IsShippingAddressEditable: to.Ptr(false),
-		// 					StartTime: to.Ptr(time.Date(2018, time.September, 10, 12, 33, 22, 257823800, time.UTC)),
-		// 					Status: to.Ptr(armdatabox.StageNameCancelled),
-		// 					TransferType: to.Ptr(armdatabox.TransferTypeImportToAzure),
-		// 				},
-		// 				SKU: &armdatabox.SKU{
-		// 					Name: to.Ptr(armdatabox.SKUNameDataBoxDisk),
-		// 					Model: to.Ptr(armdatabox.ModelNameDataBoxDisk),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
+	_, err = clientFactory.NewJobsClient().MarkDevicesShipped(ctx, "TestJobName1", "YourResourceGroupName", armdatabox.MarkDevicesShippedRequest{
+		DeliverToDcPackageDetails: &armdatabox.PackageCarrierInfo{
+			CarrierName: to.Ptr("testCarrier"),
+			TrackingID:  to.Ptr("000000"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
@@ -2239,8 +2359,8 @@ func ExampleJobsClient_NewListCredentialsPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/MarkDevicesShipped.json
-func ExampleJobsClient_MarkDevicesShipped() {
+// Generated from example definition: 2025-07-01/JobsList.json
+func ExampleJobsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -2250,203 +2370,83 @@ func ExampleJobsClient_MarkDevicesShipped() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = clientFactory.NewJobsClient().MarkDevicesShipped(ctx, "TestJobName1", "YourResourceGroupName", armdatabox.MarkDevicesShippedRequest{
-		DeliverToDcPackageDetails: &armdatabox.PackageCarrierInfo{
-			CarrierName: to.Ptr("testCarrier"),
-			TrackingID:  to.Ptr("000000"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
+	pager := clientFactory.NewJobsClient().NewListPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armdatabox.JobsClientListResponse{
+		// 	JobResourceList: armdatabox.JobResourceList{
+		// 		NextLink: to.Ptr("https://xxx.xxx.xx"),
+		// 		Value: []*armdatabox.JobResource{
+		// 			{
+		// 				Name: to.Ptr("TestJobName1"),
+		// 				Type: to.Ptr("Microsoft.DataBox/jobs"),
+		// 				ID: to.Ptr("/subscriptions/YourSubscriptionId/resourcegroups/TestResourceGroupName/providers/Microsoft.DataBox/jobs/TestJobName1"),
+		// 				Identity: &armdatabox.ResourceIdentity{
+		// 					Type: to.Ptr("None"),
+		// 				},
+		// 				Location: to.Ptr("australiaeast"),
+		// 				Properties: &armdatabox.JobProperties{
+		// 					CancellationReason: to.Ptr("Old job which is still in ordered state cancelled by the service"),
+		// 					DeliveryInfo: &armdatabox.JobDeliveryInfo{
+		// 						ScheduledDateTime: to.Ptr(time.Date(1901, time.January, 1, 0, 0, 0, 0, time.UTC)),
+		// 					},
+		// 					DeliveryType: to.Ptr(armdatabox.JobDeliveryTypeNonScheduled),
+		// 					IsCancellable: to.Ptr(false),
+		// 					IsCancellableWithoutFee: to.Ptr(false),
+		// 					IsDeletable: to.Ptr(true),
+		// 					IsPrepareToShipEnabled: to.Ptr(false),
+		// 					IsShippingAddressEditable: to.Ptr(false),
+		// 					StartTime: to.Ptr(time.Date(2018, time.August, 30, 9, 14, 39, 774010000, time.UTC)),
+		// 					Status: to.Ptr(armdatabox.StageNameCancelled),
+		// 					TransferType: to.Ptr(armdatabox.TransferTypeImportToAzure),
+		// 				},
+		// 				SKU: &armdatabox.SKU{
+		// 					Name: to.Ptr(armdatabox.SKUNameDataBoxDisk),
+		// 					Model: to.Ptr(armdatabox.ModelNameDataBoxDisk),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("TestJobName2"),
+		// 				Type: to.Ptr("Microsoft.DataBox/jobs"),
+		// 				ID: to.Ptr("/subscriptions/YourSubscriptionId/resourcegroups/TestResourceGroupName/providers/Microsoft.DataBox/jobs/TestJobName2"),
+		// 				Identity: &armdatabox.ResourceIdentity{
+		// 					Type: to.Ptr("None"),
+		// 				},
+		// 				Location: to.Ptr("australiaeast"),
+		// 				Properties: &armdatabox.JobProperties{
+		// 					CancellationReason: to.Ptr("Old job which is still in ordered state cancelled by the service"),
+		// 					DeliveryInfo: &armdatabox.JobDeliveryInfo{
+		// 						ScheduledDateTime: to.Ptr(time.Date(1901, time.January, 1, 0, 0, 0, 0, time.UTC)),
+		// 					},
+		// 					DeliveryType: to.Ptr(armdatabox.JobDeliveryTypeNonScheduled),
+		// 					IsCancellable: to.Ptr(false),
+		// 					IsCancellableWithoutFee: to.Ptr(false),
+		// 					IsDeletable: to.Ptr(true),
+		// 					IsPrepareToShipEnabled: to.Ptr(false),
+		// 					IsShippingAddressEditable: to.Ptr(false),
+		// 					StartTime: to.Ptr(time.Date(2018, time.September, 10, 12, 33, 22, 257823800, time.UTC)),
+		// 					Status: to.Ptr(armdatabox.StageNameCancelled),
+		// 					TransferType: to.Ptr(armdatabox.TransferTypeImportToAzure),
+		// 				},
+		// 				SKU: &armdatabox.SKU{
+		// 					Name: to.Ptr(armdatabox.SKUNameDataBoxDisk),
+		// 					Model: to.Ptr(armdatabox.ModelNameDataBoxDisk),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
 	}
-}
-
-// Generated from example definition: 2025-07-01/JobsPatch.json
-func ExampleJobsClient_BeginUpdate_jobsPatch() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdatabox.NewClientFactory("YourSubscriptionId", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewJobsClient().BeginUpdate(ctx, "YourResourceGroupName", "TestJobName1", armdatabox.JobResourceUpdateParameter{
-		Properties: &armdatabox.UpdateJobProperties{
-			Details: &armdatabox.UpdateJobDetails{
-				ContactDetails: &armdatabox.ContactDetails{
-					ContactName: to.Ptr("XXXX XXXX"),
-					EmailList: []*string{
-						to.Ptr("xxxx@xxxx.xxx"),
-					},
-					Phone:          to.Ptr("0000000000"),
-					PhoneExtension: to.Ptr(""),
-				},
-				ShippingAddress: &armdatabox.ShippingAddress{
-					AddressType:     to.Ptr(armdatabox.AddressTypeCommercial),
-					City:            to.Ptr("XXXX XXXX"),
-					CompanyName:     to.Ptr("XXXX XXXX"),
-					Country:         to.Ptr("XX"),
-					PostalCode:      to.Ptr("00000"),
-					StateOrProvince: to.Ptr("XX"),
-					StreetAddress1:  to.Ptr("XXXX XXXX"),
-					StreetAddress2:  to.Ptr("XXXX XXXX"),
-				},
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdatabox.JobsClientUpdateResponse{
-	// 	JobResource: armdatabox.JobResource{
-	// 		Name: to.Ptr("TestJobName1"),
-	// 		Type: to.Ptr("Microsoft.DataBox/jobs"),
-	// 		ID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.DataBox/jobs/TestJobName1"),
-	// 		Location: to.Ptr("westus"),
-	// 		Properties: &armdatabox.JobProperties{
-	// 			IsCancellable: to.Ptr(true),
-	// 			IsShippingAddressEditable: to.Ptr(true),
-	// 			StartTime: to.Ptr(time.Date(2018, time.April, 13, 10, 58, 38, 999979300, time.UTC)),
-	// 			Status: to.Ptr(armdatabox.StageNameDeviceOrdered),
-	// 			TransferType: to.Ptr(armdatabox.TransferTypeImportToAzure),
-	// 		},
-	// 		SKU: &armdatabox.SKU{
-	// 			Name: to.Ptr(armdatabox.SKUNameDataBox),
-	// 			Model: to.Ptr(armdatabox.ModelNameDataBox),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-07-01/JobsPatchCmk.json
-func ExampleJobsClient_BeginUpdate_jobsPatchCmk() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdatabox.NewClientFactory("YourSubscriptionId", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewJobsClient().BeginUpdate(ctx, "YourResourceGroupName", "TestJobName1", armdatabox.JobResourceUpdateParameter{
-		Properties: &armdatabox.UpdateJobProperties{
-			Details: &armdatabox.UpdateJobDetails{
-				KeyEncryptionKey: &armdatabox.KeyEncryptionKey{
-					KekType:            to.Ptr(armdatabox.KekTypeCustomerManaged),
-					KekURL:             to.Ptr("https://xxx.xxx.xx"),
-					KekVaultResourceID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.KeyVault/vaults/YourKeyVaultName"),
-				},
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdatabox.JobsClientUpdateResponse{
-	// 	JobResource: armdatabox.JobResource{
-	// 		Name: to.Ptr("TestJobName1"),
-	// 		Type: to.Ptr("Microsoft.DataBox/jobs"),
-	// 		ID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.DataBox/jobs/TestJobName1"),
-	// 		Location: to.Ptr("westus"),
-	// 		Properties: &armdatabox.JobProperties{
-	// 			IsCancellable: to.Ptr(true),
-	// 			IsShippingAddressEditable: to.Ptr(true),
-	// 			StartTime: to.Ptr(time.Date(2018, time.April, 13, 10, 58, 38, 999979300, time.UTC)),
-	// 			Status: to.Ptr(armdatabox.StageNameDeviceOrdered),
-	// 			TransferType: to.Ptr(armdatabox.TransferTypeImportToAzure),
-	// 		},
-	// 		SKU: &armdatabox.SKU{
-	// 			Name: to.Ptr(armdatabox.SKUNameDataBox),
-	// 			Model: to.Ptr(armdatabox.ModelNameDataBox),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-07-01/JobsPatchSystemAssignedToUserAssigned.json
-func ExampleJobsClient_BeginUpdate_jobsPatchSystemAssignedToUserAssigned() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdatabox.NewClientFactory("YourSubscriptionId", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewJobsClient().BeginUpdate(ctx, "YourResourceGroupName", "TestJobName1", armdatabox.JobResourceUpdateParameter{
-		Identity: &armdatabox.ResourceIdentity{
-			Type: to.Ptr("SystemAssigned,UserAssigned"),
-			UserAssignedIdentities: map[string]*armdatabox.UserAssignedIdentity{
-				"/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testIdentity": {},
-			},
-		},
-		Properties: &armdatabox.UpdateJobProperties{
-			Details: &armdatabox.UpdateJobDetails{
-				KeyEncryptionKey: &armdatabox.KeyEncryptionKey{
-					IdentityProperties: &armdatabox.IdentityProperties{
-						Type: to.Ptr("UserAssigned"),
-						UserAssigned: &armdatabox.UserAssignedProperties{
-							ResourceID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testIdentity"),
-						},
-					},
-					KekType:            to.Ptr(armdatabox.KekTypeCustomerManaged),
-					KekURL:             to.Ptr("https://xxx.xxx.xx"),
-					KekVaultResourceID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.KeyVault/vaults/YourKeyVaultName"),
-				},
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdatabox.JobsClientUpdateResponse{
-	// 	JobResource: armdatabox.JobResource{
-	// 		Name: to.Ptr("TestJobName1"),
-	// 		Type: to.Ptr("Microsoft.DataBox/jobs"),
-	// 		ID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.DataBox/jobs/TestJobName1"),
-	// 		Location: to.Ptr("westus"),
-	// 		Properties: &armdatabox.JobProperties{
-	// 			IsCancellable: to.Ptr(true),
-	// 			IsShippingAddressEditable: to.Ptr(true),
-	// 			StartTime: to.Ptr(time.Date(2018, time.April, 13, 10, 58, 38, 999979300, time.UTC)),
-	// 			Status: to.Ptr(armdatabox.StageNameDeviceOrdered),
-	// 			TransferType: to.Ptr(armdatabox.TransferTypeImportToAzure),
-	// 		},
-	// 		SKU: &armdatabox.SKU{
-	// 			Name: to.Ptr(armdatabox.SKUNameDataBox),
-	// 			Model: to.Ptr(armdatabox.ModelNameDataBox),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 		},
-	// 	},
-	// }
 }

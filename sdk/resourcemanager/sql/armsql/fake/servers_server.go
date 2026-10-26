@@ -21,10 +21,6 @@ import (
 
 // ServersServer is a fake server for instances of the armsql.ServersClient type.
 type ServersServer struct {
-	// CheckNameAvailability is the fake for method ServersClient.CheckNameAvailability
-	// HTTP status codes to indicate success: http.StatusOK
-	CheckNameAvailability func(ctx context.Context, parameters armsql.CheckNameAvailabilityRequest, options *armsql.ServersClientCheckNameAvailabilityOptions) (resp azfake.Responder[armsql.ServersClientCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
-
 	// BeginCreateOrUpdate is the fake for method ServersClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated, http.StatusAccepted
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, serverName string, parameters armsql.Server, options *armsql.ServersClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armsql.ServersClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -33,21 +29,9 @@ type ServersServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, serverName string, options *armsql.ServersClientBeginDeleteOptions) (resp azfake.PollerResponder[armsql.ServersClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method ServersClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, serverName string, options *armsql.ServersClientGetOptions) (resp azfake.Responder[armsql.ServersClientGetResponse], errResp azfake.ErrorResponder)
-
 	// BeginImportDatabase is the fake for method ServersClient.BeginImportDatabase
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginImportDatabase func(ctx context.Context, resourceGroupName string, serverName string, parameters armsql.ImportNewDatabaseDefinition, options *armsql.ServersClientBeginImportDatabaseOptions) (resp azfake.PollerResponder[armsql.ServersClientImportDatabaseResponse], errResp azfake.ErrorResponder)
-
-	// NewListPager is the fake for method ServersClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armsql.ServersClientListOptions) (resp azfake.PagerResponder[armsql.ServersClientListResponse])
-
-	// NewListByResourceGroupPager is the fake for method ServersClient.NewListByResourceGroupPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupPager func(resourceGroupName string, options *armsql.ServersClientListByResourceGroupOptions) (resp azfake.PagerResponder[armsql.ServersClientListByResourceGroupResponse])
 
 	// BeginRefreshStatus is the fake for method ServersClient.BeginRefreshStatus
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
@@ -56,6 +40,22 @@ type ServersServer struct {
 	// BeginUpdate is the fake for method ServersClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, resourceGroupName string, serverName string, parameters armsql.ServerUpdate, options *armsql.ServersClientBeginUpdateOptions) (resp azfake.PollerResponder[armsql.ServersClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// CheckNameAvailability is the fake for method ServersClient.CheckNameAvailability
+	// HTTP status codes to indicate success: http.StatusOK
+	CheckNameAvailability func(ctx context.Context, parameters armsql.CheckNameAvailabilityRequest, options *armsql.ServersClientCheckNameAvailabilityOptions) (resp azfake.Responder[armsql.ServersClientCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method ServersClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, serverName string, options *armsql.ServersClientGetOptions) (resp azfake.Responder[armsql.ServersClientGetResponse], errResp azfake.ErrorResponder)
+
+	// NewListByResourceGroupPager is the fake for method ServersClient.NewListByResourceGroupPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByResourceGroupPager func(resourceGroupName string, options *armsql.ServersClientListByResourceGroupOptions) (resp azfake.PagerResponder[armsql.ServersClientListByResourceGroupResponse])
+
+	// NewListPager is the fake for method ServersClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armsql.ServersClientListOptions) (resp azfake.PagerResponder[armsql.ServersClientListResponse])
 }
 
 // NewServersServerTransport creates a new instance of ServersServerTransport with the provided implementation.
@@ -67,10 +67,10 @@ func NewServersServerTransport(srv *ServersServer) *ServersServerTransport {
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armsql.ServersClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armsql.ServersClientDeleteResponse]](),
 		beginImportDatabase:         newTracker[azfake.PollerResponder[armsql.ServersClientImportDatabaseResponse]](),
-		newListPager:                newTracker[azfake.PagerResponder[armsql.ServersClientListResponse]](),
-		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armsql.ServersClientListByResourceGroupResponse]](),
 		beginRefreshStatus:          newTracker[azfake.PollerResponder[armsql.ServersClientRefreshStatusResponse]](),
 		beginUpdate:                 newTracker[azfake.PollerResponder[armsql.ServersClientUpdateResponse]](),
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armsql.ServersClientListByResourceGroupResponse]](),
+		newListPager:                newTracker[azfake.PagerResponder[armsql.ServersClientListResponse]](),
 	}
 }
 
@@ -81,10 +81,10 @@ type ServersServerTransport struct {
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armsql.ServersClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armsql.ServersClientDeleteResponse]]
 	beginImportDatabase         *tracker[azfake.PollerResponder[armsql.ServersClientImportDatabaseResponse]]
-	newListPager                *tracker[azfake.PagerResponder[armsql.ServersClientListResponse]]
-	newListByResourceGroupPager *tracker[azfake.PagerResponder[armsql.ServersClientListByResourceGroupResponse]]
 	beginRefreshStatus          *tracker[azfake.PollerResponder[armsql.ServersClientRefreshStatusResponse]]
 	beginUpdate                 *tracker[azfake.PollerResponder[armsql.ServersClientUpdateResponse]]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armsql.ServersClientListByResourceGroupResponse]]
+	newListPager                *tracker[azfake.PagerResponder[armsql.ServersClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for ServersServerTransport.
@@ -108,24 +108,24 @@ func (s *ServersServerTransport) dispatchToMethodFake(req *http.Request, method 
 		}
 		if !intercepted {
 			switch method {
-			case "ServersClient.CheckNameAvailability":
-				res.resp, res.err = s.dispatchCheckNameAvailability(req)
 			case "ServersClient.BeginCreateOrUpdate":
 				res.resp, res.err = s.dispatchBeginCreateOrUpdate(req)
 			case "ServersClient.BeginDelete":
 				res.resp, res.err = s.dispatchBeginDelete(req)
-			case "ServersClient.Get":
-				res.resp, res.err = s.dispatchGet(req)
 			case "ServersClient.BeginImportDatabase":
 				res.resp, res.err = s.dispatchBeginImportDatabase(req)
-			case "ServersClient.NewListPager":
-				res.resp, res.err = s.dispatchNewListPager(req)
-			case "ServersClient.NewListByResourceGroupPager":
-				res.resp, res.err = s.dispatchNewListByResourceGroupPager(req)
 			case "ServersClient.BeginRefreshStatus":
 				res.resp, res.err = s.dispatchBeginRefreshStatus(req)
 			case "ServersClient.BeginUpdate":
 				res.resp, res.err = s.dispatchBeginUpdate(req)
+			case "ServersClient.CheckNameAvailability":
+				res.resp, res.err = s.dispatchCheckNameAvailability(req)
+			case "ServersClient.Get":
+				res.resp, res.err = s.dispatchGet(req)
+			case "ServersClient.NewListByResourceGroupPager":
+				res.resp, res.err = s.dispatchNewListByResourceGroupPager(req)
+			case "ServersClient.NewListPager":
+				res.resp, res.err = s.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -140,35 +140,6 @@ func (s *ServersServerTransport) dispatchToMethodFake(req *http.Request, method 
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (s *ServersServerTransport) dispatchCheckNameAvailability(req *http.Request) (*http.Response, error) {
-	if s.srv.CheckNameAvailability == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CheckNameAvailability not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/checkNameAvailability`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 2 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armsql.CheckNameAvailabilityRequest](req)
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := s.srv.CheckNameAvailability(req.Context(), body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CheckNameAvailabilityResponse, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (s *ServersServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -263,47 +234,6 @@ func (s *ServersServerTransport) dispatchBeginDelete(req *http.Request) (*http.R
 	return resp, nil
 }
 
-func (s *ServersServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if s.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/servers/(?P<serverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	qp := req.URL.Query()
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
-	if err != nil {
-		return nil, err
-	}
-	expandParam := getOptional(qp.Get("$expand"))
-	var options *armsql.ServersClientGetOptions
-	if expandParam != nil {
-		options = &armsql.ServersClientGetOptions{
-			Expand: expandParam,
-		}
-	}
-	respr, errRespr := s.srv.Get(req.Context(), resourceGroupNameParam, serverNameParam, options)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Server, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (s *ServersServerTransport) dispatchBeginImportDatabase(req *http.Request) (*http.Response, error) {
 	if s.srv.BeginImportDatabase == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginImportDatabase not implemented")}
@@ -349,92 +279,6 @@ func (s *ServersServerTransport) dispatchBeginImportDatabase(req *http.Request) 
 		s.beginImportDatabase.remove(req)
 	}
 
-	return resp, nil
-}
-
-func (s *ServersServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if s.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := s.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/servers`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		expandParam := getOptional(qp.Get("$expand"))
-		var options *armsql.ServersClientListOptions
-		if expandParam != nil {
-			options = &armsql.ServersClientListOptions{
-				Expand: expandParam,
-			}
-		}
-		resp := s.srv.NewListPager(options)
-		newListPager = &resp
-		s.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armsql.ServersClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		s.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		s.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (s *ServersServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
-	if s.srv.NewListByResourceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
-	}
-	newListByResourceGroupPager := s.newListByResourceGroupPager.get(req)
-	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/servers`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		expandParam := getOptional(qp.Get("$expand"))
-		var options *armsql.ServersClientListByResourceGroupOptions
-		if expandParam != nil {
-			options = &armsql.ServersClientListByResourceGroupOptions{
-				Expand: expandParam,
-			}
-		}
-		resp := s.srv.NewListByResourceGroupPager(resourceGroupNameParam, options)
-		newListByResourceGroupPager = &resp
-		s.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armsql.ServersClientListByResourceGroupResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		s.newListByResourceGroupPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByResourceGroupPager) {
-		s.newListByResourceGroupPager.remove(req)
-	}
 	return resp, nil
 }
 
@@ -527,6 +371,162 @@ func (s *ServersServerTransport) dispatchBeginUpdate(req *http.Request) (*http.R
 		s.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (s *ServersServerTransport) dispatchCheckNameAvailability(req *http.Request) (*http.Response, error) {
+	if s.srv.CheckNameAvailability == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CheckNameAvailability not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/checkNameAvailability`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armsql.CheckNameAvailabilityRequest](req)
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.CheckNameAvailability(req.Context(), body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CheckNameAvailabilityResponse, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (s *ServersServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if s.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/servers/(?P<serverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	qp := req.URL.Query()
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
+	if err != nil {
+		return nil, err
+	}
+	expandParam := getOptional(qp.Get("$expand"))
+	var options *armsql.ServersClientGetOptions
+	if expandParam != nil {
+		options = &armsql.ServersClientGetOptions{
+			Expand: expandParam,
+		}
+	}
+	respr, errRespr := s.srv.Get(req.Context(), resourceGroupNameParam, serverNameParam, options)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Server, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (s *ServersServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
+	if s.srv.NewListByResourceGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
+	}
+	newListByResourceGroupPager := s.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/servers`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		expandParam := getOptional(qp.Get("$expand"))
+		var options *armsql.ServersClientListByResourceGroupOptions
+		if expandParam != nil {
+			options = &armsql.ServersClientListByResourceGroupOptions{
+				Expand: expandParam,
+			}
+		}
+		resp := s.srv.NewListByResourceGroupPager(resourceGroupNameParam, options)
+		newListByResourceGroupPager = &resp
+		s.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armsql.ServersClientListByResourceGroupResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		s.newListByResourceGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		s.newListByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (s *ServersServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if s.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := s.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/servers`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		expandParam := getOptional(qp.Get("$expand"))
+		var options *armsql.ServersClientListOptions
+		if expandParam != nil {
+			options = &armsql.ServersClientListOptions{
+				Expand: expandParam,
+			}
+		}
+		resp := s.srv.NewListPager(options)
+		newListPager = &resp
+		s.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armsql.ServersClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		s.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		s.newListPager.remove(req)
+	}
 	return resp, nil
 }
 

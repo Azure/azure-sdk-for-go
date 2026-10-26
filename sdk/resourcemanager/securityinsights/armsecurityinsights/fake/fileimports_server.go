@@ -22,13 +22,13 @@ import (
 
 // FileImportsServer is a fake server for instances of the armsecurityinsights.FileImportsClient type.
 type FileImportsServer struct {
-	// Create is the fake for method FileImportsClient.Create
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	Create func(ctx context.Context, resourceGroupName string, workspaceName string, fileImportID string, fileImport armsecurityinsights.FileImport, options *armsecurityinsights.FileImportsClientCreateOptions) (resp azfake.Responder[armsecurityinsights.FileImportsClientCreateResponse], errResp azfake.ErrorResponder)
-
 	// BeginDelete is the fake for method FileImportsClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, workspaceName string, fileImportID string, options *armsecurityinsights.FileImportsClientBeginDeleteOptions) (resp azfake.PollerResponder[armsecurityinsights.FileImportsClientDeleteResponse], errResp azfake.ErrorResponder)
+
+	// Create is the fake for method FileImportsClient.Create
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	Create func(ctx context.Context, resourceGroupName string, workspaceName string, fileImportID string, fileImport armsecurityinsights.FileImport, options *armsecurityinsights.FileImportsClientCreateOptions) (resp azfake.Responder[armsecurityinsights.FileImportsClientCreateResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method FileImportsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -79,10 +79,10 @@ func (f *FileImportsServerTransport) dispatchToMethodFake(req *http.Request, met
 		}
 		if !intercepted {
 			switch method {
-			case "FileImportsClient.Create":
-				res.resp, res.err = f.dispatchCreate(req)
 			case "FileImportsClient.BeginDelete":
 				res.resp, res.err = f.dispatchBeginDelete(req)
+			case "FileImportsClient.Create":
+				res.resp, res.err = f.dispatchCreate(req)
 			case "FileImportsClient.Get":
 				res.resp, res.err = f.dispatchGet(req)
 			case "FileImportsClient.NewListPager":
@@ -101,47 +101,6 @@ func (f *FileImportsServerTransport) dispatchToMethodFake(req *http.Request, met
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (f *FileImportsServerTransport) dispatchCreate(req *http.Request) (*http.Response, error) {
-	if f.srv.Create == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Create not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.OperationalInsights/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.SecurityInsights/fileImports/(?P<fileImportId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armsecurityinsights.FileImport](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
-	if err != nil {
-		return nil, err
-	}
-	fileImportIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("fileImportId")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := f.srv.Create(req.Context(), resourceGroupNameParam, workspaceNameParam, fileImportIDParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).FileImport, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (f *FileImportsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
@@ -189,6 +148,47 @@ func (f *FileImportsServerTransport) dispatchBeginDelete(req *http.Request) (*ht
 		f.beginDelete.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (f *FileImportsServerTransport) dispatchCreate(req *http.Request) (*http.Response, error) {
+	if f.srv.Create == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Create not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.OperationalInsights/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.SecurityInsights/fileImports/(?P<fileImportId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armsecurityinsights.FileImport](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
+	if err != nil {
+		return nil, err
+	}
+	fileImportIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("fileImportId")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := f.srv.Create(req.Context(), resourceGroupNameParam, workspaceNameParam, fileImportIDParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).FileImport, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 

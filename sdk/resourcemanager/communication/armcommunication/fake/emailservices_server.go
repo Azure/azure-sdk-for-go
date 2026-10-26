@@ -29,9 +29,17 @@ type EmailServicesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, emailServiceName string, options *armcommunication.EmailServicesClientBeginDeleteOptions) (resp azfake.PollerResponder[armcommunication.EmailServicesClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method EmailServicesClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	BeginUpdate func(ctx context.Context, resourceGroupName string, emailServiceName string, parameters armcommunication.EmailServiceResourceUpdate, options *armcommunication.EmailServicesClientBeginUpdateOptions) (resp azfake.PollerResponder[armcommunication.EmailServicesClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method EmailServicesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, emailServiceName string, options *armcommunication.EmailServicesClientGetOptions) (resp azfake.Responder[armcommunication.EmailServicesClientGetResponse], errResp azfake.ErrorResponder)
+
+	// ListVerifiedExchangeOnlineDomains is the fake for method EmailServicesClient.ListVerifiedExchangeOnlineDomains
+	// HTTP status codes to indicate success: http.StatusOK
+	ListVerifiedExchangeOnlineDomains func(ctx context.Context, options *armcommunication.EmailServicesClientListVerifiedExchangeOnlineDomainsOptions) (resp azfake.Responder[armcommunication.EmailServicesClientListVerifiedExchangeOnlineDomainsResponse], errResp azfake.ErrorResponder)
 
 	// NewListByResourceGroupPager is the fake for method EmailServicesClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -40,14 +48,6 @@ type EmailServicesServer struct {
 	// NewListBySubscriptionPager is the fake for method EmailServicesClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armcommunication.EmailServicesClientListBySubscriptionOptions) (resp azfake.PagerResponder[armcommunication.EmailServicesClientListBySubscriptionResponse])
-
-	// ListVerifiedExchangeOnlineDomains is the fake for method EmailServicesClient.ListVerifiedExchangeOnlineDomains
-	// HTTP status codes to indicate success: http.StatusOK
-	ListVerifiedExchangeOnlineDomains func(ctx context.Context, options *armcommunication.EmailServicesClientListVerifiedExchangeOnlineDomainsOptions) (resp azfake.Responder[armcommunication.EmailServicesClientListVerifiedExchangeOnlineDomainsResponse], errResp azfake.ErrorResponder)
-
-	// BeginUpdate is the fake for method EmailServicesClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginUpdate func(ctx context.Context, resourceGroupName string, emailServiceName string, parameters armcommunication.EmailServiceResourceUpdate, options *armcommunication.EmailServicesClientBeginUpdateOptions) (resp azfake.PollerResponder[armcommunication.EmailServicesClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewEmailServicesServerTransport creates a new instance of EmailServicesServerTransport with the provided implementation.
@@ -58,9 +58,9 @@ func NewEmailServicesServerTransport(srv *EmailServicesServer) *EmailServicesSer
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armcommunication.EmailServicesClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armcommunication.EmailServicesClientDeleteResponse]](),
+		beginUpdate:                 newTracker[azfake.PollerResponder[armcommunication.EmailServicesClientUpdateResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armcommunication.EmailServicesClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armcommunication.EmailServicesClientListBySubscriptionResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armcommunication.EmailServicesClientUpdateResponse]](),
 	}
 }
 
@@ -70,9 +70,9 @@ type EmailServicesServerTransport struct {
 	srv                         *EmailServicesServer
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armcommunication.EmailServicesClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armcommunication.EmailServicesClientDeleteResponse]]
+	beginUpdate                 *tracker[azfake.PollerResponder[armcommunication.EmailServicesClientUpdateResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armcommunication.EmailServicesClientListByResourceGroupResponse]]
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armcommunication.EmailServicesClientListBySubscriptionResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armcommunication.EmailServicesClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for EmailServicesServerTransport.
@@ -100,16 +100,16 @@ func (e *EmailServicesServerTransport) dispatchToMethodFake(req *http.Request, m
 				res.resp, res.err = e.dispatchBeginCreateOrUpdate(req)
 			case "EmailServicesClient.BeginDelete":
 				res.resp, res.err = e.dispatchBeginDelete(req)
+			case "EmailServicesClient.BeginUpdate":
+				res.resp, res.err = e.dispatchBeginUpdate(req)
 			case "EmailServicesClient.Get":
 				res.resp, res.err = e.dispatchGet(req)
+			case "EmailServicesClient.ListVerifiedExchangeOnlineDomains":
+				res.resp, res.err = e.dispatchListVerifiedExchangeOnlineDomains(req)
 			case "EmailServicesClient.NewListByResourceGroupPager":
 				res.resp, res.err = e.dispatchNewListByResourceGroupPager(req)
 			case "EmailServicesClient.NewListBySubscriptionPager":
 				res.resp, res.err = e.dispatchNewListBySubscriptionPager(req)
-			case "EmailServicesClient.ListVerifiedExchangeOnlineDomains":
-				res.resp, res.err = e.dispatchListVerifiedExchangeOnlineDomains(req)
-			case "EmailServicesClient.BeginUpdate":
-				res.resp, res.err = e.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -218,6 +218,54 @@ func (e *EmailServicesServerTransport) dispatchBeginDelete(req *http.Request) (*
 	return resp, nil
 }
 
+func (e *EmailServicesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if e.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := e.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Communication/emailServices/(?P<emailServiceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armcommunication.EmailServiceResourceUpdate](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		emailServiceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("emailServiceName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := e.srv.BeginUpdate(req.Context(), resourceGroupNameParam, emailServiceNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		e.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		e.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		e.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (e *EmailServicesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if e.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -245,6 +293,31 @@ func (e *EmailServicesServerTransport) dispatchGet(req *http.Request) (*http.Res
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).EmailServiceResource, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (e *EmailServicesServerTransport) dispatchListVerifiedExchangeOnlineDomains(req *http.Request) (*http.Response, error) {
+	if e.srv.ListVerifiedExchangeOnlineDomains == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListVerifiedExchangeOnlineDomains not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Communication/listVerifiedExchangeOnlineDomains`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	respr, errRespr := e.srv.ListVerifiedExchangeOnlineDomains(req.Context(), nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).StringArray, req)
 	if err != nil {
 		return nil, err
 	}
@@ -318,79 +391,6 @@ func (e *EmailServicesServerTransport) dispatchNewListBySubscriptionPager(req *h
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		e.newListBySubscriptionPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (e *EmailServicesServerTransport) dispatchListVerifiedExchangeOnlineDomains(req *http.Request) (*http.Response, error) {
-	if e.srv.ListVerifiedExchangeOnlineDomains == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListVerifiedExchangeOnlineDomains not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Communication/listVerifiedExchangeOnlineDomains`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 2 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	respr, errRespr := e.srv.ListVerifiedExchangeOnlineDomains(req.Context(), nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).StringArray, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (e *EmailServicesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if e.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := e.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Communication/emailServices/(?P<emailServiceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcommunication.EmailServiceResourceUpdate](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		emailServiceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("emailServiceName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := e.srv.BeginUpdate(req.Context(), resourceGroupNameParam, emailServiceNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		e.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
-		e.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		e.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

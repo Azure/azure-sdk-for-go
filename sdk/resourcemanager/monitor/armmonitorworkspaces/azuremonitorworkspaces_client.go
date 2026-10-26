@@ -52,7 +52,7 @@ func NewAzureMonitorWorkspacesClient(subscriptionID string, credential azcore.To
 //     method.
 func (client *AzureMonitorWorkspacesClient) BeginDelete(ctx context.Context, resourceGroupName string, azureMonitorWorkspaceName string, options *AzureMonitorWorkspacesClientBeginDeleteOptions) (*runtime.Poller[AzureMonitorWorkspacesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, azureMonitorWorkspaceName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, azureMonitorWorkspaceName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -67,9 +67,9 @@ func (client *AzureMonitorWorkspacesClient) BeginDelete(ctx context.Context, res
 	}
 }
 
-// delete - Deletes an Azure Monitor Workspace
+// deleteOperation - Deletes an Azure Monitor Workspace
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *AzureMonitorWorkspacesClient) delete(ctx context.Context, resourceGroupName string, azureMonitorWorkspaceName string, options *AzureMonitorWorkspacesClientBeginDeleteOptions) (*http.Response, error) {
+func (client *AzureMonitorWorkspacesClient) deleteOperation(ctx context.Context, resourceGroupName string, azureMonitorWorkspaceName string, options *AzureMonitorWorkspacesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AzureMonitorWorkspacesClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)

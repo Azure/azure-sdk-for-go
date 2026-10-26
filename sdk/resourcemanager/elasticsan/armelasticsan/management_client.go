@@ -70,7 +70,7 @@ func (client *ManagementClient) BeginRestoreVolume(ctx context.Context, resource
 	}
 }
 
-// RestoreVolume - Restore Soft Deleted Volumes. The volume name is obtained by using the API to list soft deleted volumes
+// restoreVolume - Restore Soft Deleted Volumes. The volume name is obtained by using the API to list soft deleted volumes
 // by volume group
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ManagementClient) restoreVolume(ctx context.Context, resourceGroupName string, elasticSanName string, volumeGroupName string, volumeName string, options *ManagementClientBeginRestoreVolumeOptions) (*http.Response, error) {
@@ -93,7 +93,7 @@ func (client *ManagementClient) restoreVolume(ctx context.Context, resourceGroup
 	return httpResp, nil
 }
 
-// restoreVolumeCreateRequest creates the RestoreVolume request.
+// restoreVolumeCreateRequest creates the restoreVolume request.
 func (client *ManagementClient) restoreVolumeCreateRequest(ctx context.Context, resourceGroupName string, elasticSanName string, volumeGroupName string, volumeName string, _ *ManagementClientBeginRestoreVolumeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}/volumegroups/{volumeGroupName}/volumes/{volumeName}/restore"
 	if client.subscriptionID == "" {

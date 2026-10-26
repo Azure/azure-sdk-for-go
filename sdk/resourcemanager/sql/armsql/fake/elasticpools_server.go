@@ -34,6 +34,10 @@ type ElasticPoolsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginFailover func(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string, options *armsql.ElasticPoolsClientBeginFailoverOptions) (resp azfake.PollerResponder[armsql.ElasticPoolsClientFailoverResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method ElasticPoolsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string, parameters armsql.ElasticPoolUpdate, options *armsql.ElasticPoolsClientBeginUpdateOptions) (resp azfake.PollerResponder[armsql.ElasticPoolsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method ElasticPoolsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string, options *armsql.ElasticPoolsClientGetOptions) (resp azfake.Responder[armsql.ElasticPoolsClientGetResponse], errResp azfake.ErrorResponder)
@@ -41,10 +45,6 @@ type ElasticPoolsServer struct {
 	// NewListByServerPager is the fake for method ElasticPoolsClient.NewListByServerPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByServerPager func(resourceGroupName string, serverName string, options *armsql.ElasticPoolsClientListByServerOptions) (resp azfake.PagerResponder[armsql.ElasticPoolsClientListByServerResponse])
-
-	// BeginUpdate is the fake for method ElasticPoolsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string, parameters armsql.ElasticPoolUpdate, options *armsql.ElasticPoolsClientBeginUpdateOptions) (resp azfake.PollerResponder[armsql.ElasticPoolsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewElasticPoolsServerTransport creates a new instance of ElasticPoolsServerTransport with the provided implementation.
@@ -56,8 +56,8 @@ func NewElasticPoolsServerTransport(srv *ElasticPoolsServer) *ElasticPoolsServer
 		beginCreateOrUpdate:  newTracker[azfake.PollerResponder[armsql.ElasticPoolsClientCreateOrUpdateResponse]](),
 		beginDelete:          newTracker[azfake.PollerResponder[armsql.ElasticPoolsClientDeleteResponse]](),
 		beginFailover:        newTracker[azfake.PollerResponder[armsql.ElasticPoolsClientFailoverResponse]](),
-		newListByServerPager: newTracker[azfake.PagerResponder[armsql.ElasticPoolsClientListByServerResponse]](),
 		beginUpdate:          newTracker[azfake.PollerResponder[armsql.ElasticPoolsClientUpdateResponse]](),
+		newListByServerPager: newTracker[azfake.PagerResponder[armsql.ElasticPoolsClientListByServerResponse]](),
 	}
 }
 
@@ -68,8 +68,8 @@ type ElasticPoolsServerTransport struct {
 	beginCreateOrUpdate  *tracker[azfake.PollerResponder[armsql.ElasticPoolsClientCreateOrUpdateResponse]]
 	beginDelete          *tracker[azfake.PollerResponder[armsql.ElasticPoolsClientDeleteResponse]]
 	beginFailover        *tracker[azfake.PollerResponder[armsql.ElasticPoolsClientFailoverResponse]]
-	newListByServerPager *tracker[azfake.PagerResponder[armsql.ElasticPoolsClientListByServerResponse]]
 	beginUpdate          *tracker[azfake.PollerResponder[armsql.ElasticPoolsClientUpdateResponse]]
+	newListByServerPager *tracker[azfake.PagerResponder[armsql.ElasticPoolsClientListByServerResponse]]
 }
 
 // Do implements the policy.Transporter interface for ElasticPoolsServerTransport.
@@ -99,12 +99,12 @@ func (e *ElasticPoolsServerTransport) dispatchToMethodFake(req *http.Request, me
 				res.resp, res.err = e.dispatchBeginDelete(req)
 			case "ElasticPoolsClient.BeginFailover":
 				res.resp, res.err = e.dispatchBeginFailover(req)
+			case "ElasticPoolsClient.BeginUpdate":
+				res.resp, res.err = e.dispatchBeginUpdate(req)
 			case "ElasticPoolsClient.Get":
 				res.resp, res.err = e.dispatchGet(req)
 			case "ElasticPoolsClient.NewListByServerPager":
 				res.resp, res.err = e.dispatchNewListByServerPager(req)
-			case "ElasticPoolsClient.BeginUpdate":
-				res.resp, res.err = e.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -269,6 +269,58 @@ func (e *ElasticPoolsServerTransport) dispatchBeginFailover(req *http.Request) (
 	return resp, nil
 }
 
+func (e *ElasticPoolsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if e.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := e.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/servers/(?P<serverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/elasticPools/(?P<elasticPoolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armsql.ElasticPoolUpdate](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
+		if err != nil {
+			return nil, err
+		}
+		elasticPoolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("elasticPoolName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := e.srv.BeginUpdate(req.Context(), resourceGroupNameParam, serverNameParam, elasticPoolNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		e.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		e.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		e.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (e *ElasticPoolsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if e.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -361,58 +413,6 @@ func (e *ElasticPoolsServerTransport) dispatchNewListByServerPager(req *http.Req
 	if !server.PagerResponderMore(newListByServerPager) {
 		e.newListByServerPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (e *ElasticPoolsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if e.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := e.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/servers/(?P<serverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/elasticPools/(?P<elasticPoolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armsql.ElasticPoolUpdate](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
-		if err != nil {
-			return nil, err
-		}
-		elasticPoolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("elasticPoolName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := e.srv.BeginUpdate(req.Context(), resourceGroupNameParam, serverNameParam, elasticPoolNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		e.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		e.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		e.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

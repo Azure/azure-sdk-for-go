@@ -44,6 +44,83 @@ func NewNetworkSecurityPerimeterClient(subscriptionID string, credential azcore.
 	return client, nil
 }
 
+// BeginReconcileConfiguration - Reconciles the specified NSP configuration.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - A name for the Batch account which must be unique within the region. Batch account names must be between
+//     3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as part of the DNS name
+//     that is used to access the Batch service in the region in which the account is created. For example: http://accountname.region.batch.azure.com/.
+//   - networkSecurityPerimeterConfigurationName - The name for a network security perimeter configuration
+//   - options - NetworkSecurityPerimeterClientBeginReconcileConfigurationOptions contains the optional parameters for the NetworkSecurityPerimeterClient.BeginReconcileConfiguration
+//     method.
+func (client *NetworkSecurityPerimeterClient) BeginReconcileConfiguration(ctx context.Context, resourceGroupName string, accountName string, networkSecurityPerimeterConfigurationName string, options *NetworkSecurityPerimeterClientBeginReconcileConfigurationOptions) (*runtime.Poller[NetworkSecurityPerimeterClientReconcileConfigurationResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.reconcileConfiguration(ctx, resourceGroupName, accountName, networkSecurityPerimeterConfigurationName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NetworkSecurityPerimeterClientReconcileConfigurationResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NetworkSecurityPerimeterClientReconcileConfigurationResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// reconcileConfiguration - Reconciles the specified NSP configuration.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *NetworkSecurityPerimeterClient) reconcileConfiguration(ctx context.Context, resourceGroupName string, accountName string, networkSecurityPerimeterConfigurationName string, options *NetworkSecurityPerimeterClientBeginReconcileConfigurationOptions) (*http.Response, error) {
+	var err error
+	const operationName = "NetworkSecurityPerimeterClient.BeginReconcileConfiguration"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.reconcileConfigurationCreateRequest(ctx, resourceGroupName, accountName, networkSecurityPerimeterConfigurationName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// reconcileConfigurationCreateRequest creates the reconcileConfiguration request.
+func (client *NetworkSecurityPerimeterClient) reconcileConfigurationCreateRequest(ctx context.Context, resourceGroupName string, accountName string, networkSecurityPerimeterConfigurationName string, _ *NetworkSecurityPerimeterClientBeginReconcileConfigurationOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/networkSecurityPerimeterConfigurations/{networkSecurityPerimeterConfigurationName}/reconcile"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if networkSecurityPerimeterConfigurationName == "" {
+		return nil, errors.New("parameter networkSecurityPerimeterConfigurationName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{networkSecurityPerimeterConfigurationName}", url.PathEscape(networkSecurityPerimeterConfigurationName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
 // GetConfiguration - Gets information about the specified NSP configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -189,81 +266,4 @@ func (client *NetworkSecurityPerimeterClient) listConfigurationsHandleResponse(r
 		return NetworkSecurityPerimeterClientListConfigurationsResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginReconcileConfiguration - Reconciles the specified NSP configuration.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - accountName - A name for the Batch account which must be unique within the region. Batch account names must be between
-//     3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as part of the DNS name
-//     that is used to access the Batch service in the region in which the account is created. For example: http://accountname.region.batch.azure.com/.
-//   - networkSecurityPerimeterConfigurationName - The name for a network security perimeter configuration
-//   - options - NetworkSecurityPerimeterClientBeginReconcileConfigurationOptions contains the optional parameters for the NetworkSecurityPerimeterClient.BeginReconcileConfiguration
-//     method.
-func (client *NetworkSecurityPerimeterClient) BeginReconcileConfiguration(ctx context.Context, resourceGroupName string, accountName string, networkSecurityPerimeterConfigurationName string, options *NetworkSecurityPerimeterClientBeginReconcileConfigurationOptions) (*runtime.Poller[NetworkSecurityPerimeterClientReconcileConfigurationResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.reconcileConfiguration(ctx, resourceGroupName, accountName, networkSecurityPerimeterConfigurationName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NetworkSecurityPerimeterClientReconcileConfigurationResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NetworkSecurityPerimeterClientReconcileConfigurationResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// ReconcileConfiguration - Reconciles the specified NSP configuration.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *NetworkSecurityPerimeterClient) reconcileConfiguration(ctx context.Context, resourceGroupName string, accountName string, networkSecurityPerimeterConfigurationName string, options *NetworkSecurityPerimeterClientBeginReconcileConfigurationOptions) (*http.Response, error) {
-	var err error
-	const operationName = "NetworkSecurityPerimeterClient.BeginReconcileConfiguration"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.reconcileConfigurationCreateRequest(ctx, resourceGroupName, accountName, networkSecurityPerimeterConfigurationName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// reconcileConfigurationCreateRequest creates the ReconcileConfiguration request.
-func (client *NetworkSecurityPerimeterClient) reconcileConfigurationCreateRequest(ctx context.Context, resourceGroupName string, accountName string, networkSecurityPerimeterConfigurationName string, _ *NetworkSecurityPerimeterClientBeginReconcileConfigurationOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/networkSecurityPerimeterConfigurations/{networkSecurityPerimeterConfigurationName}/reconcile"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if networkSecurityPerimeterConfigurationName == "" {
-		return nil, errors.New("parameter networkSecurityPerimeterConfigurationName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{networkSecurityPerimeterConfigurationName}", url.PathEscape(networkSecurityPerimeterConfigurationName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
 }

@@ -39,21 +39,9 @@ type ClustersServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginDeploy func(ctx context.Context, resourceGroupName string, clusterName string, options *armnetworkcloud.ClustersClientBeginDeployOptions) (resp azfake.PollerResponder[armnetworkcloud.ClustersClientDeployResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method ClustersClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, clusterName string, options *armnetworkcloud.ClustersClientGetOptions) (resp azfake.Responder[armnetworkcloud.ClustersClientGetResponse], errResp azfake.ErrorResponder)
-
 	// BeginInspect is the fake for method ClustersClient.BeginInspect
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginInspect func(ctx context.Context, resourceGroupName string, clusterName string, options *armnetworkcloud.ClustersClientBeginInspectOptions) (resp azfake.PollerResponder[armnetworkcloud.ClustersClientInspectResponse], errResp azfake.ErrorResponder)
-
-	// NewListByResourceGroupPager is the fake for method ClustersClient.NewListByResourceGroupPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupPager func(resourceGroupName string, options *armnetworkcloud.ClustersClientListByResourceGroupOptions) (resp azfake.PagerResponder[armnetworkcloud.ClustersClientListByResourceGroupResponse])
-
-	// NewListBySubscriptionPager is the fake for method ClustersClient.NewListBySubscriptionPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListBySubscriptionPager func(options *armnetworkcloud.ClustersClientListBySubscriptionOptions) (resp azfake.PagerResponder[armnetworkcloud.ClustersClientListBySubscriptionResponse])
 
 	// BeginRotateCredential is the fake for method ClustersClient.BeginRotateCredential
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
@@ -70,6 +58,18 @@ type ClustersServer struct {
 	// BeginUpdateVersion is the fake for method ClustersClient.BeginUpdateVersion
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdateVersion func(ctx context.Context, resourceGroupName string, clusterName string, clusterUpdateVersionParameters armnetworkcloud.ClusterUpdateVersionParameters, options *armnetworkcloud.ClustersClientBeginUpdateVersionOptions) (resp azfake.PollerResponder[armnetworkcloud.ClustersClientUpdateVersionResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method ClustersClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, clusterName string, options *armnetworkcloud.ClustersClientGetOptions) (resp azfake.Responder[armnetworkcloud.ClustersClientGetResponse], errResp azfake.ErrorResponder)
+
+	// NewListByResourceGroupPager is the fake for method ClustersClient.NewListByResourceGroupPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByResourceGroupPager func(resourceGroupName string, options *armnetworkcloud.ClustersClientListByResourceGroupOptions) (resp azfake.PagerResponder[armnetworkcloud.ClustersClientListByResourceGroupResponse])
+
+	// NewListBySubscriptionPager is the fake for method ClustersClient.NewListBySubscriptionPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListBySubscriptionPager func(options *armnetworkcloud.ClustersClientListBySubscriptionOptions) (resp azfake.PagerResponder[armnetworkcloud.ClustersClientListBySubscriptionResponse])
 }
 
 // NewClustersServerTransport creates a new instance of ClustersServerTransport with the provided implementation.
@@ -83,12 +83,12 @@ func NewClustersServerTransport(srv *ClustersServer) *ClustersServerTransport {
 		beginDelete:                 newTracker[azfake.PollerResponder[armnetworkcloud.ClustersClientDeleteResponse]](),
 		beginDeploy:                 newTracker[azfake.PollerResponder[armnetworkcloud.ClustersClientDeployResponse]](),
 		beginInspect:                newTracker[azfake.PollerResponder[armnetworkcloud.ClustersClientInspectResponse]](),
-		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armnetworkcloud.ClustersClientListByResourceGroupResponse]](),
-		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armnetworkcloud.ClustersClientListBySubscriptionResponse]](),
 		beginRotateCredential:       newTracker[azfake.PollerResponder[armnetworkcloud.ClustersClientRotateCredentialResponse]](),
 		beginScanRuntime:            newTracker[azfake.PollerResponder[armnetworkcloud.ClustersClientScanRuntimeResponse]](),
 		beginUpdate:                 newTracker[azfake.PollerResponder[armnetworkcloud.ClustersClientUpdateResponse]](),
 		beginUpdateVersion:          newTracker[azfake.PollerResponder[armnetworkcloud.ClustersClientUpdateVersionResponse]](),
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armnetworkcloud.ClustersClientListByResourceGroupResponse]](),
+		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armnetworkcloud.ClustersClientListBySubscriptionResponse]](),
 	}
 }
 
@@ -101,12 +101,12 @@ type ClustersServerTransport struct {
 	beginDelete                 *tracker[azfake.PollerResponder[armnetworkcloud.ClustersClientDeleteResponse]]
 	beginDeploy                 *tracker[azfake.PollerResponder[armnetworkcloud.ClustersClientDeployResponse]]
 	beginInspect                *tracker[azfake.PollerResponder[armnetworkcloud.ClustersClientInspectResponse]]
-	newListByResourceGroupPager *tracker[azfake.PagerResponder[armnetworkcloud.ClustersClientListByResourceGroupResponse]]
-	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armnetworkcloud.ClustersClientListBySubscriptionResponse]]
 	beginRotateCredential       *tracker[azfake.PollerResponder[armnetworkcloud.ClustersClientRotateCredentialResponse]]
 	beginScanRuntime            *tracker[azfake.PollerResponder[armnetworkcloud.ClustersClientScanRuntimeResponse]]
 	beginUpdate                 *tracker[azfake.PollerResponder[armnetworkcloud.ClustersClientUpdateResponse]]
 	beginUpdateVersion          *tracker[azfake.PollerResponder[armnetworkcloud.ClustersClientUpdateVersionResponse]]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armnetworkcloud.ClustersClientListByResourceGroupResponse]]
+	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armnetworkcloud.ClustersClientListBySubscriptionResponse]]
 }
 
 // Do implements the policy.Transporter interface for ClustersServerTransport.
@@ -138,14 +138,8 @@ func (c *ClustersServerTransport) dispatchToMethodFake(req *http.Request, method
 				res.resp, res.err = c.dispatchBeginDelete(req)
 			case "ClustersClient.BeginDeploy":
 				res.resp, res.err = c.dispatchBeginDeploy(req)
-			case "ClustersClient.Get":
-				res.resp, res.err = c.dispatchGet(req)
 			case "ClustersClient.BeginInspect":
 				res.resp, res.err = c.dispatchBeginInspect(req)
-			case "ClustersClient.NewListByResourceGroupPager":
-				res.resp, res.err = c.dispatchNewListByResourceGroupPager(req)
-			case "ClustersClient.NewListBySubscriptionPager":
-				res.resp, res.err = c.dispatchNewListBySubscriptionPager(req)
 			case "ClustersClient.BeginRotateCredential":
 				res.resp, res.err = c.dispatchBeginRotateCredential(req)
 			case "ClustersClient.BeginScanRuntime":
@@ -154,6 +148,12 @@ func (c *ClustersServerTransport) dispatchToMethodFake(req *http.Request, method
 				res.resp, res.err = c.dispatchBeginUpdate(req)
 			case "ClustersClient.BeginUpdateVersion":
 				res.resp, res.err = c.dispatchBeginUpdateVersion(req)
+			case "ClustersClient.Get":
+				res.resp, res.err = c.dispatchGet(req)
+			case "ClustersClient.NewListByResourceGroupPager":
+				res.resp, res.err = c.dispatchNewListByResourceGroupPager(req)
+			case "ClustersClient.NewListBySubscriptionPager":
+				res.resp, res.err = c.dispatchNewListBySubscriptionPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -382,39 +382,6 @@ func (c *ClustersServerTransport) dispatchBeginDeploy(req *http.Request) (*http.
 	return resp, nil
 }
 
-func (c *ClustersServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if c.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetworkCloud/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := c.srv.Get(req.Context(), resourceGroupNameParam, clusterNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Cluster, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (c *ClustersServerTransport) dispatchBeginInspect(req *http.Request) (*http.Response, error) {
 	if c.srv.BeginInspect == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginInspect not implemented")}
@@ -466,114 +433,6 @@ func (c *ClustersServerTransport) dispatchBeginInspect(req *http.Request) (*http
 		c.beginInspect.remove(req)
 	}
 
-	return resp, nil
-}
-
-func (c *ClustersServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
-	if c.srv.NewListByResourceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
-	}
-	newListByResourceGroupPager := c.newListByResourceGroupPager.get(req)
-	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetworkCloud/clusters`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
-		})
-		if err != nil {
-			return nil, err
-		}
-		skipTokenParam := getOptional(qp.Get("$skipToken"))
-		var options *armnetworkcloud.ClustersClientListByResourceGroupOptions
-		if topParam != nil || skipTokenParam != nil {
-			options = &armnetworkcloud.ClustersClientListByResourceGroupOptions{
-				Top:       topParam,
-				SkipToken: skipTokenParam,
-			}
-		}
-		resp := c.srv.NewListByResourceGroupPager(resourceGroupNameParam, options)
-		newListByResourceGroupPager = &resp
-		c.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armnetworkcloud.ClustersClientListByResourceGroupResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		c.newListByResourceGroupPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByResourceGroupPager) {
-		c.newListByResourceGroupPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (c *ClustersServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
-	if c.srv.NewListBySubscriptionPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
-	}
-	newListBySubscriptionPager := c.newListBySubscriptionPager.get(req)
-	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetworkCloud/clusters`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
-		})
-		if err != nil {
-			return nil, err
-		}
-		skipTokenParam := getOptional(qp.Get("$skipToken"))
-		var options *armnetworkcloud.ClustersClientListBySubscriptionOptions
-		if topParam != nil || skipTokenParam != nil {
-			options = &armnetworkcloud.ClustersClientListBySubscriptionOptions{
-				Top:       topParam,
-				SkipToken: skipTokenParam,
-			}
-		}
-		resp := c.srv.NewListBySubscriptionPager(options)
-		newListBySubscriptionPager = &resp
-		c.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
-		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armnetworkcloud.ClustersClientListBySubscriptionResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		c.newListBySubscriptionPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListBySubscriptionPager) {
-		c.newListBySubscriptionPager.remove(req)
-	}
 	return resp, nil
 }
 
@@ -781,6 +640,147 @@ func (c *ClustersServerTransport) dispatchBeginUpdateVersion(req *http.Request) 
 		c.beginUpdateVersion.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (c *ClustersServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if c.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetworkCloud/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := c.srv.Get(req.Context(), resourceGroupNameParam, clusterNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Cluster, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (c *ClustersServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
+	if c.srv.NewListByResourceGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
+	}
+	newListByResourceGroupPager := c.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetworkCloud/clusters`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		skipTokenParam := getOptional(qp.Get("$skipToken"))
+		var options *armnetworkcloud.ClustersClientListByResourceGroupOptions
+		if topParam != nil || skipTokenParam != nil {
+			options = &armnetworkcloud.ClustersClientListByResourceGroupOptions{
+				Top:       topParam,
+				SkipToken: skipTokenParam,
+			}
+		}
+		resp := c.srv.NewListByResourceGroupPager(resourceGroupNameParam, options)
+		newListByResourceGroupPager = &resp
+		c.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armnetworkcloud.ClustersClientListByResourceGroupResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		c.newListByResourceGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		c.newListByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (c *ClustersServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
+	if c.srv.NewListBySubscriptionPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
+	}
+	newListBySubscriptionPager := c.newListBySubscriptionPager.get(req)
+	if newListBySubscriptionPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetworkCloud/clusters`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		skipTokenParam := getOptional(qp.Get("$skipToken"))
+		var options *armnetworkcloud.ClustersClientListBySubscriptionOptions
+		if topParam != nil || skipTokenParam != nil {
+			options = &armnetworkcloud.ClustersClientListBySubscriptionOptions{
+				Top:       topParam,
+				SkipToken: skipTokenParam,
+			}
+		}
+		resp := c.srv.NewListBySubscriptionPager(options)
+		newListBySubscriptionPager = &resp
+		c.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
+		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armnetworkcloud.ClustersClientListBySubscriptionResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		c.newListBySubscriptionPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListBySubscriptionPager) {
+		c.newListBySubscriptionPager.remove(req)
+	}
 	return resp, nil
 }
 

@@ -38,6 +38,10 @@ type ScenarioConfigurationsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginFixResourcePermissions func(ctx context.Context, resourceGroupName string, workspaceName string, scenarioName string, scenarioConfigurationName string, options *armchaos.ScenarioConfigurationsClientBeginFixResourcePermissionsOptions) (resp azfake.PollerResponder[armchaos.ScenarioConfigurationsClientFixResourcePermissionsResponse], errResp azfake.ErrorResponder)
 
+	// BeginValidate is the fake for method ScenarioConfigurationsClient.BeginValidate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginValidate func(ctx context.Context, resourceGroupName string, workspaceName string, scenarioName string, scenarioConfigurationName string, options *armchaos.ScenarioConfigurationsClientBeginValidateOptions) (resp azfake.PollerResponder[armchaos.ScenarioConfigurationsClientValidateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method ScenarioConfigurationsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, workspaceName string, scenarioName string, scenarioConfigurationName string, options *armchaos.ScenarioConfigurationsClientGetOptions) (resp azfake.Responder[armchaos.ScenarioConfigurationsClientGetResponse], errResp azfake.ErrorResponder)
@@ -45,10 +49,6 @@ type ScenarioConfigurationsServer struct {
 	// NewListAllPager is the fake for method ScenarioConfigurationsClient.NewListAllPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListAllPager func(resourceGroupName string, workspaceName string, scenarioName string, options *armchaos.ScenarioConfigurationsClientListAllOptions) (resp azfake.PagerResponder[armchaos.ScenarioConfigurationsClientListAllResponse])
-
-	// BeginValidate is the fake for method ScenarioConfigurationsClient.BeginValidate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginValidate func(ctx context.Context, resourceGroupName string, workspaceName string, scenarioName string, scenarioConfigurationName string, options *armchaos.ScenarioConfigurationsClientBeginValidateOptions) (resp azfake.PollerResponder[armchaos.ScenarioConfigurationsClientValidateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewScenarioConfigurationsServerTransport creates a new instance of ScenarioConfigurationsServerTransport with the provided implementation.
@@ -61,8 +61,8 @@ func NewScenarioConfigurationsServerTransport(srv *ScenarioConfigurationsServer)
 		beginDelete:                 newTracker[azfake.PollerResponder[armchaos.ScenarioConfigurationsClientDeleteResponse]](),
 		beginExecute:                newTracker[azfake.PollerResponder[armchaos.ScenarioConfigurationsClientExecuteResponse]](),
 		beginFixResourcePermissions: newTracker[azfake.PollerResponder[armchaos.ScenarioConfigurationsClientFixResourcePermissionsResponse]](),
-		newListAllPager:             newTracker[azfake.PagerResponder[armchaos.ScenarioConfigurationsClientListAllResponse]](),
 		beginValidate:               newTracker[azfake.PollerResponder[armchaos.ScenarioConfigurationsClientValidateResponse]](),
+		newListAllPager:             newTracker[azfake.PagerResponder[armchaos.ScenarioConfigurationsClientListAllResponse]](),
 	}
 }
 
@@ -74,8 +74,8 @@ type ScenarioConfigurationsServerTransport struct {
 	beginDelete                 *tracker[azfake.PollerResponder[armchaos.ScenarioConfigurationsClientDeleteResponse]]
 	beginExecute                *tracker[azfake.PollerResponder[armchaos.ScenarioConfigurationsClientExecuteResponse]]
 	beginFixResourcePermissions *tracker[azfake.PollerResponder[armchaos.ScenarioConfigurationsClientFixResourcePermissionsResponse]]
-	newListAllPager             *tracker[azfake.PagerResponder[armchaos.ScenarioConfigurationsClientListAllResponse]]
 	beginValidate               *tracker[azfake.PollerResponder[armchaos.ScenarioConfigurationsClientValidateResponse]]
+	newListAllPager             *tracker[azfake.PagerResponder[armchaos.ScenarioConfigurationsClientListAllResponse]]
 }
 
 // Do implements the policy.Transporter interface for ScenarioConfigurationsServerTransport.
@@ -107,12 +107,12 @@ func (s *ScenarioConfigurationsServerTransport) dispatchToMethodFake(req *http.R
 				res.resp, res.err = s.dispatchBeginExecute(req)
 			case "ScenarioConfigurationsClient.BeginFixResourcePermissions":
 				res.resp, res.err = s.dispatchBeginFixResourcePermissions(req)
+			case "ScenarioConfigurationsClient.BeginValidate":
+				res.resp, res.err = s.dispatchBeginValidate(req)
 			case "ScenarioConfigurationsClient.Get":
 				res.resp, res.err = s.dispatchGet(req)
 			case "ScenarioConfigurationsClient.NewListAllPager":
 				res.resp, res.err = s.dispatchNewListAllPager(req)
-			case "ScenarioConfigurationsClient.BeginValidate":
-				res.resp, res.err = s.dispatchBeginValidate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -351,6 +351,58 @@ func (s *ScenarioConfigurationsServerTransport) dispatchBeginFixResourcePermissi
 	return resp, nil
 }
 
+func (s *ScenarioConfigurationsServerTransport) dispatchBeginValidate(req *http.Request) (*http.Response, error) {
+	if s.srv.BeginValidate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginValidate not implemented")}
+	}
+	beginValidate := s.beginValidate.get(req)
+	if beginValidate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Chaos/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/scenarios/(?P<scenarioName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/configurations/(?P<scenarioConfigurationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/validate`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 6 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
+		if err != nil {
+			return nil, err
+		}
+		scenarioNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("scenarioName")])
+		if err != nil {
+			return nil, err
+		}
+		scenarioConfigurationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("scenarioConfigurationName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := s.srv.BeginValidate(req.Context(), resourceGroupNameParam, workspaceNameParam, scenarioNameParam, scenarioConfigurationNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginValidate = &respr
+		s.beginValidate.add(req, beginValidate)
+	}
+
+	resp, err := server.PollerResponderNext(beginValidate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		s.beginValidate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginValidate) {
+		s.beginValidate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (s *ScenarioConfigurationsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if s.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -434,58 +486,6 @@ func (s *ScenarioConfigurationsServerTransport) dispatchNewListAllPager(req *htt
 	if !server.PagerResponderMore(newListAllPager) {
 		s.newListAllPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (s *ScenarioConfigurationsServerTransport) dispatchBeginValidate(req *http.Request) (*http.Response, error) {
-	if s.srv.BeginValidate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginValidate not implemented")}
-	}
-	beginValidate := s.beginValidate.get(req)
-	if beginValidate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Chaos/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/scenarios/(?P<scenarioName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/configurations/(?P<scenarioConfigurationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/validate`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 6 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
-		if err != nil {
-			return nil, err
-		}
-		scenarioNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("scenarioName")])
-		if err != nil {
-			return nil, err
-		}
-		scenarioConfigurationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("scenarioConfigurationName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := s.srv.BeginValidate(req.Context(), resourceGroupNameParam, workspaceNameParam, scenarioNameParam, scenarioConfigurationNameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginValidate = &respr
-		s.beginValidate.add(req, beginValidate)
-	}
-
-	resp, err := server.PollerResponderNext(beginValidate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		s.beginValidate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginValidate) {
-		s.beginValidate.remove(req)
-	}
-
 	return resp, nil
 }
 

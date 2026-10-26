@@ -12,6 +12,32 @@ import (
 	"log"
 )
 
+// Generated from example definition: 2025-12-01/StorageMovers_Delete.json
+func ExampleStorageMoversClient_BeginDelete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armstoragemover.NewClientFactory("60bcfc77-6589-4da2-b7fd-f9ec9322cf95", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewStorageMoversClient().BeginDelete(ctx, "examples-rg", "examples-storageMoverName", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armstoragemover.StorageMoversClientDeleteResponse{
+	// }
+}
+
 // Generated from example definition: 2025-12-01/StorageMovers_CreateOrUpdate.json
 func ExampleStorageMoversClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -64,32 +90,6 @@ func ExampleStorageMoversClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-12-01/StorageMovers_Delete.json
-func ExampleStorageMoversClient_BeginDelete() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armstoragemover.NewClientFactory("60bcfc77-6589-4da2-b7fd-f9ec9322cf95", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewStorageMoversClient().BeginDelete(ctx, "examples-rg", "examples-storageMoverName", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armstoragemover.StorageMoversClientDeleteResponse{
-	// }
-}
-
 // Generated from example definition: 2025-12-01/StorageMovers_Get.json
 func ExampleStorageMoversClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -131,101 +131,6 @@ func ExampleStorageMoversClient_Get() {
 	// 		},
 	// 	},
 	// }
-}
-
-// Generated from example definition: 2025-12-01/StorageMovers_List.json
-func ExampleStorageMoversClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armstoragemover.NewClientFactory("60bcfc77-6589-4da2-b7fd-f9ec9322cf95", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewStorageMoversClient().NewListPager("examples-rg", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armstoragemover.StorageMoversClientListResponse{
-		// 	List: armstoragemover.List{
-		// 		NextLink: to.Ptr("https://management.azure.com/providers/Microsoft.StorageMover/storageMovers?$skiptoken=fake-continue-token"),
-		// 		Value: []*armstoragemover.StorageMover{
-		// 			{
-		// 				Name: to.Ptr("examples-storageMoverResourceName1"),
-		// 				Type: to.Ptr("Microsoft.StorageMover/storageMovers"),
-		// 				ID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverResourceName1"),
-		// 				Location: to.Ptr("eastus2"),
-		// 				Properties: &armstoragemover.Properties{
-		// 					Description: to.Ptr("Example Storage Mover 1 Description"),
-		// 				},
-		// 				SystemData: &armstoragemover.SystemData{
-		// 					CreatedAt: to.Ptr(time.Date(2023, time.July, 1, 1, 1, 1, 107505600, time.UTC)),
-		// 					CreatedBy: to.Ptr("string"),
-		// 					CreatedByType: to.Ptr(armstoragemover.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.July, 1, 2, 1, 1, 107505600, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("string"),
-		// 					LastModifiedByType: to.Ptr(armstoragemover.CreatedByTypeUser),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 					"key1": to.Ptr("value1"),
-		// 					"key2": to.Ptr("value2"),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("examples-storageMoverResourceName2"),
-		// 				Type: to.Ptr("Microsoft.StorageMover/storageMovers"),
-		// 				ID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverResourceName2"),
-		// 				Location: to.Ptr("eastus2"),
-		// 				Properties: &armstoragemover.Properties{
-		// 					Description: to.Ptr("Example Storage Mover 2 Description"),
-		// 				},
-		// 				SystemData: &armstoragemover.SystemData{
-		// 					CreatedAt: to.Ptr(time.Date(2023, time.July, 1, 1, 1, 1, 107505600, time.UTC)),
-		// 					CreatedBy: to.Ptr("string"),
-		// 					CreatedByType: to.Ptr(armstoragemover.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.July, 1, 2, 1, 1, 107505600, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("string"),
-		// 					LastModifiedByType: to.Ptr(armstoragemover.CreatedByTypeUser),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 					"key1": to.Ptr("value1"),
-		// 					"key2": to.Ptr("value2"),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("examples-storageMoverResourceName3"),
-		// 				Type: to.Ptr("Microsoft.StorageMover/storageMovers"),
-		// 				ID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverResourceName3"),
-		// 				Location: to.Ptr("eastus2"),
-		// 				Properties: &armstoragemover.Properties{
-		// 					Description: to.Ptr("Example Storage Mover 3 Description"),
-		// 				},
-		// 				SystemData: &armstoragemover.SystemData{
-		// 					CreatedAt: to.Ptr(time.Date(2023, time.July, 1, 1, 1, 1, 107505600, time.UTC)),
-		// 					CreatedBy: to.Ptr("string"),
-		// 					CreatedByType: to.Ptr(armstoragemover.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.July, 1, 2, 1, 1, 107505600, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("string"),
-		// 					LastModifiedByType: to.Ptr(armstoragemover.CreatedByTypeUser),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 					"key1": to.Ptr("value1"),
-		// 					"key2": to.Ptr("value2"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
 }
 
 // Generated from example definition: 2025-12-01/StorageMovers_ListBySubscription.json
@@ -279,6 +184,101 @@ func ExampleStorageMoversClient_NewListBySubscriptionPager() {
 		// 				Name: to.Ptr("examples-storageMoverResourceName2"),
 		// 				Type: to.Ptr("Microsoft.StorageMover/storageMovers"),
 		// 				ID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg2/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverResourceName2"),
+		// 				Location: to.Ptr("eastus2"),
+		// 				Properties: &armstoragemover.Properties{
+		// 					Description: to.Ptr("Example Storage Mover 2 Description"),
+		// 				},
+		// 				SystemData: &armstoragemover.SystemData{
+		// 					CreatedAt: to.Ptr(time.Date(2023, time.July, 1, 1, 1, 1, 107505600, time.UTC)),
+		// 					CreatedBy: to.Ptr("string"),
+		// 					CreatedByType: to.Ptr(armstoragemover.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.July, 1, 2, 1, 1, 107505600, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("string"),
+		// 					LastModifiedByType: to.Ptr(armstoragemover.CreatedByTypeUser),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"key1": to.Ptr("value1"),
+		// 					"key2": to.Ptr("value2"),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("examples-storageMoverResourceName3"),
+		// 				Type: to.Ptr("Microsoft.StorageMover/storageMovers"),
+		// 				ID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverResourceName3"),
+		// 				Location: to.Ptr("eastus2"),
+		// 				Properties: &armstoragemover.Properties{
+		// 					Description: to.Ptr("Example Storage Mover 3 Description"),
+		// 				},
+		// 				SystemData: &armstoragemover.SystemData{
+		// 					CreatedAt: to.Ptr(time.Date(2023, time.July, 1, 1, 1, 1, 107505600, time.UTC)),
+		// 					CreatedBy: to.Ptr("string"),
+		// 					CreatedByType: to.Ptr(armstoragemover.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.July, 1, 2, 1, 1, 107505600, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("string"),
+		// 					LastModifiedByType: to.Ptr(armstoragemover.CreatedByTypeUser),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"key1": to.Ptr("value1"),
+		// 					"key2": to.Ptr("value2"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-12-01/StorageMovers_List.json
+func ExampleStorageMoversClient_NewListPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armstoragemover.NewClientFactory("60bcfc77-6589-4da2-b7fd-f9ec9322cf95", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewStorageMoversClient().NewListPager("examples-rg", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armstoragemover.StorageMoversClientListResponse{
+		// 	List: armstoragemover.List{
+		// 		NextLink: to.Ptr("https://management.azure.com/providers/Microsoft.StorageMover/storageMovers?$skiptoken=fake-continue-token"),
+		// 		Value: []*armstoragemover.StorageMover{
+		// 			{
+		// 				Name: to.Ptr("examples-storageMoverResourceName1"),
+		// 				Type: to.Ptr("Microsoft.StorageMover/storageMovers"),
+		// 				ID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverResourceName1"),
+		// 				Location: to.Ptr("eastus2"),
+		// 				Properties: &armstoragemover.Properties{
+		// 					Description: to.Ptr("Example Storage Mover 1 Description"),
+		// 				},
+		// 				SystemData: &armstoragemover.SystemData{
+		// 					CreatedAt: to.Ptr(time.Date(2023, time.July, 1, 1, 1, 1, 107505600, time.UTC)),
+		// 					CreatedBy: to.Ptr("string"),
+		// 					CreatedByType: to.Ptr(armstoragemover.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.July, 1, 2, 1, 1, 107505600, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("string"),
+		// 					LastModifiedByType: to.Ptr(armstoragemover.CreatedByTypeUser),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"key1": to.Ptr("value1"),
+		// 					"key2": to.Ptr("value2"),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("examples-storageMoverResourceName2"),
+		// 				Type: to.Ptr("Microsoft.StorageMover/storageMovers"),
+		// 				ID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverResourceName2"),
 		// 				Location: to.Ptr("eastus2"),
 		// 				Properties: &armstoragemover.Properties{
 		// 					Description: to.Ptr("Example Storage Mover 2 Description"),

@@ -70,7 +70,7 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) BeginDelete(ctx con
 	}
 }
 
-// Delete - Deletes a long term retention backup.
+// deleteOperation - Deletes a long term retention backup.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *LongTermRetentionManagedInstanceBackupsClient) deleteOperation(ctx context.Context, locationName string, managedInstanceName string, databaseName string, backupName string, options *LongTermRetentionManagedInstanceBackupsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -92,7 +92,7 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) deleteOperation(ctx
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *LongTermRetentionManagedInstanceBackupsClient) deleteCreateRequest(ctx context.Context, locationName string, managedInstanceName string, databaseName string, backupName string, _ *LongTermRetentionManagedInstanceBackupsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionManagedInstances/{managedInstanceName}/longTermRetentionDatabases/{databaseName}/longTermRetentionManagedInstanceBackups/{backupName}"
 	if client.subscriptionID == "" {
@@ -151,7 +151,7 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) BeginDeleteByResour
 	}
 }
 
-// DeleteByResourceGroup - Deletes a long term retention backup.
+// deleteByResourceGroup - Deletes a long term retention backup.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *LongTermRetentionManagedInstanceBackupsClient) deleteByResourceGroup(ctx context.Context, resourceGroupName string, locationName string, managedInstanceName string, databaseName string, backupName string, options *LongTermRetentionManagedInstanceBackupsClientBeginDeleteByResourceGroupOptions) (*http.Response, error) {
 	var err error
@@ -173,7 +173,7 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) deleteByResourceGro
 	return httpResp, nil
 }
 
-// deleteByResourceGroupCreateRequest creates the DeleteByResourceGroup request.
+// deleteByResourceGroupCreateRequest creates the deleteByResourceGroup request.
 func (client *LongTermRetentionManagedInstanceBackupsClient) deleteByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, locationName string, managedInstanceName string, databaseName string, backupName string, _ *LongTermRetentionManagedInstanceBackupsClientBeginDeleteByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionManagedInstances/{managedInstanceName}/longTermRetentionDatabases/{databaseName}/longTermRetentionManagedInstanceBackups/{backupName}"
 	if client.subscriptionID == "" {

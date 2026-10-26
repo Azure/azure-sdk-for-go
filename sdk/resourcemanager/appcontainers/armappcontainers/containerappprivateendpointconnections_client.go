@@ -71,7 +71,7 @@ func (client *ContainerAppPrivateEndpointConnectionsClient) BeginCreateOrUpdate(
 	}
 }
 
-// CreateOrUpdate - Update the state of a private endpoint connection for a given Container App.
+// createOrUpdate - Update the state of a private endpoint connection for a given Container App.
 //
 // Creates a private endpoint connection or updates its connection state for a Container App.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -95,7 +95,7 @@ func (client *ContainerAppPrivateEndpointConnectionsClient) createOrUpdate(ctx c
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ContainerAppPrivateEndpointConnectionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, containerAppName string, privateEndpointConnectionName string, privateEndpointConnectionEnvelope PrivateEndpointConnection, _ *ContainerAppPrivateEndpointConnectionsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if client.subscriptionID == "" {
@@ -155,7 +155,7 @@ func (client *ContainerAppPrivateEndpointConnectionsClient) BeginDelete(ctx cont
 	}
 }
 
-// Delete - Delete a private endpoint connection for a given Container App.
+// deleteOperation - Delete a private endpoint connection for a given Container App.
 //
 // Deletes the specified private endpoint connection associated with a Container App.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -179,7 +179,7 @@ func (client *ContainerAppPrivateEndpointConnectionsClient) deleteOperation(ctx 
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ContainerAppPrivateEndpointConnectionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, containerAppName string, privateEndpointConnectionName string, _ *ContainerAppPrivateEndpointConnectionsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if client.subscriptionID == "" {

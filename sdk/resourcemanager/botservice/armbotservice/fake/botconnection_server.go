@@ -33,10 +33,6 @@ type BotConnectionServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, resourceName string, connectionName string, options *armbotservice.BotConnectionClientGetOptions) (resp azfake.Responder[armbotservice.BotConnectionClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListByBotServicePager is the fake for method BotConnectionClient.NewListByBotServicePager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByBotServicePager func(resourceGroupName string, resourceName string, options *armbotservice.BotConnectionClientListByBotServiceOptions) (resp azfake.PagerResponder[armbotservice.BotConnectionClientListByBotServiceResponse])
-
 	// ListServiceProviders is the fake for method BotConnectionClient.ListServiceProviders
 	// HTTP status codes to indicate success: http.StatusOK
 	ListServiceProviders func(ctx context.Context, options *armbotservice.BotConnectionClientListServiceProvidersOptions) (resp azfake.Responder[armbotservice.BotConnectionClientListServiceProvidersResponse], errResp azfake.ErrorResponder)
@@ -44,6 +40,10 @@ type BotConnectionServer struct {
 	// ListWithSecrets is the fake for method BotConnectionClient.ListWithSecrets
 	// HTTP status codes to indicate success: http.StatusOK
 	ListWithSecrets func(ctx context.Context, resourceGroupName string, resourceName string, connectionName string, options *armbotservice.BotConnectionClientListWithSecretsOptions) (resp azfake.Responder[armbotservice.BotConnectionClientListWithSecretsResponse], errResp azfake.ErrorResponder)
+
+	// NewListByBotServicePager is the fake for method BotConnectionClient.NewListByBotServicePager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByBotServicePager func(resourceGroupName string, resourceName string, options *armbotservice.BotConnectionClientListByBotServiceOptions) (resp azfake.PagerResponder[armbotservice.BotConnectionClientListByBotServiceResponse])
 
 	// Update is the fake for method BotConnectionClient.Update
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
@@ -94,12 +94,12 @@ func (b *BotConnectionServerTransport) dispatchToMethodFake(req *http.Request, m
 				res.resp, res.err = b.dispatchDelete(req)
 			case "BotConnectionClient.Get":
 				res.resp, res.err = b.dispatchGet(req)
-			case "BotConnectionClient.NewListByBotServicePager":
-				res.resp, res.err = b.dispatchNewListByBotServicePager(req)
 			case "BotConnectionClient.ListServiceProviders":
 				res.resp, res.err = b.dispatchListServiceProviders(req)
 			case "BotConnectionClient.ListWithSecrets":
 				res.resp, res.err = b.dispatchListWithSecrets(req)
+			case "BotConnectionClient.NewListByBotServicePager":
+				res.resp, res.err = b.dispatchNewListByBotServicePager(req)
 			case "BotConnectionClient.Update":
 				res.resp, res.err = b.dispatchUpdate(req)
 			default:
@@ -233,47 +233,6 @@ func (b *BotConnectionServerTransport) dispatchGet(req *http.Request) (*http.Res
 	return resp, nil
 }
 
-func (b *BotConnectionServerTransport) dispatchNewListByBotServicePager(req *http.Request) (*http.Response, error) {
-	if b.srv.NewListByBotServicePager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByBotServicePager not implemented")}
-	}
-	newListByBotServicePager := b.newListByBotServicePager.get(req)
-	if newListByBotServicePager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.BotService/botServices/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/connections`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := b.srv.NewListByBotServicePager(resourceGroupNameParam, resourceNameParam, nil)
-		newListByBotServicePager = &resp
-		b.newListByBotServicePager.add(req, newListByBotServicePager)
-		server.PagerResponderInjectNextLinks(newListByBotServicePager, req, func(page *armbotservice.BotConnectionClientListByBotServiceResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByBotServicePager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		b.newListByBotServicePager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByBotServicePager) {
-		b.newListByBotServicePager.remove(req)
-	}
-	return resp, nil
-}
-
 func (b *BotConnectionServerTransport) dispatchListServiceProviders(req *http.Request) (*http.Response, error) {
 	if b.srv.ListServiceProviders == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListServiceProviders not implemented")}
@@ -332,6 +291,47 @@ func (b *BotConnectionServerTransport) dispatchListWithSecrets(req *http.Request
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ConnectionSetting, req)
 	if err != nil {
 		return nil, err
+	}
+	return resp, nil
+}
+
+func (b *BotConnectionServerTransport) dispatchNewListByBotServicePager(req *http.Request) (*http.Response, error) {
+	if b.srv.NewListByBotServicePager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByBotServicePager not implemented")}
+	}
+	newListByBotServicePager := b.newListByBotServicePager.get(req)
+	if newListByBotServicePager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.BotService/botServices/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/connections`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := b.srv.NewListByBotServicePager(resourceGroupNameParam, resourceNameParam, nil)
+		newListByBotServicePager = &resp
+		b.newListByBotServicePager.add(req, newListByBotServicePager)
+		server.PagerResponderInjectNextLinks(newListByBotServicePager, req, func(page *armbotservice.BotConnectionClientListByBotServiceResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByBotServicePager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		b.newListByBotServicePager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByBotServicePager) {
+		b.newListByBotServicePager.remove(req)
 	}
 	return resp, nil
 }

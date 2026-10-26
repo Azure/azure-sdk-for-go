@@ -70,7 +70,7 @@ func (client *ManagedInstanceAdvancedThreatProtectionSettingsClient) BeginCreate
 	}
 }
 
-// CreateOrUpdate - Creates or updates Advanced Threat Protection settings.
+// createOrUpdate - Creates or updates Advanced Threat Protection settings.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ManagedInstanceAdvancedThreatProtectionSettingsClient) createOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, advancedThreatProtectionName AdvancedThreatProtectionName, parameters ManagedInstanceAdvancedThreatProtection, options *ManagedInstanceAdvancedThreatProtectionSettingsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -92,7 +92,7 @@ func (client *ManagedInstanceAdvancedThreatProtectionSettingsClient) createOrUpd
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ManagedInstanceAdvancedThreatProtectionSettingsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, advancedThreatProtectionName AdvancedThreatProtectionName, parameters ManagedInstanceAdvancedThreatProtection, _ *ManagedInstanceAdvancedThreatProtectionSettingsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/advancedThreatProtectionSettings/{advancedThreatProtectionName}"
 	if client.subscriptionID == "" {

@@ -12,6 +12,27 @@ import (
 	"log"
 )
 
+// Generated from example definition: 2025-12-01-preview/CloudHsmClusterPrivateEndpointConnection_Delete_MaximumSet_Gen.json
+func ExampleCloudHsmClusterPrivateEndpointConnectionsClient_BeginDelete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armhardwaresecuritymodules.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewCloudHsmClusterPrivateEndpointConnectionsClient().BeginDelete(ctx, "rgcloudhsm", "chsm1", "sample-pec", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
 // Generated from example definition: 2025-12-01-preview/CloudHsmClusterPrivateEndpointConnection_Create_MaximumSet_Gen.json
 func ExampleCloudHsmClusterPrivateEndpointConnectionsClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -63,27 +84,6 @@ func ExampleCloudHsmClusterPrivateEndpointConnectionsClient_Create() {
 	// 		},
 	// 	},
 	// }
-}
-
-// Generated from example definition: 2025-12-01-preview/CloudHsmClusterPrivateEndpointConnection_Delete_MaximumSet_Gen.json
-func ExampleCloudHsmClusterPrivateEndpointConnectionsClient_BeginDelete() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armhardwaresecuritymodules.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewCloudHsmClusterPrivateEndpointConnectionsClient().BeginDelete(ctx, "rgcloudhsm", "chsm1", "sample-pec", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
 }
 
 // Generated from example definition: 2025-12-01-preview/CloudHsmClusterPrivateEndpointConnection_Get_MaximumSet_Gen.json

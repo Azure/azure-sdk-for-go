@@ -63,7 +63,7 @@ func (client *RecoveryPlansClient) BeginCreateOrUpdate(ctx context.Context, serv
 	}
 }
 
-// CreateOrUpdate - Create a RecoveryPlan
+// createOrUpdate - Create a RecoveryPlan
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *RecoveryPlansClient) createOrUpdate(ctx context.Context, serviceGroupName string, recoveryPlanName string, resource RecoveryPlan, options *RecoveryPlansClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -85,7 +85,7 @@ func (client *RecoveryPlansClient) createOrUpdate(ctx context.Context, serviceGr
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *RecoveryPlansClient) createOrUpdateCreateRequest(ctx context.Context, serviceGroupName string, recoveryPlanName string, resource RecoveryPlan, _ *RecoveryPlansClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Management/serviceGroups/{serviceGroupName}/providers/Microsoft.AzureResilienceManagement/recoveryPlans/{recoveryPlanName}"
 	if serviceGroupName == "" {
@@ -134,7 +134,7 @@ func (client *RecoveryPlansClient) BeginDelete(ctx context.Context, serviceGroup
 	}
 }
 
-// Delete - Delete a RecoveryPlan
+// deleteOperation - Delete a RecoveryPlan
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *RecoveryPlansClient) deleteOperation(ctx context.Context, serviceGroupName string, recoveryPlanName string, options *RecoveryPlansClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -156,7 +156,7 @@ func (client *RecoveryPlansClient) deleteOperation(ctx context.Context, serviceG
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *RecoveryPlansClient) deleteCreateRequest(ctx context.Context, serviceGroupName string, recoveryPlanName string, _ *RecoveryPlansClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Management/serviceGroups/{serviceGroupName}/providers/Microsoft.AzureResilienceManagement/recoveryPlans/{recoveryPlanName}"
 	if serviceGroupName == "" {
@@ -174,6 +174,78 @@ func (client *RecoveryPlansClient) deleteCreateRequest(ctx context.Context, serv
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - Update a RecoveryPlan
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - serviceGroupName - The name of the service group.
+//   - recoveryPlanName - The name of the recovery orchestration plan.
+//   - properties - The resource properties to be updated.
+//   - options - RecoveryPlansClientBeginUpdateOptions contains the optional parameters for the RecoveryPlansClient.BeginUpdate
+//     method.
+func (client *RecoveryPlansClient) BeginUpdate(ctx context.Context, serviceGroupName string, recoveryPlanName string, properties RecoveryPlan, options *RecoveryPlansClientBeginUpdateOptions) (*runtime.Poller[RecoveryPlansClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, serviceGroupName, recoveryPlanName, properties, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[RecoveryPlansClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[RecoveryPlansClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update a RecoveryPlan
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *RecoveryPlansClient) update(ctx context.Context, serviceGroupName string, recoveryPlanName string, properties RecoveryPlan, options *RecoveryPlansClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "RecoveryPlansClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, serviceGroupName, recoveryPlanName, properties, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *RecoveryPlansClient) updateCreateRequest(ctx context.Context, serviceGroupName string, recoveryPlanName string, properties RecoveryPlan, _ *RecoveryPlansClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Management/serviceGroups/{serviceGroupName}/providers/Microsoft.AzureResilienceManagement/recoveryPlans/{recoveryPlanName}"
+	if serviceGroupName == "" {
+		return nil, errors.New("parameter serviceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{serviceGroupName}", url.PathEscape(serviceGroupName))
+	if recoveryPlanName == "" {
+		return nil, errors.New("parameter recoveryPlanName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{recoveryPlanName}", url.PathEscape(recoveryPlanName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261001)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, properties); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -304,76 +376,4 @@ func (client *RecoveryPlansClient) listHandleResponse(resp *http.Response, succe
 		return RecoveryPlansClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Update a RecoveryPlan
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - serviceGroupName - The name of the service group.
-//   - recoveryPlanName - The name of the recovery orchestration plan.
-//   - properties - The resource properties to be updated.
-//   - options - RecoveryPlansClientBeginUpdateOptions contains the optional parameters for the RecoveryPlansClient.BeginUpdate
-//     method.
-func (client *RecoveryPlansClient) BeginUpdate(ctx context.Context, serviceGroupName string, recoveryPlanName string, properties RecoveryPlan, options *RecoveryPlansClientBeginUpdateOptions) (*runtime.Poller[RecoveryPlansClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, serviceGroupName, recoveryPlanName, properties, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[RecoveryPlansClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[RecoveryPlansClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update a RecoveryPlan
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *RecoveryPlansClient) update(ctx context.Context, serviceGroupName string, recoveryPlanName string, properties RecoveryPlan, options *RecoveryPlansClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "RecoveryPlansClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, serviceGroupName, recoveryPlanName, properties, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *RecoveryPlansClient) updateCreateRequest(ctx context.Context, serviceGroupName string, recoveryPlanName string, properties RecoveryPlan, _ *RecoveryPlansClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Management/serviceGroups/{serviceGroupName}/providers/Microsoft.AzureResilienceManagement/recoveryPlans/{recoveryPlanName}"
-	if serviceGroupName == "" {
-		return nil, errors.New("parameter serviceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{serviceGroupName}", url.PathEscape(serviceGroupName))
-	if recoveryPlanName == "" {
-		return nil, errors.New("parameter recoveryPlanName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{recoveryPlanName}", url.PathEscape(recoveryPlanName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20261001)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

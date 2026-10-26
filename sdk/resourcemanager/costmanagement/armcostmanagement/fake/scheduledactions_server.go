@@ -53,13 +53,13 @@ type ScheduledActionsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetByScope func(ctx context.Context, scope string, name string, options *armcostmanagement.ScheduledActionsClientGetByScopeOptions) (resp azfake.Responder[armcostmanagement.ScheduledActionsClientGetByScopeResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method ScheduledActionsClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armcostmanagement.ScheduledActionsClientListOptions) (resp azfake.PagerResponder[armcostmanagement.ScheduledActionsClientListResponse])
-
 	// NewListByScopePager is the fake for method ScheduledActionsClient.NewListByScopePager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByScopePager func(scope string, options *armcostmanagement.ScheduledActionsClientListByScopeOptions) (resp azfake.PagerResponder[armcostmanagement.ScheduledActionsClientListByScopeResponse])
+
+	// NewListPager is the fake for method ScheduledActionsClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armcostmanagement.ScheduledActionsClientListOptions) (resp azfake.PagerResponder[armcostmanagement.ScheduledActionsClientListResponse])
 
 	// Run is the fake for method ScheduledActionsClient.Run
 	// HTTP status codes to indicate success: http.StatusOK
@@ -76,8 +76,8 @@ type ScheduledActionsServer struct {
 func NewScheduledActionsServerTransport(srv *ScheduledActionsServer) *ScheduledActionsServerTransport {
 	return &ScheduledActionsServerTransport{
 		srv:                 srv,
-		newListPager:        newTracker[azfake.PagerResponder[armcostmanagement.ScheduledActionsClientListResponse]](),
 		newListByScopePager: newTracker[azfake.PagerResponder[armcostmanagement.ScheduledActionsClientListByScopeResponse]](),
+		newListPager:        newTracker[azfake.PagerResponder[armcostmanagement.ScheduledActionsClientListResponse]](),
 	}
 }
 
@@ -85,8 +85,8 @@ func NewScheduledActionsServerTransport(srv *ScheduledActionsServer) *ScheduledA
 // Don't use this type directly, use NewScheduledActionsServerTransport instead.
 type ScheduledActionsServerTransport struct {
 	srv                 *ScheduledActionsServer
-	newListPager        *tracker[azfake.PagerResponder[armcostmanagement.ScheduledActionsClientListResponse]]
 	newListByScopePager *tracker[azfake.PagerResponder[armcostmanagement.ScheduledActionsClientListByScopeResponse]]
+	newListPager        *tracker[azfake.PagerResponder[armcostmanagement.ScheduledActionsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for ScheduledActionsServerTransport.
@@ -126,10 +126,10 @@ func (s *ScheduledActionsServerTransport) dispatchToMethodFake(req *http.Request
 				res.resp, res.err = s.dispatchGet(req)
 			case "ScheduledActionsClient.GetByScope":
 				res.resp, res.err = s.dispatchGetByScope(req)
-			case "ScheduledActionsClient.NewListPager":
-				res.resp, res.err = s.dispatchNewListPager(req)
 			case "ScheduledActionsClient.NewListByScopePager":
 				res.resp, res.err = s.dispatchNewListByScopePager(req)
+			case "ScheduledActionsClient.NewListPager":
+				res.resp, res.err = s.dispatchNewListPager(req)
 			case "ScheduledActionsClient.Run":
 				res.resp, res.err = s.dispatchRun(req)
 			case "ScheduledActionsClient.RunByScope":
@@ -414,41 +414,6 @@ func (s *ScheduledActionsServerTransport) dispatchGetByScope(req *http.Request) 
 	return resp, nil
 }
 
-func (s *ScheduledActionsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if s.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := s.newListPager.get(req)
-	if newListPager == nil {
-		qp := req.URL.Query()
-		filterParam := getOptional(qp.Get("$filter"))
-		var options *armcostmanagement.ScheduledActionsClientListOptions
-		if filterParam != nil {
-			options = &armcostmanagement.ScheduledActionsClientListOptions{
-				Filter: filterParam,
-			}
-		}
-		resp := s.srv.NewListPager(options)
-		newListPager = &resp
-		s.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcostmanagement.ScheduledActionsClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		s.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		s.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (s *ScheduledActionsServerTransport) dispatchNewListByScopePager(req *http.Request) (*http.Response, error) {
 	if s.srv.NewListByScopePager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByScopePager not implemented")}
@@ -490,6 +455,41 @@ func (s *ScheduledActionsServerTransport) dispatchNewListByScopePager(req *http.
 	}
 	if !server.PagerResponderMore(newListByScopePager) {
 		s.newListByScopePager.remove(req)
+	}
+	return resp, nil
+}
+
+func (s *ScheduledActionsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if s.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := s.newListPager.get(req)
+	if newListPager == nil {
+		qp := req.URL.Query()
+		filterParam := getOptional(qp.Get("$filter"))
+		var options *armcostmanagement.ScheduledActionsClientListOptions
+		if filterParam != nil {
+			options = &armcostmanagement.ScheduledActionsClientListOptions{
+				Filter: filterParam,
+			}
+		}
+		resp := s.srv.NewListPager(options)
+		newListPager = &resp
+		s.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcostmanagement.ScheduledActionsClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		s.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		s.newListPager.remove(req)
 	}
 	return resp, nil
 }

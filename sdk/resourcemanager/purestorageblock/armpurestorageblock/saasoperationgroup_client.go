@@ -66,7 +66,7 @@ func (client *SaaSOperationGroupClient) BeginActivateResource(ctx context.Contex
 	}
 }
 
-// ActivateResource - Activate the SaaS resource
+// activateResource - Activate the SaaS resource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *SaaSOperationGroupClient) activateResource(ctx context.Context, body ActivateSaaSRequest, options *SaaSOperationGroupClientBeginActivateResourceOptions) (*http.Response, error) {
 	var err error
@@ -88,7 +88,7 @@ func (client *SaaSOperationGroupClient) activateResource(ctx context.Context, bo
 	return httpResp, nil
 }
 
-// activateResourceCreateRequest creates the ActivateResource request.
+// activateResourceCreateRequest creates the activateResource request.
 func (client *SaaSOperationGroupClient) activateResourceCreateRequest(ctx context.Context, body ActivateSaaSRequest, _ *SaaSOperationGroupClientBeginActivateResourceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/PureStorage.Block/activateSaaS"
 	if client.subscriptionID == "" {

@@ -147,7 +147,7 @@ func (client *AgentApplicationsClient) createOrUpdateCreateRequest(ctx context.C
 //     method.
 func (client *AgentApplicationsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, projectName string, name string, options *AgentApplicationsClientBeginDeleteOptions) (*runtime.Poller[AgentApplicationsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, accountName, projectName, name, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, projectName, name, options)
 		if err != nil {
 			return nil, err
 		}
@@ -162,11 +162,11 @@ func (client *AgentApplicationsClient) BeginDelete(ctx context.Context, resource
 	}
 }
 
-// delete - Delete Agent Application.
+// deleteOperation - Delete Agent Application.
 //
 // Delete Agent Application.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *AgentApplicationsClient) delete(ctx context.Context, resourceGroupName string, accountName string, projectName string, name string, options *AgentApplicationsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *AgentApplicationsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, projectName string, name string, options *AgentApplicationsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AgentApplicationsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)

@@ -22,10 +22,6 @@ import (
 
 // Server is a fake server for instances of the armredis.Client type.
 type Server struct {
-	// CheckNameAvailability is the fake for method Client.CheckNameAvailability
-	// HTTP status codes to indicate success: http.StatusOK
-	CheckNameAvailability func(ctx context.Context, parameters armredis.CheckNameAvailabilityParameters, options *armredis.ClientCheckNameAvailabilityOptions) (resp azfake.Responder[armredis.ClientCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
-
 	// BeginCreate is the fake for method Client.BeginCreate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreate func(ctx context.Context, resourceGroupName string, name string, parameters armredis.CreateParameters, options *armredis.ClientBeginCreateOptions) (resp azfake.PollerResponder[armredis.ClientCreateResponse], errResp azfake.ErrorResponder)
@@ -42,6 +38,18 @@ type Server struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginFlushCache func(ctx context.Context, resourceGroupName string, cacheName string, options *armredis.ClientBeginFlushCacheOptions) (resp azfake.PollerResponder[armredis.ClientFlushCacheResponse], errResp azfake.ErrorResponder)
 
+	// BeginImportData is the fake for method Client.BeginImportData
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginImportData func(ctx context.Context, resourceGroupName string, name string, parameters armredis.ImportRDBParameters, options *armredis.ClientBeginImportDataOptions) (resp azfake.PollerResponder[armredis.ClientImportDataResponse], errResp azfake.ErrorResponder)
+
+	// BeginUpdate is the fake for method Client.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, name string, parameters armredis.UpdateParameters, options *armredis.ClientBeginUpdateOptions) (resp azfake.PollerResponder[armredis.ClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// CheckNameAvailability is the fake for method Client.CheckNameAvailability
+	// HTTP status codes to indicate success: http.StatusOK
+	CheckNameAvailability func(ctx context.Context, parameters armredis.CheckNameAvailabilityParameters, options *armredis.ClientCheckNameAvailabilityOptions) (resp azfake.Responder[armredis.ClientCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
+
 	// ForceReboot is the fake for method Client.ForceReboot
 	// HTTP status codes to indicate success: http.StatusOK
 	ForceReboot func(ctx context.Context, resourceGroupName string, name string, parameters armredis.RebootParameters, options *armredis.ClientForceRebootOptions) (resp azfake.Responder[armredis.ClientForceRebootResponse], errResp azfake.ErrorResponder)
@@ -50,9 +58,9 @@ type Server struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, name string, options *armredis.ClientGetOptions) (resp azfake.Responder[armredis.ClientGetResponse], errResp azfake.ErrorResponder)
 
-	// BeginImportData is the fake for method Client.BeginImportData
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginImportData func(ctx context.Context, resourceGroupName string, name string, parameters armredis.ImportRDBParameters, options *armredis.ClientBeginImportDataOptions) (resp azfake.PollerResponder[armredis.ClientImportDataResponse], errResp azfake.ErrorResponder)
+	// ListKeys is the fake for method Client.ListKeys
+	// HTTP status codes to indicate success: http.StatusOK
+	ListKeys func(ctx context.Context, resourceGroupName string, name string, options *armredis.ClientListKeysOptions) (resp azfake.Responder[armredis.ClientListKeysResponse], errResp azfake.ErrorResponder)
 
 	// NewListByResourceGroupPager is the fake for method Client.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -62,10 +70,6 @@ type Server struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armredis.ClientListBySubscriptionOptions) (resp azfake.PagerResponder[armredis.ClientListBySubscriptionResponse])
 
-	// ListKeys is the fake for method Client.ListKeys
-	// HTTP status codes to indicate success: http.StatusOK
-	ListKeys func(ctx context.Context, resourceGroupName string, name string, options *armredis.ClientListKeysOptions) (resp azfake.Responder[armredis.ClientListKeysResponse], errResp azfake.ErrorResponder)
-
 	// NewListUpgradeNotificationsPager is the fake for method Client.NewListUpgradeNotificationsPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListUpgradeNotificationsPager func(resourceGroupName string, name string, history float64, options *armredis.ClientListUpgradeNotificationsOptions) (resp azfake.PagerResponder[armredis.ClientListUpgradeNotificationsResponse])
@@ -73,10 +77,6 @@ type Server struct {
 	// RegenerateKey is the fake for method Client.RegenerateKey
 	// HTTP status codes to indicate success: http.StatusOK
 	RegenerateKey func(ctx context.Context, resourceGroupName string, name string, parameters armredis.RegenerateKeyParameters, options *armredis.ClientRegenerateKeyOptions) (resp azfake.Responder[armredis.ClientRegenerateKeyResponse], errResp azfake.ErrorResponder)
-
-	// BeginUpdate is the fake for method Client.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, name string, parameters armredis.UpdateParameters, options *armredis.ClientBeginUpdateOptions) (resp azfake.PollerResponder[armredis.ClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewServerTransport creates a new instance of ServerTransport with the provided implementation.
@@ -90,10 +90,10 @@ func NewServerTransport(srv *Server) *ServerTransport {
 		beginExportData:                  newTracker[azfake.PollerResponder[armredis.ClientExportDataResponse]](),
 		beginFlushCache:                  newTracker[azfake.PollerResponder[armredis.ClientFlushCacheResponse]](),
 		beginImportData:                  newTracker[azfake.PollerResponder[armredis.ClientImportDataResponse]](),
+		beginUpdate:                      newTracker[azfake.PollerResponder[armredis.ClientUpdateResponse]](),
 		newListByResourceGroupPager:      newTracker[azfake.PagerResponder[armredis.ClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:       newTracker[azfake.PagerResponder[armredis.ClientListBySubscriptionResponse]](),
 		newListUpgradeNotificationsPager: newTracker[azfake.PagerResponder[armredis.ClientListUpgradeNotificationsResponse]](),
-		beginUpdate:                      newTracker[azfake.PollerResponder[armredis.ClientUpdateResponse]](),
 	}
 }
 
@@ -106,10 +106,10 @@ type ServerTransport struct {
 	beginExportData                  *tracker[azfake.PollerResponder[armredis.ClientExportDataResponse]]
 	beginFlushCache                  *tracker[azfake.PollerResponder[armredis.ClientFlushCacheResponse]]
 	beginImportData                  *tracker[azfake.PollerResponder[armredis.ClientImportDataResponse]]
+	beginUpdate                      *tracker[azfake.PollerResponder[armredis.ClientUpdateResponse]]
 	newListByResourceGroupPager      *tracker[azfake.PagerResponder[armredis.ClientListByResourceGroupResponse]]
 	newListBySubscriptionPager       *tracker[azfake.PagerResponder[armredis.ClientListBySubscriptionResponse]]
 	newListUpgradeNotificationsPager *tracker[azfake.PagerResponder[armredis.ClientListUpgradeNotificationsResponse]]
-	beginUpdate                      *tracker[azfake.PollerResponder[armredis.ClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for ServerTransport.
@@ -133,8 +133,6 @@ func (s *ServerTransport) dispatchToMethodFake(req *http.Request, method string)
 		}
 		if !intercepted {
 			switch method {
-			case "Client.CheckNameAvailability":
-				res.resp, res.err = s.dispatchCheckNameAvailability(req)
 			case "Client.BeginCreate":
 				res.resp, res.err = s.dispatchBeginCreate(req)
 			case "Client.BeginDelete":
@@ -143,24 +141,26 @@ func (s *ServerTransport) dispatchToMethodFake(req *http.Request, method string)
 				res.resp, res.err = s.dispatchBeginExportData(req)
 			case "Client.BeginFlushCache":
 				res.resp, res.err = s.dispatchBeginFlushCache(req)
+			case "Client.BeginImportData":
+				res.resp, res.err = s.dispatchBeginImportData(req)
+			case "Client.BeginUpdate":
+				res.resp, res.err = s.dispatchBeginUpdate(req)
+			case "Client.CheckNameAvailability":
+				res.resp, res.err = s.dispatchCheckNameAvailability(req)
 			case "Client.ForceReboot":
 				res.resp, res.err = s.dispatchForceReboot(req)
 			case "Client.Get":
 				res.resp, res.err = s.dispatchGet(req)
-			case "Client.BeginImportData":
-				res.resp, res.err = s.dispatchBeginImportData(req)
+			case "Client.ListKeys":
+				res.resp, res.err = s.dispatchListKeys(req)
 			case "Client.NewListByResourceGroupPager":
 				res.resp, res.err = s.dispatchNewListByResourceGroupPager(req)
 			case "Client.NewListBySubscriptionPager":
 				res.resp, res.err = s.dispatchNewListBySubscriptionPager(req)
-			case "Client.ListKeys":
-				res.resp, res.err = s.dispatchListKeys(req)
 			case "Client.NewListUpgradeNotificationsPager":
 				res.resp, res.err = s.dispatchNewListUpgradeNotificationsPager(req)
 			case "Client.RegenerateKey":
 				res.resp, res.err = s.dispatchRegenerateKey(req)
-			case "Client.BeginUpdate":
-				res.resp, res.err = s.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -175,35 +175,6 @@ func (s *ServerTransport) dispatchToMethodFake(req *http.Request, method string)
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (s *ServerTransport) dispatchCheckNameAvailability(req *http.Request) (*http.Response, error) {
-	if s.srv.CheckNameAvailability == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CheckNameAvailability not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Cache/checkNameAvailability`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 2 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armredis.CheckNameAvailabilityParameters](req)
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := s.srv.CheckNameAvailability(req.Context(), body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (s *ServerTransport) dispatchBeginCreate(req *http.Request) (*http.Response, error) {
@@ -390,6 +361,131 @@ func (s *ServerTransport) dispatchBeginFlushCache(req *http.Request) (*http.Resp
 	return resp, nil
 }
 
+func (s *ServerTransport) dispatchBeginImportData(req *http.Request) (*http.Response, error) {
+	if s.srv.BeginImportData == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginImportData not implemented")}
+	}
+	beginImportData := s.beginImportData.get(req)
+	if beginImportData == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Cache/redis/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/import`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armredis.ImportRDBParameters](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := s.srv.BeginImportData(req.Context(), resourceGroupNameParam, nameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginImportData = &respr
+		s.beginImportData.add(req, beginImportData)
+	}
+
+	resp, err := server.PollerResponderNext(beginImportData, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		s.beginImportData.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginImportData) {
+		s.beginImportData.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (s *ServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if s.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := s.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Cache/redis/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armredis.UpdateParameters](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := s.srv.BeginUpdate(req.Context(), resourceGroupNameParam, nameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		s.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		s.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		s.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (s *ServerTransport) dispatchCheckNameAvailability(req *http.Request) (*http.Response, error) {
+	if s.srv.CheckNameAvailability == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CheckNameAvailability not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Cache/checkNameAvailability`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armredis.CheckNameAvailabilityParameters](req)
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.CheckNameAvailability(req.Context(), body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.NewResponse(respContent, req, nil)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (s *ServerTransport) dispatchForceReboot(req *http.Request) (*http.Response, error) {
 	if s.srv.ForceReboot == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ForceReboot not implemented")}
@@ -460,51 +556,36 @@ func (s *ServerTransport) dispatchGet(req *http.Request) (*http.Response, error)
 	return resp, nil
 }
 
-func (s *ServerTransport) dispatchBeginImportData(req *http.Request) (*http.Response, error) {
-	if s.srv.BeginImportData == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginImportData not implemented")}
+func (s *ServerTransport) dispatchListKeys(req *http.Request) (*http.Response, error) {
+	if s.srv.ListKeys == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListKeys not implemented")}
 	}
-	beginImportData := s.beginImportData.get(req)
-	if beginImportData == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Cache/redis/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/import`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armredis.ImportRDBParameters](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := s.srv.BeginImportData(req.Context(), resourceGroupNameParam, nameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginImportData = &respr
-		s.beginImportData.add(req, beginImportData)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Cache/redis/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listKeys`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-
-	resp, err := server.PollerResponderNext(beginImportData, req)
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
 	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		s.beginImportData.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
 	}
-	if !server.PollerResponderMore(beginImportData) {
-		s.beginImportData.remove(req)
+	respr, errRespr := s.srv.ListKeys(req.Context(), resourceGroupNameParam, nameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
 	}
-
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AccessKeys, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 
@@ -574,39 +655,6 @@ func (s *ServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) 
 	}
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		s.newListBySubscriptionPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (s *ServerTransport) dispatchListKeys(req *http.Request) (*http.Response, error) {
-	if s.srv.ListKeys == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListKeys not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Cache/redis/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listKeys`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := s.srv.ListKeys(req.Context(), resourceGroupNameParam, nameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AccessKeys, req)
-	if err != nil {
-		return nil, err
 	}
 	return resp, nil
 }
@@ -691,54 +739,6 @@ func (s *ServerTransport) dispatchRegenerateKey(req *http.Request) (*http.Respon
 	if err != nil {
 		return nil, err
 	}
-	return resp, nil
-}
-
-func (s *ServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if s.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := s.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Cache/redis/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armredis.UpdateParameters](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := s.srv.BeginUpdate(req.Context(), resourceGroupNameParam, nameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		s.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		s.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		s.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

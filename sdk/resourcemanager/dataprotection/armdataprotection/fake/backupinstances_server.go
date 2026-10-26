@@ -34,18 +34,6 @@ type BackupInstancesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, options *armdataprotection.BackupInstancesClientBeginDeleteOptions) (resp azfake.PollerResponder[armdataprotection.BackupInstancesClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method BackupInstancesClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, options *armdataprotection.BackupInstancesClientGetOptions) (resp azfake.Responder[armdataprotection.BackupInstancesClientGetResponse], errResp azfake.ErrorResponder)
-
-	// GetBackupInstanceOperationResult is the fake for method BackupInstancesClient.GetBackupInstanceOperationResult
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	GetBackupInstanceOperationResult func(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, operationID string, options *armdataprotection.BackupInstancesClientGetBackupInstanceOperationResultOptions) (resp azfake.Responder[armdataprotection.BackupInstancesClientGetBackupInstanceOperationResultResponse], errResp azfake.ErrorResponder)
-
-	// NewListPager is the fake for method BackupInstancesClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, vaultName string, options *armdataprotection.BackupInstancesClientListOptions) (resp azfake.PagerResponder[armdataprotection.BackupInstancesClientListResponse])
-
 	// BeginResumeBackups is the fake for method BackupInstancesClient.BeginResumeBackups
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginResumeBackups func(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, options *armdataprotection.BackupInstancesClientBeginResumeBackupsOptions) (resp azfake.PollerResponder[armdataprotection.BackupInstancesClientResumeBackupsResponse], errResp azfake.ErrorResponder)
@@ -93,6 +81,18 @@ type BackupInstancesServer struct {
 	// BeginValidateForRestore is the fake for method BackupInstancesClient.BeginValidateForRestore
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginValidateForRestore func(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, parameters armdataprotection.ValidateRestoreRequestObject, options *armdataprotection.BackupInstancesClientBeginValidateForRestoreOptions) (resp azfake.PollerResponder[armdataprotection.BackupInstancesClientValidateForRestoreResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method BackupInstancesClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, options *armdataprotection.BackupInstancesClientGetOptions) (resp azfake.Responder[armdataprotection.BackupInstancesClientGetResponse], errResp azfake.ErrorResponder)
+
+	// GetBackupInstanceOperationResult is the fake for method BackupInstancesClient.GetBackupInstanceOperationResult
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	GetBackupInstanceOperationResult func(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, operationID string, options *armdataprotection.BackupInstancesClientGetBackupInstanceOperationResultOptions) (resp azfake.Responder[armdataprotection.BackupInstancesClientGetBackupInstanceOperationResultResponse], errResp azfake.ErrorResponder)
+
+	// NewListPager is the fake for method BackupInstancesClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(resourceGroupName string, vaultName string, options *armdataprotection.BackupInstancesClientListOptions) (resp azfake.PagerResponder[armdataprotection.BackupInstancesClientListResponse])
 }
 
 // NewBackupInstancesServerTransport creates a new instance of BackupInstancesServerTransport with the provided implementation.
@@ -104,7 +104,6 @@ func NewBackupInstancesServerTransport(srv *BackupInstancesServer) *BackupInstan
 		beginAdhocBackup:                newTracker[azfake.PollerResponder[armdataprotection.BackupInstancesClientAdhocBackupResponse]](),
 		beginCreateOrUpdate:             newTracker[azfake.PollerResponder[armdataprotection.BackupInstancesClientCreateOrUpdateResponse]](),
 		beginDelete:                     newTracker[azfake.PollerResponder[armdataprotection.BackupInstancesClientDeleteResponse]](),
-		newListPager:                    newTracker[azfake.PagerResponder[armdataprotection.BackupInstancesClientListResponse]](),
 		beginResumeBackups:              newTracker[azfake.PollerResponder[armdataprotection.BackupInstancesClientResumeBackupsResponse]](),
 		beginResumeProtection:           newTracker[azfake.PollerResponder[armdataprotection.BackupInstancesClientResumeProtectionResponse]](),
 		beginStopProtection:             newTracker[azfake.PollerResponder[armdataprotection.BackupInstancesClientStopProtectionResponse]](),
@@ -117,6 +116,7 @@ func NewBackupInstancesServerTransport(srv *BackupInstancesServer) *BackupInstan
 		beginValidateForBackup:          newTracker[azfake.PollerResponder[armdataprotection.BackupInstancesClientValidateForBackupResponse]](),
 		beginValidateForModifyBackup:    newTracker[azfake.PollerResponder[armdataprotection.BackupInstancesClientValidateForModifyBackupResponse]](),
 		beginValidateForRestore:         newTracker[azfake.PollerResponder[armdataprotection.BackupInstancesClientValidateForRestoreResponse]](),
+		newListPager:                    newTracker[azfake.PagerResponder[armdataprotection.BackupInstancesClientListResponse]](),
 	}
 }
 
@@ -127,7 +127,6 @@ type BackupInstancesServerTransport struct {
 	beginAdhocBackup                *tracker[azfake.PollerResponder[armdataprotection.BackupInstancesClientAdhocBackupResponse]]
 	beginCreateOrUpdate             *tracker[azfake.PollerResponder[armdataprotection.BackupInstancesClientCreateOrUpdateResponse]]
 	beginDelete                     *tracker[azfake.PollerResponder[armdataprotection.BackupInstancesClientDeleteResponse]]
-	newListPager                    *tracker[azfake.PagerResponder[armdataprotection.BackupInstancesClientListResponse]]
 	beginResumeBackups              *tracker[azfake.PollerResponder[armdataprotection.BackupInstancesClientResumeBackupsResponse]]
 	beginResumeProtection           *tracker[azfake.PollerResponder[armdataprotection.BackupInstancesClientResumeProtectionResponse]]
 	beginStopProtection             *tracker[azfake.PollerResponder[armdataprotection.BackupInstancesClientStopProtectionResponse]]
@@ -140,6 +139,7 @@ type BackupInstancesServerTransport struct {
 	beginValidateForBackup          *tracker[azfake.PollerResponder[armdataprotection.BackupInstancesClientValidateForBackupResponse]]
 	beginValidateForModifyBackup    *tracker[azfake.PollerResponder[armdataprotection.BackupInstancesClientValidateForModifyBackupResponse]]
 	beginValidateForRestore         *tracker[azfake.PollerResponder[armdataprotection.BackupInstancesClientValidateForRestoreResponse]]
+	newListPager                    *tracker[azfake.PagerResponder[armdataprotection.BackupInstancesClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for BackupInstancesServerTransport.
@@ -169,12 +169,6 @@ func (b *BackupInstancesServerTransport) dispatchToMethodFake(req *http.Request,
 				res.resp, res.err = b.dispatchBeginCreateOrUpdate(req)
 			case "BackupInstancesClient.BeginDelete":
 				res.resp, res.err = b.dispatchBeginDelete(req)
-			case "BackupInstancesClient.Get":
-				res.resp, res.err = b.dispatchGet(req)
-			case "BackupInstancesClient.GetBackupInstanceOperationResult":
-				res.resp, res.err = b.dispatchGetBackupInstanceOperationResult(req)
-			case "BackupInstancesClient.NewListPager":
-				res.resp, res.err = b.dispatchNewListPager(req)
 			case "BackupInstancesClient.BeginResumeBackups":
 				res.resp, res.err = b.dispatchBeginResumeBackups(req)
 			case "BackupInstancesClient.BeginResumeProtection":
@@ -199,6 +193,12 @@ func (b *BackupInstancesServerTransport) dispatchToMethodFake(req *http.Request,
 				res.resp, res.err = b.dispatchBeginValidateForModifyBackup(req)
 			case "BackupInstancesClient.BeginValidateForRestore":
 				res.resp, res.err = b.dispatchBeginValidateForRestore(req)
+			case "BackupInstancesClient.Get":
+				res.resp, res.err = b.dispatchGet(req)
+			case "BackupInstancesClient.GetBackupInstanceOperationResult":
+				res.resp, res.err = b.dispatchGetBackupInstanceOperationResult(req)
+			case "BackupInstancesClient.NewListPager":
+				res.resp, res.err = b.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -378,125 +378,6 @@ func (b *BackupInstancesServerTransport) dispatchBeginDelete(req *http.Request) 
 		b.beginDelete.remove(req)
 	}
 
-	return resp, nil
-}
-
-func (b *BackupInstancesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if b.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataProtection/backupVaults/(?P<vaultName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/backupInstances/(?P<backupInstanceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	vaultNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("vaultName")])
-	if err != nil {
-		return nil, err
-	}
-	backupInstanceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("backupInstanceName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := b.srv.Get(req.Context(), resourceGroupNameParam, vaultNameParam, backupInstanceNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).BackupInstanceResource, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (b *BackupInstancesServerTransport) dispatchGetBackupInstanceOperationResult(req *http.Request) (*http.Response, error) {
-	if b.srv.GetBackupInstanceOperationResult == nil {
-		return nil, &nonRetriableError{errors.New("fake for method GetBackupInstanceOperationResult not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataProtection/backupVaults/(?P<vaultName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/backupInstances/(?P<backupInstanceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/operationResults/(?P<operationId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 6 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	vaultNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("vaultName")])
-	if err != nil {
-		return nil, err
-	}
-	backupInstanceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("backupInstanceName")])
-	if err != nil {
-		return nil, err
-	}
-	operationIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("operationId")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := b.srv.GetBackupInstanceOperationResult(req.Context(), resourceGroupNameParam, vaultNameParam, backupInstanceNameParam, operationIDParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).BackupInstanceResource, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (b *BackupInstancesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if b.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := b.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataProtection/backupVaults/(?P<vaultName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/backupInstances`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		vaultNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("vaultName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := b.srv.NewListPager(resourceGroupNameParam, vaultNameParam, nil)
-		newListPager = &resp
-		b.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armdataprotection.BackupInstancesClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		b.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		b.newListPager.remove(req)
-	}
 	return resp, nil
 }
 
@@ -1128,6 +1009,125 @@ func (b *BackupInstancesServerTransport) dispatchBeginValidateForRestore(req *ht
 		b.beginValidateForRestore.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (b *BackupInstancesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if b.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataProtection/backupVaults/(?P<vaultName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/backupInstances/(?P<backupInstanceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	vaultNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("vaultName")])
+	if err != nil {
+		return nil, err
+	}
+	backupInstanceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("backupInstanceName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := b.srv.Get(req.Context(), resourceGroupNameParam, vaultNameParam, backupInstanceNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).BackupInstanceResource, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (b *BackupInstancesServerTransport) dispatchGetBackupInstanceOperationResult(req *http.Request) (*http.Response, error) {
+	if b.srv.GetBackupInstanceOperationResult == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetBackupInstanceOperationResult not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataProtection/backupVaults/(?P<vaultName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/backupInstances/(?P<backupInstanceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/operationResults/(?P<operationId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 6 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	vaultNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("vaultName")])
+	if err != nil {
+		return nil, err
+	}
+	backupInstanceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("backupInstanceName")])
+	if err != nil {
+		return nil, err
+	}
+	operationIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("operationId")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := b.srv.GetBackupInstanceOperationResult(req.Context(), resourceGroupNameParam, vaultNameParam, backupInstanceNameParam, operationIDParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).BackupInstanceResource, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (b *BackupInstancesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if b.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := b.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataProtection/backupVaults/(?P<vaultName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/backupInstances`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		vaultNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("vaultName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := b.srv.NewListPager(resourceGroupNameParam, vaultNameParam, nil)
+		newListPager = &resp
+		b.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armdataprotection.BackupInstancesClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		b.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		b.newListPager.remove(req)
+	}
 	return resp, nil
 }
 

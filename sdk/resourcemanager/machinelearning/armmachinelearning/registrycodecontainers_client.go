@@ -72,7 +72,7 @@ func (client *RegistryCodeContainersClient) BeginCreateOrUpdate(ctx context.Cont
 	}
 }
 
-// CreateOrUpdate - Create or update Code container.
+// createOrUpdate - Create or update Code container.
 //
 // Create or update Code container.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -96,7 +96,7 @@ func (client *RegistryCodeContainersClient) createOrUpdate(ctx context.Context, 
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *RegistryCodeContainersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, registryName string, codeName string, body CodeContainer, _ *RegistryCodeContainersClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/registries/{registryName}/codes/{codeName}"
 	if client.subscriptionID == "" {
@@ -156,7 +156,7 @@ func (client *RegistryCodeContainersClient) BeginDelete(ctx context.Context, res
 	}
 }
 
-// Delete - Delete Code container.
+// deleteOperation - Delete Code container.
 //
 // Delete Code container.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -180,7 +180,7 @@ func (client *RegistryCodeContainersClient) deleteOperation(ctx context.Context,
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *RegistryCodeContainersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, registryName string, codeName string, _ *RegistryCodeContainersClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/registries/{registryName}/codes/{codeName}"
 	if client.subscriptionID == "" {

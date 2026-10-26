@@ -68,7 +68,7 @@ func (client *UsagePlansClient) BeginCreateOrUpdate(ctx context.Context, resourc
 	}
 }
 
-// CreateOrUpdate - Create a UsagePlan
+// createOrUpdate - Create a UsagePlan
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *UsagePlansClient) createOrUpdate(ctx context.Context, resourceGroupName string, usagePlanName string, resource UsagePlan, options *UsagePlansClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -90,7 +90,7 @@ func (client *UsagePlansClient) createOrUpdate(ctx context.Context, resourceGrou
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *UsagePlansClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, usagePlanName string, resource UsagePlan, _ *UsagePlansClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureResilienceManagement/usagePlans/{usagePlanName}"
 	if client.subscriptionID == "" {
@@ -142,7 +142,7 @@ func (client *UsagePlansClient) BeginDelete(ctx context.Context, resourceGroupNa
 	}
 }
 
-// Delete - Delete a UsagePlan
+// deleteOperation - Delete a UsagePlan
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *UsagePlansClient) deleteOperation(ctx context.Context, resourceGroupName string, usagePlanName string, options *UsagePlansClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -164,7 +164,7 @@ func (client *UsagePlansClient) deleteOperation(ctx context.Context, resourceGro
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *UsagePlansClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, usagePlanName string, _ *UsagePlansClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureResilienceManagement/usagePlans/{usagePlanName}"
 	if client.subscriptionID == "" {
@@ -186,6 +186,81 @@ func (client *UsagePlansClient) deleteCreateRequest(ctx context.Context, resourc
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - Update a UsagePlan
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - usagePlanName - The name of the usage plan.
+//   - properties - The resource properties to be updated.
+//   - options - UsagePlansClientBeginUpdateOptions contains the optional parameters for the UsagePlansClient.BeginUpdate method.
+func (client *UsagePlansClient) BeginUpdate(ctx context.Context, resourceGroupName string, usagePlanName string, properties UsagePlanTagsUpdate, options *UsagePlansClientBeginUpdateOptions) (*runtime.Poller[UsagePlansClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, usagePlanName, properties, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[UsagePlansClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[UsagePlansClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update a UsagePlan
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *UsagePlansClient) update(ctx context.Context, resourceGroupName string, usagePlanName string, properties UsagePlanTagsUpdate, options *UsagePlansClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "UsagePlansClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, usagePlanName, properties, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *UsagePlansClient) updateCreateRequest(ctx context.Context, resourceGroupName string, usagePlanName string, properties UsagePlanTagsUpdate, _ *UsagePlansClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureResilienceManagement/usagePlans/{usagePlanName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if usagePlanName == "" {
+		return nil, errors.New("parameter usagePlanName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{usagePlanName}", url.PathEscape(usagePlanName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261001)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, properties); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -386,79 +461,4 @@ func (client *UsagePlansClient) listBySubscriptionHandleResponse(resp *http.Resp
 		return UsagePlansClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Update a UsagePlan
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - usagePlanName - The name of the usage plan.
-//   - properties - The resource properties to be updated.
-//   - options - UsagePlansClientBeginUpdateOptions contains the optional parameters for the UsagePlansClient.BeginUpdate method.
-func (client *UsagePlansClient) BeginUpdate(ctx context.Context, resourceGroupName string, usagePlanName string, properties UsagePlanTagsUpdate, options *UsagePlansClientBeginUpdateOptions) (*runtime.Poller[UsagePlansClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, usagePlanName, properties, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[UsagePlansClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[UsagePlansClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update a UsagePlan
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *UsagePlansClient) update(ctx context.Context, resourceGroupName string, usagePlanName string, properties UsagePlanTagsUpdate, options *UsagePlansClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "UsagePlansClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, usagePlanName, properties, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *UsagePlansClient) updateCreateRequest(ctx context.Context, resourceGroupName string, usagePlanName string, properties UsagePlanTagsUpdate, _ *UsagePlansClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureResilienceManagement/usagePlans/{usagePlanName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if usagePlanName == "" {
-		return nil, errors.New("parameter usagePlanName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{usagePlanName}", url.PathEscape(usagePlanName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20261001)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

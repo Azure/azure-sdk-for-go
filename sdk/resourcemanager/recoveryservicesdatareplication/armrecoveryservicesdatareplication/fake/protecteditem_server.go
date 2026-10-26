@@ -30,14 +30,6 @@ type ProtectedItemServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, vaultName string, protectedItemName string, options *armrecoveryservicesdatareplication.ProtectedItemClientBeginDeleteOptions) (resp azfake.PollerResponder[armrecoveryservicesdatareplication.ProtectedItemClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method ProtectedItemClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, vaultName string, protectedItemName string, options *armrecoveryservicesdatareplication.ProtectedItemClientGetOptions) (resp azfake.Responder[armrecoveryservicesdatareplication.ProtectedItemClientGetResponse], errResp azfake.ErrorResponder)
-
-	// NewListPager is the fake for method ProtectedItemClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, vaultName string, options *armrecoveryservicesdatareplication.ProtectedItemClientListOptions) (resp azfake.PagerResponder[armrecoveryservicesdatareplication.ProtectedItemClientListResponse])
-
 	// BeginPlannedFailover is the fake for method ProtectedItemClient.BeginPlannedFailover
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginPlannedFailover func(ctx context.Context, resourceGroupName string, vaultName string, protectedItemName string, body armrecoveryservicesdatareplication.PlannedFailoverModel, options *armrecoveryservicesdatareplication.ProtectedItemClientBeginPlannedFailoverOptions) (resp azfake.PollerResponder[armrecoveryservicesdatareplication.ProtectedItemClientPlannedFailoverResponse], errResp azfake.ErrorResponder)
@@ -45,6 +37,14 @@ type ProtectedItemServer struct {
 	// BeginUpdate is the fake for method ProtectedItemClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, resourceGroupName string, vaultName string, protectedItemName string, properties armrecoveryservicesdatareplication.ProtectedItemModelUpdate, options *armrecoveryservicesdatareplication.ProtectedItemClientBeginUpdateOptions) (resp azfake.PollerResponder[armrecoveryservicesdatareplication.ProtectedItemClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method ProtectedItemClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, vaultName string, protectedItemName string, options *armrecoveryservicesdatareplication.ProtectedItemClientGetOptions) (resp azfake.Responder[armrecoveryservicesdatareplication.ProtectedItemClientGetResponse], errResp azfake.ErrorResponder)
+
+	// NewListPager is the fake for method ProtectedItemClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(resourceGroupName string, vaultName string, options *armrecoveryservicesdatareplication.ProtectedItemClientListOptions) (resp azfake.PagerResponder[armrecoveryservicesdatareplication.ProtectedItemClientListResponse])
 }
 
 // NewProtectedItemServerTransport creates a new instance of ProtectedItemServerTransport with the provided implementation.
@@ -55,9 +55,9 @@ func NewProtectedItemServerTransport(srv *ProtectedItemServer) *ProtectedItemSer
 		srv:                  srv,
 		beginCreate:          newTracker[azfake.PollerResponder[armrecoveryservicesdatareplication.ProtectedItemClientCreateResponse]](),
 		beginDelete:          newTracker[azfake.PollerResponder[armrecoveryservicesdatareplication.ProtectedItemClientDeleteResponse]](),
-		newListPager:         newTracker[azfake.PagerResponder[armrecoveryservicesdatareplication.ProtectedItemClientListResponse]](),
 		beginPlannedFailover: newTracker[azfake.PollerResponder[armrecoveryservicesdatareplication.ProtectedItemClientPlannedFailoverResponse]](),
 		beginUpdate:          newTracker[azfake.PollerResponder[armrecoveryservicesdatareplication.ProtectedItemClientUpdateResponse]](),
+		newListPager:         newTracker[azfake.PagerResponder[armrecoveryservicesdatareplication.ProtectedItemClientListResponse]](),
 	}
 }
 
@@ -67,9 +67,9 @@ type ProtectedItemServerTransport struct {
 	srv                  *ProtectedItemServer
 	beginCreate          *tracker[azfake.PollerResponder[armrecoveryservicesdatareplication.ProtectedItemClientCreateResponse]]
 	beginDelete          *tracker[azfake.PollerResponder[armrecoveryservicesdatareplication.ProtectedItemClientDeleteResponse]]
-	newListPager         *tracker[azfake.PagerResponder[armrecoveryservicesdatareplication.ProtectedItemClientListResponse]]
 	beginPlannedFailover *tracker[azfake.PollerResponder[armrecoveryservicesdatareplication.ProtectedItemClientPlannedFailoverResponse]]
 	beginUpdate          *tracker[azfake.PollerResponder[armrecoveryservicesdatareplication.ProtectedItemClientUpdateResponse]]
+	newListPager         *tracker[azfake.PagerResponder[armrecoveryservicesdatareplication.ProtectedItemClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for ProtectedItemServerTransport.
@@ -97,14 +97,14 @@ func (p *ProtectedItemServerTransport) dispatchToMethodFake(req *http.Request, m
 				res.resp, res.err = p.dispatchBeginCreate(req)
 			case "ProtectedItemClient.BeginDelete":
 				res.resp, res.err = p.dispatchBeginDelete(req)
-			case "ProtectedItemClient.Get":
-				res.resp, res.err = p.dispatchGet(req)
-			case "ProtectedItemClient.NewListPager":
-				res.resp, res.err = p.dispatchNewListPager(req)
 			case "ProtectedItemClient.BeginPlannedFailover":
 				res.resp, res.err = p.dispatchBeginPlannedFailover(req)
 			case "ProtectedItemClient.BeginUpdate":
 				res.resp, res.err = p.dispatchBeginUpdate(req)
+			case "ProtectedItemClient.Get":
+				res.resp, res.err = p.dispatchGet(req)
+			case "ProtectedItemClient.NewListPager":
+				res.resp, res.err = p.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -232,105 +232,6 @@ func (p *ProtectedItemServerTransport) dispatchBeginDelete(req *http.Request) (*
 	return resp, nil
 }
 
-func (p *ProtectedItemServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if p.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataReplication/replicationVaults/(?P<vaultName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/protectedItems/(?P<protectedItemName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	vaultNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("vaultName")])
-	if err != nil {
-		return nil, err
-	}
-	protectedItemNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("protectedItemName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := p.srv.Get(req.Context(), resourceGroupNameParam, vaultNameParam, protectedItemNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ProtectedItemModel, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (p *ProtectedItemServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if p.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := p.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataReplication/replicationVaults/(?P<vaultName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/protectedItems`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		oDataOptionsParam := getOptional(qp.Get("odataOptions"))
-		continuationTokenParam := getOptional(qp.Get("continuationToken"))
-		pageSizeParam, err := parseOptional(qp.Get("pageSize"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
-		})
-		if err != nil {
-			return nil, err
-		}
-		vaultNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("vaultName")])
-		if err != nil {
-			return nil, err
-		}
-		var options *armrecoveryservicesdatareplication.ProtectedItemClientListOptions
-		if oDataOptionsParam != nil || continuationTokenParam != nil || pageSizeParam != nil {
-			options = &armrecoveryservicesdatareplication.ProtectedItemClientListOptions{
-				ODataOptions:      oDataOptionsParam,
-				ContinuationToken: continuationTokenParam,
-				PageSize:          pageSizeParam,
-			}
-		}
-		resp := p.srv.NewListPager(resourceGroupNameParam, vaultNameParam, options)
-		newListPager = &resp
-		p.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armrecoveryservicesdatareplication.ProtectedItemClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		p.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		p.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (p *ProtectedItemServerTransport) dispatchBeginPlannedFailover(req *http.Request) (*http.Response, error) {
 	if p.srv.BeginPlannedFailover == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginPlannedFailover not implemented")}
@@ -432,6 +333,105 @@ func (p *ProtectedItemServerTransport) dispatchBeginUpdate(req *http.Request) (*
 		p.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (p *ProtectedItemServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if p.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataReplication/replicationVaults/(?P<vaultName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/protectedItems/(?P<protectedItemName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	vaultNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("vaultName")])
+	if err != nil {
+		return nil, err
+	}
+	protectedItemNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("protectedItemName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := p.srv.Get(req.Context(), resourceGroupNameParam, vaultNameParam, protectedItemNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ProtectedItemModel, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (p *ProtectedItemServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if p.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := p.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataReplication/replicationVaults/(?P<vaultName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/protectedItems`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		oDataOptionsParam := getOptional(qp.Get("odataOptions"))
+		continuationTokenParam := getOptional(qp.Get("continuationToken"))
+		pageSizeParam, err := parseOptional(qp.Get("pageSize"), func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		vaultNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("vaultName")])
+		if err != nil {
+			return nil, err
+		}
+		var options *armrecoveryservicesdatareplication.ProtectedItemClientListOptions
+		if oDataOptionsParam != nil || continuationTokenParam != nil || pageSizeParam != nil {
+			options = &armrecoveryservicesdatareplication.ProtectedItemClientListOptions{
+				ODataOptions:      oDataOptionsParam,
+				ContinuationToken: continuationTokenParam,
+				PageSize:          pageSizeParam,
+			}
+		}
+		resp := p.srv.NewListPager(resourceGroupNameParam, vaultNameParam, options)
+		newListPager = &resp
+		p.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armrecoveryservicesdatareplication.ProtectedItemClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		p.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		p.newListPager.remove(req)
+	}
 	return resp, nil
 }
 

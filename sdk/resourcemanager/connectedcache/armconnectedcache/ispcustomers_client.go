@@ -68,7 +68,7 @@ func (client *IspCustomersClient) BeginCreateOrUpdate(ctx context.Context, resou
 	}
 }
 
-// CreateOrUpdate - This api creates an ispCustomer with the specified create parameters
+// createOrUpdate - This api creates an ispCustomer with the specified create parameters
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *IspCustomersClient) createOrUpdate(ctx context.Context, resourceGroupName string, customerResourceName string, resource IspCustomerResource, options *IspCustomersClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -90,7 +90,7 @@ func (client *IspCustomersClient) createOrUpdate(ctx context.Context, resourceGr
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *IspCustomersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, customerResourceName string, resource IspCustomerResource, _ *IspCustomersClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/ispCustomers/{customerResourceName}"
 	if client.subscriptionID == "" {
@@ -143,7 +143,7 @@ func (client *IspCustomersClient) BeginDelete(ctx context.Context, resourceGroup
 	}
 }
 
-// Delete - This api deletes an existing ispCustomer resource
+// deleteOperation - This api deletes an existing ispCustomer resource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *IspCustomersClient) deleteOperation(ctx context.Context, resourceGroupName string, customerResourceName string, options *IspCustomersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -165,7 +165,7 @@ func (client *IspCustomersClient) deleteOperation(ctx context.Context, resourceG
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *IspCustomersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, customerResourceName string, _ *IspCustomersClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/ispCustomers/{customerResourceName}"
 	if client.subscriptionID == "" {

@@ -51,7 +51,7 @@ func NewSubscriptionRaiPolicyClient(subscriptionID string, credential azcore.Tok
 //     method.
 func (client *SubscriptionRaiPolicyClient) BeginDelete(ctx context.Context, raiPolicyName string, options *SubscriptionRaiPolicyClientBeginDeleteOptions) (*runtime.Poller[SubscriptionRaiPolicyClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, raiPolicyName, options)
+		resp, err := client.deleteOperation(ctx, raiPolicyName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -66,9 +66,9 @@ func (client *SubscriptionRaiPolicyClient) BeginDelete(ctx context.Context, raiP
 	}
 }
 
-// delete - Deletes the specified Content Filters associated with the subscription.
+// deleteOperation - Deletes the specified Content Filters associated with the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *SubscriptionRaiPolicyClient) delete(ctx context.Context, raiPolicyName string, options *SubscriptionRaiPolicyClientBeginDeleteOptions) (*http.Response, error) {
+func (client *SubscriptionRaiPolicyClient) deleteOperation(ctx context.Context, raiPolicyName string, options *SubscriptionRaiPolicyClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SubscriptionRaiPolicyClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)

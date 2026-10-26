@@ -134,7 +134,7 @@ func (client *AddressPrefixSetsClient) createOrUpdateCreateRequest(ctx context.C
 //     method.
 func (client *AddressPrefixSetsClient) BeginDelete(ctx context.Context, resourceGroupName string, applicationSecurityGroupName string, addressPrefixSetName string, options *AddressPrefixSetsClientBeginDeleteOptions) (*runtime.Poller[AddressPrefixSetsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, applicationSecurityGroupName, addressPrefixSetName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, applicationSecurityGroupName, addressPrefixSetName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -149,9 +149,9 @@ func (client *AddressPrefixSetsClient) BeginDelete(ctx context.Context, resource
 	}
 }
 
-// delete - Deletes the specified address prefix set.
+// deleteOperation - Deletes the specified address prefix set.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *AddressPrefixSetsClient) delete(ctx context.Context, resourceGroupName string, applicationSecurityGroupName string, addressPrefixSetName string, options *AddressPrefixSetsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *AddressPrefixSetsClient) deleteOperation(ctx context.Context, resourceGroupName string, applicationSecurityGroupName string, addressPrefixSetName string, options *AddressPrefixSetsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AddressPrefixSetsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)

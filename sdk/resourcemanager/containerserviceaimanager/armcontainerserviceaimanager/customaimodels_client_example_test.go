@@ -12,56 +12,6 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-09-02-preview/CustomAIModels_CalculateCost.json
-func ExampleCustomAIModelsClient_CalculateCost() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcontainerserviceaimanager.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewCustomAIModelsClient().CalculateCost(ctx, "rg1", "aimanager1", "custom-model1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcontainerserviceaimanager.CustomAIModelsClientCalculateCostResponse{
-	// 	CalculateCostResponse: armcontainerserviceaimanager.CalculateCostResponse{
-	// 		Currency: to.Ptr("USD"),
-	// 		Plans: []*armcontainerserviceaimanager.CalculateCostPlan{
-	// 			{
-	// 				VMSize: to.Ptr("Standard_NC24ads_A100_v4"),
-	// 				Quantization: to.Ptr("fp16"),
-	// 				VMsPerReplica: to.Ptr[int32](1),
-	// 				MaxAvailableReplicas: to.Ptr[int32](4),
-	// 				VMHourlyPrice: to.Ptr[float64](3.67),
-	// 				TotalHourlyPrice: to.Ptr[float64](3.67),
-	// 				PriceAsOf: to.Ptr(time.Date(2026, time.May, 5, 6, 5, 51, 775000000, time.UTC)),
-	// 				Feasible: to.Ptr(true),
-	// 			},
-	// 			{
-	// 				VMSize: to.Ptr("Standard_ND96isr_H100_v5"),
-	// 				Quantization: to.Ptr("fp16"),
-	// 				VMsPerReplica: to.Ptr[int32](1),
-	// 				MaxAvailableReplicas: to.Ptr[int32](0),
-	// 				VMHourlyPrice: to.Ptr[float64](98.32),
-	// 				PriceAsOf: to.Ptr(time.Date(2026, time.May, 5, 6, 5, 51, 775000000, time.UTC)),
-	// 				Feasible: to.Ptr(false),
-	// 				InfeasibilityReason: &armcontainerserviceaimanager.InfeasibilityReason{
-	// 					Code: to.Ptr(armcontainerserviceaimanager.InfeasibleCodeInsufficientQuota),
-	// 					Message: to.Ptr("Subscription does not have sufficient H100 quota in the target region."),
-	// 				},
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
 // Generated from example definition: 2026-09-02-preview/CustomAIModels_CreateOrUpdate.json
 func ExampleCustomAIModelsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -307,6 +257,56 @@ func ExampleCustomAIModelsClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to poll the result: %v", err)
 	}
+}
+
+// Generated from example definition: 2026-09-02-preview/CustomAIModels_CalculateCost.json
+func ExampleCustomAIModelsClient_CalculateCost() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcontainerserviceaimanager.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewCustomAIModelsClient().CalculateCost(ctx, "rg1", "aimanager1", "custom-model1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcontainerserviceaimanager.CustomAIModelsClientCalculateCostResponse{
+	// 	CalculateCostResponse: armcontainerserviceaimanager.CalculateCostResponse{
+	// 		Currency: to.Ptr("USD"),
+	// 		Plans: []*armcontainerserviceaimanager.CalculateCostPlan{
+	// 			{
+	// 				VMSize: to.Ptr("Standard_NC24ads_A100_v4"),
+	// 				Quantization: to.Ptr("fp16"),
+	// 				VMsPerReplica: to.Ptr[int32](1),
+	// 				MaxAvailableReplicas: to.Ptr[int32](4),
+	// 				VMHourlyPrice: to.Ptr[float64](3.67),
+	// 				TotalHourlyPrice: to.Ptr[float64](3.67),
+	// 				PriceAsOf: to.Ptr(time.Date(2026, time.May, 5, 6, 5, 51, 775000000, time.UTC)),
+	// 				Feasible: to.Ptr(true),
+	// 			},
+	// 			{
+	// 				VMSize: to.Ptr("Standard_ND96isr_H100_v5"),
+	// 				Quantization: to.Ptr("fp16"),
+	// 				VMsPerReplica: to.Ptr[int32](1),
+	// 				MaxAvailableReplicas: to.Ptr[int32](0),
+	// 				VMHourlyPrice: to.Ptr[float64](98.32),
+	// 				PriceAsOf: to.Ptr(time.Date(2026, time.May, 5, 6, 5, 51, 775000000, time.UTC)),
+	// 				Feasible: to.Ptr(false),
+	// 				InfeasibilityReason: &armcontainerserviceaimanager.InfeasibilityReason{
+	// 					Code: to.Ptr(armcontainerserviceaimanager.InfeasibleCodeInsufficientQuota),
+	// 					Message: to.Ptr("Subscription does not have sufficient H100 quota in the target region."),
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
 }
 
 // Generated from example definition: 2026-09-02-preview/CustomAIModels_Get.json

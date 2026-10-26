@@ -72,7 +72,7 @@ func (client *RegistryModelContainersClient) BeginCreateOrUpdate(ctx context.Con
 	}
 }
 
-// CreateOrUpdate - Create or update model container.
+// createOrUpdate - Create or update model container.
 //
 // Create or update model container.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -96,7 +96,7 @@ func (client *RegistryModelContainersClient) createOrUpdate(ctx context.Context,
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *RegistryModelContainersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, registryName string, modelName string, body ModelContainer, _ *RegistryModelContainersClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/registries/{registryName}/models/{modelName}"
 	if client.subscriptionID == "" {
@@ -156,7 +156,7 @@ func (client *RegistryModelContainersClient) BeginDelete(ctx context.Context, re
 	}
 }
 
-// Delete - Delete container.
+// deleteOperation - Delete container.
 //
 // Delete container.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -180,7 +180,7 @@ func (client *RegistryModelContainersClient) deleteOperation(ctx context.Context
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *RegistryModelContainersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, registryName string, modelName string, _ *RegistryModelContainersClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/registries/{registryName}/models/{modelName}"
 	if client.subscriptionID == "" {

@@ -70,7 +70,7 @@ func (client *SummaryLogsClient) BeginCreateOrUpdate(ctx context.Context, resour
 	}
 }
 
-// CreateOrUpdate - Creates or updates Log Analytics workspace Summary rules.
+// createOrUpdate - Creates or updates Log Analytics workspace Summary rules.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *SummaryLogsClient) createOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, summaryLogsName string, parameters SummaryLogs, options *SummaryLogsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -92,7 +92,7 @@ func (client *SummaryLogsClient) createOrUpdate(ctx context.Context, resourceGro
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *SummaryLogsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, summaryLogsName string, parameters SummaryLogs, _ *SummaryLogsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/summaryLogs/{summaryLogsName}"
 	if client.subscriptionID == "" {
@@ -150,7 +150,7 @@ func (client *SummaryLogsClient) BeginDelete(ctx context.Context, resourceGroupN
 	}
 }
 
-// Delete - Deletes Log Analytics workspace Summary rules.
+// deleteOperation - Deletes Log Analytics workspace Summary rules.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *SummaryLogsClient) deleteOperation(ctx context.Context, resourceGroupName string, workspaceName string, summaryLogsName string, options *SummaryLogsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -172,7 +172,7 @@ func (client *SummaryLogsClient) deleteOperation(ctx context.Context, resourceGr
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *SummaryLogsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, summaryLogsName string, _ *SummaryLogsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/summaryLogs/{summaryLogsName}"
 	if client.subscriptionID == "" {
@@ -192,6 +192,162 @@ func (client *SummaryLogsClient) deleteCreateRequest(ctx context.Context, resour
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{summaryLogsName}", url.PathEscape(summaryLogsName))
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginRetryBin - Retries a failed Summary rule bin.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - summaryLogsName - The name of the summary logs. Must not contain '/'.
+//   - parameters - The parameters required to retry a Summary rule bin.
+//   - options - SummaryLogsClientBeginRetryBinOptions contains the optional parameters for the SummaryLogsClient.BeginRetryBin
+//     method.
+func (client *SummaryLogsClient) BeginRetryBin(ctx context.Context, resourceGroupName string, workspaceName string, summaryLogsName string, parameters SummaryLogsRetryBin, options *SummaryLogsClientBeginRetryBinOptions) (*runtime.Poller[SummaryLogsClientRetryBinResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.retryBin(ctx, resourceGroupName, workspaceName, summaryLogsName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SummaryLogsClientRetryBinResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SummaryLogsClientRetryBinResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// retryBin - Retries a failed Summary rule bin.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *SummaryLogsClient) retryBin(ctx context.Context, resourceGroupName string, workspaceName string, summaryLogsName string, parameters SummaryLogsRetryBin, options *SummaryLogsClientBeginRetryBinOptions) (*http.Response, error) {
+	var err error
+	const operationName = "SummaryLogsClient.BeginRetryBin"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.retryBinCreateRequest(ctx, resourceGroupName, workspaceName, summaryLogsName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// retryBinCreateRequest creates the retryBin request.
+func (client *SummaryLogsClient) retryBinCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, summaryLogsName string, parameters SummaryLogsRetryBin, _ *SummaryLogsClientBeginRetryBinOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/summaryLogs/{summaryLogsName}/retrybin"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if workspaceName == "" {
+		return nil, errors.New("parameter workspaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
+	if summaryLogsName == "" {
+		return nil, errors.New("parameter summaryLogsName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{summaryLogsName}", url.PathEscape(summaryLogsName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginStart - Starts an inactive Summary rule.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - summaryLogsName - The name of the summary logs. Must not contain '/'.
+//   - options - SummaryLogsClientBeginStartOptions contains the optional parameters for the SummaryLogsClient.BeginStart method.
+func (client *SummaryLogsClient) BeginStart(ctx context.Context, resourceGroupName string, workspaceName string, summaryLogsName string, options *SummaryLogsClientBeginStartOptions) (*runtime.Poller[SummaryLogsClientStartResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.start(ctx, resourceGroupName, workspaceName, summaryLogsName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SummaryLogsClientStartResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SummaryLogsClientStartResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// start - Starts an inactive Summary rule.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *SummaryLogsClient) start(ctx context.Context, resourceGroupName string, workspaceName string, summaryLogsName string, options *SummaryLogsClientBeginStartOptions) (*http.Response, error) {
+	var err error
+	const operationName = "SummaryLogsClient.BeginStart"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.startCreateRequest(ctx, resourceGroupName, workspaceName, summaryLogsName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// startCreateRequest creates the start request.
+func (client *SummaryLogsClient) startCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, summaryLogsName string, _ *SummaryLogsClientBeginStartOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/summaryLogs/{summaryLogsName}/start"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if workspaceName == "" {
+		return nil, errors.New("parameter workspaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
+	if summaryLogsName == "" {
+		return nil, errors.New("parameter summaryLogsName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{summaryLogsName}", url.PathEscape(summaryLogsName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -341,162 +497,6 @@ func (client *SummaryLogsClient) listByWorkspaceHandleResponse(resp *http.Respon
 		return SummaryLogsClientListByWorkspaceResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginRetryBin - Retries a failed Summary rule bin.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the workspace.
-//   - summaryLogsName - The name of the summary logs. Must not contain '/'.
-//   - parameters - The parameters required to retry a Summary rule bin.
-//   - options - SummaryLogsClientBeginRetryBinOptions contains the optional parameters for the SummaryLogsClient.BeginRetryBin
-//     method.
-func (client *SummaryLogsClient) BeginRetryBin(ctx context.Context, resourceGroupName string, workspaceName string, summaryLogsName string, parameters SummaryLogsRetryBin, options *SummaryLogsClientBeginRetryBinOptions) (*runtime.Poller[SummaryLogsClientRetryBinResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.retryBin(ctx, resourceGroupName, workspaceName, summaryLogsName, parameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SummaryLogsClientRetryBinResponse]{
-			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
-			Tracer:        client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SummaryLogsClientRetryBinResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// RetryBin - Retries a failed Summary rule bin.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *SummaryLogsClient) retryBin(ctx context.Context, resourceGroupName string, workspaceName string, summaryLogsName string, parameters SummaryLogsRetryBin, options *SummaryLogsClientBeginRetryBinOptions) (*http.Response, error) {
-	var err error
-	const operationName = "SummaryLogsClient.BeginRetryBin"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.retryBinCreateRequest(ctx, resourceGroupName, workspaceName, summaryLogsName, parameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// retryBinCreateRequest creates the RetryBin request.
-func (client *SummaryLogsClient) retryBinCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, summaryLogsName string, parameters SummaryLogsRetryBin, _ *SummaryLogsClientBeginRetryBinOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/summaryLogs/{summaryLogsName}/retrybin"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if workspaceName == "" {
-		return nil, errors.New("parameter workspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	if summaryLogsName == "" {
-		return nil, errors.New("parameter summaryLogsName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{summaryLogsName}", url.PathEscape(summaryLogsName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginStart - Starts an inactive Summary rule.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the workspace.
-//   - summaryLogsName - The name of the summary logs. Must not contain '/'.
-//   - options - SummaryLogsClientBeginStartOptions contains the optional parameters for the SummaryLogsClient.BeginStart method.
-func (client *SummaryLogsClient) BeginStart(ctx context.Context, resourceGroupName string, workspaceName string, summaryLogsName string, options *SummaryLogsClientBeginStartOptions) (*runtime.Poller[SummaryLogsClientStartResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.start(ctx, resourceGroupName, workspaceName, summaryLogsName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SummaryLogsClientStartResponse]{
-			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
-			Tracer:        client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SummaryLogsClientStartResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Start - Starts an inactive Summary rule.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *SummaryLogsClient) start(ctx context.Context, resourceGroupName string, workspaceName string, summaryLogsName string, options *SummaryLogsClientBeginStartOptions) (*http.Response, error) {
-	var err error
-	const operationName = "SummaryLogsClient.BeginStart"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.startCreateRequest(ctx, resourceGroupName, workspaceName, summaryLogsName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// startCreateRequest creates the Start request.
-func (client *SummaryLogsClient) startCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, summaryLogsName string, _ *SummaryLogsClientBeginStartOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/summaryLogs/{summaryLogsName}/start"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if workspaceName == "" {
-		return nil, errors.New("parameter workspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	if summaryLogsName == "" {
-		return nil, errors.New("parameter summaryLogsName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{summaryLogsName}", url.PathEscape(summaryLogsName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
 }
 
 // Stop - Stops an active Summary rule.

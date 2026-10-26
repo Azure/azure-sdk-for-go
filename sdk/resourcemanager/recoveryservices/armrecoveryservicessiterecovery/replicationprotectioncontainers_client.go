@@ -72,7 +72,7 @@ func (client *ReplicationProtectionContainersClient) BeginCreate(ctx context.Con
 	}
 }
 
-// Create - Create a protection container.
+// create - Create a protection container.
 //
 // Operation to create a protection container.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -96,7 +96,7 @@ func (client *ReplicationProtectionContainersClient) create(ctx context.Context,
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *ReplicationProtectionContainersClient) createCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, protectionContainerName string, creationInput CreateProtectionContainerInput, _ *ReplicationProtectionContainersClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}"
 	if client.subscriptionID == "" {
@@ -161,7 +161,7 @@ func (client *ReplicationProtectionContainersClient) BeginDelete(ctx context.Con
 	}
 }
 
-// Delete - Removes a protection container.
+// deleteOperation - Removes a protection container.
 //
 // Operation to remove a protection container.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -185,7 +185,7 @@ func (client *ReplicationProtectionContainersClient) deleteOperation(ctx context
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ReplicationProtectionContainersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, protectionContainerName string, _ *ReplicationProtectionContainersClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/remove"
 	if client.subscriptionID == "" {
@@ -246,7 +246,7 @@ func (client *ReplicationProtectionContainersClient) BeginDiscoverProtectableIte
 	}
 }
 
-// DiscoverProtectableItem - Adds a protectable item to the replication protection container.
+// discoverProtectableItem - Adds a protectable item to the replication protection container.
 //
 // The operation to a add a protectable item to a protection container(Add physical server).
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -270,7 +270,7 @@ func (client *ReplicationProtectionContainersClient) discoverProtectableItem(ctx
 	return httpResp, nil
 }
 
-// discoverProtectableItemCreateRequest creates the DiscoverProtectableItem request.
+// discoverProtectableItemCreateRequest creates the discoverProtectableItem request.
 func (client *ReplicationProtectionContainersClient) discoverProtectableItemCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, protectionContainerName string, discoverProtectableItemRequest DiscoverProtectableItemRequest, _ *ReplicationProtectionContainersClientBeginDiscoverProtectableItemOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/discoverProtectableItem"
 	if client.subscriptionID == "" {
@@ -303,6 +303,186 @@ func (client *ReplicationProtectionContainersClient) discoverProtectableItemCrea
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, discoverProtectableItemRequest); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginSwitchClusterProtection - Switches protection from one container to another.
+//
+// Operation to switch protection from one container to another.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - The name of the recovery services vault.
+//   - fabricName - Fabric name.
+//   - protectionContainerName - Protection container name.
+//   - switchInput - Switch protection input.
+//   - options - ReplicationProtectionContainersClientBeginSwitchClusterProtectionOptions contains the optional parameters for
+//     the ReplicationProtectionContainersClient.BeginSwitchClusterProtection method.
+func (client *ReplicationProtectionContainersClient) BeginSwitchClusterProtection(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, protectionContainerName string, switchInput SwitchClusterProtectionInput, options *ReplicationProtectionContainersClientBeginSwitchClusterProtectionOptions) (*runtime.Poller[ReplicationProtectionContainersClientSwitchClusterProtectionResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.switchClusterProtection(ctx, resourceGroupName, resourceName, fabricName, protectionContainerName, switchInput, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ReplicationProtectionContainersClientSwitchClusterProtectionResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ReplicationProtectionContainersClientSwitchClusterProtectionResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// switchClusterProtection - Switches protection from one container to another.
+//
+// Operation to switch protection from one container to another.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ReplicationProtectionContainersClient) switchClusterProtection(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, protectionContainerName string, switchInput SwitchClusterProtectionInput, options *ReplicationProtectionContainersClientBeginSwitchClusterProtectionOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ReplicationProtectionContainersClient.BeginSwitchClusterProtection"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.switchClusterProtectionCreateRequest(ctx, resourceGroupName, resourceName, fabricName, protectionContainerName, switchInput, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// switchClusterProtectionCreateRequest creates the switchClusterProtection request.
+func (client *ReplicationProtectionContainersClient) switchClusterProtectionCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, protectionContainerName string, switchInput SwitchClusterProtectionInput, _ *ReplicationProtectionContainersClientBeginSwitchClusterProtectionOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/switchClusterProtection"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	if fabricName == "" {
+		return nil, errors.New("parameter fabricName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{fabricName}", url.PathEscape(fabricName))
+	if protectionContainerName == "" {
+		return nil, errors.New("parameter protectionContainerName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{protectionContainerName}", url.PathEscape(protectionContainerName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, switchInput); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginSwitchProtection - Switches protection from one container to another or one replication provider to another.
+//
+// Operation to switch protection from one container to another or one replication provider to another.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - The name of the Vault
+//   - fabricName - Fabric name.
+//   - protectionContainerName - Protection container name.
+//   - switchInput - Switch protection input.
+//   - options - ReplicationProtectionContainersClientBeginSwitchProtectionOptions contains the optional parameters for the ReplicationProtectionContainersClient.BeginSwitchProtection
+//     method.
+func (client *ReplicationProtectionContainersClient) BeginSwitchProtection(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, protectionContainerName string, switchInput SwitchProtectionInput, options *ReplicationProtectionContainersClientBeginSwitchProtectionOptions) (*runtime.Poller[ReplicationProtectionContainersClientSwitchProtectionResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.switchProtection(ctx, resourceGroupName, resourceName, fabricName, protectionContainerName, switchInput, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ReplicationProtectionContainersClientSwitchProtectionResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ReplicationProtectionContainersClientSwitchProtectionResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// switchProtection - Switches protection from one container to another or one replication provider to another.
+//
+// Operation to switch protection from one container to another or one replication provider to another.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ReplicationProtectionContainersClient) switchProtection(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, protectionContainerName string, switchInput SwitchProtectionInput, options *ReplicationProtectionContainersClientBeginSwitchProtectionOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ReplicationProtectionContainersClient.BeginSwitchProtection"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.switchProtectionCreateRequest(ctx, resourceGroupName, resourceName, fabricName, protectionContainerName, switchInput, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// switchProtectionCreateRequest creates the switchProtection request.
+func (client *ReplicationProtectionContainersClient) switchProtectionCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, protectionContainerName string, switchInput SwitchProtectionInput, _ *ReplicationProtectionContainersClientBeginSwitchProtectionOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/switchprotection"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	if fabricName == "" {
+		return nil, errors.New("parameter fabricName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{fabricName}", url.PathEscape(fabricName))
+	if protectionContainerName == "" {
+		return nil, errors.New("parameter protectionContainerName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{protectionContainerName}", url.PathEscape(protectionContainerName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, switchInput); err != nil {
 		return nil, err
 	}
 	return req, nil
@@ -377,85 +557,6 @@ func (client *ReplicationProtectionContainersClient) getHandleResponse(resp *htt
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProtectionContainer); err != nil {
 		return ReplicationProtectionContainersClientGetResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListPager - Gets the list of all protection containers in a vault.
-//
-// Lists the protection containers in a vault.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - resourceName - The name of the recovery services vault.
-//   - options - ReplicationProtectionContainersClientListOptions contains the optional parameters for the ReplicationProtectionContainersClient.NewListPager
-//     method.
-func (client *ReplicationProtectionContainersClient) NewListPager(resourceGroupName string, resourceName string, options *ReplicationProtectionContainersClientListOptions) *runtime.Pager[ReplicationProtectionContainersClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ReplicationProtectionContainersClientListResponse]{
-		More: func(page ReplicationProtectionContainersClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *ReplicationProtectionContainersClientListResponse) (ReplicationProtectionContainersClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ReplicationProtectionContainersClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listCreateRequest(ctx, resourceGroupName, resourceName, nextLink, options)
-			if err != nil {
-				return ReplicationProtectionContainersClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ReplicationProtectionContainersClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *ReplicationProtectionContainersClient) listCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, nextLink string, _ *ReplicationProtectionContainersClientListOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationProtectionContainers"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		if resourceGroupName == "" {
-			return nil, errors.New("parameter resourceGroupName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-		if resourceName == "" {
-			return nil, errors.New("parameter resourceName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250801)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *ReplicationProtectionContainersClient) listHandleResponse(resp *http.Response, successCodes ...int) (ReplicationProtectionContainersClientListResponse, error) {
-	result := ReplicationProtectionContainersClientListResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ProtectionContainerCollection); err != nil {
-		return ReplicationProtectionContainersClientListResponse{}, err
 	}
 	return result, nil
 }
@@ -544,182 +645,81 @@ func (client *ReplicationProtectionContainersClient) listByReplicationFabricsHan
 	return result, nil
 }
 
-// BeginSwitchClusterProtection - Switches protection from one container to another.
+// NewListPager - Gets the list of all protection containers in a vault.
 //
-// Operation to switch protection from one container to another.
-// If the operation fails it returns an *azcore.ResponseError type.
+// Lists the protection containers in a vault.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the recovery services vault.
-//   - fabricName - Fabric name.
-//   - protectionContainerName - Protection container name.
-//   - switchInput - Switch protection input.
-//   - options - ReplicationProtectionContainersClientBeginSwitchClusterProtectionOptions contains the optional parameters for
-//     the ReplicationProtectionContainersClient.BeginSwitchClusterProtection method.
-func (client *ReplicationProtectionContainersClient) BeginSwitchClusterProtection(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, protectionContainerName string, switchInput SwitchClusterProtectionInput, options *ReplicationProtectionContainersClientBeginSwitchClusterProtectionOptions) (*runtime.Poller[ReplicationProtectionContainersClientSwitchClusterProtectionResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.switchClusterProtection(ctx, resourceGroupName, resourceName, fabricName, protectionContainerName, switchInput, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ReplicationProtectionContainersClientSwitchClusterProtectionResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ReplicationProtectionContainersClientSwitchClusterProtectionResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// SwitchClusterProtection - Switches protection from one container to another.
-//
-// Operation to switch protection from one container to another.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ReplicationProtectionContainersClient) switchClusterProtection(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, protectionContainerName string, switchInput SwitchClusterProtectionInput, options *ReplicationProtectionContainersClientBeginSwitchClusterProtectionOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ReplicationProtectionContainersClient.BeginSwitchClusterProtection"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.switchClusterProtectionCreateRequest(ctx, resourceGroupName, resourceName, fabricName, protectionContainerName, switchInput, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// switchClusterProtectionCreateRequest creates the SwitchClusterProtection request.
-func (client *ReplicationProtectionContainersClient) switchClusterProtectionCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, protectionContainerName string, switchInput SwitchClusterProtectionInput, _ *ReplicationProtectionContainersClientBeginSwitchClusterProtectionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/switchClusterProtection"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if resourceName == "" {
-		return nil, errors.New("parameter resourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	if fabricName == "" {
-		return nil, errors.New("parameter fabricName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{fabricName}", url.PathEscape(fabricName))
-	if protectionContainerName == "" {
-		return nil, errors.New("parameter protectionContainerName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{protectionContainerName}", url.PathEscape(protectionContainerName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, switchInput); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginSwitchProtection - Switches protection from one container to another or one replication provider to another.
-//
-// Operation to switch protection from one container to another or one replication provider to another.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - resourceName - The name of the Vault
-//   - fabricName - Fabric name.
-//   - protectionContainerName - Protection container name.
-//   - switchInput - Switch protection input.
-//   - options - ReplicationProtectionContainersClientBeginSwitchProtectionOptions contains the optional parameters for the ReplicationProtectionContainersClient.BeginSwitchProtection
+//   - options - ReplicationProtectionContainersClientListOptions contains the optional parameters for the ReplicationProtectionContainersClient.NewListPager
 //     method.
-func (client *ReplicationProtectionContainersClient) BeginSwitchProtection(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, protectionContainerName string, switchInput SwitchProtectionInput, options *ReplicationProtectionContainersClientBeginSwitchProtectionOptions) (*runtime.Poller[ReplicationProtectionContainersClientSwitchProtectionResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.switchProtection(ctx, resourceGroupName, resourceName, fabricName, protectionContainerName, switchInput, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ReplicationProtectionContainersClientSwitchProtectionResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ReplicationProtectionContainersClientSwitchProtectionResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
+func (client *ReplicationProtectionContainersClient) NewListPager(resourceGroupName string, resourceName string, options *ReplicationProtectionContainersClientListOptions) *runtime.Pager[ReplicationProtectionContainersClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ReplicationProtectionContainersClientListResponse]{
+		More: func(page ReplicationProtectionContainersClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *ReplicationProtectionContainersClientListResponse) (ReplicationProtectionContainersClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ReplicationProtectionContainersClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, resourceGroupName, resourceName, nextLink, options)
+			if err != nil {
+				return ReplicationProtectionContainersClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ReplicationProtectionContainersClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
 }
 
-// SwitchProtection - Switches protection from one container to another or one replication provider to another.
-//
-// Operation to switch protection from one container to another or one replication provider to another.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ReplicationProtectionContainersClient) switchProtection(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, protectionContainerName string, switchInput SwitchProtectionInput, options *ReplicationProtectionContainersClientBeginSwitchProtectionOptions) (*http.Response, error) {
+// listCreateRequest creates the List request.
+func (client *ReplicationProtectionContainersClient) listCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, nextLink string, _ *ReplicationProtectionContainersClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
 	var err error
-	const operationName = "ReplicationProtectionContainersClient.BeginSwitchProtection"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.switchProtectionCreateRequest(ctx, resourceGroupName, resourceName, fabricName, protectionContainerName, switchInput, options)
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationProtectionContainers"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if resourceName == "" {
+			return nil, errors.New("parameter resourceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
 	if err != nil {
 		return nil, err
 	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// switchProtectionCreateRequest creates the SwitchProtection request.
-func (client *ReplicationProtectionContainersClient) switchProtectionCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, protectionContainerName string, switchInput SwitchProtectionInput, _ *ReplicationProtectionContainersClientBeginSwitchProtectionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/switchprotection"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if resourceName == "" {
-		return nil, errors.New("parameter resourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	if fabricName == "" {
-		return nil, errors.New("parameter fabricName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{fabricName}", url.PathEscape(fabricName))
-	if protectionContainerName == "" {
-		return nil, errors.New("parameter protectionContainerName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{protectionContainerName}", url.PathEscape(protectionContainerName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, switchInput); err != nil {
-		return nil, err
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250801)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
 	return req, nil
+}
+
+// listHandleResponse handles the List response.
+func (client *ReplicationProtectionContainersClient) listHandleResponse(resp *http.Response, successCodes ...int) (ReplicationProtectionContainersClientListResponse, error) {
+	result := ReplicationProtectionContainersClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ProtectionContainerCollection); err != nil {
+		return ReplicationProtectionContainersClientListResponse{}, err
+	}
+	return result, nil
 }

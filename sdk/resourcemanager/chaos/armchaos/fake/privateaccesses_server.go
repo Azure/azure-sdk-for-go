@@ -33,6 +33,10 @@ type PrivateAccessesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDeleteAPrivateEndpointConnection func(ctx context.Context, resourceGroupName string, privateAccessName string, privateEndpointConnectionName string, options *armchaos.PrivateAccessesClientBeginDeleteAPrivateEndpointConnectionOptions) (resp azfake.PollerResponder[armchaos.PrivateAccessesClientDeleteAPrivateEndpointConnectionResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method PrivateAccessesClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, privateAccessName string, properties armchaos.PrivateAccessPatch, options *armchaos.PrivateAccessesClientBeginUpdateOptions) (resp azfake.PollerResponder[armchaos.PrivateAccessesClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method PrivateAccessesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, privateAccessName string, options *armchaos.PrivateAccessesClientGetOptions) (resp azfake.Responder[armchaos.PrivateAccessesClientGetResponse], errResp azfake.ErrorResponder)
@@ -45,21 +49,17 @@ type PrivateAccessesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetPrivateLinkResources func(ctx context.Context, resourceGroupName string, privateAccessName string, options *armchaos.PrivateAccessesClientGetPrivateLinkResourcesOptions) (resp azfake.Responder[armchaos.PrivateAccessesClientGetPrivateLinkResourcesResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method PrivateAccessesClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, options *armchaos.PrivateAccessesClientListOptions) (resp azfake.PagerResponder[armchaos.PrivateAccessesClientListResponse])
-
 	// NewListAllPager is the fake for method PrivateAccessesClient.NewListAllPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListAllPager func(options *armchaos.PrivateAccessesClientListAllOptions) (resp azfake.PagerResponder[armchaos.PrivateAccessesClientListAllResponse])
 
+	// NewListPager is the fake for method PrivateAccessesClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(resourceGroupName string, options *armchaos.PrivateAccessesClientListOptions) (resp azfake.PagerResponder[armchaos.PrivateAccessesClientListResponse])
+
 	// NewListPrivateEndpointConnectionsPager is the fake for method PrivateAccessesClient.NewListPrivateEndpointConnectionsPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPrivateEndpointConnectionsPager func(resourceGroupName string, privateAccessName string, options *armchaos.PrivateAccessesClientListPrivateEndpointConnectionsOptions) (resp azfake.PagerResponder[armchaos.PrivateAccessesClientListPrivateEndpointConnectionsResponse])
-
-	// BeginUpdate is the fake for method PrivateAccessesClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, privateAccessName string, properties armchaos.PrivateAccessPatch, options *armchaos.PrivateAccessesClientBeginUpdateOptions) (resp azfake.PollerResponder[armchaos.PrivateAccessesClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewPrivateAccessesServerTransport creates a new instance of PrivateAccessesServerTransport with the provided implementation.
@@ -71,10 +71,10 @@ func NewPrivateAccessesServerTransport(srv *PrivateAccessesServer) *PrivateAcces
 		beginCreateOrUpdate:                    newTracker[azfake.PollerResponder[armchaos.PrivateAccessesClientCreateOrUpdateResponse]](),
 		beginDelete:                            newTracker[azfake.PollerResponder[armchaos.PrivateAccessesClientDeleteResponse]](),
 		beginDeleteAPrivateEndpointConnection:  newTracker[azfake.PollerResponder[armchaos.PrivateAccessesClientDeleteAPrivateEndpointConnectionResponse]](),
-		newListPager:                           newTracker[azfake.PagerResponder[armchaos.PrivateAccessesClientListResponse]](),
-		newListAllPager:                        newTracker[azfake.PagerResponder[armchaos.PrivateAccessesClientListAllResponse]](),
-		newListPrivateEndpointConnectionsPager: newTracker[azfake.PagerResponder[armchaos.PrivateAccessesClientListPrivateEndpointConnectionsResponse]](),
 		beginUpdate:                            newTracker[azfake.PollerResponder[armchaos.PrivateAccessesClientUpdateResponse]](),
+		newListAllPager:                        newTracker[azfake.PagerResponder[armchaos.PrivateAccessesClientListAllResponse]](),
+		newListPager:                           newTracker[azfake.PagerResponder[armchaos.PrivateAccessesClientListResponse]](),
+		newListPrivateEndpointConnectionsPager: newTracker[azfake.PagerResponder[armchaos.PrivateAccessesClientListPrivateEndpointConnectionsResponse]](),
 	}
 }
 
@@ -85,10 +85,10 @@ type PrivateAccessesServerTransport struct {
 	beginCreateOrUpdate                    *tracker[azfake.PollerResponder[armchaos.PrivateAccessesClientCreateOrUpdateResponse]]
 	beginDelete                            *tracker[azfake.PollerResponder[armchaos.PrivateAccessesClientDeleteResponse]]
 	beginDeleteAPrivateEndpointConnection  *tracker[azfake.PollerResponder[armchaos.PrivateAccessesClientDeleteAPrivateEndpointConnectionResponse]]
-	newListPager                           *tracker[azfake.PagerResponder[armchaos.PrivateAccessesClientListResponse]]
-	newListAllPager                        *tracker[azfake.PagerResponder[armchaos.PrivateAccessesClientListAllResponse]]
-	newListPrivateEndpointConnectionsPager *tracker[azfake.PagerResponder[armchaos.PrivateAccessesClientListPrivateEndpointConnectionsResponse]]
 	beginUpdate                            *tracker[azfake.PollerResponder[armchaos.PrivateAccessesClientUpdateResponse]]
+	newListAllPager                        *tracker[azfake.PagerResponder[armchaos.PrivateAccessesClientListAllResponse]]
+	newListPager                           *tracker[azfake.PagerResponder[armchaos.PrivateAccessesClientListResponse]]
+	newListPrivateEndpointConnectionsPager *tracker[azfake.PagerResponder[armchaos.PrivateAccessesClientListPrivateEndpointConnectionsResponse]]
 }
 
 // Do implements the policy.Transporter interface for PrivateAccessesServerTransport.
@@ -118,20 +118,20 @@ func (p *PrivateAccessesServerTransport) dispatchToMethodFake(req *http.Request,
 				res.resp, res.err = p.dispatchBeginDelete(req)
 			case "PrivateAccessesClient.BeginDeleteAPrivateEndpointConnection":
 				res.resp, res.err = p.dispatchBeginDeleteAPrivateEndpointConnection(req)
+			case "PrivateAccessesClient.BeginUpdate":
+				res.resp, res.err = p.dispatchBeginUpdate(req)
 			case "PrivateAccessesClient.Get":
 				res.resp, res.err = p.dispatchGet(req)
 			case "PrivateAccessesClient.GetAPrivateEndpointConnection":
 				res.resp, res.err = p.dispatchGetAPrivateEndpointConnection(req)
 			case "PrivateAccessesClient.GetPrivateLinkResources":
 				res.resp, res.err = p.dispatchGetPrivateLinkResources(req)
-			case "PrivateAccessesClient.NewListPager":
-				res.resp, res.err = p.dispatchNewListPager(req)
 			case "PrivateAccessesClient.NewListAllPager":
 				res.resp, res.err = p.dispatchNewListAllPager(req)
+			case "PrivateAccessesClient.NewListPager":
+				res.resp, res.err = p.dispatchNewListPager(req)
 			case "PrivateAccessesClient.NewListPrivateEndpointConnectionsPager":
 				res.resp, res.err = p.dispatchNewListPrivateEndpointConnectionsPager(req)
-			case "PrivateAccessesClient.BeginUpdate":
-				res.resp, res.err = p.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -288,6 +288,54 @@ func (p *PrivateAccessesServerTransport) dispatchBeginDeleteAPrivateEndpointConn
 	return resp, nil
 }
 
+func (p *PrivateAccessesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if p.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := p.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Chaos/privateAccesses/(?P<privateAccessName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armchaos.PrivateAccessPatch](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		privateAccessNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("privateAccessName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := p.srv.BeginUpdate(req.Context(), resourceGroupNameParam, privateAccessNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		p.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		p.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		p.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (p *PrivateAccessesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if p.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -391,6 +439,47 @@ func (p *PrivateAccessesServerTransport) dispatchGetPrivateLinkResources(req *ht
 	return resp, nil
 }
 
+func (p *PrivateAccessesServerTransport) dispatchNewListAllPager(req *http.Request) (*http.Response, error) {
+	if p.srv.NewListAllPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListAllPager not implemented")}
+	}
+	newListAllPager := p.newListAllPager.get(req)
+	if newListAllPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Chaos/privateAccesses`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		continuationTokenParam := getOptional(qp.Get("continuationToken"))
+		var options *armchaos.PrivateAccessesClientListAllOptions
+		if continuationTokenParam != nil {
+			options = &armchaos.PrivateAccessesClientListAllOptions{
+				ContinuationToken: continuationTokenParam,
+			}
+		}
+		resp := p.srv.NewListAllPager(options)
+		newListAllPager = &resp
+		p.newListAllPager.add(req, newListAllPager)
+		server.PagerResponderInjectNextLinks(newListAllPager, req, func(page *armchaos.PrivateAccessesClientListAllResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListAllPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		p.newListAllPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListAllPager) {
+		p.newListAllPager.remove(req)
+	}
+	return resp, nil
+}
+
 func (p *PrivateAccessesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
 	if p.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
@@ -436,47 +525,6 @@ func (p *PrivateAccessesServerTransport) dispatchNewListPager(req *http.Request)
 	return resp, nil
 }
 
-func (p *PrivateAccessesServerTransport) dispatchNewListAllPager(req *http.Request) (*http.Response, error) {
-	if p.srv.NewListAllPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListAllPager not implemented")}
-	}
-	newListAllPager := p.newListAllPager.get(req)
-	if newListAllPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Chaos/privateAccesses`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		continuationTokenParam := getOptional(qp.Get("continuationToken"))
-		var options *armchaos.PrivateAccessesClientListAllOptions
-		if continuationTokenParam != nil {
-			options = &armchaos.PrivateAccessesClientListAllOptions{
-				ContinuationToken: continuationTokenParam,
-			}
-		}
-		resp := p.srv.NewListAllPager(options)
-		newListAllPager = &resp
-		p.newListAllPager.add(req, newListAllPager)
-		server.PagerResponderInjectNextLinks(newListAllPager, req, func(page *armchaos.PrivateAccessesClientListAllResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListAllPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		p.newListAllPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListAllPager) {
-		p.newListAllPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (p *PrivateAccessesServerTransport) dispatchNewListPrivateEndpointConnectionsPager(req *http.Request) (*http.Response, error) {
 	if p.srv.NewListPrivateEndpointConnectionsPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPrivateEndpointConnectionsPager not implemented")}
@@ -515,54 +563,6 @@ func (p *PrivateAccessesServerTransport) dispatchNewListPrivateEndpointConnectio
 	if !server.PagerResponderMore(newListPrivateEndpointConnectionsPager) {
 		p.newListPrivateEndpointConnectionsPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (p *PrivateAccessesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if p.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := p.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Chaos/privateAccesses/(?P<privateAccessName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armchaos.PrivateAccessPatch](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		privateAccessNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("privateAccessName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := p.srv.BeginUpdate(req.Context(), resourceGroupNameParam, privateAccessNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		p.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		p.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		p.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

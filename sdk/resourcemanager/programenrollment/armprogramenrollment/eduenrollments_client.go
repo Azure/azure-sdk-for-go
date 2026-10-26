@@ -68,7 +68,7 @@ func (client *EduEnrollmentsClient) BeginCreateOrUpdate(ctx context.Context, res
 	}
 }
 
-// CreateOrUpdate - Creates or updates the specified edu enrollment.
+// createOrUpdate - Creates or updates the specified edu enrollment.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *EduEnrollmentsClient) createOrUpdate(ctx context.Context, resourceGroupName string, enrollmentName string, resource EduEnrollment, options *EduEnrollmentsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -90,7 +90,7 @@ func (client *EduEnrollmentsClient) createOrUpdate(ctx context.Context, resource
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *EduEnrollmentsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, enrollmentName string, resource EduEnrollment, _ *EduEnrollmentsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ProgramEnrollment/eduEnrollments/{enrollmentName}"
 	if client.subscriptionID == "" {
@@ -143,7 +143,7 @@ func (client *EduEnrollmentsClient) BeginDelete(ctx context.Context, resourceGro
 	}
 }
 
-// Delete - Deletes the specified edu enrollment.
+// deleteOperation - Deletes the specified edu enrollment.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *EduEnrollmentsClient) deleteOperation(ctx context.Context, resourceGroupName string, enrollmentName string, options *EduEnrollmentsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -165,7 +165,7 @@ func (client *EduEnrollmentsClient) deleteOperation(ctx context.Context, resourc
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *EduEnrollmentsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, enrollmentName string, _ *EduEnrollmentsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ProgramEnrollment/eduEnrollments/{enrollmentName}"
 	if client.subscriptionID == "" {

@@ -69,7 +69,7 @@ func (client *RuntimeBindingsClient) BeginCreateOrUpdate(ctx context.Context, re
 	}
 }
 
-// CreateOrUpdate - Creates or replaces a runtime binding.
+// createOrUpdate - Creates or replaces a runtime binding.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *RuntimeBindingsClient) createOrUpdate(ctx context.Context, resourceGroupName string, spaceName string, bindingName string, resource RuntimeBinding, options *RuntimeBindingsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *RuntimeBindingsClient) createOrUpdate(ctx context.Context, resourc
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *RuntimeBindingsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, spaceName string, bindingName string, resource RuntimeBinding, _ *RuntimeBindingsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/workloadSpaces/{spaceName}/runtimeBindings/{bindingName}"
 	if client.subscriptionID == "" {
@@ -149,7 +149,7 @@ func (client *RuntimeBindingsClient) BeginDelete(ctx context.Context, resourceGr
 	}
 }
 
-// Delete - Deletes a runtime binding without deleting customer-owned referenced resources.
+// deleteOperation - Deletes a runtime binding without deleting customer-owned referenced resources.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *RuntimeBindingsClient) deleteOperation(ctx context.Context, resourceGroupName string, spaceName string, bindingName string, options *RuntimeBindingsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -171,7 +171,7 @@ func (client *RuntimeBindingsClient) deleteOperation(ctx context.Context, resour
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *RuntimeBindingsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, spaceName string, bindingName string, _ *RuntimeBindingsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/workloadSpaces/{spaceName}/runtimeBindings/{bindingName}"
 	if client.subscriptionID == "" {
@@ -197,6 +197,87 @@ func (client *RuntimeBindingsClient) deleteCreateRequest(ctx context.Context, re
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20261101Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - Updates mutable runtime binding properties.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - spaceName - The name of the WorkloadSpace
+//   - bindingName - The name of the RuntimeBinding
+//   - properties - The resource properties to be updated.
+//   - options - RuntimeBindingsClientBeginUpdateOptions contains the optional parameters for the RuntimeBindingsClient.BeginUpdate
+//     method.
+func (client *RuntimeBindingsClient) BeginUpdate(ctx context.Context, resourceGroupName string, spaceName string, bindingName string, properties RuntimeBindingUpdate, options *RuntimeBindingsClientBeginUpdateOptions) (*runtime.Poller[RuntimeBindingsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, spaceName, bindingName, properties, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[RuntimeBindingsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[RuntimeBindingsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Updates mutable runtime binding properties.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *RuntimeBindingsClient) update(ctx context.Context, resourceGroupName string, spaceName string, bindingName string, properties RuntimeBindingUpdate, options *RuntimeBindingsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "RuntimeBindingsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, spaceName, bindingName, properties, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *RuntimeBindingsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, spaceName string, bindingName string, properties RuntimeBindingUpdate, _ *RuntimeBindingsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/workloadSpaces/{spaceName}/runtimeBindings/{bindingName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if spaceName == "" {
+		return nil, errors.New("parameter spaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{spaceName}", url.PathEscape(spaceName))
+	if bindingName == "" {
+		return nil, errors.New("parameter bindingName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{bindingName}", url.PathEscape(bindingName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, properties); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -340,85 +421,4 @@ func (client *RuntimeBindingsClient) listByWorkloadSpaceHandleResponse(resp *htt
 		return RuntimeBindingsClientListByWorkloadSpaceResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Updates mutable runtime binding properties.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - spaceName - The name of the WorkloadSpace
-//   - bindingName - The name of the RuntimeBinding
-//   - properties - The resource properties to be updated.
-//   - options - RuntimeBindingsClientBeginUpdateOptions contains the optional parameters for the RuntimeBindingsClient.BeginUpdate
-//     method.
-func (client *RuntimeBindingsClient) BeginUpdate(ctx context.Context, resourceGroupName string, spaceName string, bindingName string, properties RuntimeBindingUpdate, options *RuntimeBindingsClientBeginUpdateOptions) (*runtime.Poller[RuntimeBindingsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, spaceName, bindingName, properties, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[RuntimeBindingsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[RuntimeBindingsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Updates mutable runtime binding properties.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *RuntimeBindingsClient) update(ctx context.Context, resourceGroupName string, spaceName string, bindingName string, properties RuntimeBindingUpdate, options *RuntimeBindingsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "RuntimeBindingsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, spaceName, bindingName, properties, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *RuntimeBindingsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, spaceName string, bindingName string, properties RuntimeBindingUpdate, _ *RuntimeBindingsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/workloadSpaces/{spaceName}/runtimeBindings/{bindingName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if spaceName == "" {
-		return nil, errors.New("parameter spaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{spaceName}", url.PathEscape(spaceName))
-	if bindingName == "" {
-		return nil, errors.New("parameter bindingName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{bindingName}", url.PathEscape(bindingName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20261101Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

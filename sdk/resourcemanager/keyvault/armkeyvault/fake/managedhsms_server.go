@@ -22,10 +22,6 @@ import (
 
 // ManagedHsmsServer is a fake server for instances of the armkeyvault.ManagedHsmsClient type.
 type ManagedHsmsServer struct {
-	// CheckMhsmNameAvailability is the fake for method ManagedHsmsClient.CheckMhsmNameAvailability
-	// HTTP status codes to indicate success: http.StatusOK
-	CheckMhsmNameAvailability func(ctx context.Context, mhsmName armkeyvault.CheckMhsmNameAvailabilityParameters, options *armkeyvault.ManagedHsmsClientCheckMhsmNameAvailabilityOptions) (resp azfake.Responder[armkeyvault.ManagedHsmsClientCheckMhsmNameAvailabilityResponse], errResp azfake.ErrorResponder)
-
 	// BeginCreateOrUpdate is the fake for method ManagedHsmsClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, name string, parameters armkeyvault.ManagedHsm, options *armkeyvault.ManagedHsmsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armkeyvault.ManagedHsmsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -33,6 +29,18 @@ type ManagedHsmsServer struct {
 	// BeginDelete is the fake for method ManagedHsmsClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, name string, options *armkeyvault.ManagedHsmsClientBeginDeleteOptions) (resp azfake.PollerResponder[armkeyvault.ManagedHsmsClientDeleteResponse], errResp azfake.ErrorResponder)
+
+	// BeginPurgeDeleted is the fake for method ManagedHsmsClient.BeginPurgeDeleted
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginPurgeDeleted func(ctx context.Context, name string, location string, options *armkeyvault.ManagedHsmsClientBeginPurgeDeletedOptions) (resp azfake.PollerResponder[armkeyvault.ManagedHsmsClientPurgeDeletedResponse], errResp azfake.ErrorResponder)
+
+	// BeginUpdate is the fake for method ManagedHsmsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, name string, parameters armkeyvault.ManagedHsm, options *armkeyvault.ManagedHsmsClientBeginUpdateOptions) (resp azfake.PollerResponder[armkeyvault.ManagedHsmsClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// CheckMhsmNameAvailability is the fake for method ManagedHsmsClient.CheckMhsmNameAvailability
+	// HTTP status codes to indicate success: http.StatusOK
+	CheckMhsmNameAvailability func(ctx context.Context, mhsmName armkeyvault.CheckMhsmNameAvailabilityParameters, options *armkeyvault.ManagedHsmsClientCheckMhsmNameAvailabilityOptions) (resp azfake.Responder[armkeyvault.ManagedHsmsClientCheckMhsmNameAvailabilityResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method ManagedHsmsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
@@ -53,14 +61,6 @@ type ManagedHsmsServer struct {
 	// NewListDeletedPager is the fake for method ManagedHsmsClient.NewListDeletedPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListDeletedPager func(options *armkeyvault.ManagedHsmsClientListDeletedOptions) (resp azfake.PagerResponder[armkeyvault.ManagedHsmsClientListDeletedResponse])
-
-	// BeginPurgeDeleted is the fake for method ManagedHsmsClient.BeginPurgeDeleted
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginPurgeDeleted func(ctx context.Context, name string, location string, options *armkeyvault.ManagedHsmsClientBeginPurgeDeletedOptions) (resp azfake.PollerResponder[armkeyvault.ManagedHsmsClientPurgeDeletedResponse], errResp azfake.ErrorResponder)
-
-	// BeginUpdate is the fake for method ManagedHsmsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, name string, parameters armkeyvault.ManagedHsm, options *armkeyvault.ManagedHsmsClientBeginUpdateOptions) (resp azfake.PollerResponder[armkeyvault.ManagedHsmsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewManagedHsmsServerTransport creates a new instance of ManagedHsmsServerTransport with the provided implementation.
@@ -71,11 +71,11 @@ func NewManagedHsmsServerTransport(srv *ManagedHsmsServer) *ManagedHsmsServerTra
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armkeyvault.ManagedHsmsClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armkeyvault.ManagedHsmsClientDeleteResponse]](),
+		beginPurgeDeleted:           newTracker[azfake.PollerResponder[armkeyvault.ManagedHsmsClientPurgeDeletedResponse]](),
+		beginUpdate:                 newTracker[azfake.PollerResponder[armkeyvault.ManagedHsmsClientUpdateResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armkeyvault.ManagedHsmsClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armkeyvault.ManagedHsmsClientListBySubscriptionResponse]](),
 		newListDeletedPager:         newTracker[azfake.PagerResponder[armkeyvault.ManagedHsmsClientListDeletedResponse]](),
-		beginPurgeDeleted:           newTracker[azfake.PollerResponder[armkeyvault.ManagedHsmsClientPurgeDeletedResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armkeyvault.ManagedHsmsClientUpdateResponse]](),
 	}
 }
 
@@ -85,11 +85,11 @@ type ManagedHsmsServerTransport struct {
 	srv                         *ManagedHsmsServer
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armkeyvault.ManagedHsmsClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armkeyvault.ManagedHsmsClientDeleteResponse]]
+	beginPurgeDeleted           *tracker[azfake.PollerResponder[armkeyvault.ManagedHsmsClientPurgeDeletedResponse]]
+	beginUpdate                 *tracker[azfake.PollerResponder[armkeyvault.ManagedHsmsClientUpdateResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armkeyvault.ManagedHsmsClientListByResourceGroupResponse]]
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armkeyvault.ManagedHsmsClientListBySubscriptionResponse]]
 	newListDeletedPager         *tracker[azfake.PagerResponder[armkeyvault.ManagedHsmsClientListDeletedResponse]]
-	beginPurgeDeleted           *tracker[azfake.PollerResponder[armkeyvault.ManagedHsmsClientPurgeDeletedResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armkeyvault.ManagedHsmsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for ManagedHsmsServerTransport.
@@ -113,12 +113,16 @@ func (m *ManagedHsmsServerTransport) dispatchToMethodFake(req *http.Request, met
 		}
 		if !intercepted {
 			switch method {
-			case "ManagedHsmsClient.CheckMhsmNameAvailability":
-				res.resp, res.err = m.dispatchCheckMhsmNameAvailability(req)
 			case "ManagedHsmsClient.BeginCreateOrUpdate":
 				res.resp, res.err = m.dispatchBeginCreateOrUpdate(req)
 			case "ManagedHsmsClient.BeginDelete":
 				res.resp, res.err = m.dispatchBeginDelete(req)
+			case "ManagedHsmsClient.BeginPurgeDeleted":
+				res.resp, res.err = m.dispatchBeginPurgeDeleted(req)
+			case "ManagedHsmsClient.BeginUpdate":
+				res.resp, res.err = m.dispatchBeginUpdate(req)
+			case "ManagedHsmsClient.CheckMhsmNameAvailability":
+				res.resp, res.err = m.dispatchCheckMhsmNameAvailability(req)
 			case "ManagedHsmsClient.Get":
 				res.resp, res.err = m.dispatchGet(req)
 			case "ManagedHsmsClient.GetDeleted":
@@ -129,10 +133,6 @@ func (m *ManagedHsmsServerTransport) dispatchToMethodFake(req *http.Request, met
 				res.resp, res.err = m.dispatchNewListBySubscriptionPager(req)
 			case "ManagedHsmsClient.NewListDeletedPager":
 				res.resp, res.err = m.dispatchNewListDeletedPager(req)
-			case "ManagedHsmsClient.BeginPurgeDeleted":
-				res.resp, res.err = m.dispatchBeginPurgeDeleted(req)
-			case "ManagedHsmsClient.BeginUpdate":
-				res.resp, res.err = m.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -147,35 +147,6 @@ func (m *ManagedHsmsServerTransport) dispatchToMethodFake(req *http.Request, met
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (m *ManagedHsmsServerTransport) dispatchCheckMhsmNameAvailability(req *http.Request) (*http.Response, error) {
-	if m.srv.CheckMhsmNameAvailability == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CheckMhsmNameAvailability not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.KeyVault/checkMhsmNameAvailability`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 2 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armkeyvault.CheckMhsmNameAvailabilityParameters](req)
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := m.srv.CheckMhsmNameAvailability(req.Context(), body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CheckMhsmNameAvailabilityResult, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (m *ManagedHsmsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -267,6 +238,127 @@ func (m *ManagedHsmsServerTransport) dispatchBeginDelete(req *http.Request) (*ht
 		m.beginDelete.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (m *ManagedHsmsServerTransport) dispatchBeginPurgeDeleted(req *http.Request) (*http.Response, error) {
+	if m.srv.BeginPurgeDeleted == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginPurgeDeleted not implemented")}
+	}
+	beginPurgeDeleted := m.beginPurgeDeleted.get(req)
+	if beginPurgeDeleted == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.KeyVault/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/deletedManagedHSMs/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/purge`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := m.srv.BeginPurgeDeleted(req.Context(), nameParam, locationParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginPurgeDeleted = &respr
+		m.beginPurgeDeleted.add(req, beginPurgeDeleted)
+	}
+
+	resp, err := server.PollerResponderNext(beginPurgeDeleted, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		m.beginPurgeDeleted.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginPurgeDeleted) {
+		m.beginPurgeDeleted.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (m *ManagedHsmsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if m.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := m.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.KeyVault/managedHSMs/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armkeyvault.ManagedHsm](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := m.srv.BeginUpdate(req.Context(), resourceGroupNameParam, nameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		m.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		m.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		m.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (m *ManagedHsmsServerTransport) dispatchCheckMhsmNameAvailability(req *http.Request) (*http.Response, error) {
+	if m.srv.CheckMhsmNameAvailability == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CheckMhsmNameAvailability not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.KeyVault/checkMhsmNameAvailability`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armkeyvault.CheckMhsmNameAvailabilityParameters](req)
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := m.srv.CheckMhsmNameAvailability(req.Context(), body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CheckMhsmNameAvailabilityResult, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 
@@ -470,98 +562,6 @@ func (m *ManagedHsmsServerTransport) dispatchNewListDeletedPager(req *http.Reque
 	if !server.PagerResponderMore(newListDeletedPager) {
 		m.newListDeletedPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (m *ManagedHsmsServerTransport) dispatchBeginPurgeDeleted(req *http.Request) (*http.Response, error) {
-	if m.srv.BeginPurgeDeleted == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginPurgeDeleted not implemented")}
-	}
-	beginPurgeDeleted := m.beginPurgeDeleted.get(req)
-	if beginPurgeDeleted == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.KeyVault/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/deletedManagedHSMs/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/purge`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
-		locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := m.srv.BeginPurgeDeleted(req.Context(), nameParam, locationParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginPurgeDeleted = &respr
-		m.beginPurgeDeleted.add(req, beginPurgeDeleted)
-	}
-
-	resp, err := server.PollerResponderNext(beginPurgeDeleted, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		m.beginPurgeDeleted.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginPurgeDeleted) {
-		m.beginPurgeDeleted.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (m *ManagedHsmsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if m.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := m.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.KeyVault/managedHSMs/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armkeyvault.ManagedHsm](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := m.srv.BeginUpdate(req.Context(), resourceGroupNameParam, nameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		m.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		m.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		m.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

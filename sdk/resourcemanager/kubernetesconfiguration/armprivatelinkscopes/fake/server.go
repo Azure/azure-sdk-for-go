@@ -33,13 +33,13 @@ type Server struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, scopeName string, options *armprivatelinkscopes.ClientGetOptions) (resp azfake.Responder[armprivatelinkscopes.ClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method Client.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armprivatelinkscopes.ClientListOptions) (resp azfake.PagerResponder[armprivatelinkscopes.ClientListResponse])
-
 	// NewListByResourceGroupPager is the fake for method Client.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, options *armprivatelinkscopes.ClientListByResourceGroupOptions) (resp azfake.PagerResponder[armprivatelinkscopes.ClientListByResourceGroupResponse])
+
+	// NewListPager is the fake for method Client.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armprivatelinkscopes.ClientListOptions) (resp azfake.PagerResponder[armprivatelinkscopes.ClientListResponse])
 
 	// UpdateTags is the fake for method Client.UpdateTags
 	// HTTP status codes to indicate success: http.StatusOK
@@ -52,8 +52,8 @@ type Server struct {
 func NewServerTransport(srv *Server) *ServerTransport {
 	return &ServerTransport{
 		srv:                         srv,
-		newListPager:                newTracker[azfake.PagerResponder[armprivatelinkscopes.ClientListResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armprivatelinkscopes.ClientListByResourceGroupResponse]](),
+		newListPager:                newTracker[azfake.PagerResponder[armprivatelinkscopes.ClientListResponse]](),
 	}
 }
 
@@ -61,8 +61,8 @@ func NewServerTransport(srv *Server) *ServerTransport {
 // Don't use this type directly, use NewServerTransport instead.
 type ServerTransport struct {
 	srv                         *Server
-	newListPager                *tracker[azfake.PagerResponder[armprivatelinkscopes.ClientListResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armprivatelinkscopes.ClientListByResourceGroupResponse]]
+	newListPager                *tracker[azfake.PagerResponder[armprivatelinkscopes.ClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for ServerTransport.
@@ -92,10 +92,10 @@ func (s *ServerTransport) dispatchToMethodFake(req *http.Request, method string)
 				res.resp, res.err = s.dispatchDelete(req)
 			case "Client.Get":
 				res.resp, res.err = s.dispatchGet(req)
-			case "Client.NewListPager":
-				res.resp, res.err = s.dispatchNewListPager(req)
 			case "Client.NewListByResourceGroupPager":
 				res.resp, res.err = s.dispatchNewListByResourceGroupPager(req)
+			case "Client.NewListPager":
+				res.resp, res.err = s.dispatchNewListPager(req)
 			case "Client.UpdateTags":
 				res.resp, res.err = s.dispatchUpdateTags(req)
 			default:
@@ -217,39 +217,6 @@ func (s *ServerTransport) dispatchGet(req *http.Request) (*http.Response, error)
 	return resp, nil
 }
 
-func (s *ServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if s.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := s.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.KubernetesConfiguration/privateLinkScopes`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := s.srv.NewListPager(nil)
-		newListPager = &resp
-		s.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armprivatelinkscopes.ClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		s.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		s.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (s *ServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
 	if s.srv.NewListByResourceGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
@@ -283,6 +250,39 @@ func (s *ServerTransport) dispatchNewListByResourceGroupPager(req *http.Request)
 	}
 	if !server.PagerResponderMore(newListByResourceGroupPager) {
 		s.newListByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (s *ServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if s.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := s.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.KubernetesConfiguration/privateLinkScopes`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := s.srv.NewListPager(nil)
+		newListPager = &resp
+		s.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armprivatelinkscopes.ClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		s.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		s.newListPager.remove(req)
 	}
 	return resp, nil
 }

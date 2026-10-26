@@ -29,6 +29,10 @@ type NamespaceDiscoveredDevicesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, namespaceName string, discoveredDeviceName string, options *armdeviceregistry.NamespaceDiscoveredDevicesClientBeginDeleteOptions) (resp azfake.PollerResponder[armdeviceregistry.NamespaceDiscoveredDevicesClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method NamespaceDiscoveredDevicesClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, namespaceName string, discoveredDeviceName string, properties armdeviceregistry.NamespaceDiscoveredDeviceUpdate, options *armdeviceregistry.NamespaceDiscoveredDevicesClientBeginUpdateOptions) (resp azfake.PollerResponder[armdeviceregistry.NamespaceDiscoveredDevicesClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method NamespaceDiscoveredDevicesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, namespaceName string, discoveredDeviceName string, options *armdeviceregistry.NamespaceDiscoveredDevicesClientGetOptions) (resp azfake.Responder[armdeviceregistry.NamespaceDiscoveredDevicesClientGetResponse], errResp azfake.ErrorResponder)
@@ -36,10 +40,6 @@ type NamespaceDiscoveredDevicesServer struct {
 	// NewListByResourceGroupPager is the fake for method NamespaceDiscoveredDevicesClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, namespaceName string, options *armdeviceregistry.NamespaceDiscoveredDevicesClientListByResourceGroupOptions) (resp azfake.PagerResponder[armdeviceregistry.NamespaceDiscoveredDevicesClientListByResourceGroupResponse])
-
-	// BeginUpdate is the fake for method NamespaceDiscoveredDevicesClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, namespaceName string, discoveredDeviceName string, properties armdeviceregistry.NamespaceDiscoveredDeviceUpdate, options *armdeviceregistry.NamespaceDiscoveredDevicesClientBeginUpdateOptions) (resp azfake.PollerResponder[armdeviceregistry.NamespaceDiscoveredDevicesClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewNamespaceDiscoveredDevicesServerTransport creates a new instance of NamespaceDiscoveredDevicesServerTransport with the provided implementation.
@@ -50,8 +50,8 @@ func NewNamespaceDiscoveredDevicesServerTransport(srv *NamespaceDiscoveredDevice
 		srv:                         srv,
 		beginCreateOrReplace:        newTracker[azfake.PollerResponder[armdeviceregistry.NamespaceDiscoveredDevicesClientCreateOrReplaceResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armdeviceregistry.NamespaceDiscoveredDevicesClientDeleteResponse]](),
-		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armdeviceregistry.NamespaceDiscoveredDevicesClientListByResourceGroupResponse]](),
 		beginUpdate:                 newTracker[azfake.PollerResponder[armdeviceregistry.NamespaceDiscoveredDevicesClientUpdateResponse]](),
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armdeviceregistry.NamespaceDiscoveredDevicesClientListByResourceGroupResponse]](),
 	}
 }
 
@@ -61,8 +61,8 @@ type NamespaceDiscoveredDevicesServerTransport struct {
 	srv                         *NamespaceDiscoveredDevicesServer
 	beginCreateOrReplace        *tracker[azfake.PollerResponder[armdeviceregistry.NamespaceDiscoveredDevicesClientCreateOrReplaceResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armdeviceregistry.NamespaceDiscoveredDevicesClientDeleteResponse]]
-	newListByResourceGroupPager *tracker[azfake.PagerResponder[armdeviceregistry.NamespaceDiscoveredDevicesClientListByResourceGroupResponse]]
 	beginUpdate                 *tracker[azfake.PollerResponder[armdeviceregistry.NamespaceDiscoveredDevicesClientUpdateResponse]]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armdeviceregistry.NamespaceDiscoveredDevicesClientListByResourceGroupResponse]]
 }
 
 // Do implements the policy.Transporter interface for NamespaceDiscoveredDevicesServerTransport.
@@ -90,12 +90,12 @@ func (n *NamespaceDiscoveredDevicesServerTransport) dispatchToMethodFake(req *ht
 				res.resp, res.err = n.dispatchBeginCreateOrReplace(req)
 			case "NamespaceDiscoveredDevicesClient.BeginDelete":
 				res.resp, res.err = n.dispatchBeginDelete(req)
+			case "NamespaceDiscoveredDevicesClient.BeginUpdate":
+				res.resp, res.err = n.dispatchBeginUpdate(req)
 			case "NamespaceDiscoveredDevicesClient.Get":
 				res.resp, res.err = n.dispatchGet(req)
 			case "NamespaceDiscoveredDevicesClient.NewListByResourceGroupPager":
 				res.resp, res.err = n.dispatchNewListByResourceGroupPager(req)
-			case "NamespaceDiscoveredDevicesClient.BeginUpdate":
-				res.resp, res.err = n.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -212,6 +212,58 @@ func (n *NamespaceDiscoveredDevicesServerTransport) dispatchBeginDelete(req *htt
 	return resp, nil
 }
 
+func (n *NamespaceDiscoveredDevicesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if n.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := n.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DeviceRegistry/namespaces/(?P<namespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/discoveredDevices/(?P<discoveredDeviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armdeviceregistry.NamespaceDiscoveredDeviceUpdate](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		namespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("namespaceName")])
+		if err != nil {
+			return nil, err
+		}
+		discoveredDeviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("discoveredDeviceName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := n.srv.BeginUpdate(req.Context(), resourceGroupNameParam, namespaceNameParam, discoveredDeviceNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		n.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		n.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		n.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (n *NamespaceDiscoveredDevicesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if n.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -287,58 +339,6 @@ func (n *NamespaceDiscoveredDevicesServerTransport) dispatchNewListByResourceGro
 	if !server.PagerResponderMore(newListByResourceGroupPager) {
 		n.newListByResourceGroupPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (n *NamespaceDiscoveredDevicesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if n.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := n.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DeviceRegistry/namespaces/(?P<namespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/discoveredDevices/(?P<discoveredDeviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armdeviceregistry.NamespaceDiscoveredDeviceUpdate](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		namespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("namespaceName")])
-		if err != nil {
-			return nil, err
-		}
-		discoveredDeviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("discoveredDeviceName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := n.srv.BeginUpdate(req.Context(), resourceGroupNameParam, namespaceNameParam, discoveredDeviceNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		n.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		n.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		n.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

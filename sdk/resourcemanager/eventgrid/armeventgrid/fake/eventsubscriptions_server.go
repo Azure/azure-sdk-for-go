@@ -30,6 +30,10 @@ type EventSubscriptionsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, scope string, eventSubscriptionName string, options *armeventgrid.EventSubscriptionsClientBeginDeleteOptions) (resp azfake.PollerResponder[armeventgrid.EventSubscriptionsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method EventSubscriptionsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	BeginUpdate func(ctx context.Context, scope string, eventSubscriptionName string, eventSubscriptionUpdateParameters armeventgrid.EventSubscriptionUpdateParameters, options *armeventgrid.EventSubscriptionsClientBeginUpdateOptions) (resp azfake.PollerResponder[armeventgrid.EventSubscriptionsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method EventSubscriptionsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, scope string, eventSubscriptionName string, options *armeventgrid.EventSubscriptionsClientGetOptions) (resp azfake.Responder[armeventgrid.EventSubscriptionsClientGetResponse], errResp azfake.ErrorResponder)
@@ -50,41 +54,37 @@ type EventSubscriptionsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourcePager func(resourceGroupName string, providerNamespace string, resourceTypeName string, resourceName string, options *armeventgrid.EventSubscriptionsClientListByResourceOptions) (resp azfake.PagerResponder[armeventgrid.EventSubscriptionsClientListByResourceResponse])
 
-	// NewListGlobalByResourceGroupPager is the fake for method EventSubscriptionsClient.NewListGlobalByResourceGroupPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListGlobalByResourceGroupPager func(resourceGroupName string, options *armeventgrid.EventSubscriptionsClientListGlobalByResourceGroupOptions) (resp azfake.PagerResponder[armeventgrid.EventSubscriptionsClientListGlobalByResourceGroupResponse])
-
 	// NewListGlobalByResourceGroupForTopicTypePager is the fake for method EventSubscriptionsClient.NewListGlobalByResourceGroupForTopicTypePager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListGlobalByResourceGroupForTopicTypePager func(resourceGroupName string, topicTypeName string, options *armeventgrid.EventSubscriptionsClientListGlobalByResourceGroupForTopicTypeOptions) (resp azfake.PagerResponder[armeventgrid.EventSubscriptionsClientListGlobalByResourceGroupForTopicTypeResponse])
 
-	// NewListGlobalBySubscriptionPager is the fake for method EventSubscriptionsClient.NewListGlobalBySubscriptionPager
+	// NewListGlobalByResourceGroupPager is the fake for method EventSubscriptionsClient.NewListGlobalByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListGlobalBySubscriptionPager func(options *armeventgrid.EventSubscriptionsClientListGlobalBySubscriptionOptions) (resp azfake.PagerResponder[armeventgrid.EventSubscriptionsClientListGlobalBySubscriptionResponse])
+	NewListGlobalByResourceGroupPager func(resourceGroupName string, options *armeventgrid.EventSubscriptionsClientListGlobalByResourceGroupOptions) (resp azfake.PagerResponder[armeventgrid.EventSubscriptionsClientListGlobalByResourceGroupResponse])
 
 	// NewListGlobalBySubscriptionForTopicTypePager is the fake for method EventSubscriptionsClient.NewListGlobalBySubscriptionForTopicTypePager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListGlobalBySubscriptionForTopicTypePager func(topicTypeName string, options *armeventgrid.EventSubscriptionsClientListGlobalBySubscriptionForTopicTypeOptions) (resp azfake.PagerResponder[armeventgrid.EventSubscriptionsClientListGlobalBySubscriptionForTopicTypeResponse])
 
-	// NewListRegionalByResourceGroupPager is the fake for method EventSubscriptionsClient.NewListRegionalByResourceGroupPager
+	// NewListGlobalBySubscriptionPager is the fake for method EventSubscriptionsClient.NewListGlobalBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListRegionalByResourceGroupPager func(resourceGroupName string, location string, options *armeventgrid.EventSubscriptionsClientListRegionalByResourceGroupOptions) (resp azfake.PagerResponder[armeventgrid.EventSubscriptionsClientListRegionalByResourceGroupResponse])
+	NewListGlobalBySubscriptionPager func(options *armeventgrid.EventSubscriptionsClientListGlobalBySubscriptionOptions) (resp azfake.PagerResponder[armeventgrid.EventSubscriptionsClientListGlobalBySubscriptionResponse])
 
 	// NewListRegionalByResourceGroupForTopicTypePager is the fake for method EventSubscriptionsClient.NewListRegionalByResourceGroupForTopicTypePager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListRegionalByResourceGroupForTopicTypePager func(resourceGroupName string, location string, topicTypeName string, options *armeventgrid.EventSubscriptionsClientListRegionalByResourceGroupForTopicTypeOptions) (resp azfake.PagerResponder[armeventgrid.EventSubscriptionsClientListRegionalByResourceGroupForTopicTypeResponse])
 
-	// NewListRegionalBySubscriptionPager is the fake for method EventSubscriptionsClient.NewListRegionalBySubscriptionPager
+	// NewListRegionalByResourceGroupPager is the fake for method EventSubscriptionsClient.NewListRegionalByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListRegionalBySubscriptionPager func(location string, options *armeventgrid.EventSubscriptionsClientListRegionalBySubscriptionOptions) (resp azfake.PagerResponder[armeventgrid.EventSubscriptionsClientListRegionalBySubscriptionResponse])
+	NewListRegionalByResourceGroupPager func(resourceGroupName string, location string, options *armeventgrid.EventSubscriptionsClientListRegionalByResourceGroupOptions) (resp azfake.PagerResponder[armeventgrid.EventSubscriptionsClientListRegionalByResourceGroupResponse])
 
 	// NewListRegionalBySubscriptionForTopicTypePager is the fake for method EventSubscriptionsClient.NewListRegionalBySubscriptionForTopicTypePager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListRegionalBySubscriptionForTopicTypePager func(location string, topicTypeName string, options *armeventgrid.EventSubscriptionsClientListRegionalBySubscriptionForTopicTypeOptions) (resp azfake.PagerResponder[armeventgrid.EventSubscriptionsClientListRegionalBySubscriptionForTopicTypeResponse])
 
-	// BeginUpdate is the fake for method EventSubscriptionsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginUpdate func(ctx context.Context, scope string, eventSubscriptionName string, eventSubscriptionUpdateParameters armeventgrid.EventSubscriptionUpdateParameters, options *armeventgrid.EventSubscriptionsClientBeginUpdateOptions) (resp azfake.PollerResponder[armeventgrid.EventSubscriptionsClientUpdateResponse], errResp azfake.ErrorResponder)
+	// NewListRegionalBySubscriptionPager is the fake for method EventSubscriptionsClient.NewListRegionalBySubscriptionPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListRegionalBySubscriptionPager func(location string, options *armeventgrid.EventSubscriptionsClientListRegionalBySubscriptionOptions) (resp azfake.PagerResponder[armeventgrid.EventSubscriptionsClientListRegionalBySubscriptionResponse])
 }
 
 // NewEventSubscriptionsServerTransport creates a new instance of EventSubscriptionsServerTransport with the provided implementation.
@@ -92,20 +92,20 @@ type EventSubscriptionsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewEventSubscriptionsServerTransport(srv *EventSubscriptionsServer) *EventSubscriptionsServerTransport {
 	return &EventSubscriptionsServerTransport{
-		srv:                               srv,
-		beginCreateOrUpdate:               newTracker[azfake.PollerResponder[armeventgrid.EventSubscriptionsClientCreateOrUpdateResponse]](),
-		beginDelete:                       newTracker[azfake.PollerResponder[armeventgrid.EventSubscriptionsClientDeleteResponse]](),
-		newListByDomainTopicPager:         newTracker[azfake.PagerResponder[armeventgrid.EventSubscriptionsClientListByDomainTopicResponse]](),
-		newListByResourcePager:            newTracker[azfake.PagerResponder[armeventgrid.EventSubscriptionsClientListByResourceResponse]](),
-		newListGlobalByResourceGroupPager: newTracker[azfake.PagerResponder[armeventgrid.EventSubscriptionsClientListGlobalByResourceGroupResponse]](),
+		srv:                       srv,
+		beginCreateOrUpdate:       newTracker[azfake.PollerResponder[armeventgrid.EventSubscriptionsClientCreateOrUpdateResponse]](),
+		beginDelete:               newTracker[azfake.PollerResponder[armeventgrid.EventSubscriptionsClientDeleteResponse]](),
+		beginUpdate:               newTracker[azfake.PollerResponder[armeventgrid.EventSubscriptionsClientUpdateResponse]](),
+		newListByDomainTopicPager: newTracker[azfake.PagerResponder[armeventgrid.EventSubscriptionsClientListByDomainTopicResponse]](),
+		newListByResourcePager:    newTracker[azfake.PagerResponder[armeventgrid.EventSubscriptionsClientListByResourceResponse]](),
 		newListGlobalByResourceGroupForTopicTypePager:   newTracker[azfake.PagerResponder[armeventgrid.EventSubscriptionsClientListGlobalByResourceGroupForTopicTypeResponse]](),
-		newListGlobalBySubscriptionPager:                newTracker[azfake.PagerResponder[armeventgrid.EventSubscriptionsClientListGlobalBySubscriptionResponse]](),
+		newListGlobalByResourceGroupPager:               newTracker[azfake.PagerResponder[armeventgrid.EventSubscriptionsClientListGlobalByResourceGroupResponse]](),
 		newListGlobalBySubscriptionForTopicTypePager:    newTracker[azfake.PagerResponder[armeventgrid.EventSubscriptionsClientListGlobalBySubscriptionForTopicTypeResponse]](),
-		newListRegionalByResourceGroupPager:             newTracker[azfake.PagerResponder[armeventgrid.EventSubscriptionsClientListRegionalByResourceGroupResponse]](),
+		newListGlobalBySubscriptionPager:                newTracker[azfake.PagerResponder[armeventgrid.EventSubscriptionsClientListGlobalBySubscriptionResponse]](),
 		newListRegionalByResourceGroupForTopicTypePager: newTracker[azfake.PagerResponder[armeventgrid.EventSubscriptionsClientListRegionalByResourceGroupForTopicTypeResponse]](),
-		newListRegionalBySubscriptionPager:              newTracker[azfake.PagerResponder[armeventgrid.EventSubscriptionsClientListRegionalBySubscriptionResponse]](),
+		newListRegionalByResourceGroupPager:             newTracker[azfake.PagerResponder[armeventgrid.EventSubscriptionsClientListRegionalByResourceGroupResponse]](),
 		newListRegionalBySubscriptionForTopicTypePager:  newTracker[azfake.PagerResponder[armeventgrid.EventSubscriptionsClientListRegionalBySubscriptionForTopicTypeResponse]](),
-		beginUpdate: newTracker[azfake.PollerResponder[armeventgrid.EventSubscriptionsClientUpdateResponse]](),
+		newListRegionalBySubscriptionPager:              newTracker[azfake.PagerResponder[armeventgrid.EventSubscriptionsClientListRegionalBySubscriptionResponse]](),
 	}
 }
 
@@ -115,17 +115,17 @@ type EventSubscriptionsServerTransport struct {
 	srv                                             *EventSubscriptionsServer
 	beginCreateOrUpdate                             *tracker[azfake.PollerResponder[armeventgrid.EventSubscriptionsClientCreateOrUpdateResponse]]
 	beginDelete                                     *tracker[azfake.PollerResponder[armeventgrid.EventSubscriptionsClientDeleteResponse]]
+	beginUpdate                                     *tracker[azfake.PollerResponder[armeventgrid.EventSubscriptionsClientUpdateResponse]]
 	newListByDomainTopicPager                       *tracker[azfake.PagerResponder[armeventgrid.EventSubscriptionsClientListByDomainTopicResponse]]
 	newListByResourcePager                          *tracker[azfake.PagerResponder[armeventgrid.EventSubscriptionsClientListByResourceResponse]]
-	newListGlobalByResourceGroupPager               *tracker[azfake.PagerResponder[armeventgrid.EventSubscriptionsClientListGlobalByResourceGroupResponse]]
 	newListGlobalByResourceGroupForTopicTypePager   *tracker[azfake.PagerResponder[armeventgrid.EventSubscriptionsClientListGlobalByResourceGroupForTopicTypeResponse]]
-	newListGlobalBySubscriptionPager                *tracker[azfake.PagerResponder[armeventgrid.EventSubscriptionsClientListGlobalBySubscriptionResponse]]
+	newListGlobalByResourceGroupPager               *tracker[azfake.PagerResponder[armeventgrid.EventSubscriptionsClientListGlobalByResourceGroupResponse]]
 	newListGlobalBySubscriptionForTopicTypePager    *tracker[azfake.PagerResponder[armeventgrid.EventSubscriptionsClientListGlobalBySubscriptionForTopicTypeResponse]]
-	newListRegionalByResourceGroupPager             *tracker[azfake.PagerResponder[armeventgrid.EventSubscriptionsClientListRegionalByResourceGroupResponse]]
+	newListGlobalBySubscriptionPager                *tracker[azfake.PagerResponder[armeventgrid.EventSubscriptionsClientListGlobalBySubscriptionResponse]]
 	newListRegionalByResourceGroupForTopicTypePager *tracker[azfake.PagerResponder[armeventgrid.EventSubscriptionsClientListRegionalByResourceGroupForTopicTypeResponse]]
-	newListRegionalBySubscriptionPager              *tracker[azfake.PagerResponder[armeventgrid.EventSubscriptionsClientListRegionalBySubscriptionResponse]]
+	newListRegionalByResourceGroupPager             *tracker[azfake.PagerResponder[armeventgrid.EventSubscriptionsClientListRegionalByResourceGroupResponse]]
 	newListRegionalBySubscriptionForTopicTypePager  *tracker[azfake.PagerResponder[armeventgrid.EventSubscriptionsClientListRegionalBySubscriptionForTopicTypeResponse]]
-	beginUpdate                                     *tracker[azfake.PollerResponder[armeventgrid.EventSubscriptionsClientUpdateResponse]]
+	newListRegionalBySubscriptionPager              *tracker[azfake.PagerResponder[armeventgrid.EventSubscriptionsClientListRegionalBySubscriptionResponse]]
 }
 
 // Do implements the policy.Transporter interface for EventSubscriptionsServerTransport.
@@ -153,6 +153,8 @@ func (e *EventSubscriptionsServerTransport) dispatchToMethodFake(req *http.Reque
 				res.resp, res.err = e.dispatchBeginCreateOrUpdate(req)
 			case "EventSubscriptionsClient.BeginDelete":
 				res.resp, res.err = e.dispatchBeginDelete(req)
+			case "EventSubscriptionsClient.BeginUpdate":
+				res.resp, res.err = e.dispatchBeginUpdate(req)
 			case "EventSubscriptionsClient.Get":
 				res.resp, res.err = e.dispatchGet(req)
 			case "EventSubscriptionsClient.GetDeliveryAttributes":
@@ -163,24 +165,22 @@ func (e *EventSubscriptionsServerTransport) dispatchToMethodFake(req *http.Reque
 				res.resp, res.err = e.dispatchNewListByDomainTopicPager(req)
 			case "EventSubscriptionsClient.NewListByResourcePager":
 				res.resp, res.err = e.dispatchNewListByResourcePager(req)
-			case "EventSubscriptionsClient.NewListGlobalByResourceGroupPager":
-				res.resp, res.err = e.dispatchNewListGlobalByResourceGroupPager(req)
 			case "EventSubscriptionsClient.NewListGlobalByResourceGroupForTopicTypePager":
 				res.resp, res.err = e.dispatchNewListGlobalByResourceGroupForTopicTypePager(req)
-			case "EventSubscriptionsClient.NewListGlobalBySubscriptionPager":
-				res.resp, res.err = e.dispatchNewListGlobalBySubscriptionPager(req)
+			case "EventSubscriptionsClient.NewListGlobalByResourceGroupPager":
+				res.resp, res.err = e.dispatchNewListGlobalByResourceGroupPager(req)
 			case "EventSubscriptionsClient.NewListGlobalBySubscriptionForTopicTypePager":
 				res.resp, res.err = e.dispatchNewListGlobalBySubscriptionForTopicTypePager(req)
-			case "EventSubscriptionsClient.NewListRegionalByResourceGroupPager":
-				res.resp, res.err = e.dispatchNewListRegionalByResourceGroupPager(req)
+			case "EventSubscriptionsClient.NewListGlobalBySubscriptionPager":
+				res.resp, res.err = e.dispatchNewListGlobalBySubscriptionPager(req)
 			case "EventSubscriptionsClient.NewListRegionalByResourceGroupForTopicTypePager":
 				res.resp, res.err = e.dispatchNewListRegionalByResourceGroupForTopicTypePager(req)
-			case "EventSubscriptionsClient.NewListRegionalBySubscriptionPager":
-				res.resp, res.err = e.dispatchNewListRegionalBySubscriptionPager(req)
+			case "EventSubscriptionsClient.NewListRegionalByResourceGroupPager":
+				res.resp, res.err = e.dispatchNewListRegionalByResourceGroupPager(req)
 			case "EventSubscriptionsClient.NewListRegionalBySubscriptionForTopicTypePager":
 				res.resp, res.err = e.dispatchNewListRegionalBySubscriptionForTopicTypePager(req)
-			case "EventSubscriptionsClient.BeginUpdate":
-				res.resp, res.err = e.dispatchBeginUpdate(req)
+			case "EventSubscriptionsClient.NewListRegionalBySubscriptionPager":
+				res.resp, res.err = e.dispatchNewListRegionalBySubscriptionPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -284,6 +284,54 @@ func (e *EventSubscriptionsServerTransport) dispatchBeginDelete(req *http.Reques
 	}
 	if !server.PollerResponderMore(beginDelete) {
 		e.beginDelete.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (e *EventSubscriptionsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if e.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := e.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventGrid/eventSubscriptions/(?P<eventSubscriptionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armeventgrid.EventSubscriptionUpdateParameters](req)
+		if err != nil {
+			return nil, err
+		}
+		scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
+		if err != nil {
+			return nil, err
+		}
+		eventSubscriptionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("eventSubscriptionName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := e.srv.BeginUpdate(req.Context(), scopeParam, eventSubscriptionNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		e.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		e.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		e.beginUpdate.remove(req)
 	}
 
 	return resp, nil
@@ -520,62 +568,6 @@ func (e *EventSubscriptionsServerTransport) dispatchNewListByResourcePager(req *
 	return resp, nil
 }
 
-func (e *EventSubscriptionsServerTransport) dispatchNewListGlobalByResourceGroupPager(req *http.Request) (*http.Response, error) {
-	if e.srv.NewListGlobalByResourceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListGlobalByResourceGroupPager not implemented")}
-	}
-	newListGlobalByResourceGroupPager := e.newListGlobalByResourceGroupPager.get(req)
-	if newListGlobalByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventGrid/eventSubscriptions`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		filterParam := getOptional(qp.Get("$filter"))
-		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
-		})
-		if err != nil {
-			return nil, err
-		}
-		var options *armeventgrid.EventSubscriptionsClientListGlobalByResourceGroupOptions
-		if filterParam != nil || topParam != nil {
-			options = &armeventgrid.EventSubscriptionsClientListGlobalByResourceGroupOptions{
-				Filter: filterParam,
-				Top:    topParam,
-			}
-		}
-		resp := e.srv.NewListGlobalByResourceGroupPager(resourceGroupNameParam, options)
-		newListGlobalByResourceGroupPager = &resp
-		e.newListGlobalByResourceGroupPager.add(req, newListGlobalByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListGlobalByResourceGroupPager, req, func(page *armeventgrid.EventSubscriptionsClientListGlobalByResourceGroupResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListGlobalByResourceGroupPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		e.newListGlobalByResourceGroupPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListGlobalByResourceGroupPager) {
-		e.newListGlobalByResourceGroupPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (e *EventSubscriptionsServerTransport) dispatchNewListGlobalByResourceGroupForTopicTypePager(req *http.Request) (*http.Response, error) {
 	if e.srv.NewListGlobalByResourceGroupForTopicTypePager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListGlobalByResourceGroupForTopicTypePager not implemented")}
@@ -636,19 +628,23 @@ func (e *EventSubscriptionsServerTransport) dispatchNewListGlobalByResourceGroup
 	return resp, nil
 }
 
-func (e *EventSubscriptionsServerTransport) dispatchNewListGlobalBySubscriptionPager(req *http.Request) (*http.Response, error) {
-	if e.srv.NewListGlobalBySubscriptionPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListGlobalBySubscriptionPager not implemented")}
+func (e *EventSubscriptionsServerTransport) dispatchNewListGlobalByResourceGroupPager(req *http.Request) (*http.Response, error) {
+	if e.srv.NewListGlobalByResourceGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListGlobalByResourceGroupPager not implemented")}
 	}
-	newListGlobalBySubscriptionPager := e.newListGlobalBySubscriptionPager.get(req)
-	if newListGlobalBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventGrid/eventSubscriptions`
+	newListGlobalByResourceGroupPager := e.newListGlobalByResourceGroupPager.get(req)
+	if newListGlobalByResourceGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventGrid/eventSubscriptions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
 		filterParam := getOptional(qp.Get("$filter"))
 		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
 			p, parseErr := strconv.ParseInt(v, 10, 32)
@@ -660,30 +656,30 @@ func (e *EventSubscriptionsServerTransport) dispatchNewListGlobalBySubscriptionP
 		if err != nil {
 			return nil, err
 		}
-		var options *armeventgrid.EventSubscriptionsClientListGlobalBySubscriptionOptions
+		var options *armeventgrid.EventSubscriptionsClientListGlobalByResourceGroupOptions
 		if filterParam != nil || topParam != nil {
-			options = &armeventgrid.EventSubscriptionsClientListGlobalBySubscriptionOptions{
+			options = &armeventgrid.EventSubscriptionsClientListGlobalByResourceGroupOptions{
 				Filter: filterParam,
 				Top:    topParam,
 			}
 		}
-		resp := e.srv.NewListGlobalBySubscriptionPager(options)
-		newListGlobalBySubscriptionPager = &resp
-		e.newListGlobalBySubscriptionPager.add(req, newListGlobalBySubscriptionPager)
-		server.PagerResponderInjectNextLinks(newListGlobalBySubscriptionPager, req, func(page *armeventgrid.EventSubscriptionsClientListGlobalBySubscriptionResponse, createLink func() string) {
+		resp := e.srv.NewListGlobalByResourceGroupPager(resourceGroupNameParam, options)
+		newListGlobalByResourceGroupPager = &resp
+		e.newListGlobalByResourceGroupPager.add(req, newListGlobalByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListGlobalByResourceGroupPager, req, func(page *armeventgrid.EventSubscriptionsClientListGlobalByResourceGroupResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(newListGlobalBySubscriptionPager, req)
+	resp, err := server.PagerResponderNext(newListGlobalByResourceGroupPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		e.newListGlobalBySubscriptionPager.remove(req)
+		e.newListGlobalByResourceGroupPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(newListGlobalBySubscriptionPager) {
-		e.newListGlobalBySubscriptionPager.remove(req)
+	if !server.PagerResponderMore(newListGlobalByResourceGroupPager) {
+		e.newListGlobalByResourceGroupPager.remove(req)
 	}
 	return resp, nil
 }
@@ -744,27 +740,19 @@ func (e *EventSubscriptionsServerTransport) dispatchNewListGlobalBySubscriptionF
 	return resp, nil
 }
 
-func (e *EventSubscriptionsServerTransport) dispatchNewListRegionalByResourceGroupPager(req *http.Request) (*http.Response, error) {
-	if e.srv.NewListRegionalByResourceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListRegionalByResourceGroupPager not implemented")}
+func (e *EventSubscriptionsServerTransport) dispatchNewListGlobalBySubscriptionPager(req *http.Request) (*http.Response, error) {
+	if e.srv.NewListGlobalBySubscriptionPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListGlobalBySubscriptionPager not implemented")}
 	}
-	newListRegionalByResourceGroupPager := e.newListRegionalByResourceGroupPager.get(req)
-	if newListRegionalByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventGrid/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/eventSubscriptions`
+	newListGlobalBySubscriptionPager := e.newListGlobalBySubscriptionPager.get(req)
+	if newListGlobalBySubscriptionPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventGrid/eventSubscriptions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
-		if err != nil {
-			return nil, err
-		}
 		filterParam := getOptional(qp.Get("$filter"))
 		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
 			p, parseErr := strconv.ParseInt(v, 10, 32)
@@ -776,30 +764,30 @@ func (e *EventSubscriptionsServerTransport) dispatchNewListRegionalByResourceGro
 		if err != nil {
 			return nil, err
 		}
-		var options *armeventgrid.EventSubscriptionsClientListRegionalByResourceGroupOptions
+		var options *armeventgrid.EventSubscriptionsClientListGlobalBySubscriptionOptions
 		if filterParam != nil || topParam != nil {
-			options = &armeventgrid.EventSubscriptionsClientListRegionalByResourceGroupOptions{
+			options = &armeventgrid.EventSubscriptionsClientListGlobalBySubscriptionOptions{
 				Filter: filterParam,
 				Top:    topParam,
 			}
 		}
-		resp := e.srv.NewListRegionalByResourceGroupPager(resourceGroupNameParam, locationParam, options)
-		newListRegionalByResourceGroupPager = &resp
-		e.newListRegionalByResourceGroupPager.add(req, newListRegionalByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListRegionalByResourceGroupPager, req, func(page *armeventgrid.EventSubscriptionsClientListRegionalByResourceGroupResponse, createLink func() string) {
+		resp := e.srv.NewListGlobalBySubscriptionPager(options)
+		newListGlobalBySubscriptionPager = &resp
+		e.newListGlobalBySubscriptionPager.add(req, newListGlobalBySubscriptionPager)
+		server.PagerResponderInjectNextLinks(newListGlobalBySubscriptionPager, req, func(page *armeventgrid.EventSubscriptionsClientListGlobalBySubscriptionResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(newListRegionalByResourceGroupPager, req)
+	resp, err := server.PagerResponderNext(newListGlobalBySubscriptionPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		e.newListRegionalByResourceGroupPager.remove(req)
+		e.newListGlobalBySubscriptionPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(newListRegionalByResourceGroupPager) {
-		e.newListRegionalByResourceGroupPager.remove(req)
+	if !server.PagerResponderMore(newListGlobalBySubscriptionPager) {
+		e.newListGlobalBySubscriptionPager.remove(req)
 	}
 	return resp, nil
 }
@@ -868,19 +856,23 @@ func (e *EventSubscriptionsServerTransport) dispatchNewListRegionalByResourceGro
 	return resp, nil
 }
 
-func (e *EventSubscriptionsServerTransport) dispatchNewListRegionalBySubscriptionPager(req *http.Request) (*http.Response, error) {
-	if e.srv.NewListRegionalBySubscriptionPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListRegionalBySubscriptionPager not implemented")}
+func (e *EventSubscriptionsServerTransport) dispatchNewListRegionalByResourceGroupPager(req *http.Request) (*http.Response, error) {
+	if e.srv.NewListRegionalByResourceGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListRegionalByResourceGroupPager not implemented")}
 	}
-	newListRegionalBySubscriptionPager := e.newListRegionalBySubscriptionPager.get(req)
-	if newListRegionalBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventGrid/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/eventSubscriptions`
+	newListRegionalByResourceGroupPager := e.newListRegionalByResourceGroupPager.get(req)
+	if newListRegionalByResourceGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventGrid/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/eventSubscriptions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
 		locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
 		if err != nil {
 			return nil, err
@@ -896,30 +888,30 @@ func (e *EventSubscriptionsServerTransport) dispatchNewListRegionalBySubscriptio
 		if err != nil {
 			return nil, err
 		}
-		var options *armeventgrid.EventSubscriptionsClientListRegionalBySubscriptionOptions
+		var options *armeventgrid.EventSubscriptionsClientListRegionalByResourceGroupOptions
 		if filterParam != nil || topParam != nil {
-			options = &armeventgrid.EventSubscriptionsClientListRegionalBySubscriptionOptions{
+			options = &armeventgrid.EventSubscriptionsClientListRegionalByResourceGroupOptions{
 				Filter: filterParam,
 				Top:    topParam,
 			}
 		}
-		resp := e.srv.NewListRegionalBySubscriptionPager(locationParam, options)
-		newListRegionalBySubscriptionPager = &resp
-		e.newListRegionalBySubscriptionPager.add(req, newListRegionalBySubscriptionPager)
-		server.PagerResponderInjectNextLinks(newListRegionalBySubscriptionPager, req, func(page *armeventgrid.EventSubscriptionsClientListRegionalBySubscriptionResponse, createLink func() string) {
+		resp := e.srv.NewListRegionalByResourceGroupPager(resourceGroupNameParam, locationParam, options)
+		newListRegionalByResourceGroupPager = &resp
+		e.newListRegionalByResourceGroupPager.add(req, newListRegionalByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListRegionalByResourceGroupPager, req, func(page *armeventgrid.EventSubscriptionsClientListRegionalByResourceGroupResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(newListRegionalBySubscriptionPager, req)
+	resp, err := server.PagerResponderNext(newListRegionalByResourceGroupPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		e.newListRegionalBySubscriptionPager.remove(req)
+		e.newListRegionalByResourceGroupPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(newListRegionalBySubscriptionPager) {
-		e.newListRegionalBySubscriptionPager.remove(req)
+	if !server.PagerResponderMore(newListRegionalByResourceGroupPager) {
+		e.newListRegionalByResourceGroupPager.remove(req)
 	}
 	return resp, nil
 }
@@ -984,51 +976,59 @@ func (e *EventSubscriptionsServerTransport) dispatchNewListRegionalBySubscriptio
 	return resp, nil
 }
 
-func (e *EventSubscriptionsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if e.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+func (e *EventSubscriptionsServerTransport) dispatchNewListRegionalBySubscriptionPager(req *http.Request) (*http.Response, error) {
+	if e.srv.NewListRegionalBySubscriptionPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListRegionalBySubscriptionPager not implemented")}
 	}
-	beginUpdate := e.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventGrid/eventSubscriptions/(?P<eventSubscriptionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	newListRegionalBySubscriptionPager := e.newListRegionalBySubscriptionPager.get(req)
+	if newListRegionalBySubscriptionPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventGrid/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/eventSubscriptions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		body, err := server.UnmarshalRequestAsJSON[armeventgrid.EventSubscriptionUpdateParameters](req)
+		qp := req.URL.Query()
+		locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
 		if err != nil {
 			return nil, err
 		}
-		scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
+		filterParam := getOptional(qp.Get("$filter"))
+		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
 		if err != nil {
 			return nil, err
 		}
-		eventSubscriptionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("eventSubscriptionName")])
-		if err != nil {
-			return nil, err
+		var options *armeventgrid.EventSubscriptionsClientListRegionalBySubscriptionOptions
+		if filterParam != nil || topParam != nil {
+			options = &armeventgrid.EventSubscriptionsClientListRegionalBySubscriptionOptions{
+				Filter: filterParam,
+				Top:    topParam,
+			}
 		}
-		respr, errRespr := e.srv.BeginUpdate(req.Context(), scopeParam, eventSubscriptionNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		e.beginUpdate.add(req, beginUpdate)
+		resp := e.srv.NewListRegionalBySubscriptionPager(locationParam, options)
+		newListRegionalBySubscriptionPager = &resp
+		e.newListRegionalBySubscriptionPager.add(req, newListRegionalBySubscriptionPager)
+		server.PagerResponderInjectNextLinks(newListRegionalBySubscriptionPager, req, func(page *armeventgrid.EventSubscriptionsClientListRegionalBySubscriptionResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
 	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
+	resp, err := server.PagerResponderNext(newListRegionalBySubscriptionPager, req)
 	if err != nil {
 		return nil, err
 	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
-		e.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		e.newListRegionalBySubscriptionPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(beginUpdate) {
-		e.beginUpdate.remove(req)
+	if !server.PagerResponderMore(newListRegionalBySubscriptionPager) {
+		e.newListRegionalBySubscriptionPager.remove(req)
 	}
-
 	return resp, nil
 }
 

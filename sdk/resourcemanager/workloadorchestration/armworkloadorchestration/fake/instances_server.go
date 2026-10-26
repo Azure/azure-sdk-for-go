@@ -29,6 +29,10 @@ type InstancesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, targetName string, solutionName string, instanceName string, options *armworkloadorchestration.InstancesClientBeginDeleteOptions) (resp azfake.PollerResponder[armworkloadorchestration.InstancesClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method InstancesClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, targetName string, solutionName string, instanceName string, properties armworkloadorchestration.Instance, options *armworkloadorchestration.InstancesClientBeginUpdateOptions) (resp azfake.PollerResponder[armworkloadorchestration.InstancesClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method InstancesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, targetName string, solutionName string, instanceName string, options *armworkloadorchestration.InstancesClientGetOptions) (resp azfake.Responder[armworkloadorchestration.InstancesClientGetResponse], errResp azfake.ErrorResponder)
@@ -36,10 +40,6 @@ type InstancesServer struct {
 	// NewListBySolutionPager is the fake for method InstancesClient.NewListBySolutionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySolutionPager func(resourceGroupName string, targetName string, solutionName string, options *armworkloadorchestration.InstancesClientListBySolutionOptions) (resp azfake.PagerResponder[armworkloadorchestration.InstancesClientListBySolutionResponse])
-
-	// BeginUpdate is the fake for method InstancesClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, targetName string, solutionName string, instanceName string, properties armworkloadorchestration.Instance, options *armworkloadorchestration.InstancesClientBeginUpdateOptions) (resp azfake.PollerResponder[armworkloadorchestration.InstancesClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewInstancesServerTransport creates a new instance of InstancesServerTransport with the provided implementation.
@@ -50,8 +50,8 @@ func NewInstancesServerTransport(srv *InstancesServer) *InstancesServerTransport
 		srv:                    srv,
 		beginCreateOrUpdate:    newTracker[azfake.PollerResponder[armworkloadorchestration.InstancesClientCreateOrUpdateResponse]](),
 		beginDelete:            newTracker[azfake.PollerResponder[armworkloadorchestration.InstancesClientDeleteResponse]](),
-		newListBySolutionPager: newTracker[azfake.PagerResponder[armworkloadorchestration.InstancesClientListBySolutionResponse]](),
 		beginUpdate:            newTracker[azfake.PollerResponder[armworkloadorchestration.InstancesClientUpdateResponse]](),
+		newListBySolutionPager: newTracker[azfake.PagerResponder[armworkloadorchestration.InstancesClientListBySolutionResponse]](),
 	}
 }
 
@@ -61,8 +61,8 @@ type InstancesServerTransport struct {
 	srv                    *InstancesServer
 	beginCreateOrUpdate    *tracker[azfake.PollerResponder[armworkloadorchestration.InstancesClientCreateOrUpdateResponse]]
 	beginDelete            *tracker[azfake.PollerResponder[armworkloadorchestration.InstancesClientDeleteResponse]]
-	newListBySolutionPager *tracker[azfake.PagerResponder[armworkloadorchestration.InstancesClientListBySolutionResponse]]
 	beginUpdate            *tracker[azfake.PollerResponder[armworkloadorchestration.InstancesClientUpdateResponse]]
+	newListBySolutionPager *tracker[azfake.PagerResponder[armworkloadorchestration.InstancesClientListBySolutionResponse]]
 }
 
 // Do implements the policy.Transporter interface for InstancesServerTransport.
@@ -90,12 +90,12 @@ func (i *InstancesServerTransport) dispatchToMethodFake(req *http.Request, metho
 				res.resp, res.err = i.dispatchBeginCreateOrUpdate(req)
 			case "InstancesClient.BeginDelete":
 				res.resp, res.err = i.dispatchBeginDelete(req)
+			case "InstancesClient.BeginUpdate":
+				res.resp, res.err = i.dispatchBeginUpdate(req)
 			case "InstancesClient.Get":
 				res.resp, res.err = i.dispatchGet(req)
 			case "InstancesClient.NewListBySolutionPager":
 				res.resp, res.err = i.dispatchNewListBySolutionPager(req)
-			case "InstancesClient.BeginUpdate":
-				res.resp, res.err = i.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -220,6 +220,62 @@ func (i *InstancesServerTransport) dispatchBeginDelete(req *http.Request) (*http
 	return resp, nil
 }
 
+func (i *InstancesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if i.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := i.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Edge/targets/(?P<targetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/solutions/(?P<solutionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/instances/(?P<instanceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 6 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armworkloadorchestration.Instance](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		targetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("targetName")])
+		if err != nil {
+			return nil, err
+		}
+		solutionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("solutionName")])
+		if err != nil {
+			return nil, err
+		}
+		instanceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("instanceName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := i.srv.BeginUpdate(req.Context(), resourceGroupNameParam, targetNameParam, solutionNameParam, instanceNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		i.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		i.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		i.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (i *InstancesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if i.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -303,62 +359,6 @@ func (i *InstancesServerTransport) dispatchNewListBySolutionPager(req *http.Requ
 	if !server.PagerResponderMore(newListBySolutionPager) {
 		i.newListBySolutionPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (i *InstancesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if i.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := i.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Edge/targets/(?P<targetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/solutions/(?P<solutionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/instances/(?P<instanceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 6 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armworkloadorchestration.Instance](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		targetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("targetName")])
-		if err != nil {
-			return nil, err
-		}
-		solutionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("solutionName")])
-		if err != nil {
-			return nil, err
-		}
-		instanceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("instanceName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := i.srv.BeginUpdate(req.Context(), resourceGroupNameParam, targetNameParam, solutionNameParam, instanceNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		i.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		i.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		i.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

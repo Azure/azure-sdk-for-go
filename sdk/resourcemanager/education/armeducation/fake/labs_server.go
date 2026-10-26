@@ -38,13 +38,13 @@ type LabsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, billingAccountName string, billingProfileName string, invoiceSectionName string, options *armeducation.LabsClientGetOptions) (resp azfake.Responder[armeducation.LabsClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method LabsClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(billingAccountName string, billingProfileName string, invoiceSectionName string, options *armeducation.LabsClientListOptions) (resp azfake.PagerResponder[armeducation.LabsClientListResponse])
-
 	// NewListAllPager is the fake for method LabsClient.NewListAllPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListAllPager func(billingAccountName string, billingProfileName string, options *armeducation.LabsClientListAllOptions) (resp azfake.PagerResponder[armeducation.LabsClientListAllResponse])
+
+	// NewListPager is the fake for method LabsClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(billingAccountName string, billingProfileName string, invoiceSectionName string, options *armeducation.LabsClientListOptions) (resp azfake.PagerResponder[armeducation.LabsClientListResponse])
 }
 
 // NewLabsServerTransport creates a new instance of LabsServerTransport with the provided implementation.
@@ -53,8 +53,8 @@ type LabsServer struct {
 func NewLabsServerTransport(srv *LabsServer) *LabsServerTransport {
 	return &LabsServerTransport{
 		srv:             srv,
-		newListPager:    newTracker[azfake.PagerResponder[armeducation.LabsClientListResponse]](),
 		newListAllPager: newTracker[azfake.PagerResponder[armeducation.LabsClientListAllResponse]](),
+		newListPager:    newTracker[azfake.PagerResponder[armeducation.LabsClientListResponse]](),
 	}
 }
 
@@ -62,8 +62,8 @@ func NewLabsServerTransport(srv *LabsServer) *LabsServerTransport {
 // Don't use this type directly, use NewLabsServerTransport instead.
 type LabsServerTransport struct {
 	srv             *LabsServer
-	newListPager    *tracker[azfake.PagerResponder[armeducation.LabsClientListResponse]]
 	newListAllPager *tracker[azfake.PagerResponder[armeducation.LabsClientListAllResponse]]
+	newListPager    *tracker[azfake.PagerResponder[armeducation.LabsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for LabsServerTransport.
@@ -95,10 +95,10 @@ func (l *LabsServerTransport) dispatchToMethodFake(req *http.Request, method str
 				res.resp, res.err = l.dispatchGenerateInviteCode(req)
 			case "LabsClient.Get":
 				res.resp, res.err = l.dispatchGet(req)
-			case "LabsClient.NewListPager":
-				res.resp, res.err = l.dispatchNewListPager(req)
 			case "LabsClient.NewListAllPager":
 				res.resp, res.err = l.dispatchNewListAllPager(req)
+			case "LabsClient.NewListPager":
+				res.resp, res.err = l.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -293,62 +293,6 @@ func (l *LabsServerTransport) dispatchGet(req *http.Request) (*http.Response, er
 	return resp, nil
 }
 
-func (l *LabsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if l.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := l.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/billingProfiles/(?P<billingProfileName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/invoiceSections/(?P<invoiceSectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Education/labs`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
-		if err != nil {
-			return nil, err
-		}
-		billingProfileNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingProfileName")])
-		if err != nil {
-			return nil, err
-		}
-		invoiceSectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("invoiceSectionName")])
-		if err != nil {
-			return nil, err
-		}
-		includeBudgetParam, err := parseOptional(qp.Get("includeBudget"), strconv.ParseBool)
-		if err != nil {
-			return nil, err
-		}
-		var options *armeducation.LabsClientListOptions
-		if includeBudgetParam != nil {
-			options = &armeducation.LabsClientListOptions{
-				IncludeBudget: includeBudgetParam,
-			}
-		}
-		resp := l.srv.NewListPager(billingAccountNameParam, billingProfileNameParam, invoiceSectionNameParam, options)
-		newListPager = &resp
-		l.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armeducation.LabsClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		l.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		l.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (l *LabsServerTransport) dispatchNewListAllPager(req *http.Request) (*http.Response, error) {
 	if l.srv.NewListAllPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListAllPager not implemented")}
@@ -402,6 +346,62 @@ func (l *LabsServerTransport) dispatchNewListAllPager(req *http.Request) (*http.
 	}
 	if !server.PagerResponderMore(newListAllPager) {
 		l.newListAllPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (l *LabsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if l.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := l.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/billingProfiles/(?P<billingProfileName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/invoiceSections/(?P<invoiceSectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Education/labs`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
+		if err != nil {
+			return nil, err
+		}
+		billingProfileNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingProfileName")])
+		if err != nil {
+			return nil, err
+		}
+		invoiceSectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("invoiceSectionName")])
+		if err != nil {
+			return nil, err
+		}
+		includeBudgetParam, err := parseOptional(qp.Get("includeBudget"), strconv.ParseBool)
+		if err != nil {
+			return nil, err
+		}
+		var options *armeducation.LabsClientListOptions
+		if includeBudgetParam != nil {
+			options = &armeducation.LabsClientListOptions{
+				IncludeBudget: includeBudgetParam,
+			}
+		}
+		resp := l.srv.NewListPager(billingAccountNameParam, billingProfileNameParam, invoiceSectionNameParam, options)
+		newListPager = &resp
+		l.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armeducation.LabsClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		l.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		l.newListPager.remove(req)
 	}
 	return resp, nil
 }

@@ -46,21 +46,21 @@ type AssignmentsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetByID func(ctx context.Context, policyAssignmentID string, options *armpolicy.AssignmentsClientGetByIDOptions) (resp azfake.Responder[armpolicy.AssignmentsClientGetByIDResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method AssignmentsClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armpolicy.AssignmentsClientListOptions) (resp azfake.PagerResponder[armpolicy.AssignmentsClientListResponse])
-
 	// NewListForManagementGroupPager is the fake for method AssignmentsClient.NewListForManagementGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListForManagementGroupPager func(managementGroupID string, options *armpolicy.AssignmentsClientListForManagementGroupOptions) (resp azfake.PagerResponder[armpolicy.AssignmentsClientListForManagementGroupResponse])
+
+	// NewListForResourceGroupPager is the fake for method AssignmentsClient.NewListForResourceGroupPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListForResourceGroupPager func(resourceGroupName string, options *armpolicy.AssignmentsClientListForResourceGroupOptions) (resp azfake.PagerResponder[armpolicy.AssignmentsClientListForResourceGroupResponse])
 
 	// NewListForResourcePager is the fake for method AssignmentsClient.NewListForResourcePager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListForResourcePager func(resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, options *armpolicy.AssignmentsClientListForResourceOptions) (resp azfake.PagerResponder[armpolicy.AssignmentsClientListForResourceResponse])
 
-	// NewListForResourceGroupPager is the fake for method AssignmentsClient.NewListForResourceGroupPager
+	// NewListPager is the fake for method AssignmentsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListForResourceGroupPager func(resourceGroupName string, options *armpolicy.AssignmentsClientListForResourceGroupOptions) (resp azfake.PagerResponder[armpolicy.AssignmentsClientListForResourceGroupResponse])
+	NewListPager func(options *armpolicy.AssignmentsClientListOptions) (resp azfake.PagerResponder[armpolicy.AssignmentsClientListResponse])
 
 	// Update is the fake for method AssignmentsClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
@@ -77,10 +77,10 @@ type AssignmentsServer struct {
 func NewAssignmentsServerTransport(srv *AssignmentsServer) *AssignmentsServerTransport {
 	return &AssignmentsServerTransport{
 		srv:                            srv,
-		newListPager:                   newTracker[azfake.PagerResponder[armpolicy.AssignmentsClientListResponse]](),
 		newListForManagementGroupPager: newTracker[azfake.PagerResponder[armpolicy.AssignmentsClientListForManagementGroupResponse]](),
-		newListForResourcePager:        newTracker[azfake.PagerResponder[armpolicy.AssignmentsClientListForResourceResponse]](),
 		newListForResourceGroupPager:   newTracker[azfake.PagerResponder[armpolicy.AssignmentsClientListForResourceGroupResponse]](),
+		newListForResourcePager:        newTracker[azfake.PagerResponder[armpolicy.AssignmentsClientListForResourceResponse]](),
+		newListPager:                   newTracker[azfake.PagerResponder[armpolicy.AssignmentsClientListResponse]](),
 	}
 }
 
@@ -88,10 +88,10 @@ func NewAssignmentsServerTransport(srv *AssignmentsServer) *AssignmentsServerTra
 // Don't use this type directly, use NewAssignmentsServerTransport instead.
 type AssignmentsServerTransport struct {
 	srv                            *AssignmentsServer
-	newListPager                   *tracker[azfake.PagerResponder[armpolicy.AssignmentsClientListResponse]]
 	newListForManagementGroupPager *tracker[azfake.PagerResponder[armpolicy.AssignmentsClientListForManagementGroupResponse]]
-	newListForResourcePager        *tracker[azfake.PagerResponder[armpolicy.AssignmentsClientListForResourceResponse]]
 	newListForResourceGroupPager   *tracker[azfake.PagerResponder[armpolicy.AssignmentsClientListForResourceGroupResponse]]
+	newListForResourcePager        *tracker[azfake.PagerResponder[armpolicy.AssignmentsClientListForResourceResponse]]
+	newListPager                   *tracker[azfake.PagerResponder[armpolicy.AssignmentsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for AssignmentsServerTransport.
@@ -127,14 +127,14 @@ func (a *AssignmentsServerTransport) dispatchToMethodFake(req *http.Request, met
 				res.resp, res.err = a.dispatchGet(req)
 			case "AssignmentsClient.GetByID":
 				res.resp, res.err = a.dispatchGetByID(req)
-			case "AssignmentsClient.NewListPager":
-				res.resp, res.err = a.dispatchNewListPager(req)
 			case "AssignmentsClient.NewListForManagementGroupPager":
 				res.resp, res.err = a.dispatchNewListForManagementGroupPager(req)
-			case "AssignmentsClient.NewListForResourcePager":
-				res.resp, res.err = a.dispatchNewListForResourcePager(req)
 			case "AssignmentsClient.NewListForResourceGroupPager":
 				res.resp, res.err = a.dispatchNewListForResourceGroupPager(req)
+			case "AssignmentsClient.NewListForResourcePager":
+				res.resp, res.err = a.dispatchNewListForResourcePager(req)
+			case "AssignmentsClient.NewListPager":
+				res.resp, res.err = a.dispatchNewListPager(req)
 			case "AssignmentsClient.Update":
 				res.resp, res.err = a.dispatchUpdate(req)
 			case "AssignmentsClient.UpdateByID":
@@ -339,60 +339,6 @@ func (a *AssignmentsServerTransport) dispatchGetByID(req *http.Request) (*http.R
 	return resp, nil
 }
 
-func (a *AssignmentsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if a.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := a.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Authorization/policyAssignments`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		filterParam := getOptional(qp.Get("$filter"))
-		expandParam := getOptional(qp.Get("$expand"))
-		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
-		})
-		if err != nil {
-			return nil, err
-		}
-		var options *armpolicy.AssignmentsClientListOptions
-		if filterParam != nil || expandParam != nil || topParam != nil {
-			options = &armpolicy.AssignmentsClientListOptions{
-				Filter: filterParam,
-				Expand: expandParam,
-				Top:    topParam,
-			}
-		}
-		resp := a.srv.NewListPager(options)
-		newListPager = &resp
-		a.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armpolicy.AssignmentsClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		a.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		a.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (a *AssignmentsServerTransport) dispatchNewListForManagementGroupPager(req *http.Request) (*http.Response, error) {
 	if a.srv.NewListForManagementGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListForManagementGroupPager not implemented")}
@@ -447,6 +393,64 @@ func (a *AssignmentsServerTransport) dispatchNewListForManagementGroupPager(req 
 	}
 	if !server.PagerResponderMore(newListForManagementGroupPager) {
 		a.newListForManagementGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (a *AssignmentsServerTransport) dispatchNewListForResourceGroupPager(req *http.Request) (*http.Response, error) {
+	if a.srv.NewListForResourceGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListForResourceGroupPager not implemented")}
+	}
+	newListForResourceGroupPager := a.newListForResourceGroupPager.get(req)
+	if newListForResourceGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Authorization/policyAssignments`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		filterParam := getOptional(qp.Get("$filter"))
+		expandParam := getOptional(qp.Get("$expand"))
+		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		var options *armpolicy.AssignmentsClientListForResourceGroupOptions
+		if filterParam != nil || expandParam != nil || topParam != nil {
+			options = &armpolicy.AssignmentsClientListForResourceGroupOptions{
+				Filter: filterParam,
+				Expand: expandParam,
+				Top:    topParam,
+			}
+		}
+		resp := a.srv.NewListForResourceGroupPager(resourceGroupNameParam, options)
+		newListForResourceGroupPager = &resp
+		a.newListForResourceGroupPager.add(req, newListForResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListForResourceGroupPager, req, func(page *armpolicy.AssignmentsClientListForResourceGroupResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListForResourceGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		a.newListForResourceGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListForResourceGroupPager) {
+		a.newListForResourceGroupPager.remove(req)
 	}
 	return resp, nil
 }
@@ -519,23 +523,19 @@ func (a *AssignmentsServerTransport) dispatchNewListForResourcePager(req *http.R
 	return resp, nil
 }
 
-func (a *AssignmentsServerTransport) dispatchNewListForResourceGroupPager(req *http.Request) (*http.Response, error) {
-	if a.srv.NewListForResourceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListForResourceGroupPager not implemented")}
+func (a *AssignmentsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if a.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	newListForResourceGroupPager := a.newListForResourceGroupPager.get(req)
-	if newListForResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Authorization/policyAssignments`
+	newListPager := a.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Authorization/policyAssignments`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
 		filterParam := getOptional(qp.Get("$filter"))
 		expandParam := getOptional(qp.Get("$expand"))
 		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
@@ -548,31 +548,31 @@ func (a *AssignmentsServerTransport) dispatchNewListForResourceGroupPager(req *h
 		if err != nil {
 			return nil, err
 		}
-		var options *armpolicy.AssignmentsClientListForResourceGroupOptions
+		var options *armpolicy.AssignmentsClientListOptions
 		if filterParam != nil || expandParam != nil || topParam != nil {
-			options = &armpolicy.AssignmentsClientListForResourceGroupOptions{
+			options = &armpolicy.AssignmentsClientListOptions{
 				Filter: filterParam,
 				Expand: expandParam,
 				Top:    topParam,
 			}
 		}
-		resp := a.srv.NewListForResourceGroupPager(resourceGroupNameParam, options)
-		newListForResourceGroupPager = &resp
-		a.newListForResourceGroupPager.add(req, newListForResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListForResourceGroupPager, req, func(page *armpolicy.AssignmentsClientListForResourceGroupResponse, createLink func() string) {
+		resp := a.srv.NewListPager(options)
+		newListPager = &resp
+		a.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armpolicy.AssignmentsClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(newListForResourceGroupPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		a.newListForResourceGroupPager.remove(req)
+		a.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(newListForResourceGroupPager) {
-		a.newListForResourceGroupPager.remove(req)
+	if !server.PagerResponderMore(newListPager) {
+		a.newListPager.remove(req)
 	}
 	return resp, nil
 }

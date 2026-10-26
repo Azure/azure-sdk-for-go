@@ -69,7 +69,7 @@ func (client *ManagedLedgerDigestUploadsClient) BeginCreateOrUpdate(ctx context.
 	}
 }
 
-// CreateOrUpdate - Enables upload ledger digests to an Azure Storage account or an Azure Confidential Ledger instance.
+// createOrUpdate - Enables upload ledger digests to an Azure Storage account or an Azure Confidential Ledger instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ManagedLedgerDigestUploadsClient) createOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, ledgerDigestUploads ManagedLedgerDigestUploadsName, parameters ManagedLedgerDigestUploads, options *ManagedLedgerDigestUploadsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *ManagedLedgerDigestUploadsClient) createOrUpdate(ctx context.Conte
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ManagedLedgerDigestUploadsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, ledgerDigestUploads ManagedLedgerDigestUploadsName, parameters ManagedLedgerDigestUploads, _ *ManagedLedgerDigestUploadsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}/ledgerDigestUploads/{ledgerDigestUploads}"
 	if client.subscriptionID == "" {
@@ -153,7 +153,7 @@ func (client *ManagedLedgerDigestUploadsClient) BeginDisable(ctx context.Context
 	}
 }
 
-// Disable - Disables uploading ledger digests to an Azure Storage account or an Azure Confidential Ledger instance.
+// disable - Disables uploading ledger digests to an Azure Storage account or an Azure Confidential Ledger instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ManagedLedgerDigestUploadsClient) disable(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, ledgerDigestUploads ManagedLedgerDigestUploadsName, options *ManagedLedgerDigestUploadsClientBeginDisableOptions) (*http.Response, error) {
 	var err error
@@ -175,7 +175,7 @@ func (client *ManagedLedgerDigestUploadsClient) disable(ctx context.Context, res
 	return httpResp, nil
 }
 
-// disableCreateRequest creates the Disable request.
+// disableCreateRequest creates the disable request.
 func (client *ManagedLedgerDigestUploadsClient) disableCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, ledgerDigestUploads ManagedLedgerDigestUploadsName, _ *ManagedLedgerDigestUploadsClientBeginDisableOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}/ledgerDigestUploads/{ledgerDigestUploads}/disable"
 	if client.subscriptionID == "" {

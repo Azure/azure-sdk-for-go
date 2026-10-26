@@ -29,29 +29,29 @@ type BotsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, botName string, options *armhealthbot.BotsClientBeginDeleteOptions) (resp azfake.PollerResponder[armhealthbot.BotsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method BotsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	BeginUpdate func(ctx context.Context, resourceGroupName string, botName string, parameters armhealthbot.UpdateParameters, options *armhealthbot.BotsClientBeginUpdateOptions) (resp azfake.PollerResponder[armhealthbot.BotsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method BotsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, botName string, options *armhealthbot.BotsClientGetOptions) (resp azfake.Responder[armhealthbot.BotsClientGetResponse], errResp azfake.ErrorResponder)
-
-	// NewListPager is the fake for method BotsClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armhealthbot.BotsClientListOptions) (resp azfake.PagerResponder[armhealthbot.BotsClientListResponse])
-
-	// NewListByResourceGroupPager is the fake for method BotsClient.NewListByResourceGroupPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupPager func(resourceGroupName string, options *armhealthbot.BotsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armhealthbot.BotsClientListByResourceGroupResponse])
 
 	// ListSecrets is the fake for method BotsClient.ListSecrets
 	// HTTP status codes to indicate success: http.StatusOK
 	ListSecrets func(ctx context.Context, resourceGroupName string, botName string, options *armhealthbot.BotsClientListSecretsOptions) (resp azfake.Responder[armhealthbot.BotsClientListSecretsResponse], errResp azfake.ErrorResponder)
 
+	// NewListByResourceGroupPager is the fake for method BotsClient.NewListByResourceGroupPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByResourceGroupPager func(resourceGroupName string, options *armhealthbot.BotsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armhealthbot.BotsClientListByResourceGroupResponse])
+
+	// NewListPager is the fake for method BotsClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armhealthbot.BotsClientListOptions) (resp azfake.PagerResponder[armhealthbot.BotsClientListResponse])
+
 	// RegenerateAPIJwtSecret is the fake for method BotsClient.RegenerateAPIJwtSecret
 	// HTTP status codes to indicate success: http.StatusOK
 	RegenerateAPIJwtSecret func(ctx context.Context, resourceGroupName string, botName string, options *armhealthbot.BotsClientRegenerateAPIJwtSecretOptions) (resp azfake.Responder[armhealthbot.BotsClientRegenerateAPIJwtSecretResponse], errResp azfake.ErrorResponder)
-
-	// BeginUpdate is the fake for method BotsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginUpdate func(ctx context.Context, resourceGroupName string, botName string, parameters armhealthbot.UpdateParameters, options *armhealthbot.BotsClientBeginUpdateOptions) (resp azfake.PollerResponder[armhealthbot.BotsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewBotsServerTransport creates a new instance of BotsServerTransport with the provided implementation.
@@ -62,9 +62,9 @@ func NewBotsServerTransport(srv *BotsServer) *BotsServerTransport {
 		srv:                         srv,
 		beginCreate:                 newTracker[azfake.PollerResponder[armhealthbot.BotsClientCreateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armhealthbot.BotsClientDeleteResponse]](),
-		newListPager:                newTracker[azfake.PagerResponder[armhealthbot.BotsClientListResponse]](),
-		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armhealthbot.BotsClientListByResourceGroupResponse]](),
 		beginUpdate:                 newTracker[azfake.PollerResponder[armhealthbot.BotsClientUpdateResponse]](),
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armhealthbot.BotsClientListByResourceGroupResponse]](),
+		newListPager:                newTracker[azfake.PagerResponder[armhealthbot.BotsClientListResponse]](),
 	}
 }
 
@@ -74,9 +74,9 @@ type BotsServerTransport struct {
 	srv                         *BotsServer
 	beginCreate                 *tracker[azfake.PollerResponder[armhealthbot.BotsClientCreateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armhealthbot.BotsClientDeleteResponse]]
-	newListPager                *tracker[azfake.PagerResponder[armhealthbot.BotsClientListResponse]]
-	newListByResourceGroupPager *tracker[azfake.PagerResponder[armhealthbot.BotsClientListByResourceGroupResponse]]
 	beginUpdate                 *tracker[azfake.PollerResponder[armhealthbot.BotsClientUpdateResponse]]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armhealthbot.BotsClientListByResourceGroupResponse]]
+	newListPager                *tracker[azfake.PagerResponder[armhealthbot.BotsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for BotsServerTransport.
@@ -104,18 +104,18 @@ func (b *BotsServerTransport) dispatchToMethodFake(req *http.Request, method str
 				res.resp, res.err = b.dispatchBeginCreate(req)
 			case "BotsClient.BeginDelete":
 				res.resp, res.err = b.dispatchBeginDelete(req)
-			case "BotsClient.Get":
-				res.resp, res.err = b.dispatchGet(req)
-			case "BotsClient.NewListPager":
-				res.resp, res.err = b.dispatchNewListPager(req)
-			case "BotsClient.NewListByResourceGroupPager":
-				res.resp, res.err = b.dispatchNewListByResourceGroupPager(req)
-			case "BotsClient.ListSecrets":
-				res.resp, res.err = b.dispatchListSecrets(req)
-			case "BotsClient.RegenerateAPIJwtSecret":
-				res.resp, res.err = b.dispatchRegenerateAPIJwtSecret(req)
 			case "BotsClient.BeginUpdate":
 				res.resp, res.err = b.dispatchBeginUpdate(req)
+			case "BotsClient.Get":
+				res.resp, res.err = b.dispatchGet(req)
+			case "BotsClient.ListSecrets":
+				res.resp, res.err = b.dispatchListSecrets(req)
+			case "BotsClient.NewListByResourceGroupPager":
+				res.resp, res.err = b.dispatchNewListByResourceGroupPager(req)
+			case "BotsClient.NewListPager":
+				res.resp, res.err = b.dispatchNewListPager(req)
+			case "BotsClient.RegenerateAPIJwtSecret":
+				res.resp, res.err = b.dispatchRegenerateAPIJwtSecret(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -224,175 +224,6 @@ func (b *BotsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Resp
 	return resp, nil
 }
 
-func (b *BotsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if b.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.HealthBot/healthBots/(?P<botName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	botNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("botName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := b.srv.Get(req.Context(), resourceGroupNameParam, botNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).HealthBot, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (b *BotsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if b.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := b.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.HealthBot/healthBots`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := b.srv.NewListPager(nil)
-		newListPager = &resp
-		b.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armhealthbot.BotsClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		b.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		b.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (b *BotsServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
-	if b.srv.NewListByResourceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
-	}
-	newListByResourceGroupPager := b.newListByResourceGroupPager.get(req)
-	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.HealthBot/healthBots`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := b.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
-		newListByResourceGroupPager = &resp
-		b.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armhealthbot.BotsClientListByResourceGroupResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		b.newListByResourceGroupPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByResourceGroupPager) {
-		b.newListByResourceGroupPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (b *BotsServerTransport) dispatchListSecrets(req *http.Request) (*http.Response, error) {
-	if b.srv.ListSecrets == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListSecrets not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.HealthBot/healthBots/(?P<botName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listSecrets`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	botNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("botName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := b.srv.ListSecrets(req.Context(), resourceGroupNameParam, botNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).KeysResponse, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (b *BotsServerTransport) dispatchRegenerateAPIJwtSecret(req *http.Request) (*http.Response, error) {
-	if b.srv.RegenerateAPIJwtSecret == nil {
-		return nil, &nonRetriableError{errors.New("fake for method RegenerateAPIJwtSecret not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.HealthBot/healthBots/(?P<botName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/regenerateApiJwtSecret`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	botNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("botName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := b.srv.RegenerateAPIJwtSecret(req.Context(), resourceGroupNameParam, botNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Key, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (b *BotsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
 	if b.srv.BeginUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
@@ -438,6 +269,175 @@ func (b *BotsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Resp
 		b.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (b *BotsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if b.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.HealthBot/healthBots/(?P<botName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	botNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("botName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := b.srv.Get(req.Context(), resourceGroupNameParam, botNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).HealthBot, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (b *BotsServerTransport) dispatchListSecrets(req *http.Request) (*http.Response, error) {
+	if b.srv.ListSecrets == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListSecrets not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.HealthBot/healthBots/(?P<botName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listSecrets`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	botNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("botName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := b.srv.ListSecrets(req.Context(), resourceGroupNameParam, botNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).KeysResponse, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (b *BotsServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
+	if b.srv.NewListByResourceGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
+	}
+	newListByResourceGroupPager := b.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.HealthBot/healthBots`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := b.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
+		newListByResourceGroupPager = &resp
+		b.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armhealthbot.BotsClientListByResourceGroupResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		b.newListByResourceGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		b.newListByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (b *BotsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if b.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := b.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.HealthBot/healthBots`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := b.srv.NewListPager(nil)
+		newListPager = &resp
+		b.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armhealthbot.BotsClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		b.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		b.newListPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (b *BotsServerTransport) dispatchRegenerateAPIJwtSecret(req *http.Request) (*http.Response, error) {
+	if b.srv.RegenerateAPIJwtSecret == nil {
+		return nil, &nonRetriableError{errors.New("fake for method RegenerateAPIJwtSecret not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.HealthBot/healthBots/(?P<botName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/regenerateApiJwtSecret`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	botNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("botName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := b.srv.RegenerateAPIJwtSecret(req.Context(), resourceGroupNameParam, botNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Key, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 

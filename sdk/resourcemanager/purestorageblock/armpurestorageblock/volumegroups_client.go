@@ -69,7 +69,7 @@ func (client *VolumeGroupsClient) BeginCreate(ctx context.Context, resourceGroup
 	}
 }
 
-// Create - Create a volume group
+// create - Create a volume group
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *VolumeGroupsClient) create(ctx context.Context, resourceGroupName string, storagePoolName string, volumeGroupName string, resource VolumeGroup, options *VolumeGroupsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *VolumeGroupsClient) create(ctx context.Context, resourceGroupName 
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *VolumeGroupsClient) createCreateRequest(ctx context.Context, resourceGroupName string, storagePoolName string, volumeGroupName string, resource VolumeGroup, _ *VolumeGroupsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/volumeGroups/{volumeGroupName}"
 	if client.subscriptionID == "" {
@@ -149,7 +149,7 @@ func (client *VolumeGroupsClient) BeginDelete(ctx context.Context, resourceGroup
 	}
 }
 
-// Delete - Delete a volume group
+// deleteOperation - Delete a volume group
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *VolumeGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, storagePoolName string, volumeGroupName string, options *VolumeGroupsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -171,7 +171,7 @@ func (client *VolumeGroupsClient) deleteOperation(ctx context.Context, resourceG
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *VolumeGroupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, storagePoolName string, volumeGroupName string, _ *VolumeGroupsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/volumeGroups/{volumeGroupName}"
 	if client.subscriptionID == "" {
@@ -197,6 +197,168 @@ func (client *VolumeGroupsClient) deleteCreateRequest(ctx context.Context, resou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginOverwrite - Restores a volume group to a specific snapshot state, including volume structure and data
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - storagePoolName - Name of the storage pool
+//   - volumeGroupName - Name of the volume group
+//   - body - The content of the action request
+//   - options - VolumeGroupsClientBeginOverwriteOptions contains the optional parameters for the VolumeGroupsClient.BeginOverwrite
+//     method.
+func (client *VolumeGroupsClient) BeginOverwrite(ctx context.Context, resourceGroupName string, storagePoolName string, volumeGroupName string, body VolumeGroupOverwriteRequest, options *VolumeGroupsClientBeginOverwriteOptions) (*runtime.Poller[VolumeGroupsClientOverwriteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.overwrite(ctx, resourceGroupName, storagePoolName, volumeGroupName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VolumeGroupsClientOverwriteResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VolumeGroupsClientOverwriteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// overwrite - Restores a volume group to a specific snapshot state, including volume structure and data
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *VolumeGroupsClient) overwrite(ctx context.Context, resourceGroupName string, storagePoolName string, volumeGroupName string, body VolumeGroupOverwriteRequest, options *VolumeGroupsClientBeginOverwriteOptions) (*http.Response, error) {
+	var err error
+	const operationName = "VolumeGroupsClient.BeginOverwrite"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.overwriteCreateRequest(ctx, resourceGroupName, storagePoolName, volumeGroupName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// overwriteCreateRequest creates the overwrite request.
+func (client *VolumeGroupsClient) overwriteCreateRequest(ctx context.Context, resourceGroupName string, storagePoolName string, volumeGroupName string, body VolumeGroupOverwriteRequest, _ *VolumeGroupsClientBeginOverwriteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/volumeGroups/{volumeGroupName}/overwrite"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if storagePoolName == "" {
+		return nil, errors.New("parameter storagePoolName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{storagePoolName}", url.PathEscape(storagePoolName))
+	if volumeGroupName == "" {
+		return nil, errors.New("parameter volumeGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{volumeGroupName}", url.PathEscape(volumeGroupName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginUpdate - Update a volume group
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - storagePoolName - Name of the storage pool
+//   - volumeGroupName - Name of the volume group
+//   - properties - The resource properties to be updated.
+//   - options - VolumeGroupsClientBeginUpdateOptions contains the optional parameters for the VolumeGroupsClient.BeginUpdate
+//     method.
+func (client *VolumeGroupsClient) BeginUpdate(ctx context.Context, resourceGroupName string, storagePoolName string, volumeGroupName string, properties VolumeGroupUpdate, options *VolumeGroupsClientBeginUpdateOptions) (*runtime.Poller[VolumeGroupsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, storagePoolName, volumeGroupName, properties, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VolumeGroupsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VolumeGroupsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update a volume group
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *VolumeGroupsClient) update(ctx context.Context, resourceGroupName string, storagePoolName string, volumeGroupName string, properties VolumeGroupUpdate, options *VolumeGroupsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "VolumeGroupsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, storagePoolName, volumeGroupName, properties, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *VolumeGroupsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, storagePoolName string, volumeGroupName string, properties VolumeGroupUpdate, _ *VolumeGroupsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/volumeGroups/{volumeGroupName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if storagePoolName == "" {
+		return nil, errors.New("parameter storagePoolName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{storagePoolName}", url.PathEscape(storagePoolName))
+	if volumeGroupName == "" {
+		return nil, errors.New("parameter volumeGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{volumeGroupName}", url.PathEscape(volumeGroupName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, properties); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -330,6 +492,72 @@ func (client *VolumeGroupsClient) getStatusHandleResponse(resp *http.Response, s
 	return result, nil
 }
 
+// ListConnectionParameters - Get connection parameters for ISCSI connection to the volume group
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - storagePoolName - Name of the storage pool
+//   - volumeGroupName - Name of the volume group
+//   - options - VolumeGroupsClientListConnectionParametersOptions contains the optional parameters for the VolumeGroupsClient.ListConnectionParameters
+//     method.
+func (client *VolumeGroupsClient) ListConnectionParameters(ctx context.Context, resourceGroupName string, storagePoolName string, volumeGroupName string, options *VolumeGroupsClientListConnectionParametersOptions) (VolumeGroupsClientListConnectionParametersResponse, error) {
+	var err error
+	const operationName = "VolumeGroupsClient.ListConnectionParameters"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listConnectionParametersCreateRequest(ctx, resourceGroupName, storagePoolName, volumeGroupName, options)
+	if err != nil {
+		return VolumeGroupsClientListConnectionParametersResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return VolumeGroupsClientListConnectionParametersResponse{}, err
+	}
+	return client.listConnectionParametersHandleResponse(httpResp, http.StatusOK)
+}
+
+// listConnectionParametersCreateRequest creates the ListConnectionParameters request.
+func (client *VolumeGroupsClient) listConnectionParametersCreateRequest(ctx context.Context, resourceGroupName string, storagePoolName string, volumeGroupName string, _ *VolumeGroupsClientListConnectionParametersOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/volumeGroups/{volumeGroupName}/listConnectionParameters"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if storagePoolName == "" {
+		return nil, errors.New("parameter storagePoolName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{storagePoolName}", url.PathEscape(storagePoolName))
+	if volumeGroupName == "" {
+		return nil, errors.New("parameter volumeGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{volumeGroupName}", url.PathEscape(volumeGroupName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listConnectionParametersHandleResponse handles the ListConnectionParameters response.
+func (client *VolumeGroupsClient) listConnectionParametersHandleResponse(resp *http.Response, successCodes ...int) (VolumeGroupsClientListConnectionParametersResponse, error) {
+	result := VolumeGroupsClientListConnectionParametersResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectionParametersResponse); err != nil {
+		return VolumeGroupsClientListConnectionParametersResponse{}, err
+	}
+	return result, nil
+}
+
 // NewListByStoragePoolPager - List volume groups by storage pool
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storagePoolName - Name of the storage pool
@@ -405,232 +633,4 @@ func (client *VolumeGroupsClient) listByStoragePoolHandleResponse(resp *http.Res
 		return VolumeGroupsClientListByStoragePoolResponse{}, err
 	}
 	return result, nil
-}
-
-// ListConnectionParameters - Get connection parameters for ISCSI connection to the volume group
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - storagePoolName - Name of the storage pool
-//   - volumeGroupName - Name of the volume group
-//   - options - VolumeGroupsClientListConnectionParametersOptions contains the optional parameters for the VolumeGroupsClient.ListConnectionParameters
-//     method.
-func (client *VolumeGroupsClient) ListConnectionParameters(ctx context.Context, resourceGroupName string, storagePoolName string, volumeGroupName string, options *VolumeGroupsClientListConnectionParametersOptions) (VolumeGroupsClientListConnectionParametersResponse, error) {
-	var err error
-	const operationName = "VolumeGroupsClient.ListConnectionParameters"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listConnectionParametersCreateRequest(ctx, resourceGroupName, storagePoolName, volumeGroupName, options)
-	if err != nil {
-		return VolumeGroupsClientListConnectionParametersResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return VolumeGroupsClientListConnectionParametersResponse{}, err
-	}
-	return client.listConnectionParametersHandleResponse(httpResp, http.StatusOK)
-}
-
-// listConnectionParametersCreateRequest creates the ListConnectionParameters request.
-func (client *VolumeGroupsClient) listConnectionParametersCreateRequest(ctx context.Context, resourceGroupName string, storagePoolName string, volumeGroupName string, _ *VolumeGroupsClientListConnectionParametersOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/volumeGroups/{volumeGroupName}/listConnectionParameters"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if storagePoolName == "" {
-		return nil, errors.New("parameter storagePoolName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{storagePoolName}", url.PathEscape(storagePoolName))
-	if volumeGroupName == "" {
-		return nil, errors.New("parameter volumeGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{volumeGroupName}", url.PathEscape(volumeGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listConnectionParametersHandleResponse handles the ListConnectionParameters response.
-func (client *VolumeGroupsClient) listConnectionParametersHandleResponse(resp *http.Response, successCodes ...int) (VolumeGroupsClientListConnectionParametersResponse, error) {
-	result := VolumeGroupsClientListConnectionParametersResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectionParametersResponse); err != nil {
-		return VolumeGroupsClientListConnectionParametersResponse{}, err
-	}
-	return result, nil
-}
-
-// BeginOverwrite - Restores a volume group to a specific snapshot state, including volume structure and data
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - storagePoolName - Name of the storage pool
-//   - volumeGroupName - Name of the volume group
-//   - body - The content of the action request
-//   - options - VolumeGroupsClientBeginOverwriteOptions contains the optional parameters for the VolumeGroupsClient.BeginOverwrite
-//     method.
-func (client *VolumeGroupsClient) BeginOverwrite(ctx context.Context, resourceGroupName string, storagePoolName string, volumeGroupName string, body VolumeGroupOverwriteRequest, options *VolumeGroupsClientBeginOverwriteOptions) (*runtime.Poller[VolumeGroupsClientOverwriteResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.overwrite(ctx, resourceGroupName, storagePoolName, volumeGroupName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VolumeGroupsClientOverwriteResponse]{
-			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
-			Tracer:        client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VolumeGroupsClientOverwriteResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Overwrite - Restores a volume group to a specific snapshot state, including volume structure and data
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *VolumeGroupsClient) overwrite(ctx context.Context, resourceGroupName string, storagePoolName string, volumeGroupName string, body VolumeGroupOverwriteRequest, options *VolumeGroupsClientBeginOverwriteOptions) (*http.Response, error) {
-	var err error
-	const operationName = "VolumeGroupsClient.BeginOverwrite"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.overwriteCreateRequest(ctx, resourceGroupName, storagePoolName, volumeGroupName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// overwriteCreateRequest creates the Overwrite request.
-func (client *VolumeGroupsClient) overwriteCreateRequest(ctx context.Context, resourceGroupName string, storagePoolName string, volumeGroupName string, body VolumeGroupOverwriteRequest, _ *VolumeGroupsClientBeginOverwriteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/volumeGroups/{volumeGroupName}/overwrite"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if storagePoolName == "" {
-		return nil, errors.New("parameter storagePoolName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{storagePoolName}", url.PathEscape(storagePoolName))
-	if volumeGroupName == "" {
-		return nil, errors.New("parameter volumeGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{volumeGroupName}", url.PathEscape(volumeGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginUpdate - Update a volume group
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - storagePoolName - Name of the storage pool
-//   - volumeGroupName - Name of the volume group
-//   - properties - The resource properties to be updated.
-//   - options - VolumeGroupsClientBeginUpdateOptions contains the optional parameters for the VolumeGroupsClient.BeginUpdate
-//     method.
-func (client *VolumeGroupsClient) BeginUpdate(ctx context.Context, resourceGroupName string, storagePoolName string, volumeGroupName string, properties VolumeGroupUpdate, options *VolumeGroupsClientBeginUpdateOptions) (*runtime.Poller[VolumeGroupsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, storagePoolName, volumeGroupName, properties, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VolumeGroupsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VolumeGroupsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update a volume group
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *VolumeGroupsClient) update(ctx context.Context, resourceGroupName string, storagePoolName string, volumeGroupName string, properties VolumeGroupUpdate, options *VolumeGroupsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "VolumeGroupsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, storagePoolName, volumeGroupName, properties, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *VolumeGroupsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, storagePoolName string, volumeGroupName string, properties VolumeGroupUpdate, _ *VolumeGroupsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/volumeGroups/{volumeGroupName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if storagePoolName == "" {
-		return nil, errors.New("parameter storagePoolName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{storagePoolName}", url.PathEscape(storagePoolName))
-	if volumeGroupName == "" {
-		return nil, errors.New("parameter volumeGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{volumeGroupName}", url.PathEscape(volumeGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

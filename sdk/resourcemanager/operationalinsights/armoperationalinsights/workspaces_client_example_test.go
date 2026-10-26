@@ -136,6 +136,27 @@ func ExampleWorkspacesClient_BeginFailover() {
 	}
 }
 
+// Generated from example definition: 2025-07-01/NSPForWorkspaces_Reconcile.json
+func ExampleWorkspacesClient_BeginReconcileNSP() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoperationalinsights.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewWorkspacesClient().BeginReconcileNSP(ctx, "exampleRG", "someWorkspace", "somePerimeterConfiguration", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
 // Generated from example definition: 2025-07-01/WorkspacesGet.json
 func ExampleWorkspacesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -237,56 +258,6 @@ func ExampleWorkspacesClient_GetNSP() {
 	// 		},
 	// 	},
 	// }
-}
-
-// Generated from example definition: 2025-07-01/WorkspacesSubscriptionListForWorkSpace.json
-func ExampleWorkspacesClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armoperationalinsights.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewWorkspacesClient().NewListPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armoperationalinsights.WorkspacesClientListResponse{
-		// 	WorkspaceListResult: armoperationalinsights.WorkspaceListResult{
-		// 		Value: []*armoperationalinsights.Workspace{
-		// 			{
-		// 				Name: to.Ptr("AzTest2170"),
-		// 				Type: to.Ptr("Microsoft.OperationalInsights/workspaces"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000005/resourcegroups/oiautorest6685/providers/microsoft.operationalinsights/workspaces/aztest2170"),
-		// 				Location: to.Ptr("australiasoutheast"),
-		// 				Properties: &armoperationalinsights.WorkspaceProperties{
-		// 					CustomerID: to.Ptr("bc089d7b-485c-4aff-a71e-c00f362d8d2f"),
-		// 					ProvisioningState: to.Ptr(armoperationalinsights.WorkspaceEntityStatusSucceeded),
-		// 					PublicNetworkAccessForIngestion: to.Ptr(armoperationalinsights.PublicNetworkAccessTypeEnabled),
-		// 					PublicNetworkAccessForQuery: to.Ptr(armoperationalinsights.PublicNetworkAccessTypeEnabled),
-		// 					RetentionInDays: to.Ptr[int32](30),
-		// 					SKU: &armoperationalinsights.WorkspaceSKU{
-		// 						Name: to.Ptr(armoperationalinsights.WorkspaceSKUNameEnumPerGB2018),
-		// 					},
-		// 				},
-		// 				Tags: map[string]*string{
-		// 					"tag1": to.Ptr("val1"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
 }
 
 // Generated from example definition: 2025-07-01/WorkspacesListByResourceGroup.json
@@ -402,24 +373,53 @@ func ExampleWorkspacesClient_NewListNSPPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/NSPForWorkspaces_Reconcile.json
-func ExampleWorkspacesClient_BeginReconcileNSP() {
+// Generated from example definition: 2025-07-01/WorkspacesSubscriptionListForWorkSpace.json
+func ExampleWorkspacesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armoperationalinsights.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	clientFactory, err := armoperationalinsights.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewWorkspacesClient().BeginReconcileNSP(ctx, "exampleRG", "someWorkspace", "somePerimeterConfiguration", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+	pager := clientFactory.NewWorkspacesClient().NewListPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armoperationalinsights.WorkspacesClientListResponse{
+		// 	WorkspaceListResult: armoperationalinsights.WorkspaceListResult{
+		// 		Value: []*armoperationalinsights.Workspace{
+		// 			{
+		// 				Name: to.Ptr("AzTest2170"),
+		// 				Type: to.Ptr("Microsoft.OperationalInsights/workspaces"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000005/resourcegroups/oiautorest6685/providers/microsoft.operationalinsights/workspaces/aztest2170"),
+		// 				Location: to.Ptr("australiasoutheast"),
+		// 				Properties: &armoperationalinsights.WorkspaceProperties{
+		// 					CustomerID: to.Ptr("bc089d7b-485c-4aff-a71e-c00f362d8d2f"),
+		// 					ProvisioningState: to.Ptr(armoperationalinsights.WorkspaceEntityStatusSucceeded),
+		// 					PublicNetworkAccessForIngestion: to.Ptr(armoperationalinsights.PublicNetworkAccessTypeEnabled),
+		// 					PublicNetworkAccessForQuery: to.Ptr(armoperationalinsights.PublicNetworkAccessTypeEnabled),
+		// 					RetentionInDays: to.Ptr[int32](30),
+		// 					SKU: &armoperationalinsights.WorkspaceSKU{
+		// 						Name: to.Ptr(armoperationalinsights.WorkspaceSKUNameEnumPerGB2018),
+		// 					},
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"tag1": to.Ptr("val1"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
 	}
 }
 

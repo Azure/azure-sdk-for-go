@@ -29,6 +29,10 @@ type RoutesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, profileName string, endpointName string, routeName string, options *armcdn.RoutesClientBeginDeleteOptions) (resp azfake.PollerResponder[armcdn.RoutesClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method RoutesClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, profileName string, endpointName string, routeName string, routeUpdateProperties armcdn.RouteUpdateParameters, options *armcdn.RoutesClientBeginUpdateOptions) (resp azfake.PollerResponder[armcdn.RoutesClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method RoutesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, profileName string, endpointName string, routeName string, options *armcdn.RoutesClientGetOptions) (resp azfake.Responder[armcdn.RoutesClientGetResponse], errResp azfake.ErrorResponder)
@@ -36,10 +40,6 @@ type RoutesServer struct {
 	// NewListByEndpointPager is the fake for method RoutesClient.NewListByEndpointPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByEndpointPager func(resourceGroupName string, profileName string, endpointName string, options *armcdn.RoutesClientListByEndpointOptions) (resp azfake.PagerResponder[armcdn.RoutesClientListByEndpointResponse])
-
-	// BeginUpdate is the fake for method RoutesClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, profileName string, endpointName string, routeName string, routeUpdateProperties armcdn.RouteUpdateParameters, options *armcdn.RoutesClientBeginUpdateOptions) (resp azfake.PollerResponder[armcdn.RoutesClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewRoutesServerTransport creates a new instance of RoutesServerTransport with the provided implementation.
@@ -50,8 +50,8 @@ func NewRoutesServerTransport(srv *RoutesServer) *RoutesServerTransport {
 		srv:                    srv,
 		beginCreate:            newTracker[azfake.PollerResponder[armcdn.RoutesClientCreateResponse]](),
 		beginDelete:            newTracker[azfake.PollerResponder[armcdn.RoutesClientDeleteResponse]](),
-		newListByEndpointPager: newTracker[azfake.PagerResponder[armcdn.RoutesClientListByEndpointResponse]](),
 		beginUpdate:            newTracker[azfake.PollerResponder[armcdn.RoutesClientUpdateResponse]](),
+		newListByEndpointPager: newTracker[azfake.PagerResponder[armcdn.RoutesClientListByEndpointResponse]](),
 	}
 }
 
@@ -61,8 +61,8 @@ type RoutesServerTransport struct {
 	srv                    *RoutesServer
 	beginCreate            *tracker[azfake.PollerResponder[armcdn.RoutesClientCreateResponse]]
 	beginDelete            *tracker[azfake.PollerResponder[armcdn.RoutesClientDeleteResponse]]
-	newListByEndpointPager *tracker[azfake.PagerResponder[armcdn.RoutesClientListByEndpointResponse]]
 	beginUpdate            *tracker[azfake.PollerResponder[armcdn.RoutesClientUpdateResponse]]
+	newListByEndpointPager *tracker[azfake.PagerResponder[armcdn.RoutesClientListByEndpointResponse]]
 }
 
 // Do implements the policy.Transporter interface for RoutesServerTransport.
@@ -90,12 +90,12 @@ func (r *RoutesServerTransport) dispatchToMethodFake(req *http.Request, method s
 				res.resp, res.err = r.dispatchBeginCreate(req)
 			case "RoutesClient.BeginDelete":
 				res.resp, res.err = r.dispatchBeginDelete(req)
+			case "RoutesClient.BeginUpdate":
+				res.resp, res.err = r.dispatchBeginUpdate(req)
 			case "RoutesClient.Get":
 				res.resp, res.err = r.dispatchGet(req)
 			case "RoutesClient.NewListByEndpointPager":
 				res.resp, res.err = r.dispatchNewListByEndpointPager(req)
-			case "RoutesClient.BeginUpdate":
-				res.resp, res.err = r.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -220,6 +220,62 @@ func (r *RoutesServerTransport) dispatchBeginDelete(req *http.Request) (*http.Re
 	return resp, nil
 }
 
+func (r *RoutesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if r.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := r.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Cdn/profiles/(?P<profileName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/afdEndpoints/(?P<endpointName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/routes/(?P<routeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 6 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armcdn.RouteUpdateParameters](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		profileNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("profileName")])
+		if err != nil {
+			return nil, err
+		}
+		endpointNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("endpointName")])
+		if err != nil {
+			return nil, err
+		}
+		routeNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("routeName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := r.srv.BeginUpdate(req.Context(), resourceGroupNameParam, profileNameParam, endpointNameParam, routeNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		r.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		r.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		r.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (r *RoutesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if r.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -303,62 +359,6 @@ func (r *RoutesServerTransport) dispatchNewListByEndpointPager(req *http.Request
 	if !server.PagerResponderMore(newListByEndpointPager) {
 		r.newListByEndpointPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (r *RoutesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if r.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := r.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Cdn/profiles/(?P<profileName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/afdEndpoints/(?P<endpointName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/routes/(?P<routeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 6 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcdn.RouteUpdateParameters](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		profileNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("profileName")])
-		if err != nil {
-			return nil, err
-		}
-		endpointNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("endpointName")])
-		if err != nil {
-			return nil, err
-		}
-		routeNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("routeName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := r.srv.BeginUpdate(req.Context(), resourceGroupNameParam, profileNameParam, endpointNameParam, routeNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		r.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		r.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		r.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

@@ -21,13 +21,13 @@ import (
 
 // ProjectsServer is a fake server for instances of the armstoragemover.ProjectsClient type.
 type ProjectsServer struct {
-	// CreateOrUpdate is the fake for method ProjectsClient.CreateOrUpdate
-	// HTTP status codes to indicate success: http.StatusOK
-	CreateOrUpdate func(ctx context.Context, resourceGroupName string, storageMoverName string, projectName string, project armstoragemover.Project, options *armstoragemover.ProjectsClientCreateOrUpdateOptions) (resp azfake.Responder[armstoragemover.ProjectsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
-
 	// BeginDelete is the fake for method ProjectsClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, storageMoverName string, projectName string, options *armstoragemover.ProjectsClientBeginDeleteOptions) (resp azfake.PollerResponder[armstoragemover.ProjectsClientDeleteResponse], errResp azfake.ErrorResponder)
+
+	// CreateOrUpdate is the fake for method ProjectsClient.CreateOrUpdate
+	// HTTP status codes to indicate success: http.StatusOK
+	CreateOrUpdate func(ctx context.Context, resourceGroupName string, storageMoverName string, projectName string, project armstoragemover.Project, options *armstoragemover.ProjectsClientCreateOrUpdateOptions) (resp azfake.Responder[armstoragemover.ProjectsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method ProjectsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -82,10 +82,10 @@ func (p *ProjectsServerTransport) dispatchToMethodFake(req *http.Request, method
 		}
 		if !intercepted {
 			switch method {
-			case "ProjectsClient.CreateOrUpdate":
-				res.resp, res.err = p.dispatchCreateOrUpdate(req)
 			case "ProjectsClient.BeginDelete":
 				res.resp, res.err = p.dispatchBeginDelete(req)
+			case "ProjectsClient.CreateOrUpdate":
+				res.resp, res.err = p.dispatchCreateOrUpdate(req)
 			case "ProjectsClient.Get":
 				res.resp, res.err = p.dispatchGet(req)
 			case "ProjectsClient.NewListPager":
@@ -106,47 +106,6 @@ func (p *ProjectsServerTransport) dispatchToMethodFake(req *http.Request, method
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (p *ProjectsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
-	if p.srv.CreateOrUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.StorageMover/storageMovers/(?P<storageMoverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/projects/(?P<projectName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armstoragemover.Project](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	storageMoverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("storageMoverName")])
-	if err != nil {
-		return nil, err
-	}
-	projectNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("projectName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := p.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, storageMoverNameParam, projectNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Project, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (p *ProjectsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
@@ -194,6 +153,47 @@ func (p *ProjectsServerTransport) dispatchBeginDelete(req *http.Request) (*http.
 		p.beginDelete.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (p *ProjectsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
+	if p.srv.CreateOrUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.StorageMover/storageMovers/(?P<storageMoverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/projects/(?P<projectName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armstoragemover.Project](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	storageMoverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("storageMoverName")])
+	if err != nil {
+		return nil, err
+	}
+	projectNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("projectName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := p.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, storageMoverNameParam, projectNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Project, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 

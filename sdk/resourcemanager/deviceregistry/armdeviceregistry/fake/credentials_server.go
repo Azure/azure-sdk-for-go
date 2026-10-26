@@ -29,14 +29,6 @@ type CredentialsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, namespaceName string, options *armdeviceregistry.CredentialsClientBeginDeleteOptions) (resp azfake.PollerResponder[armdeviceregistry.CredentialsClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method CredentialsClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, namespaceName string, options *armdeviceregistry.CredentialsClientGetOptions) (resp azfake.Responder[armdeviceregistry.CredentialsClientGetResponse], errResp azfake.ErrorResponder)
-
-	// NewListByResourceGroupPager is the fake for method CredentialsClient.NewListByResourceGroupPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupPager func(resourceGroupName string, namespaceName string, options *armdeviceregistry.CredentialsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armdeviceregistry.CredentialsClientListByResourceGroupResponse])
-
 	// BeginSynchronize is the fake for method CredentialsClient.BeginSynchronize
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginSynchronize func(ctx context.Context, resourceGroupName string, namespaceName string, options *armdeviceregistry.CredentialsClientBeginSynchronizeOptions) (resp azfake.PollerResponder[armdeviceregistry.CredentialsClientSynchronizeResponse], errResp azfake.ErrorResponder)
@@ -44,6 +36,14 @@ type CredentialsServer struct {
 	// BeginUpdate is the fake for method CredentialsClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, resourceGroupName string, namespaceName string, properties armdeviceregistry.CredentialUpdate, options *armdeviceregistry.CredentialsClientBeginUpdateOptions) (resp azfake.PollerResponder[armdeviceregistry.CredentialsClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method CredentialsClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, namespaceName string, options *armdeviceregistry.CredentialsClientGetOptions) (resp azfake.Responder[armdeviceregistry.CredentialsClientGetResponse], errResp azfake.ErrorResponder)
+
+	// NewListByResourceGroupPager is the fake for method CredentialsClient.NewListByResourceGroupPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByResourceGroupPager func(resourceGroupName string, namespaceName string, options *armdeviceregistry.CredentialsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armdeviceregistry.CredentialsClientListByResourceGroupResponse])
 }
 
 // NewCredentialsServerTransport creates a new instance of CredentialsServerTransport with the provided implementation.
@@ -54,9 +54,9 @@ func NewCredentialsServerTransport(srv *CredentialsServer) *CredentialsServerTra
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armdeviceregistry.CredentialsClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armdeviceregistry.CredentialsClientDeleteResponse]](),
-		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armdeviceregistry.CredentialsClientListByResourceGroupResponse]](),
 		beginSynchronize:            newTracker[azfake.PollerResponder[armdeviceregistry.CredentialsClientSynchronizeResponse]](),
 		beginUpdate:                 newTracker[azfake.PollerResponder[armdeviceregistry.CredentialsClientUpdateResponse]](),
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armdeviceregistry.CredentialsClientListByResourceGroupResponse]](),
 	}
 }
 
@@ -66,9 +66,9 @@ type CredentialsServerTransport struct {
 	srv                         *CredentialsServer
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armdeviceregistry.CredentialsClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armdeviceregistry.CredentialsClientDeleteResponse]]
-	newListByResourceGroupPager *tracker[azfake.PagerResponder[armdeviceregistry.CredentialsClientListByResourceGroupResponse]]
 	beginSynchronize            *tracker[azfake.PollerResponder[armdeviceregistry.CredentialsClientSynchronizeResponse]]
 	beginUpdate                 *tracker[azfake.PollerResponder[armdeviceregistry.CredentialsClientUpdateResponse]]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armdeviceregistry.CredentialsClientListByResourceGroupResponse]]
 }
 
 // Do implements the policy.Transporter interface for CredentialsServerTransport.
@@ -96,14 +96,14 @@ func (c *CredentialsServerTransport) dispatchToMethodFake(req *http.Request, met
 				res.resp, res.err = c.dispatchBeginCreateOrUpdate(req)
 			case "CredentialsClient.BeginDelete":
 				res.resp, res.err = c.dispatchBeginDelete(req)
-			case "CredentialsClient.Get":
-				res.resp, res.err = c.dispatchGet(req)
-			case "CredentialsClient.NewListByResourceGroupPager":
-				res.resp, res.err = c.dispatchNewListByResourceGroupPager(req)
 			case "CredentialsClient.BeginSynchronize":
 				res.resp, res.err = c.dispatchBeginSynchronize(req)
 			case "CredentialsClient.BeginUpdate":
 				res.resp, res.err = c.dispatchBeginUpdate(req)
+			case "CredentialsClient.Get":
+				res.resp, res.err = c.dispatchGet(req)
+			case "CredentialsClient.NewListByResourceGroupPager":
+				res.resp, res.err = c.dispatchNewListByResourceGroupPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -212,80 +212,6 @@ func (c *CredentialsServerTransport) dispatchBeginDelete(req *http.Request) (*ht
 	return resp, nil
 }
 
-func (c *CredentialsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if c.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DeviceRegistry/namespaces/(?P<namespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/credentials/default`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	namespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("namespaceName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := c.srv.Get(req.Context(), resourceGroupNameParam, namespaceNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Credential, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (c *CredentialsServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
-	if c.srv.NewListByResourceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
-	}
-	newListByResourceGroupPager := c.newListByResourceGroupPager.get(req)
-	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DeviceRegistry/namespaces/(?P<namespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/credentials`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		namespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("namespaceName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := c.srv.NewListByResourceGroupPager(resourceGroupNameParam, namespaceNameParam, nil)
-		newListByResourceGroupPager = &resp
-		c.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armdeviceregistry.CredentialsClientListByResourceGroupResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		c.newListByResourceGroupPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByResourceGroupPager) {
-		c.newListByResourceGroupPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (c *CredentialsServerTransport) dispatchBeginSynchronize(req *http.Request) (*http.Response, error) {
 	if c.srv.BeginSynchronize == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginSynchronize not implemented")}
@@ -375,6 +301,80 @@ func (c *CredentialsServerTransport) dispatchBeginUpdate(req *http.Request) (*ht
 		c.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (c *CredentialsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if c.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DeviceRegistry/namespaces/(?P<namespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/credentials/default`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	namespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("namespaceName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := c.srv.Get(req.Context(), resourceGroupNameParam, namespaceNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Credential, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (c *CredentialsServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
+	if c.srv.NewListByResourceGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
+	}
+	newListByResourceGroupPager := c.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DeviceRegistry/namespaces/(?P<namespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/credentials`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		namespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("namespaceName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := c.srv.NewListByResourceGroupPager(resourceGroupNameParam, namespaceNameParam, nil)
+		newListByResourceGroupPager = &resp
+		c.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armdeviceregistry.CredentialsClientListByResourceGroupResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		c.newListByResourceGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		c.newListByResourceGroupPager.remove(req)
+	}
 	return resp, nil
 }
 

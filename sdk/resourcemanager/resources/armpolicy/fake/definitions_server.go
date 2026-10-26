@@ -50,10 +50,6 @@ type DefinitionsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetBuiltIn func(ctx context.Context, policyDefinitionName string, options *armpolicy.DefinitionsClientGetBuiltInOptions) (resp azfake.Responder[armpolicy.DefinitionsClientGetBuiltInResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method DefinitionsClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armpolicy.DefinitionsClientListOptions) (resp azfake.PagerResponder[armpolicy.DefinitionsClientListResponse])
-
 	// NewListBuiltInPager is the fake for method DefinitionsClient.NewListBuiltInPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBuiltInPager func(options *armpolicy.DefinitionsClientListBuiltInOptions) (resp azfake.PagerResponder[armpolicy.DefinitionsClientListBuiltInResponse])
@@ -61,6 +57,10 @@ type DefinitionsServer struct {
 	// NewListByManagementGroupPager is the fake for method DefinitionsClient.NewListByManagementGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByManagementGroupPager func(managementGroupID string, options *armpolicy.DefinitionsClientListByManagementGroupOptions) (resp azfake.PagerResponder[armpolicy.DefinitionsClientListByManagementGroupResponse])
+
+	// NewListPager is the fake for method DefinitionsClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armpolicy.DefinitionsClientListOptions) (resp azfake.PagerResponder[armpolicy.DefinitionsClientListResponse])
 }
 
 // NewDefinitionsServerTransport creates a new instance of DefinitionsServerTransport with the provided implementation.
@@ -69,9 +69,9 @@ type DefinitionsServer struct {
 func NewDefinitionsServerTransport(srv *DefinitionsServer) *DefinitionsServerTransport {
 	return &DefinitionsServerTransport{
 		srv:                           srv,
-		newListPager:                  newTracker[azfake.PagerResponder[armpolicy.DefinitionsClientListResponse]](),
 		newListBuiltInPager:           newTracker[azfake.PagerResponder[armpolicy.DefinitionsClientListBuiltInResponse]](),
 		newListByManagementGroupPager: newTracker[azfake.PagerResponder[armpolicy.DefinitionsClientListByManagementGroupResponse]](),
+		newListPager:                  newTracker[azfake.PagerResponder[armpolicy.DefinitionsClientListResponse]](),
 	}
 }
 
@@ -79,9 +79,9 @@ func NewDefinitionsServerTransport(srv *DefinitionsServer) *DefinitionsServerTra
 // Don't use this type directly, use NewDefinitionsServerTransport instead.
 type DefinitionsServerTransport struct {
 	srv                           *DefinitionsServer
-	newListPager                  *tracker[azfake.PagerResponder[armpolicy.DefinitionsClientListResponse]]
 	newListBuiltInPager           *tracker[azfake.PagerResponder[armpolicy.DefinitionsClientListBuiltInResponse]]
 	newListByManagementGroupPager *tracker[azfake.PagerResponder[armpolicy.DefinitionsClientListByManagementGroupResponse]]
+	newListPager                  *tracker[azfake.PagerResponder[armpolicy.DefinitionsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for DefinitionsServerTransport.
@@ -119,12 +119,12 @@ func (d *DefinitionsServerTransport) dispatchToMethodFake(req *http.Request, met
 				res.resp, res.err = d.dispatchGetAtManagementGroup(req)
 			case "DefinitionsClient.GetBuiltIn":
 				res.resp, res.err = d.dispatchGetBuiltIn(req)
-			case "DefinitionsClient.NewListPager":
-				res.resp, res.err = d.dispatchNewListPager(req)
 			case "DefinitionsClient.NewListBuiltInPager":
 				res.resp, res.err = d.dispatchNewListBuiltInPager(req)
 			case "DefinitionsClient.NewListByManagementGroupPager":
 				res.resp, res.err = d.dispatchNewListByManagementGroupPager(req)
+			case "DefinitionsClient.NewListPager":
+				res.resp, res.err = d.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -364,58 +364,6 @@ func (d *DefinitionsServerTransport) dispatchGetBuiltIn(req *http.Request) (*htt
 	return resp, nil
 }
 
-func (d *DefinitionsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if d.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := d.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Authorization/policyDefinitions`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		filterParam := getOptional(qp.Get("$filter"))
-		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
-		})
-		if err != nil {
-			return nil, err
-		}
-		var options *armpolicy.DefinitionsClientListOptions
-		if filterParam != nil || topParam != nil {
-			options = &armpolicy.DefinitionsClientListOptions{
-				Filter: filterParam,
-				Top:    topParam,
-			}
-		}
-		resp := d.srv.NewListPager(options)
-		newListPager = &resp
-		d.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armpolicy.DefinitionsClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		d.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		d.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (d *DefinitionsServerTransport) dispatchNewListBuiltInPager(req *http.Request) (*http.Response, error) {
 	if d.srv.NewListBuiltInPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListBuiltInPager not implemented")}
@@ -514,6 +462,58 @@ func (d *DefinitionsServerTransport) dispatchNewListByManagementGroupPager(req *
 	}
 	if !server.PagerResponderMore(newListByManagementGroupPager) {
 		d.newListByManagementGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (d *DefinitionsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if d.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := d.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Authorization/policyDefinitions`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		filterParam := getOptional(qp.Get("$filter"))
+		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		var options *armpolicy.DefinitionsClientListOptions
+		if filterParam != nil || topParam != nil {
+			options = &armpolicy.DefinitionsClientListOptions{
+				Filter: filterParam,
+				Top:    topParam,
+			}
+		}
+		resp := d.srv.NewListPager(options)
+		newListPager = &resp
+		d.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armpolicy.DefinitionsClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		d.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		d.newListPager.remove(req)
 	}
 	return resp, nil
 }

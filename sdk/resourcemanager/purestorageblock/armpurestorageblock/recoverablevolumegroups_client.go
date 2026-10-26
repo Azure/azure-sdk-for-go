@@ -68,7 +68,7 @@ func (client *RecoverableVolumeGroupsClient) BeginDelete(ctx context.Context, re
 	}
 }
 
-// Delete - Eradicate a recoverable volume group
+// deleteOperation - Eradicate a recoverable volume group
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *RecoverableVolumeGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, storagePoolName string, recoverableVolumeGroupName string, options *RecoverableVolumeGroupsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -90,7 +90,7 @@ func (client *RecoverableVolumeGroupsClient) deleteOperation(ctx context.Context
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *RecoverableVolumeGroupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, storagePoolName string, recoverableVolumeGroupName string, _ *RecoverableVolumeGroupsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/recoverableVolumeGroups/{recoverableVolumeGroupName}"
 	if client.subscriptionID == "" {

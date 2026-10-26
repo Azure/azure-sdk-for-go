@@ -41,22 +41,6 @@ type AutonomousDatabasesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginFailover func(ctx context.Context, resourceGroupName string, autonomousdatabasename string, body armoracledatabase.PeerDbDetails, options *armoracledatabase.AutonomousDatabasesClientBeginFailoverOptions) (resp azfake.PollerResponder[armoracledatabase.AutonomousDatabasesClientFailoverResponse], errResp azfake.ErrorResponder)
 
-	// GenerateWallet is the fake for method AutonomousDatabasesClient.GenerateWallet
-	// HTTP status codes to indicate success: http.StatusOK
-	GenerateWallet func(ctx context.Context, resourceGroupName string, autonomousdatabasename string, body armoracledatabase.GenerateAutonomousDatabaseWalletDetails, options *armoracledatabase.AutonomousDatabasesClientGenerateWalletOptions) (resp azfake.Responder[armoracledatabase.AutonomousDatabasesClientGenerateWalletResponse], errResp azfake.ErrorResponder)
-
-	// Get is the fake for method AutonomousDatabasesClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, autonomousdatabasename string, options *armoracledatabase.AutonomousDatabasesClientGetOptions) (resp azfake.Responder[armoracledatabase.AutonomousDatabasesClientGetResponse], errResp azfake.ErrorResponder)
-
-	// NewListByResourceGroupPager is the fake for method AutonomousDatabasesClient.NewListByResourceGroupPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupPager func(resourceGroupName string, options *armoracledatabase.AutonomousDatabasesClientListByResourceGroupOptions) (resp azfake.PagerResponder[armoracledatabase.AutonomousDatabasesClientListByResourceGroupResponse])
-
-	// NewListBySubscriptionPager is the fake for method AutonomousDatabasesClient.NewListBySubscriptionPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListBySubscriptionPager func(options *armoracledatabase.AutonomousDatabasesClientListBySubscriptionOptions) (resp azfake.PagerResponder[armoracledatabase.AutonomousDatabasesClientListBySubscriptionResponse])
-
 	// BeginRestore is the fake for method AutonomousDatabasesClient.BeginRestore
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginRestore func(ctx context.Context, resourceGroupName string, autonomousdatabasename string, body armoracledatabase.RestoreAutonomousDatabaseDetails, options *armoracledatabase.AutonomousDatabasesClientBeginRestoreOptions) (resp azfake.PollerResponder[armoracledatabase.AutonomousDatabasesClientRestoreResponse], errResp azfake.ErrorResponder)
@@ -72,6 +56,22 @@ type AutonomousDatabasesServer struct {
 	// BeginUpdate is the fake for method AutonomousDatabasesClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, resourceGroupName string, autonomousdatabasename string, properties armoracledatabase.AutonomousDatabaseUpdate, options *armoracledatabase.AutonomousDatabasesClientBeginUpdateOptions) (resp azfake.PollerResponder[armoracledatabase.AutonomousDatabasesClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// GenerateWallet is the fake for method AutonomousDatabasesClient.GenerateWallet
+	// HTTP status codes to indicate success: http.StatusOK
+	GenerateWallet func(ctx context.Context, resourceGroupName string, autonomousdatabasename string, body armoracledatabase.GenerateAutonomousDatabaseWalletDetails, options *armoracledatabase.AutonomousDatabasesClientGenerateWalletOptions) (resp azfake.Responder[armoracledatabase.AutonomousDatabasesClientGenerateWalletResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method AutonomousDatabasesClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, autonomousdatabasename string, options *armoracledatabase.AutonomousDatabasesClientGetOptions) (resp azfake.Responder[armoracledatabase.AutonomousDatabasesClientGetResponse], errResp azfake.ErrorResponder)
+
+	// NewListByResourceGroupPager is the fake for method AutonomousDatabasesClient.NewListByResourceGroupPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByResourceGroupPager func(resourceGroupName string, options *armoracledatabase.AutonomousDatabasesClientListByResourceGroupOptions) (resp azfake.PagerResponder[armoracledatabase.AutonomousDatabasesClientListByResourceGroupResponse])
+
+	// NewListBySubscriptionPager is the fake for method AutonomousDatabasesClient.NewListBySubscriptionPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListBySubscriptionPager func(options *armoracledatabase.AutonomousDatabasesClientListBySubscriptionOptions) (resp azfake.PagerResponder[armoracledatabase.AutonomousDatabasesClientListBySubscriptionResponse])
 }
 
 // NewAutonomousDatabasesServerTransport creates a new instance of AutonomousDatabasesServerTransport with the provided implementation.
@@ -85,12 +85,12 @@ func NewAutonomousDatabasesServerTransport(srv *AutonomousDatabasesServer) *Auto
 		beginCreateOrUpdate:                      newTracker[azfake.PollerResponder[armoracledatabase.AutonomousDatabasesClientCreateOrUpdateResponse]](),
 		beginDelete:                              newTracker[azfake.PollerResponder[armoracledatabase.AutonomousDatabasesClientDeleteResponse]](),
 		beginFailover:                            newTracker[azfake.PollerResponder[armoracledatabase.AutonomousDatabasesClientFailoverResponse]](),
-		newListByResourceGroupPager:              newTracker[azfake.PagerResponder[armoracledatabase.AutonomousDatabasesClientListByResourceGroupResponse]](),
-		newListBySubscriptionPager:               newTracker[azfake.PagerResponder[armoracledatabase.AutonomousDatabasesClientListBySubscriptionResponse]](),
 		beginRestore:                             newTracker[azfake.PollerResponder[armoracledatabase.AutonomousDatabasesClientRestoreResponse]](),
 		beginShrink:                              newTracker[azfake.PollerResponder[armoracledatabase.AutonomousDatabasesClientShrinkResponse]](),
 		beginSwitchover:                          newTracker[azfake.PollerResponder[armoracledatabase.AutonomousDatabasesClientSwitchoverResponse]](),
 		beginUpdate:                              newTracker[azfake.PollerResponder[armoracledatabase.AutonomousDatabasesClientUpdateResponse]](),
+		newListByResourceGroupPager:              newTracker[azfake.PagerResponder[armoracledatabase.AutonomousDatabasesClientListByResourceGroupResponse]](),
+		newListBySubscriptionPager:               newTracker[azfake.PagerResponder[armoracledatabase.AutonomousDatabasesClientListBySubscriptionResponse]](),
 	}
 }
 
@@ -103,12 +103,12 @@ type AutonomousDatabasesServerTransport struct {
 	beginCreateOrUpdate                      *tracker[azfake.PollerResponder[armoracledatabase.AutonomousDatabasesClientCreateOrUpdateResponse]]
 	beginDelete                              *tracker[azfake.PollerResponder[armoracledatabase.AutonomousDatabasesClientDeleteResponse]]
 	beginFailover                            *tracker[azfake.PollerResponder[armoracledatabase.AutonomousDatabasesClientFailoverResponse]]
-	newListByResourceGroupPager              *tracker[azfake.PagerResponder[armoracledatabase.AutonomousDatabasesClientListByResourceGroupResponse]]
-	newListBySubscriptionPager               *tracker[azfake.PagerResponder[armoracledatabase.AutonomousDatabasesClientListBySubscriptionResponse]]
 	beginRestore                             *tracker[azfake.PollerResponder[armoracledatabase.AutonomousDatabasesClientRestoreResponse]]
 	beginShrink                              *tracker[azfake.PollerResponder[armoracledatabase.AutonomousDatabasesClientShrinkResponse]]
 	beginSwitchover                          *tracker[azfake.PollerResponder[armoracledatabase.AutonomousDatabasesClientSwitchoverResponse]]
 	beginUpdate                              *tracker[azfake.PollerResponder[armoracledatabase.AutonomousDatabasesClientUpdateResponse]]
+	newListByResourceGroupPager              *tracker[azfake.PagerResponder[armoracledatabase.AutonomousDatabasesClientListByResourceGroupResponse]]
+	newListBySubscriptionPager               *tracker[azfake.PagerResponder[armoracledatabase.AutonomousDatabasesClientListBySubscriptionResponse]]
 }
 
 // Do implements the policy.Transporter interface for AutonomousDatabasesServerTransport.
@@ -142,14 +142,6 @@ func (a *AutonomousDatabasesServerTransport) dispatchToMethodFake(req *http.Requ
 				res.resp, res.err = a.dispatchBeginDelete(req)
 			case "AutonomousDatabasesClient.BeginFailover":
 				res.resp, res.err = a.dispatchBeginFailover(req)
-			case "AutonomousDatabasesClient.GenerateWallet":
-				res.resp, res.err = a.dispatchGenerateWallet(req)
-			case "AutonomousDatabasesClient.Get":
-				res.resp, res.err = a.dispatchGet(req)
-			case "AutonomousDatabasesClient.NewListByResourceGroupPager":
-				res.resp, res.err = a.dispatchNewListByResourceGroupPager(req)
-			case "AutonomousDatabasesClient.NewListBySubscriptionPager":
-				res.resp, res.err = a.dispatchNewListBySubscriptionPager(req)
 			case "AutonomousDatabasesClient.BeginRestore":
 				res.resp, res.err = a.dispatchBeginRestore(req)
 			case "AutonomousDatabasesClient.BeginShrink":
@@ -158,6 +150,14 @@ func (a *AutonomousDatabasesServerTransport) dispatchToMethodFake(req *http.Requ
 				res.resp, res.err = a.dispatchBeginSwitchover(req)
 			case "AutonomousDatabasesClient.BeginUpdate":
 				res.resp, res.err = a.dispatchBeginUpdate(req)
+			case "AutonomousDatabasesClient.GenerateWallet":
+				res.resp, res.err = a.dispatchGenerateWallet(req)
+			case "AutonomousDatabasesClient.Get":
+				res.resp, res.err = a.dispatchGet(req)
+			case "AutonomousDatabasesClient.NewListByResourceGroupPager":
+				res.resp, res.err = a.dispatchNewListByResourceGroupPager(req)
+			case "AutonomousDatabasesClient.NewListBySubscriptionPager":
+				res.resp, res.err = a.dispatchNewListBySubscriptionPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -410,146 +410,6 @@ func (a *AutonomousDatabasesServerTransport) dispatchBeginFailover(req *http.Req
 	return resp, nil
 }
 
-func (a *AutonomousDatabasesServerTransport) dispatchGenerateWallet(req *http.Request) (*http.Response, error) {
-	if a.srv.GenerateWallet == nil {
-		return nil, &nonRetriableError{errors.New("fake for method GenerateWallet not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Oracle\.Database/autonomousDatabases/(?P<autonomousdatabasename>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/generateWallet`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armoracledatabase.GenerateAutonomousDatabaseWalletDetails](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	autonomousdatabasenameParam, err := url.PathUnescape(matches[regex.SubexpIndex("autonomousdatabasename")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := a.srv.GenerateWallet(req.Context(), resourceGroupNameParam, autonomousdatabasenameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AutonomousDatabaseWalletFile, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (a *AutonomousDatabasesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if a.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Oracle\.Database/autonomousDatabases/(?P<autonomousdatabasename>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	autonomousdatabasenameParam, err := url.PathUnescape(matches[regex.SubexpIndex("autonomousdatabasename")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := a.srv.Get(req.Context(), resourceGroupNameParam, autonomousdatabasenameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AutonomousDatabase, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (a *AutonomousDatabasesServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
-	if a.srv.NewListByResourceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
-	}
-	newListByResourceGroupPager := a.newListByResourceGroupPager.get(req)
-	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Oracle\.Database/autonomousDatabases`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := a.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
-		newListByResourceGroupPager = &resp
-		a.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armoracledatabase.AutonomousDatabasesClientListByResourceGroupResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		a.newListByResourceGroupPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByResourceGroupPager) {
-		a.newListByResourceGroupPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (a *AutonomousDatabasesServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
-	if a.srv.NewListBySubscriptionPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
-	}
-	newListBySubscriptionPager := a.newListBySubscriptionPager.get(req)
-	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Oracle\.Database/autonomousDatabases`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := a.srv.NewListBySubscriptionPager(nil)
-		newListBySubscriptionPager = &resp
-		a.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
-		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armoracledatabase.AutonomousDatabasesClientListBySubscriptionResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		a.newListBySubscriptionPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListBySubscriptionPager) {
-		a.newListBySubscriptionPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (a *AutonomousDatabasesServerTransport) dispatchBeginRestore(req *http.Request) (*http.Response, error) {
 	if a.srv.BeginRestore == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginRestore not implemented")}
@@ -735,6 +595,146 @@ func (a *AutonomousDatabasesServerTransport) dispatchBeginUpdate(req *http.Reque
 		a.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (a *AutonomousDatabasesServerTransport) dispatchGenerateWallet(req *http.Request) (*http.Response, error) {
+	if a.srv.GenerateWallet == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GenerateWallet not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Oracle\.Database/autonomousDatabases/(?P<autonomousdatabasename>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/generateWallet`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armoracledatabase.GenerateAutonomousDatabaseWalletDetails](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	autonomousdatabasenameParam, err := url.PathUnescape(matches[regex.SubexpIndex("autonomousdatabasename")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := a.srv.GenerateWallet(req.Context(), resourceGroupNameParam, autonomousdatabasenameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AutonomousDatabaseWalletFile, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (a *AutonomousDatabasesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if a.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Oracle\.Database/autonomousDatabases/(?P<autonomousdatabasename>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	autonomousdatabasenameParam, err := url.PathUnescape(matches[regex.SubexpIndex("autonomousdatabasename")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := a.srv.Get(req.Context(), resourceGroupNameParam, autonomousdatabasenameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AutonomousDatabase, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (a *AutonomousDatabasesServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
+	if a.srv.NewListByResourceGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
+	}
+	newListByResourceGroupPager := a.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Oracle\.Database/autonomousDatabases`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := a.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
+		newListByResourceGroupPager = &resp
+		a.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armoracledatabase.AutonomousDatabasesClientListByResourceGroupResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		a.newListByResourceGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		a.newListByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (a *AutonomousDatabasesServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
+	if a.srv.NewListBySubscriptionPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
+	}
+	newListBySubscriptionPager := a.newListBySubscriptionPager.get(req)
+	if newListBySubscriptionPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Oracle\.Database/autonomousDatabases`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := a.srv.NewListBySubscriptionPager(nil)
+		newListBySubscriptionPager = &resp
+		a.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
+		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armoracledatabase.AutonomousDatabasesClientListBySubscriptionResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		a.newListBySubscriptionPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListBySubscriptionPager) {
+		a.newListBySubscriptionPager.remove(req)
+	}
 	return resp, nil
 }
 

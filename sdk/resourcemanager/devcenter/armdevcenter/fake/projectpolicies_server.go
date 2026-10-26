@@ -30,6 +30,10 @@ type ProjectPoliciesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, devCenterName string, projectPolicyName string, options *armdevcenter.ProjectPoliciesClientBeginDeleteOptions) (resp azfake.PollerResponder[armdevcenter.ProjectPoliciesClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method ProjectPoliciesClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, devCenterName string, projectPolicyName string, body armdevcenter.ProjectPolicyUpdate, options *armdevcenter.ProjectPoliciesClientBeginUpdateOptions) (resp azfake.PollerResponder[armdevcenter.ProjectPoliciesClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method ProjectPoliciesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, devCenterName string, projectPolicyName string, options *armdevcenter.ProjectPoliciesClientGetOptions) (resp azfake.Responder[armdevcenter.ProjectPoliciesClientGetResponse], errResp azfake.ErrorResponder)
@@ -37,10 +41,6 @@ type ProjectPoliciesServer struct {
 	// NewListByDevCenterPager is the fake for method ProjectPoliciesClient.NewListByDevCenterPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByDevCenterPager func(resourceGroupName string, devCenterName string, options *armdevcenter.ProjectPoliciesClientListByDevCenterOptions) (resp azfake.PagerResponder[armdevcenter.ProjectPoliciesClientListByDevCenterResponse])
-
-	// BeginUpdate is the fake for method ProjectPoliciesClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, devCenterName string, projectPolicyName string, body armdevcenter.ProjectPolicyUpdate, options *armdevcenter.ProjectPoliciesClientBeginUpdateOptions) (resp azfake.PollerResponder[armdevcenter.ProjectPoliciesClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewProjectPoliciesServerTransport creates a new instance of ProjectPoliciesServerTransport with the provided implementation.
@@ -51,8 +51,8 @@ func NewProjectPoliciesServerTransport(srv *ProjectPoliciesServer) *ProjectPolic
 		srv:                     srv,
 		beginCreateOrUpdate:     newTracker[azfake.PollerResponder[armdevcenter.ProjectPoliciesClientCreateOrUpdateResponse]](),
 		beginDelete:             newTracker[azfake.PollerResponder[armdevcenter.ProjectPoliciesClientDeleteResponse]](),
-		newListByDevCenterPager: newTracker[azfake.PagerResponder[armdevcenter.ProjectPoliciesClientListByDevCenterResponse]](),
 		beginUpdate:             newTracker[azfake.PollerResponder[armdevcenter.ProjectPoliciesClientUpdateResponse]](),
+		newListByDevCenterPager: newTracker[azfake.PagerResponder[armdevcenter.ProjectPoliciesClientListByDevCenterResponse]](),
 	}
 }
 
@@ -62,8 +62,8 @@ type ProjectPoliciesServerTransport struct {
 	srv                     *ProjectPoliciesServer
 	beginCreateOrUpdate     *tracker[azfake.PollerResponder[armdevcenter.ProjectPoliciesClientCreateOrUpdateResponse]]
 	beginDelete             *tracker[azfake.PollerResponder[armdevcenter.ProjectPoliciesClientDeleteResponse]]
-	newListByDevCenterPager *tracker[azfake.PagerResponder[armdevcenter.ProjectPoliciesClientListByDevCenterResponse]]
 	beginUpdate             *tracker[azfake.PollerResponder[armdevcenter.ProjectPoliciesClientUpdateResponse]]
+	newListByDevCenterPager *tracker[azfake.PagerResponder[armdevcenter.ProjectPoliciesClientListByDevCenterResponse]]
 }
 
 // Do implements the policy.Transporter interface for ProjectPoliciesServerTransport.
@@ -91,12 +91,12 @@ func (p *ProjectPoliciesServerTransport) dispatchToMethodFake(req *http.Request,
 				res.resp, res.err = p.dispatchBeginCreateOrUpdate(req)
 			case "ProjectPoliciesClient.BeginDelete":
 				res.resp, res.err = p.dispatchBeginDelete(req)
+			case "ProjectPoliciesClient.BeginUpdate":
+				res.resp, res.err = p.dispatchBeginUpdate(req)
 			case "ProjectPoliciesClient.Get":
 				res.resp, res.err = p.dispatchGet(req)
 			case "ProjectPoliciesClient.NewListByDevCenterPager":
 				res.resp, res.err = p.dispatchNewListByDevCenterPager(req)
-			case "ProjectPoliciesClient.BeginUpdate":
-				res.resp, res.err = p.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -213,6 +213,58 @@ func (p *ProjectPoliciesServerTransport) dispatchBeginDelete(req *http.Request) 
 	return resp, nil
 }
 
+func (p *ProjectPoliciesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if p.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := p.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DevCenter/devcenters/(?P<devCenterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/projectPolicies/(?P<projectPolicyName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armdevcenter.ProjectPolicyUpdate](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		devCenterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("devCenterName")])
+		if err != nil {
+			return nil, err
+		}
+		projectPolicyNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("projectPolicyName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := p.srv.BeginUpdate(req.Context(), resourceGroupNameParam, devCenterNameParam, projectPolicyNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		p.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		p.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		p.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (p *ProjectPoliciesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if p.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -305,58 +357,6 @@ func (p *ProjectPoliciesServerTransport) dispatchNewListByDevCenterPager(req *ht
 	if !server.PagerResponderMore(newListByDevCenterPager) {
 		p.newListByDevCenterPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (p *ProjectPoliciesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if p.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := p.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DevCenter/devcenters/(?P<devCenterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/projectPolicies/(?P<projectPolicyName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armdevcenter.ProjectPolicyUpdate](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		devCenterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("devCenterName")])
-		if err != nil {
-			return nil, err
-		}
-		projectPolicyNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("projectPolicyName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := p.srv.BeginUpdate(req.Context(), resourceGroupNameParam, devCenterNameParam, projectPolicyNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		p.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		p.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		p.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

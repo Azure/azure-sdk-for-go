@@ -29,6 +29,10 @@ type ContainersServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, deviceName string, storageAccountName string, containerName string, resourceGroupName string, options *armdataboxedge.ContainersClientBeginDeleteOptions) (resp azfake.PollerResponder[armdataboxedge.ContainersClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginRefresh is the fake for method ContainersClient.BeginRefresh
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginRefresh func(ctx context.Context, deviceName string, storageAccountName string, containerName string, resourceGroupName string, options *armdataboxedge.ContainersClientBeginRefreshOptions) (resp azfake.PollerResponder[armdataboxedge.ContainersClientRefreshResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method ContainersClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, deviceName string, storageAccountName string, containerName string, resourceGroupName string, options *armdataboxedge.ContainersClientGetOptions) (resp azfake.Responder[armdataboxedge.ContainersClientGetResponse], errResp azfake.ErrorResponder)
@@ -36,10 +40,6 @@ type ContainersServer struct {
 	// NewListByStorageAccountPager is the fake for method ContainersClient.NewListByStorageAccountPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByStorageAccountPager func(deviceName string, storageAccountName string, resourceGroupName string, options *armdataboxedge.ContainersClientListByStorageAccountOptions) (resp azfake.PagerResponder[armdataboxedge.ContainersClientListByStorageAccountResponse])
-
-	// BeginRefresh is the fake for method ContainersClient.BeginRefresh
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginRefresh func(ctx context.Context, deviceName string, storageAccountName string, containerName string, resourceGroupName string, options *armdataboxedge.ContainersClientBeginRefreshOptions) (resp azfake.PollerResponder[armdataboxedge.ContainersClientRefreshResponse], errResp azfake.ErrorResponder)
 }
 
 // NewContainersServerTransport creates a new instance of ContainersServerTransport with the provided implementation.
@@ -50,8 +50,8 @@ func NewContainersServerTransport(srv *ContainersServer) *ContainersServerTransp
 		srv:                          srv,
 		beginCreateOrUpdate:          newTracker[azfake.PollerResponder[armdataboxedge.ContainersClientCreateOrUpdateResponse]](),
 		beginDelete:                  newTracker[azfake.PollerResponder[armdataboxedge.ContainersClientDeleteResponse]](),
-		newListByStorageAccountPager: newTracker[azfake.PagerResponder[armdataboxedge.ContainersClientListByStorageAccountResponse]](),
 		beginRefresh:                 newTracker[azfake.PollerResponder[armdataboxedge.ContainersClientRefreshResponse]](),
+		newListByStorageAccountPager: newTracker[azfake.PagerResponder[armdataboxedge.ContainersClientListByStorageAccountResponse]](),
 	}
 }
 
@@ -61,8 +61,8 @@ type ContainersServerTransport struct {
 	srv                          *ContainersServer
 	beginCreateOrUpdate          *tracker[azfake.PollerResponder[armdataboxedge.ContainersClientCreateOrUpdateResponse]]
 	beginDelete                  *tracker[azfake.PollerResponder[armdataboxedge.ContainersClientDeleteResponse]]
-	newListByStorageAccountPager *tracker[azfake.PagerResponder[armdataboxedge.ContainersClientListByStorageAccountResponse]]
 	beginRefresh                 *tracker[azfake.PollerResponder[armdataboxedge.ContainersClientRefreshResponse]]
+	newListByStorageAccountPager *tracker[azfake.PagerResponder[armdataboxedge.ContainersClientListByStorageAccountResponse]]
 }
 
 // Do implements the policy.Transporter interface for ContainersServerTransport.
@@ -90,12 +90,12 @@ func (c *ContainersServerTransport) dispatchToMethodFake(req *http.Request, meth
 				res.resp, res.err = c.dispatchBeginCreateOrUpdate(req)
 			case "ContainersClient.BeginDelete":
 				res.resp, res.err = c.dispatchBeginDelete(req)
+			case "ContainersClient.BeginRefresh":
+				res.resp, res.err = c.dispatchBeginRefresh(req)
 			case "ContainersClient.Get":
 				res.resp, res.err = c.dispatchGet(req)
 			case "ContainersClient.NewListByStorageAccountPager":
 				res.resp, res.err = c.dispatchNewListByStorageAccountPager(req)
-			case "ContainersClient.BeginRefresh":
-				res.resp, res.err = c.dispatchBeginRefresh(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -220,6 +220,58 @@ func (c *ContainersServerTransport) dispatchBeginDelete(req *http.Request) (*htt
 	return resp, nil
 }
 
+func (c *ContainersServerTransport) dispatchBeginRefresh(req *http.Request) (*http.Response, error) {
+	if c.srv.BeginRefresh == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginRefresh not implemented")}
+	}
+	beginRefresh := c.beginRefresh.get(req)
+	if beginRefresh == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataBoxEdge/dataBoxEdgeDevices/(?P<deviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/storageAccounts/(?P<storageAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/containers/(?P<containerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/refresh`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 6 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		deviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deviceName")])
+		if err != nil {
+			return nil, err
+		}
+		storageAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("storageAccountName")])
+		if err != nil {
+			return nil, err
+		}
+		containerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("containerName")])
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := c.srv.BeginRefresh(req.Context(), deviceNameParam, storageAccountNameParam, containerNameParam, resourceGroupNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginRefresh = &respr
+		c.beginRefresh.add(req, beginRefresh)
+	}
+
+	resp, err := server.PollerResponderNext(beginRefresh, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		c.beginRefresh.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginRefresh) {
+		c.beginRefresh.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (c *ContainersServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if c.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -303,58 +355,6 @@ func (c *ContainersServerTransport) dispatchNewListByStorageAccountPager(req *ht
 	if !server.PagerResponderMore(newListByStorageAccountPager) {
 		c.newListByStorageAccountPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (c *ContainersServerTransport) dispatchBeginRefresh(req *http.Request) (*http.Response, error) {
-	if c.srv.BeginRefresh == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginRefresh not implemented")}
-	}
-	beginRefresh := c.beginRefresh.get(req)
-	if beginRefresh == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataBoxEdge/dataBoxEdgeDevices/(?P<deviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/storageAccounts/(?P<storageAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/containers/(?P<containerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/refresh`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 6 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		deviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deviceName")])
-		if err != nil {
-			return nil, err
-		}
-		storageAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("storageAccountName")])
-		if err != nil {
-			return nil, err
-		}
-		containerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("containerName")])
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := c.srv.BeginRefresh(req.Context(), deviceNameParam, storageAccountNameParam, containerNameParam, resourceGroupNameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginRefresh = &respr
-		c.beginRefresh.add(req, beginRefresh)
-	}
-
-	resp, err := server.PollerResponderNext(beginRefresh, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		c.beginRefresh.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginRefresh) {
-		c.beginRefresh.remove(req)
-	}
-
 	return resp, nil
 }
 

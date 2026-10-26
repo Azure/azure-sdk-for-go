@@ -114,6 +114,77 @@ func (client *ArtifactsClient) getHandleResponse(resp *http.Response, successCod
 	return result, nil
 }
 
+// ListDownloadURI - Get artifact download link.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - name - Name of the resource
+//   - imageName - The name of the Image
+//   - artifactName - The name of the Artifact
+//   - options - ArtifactsClientListDownloadURIOptions contains the optional parameters for the ArtifactsClient.ListDownloadURI
+//     method.
+func (client *ArtifactsClient) ListDownloadURI(ctx context.Context, resourceGroupName string, name string, imageName string, artifactName string, options *ArtifactsClientListDownloadURIOptions) (ArtifactsClientListDownloadURIResponse, error) {
+	var err error
+	const operationName = "ArtifactsClient.ListDownloadURI"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listDownloadURICreateRequest(ctx, resourceGroupName, name, imageName, artifactName, options)
+	if err != nil {
+		return ArtifactsClientListDownloadURIResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ArtifactsClientListDownloadURIResponse{}, err
+	}
+	return client.listDownloadURIHandleResponse(httpResp, http.StatusOK)
+}
+
+// listDownloadURICreateRequest creates the ListDownloadURI request.
+func (client *ArtifactsClient) listDownloadURICreateRequest(ctx context.Context, resourceGroupName string, name string, imageName string, artifactName string, _ *ArtifactsClientListDownloadURIOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/disconnectedOperations/{name}/images/{imageName}/artifacts/{artifactName}/listDownloadUri"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if name == "" {
+		return nil, errors.New("parameter name cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+	if imageName == "" {
+		return nil, errors.New("parameter imageName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{imageName}", url.PathEscape(imageName))
+	if artifactName == "" {
+		return nil, errors.New("parameter artifactName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{artifactName}", url.PathEscape(artifactName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260315)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listDownloadURIHandleResponse handles the ListDownloadURI response.
+func (client *ArtifactsClient) listDownloadURIHandleResponse(resp *http.Response, successCodes ...int) (ArtifactsClientListDownloadURIResponse, error) {
+	result := ArtifactsClientListDownloadURIResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ArtifactDownloadResult); err != nil {
+		return ArtifactsClientListDownloadURIResponse{}, err
+	}
+	return result, nil
+}
+
 // NewListByParentPager - List by parent
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the resource
@@ -192,77 +263,6 @@ func (client *ArtifactsClient) listByParentHandleResponse(resp *http.Response, s
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ArtifactListResult); err != nil {
 		return ArtifactsClientListByParentResponse{}, err
-	}
-	return result, nil
-}
-
-// ListDownloadURI - Get artifact download link.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - name - Name of the resource
-//   - imageName - The name of the Image
-//   - artifactName - The name of the Artifact
-//   - options - ArtifactsClientListDownloadURIOptions contains the optional parameters for the ArtifactsClient.ListDownloadURI
-//     method.
-func (client *ArtifactsClient) ListDownloadURI(ctx context.Context, resourceGroupName string, name string, imageName string, artifactName string, options *ArtifactsClientListDownloadURIOptions) (ArtifactsClientListDownloadURIResponse, error) {
-	var err error
-	const operationName = "ArtifactsClient.ListDownloadURI"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listDownloadURICreateRequest(ctx, resourceGroupName, name, imageName, artifactName, options)
-	if err != nil {
-		return ArtifactsClientListDownloadURIResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return ArtifactsClientListDownloadURIResponse{}, err
-	}
-	return client.listDownloadURIHandleResponse(httpResp, http.StatusOK)
-}
-
-// listDownloadURICreateRequest creates the ListDownloadURI request.
-func (client *ArtifactsClient) listDownloadURICreateRequest(ctx context.Context, resourceGroupName string, name string, imageName string, artifactName string, _ *ArtifactsClientListDownloadURIOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/disconnectedOperations/{name}/images/{imageName}/artifacts/{artifactName}/listDownloadUri"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	if imageName == "" {
-		return nil, errors.New("parameter imageName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{imageName}", url.PathEscape(imageName))
-	if artifactName == "" {
-		return nil, errors.New("parameter artifactName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{artifactName}", url.PathEscape(artifactName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listDownloadURIHandleResponse handles the ListDownloadURI response.
-func (client *ArtifactsClient) listDownloadURIHandleResponse(resp *http.Response, successCodes ...int) (ArtifactsClientListDownloadURIResponse, error) {
-	result := ArtifactsClientListDownloadURIResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ArtifactDownloadResult); err != nil {
-		return ArtifactsClientListDownloadURIResponse{}, err
 	}
 	return result, nil
 }

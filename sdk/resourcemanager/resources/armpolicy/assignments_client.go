@@ -400,91 +400,6 @@ func (client *AssignmentsClient) getByIDHandleResponse(resp *http.Response, succ
 	return result, nil
 }
 
-// NewListPager - Retrieves all policy assignments that apply to a subscription.
-//
-// This operation retrieves the list of all policy assignments associated with the given subscription that match the optional
-// given $filter. Valid values for $filter are: 'atScope()', 'atExactScope()' or 'policyDefinitionId eq '{value}”. If $filter
-// is not provided, the unfiltered list includes all policy assignments associated with the subscription, including those
-// that apply directly or from management groups that contain the given subscription, as well as any applied to objects contained
-// within the subscription. If $filter=atScope() is provided, the returned list includes all policy assignments that apply
-// to the subscription, which is everything in the unfiltered list except those applied to objects contained within the subscription.
-// If $filter=atExactScope() is provided, the returned list only includes all policy assignments that at the subscription.
-// If $filter=policyDefinitionId eq '{value}' is provided, the returned list includes all policy assignments of the policy
-// definition whose id is {value}.
-//   - options - AssignmentsClientListOptions contains the optional parameters for the AssignmentsClient.NewListPager method.
-func (client *AssignmentsClient) NewListPager(options *AssignmentsClientListOptions) *runtime.Pager[AssignmentsClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[AssignmentsClientListResponse]{
-		More: func(page AssignmentsClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *AssignmentsClientListResponse) (AssignmentsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AssignmentsClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listCreateRequest(ctx, nextLink, options)
-			if err != nil {
-				return AssignmentsClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return AssignmentsClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *AssignmentsClient) listCreateRequest(ctx context.Context, nextLink string, options *AssignmentsClientListOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policyAssignments"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		if options != nil && options.Expand != nil {
-			reqQP.Set("$expand", *options.Expand)
-		}
-		if options != nil && options.Filter != nil {
-			reqQP.Set("$filter", *options.Filter)
-		}
-		if options != nil && options.Top != nil {
-			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-		}
-		reqQP.Set("api-version", version20260601)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *AssignmentsClient) listHandleResponse(resp *http.Response, successCodes ...int) (AssignmentsClientListResponse, error) {
-	result := AssignmentsClientListResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.AssignmentListResult); err != nil {
-		return AssignmentsClientListResponse{}, err
-	}
-	return result, nil
-}
-
 // NewListForManagementGroupPager - Retrieves all policy assignments that apply to a management group.
 //
 // This operation retrieves the list of all policy assignments applicable to the management group that match the given $filter.
@@ -565,6 +480,95 @@ func (client *AssignmentsClient) listForManagementGroupHandleResponse(resp *http
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AssignmentListResult); err != nil {
 		return AssignmentsClientListForManagementGroupResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListForResourceGroupPager - This operation retrieves the list of all policy assignments associated with the given resource
+// group in the given subscription that match the optional given $filter. Valid values for $filter are: 'atScope()', 'atExactScope()'
+// or 'policyDefinitionId eq '{value}”. If $filter is not provided, the unfiltered list includes all policy assignments associated
+// with the resource group, including those that apply directly or apply from containing scopes, as well as any applied to
+// resources contained within the resource group. If $filter=atScope() is provided, the returned list includes all policy
+// assignments that apply to the resource group, which is everything in the unfiltered list except those applied to resources
+// contained within the resource group. If $filter=atExactScope() is provided, the returned list only includes all policy
+// assignments that at the resource group. If $filter=policyDefinitionId eq '{value}' is provided, the returned list includes
+// all policy assignments of the policy definition whose id is {value} that apply to the resource group.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - options - AssignmentsClientListForResourceGroupOptions contains the optional parameters for the AssignmentsClient.NewListForResourceGroupPager
+//     method.
+func (client *AssignmentsClient) NewListForResourceGroupPager(resourceGroupName string, options *AssignmentsClientListForResourceGroupOptions) *runtime.Pager[AssignmentsClientListForResourceGroupResponse] {
+	return runtime.NewPager(runtime.PagingHandler[AssignmentsClientListForResourceGroupResponse]{
+		More: func(page AssignmentsClientListForResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *AssignmentsClientListForResourceGroupResponse) (AssignmentsClientListForResourceGroupResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AssignmentsClient.NewListForResourceGroupPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listForResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
+			if err != nil {
+				return AssignmentsClientListForResourceGroupResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return AssignmentsClientListForResourceGroupResponse{}, err
+			}
+			return client.listForResourceGroupHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listForResourceGroupCreateRequest creates the ListForResourceGroup request.
+func (client *AssignmentsClient) listForResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, options *AssignmentsClientListForResourceGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Authorization/policyAssignments"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Expand != nil {
+			reqQP.Set("$expand", *options.Expand)
+		}
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20260601)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listForResourceGroupHandleResponse handles the ListForResourceGroup response.
+func (client *AssignmentsClient) listForResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (AssignmentsClientListForResourceGroupResponse, error) {
+	result := AssignmentsClientListForResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AssignmentListResult); err != nil {
+		return AssignmentsClientListForResourceGroupResponse{}, err
 	}
 	return result, nil
 }
@@ -689,58 +693,54 @@ func (client *AssignmentsClient) listForResourceHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// NewListForResourceGroupPager - This operation retrieves the list of all policy assignments associated with the given resource
-// group in the given subscription that match the optional given $filter. Valid values for $filter are: 'atScope()', 'atExactScope()'
-// or 'policyDefinitionId eq '{value}”. If $filter is not provided, the unfiltered list includes all policy assignments associated
-// with the resource group, including those that apply directly or apply from containing scopes, as well as any applied to
-// resources contained within the resource group. If $filter=atScope() is provided, the returned list includes all policy
-// assignments that apply to the resource group, which is everything in the unfiltered list except those applied to resources
-// contained within the resource group. If $filter=atExactScope() is provided, the returned list only includes all policy
-// assignments that at the resource group. If $filter=policyDefinitionId eq '{value}' is provided, the returned list includes
-// all policy assignments of the policy definition whose id is {value} that apply to the resource group.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - options - AssignmentsClientListForResourceGroupOptions contains the optional parameters for the AssignmentsClient.NewListForResourceGroupPager
-//     method.
-func (client *AssignmentsClient) NewListForResourceGroupPager(resourceGroupName string, options *AssignmentsClientListForResourceGroupOptions) *runtime.Pager[AssignmentsClientListForResourceGroupResponse] {
-	return runtime.NewPager(runtime.PagingHandler[AssignmentsClientListForResourceGroupResponse]{
-		More: func(page AssignmentsClientListForResourceGroupResponse) bool {
+// NewListPager - Retrieves all policy assignments that apply to a subscription.
+//
+// This operation retrieves the list of all policy assignments associated with the given subscription that match the optional
+// given $filter. Valid values for $filter are: 'atScope()', 'atExactScope()' or 'policyDefinitionId eq '{value}”. If $filter
+// is not provided, the unfiltered list includes all policy assignments associated with the subscription, including those
+// that apply directly or from management groups that contain the given subscription, as well as any applied to objects contained
+// within the subscription. If $filter=atScope() is provided, the returned list includes all policy assignments that apply
+// to the subscription, which is everything in the unfiltered list except those applied to objects contained within the subscription.
+// If $filter=atExactScope() is provided, the returned list only includes all policy assignments that at the subscription.
+// If $filter=policyDefinitionId eq '{value}' is provided, the returned list includes all policy assignments of the policy
+// definition whose id is {value}.
+//   - options - AssignmentsClientListOptions contains the optional parameters for the AssignmentsClient.NewListPager method.
+func (client *AssignmentsClient) NewListPager(options *AssignmentsClientListOptions) *runtime.Pager[AssignmentsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[AssignmentsClientListResponse]{
+		More: func(page AssignmentsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *AssignmentsClientListForResourceGroupResponse) (AssignmentsClientListForResourceGroupResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AssignmentsClient.NewListForResourceGroupPager")
+		Fetcher: func(ctx context.Context, page *AssignmentsClientListResponse) (AssignmentsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AssignmentsClient.NewListPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			req, err := client.listForResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
+			req, err := client.listCreateRequest(ctx, nextLink, options)
 			if err != nil {
-				return AssignmentsClientListForResourceGroupResponse{}, err
+				return AssignmentsClientListResponse{}, err
 			}
 			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
-				return AssignmentsClientListForResourceGroupResponse{}, err
+				return AssignmentsClientListResponse{}, err
 			}
-			return client.listForResourceGroupHandleResponse(resp, http.StatusOK)
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
-// listForResourceGroupCreateRequest creates the ListForResourceGroup request.
-func (client *AssignmentsClient) listForResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, options *AssignmentsClientListForResourceGroupOptions) (*policy.Request, error) {
+// listCreateRequest creates the List request.
+func (client *AssignmentsClient) listCreateRequest(ctx context.Context, nextLink string, options *AssignmentsClientListOptions) (*policy.Request, error) {
 	firstPage := nextLink == ""
 	var req *policy.Request
 	var err error
 	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Authorization/policyAssignments"
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policyAssignments"
 		if client.subscriptionID == "" {
 			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		if resourceGroupName == "" {
-			return nil, errors.New("parameter resourceGroupName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	} else {
 		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
@@ -766,14 +766,14 @@ func (client *AssignmentsClient) listForResourceGroupCreateRequest(ctx context.C
 	return req, nil
 }
 
-// listForResourceGroupHandleResponse handles the ListForResourceGroup response.
-func (client *AssignmentsClient) listForResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (AssignmentsClientListForResourceGroupResponse, error) {
-	result := AssignmentsClientListForResourceGroupResponse{}
+// listHandleResponse handles the List response.
+func (client *AssignmentsClient) listHandleResponse(resp *http.Response, successCodes ...int) (AssignmentsClientListResponse, error) {
+	result := AssignmentsClientListResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AssignmentListResult); err != nil {
-		return AssignmentsClientListForResourceGroupResponse{}, err
+		return AssignmentsClientListResponse{}, err
 	}
 	return result, nil
 }

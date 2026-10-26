@@ -29,6 +29,10 @@ type StorageTasksServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, storageTaskName string, options *armstorageactions.StorageTasksClientBeginDeleteOptions) (resp azfake.PollerResponder[armstorageactions.StorageTasksClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method StorageTasksClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, storageTaskName string, parameters armstorageactions.StorageTaskUpdateParameters, options *armstorageactions.StorageTasksClientBeginUpdateOptions) (resp azfake.PollerResponder[armstorageactions.StorageTasksClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method StorageTasksClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, storageTaskName string, options *armstorageactions.StorageTasksClientGetOptions) (resp azfake.Responder[armstorageactions.StorageTasksClientGetResponse], errResp azfake.ErrorResponder)
@@ -44,10 +48,6 @@ type StorageTasksServer struct {
 	// PreviewActions is the fake for method StorageTasksClient.PreviewActions
 	// HTTP status codes to indicate success: http.StatusOK
 	PreviewActions func(ctx context.Context, location string, parameters armstorageactions.StorageTaskPreviewAction, options *armstorageactions.StorageTasksClientPreviewActionsOptions) (resp azfake.Responder[armstorageactions.StorageTasksClientPreviewActionsResponse], errResp azfake.ErrorResponder)
-
-	// BeginUpdate is the fake for method StorageTasksClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, storageTaskName string, parameters armstorageactions.StorageTaskUpdateParameters, options *armstorageactions.StorageTasksClientBeginUpdateOptions) (resp azfake.PollerResponder[armstorageactions.StorageTasksClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewStorageTasksServerTransport creates a new instance of StorageTasksServerTransport with the provided implementation.
@@ -58,9 +58,9 @@ func NewStorageTasksServerTransport(srv *StorageTasksServer) *StorageTasksServer
 		srv:                         srv,
 		beginCreate:                 newTracker[azfake.PollerResponder[armstorageactions.StorageTasksClientCreateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armstorageactions.StorageTasksClientDeleteResponse]](),
+		beginUpdate:                 newTracker[azfake.PollerResponder[armstorageactions.StorageTasksClientUpdateResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armstorageactions.StorageTasksClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armstorageactions.StorageTasksClientListBySubscriptionResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armstorageactions.StorageTasksClientUpdateResponse]](),
 	}
 }
 
@@ -70,9 +70,9 @@ type StorageTasksServerTransport struct {
 	srv                         *StorageTasksServer
 	beginCreate                 *tracker[azfake.PollerResponder[armstorageactions.StorageTasksClientCreateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armstorageactions.StorageTasksClientDeleteResponse]]
+	beginUpdate                 *tracker[azfake.PollerResponder[armstorageactions.StorageTasksClientUpdateResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armstorageactions.StorageTasksClientListByResourceGroupResponse]]
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armstorageactions.StorageTasksClientListBySubscriptionResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armstorageactions.StorageTasksClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for StorageTasksServerTransport.
@@ -100,6 +100,8 @@ func (s *StorageTasksServerTransport) dispatchToMethodFake(req *http.Request, me
 				res.resp, res.err = s.dispatchBeginCreate(req)
 			case "StorageTasksClient.BeginDelete":
 				res.resp, res.err = s.dispatchBeginDelete(req)
+			case "StorageTasksClient.BeginUpdate":
+				res.resp, res.err = s.dispatchBeginUpdate(req)
 			case "StorageTasksClient.Get":
 				res.resp, res.err = s.dispatchGet(req)
 			case "StorageTasksClient.NewListByResourceGroupPager":
@@ -108,8 +110,6 @@ func (s *StorageTasksServerTransport) dispatchToMethodFake(req *http.Request, me
 				res.resp, res.err = s.dispatchNewListBySubscriptionPager(req)
 			case "StorageTasksClient.PreviewActions":
 				res.resp, res.err = s.dispatchPreviewActions(req)
-			case "StorageTasksClient.BeginUpdate":
-				res.resp, res.err = s.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -213,6 +213,54 @@ func (s *StorageTasksServerTransport) dispatchBeginDelete(req *http.Request) (*h
 	}
 	if !server.PollerResponderMore(beginDelete) {
 		s.beginDelete.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (s *StorageTasksServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if s.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := s.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.StorageActions/storageTasks/(?P<storageTaskName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armstorageactions.StorageTaskUpdateParameters](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		storageTaskNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("storageTaskName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := s.srv.BeginUpdate(req.Context(), resourceGroupNameParam, storageTaskNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		s.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		s.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		s.beginUpdate.remove(req)
 	}
 
 	return resp, nil
@@ -351,54 +399,6 @@ func (s *StorageTasksServerTransport) dispatchPreviewActions(req *http.Request) 
 	if err != nil {
 		return nil, err
 	}
-	return resp, nil
-}
-
-func (s *StorageTasksServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if s.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := s.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.StorageActions/storageTasks/(?P<storageTaskName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armstorageactions.StorageTaskUpdateParameters](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		storageTaskNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("storageTaskName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := s.srv.BeginUpdate(req.Context(), resourceGroupNameParam, storageTaskNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		s.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		s.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		s.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

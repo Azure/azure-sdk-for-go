@@ -30,13 +30,13 @@ type Server struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, subscriptionID string, options *armsubscriptions.ClientGetOptions) (resp azfake.Responder[armsubscriptions.ClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method Client.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armsubscriptions.ClientListOptions) (resp azfake.PagerResponder[armsubscriptions.ClientListResponse])
-
 	// NewListLocationsPager is the fake for method Client.NewListLocationsPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListLocationsPager func(subscriptionID string, options *armsubscriptions.ClientListLocationsOptions) (resp azfake.PagerResponder[armsubscriptions.ClientListLocationsResponse])
+
+	// NewListPager is the fake for method Client.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armsubscriptions.ClientListOptions) (resp azfake.PagerResponder[armsubscriptions.ClientListResponse])
 }
 
 // NewServerTransport creates a new instance of ServerTransport with the provided implementation.
@@ -45,8 +45,8 @@ type Server struct {
 func NewServerTransport(srv *Server) *ServerTransport {
 	return &ServerTransport{
 		srv:                   srv,
-		newListPager:          newTracker[azfake.PagerResponder[armsubscriptions.ClientListResponse]](),
 		newListLocationsPager: newTracker[azfake.PagerResponder[armsubscriptions.ClientListLocationsResponse]](),
+		newListPager:          newTracker[azfake.PagerResponder[armsubscriptions.ClientListResponse]](),
 	}
 }
 
@@ -54,8 +54,8 @@ func NewServerTransport(srv *Server) *ServerTransport {
 // Don't use this type directly, use NewServerTransport instead.
 type ServerTransport struct {
 	srv                   *Server
-	newListPager          *tracker[azfake.PagerResponder[armsubscriptions.ClientListResponse]]
 	newListLocationsPager *tracker[azfake.PagerResponder[armsubscriptions.ClientListLocationsResponse]]
+	newListPager          *tracker[azfake.PagerResponder[armsubscriptions.ClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for ServerTransport.
@@ -83,10 +83,10 @@ func (s *ServerTransport) dispatchToMethodFake(req *http.Request, method string)
 				res.resp, res.err = s.dispatchCheckZonePeers(req)
 			case "Client.Get":
 				res.resp, res.err = s.dispatchGet(req)
-			case "Client.NewListPager":
-				res.resp, res.err = s.dispatchNewListPager(req)
 			case "Client.NewListLocationsPager":
 				res.resp, res.err = s.dispatchNewListLocationsPager(req)
+			case "Client.NewListPager":
+				res.resp, res.err = s.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -165,33 +165,6 @@ func (s *ServerTransport) dispatchGet(req *http.Request) (*http.Response, error)
 	return resp, nil
 }
 
-func (s *ServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if s.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := s.newListPager.get(req)
-	if newListPager == nil {
-		resp := s.srv.NewListPager(nil)
-		newListPager = &resp
-		s.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armsubscriptions.ClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		s.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		s.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (s *ServerTransport) dispatchNewListLocationsPager(req *http.Request) (*http.Response, error) {
 	if s.srv.NewListLocationsPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListLocationsPager not implemented")}
@@ -236,6 +209,33 @@ func (s *ServerTransport) dispatchNewListLocationsPager(req *http.Request) (*htt
 	}
 	if !server.PagerResponderMore(newListLocationsPager) {
 		s.newListLocationsPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (s *ServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if s.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := s.newListPager.get(req)
+	if newListPager == nil {
+		resp := s.srv.NewListPager(nil)
+		newListPager = &resp
+		s.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armsubscriptions.ClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		s.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		s.newListPager.remove(req)
 	}
 	return resp, nil
 }

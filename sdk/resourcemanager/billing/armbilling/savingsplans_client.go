@@ -39,6 +39,83 @@ func NewSavingsPlansClient(credential azcore.TokenCredential, options *arm.Clien
 	return client, nil
 }
 
+// BeginUpdateByBillingAccount - Update savings plan by billing account.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - billingAccountName - The ID that uniquely identifies a billing account.
+//   - savingsPlanOrderID - Order ID of the savings plan
+//   - savingsPlanID - ID of the savings plan
+//   - body - Request body for patching a savings plan order alias
+//   - options - SavingsPlansClientBeginUpdateByBillingAccountOptions contains the optional parameters for the SavingsPlansClient.BeginUpdateByBillingAccount
+//     method.
+func (client *SavingsPlansClient) BeginUpdateByBillingAccount(ctx context.Context, billingAccountName string, savingsPlanOrderID string, savingsPlanID string, body SavingsPlanUpdateRequest, options *SavingsPlansClientBeginUpdateByBillingAccountOptions) (*runtime.Poller[SavingsPlansClientUpdateByBillingAccountResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.updateByBillingAccount(ctx, billingAccountName, savingsPlanOrderID, savingsPlanID, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SavingsPlansClientUpdateByBillingAccountResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SavingsPlansClientUpdateByBillingAccountResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// updateByBillingAccount - Update savings plan by billing account.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *SavingsPlansClient) updateByBillingAccount(ctx context.Context, billingAccountName string, savingsPlanOrderID string, savingsPlanID string, body SavingsPlanUpdateRequest, options *SavingsPlansClientBeginUpdateByBillingAccountOptions) (*http.Response, error) {
+	var err error
+	const operationName = "SavingsPlansClient.BeginUpdateByBillingAccount"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateByBillingAccountCreateRequest(ctx, billingAccountName, savingsPlanOrderID, savingsPlanID, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateByBillingAccountCreateRequest creates the updateByBillingAccount request.
+func (client *SavingsPlansClient) updateByBillingAccountCreateRequest(ctx context.Context, billingAccountName string, savingsPlanOrderID string, savingsPlanID string, body SavingsPlanUpdateRequest, _ *SavingsPlansClientBeginUpdateByBillingAccountOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/savingsPlanOrders/{savingsPlanOrderId}/savingsPlans/{savingsPlanId}"
+	if billingAccountName == "" {
+		return nil, errors.New("parameter billingAccountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+	if savingsPlanOrderID == "" {
+		return nil, errors.New("parameter savingsPlanOrderID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{savingsPlanOrderId}", url.PathEscape(savingsPlanOrderID))
+	if savingsPlanID == "" {
+		return nil, errors.New("parameter savingsPlanID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{savingsPlanId}", url.PathEscape(savingsPlanID))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20240401)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
 // GetByBillingAccount - Get savings plan by billing account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - billingAccountName - The ID that uniquely identifies a billing account.
@@ -261,83 +338,6 @@ func (client *SavingsPlansClient) listBySavingsPlanOrderHandleResponse(resp *htt
 		return SavingsPlansClientListBySavingsPlanOrderResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdateByBillingAccount - Update savings plan by billing account.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - billingAccountName - The ID that uniquely identifies a billing account.
-//   - savingsPlanOrderID - Order ID of the savings plan
-//   - savingsPlanID - ID of the savings plan
-//   - body - Request body for patching a savings plan order alias
-//   - options - SavingsPlansClientBeginUpdateByBillingAccountOptions contains the optional parameters for the SavingsPlansClient.BeginUpdateByBillingAccount
-//     method.
-func (client *SavingsPlansClient) BeginUpdateByBillingAccount(ctx context.Context, billingAccountName string, savingsPlanOrderID string, savingsPlanID string, body SavingsPlanUpdateRequest, options *SavingsPlansClientBeginUpdateByBillingAccountOptions) (*runtime.Poller[SavingsPlansClientUpdateByBillingAccountResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.updateByBillingAccount(ctx, billingAccountName, savingsPlanOrderID, savingsPlanID, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SavingsPlansClientUpdateByBillingAccountResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SavingsPlansClientUpdateByBillingAccountResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// UpdateByBillingAccount - Update savings plan by billing account.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *SavingsPlansClient) updateByBillingAccount(ctx context.Context, billingAccountName string, savingsPlanOrderID string, savingsPlanID string, body SavingsPlanUpdateRequest, options *SavingsPlansClientBeginUpdateByBillingAccountOptions) (*http.Response, error) {
-	var err error
-	const operationName = "SavingsPlansClient.BeginUpdateByBillingAccount"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateByBillingAccountCreateRequest(ctx, billingAccountName, savingsPlanOrderID, savingsPlanID, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateByBillingAccountCreateRequest creates the UpdateByBillingAccount request.
-func (client *SavingsPlansClient) updateByBillingAccountCreateRequest(ctx context.Context, billingAccountName string, savingsPlanOrderID string, savingsPlanID string, body SavingsPlanUpdateRequest, _ *SavingsPlansClientBeginUpdateByBillingAccountOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/savingsPlanOrders/{savingsPlanOrderId}/savingsPlans/{savingsPlanId}"
-	if billingAccountName == "" {
-		return nil, errors.New("parameter billingAccountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
-	if savingsPlanOrderID == "" {
-		return nil, errors.New("parameter savingsPlanOrderID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{savingsPlanOrderId}", url.PathEscape(savingsPlanOrderID))
-	if savingsPlanID == "" {
-		return nil, errors.New("parameter savingsPlanID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{savingsPlanId}", url.PathEscape(savingsPlanID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
 }
 
 // ValidateUpdateByBillingAccount - Validate savings plan patch by billing account.

@@ -67,7 +67,7 @@ func (client *GeoCatalogsClient) BeginCreate(ctx context.Context, resourceGroupN
 	}
 }
 
-// Create - Create a GeoCatalog
+// create - Create a GeoCatalog
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *GeoCatalogsClient) create(ctx context.Context, resourceGroupName string, catalogName string, resource GeoCatalog, options *GeoCatalogsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
@@ -89,7 +89,7 @@ func (client *GeoCatalogsClient) create(ctx context.Context, resourceGroupName s
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *GeoCatalogsClient) createCreateRequest(ctx context.Context, resourceGroupName string, catalogName string, resource GeoCatalog, _ *GeoCatalogsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Orbital/geoCatalogs/{catalogName}"
 	if client.subscriptionID == "" {
@@ -141,7 +141,7 @@ func (client *GeoCatalogsClient) BeginDelete(ctx context.Context, resourceGroupN
 	}
 }
 
-// Delete - Delete a GeoCatalog
+// deleteOperation - Delete a GeoCatalog
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *GeoCatalogsClient) deleteOperation(ctx context.Context, resourceGroupName string, catalogName string, options *GeoCatalogsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -163,7 +163,7 @@ func (client *GeoCatalogsClient) deleteOperation(ctx context.Context, resourceGr
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *GeoCatalogsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, catalogName string, _ *GeoCatalogsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Orbital/geoCatalogs/{catalogName}"
 	if client.subscriptionID == "" {
@@ -185,6 +185,81 @@ func (client *GeoCatalogsClient) deleteCreateRequest(ctx context.Context, resour
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20260415)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - Update a GeoCatalog
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - catalogName - The name of the catalog
+//   - properties - The resource properties to be updated.
+//   - options - GeoCatalogsClientBeginUpdateOptions contains the optional parameters for the GeoCatalogsClient.BeginUpdate method.
+func (client *GeoCatalogsClient) BeginUpdate(ctx context.Context, resourceGroupName string, catalogName string, properties GeoCatalogUpdate, options *GeoCatalogsClientBeginUpdateOptions) (*runtime.Poller[GeoCatalogsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, catalogName, properties, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[GeoCatalogsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[GeoCatalogsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update a GeoCatalog
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *GeoCatalogsClient) update(ctx context.Context, resourceGroupName string, catalogName string, properties GeoCatalogUpdate, options *GeoCatalogsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "GeoCatalogsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, catalogName, properties, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *GeoCatalogsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, catalogName string, properties GeoCatalogUpdate, _ *GeoCatalogsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Orbital/geoCatalogs/{catalogName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if catalogName == "" {
+		return nil, errors.New("parameter catalogName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{catalogName}", url.PathEscape(catalogName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260415)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, properties); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -385,79 +460,4 @@ func (client *GeoCatalogsClient) listBySubscriptionHandleResponse(resp *http.Res
 		return GeoCatalogsClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Update a GeoCatalog
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - catalogName - The name of the catalog
-//   - properties - The resource properties to be updated.
-//   - options - GeoCatalogsClientBeginUpdateOptions contains the optional parameters for the GeoCatalogsClient.BeginUpdate method.
-func (client *GeoCatalogsClient) BeginUpdate(ctx context.Context, resourceGroupName string, catalogName string, properties GeoCatalogUpdate, options *GeoCatalogsClientBeginUpdateOptions) (*runtime.Poller[GeoCatalogsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, catalogName, properties, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[GeoCatalogsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[GeoCatalogsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update a GeoCatalog
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *GeoCatalogsClient) update(ctx context.Context, resourceGroupName string, catalogName string, properties GeoCatalogUpdate, options *GeoCatalogsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "GeoCatalogsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, catalogName, properties, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *GeoCatalogsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, catalogName string, properties GeoCatalogUpdate, _ *GeoCatalogsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Orbital/geoCatalogs/{catalogName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if catalogName == "" {
-		return nil, errors.New("parameter catalogName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{catalogName}", url.PathEscape(catalogName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260415)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

@@ -184,6 +184,125 @@ func ExampleOrganizationClient_BeginCreate() {
 	// }
 }
 
+// Generated from example definition: 2026-06-02-preview/Organization_Delete_MaximumSet_Gen.json
+func ExampleOrganizationClient_BeginDelete_organizationDeleteMaximumSet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armconfluent.NewClientFactory("DC34558A-05D3-4370-AED8-75E60B381F94", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewOrganizationClient().BeginDelete(ctx, "rgconfluent", "zqp", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armconfluent.OrganizationClientDeleteResponse{
+	// }
+}
+
+// Generated from example definition: 2026-06-02-preview/Organization_Delete_MinimumSet_Gen.json
+func ExampleOrganizationClient_BeginDelete_organizationDeleteMinimumSet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armconfluent.NewClientFactory("DC34558A-05D3-4370-AED8-75E60B381F94", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewOrganizationClient().BeginDelete(ctx, "rgconfluent", "w", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armconfluent.OrganizationClientDeleteResponse{
+	// }
+}
+
+// Generated from example definition: 2026-06-02-preview/Organization_LinkSaaS_MaximumSet_Gen.json
+func ExampleOrganizationClient_BeginLinkSaaS() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armconfluent.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewOrganizationClient().BeginLinkSaaS(ctx, "myResourceGroup", "myOrganization", armconfluent.SaaSData{
+		SaaSResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.SaaS/resources/contosoSaaS"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armconfluent.OrganizationClientLinkSaaSResponse{
+	// 	OrganizationResource: armconfluent.OrganizationResource{
+	// 		Properties: &armconfluent.OrganizationResourceProperties{
+	// 			CreatedTime: to.Ptr(time.Date(2021, time.July, 22, 20, 14, 1, 830000000, time.UTC)),
+	// 			ProvisioningState: to.Ptr(armconfluent.ProvisionStateSucceeded),
+	// 			OrganizationID: to.Ptr("org-12345"),
+	// 			SsoURL: to.Ptr("https://confluent.cloud/login/sso/contoso"),
+	// 			OfferDetail: &armconfluent.OfferDetail{
+	// 				PublisherID: to.Ptr("confluent"),
+	// 				ID: to.Ptr("confluent-cloud-azure-prod"),
+	// 				PlanID: to.Ptr("confluent-cloud-azure-payg-prod"),
+	// 				PlanName: to.Ptr("Confluent Cloud - Pay as you Go"),
+	// 				TermUnit: to.Ptr("P1M"),
+	// 				TermID: to.Ptr("monthly-term-001"),
+	// 				Status: to.Ptr(armconfluent.SaaSOfferStatusSubscribed),
+	// 			},
+	// 			UserDetail: &armconfluent.UserDetail{
+	// 				FirstName: to.Ptr("John"),
+	// 				LastName: to.Ptr("Doe"),
+	// 				EmailAddress: to.Ptr("john.doe@contoso.com"),
+	// 				UserPrincipalName: to.Ptr("john.doe@contoso.com"),
+	// 				AADEmail: to.Ptr("john.doe@contoso.com"),
+	// 			},
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"Environment": to.Ptr("Dev"),
+	// 		},
+	// 		Location: to.Ptr("eastus"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Confluent/organizations/myOrganization"),
+	// 		Name: to.Ptr("myOrganization"),
+	// 		Type: to.Ptr("Microsoft.Confluent/organizations"),
+	// 		SystemData: &armconfluent.SystemData{
+	// 			CreatedBy: to.Ptr("john.doe@contoso.com"),
+	// 			CreatedByType: to.Ptr(armconfluent.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.July, 22, 20, 14, 1, 830000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("john.doe@contoso.com"),
+	// 			LastModifiedByType: to.Ptr(armconfluent.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.July, 22, 20, 14, 1, 830000000, time.UTC)),
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2026-06-02-preview/Organization_CreateAPIKey_MaximumSet_Gen.json
 func ExampleOrganizationClient_CreateAPIKey_organizationCreateApiKeyMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -260,58 +379,6 @@ func ExampleOrganizationClient_CreateAPIKey_organizationCreateApiKeyMinimumSet()
 	// res = armconfluent.OrganizationClientCreateAPIKeyResponse{
 	// 	APIKeyRecord: armconfluent.APIKeyRecord{
 	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-06-02-preview/Organization_Delete_MaximumSet_Gen.json
-func ExampleOrganizationClient_BeginDelete_organizationDeleteMaximumSet() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armconfluent.NewClientFactory("DC34558A-05D3-4370-AED8-75E60B381F94", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewOrganizationClient().BeginDelete(ctx, "rgconfluent", "zqp", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armconfluent.OrganizationClientDeleteResponse{
-	// }
-}
-
-// Generated from example definition: 2026-06-02-preview/Organization_Delete_MinimumSet_Gen.json
-func ExampleOrganizationClient_BeginDelete_organizationDeleteMinimumSet() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armconfluent.NewClientFactory("DC34558A-05D3-4370-AED8-75E60B381F94", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewOrganizationClient().BeginDelete(ctx, "rgconfluent", "w", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armconfluent.OrganizationClientDeleteResponse{
 	// }
 }
 
@@ -734,69 +801,77 @@ func ExampleOrganizationClient_LatestLinkedSaaS() {
 	// }
 }
 
-// Generated from example definition: 2026-06-02-preview/Organization_LinkSaaS_MaximumSet_Gen.json
-func ExampleOrganizationClient_BeginLinkSaaS() {
+// Generated from example definition: 2026-06-02-preview/Organization_ListRegions_MaximumSet_Gen.json
+func ExampleOrganizationClient_ListRegions_organizationListRegionsMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armconfluent.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armconfluent.NewClientFactory("DC34558A-05D3-4370-AED8-75E60B381F94", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewOrganizationClient().BeginLinkSaaS(ctx, "myResourceGroup", "myOrganization", armconfluent.SaaSData{
-		SaaSResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.SaaS/resources/contosoSaaS"),
+	res, err := clientFactory.NewOrganizationClient().ListRegions(ctx, "rgconfluent", "bnu", armconfluent.ListAccessRequestModel{
+		SearchFilters: map[string]*string{
+			"key8083": to.Ptr("ft"),
+		},
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, nil)
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armconfluent.OrganizationClientListRegionsResponse{
+	// 	ListRegionsSuccessResponse: armconfluent.ListRegionsSuccessResponse{
+	// 		Data: []*armconfluent.RegionRecord{
+	// 			{
+	// 				Kind: to.Ptr("muabtqsllrtrsecdvjgvntpke"),
+	// 				ID: to.Ptr("okvhazbpnpaxqchtznncekkwucejaa"),
+	// 				Properties: &armconfluent.RegionProperties{
+	// 					Metadata: &armconfluent.SCMetadataEntity{
+	// 						Self: to.Ptr("bnbnbarlsvfifpzcnsnplf"),
+	// 						ResourceName: to.Ptr("ciadqmxlpgllibvkz"),
+	// 						CreatedTimestamp: to.Ptr("ouqjivxfggaxzrsmxm"),
+	// 						UpdatedTimestamp: to.Ptr("ctrngbppcxdpzmp"),
+	// 						DeletedTimestamp: to.Ptr("gn"),
+	// 					},
+	// 					Spec: &armconfluent.RegionSpecEntity{
+	// 						Name: to.Ptr("futevtizlzyhjjrvub"),
+	// 						Cloud: to.Ptr("uagbogdrkcphfjcckxfoupusycw"),
+	// 						RegionName: to.Ptr("pzmdsnasogrogtatsdrwfyvetrhx"),
+	// 						Packages: []*string{
+	// 							to.Ptr("dnscn"),
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-06-02-preview/Organization_ListRegions_MinimumSet_Gen.json
+func ExampleOrganizationClient_ListRegions_organizationListRegionsMinimumSet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armconfluent.NewClientFactory("DC34558A-05D3-4370-AED8-75E60B381F94", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewOrganizationClient().ListRegions(ctx, "rgconfluent", "dvfvoveezvifybaptbuvprerr", armconfluent.ListAccessRequestModel{}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armconfluent.OrganizationClientLinkSaaSResponse{
-	// 	OrganizationResource: armconfluent.OrganizationResource{
-	// 		Properties: &armconfluent.OrganizationResourceProperties{
-	// 			CreatedTime: to.Ptr(time.Date(2021, time.July, 22, 20, 14, 1, 830000000, time.UTC)),
-	// 			ProvisioningState: to.Ptr(armconfluent.ProvisionStateSucceeded),
-	// 			OrganizationID: to.Ptr("org-12345"),
-	// 			SsoURL: to.Ptr("https://confluent.cloud/login/sso/contoso"),
-	// 			OfferDetail: &armconfluent.OfferDetail{
-	// 				PublisherID: to.Ptr("confluent"),
-	// 				ID: to.Ptr("confluent-cloud-azure-prod"),
-	// 				PlanID: to.Ptr("confluent-cloud-azure-payg-prod"),
-	// 				PlanName: to.Ptr("Confluent Cloud - Pay as you Go"),
-	// 				TermUnit: to.Ptr("P1M"),
-	// 				TermID: to.Ptr("monthly-term-001"),
-	// 				Status: to.Ptr(armconfluent.SaaSOfferStatusSubscribed),
-	// 			},
-	// 			UserDetail: &armconfluent.UserDetail{
-	// 				FirstName: to.Ptr("John"),
-	// 				LastName: to.Ptr("Doe"),
-	// 				EmailAddress: to.Ptr("john.doe@contoso.com"),
-	// 				UserPrincipalName: to.Ptr("john.doe@contoso.com"),
-	// 				AADEmail: to.Ptr("john.doe@contoso.com"),
-	// 			},
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"Environment": to.Ptr("Dev"),
-	// 		},
-	// 		Location: to.Ptr("eastus"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Confluent/organizations/myOrganization"),
-	// 		Name: to.Ptr("myOrganization"),
-	// 		Type: to.Ptr("Microsoft.Confluent/organizations"),
-	// 		SystemData: &armconfluent.SystemData{
-	// 			CreatedBy: to.Ptr("john.doe@contoso.com"),
-	// 			CreatedByType: to.Ptr(armconfluent.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2021, time.July, 22, 20, 14, 1, 830000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("john.doe@contoso.com"),
-	// 			LastModifiedByType: to.Ptr(armconfluent.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.July, 22, 20, 14, 1, 830000000, time.UTC)),
-	// 		},
+	// res = armconfluent.OrganizationClientListRegionsResponse{
+	// 	ListRegionsSuccessResponse: armconfluent.ListRegionsSuccessResponse{
 	// 	},
 	// }
 }
@@ -1105,81 +1180,6 @@ func ExampleOrganizationClient_NewListEnvironmentsPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-06-02-preview/Organization_ListRegions_MaximumSet_Gen.json
-func ExampleOrganizationClient_ListRegions_organizationListRegionsMaximumSet() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armconfluent.NewClientFactory("DC34558A-05D3-4370-AED8-75E60B381F94", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewOrganizationClient().ListRegions(ctx, "rgconfluent", "bnu", armconfluent.ListAccessRequestModel{
-		SearchFilters: map[string]*string{
-			"key8083": to.Ptr("ft"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armconfluent.OrganizationClientListRegionsResponse{
-	// 	ListRegionsSuccessResponse: armconfluent.ListRegionsSuccessResponse{
-	// 		Data: []*armconfluent.RegionRecord{
-	// 			{
-	// 				Kind: to.Ptr("muabtqsllrtrsecdvjgvntpke"),
-	// 				ID: to.Ptr("okvhazbpnpaxqchtznncekkwucejaa"),
-	// 				Properties: &armconfluent.RegionProperties{
-	// 					Metadata: &armconfluent.SCMetadataEntity{
-	// 						Self: to.Ptr("bnbnbarlsvfifpzcnsnplf"),
-	// 						ResourceName: to.Ptr("ciadqmxlpgllibvkz"),
-	// 						CreatedTimestamp: to.Ptr("ouqjivxfggaxzrsmxm"),
-	// 						UpdatedTimestamp: to.Ptr("ctrngbppcxdpzmp"),
-	// 						DeletedTimestamp: to.Ptr("gn"),
-	// 					},
-	// 					Spec: &armconfluent.RegionSpecEntity{
-	// 						Name: to.Ptr("futevtizlzyhjjrvub"),
-	// 						Cloud: to.Ptr("uagbogdrkcphfjcckxfoupusycw"),
-	// 						RegionName: to.Ptr("pzmdsnasogrogtatsdrwfyvetrhx"),
-	// 						Packages: []*string{
-	// 							to.Ptr("dnscn"),
-	// 						},
-	// 					},
-	// 				},
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-06-02-preview/Organization_ListRegions_MinimumSet_Gen.json
-func ExampleOrganizationClient_ListRegions_organizationListRegionsMinimumSet() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armconfluent.NewClientFactory("DC34558A-05D3-4370-AED8-75E60B381F94", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewOrganizationClient().ListRegions(ctx, "rgconfluent", "dvfvoveezvifybaptbuvprerr", armconfluent.ListAccessRequestModel{}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armconfluent.OrganizationClientListRegionsResponse{
-	// 	ListRegionsSuccessResponse: armconfluent.ListRegionsSuccessResponse{
-	// 	},
-	// }
 }
 
 // Generated from example definition: 2026-06-02-preview/Organization_ListSchemaRegistryClusters_MaximumSet_Gen.json

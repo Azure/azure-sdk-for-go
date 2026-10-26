@@ -67,7 +67,7 @@ func (client *Client) BeginCreateOrUpdate(ctx context.Context, resourceGroupName
 	}
 }
 
-// CreateOrUpdate - Create a DisconnectedOperation
+// createOrUpdate - Create a DisconnectedOperation
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *Client) createOrUpdate(ctx context.Context, resourceGroupName string, name string, resource DisconnectedOperation, options *ClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -89,7 +89,7 @@ func (client *Client) createOrUpdate(ctx context.Context, resourceGroupName stri
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *Client) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, name string, resource DisconnectedOperation, _ *ClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/disconnectedOperations/{name}"
 	if client.subscriptionID == "" {
@@ -141,7 +141,7 @@ func (client *Client) BeginDelete(ctx context.Context, resourceGroupName string,
 	}
 }
 
-// Delete - Delete a DisconnectedOperation
+// deleteOperation - Delete a DisconnectedOperation
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *Client) deleteOperation(ctx context.Context, resourceGroupName string, name string, options *ClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -163,7 +163,7 @@ func (client *Client) deleteOperation(ctx context.Context, resourceGroupName str
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *Client) deleteCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *ClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/disconnectedOperations/{name}"
 	if client.subscriptionID == "" {
@@ -244,6 +244,66 @@ func (client *Client) getHandleResponse(resp *http.Response, successCodes ...int
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DisconnectedOperation); err != nil {
 		return ClientGetResponse{}, err
+	}
+	return result, nil
+}
+
+// ListDeploymentManifest - get deployment manifest.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - name - Name of the resource
+//   - options - ClientListDeploymentManifestOptions contains the optional parameters for the Client.ListDeploymentManifest method.
+func (client *Client) ListDeploymentManifest(ctx context.Context, resourceGroupName string, name string, options *ClientListDeploymentManifestOptions) (ClientListDeploymentManifestResponse, error) {
+	var err error
+	const operationName = "Client.ListDeploymentManifest"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listDeploymentManifestCreateRequest(ctx, resourceGroupName, name, options)
+	if err != nil {
+		return ClientListDeploymentManifestResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ClientListDeploymentManifestResponse{}, err
+	}
+	return client.listDeploymentManifestHandleResponse(httpResp, http.StatusOK)
+}
+
+// listDeploymentManifestCreateRequest creates the ListDeploymentManifest request.
+func (client *Client) listDeploymentManifestCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *ClientListDeploymentManifestOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/disconnectedOperations/{name}/listDeploymentManifest"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if name == "" {
+		return nil, errors.New("parameter name cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260315)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listDeploymentManifestHandleResponse handles the ListDeploymentManifest response.
+func (client *Client) listDeploymentManifestHandleResponse(resp *http.Response, successCodes ...int) (ClientListDeploymentManifestResponse, error) {
+	result := ClientListDeploymentManifestResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DisconnectedOperationDeploymentManifest); err != nil {
+		return ClientListDeploymentManifestResponse{}, err
 	}
 	return result, nil
 }
@@ -382,66 +442,6 @@ func (client *Client) listBySubscriptionHandleResponse(resp *http.Response, succ
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DisconnectedOperationListResult); err != nil {
 		return ClientListBySubscriptionResponse{}, err
-	}
-	return result, nil
-}
-
-// ListDeploymentManifest - get deployment manifest.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - name - Name of the resource
-//   - options - ClientListDeploymentManifestOptions contains the optional parameters for the Client.ListDeploymentManifest method.
-func (client *Client) ListDeploymentManifest(ctx context.Context, resourceGroupName string, name string, options *ClientListDeploymentManifestOptions) (ClientListDeploymentManifestResponse, error) {
-	var err error
-	const operationName = "Client.ListDeploymentManifest"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listDeploymentManifestCreateRequest(ctx, resourceGroupName, name, options)
-	if err != nil {
-		return ClientListDeploymentManifestResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return ClientListDeploymentManifestResponse{}, err
-	}
-	return client.listDeploymentManifestHandleResponse(httpResp, http.StatusOK)
-}
-
-// listDeploymentManifestCreateRequest creates the ListDeploymentManifest request.
-func (client *Client) listDeploymentManifestCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *ClientListDeploymentManifestOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/disconnectedOperations/{name}/listDeploymentManifest"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listDeploymentManifestHandleResponse handles the ListDeploymentManifest response.
-func (client *Client) listDeploymentManifestHandleResponse(resp *http.Response, successCodes ...int) (ClientListDeploymentManifestResponse, error) {
-	result := ClientListDeploymentManifestResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.DisconnectedOperationDeploymentManifest); err != nil {
-		return ClientListDeploymentManifestResponse{}, err
 	}
 	return result, nil
 }

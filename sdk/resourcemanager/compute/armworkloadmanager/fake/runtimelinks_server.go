@@ -29,6 +29,10 @@ type RuntimeLinksServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, spaceName string, linkName string, options *armworkloadmanager.RuntimeLinksClientBeginDeleteOptions) (resp azfake.PollerResponder[armworkloadmanager.RuntimeLinksClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method RuntimeLinksClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, spaceName string, linkName string, properties armworkloadmanager.RuntimeLinkUpdate, options *armworkloadmanager.RuntimeLinksClientBeginUpdateOptions) (resp azfake.PollerResponder[armworkloadmanager.RuntimeLinksClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method RuntimeLinksClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, spaceName string, linkName string, options *armworkloadmanager.RuntimeLinksClientGetOptions) (resp azfake.Responder[armworkloadmanager.RuntimeLinksClientGetResponse], errResp azfake.ErrorResponder)
@@ -36,10 +40,6 @@ type RuntimeLinksServer struct {
 	// NewListByWorkloadSpacePager is the fake for method RuntimeLinksClient.NewListByWorkloadSpacePager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByWorkloadSpacePager func(resourceGroupName string, spaceName string, options *armworkloadmanager.RuntimeLinksClientListByWorkloadSpaceOptions) (resp azfake.PagerResponder[armworkloadmanager.RuntimeLinksClientListByWorkloadSpaceResponse])
-
-	// BeginUpdate is the fake for method RuntimeLinksClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, spaceName string, linkName string, properties armworkloadmanager.RuntimeLinkUpdate, options *armworkloadmanager.RuntimeLinksClientBeginUpdateOptions) (resp azfake.PollerResponder[armworkloadmanager.RuntimeLinksClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewRuntimeLinksServerTransport creates a new instance of RuntimeLinksServerTransport with the provided implementation.
@@ -50,8 +50,8 @@ func NewRuntimeLinksServerTransport(srv *RuntimeLinksServer) *RuntimeLinksServer
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armworkloadmanager.RuntimeLinksClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armworkloadmanager.RuntimeLinksClientDeleteResponse]](),
-		newListByWorkloadSpacePager: newTracker[azfake.PagerResponder[armworkloadmanager.RuntimeLinksClientListByWorkloadSpaceResponse]](),
 		beginUpdate:                 newTracker[azfake.PollerResponder[armworkloadmanager.RuntimeLinksClientUpdateResponse]](),
+		newListByWorkloadSpacePager: newTracker[azfake.PagerResponder[armworkloadmanager.RuntimeLinksClientListByWorkloadSpaceResponse]](),
 	}
 }
 
@@ -61,8 +61,8 @@ type RuntimeLinksServerTransport struct {
 	srv                         *RuntimeLinksServer
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armworkloadmanager.RuntimeLinksClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armworkloadmanager.RuntimeLinksClientDeleteResponse]]
-	newListByWorkloadSpacePager *tracker[azfake.PagerResponder[armworkloadmanager.RuntimeLinksClientListByWorkloadSpaceResponse]]
 	beginUpdate                 *tracker[azfake.PollerResponder[armworkloadmanager.RuntimeLinksClientUpdateResponse]]
+	newListByWorkloadSpacePager *tracker[azfake.PagerResponder[armworkloadmanager.RuntimeLinksClientListByWorkloadSpaceResponse]]
 }
 
 // Do implements the policy.Transporter interface for RuntimeLinksServerTransport.
@@ -90,12 +90,12 @@ func (r *RuntimeLinksServerTransport) dispatchToMethodFake(req *http.Request, me
 				res.resp, res.err = r.dispatchBeginCreateOrUpdate(req)
 			case "RuntimeLinksClient.BeginDelete":
 				res.resp, res.err = r.dispatchBeginDelete(req)
+			case "RuntimeLinksClient.BeginUpdate":
+				res.resp, res.err = r.dispatchBeginUpdate(req)
 			case "RuntimeLinksClient.Get":
 				res.resp, res.err = r.dispatchGet(req)
 			case "RuntimeLinksClient.NewListByWorkloadSpacePager":
 				res.resp, res.err = r.dispatchNewListByWorkloadSpacePager(req)
-			case "RuntimeLinksClient.BeginUpdate":
-				res.resp, res.err = r.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -212,6 +212,58 @@ func (r *RuntimeLinksServerTransport) dispatchBeginDelete(req *http.Request) (*h
 	return resp, nil
 }
 
+func (r *RuntimeLinksServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if r.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := r.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/workloadSpaces/(?P<spaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/runtimeLinks/(?P<linkName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armworkloadmanager.RuntimeLinkUpdate](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		spaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("spaceName")])
+		if err != nil {
+			return nil, err
+		}
+		linkNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("linkName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := r.srv.BeginUpdate(req.Context(), resourceGroupNameParam, spaceNameParam, linkNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		r.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		r.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		r.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (r *RuntimeLinksServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if r.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -287,58 +339,6 @@ func (r *RuntimeLinksServerTransport) dispatchNewListByWorkloadSpacePager(req *h
 	if !server.PagerResponderMore(newListByWorkloadSpacePager) {
 		r.newListByWorkloadSpacePager.remove(req)
 	}
-	return resp, nil
-}
-
-func (r *RuntimeLinksServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if r.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := r.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/workloadSpaces/(?P<spaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/runtimeLinks/(?P<linkName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armworkloadmanager.RuntimeLinkUpdate](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		spaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("spaceName")])
-		if err != nil {
-			return nil, err
-		}
-		linkNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("linkName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := r.srv.BeginUpdate(req.Context(), resourceGroupNameParam, spaceNameParam, linkNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		r.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		r.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		r.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

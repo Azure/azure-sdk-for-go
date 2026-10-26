@@ -210,7 +210,7 @@ func (client *CommitmentPlansClient) createOrUpdatePlanCreateRequest(ctx context
 //     method.
 func (client *CommitmentPlansClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, commitmentPlanName string, options *CommitmentPlansClientBeginDeleteOptions) (*runtime.Poller[CommitmentPlansClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, accountName, commitmentPlanName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, commitmentPlanName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -225,9 +225,9 @@ func (client *CommitmentPlansClient) BeginDelete(ctx context.Context, resourceGr
 	}
 }
 
-// delete - Deletes the specified commitmentPlan associated with the Cognitive Services account.
+// deleteOperation - Deletes the specified commitmentPlan associated with the Cognitive Services account.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *CommitmentPlansClient) delete(ctx context.Context, resourceGroupName string, accountName string, commitmentPlanName string, options *CommitmentPlansClientBeginDeleteOptions) (*http.Response, error) {
+func (client *CommitmentPlansClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, commitmentPlanName string, options *CommitmentPlansClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CommitmentPlansClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)

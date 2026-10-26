@@ -45,6 +45,93 @@ func NewRecoveryPointsClient(subscriptionID string, credential azcore.TokenCrede
 	return client, nil
 }
 
+// BeginGetRPExtendedInfo - Triggers fetching the additional details of a recovery point, which are not returned by the recovery
+// point GET
+// API. This is an asynchronous operation. Returns tracking headers which can be tracked using the
+// GetRPExtendedInfoOperationResult API.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - vaultName - The name of the recovery services vault.
+//   - fabricName - Fabric name associated with the backed up items.
+//   - parameters - Request payload containing the ARM id of the recovery point whose additional details are to be fetched.
+//   - options - RecoveryPointsClientBeginGetRPExtendedInfoOptions contains the optional parameters for the RecoveryPointsClient.BeginGetRPExtendedInfo
+//     method.
+func (client *RecoveryPointsClient) BeginGetRPExtendedInfo(ctx context.Context, resourceGroupName string, vaultName string, fabricName string, parameters GetRPExtendedInfoRequestResource, options *RecoveryPointsClientBeginGetRPExtendedInfoOptions) (*runtime.Poller[RecoveryPointsClientGetRPExtendedInfoResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.getRPExtendedInfo(ctx, resourceGroupName, vaultName, fabricName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[RecoveryPointsClientGetRPExtendedInfoResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[RecoveryPointsClientGetRPExtendedInfoResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// getRPExtendedInfo - Triggers fetching the additional details of a recovery point, which are not returned by the recovery
+// point GET
+// API. This is an asynchronous operation. Returns tracking headers which can be tracked using the
+// GetRPExtendedInfoOperationResult API.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *RecoveryPointsClient) getRPExtendedInfo(ctx context.Context, resourceGroupName string, vaultName string, fabricName string, parameters GetRPExtendedInfoRequestResource, options *RecoveryPointsClientBeginGetRPExtendedInfoOptions) (*http.Response, error) {
+	var err error
+	const operationName = "RecoveryPointsClient.BeginGetRPExtendedInfo"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getRPExtendedInfoCreateRequest(ctx, resourceGroupName, vaultName, fabricName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// getRPExtendedInfoCreateRequest creates the getRPExtendedInfo request.
+func (client *RecoveryPointsClient) getRPExtendedInfoCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, fabricName string, parameters GetRPExtendedInfoRequestResource, _ *RecoveryPointsClientBeginGetRPExtendedInfoOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/getRPExtendedInfo"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if vaultName == "" {
+		return nil, errors.New("parameter vaultName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
+	if fabricName == "" {
+		return nil, errors.New("parameter fabricName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{fabricName}", url.PathEscape(fabricName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261001)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
 // Get - Provides the information of the backed up data identified using RecoveryPointID. This is an asynchronous operation.
 // To know the status of the operation, call the GetProtectedItemOperationResult API.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -119,93 +206,6 @@ func (client *RecoveryPointsClient) getHandleResponse(resp *http.Response, succe
 		return RecoveryPointsClientGetResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginGetRPExtendedInfo - Triggers fetching the additional details of a recovery point, which are not returned by the recovery
-// point GET
-// API. This is an asynchronous operation. Returns tracking headers which can be tracked using the
-// GetRPExtendedInfoOperationResult API.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - vaultName - The name of the recovery services vault.
-//   - fabricName - Fabric name associated with the backed up items.
-//   - parameters - Request payload containing the ARM id of the recovery point whose additional details are to be fetched.
-//   - options - RecoveryPointsClientBeginGetRPExtendedInfoOptions contains the optional parameters for the RecoveryPointsClient.BeginGetRPExtendedInfo
-//     method.
-func (client *RecoveryPointsClient) BeginGetRPExtendedInfo(ctx context.Context, resourceGroupName string, vaultName string, fabricName string, parameters GetRPExtendedInfoRequestResource, options *RecoveryPointsClientBeginGetRPExtendedInfoOptions) (*runtime.Poller[RecoveryPointsClientGetRPExtendedInfoResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.getRPExtendedInfo(ctx, resourceGroupName, vaultName, fabricName, parameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[RecoveryPointsClientGetRPExtendedInfoResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[RecoveryPointsClientGetRPExtendedInfoResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// GetRPExtendedInfo - Triggers fetching the additional details of a recovery point, which are not returned by the recovery
-// point GET
-// API. This is an asynchronous operation. Returns tracking headers which can be tracked using the
-// GetRPExtendedInfoOperationResult API.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *RecoveryPointsClient) getRPExtendedInfo(ctx context.Context, resourceGroupName string, vaultName string, fabricName string, parameters GetRPExtendedInfoRequestResource, options *RecoveryPointsClientBeginGetRPExtendedInfoOptions) (*http.Response, error) {
-	var err error
-	const operationName = "RecoveryPointsClient.BeginGetRPExtendedInfo"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.getRPExtendedInfoCreateRequest(ctx, resourceGroupName, vaultName, fabricName, parameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// getRPExtendedInfoCreateRequest creates the GetRPExtendedInfo request.
-func (client *RecoveryPointsClient) getRPExtendedInfoCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, fabricName string, parameters GetRPExtendedInfoRequestResource, _ *RecoveryPointsClientBeginGetRPExtendedInfoOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/getRPExtendedInfo"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if vaultName == "" {
-		return nil, errors.New("parameter vaultName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
-	if fabricName == "" {
-		return nil, errors.New("parameter fabricName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{fabricName}", url.PathEscape(fabricName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20261001)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
-	return req, nil
 }
 
 // GetRPExtendedInfoOperationResult - Returns the additional details of the recovery points fetched by a prior getRPExtendedInfo

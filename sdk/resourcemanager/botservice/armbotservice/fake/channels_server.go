@@ -33,13 +33,13 @@ type ChannelsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, resourceName string, channelName string, options *armbotservice.ChannelsClientGetOptions) (resp azfake.Responder[armbotservice.ChannelsClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListByResourceGroupPager is the fake for method ChannelsClient.NewListByResourceGroupPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupPager func(resourceGroupName string, resourceName string, options *armbotservice.ChannelsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armbotservice.ChannelsClientListByResourceGroupResponse])
-
 	// ListWithKeys is the fake for method ChannelsClient.ListWithKeys
 	// HTTP status codes to indicate success: http.StatusOK
 	ListWithKeys func(ctx context.Context, resourceGroupName string, resourceName string, channelName armbotservice.ChannelName, options *armbotservice.ChannelsClientListWithKeysOptions) (resp azfake.Responder[armbotservice.ChannelsClientListWithKeysResponse], errResp azfake.ErrorResponder)
+
+	// NewListByResourceGroupPager is the fake for method ChannelsClient.NewListByResourceGroupPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByResourceGroupPager func(resourceGroupName string, resourceName string, options *armbotservice.ChannelsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armbotservice.ChannelsClientListByResourceGroupResponse])
 
 	// Update is the fake for method ChannelsClient.Update
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
@@ -90,10 +90,10 @@ func (c *ChannelsServerTransport) dispatchToMethodFake(req *http.Request, method
 				res.resp, res.err = c.dispatchDelete(req)
 			case "ChannelsClient.Get":
 				res.resp, res.err = c.dispatchGet(req)
-			case "ChannelsClient.NewListByResourceGroupPager":
-				res.resp, res.err = c.dispatchNewListByResourceGroupPager(req)
 			case "ChannelsClient.ListWithKeys":
 				res.resp, res.err = c.dispatchListWithKeys(req)
+			case "ChannelsClient.NewListByResourceGroupPager":
+				res.resp, res.err = c.dispatchNewListByResourceGroupPager(req)
 			case "ChannelsClient.Update":
 				res.resp, res.err = c.dispatchUpdate(req)
 			default:
@@ -233,47 +233,6 @@ func (c *ChannelsServerTransport) dispatchGet(req *http.Request) (*http.Response
 	return resp, nil
 }
 
-func (c *ChannelsServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
-	if c.srv.NewListByResourceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
-	}
-	newListByResourceGroupPager := c.newListByResourceGroupPager.get(req)
-	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.BotService/botServices/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/channels`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := c.srv.NewListByResourceGroupPager(resourceGroupNameParam, resourceNameParam, nil)
-		newListByResourceGroupPager = &resp
-		c.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armbotservice.ChannelsClientListByResourceGroupResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		c.newListByResourceGroupPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByResourceGroupPager) {
-		c.newListByResourceGroupPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (c *ChannelsServerTransport) dispatchListWithKeys(req *http.Request) (*http.Response, error) {
 	if c.srv.ListWithKeys == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListWithKeys not implemented")}
@@ -313,6 +272,47 @@ func (c *ChannelsServerTransport) dispatchListWithKeys(req *http.Request) (*http
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ListChannelWithKeysResponse, req)
 	if err != nil {
 		return nil, err
+	}
+	return resp, nil
+}
+
+func (c *ChannelsServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
+	if c.srv.NewListByResourceGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
+	}
+	newListByResourceGroupPager := c.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.BotService/botServices/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/channels`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := c.srv.NewListByResourceGroupPager(resourceGroupNameParam, resourceNameParam, nil)
+		newListByResourceGroupPager = &resp
+		c.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armbotservice.ChannelsClientListByResourceGroupResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		c.newListByResourceGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		c.newListByResourceGroupPager.remove(req)
 	}
 	return resp, nil
 }

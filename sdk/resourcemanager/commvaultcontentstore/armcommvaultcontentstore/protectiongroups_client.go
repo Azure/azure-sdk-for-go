@@ -204,7 +204,7 @@ func (client *ProtectionGroupsClient) createOrupdateCreateRequest(ctx context.Co
 //     method.
 func (client *ProtectionGroupsClient) BeginDelete(ctx context.Context, resourceGroupName string, cloudAccountName string, protectionGroupName string, options *ProtectionGroupsClientBeginDeleteOptions) (*runtime.Poller[ProtectionGroupsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, cloudAccountName, protectionGroupName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, cloudAccountName, protectionGroupName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -219,9 +219,9 @@ func (client *ProtectionGroupsClient) BeginDelete(ctx context.Context, resourceG
 	}
 }
 
-// delete - Delete a ProtectionGroup
+// deleteOperation - Delete a ProtectionGroup
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *ProtectionGroupsClient) delete(ctx context.Context, resourceGroupName string, cloudAccountName string, protectionGroupName string, options *ProtectionGroupsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *ProtectionGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, cloudAccountName string, protectionGroupName string, options *ProtectionGroupsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ProtectionGroupsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)

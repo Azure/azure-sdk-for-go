@@ -524,844 +524,6 @@ func ExampleMaccsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-12-01-preview/ContributorGet.json
-func ExampleMaccsClient_Get_contributorGet() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armbillingbenefits.NewClientFactory(cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewMaccsClient("10000000-0000-0000-0000-000000000000").Get(ctx, "resource_group_name_02", "macc_contributor_20230614", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armbillingbenefits.MaccsClientGetResponse{
-	// 	Macc: armbillingbenefits.Macc{
-	// 		Name: to.Ptr("macc_contributor_20230614"),
-	// 		Type: to.Ptr("Microsoft.BillingBenefits/maccs"),
-	// 		ID: to.Ptr("/subscriptions/{contributorCloudSubId}/resourceGroups/resource_group_name_02/providers/Microsoft.BillingBenefits/maccs/macc_contributor_20230614"),
-	// 		Location: to.Ptr("global"),
-	// 		Properties: &armbillingbenefits.MaccModelProperties{
-	// 			AutomaticShortfall: to.Ptr(armbillingbenefits.EnablementModeEnabled),
-	// 			BillingAccountResourceID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{acctId:orgId}"),
-	// 			Commitment: &armbillingbenefits.Commitment{
-	// 				Amount: to.Ptr[float64](20000),
-	// 				CurrencyCode: to.Ptr("USD"),
-	// 				Grain: to.Ptr(armbillingbenefits.CommitmentGrainFullTerm),
-	// 			},
-	// 			DisplayName: to.Ptr("Contributor Macc 20230614"),
-	// 			EndAt: to.Ptr(time.Date(2024, time.July, 1, 0, 0, 0, 0, time.UTC)),
-	// 			EntityType: to.Ptr(armbillingbenefits.MaccEntityTypeContributor),
-	// 			PrimaryBillingAccountResourceID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{acctId:orgId}"),
-	// 			PrimaryResourceID: to.Ptr("/subscriptions/{primaryCloudSubId}/resourceGroups/resource_group_name_01/providers/Microsoft.BillingBenefits/maccs/macc_20230614"),
-	// 			ProductCode: to.Ptr("0001d726-0000-0160-330f-a0b98cdbbdc4"),
-	// 			ProvisioningState: to.Ptr("Succeeded"),
-	// 			StartAt: to.Ptr(time.Date(2023, time.July, 1, 0, 0, 0, 0, time.UTC)),
-	// 			Status: to.Ptr(armbillingbenefits.MaccStatusActive),
-	// 			SystemID: to.Ptr("13810867107109237"),
-	// 		},
-	// 		SystemData: &armbillingbenefits.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2023, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
-	// 			CreatedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
-	// 			LastModifiedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"key1": to.Ptr("value1"),
-	// 			"key2": to.Ptr("value2"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-12-01-preview/ContributorWithMilestonesAndShortfallGet.json
-func ExampleMaccsClient_Get_contributorWithMilestonesAndShortfallGetFromPrimary() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armbillingbenefits.NewClientFactory(cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewMaccsClient("10000000-0000-0000-0000-000000000000").Get(ctx, "resource_group_name_02", "macc_contributor_20230614", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armbillingbenefits.MaccsClientGetResponse{
-	// 	Macc: armbillingbenefits.Macc{
-	// 		Name: to.Ptr("macc_contributor_20230614"),
-	// 		Type: to.Ptr("Microsoft.BillingBenefits/maccs"),
-	// 		ID: to.Ptr("/subscriptions/{contributorCloudSubId}/resourceGroups/resource_group_name_02/providers/Microsoft.BillingBenefits/maccs/macc_contributor_20230614"),
-	// 		Location: to.Ptr("global"),
-	// 		Properties: &armbillingbenefits.MaccModelProperties{
-	// 			AutomaticShortfall: to.Ptr(armbillingbenefits.EnablementModeEnabled),
-	// 			BillingAccountResourceID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{acctId:orgId}"),
-	// 			Commitment: &armbillingbenefits.Commitment{
-	// 				Amount: to.Ptr[float64](20000),
-	// 				CurrencyCode: to.Ptr("USD"),
-	// 				Grain: to.Ptr(armbillingbenefits.CommitmentGrainFullTerm),
-	// 			},
-	// 			DisplayName: to.Ptr("macc contributor 20230614"),
-	// 			EndAt: to.Ptr(time.Date(2028, time.May, 31, 23, 59, 59, 0, time.UTC)),
-	// 			EntityType: to.Ptr(armbillingbenefits.MaccEntityTypeContributor),
-	// 			Milestones: []*armbillingbenefits.MaccMilestone{
-	// 				{
-	// 					AutomaticShortfall: to.Ptr(armbillingbenefits.EnablementModeDisabled),
-	// 					Commitment: &armbillingbenefits.Price{
-	// 						Amount: to.Ptr[float64](10000),
-	// 						CurrencyCode: to.Ptr("USD"),
-	// 					},
-	// 					EndAt: to.Ptr(time.Date(2026, time.May, 31, 23, 59, 59, 0, time.UTC)),
-	// 					MilestoneID: to.Ptr("11111111-1111-1111-1111-111111111111"),
-	// 					Status: to.Ptr(armbillingbenefits.MaccMilestoneStatusCompleted),
-	// 				},
-	// 				{
-	// 					AutomaticShortfall: to.Ptr(armbillingbenefits.EnablementModeDisabled),
-	// 					Commitment: &armbillingbenefits.Price{
-	// 						Amount: to.Ptr[float64](15000),
-	// 						CurrencyCode: to.Ptr("USD"),
-	// 					},
-	// 					EndAt: to.Ptr(time.Date(2027, time.May, 31, 23, 59, 59, 0, time.UTC)),
-	// 					MilestoneID: to.Ptr("22222222-2222-2222-2222-222222222222"),
-	// 					Status: to.Ptr(armbillingbenefits.MaccMilestoneStatusCompleted),
-	// 				},
-	// 			},
-	// 			PrimaryBillingAccountResourceID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{acctId:orgId}"),
-	// 			PrimaryResourceID: to.Ptr("/subscriptions/{primaryCloudSubId}/resourceGroups/resource_group_name_01/providers/Microsoft.BillingBenefits/maccs/macc_20230614"),
-	// 			ProductCode: to.Ptr("0001d726-0000-0160-330f-a0b98cdbbdc4"),
-	// 			ProvisioningState: to.Ptr("Succeeded"),
-	// 			Shortfall: &armbillingbenefits.Shortfall{
-	// 				BalanceVersion: to.Ptr[float32](9),
-	// 				Charge: &armbillingbenefits.Commitment{
-	// 					Amount: to.Ptr[float64](5000),
-	// 					CurrencyCode: to.Ptr("USD"),
-	// 					Grain: to.Ptr(armbillingbenefits.CommitmentGrainFullTerm),
-	// 				},
-	// 				EndAt: to.Ptr(time.Date(2029, time.July, 31, 23, 59, 59, 0, time.UTC)),
-	// 				ProductCode: to.Ptr("000278da-0000-0160-330f-a0b98cdbbdc4"),
-	// 				ResourceID: to.Ptr("/subscriptions/27507203-b094-420a-a716-b6fda046e1c2/resourceGroups/testcredit/providers/Microsoft.BillingBenefits/credits/taco0647052025"),
-	// 				StartAt: to.Ptr(time.Date(2028, time.July, 1, 0, 0, 0, 0, time.UTC)),
-	// 				SystemID: to.Ptr("shortfall32109876"),
-	// 			},
-	// 			StartAt: to.Ptr(time.Date(2025, time.May, 1, 0, 0, 0, 0, time.UTC)),
-	// 			Status: to.Ptr(armbillingbenefits.MaccStatusShortfallCharged),
-	// 			SystemID: to.Ptr("13810867107109237"),
-	// 		},
-	// 		SystemData: &armbillingbenefits.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2023, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
-	// 			CreatedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
-	// 			LastModifiedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"key1": to.Ptr("value1"),
-	// 			"key2": to.Ptr("value2"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-12-01-preview/ContributorWithMilestonesGet.json
-func ExampleMaccsClient_Get_contributorWithMilestonesGetFromPrimary() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armbillingbenefits.NewClientFactory(cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewMaccsClient("10000000-0000-0000-0000-000000000000").Get(ctx, "resource_group_name_02", "macc_contributor_20230614", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armbillingbenefits.MaccsClientGetResponse{
-	// 	Macc: armbillingbenefits.Macc{
-	// 		Name: to.Ptr("macc_contributor_20230614"),
-	// 		Type: to.Ptr("Microsoft.BillingBenefits/maccs"),
-	// 		ID: to.Ptr("/subscriptions/{contributorCloudSubId}/resourceGroups/resource_group_name_02/providers/Microsoft.BillingBenefits/maccs/macc_contributor_20230614"),
-	// 		Location: to.Ptr("global"),
-	// 		Properties: &armbillingbenefits.MaccModelProperties{
-	// 			AutomaticShortfall: to.Ptr(armbillingbenefits.EnablementModeEnabled),
-	// 			BillingAccountResourceID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{acctId:orgId}"),
-	// 			Commitment: &armbillingbenefits.Commitment{
-	// 				Amount: to.Ptr[float64](20000),
-	// 				CurrencyCode: to.Ptr("USD"),
-	// 				Grain: to.Ptr(armbillingbenefits.CommitmentGrainFullTerm),
-	// 			},
-	// 			DisplayName: to.Ptr("macc contributor 20230614"),
-	// 			EndAt: to.Ptr(time.Date(2028, time.May, 31, 23, 59, 59, 0, time.UTC)),
-	// 			EntityType: to.Ptr(armbillingbenefits.MaccEntityTypeContributor),
-	// 			Milestones: []*armbillingbenefits.MaccMilestone{
-	// 				{
-	// 					AutomaticShortfall: to.Ptr(armbillingbenefits.EnablementModeEnabled),
-	// 					Commitment: &armbillingbenefits.Price{
-	// 						Amount: to.Ptr[float64](10000),
-	// 						CurrencyCode: to.Ptr("USD"),
-	// 					},
-	// 					EndAt: to.Ptr(time.Date(2026, time.May, 31, 23, 59, 59, 0, time.UTC)),
-	// 					MilestoneID: to.Ptr("11111111-1111-1111-1111-111111111111"),
-	// 					Status: to.Ptr(armbillingbenefits.MaccMilestoneStatusActive),
-	// 				},
-	// 				{
-	// 					AutomaticShortfall: to.Ptr(armbillingbenefits.EnablementModeDisabled),
-	// 					Commitment: &armbillingbenefits.Price{
-	// 						Amount: to.Ptr[float64](15000),
-	// 						CurrencyCode: to.Ptr("USD"),
-	// 					},
-	// 					EndAt: to.Ptr(time.Date(2027, time.May, 31, 23, 59, 59, 0, time.UTC)),
-	// 					MilestoneID: to.Ptr("22222222-2222-2222-2222-222222222222"),
-	// 					Status: to.Ptr(armbillingbenefits.MaccMilestoneStatusScheduled),
-	// 				},
-	// 			},
-	// 			PrimaryBillingAccountResourceID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{acctId:orgId}"),
-	// 			PrimaryResourceID: to.Ptr("/subscriptions/{primaryCloudSubId}/resourceGroups/resource_group_name_01/providers/Microsoft.BillingBenefits/maccs/macc_20230614"),
-	// 			ProductCode: to.Ptr("0001d726-0000-0160-330f-a0b98cdbbdc4"),
-	// 			ProvisioningState: to.Ptr("Succeeded"),
-	// 			StartAt: to.Ptr(time.Date(2025, time.May, 1, 0, 0, 0, 0, time.UTC)),
-	// 			Status: to.Ptr(armbillingbenefits.MaccStatusActive),
-	// 			SystemID: to.Ptr("13810867107109237"),
-	// 		},
-	// 		SystemData: &armbillingbenefits.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2023, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
-	// 			CreatedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
-	// 			LastModifiedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"key1": to.Ptr("value1"),
-	// 			"key2": to.Ptr("value2"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-12-01-preview/MaccGet.json
-func ExampleMaccsClient_Get_maccGet() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armbillingbenefits.NewClientFactory(cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewMaccsClient("10000000-0000-0000-0000-000000000000").Get(ctx, "resource_group_name_01", "macc_20230614", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armbillingbenefits.MaccsClientGetResponse{
-	// 	Macc: armbillingbenefits.Macc{
-	// 		Name: to.Ptr("macc_20230614"),
-	// 		Type: to.Ptr("Microsoft.BillingBenefits/maccs"),
-	// 		ID: to.Ptr("/subscriptions/{primaryCloudSubId}/resourceGroups/resource_group_name_01/providers/Microsoft.BillingBenefits/maccs/macc_20230614"),
-	// 		Location: to.Ptr("global"),
-	// 		Properties: &armbillingbenefits.MaccModelProperties{
-	// 			AllowContributors: to.Ptr(true),
-	// 			AutomaticShortfall: to.Ptr(armbillingbenefits.EnablementModeEnabled),
-	// 			BillingAccountResourceID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{acctId:orgId}"),
-	// 			Commitment: &armbillingbenefits.Commitment{
-	// 				Amount: to.Ptr[float64](20000),
-	// 				CurrencyCode: to.Ptr("USD"),
-	// 				Grain: to.Ptr(armbillingbenefits.CommitmentGrainFullTerm),
-	// 			},
-	// 			DisplayName: to.Ptr("macc 20230614"),
-	// 			EndAt: to.Ptr(time.Date(2024, time.July, 1, 0, 0, 0, 0, time.UTC)),
-	// 			EntityType: to.Ptr(armbillingbenefits.MaccEntityTypePrimary),
-	// 			ProductCode: to.Ptr("0001d726-0000-0160-330f-a0b98cdbbdc4"),
-	// 			ProvisioningState: to.Ptr("Succeeded"),
-	// 			StartAt: to.Ptr(time.Date(2023, time.July, 1, 0, 0, 0, 0, time.UTC)),
-	// 			Status: to.Ptr(armbillingbenefits.MaccStatusActive),
-	// 			SystemID: to.Ptr("13810867107109237"),
-	// 		},
-	// 		SystemData: &armbillingbenefits.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2023, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
-	// 			CreatedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
-	// 			LastModifiedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"key1": to.Ptr("value1"),
-	// 			"key2": to.Ptr("value2"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-12-01-preview/MaccWithMilestonesAndShortfallGet.json
-func ExampleMaccsClient_Get_maccWithMilestonesAndShortfallGet() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armbillingbenefits.NewClientFactory(cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewMaccsClient("10000000-0000-0000-0000-000000000000").Get(ctx, "resource_group_name_01", "macc_20230614", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armbillingbenefits.MaccsClientGetResponse{
-	// 	Macc: armbillingbenefits.Macc{
-	// 		Name: to.Ptr("macc_20230614"),
-	// 		Type: to.Ptr("Microsoft.BillingBenefits/maccs"),
-	// 		ID: to.Ptr("/subscriptions/{primaryCloudSubId}/resourceGroups/resource_group_name_01/providers/Microsoft.BillingBenefits/maccs/macc_20230614"),
-	// 		Location: to.Ptr("global"),
-	// 		Properties: &armbillingbenefits.MaccModelProperties{
-	// 			AllowContributors: to.Ptr(true),
-	// 			AutomaticShortfall: to.Ptr(armbillingbenefits.EnablementModeEnabled),
-	// 			BillingAccountResourceID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{acctId:orgId}"),
-	// 			Commitment: &armbillingbenefits.Commitment{
-	// 				Amount: to.Ptr[float64](20000),
-	// 				CurrencyCode: to.Ptr("USD"),
-	// 				Grain: to.Ptr(armbillingbenefits.CommitmentGrainFullTerm),
-	// 			},
-	// 			DisplayName: to.Ptr("macc 20230614"),
-	// 			EndAt: to.Ptr(time.Date(2028, time.May, 1, 23, 59, 59, 0, time.UTC)),
-	// 			EntityType: to.Ptr(armbillingbenefits.MaccEntityTypePrimary),
-	// 			Milestones: []*armbillingbenefits.MaccMilestone{
-	// 				{
-	// 					AutomaticShortfall: to.Ptr(armbillingbenefits.EnablementModeEnabled),
-	// 					Commitment: &armbillingbenefits.Price{
-	// 						Amount: to.Ptr[float64](10000),
-	// 						CurrencyCode: to.Ptr("USD"),
-	// 					},
-	// 					EndAt: to.Ptr(time.Date(2026, time.May, 31, 23, 59, 59, 0, time.UTC)),
-	// 					MilestoneID: to.Ptr("11111111-1111-1111-1111-111111111111"),
-	// 					Shortfall: &armbillingbenefits.Shortfall{
-	// 						BalanceVersion: to.Ptr[float32](1),
-	// 						Charge: &armbillingbenefits.Commitment{
-	// 							Amount: to.Ptr[float64](2000),
-	// 							CurrencyCode: to.Ptr("USD"),
-	// 							Grain: to.Ptr(armbillingbenefits.CommitmentGrainFullTerm),
-	// 						},
-	// 						EndAt: to.Ptr(time.Date(2027, time.July, 1, 23, 59, 59, 0, time.UTC)),
-	// 						ProductCode: to.Ptr("000278da-0000-0160-330f-a0b98cdbbdc4"),
-	// 						ResourceID: to.Ptr("/subscriptions/27507203-b094-420a-a716-b6fda046e1c2/resourceGroups/testcredit/providers/Microsoft.BillingBenefits/credits/taco0647052025"),
-	// 						StartAt: to.Ptr(time.Date(2026, time.July, 1, 0, 0, 0, 0, time.UTC)),
-	// 						SystemID: to.Ptr("lotId"),
-	// 					},
-	// 					Status: to.Ptr(armbillingbenefits.MaccMilestoneStatusShortfallCharged),
-	// 				},
-	// 				{
-	// 					AutomaticShortfall: to.Ptr(armbillingbenefits.EnablementModeDisabled),
-	// 					Commitment: &armbillingbenefits.Price{
-	// 						Amount: to.Ptr[float64](15000),
-	// 						CurrencyCode: to.Ptr("USD"),
-	// 					},
-	// 					EndAt: to.Ptr(time.Date(2027, time.May, 31, 23, 59, 59, 0, time.UTC)),
-	// 					MilestoneID: to.Ptr("22222222-2222-2222-2222-222222222222"),
-	// 					Status: to.Ptr(armbillingbenefits.MaccMilestoneStatusCompleted),
-	// 				},
-	// 			},
-	// 			ProductCode: to.Ptr("0001d726-0000-0160-330f-a0b98cdbbdc4"),
-	// 			ProvisioningState: to.Ptr("Succeeded"),
-	// 			Shortfall: &armbillingbenefits.Shortfall{
-	// 				BalanceVersion: to.Ptr[float32](3),
-	// 				Charge: &armbillingbenefits.Commitment{
-	// 					Amount: to.Ptr[float64](5000),
-	// 					CurrencyCode: to.Ptr("USD"),
-	// 					Grain: to.Ptr(armbillingbenefits.CommitmentGrainFullTerm),
-	// 				},
-	// 				EndAt: to.Ptr(time.Date(2029, time.July, 31, 23, 59, 59, 0, time.UTC)),
-	// 				ProductCode: to.Ptr("000278da-0000-0160-330f-a0b98cdbbdc4"),
-	// 				ResourceID: to.Ptr("/subscriptions/27507203-b094-420a-a716-b6fda046e1c2/resourceGroups/testcredit/providers/Microsoft.BillingBenefits/credits/taco0647052025"),
-	// 				StartAt: to.Ptr(time.Date(2028, time.July, 1, 0, 0, 0, 0, time.UTC)),
-	// 				SystemID: to.Ptr("shortfall98765432"),
-	// 			},
-	// 			StartAt: to.Ptr(time.Date(2025, time.May, 1, 0, 0, 0, 0, time.UTC)),
-	// 			Status: to.Ptr(armbillingbenefits.MaccStatusShortfallCharged),
-	// 			SystemID: to.Ptr("13810867107109237"),
-	// 		},
-	// 		SystemData: &armbillingbenefits.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2023, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
-	// 			CreatedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
-	// 			LastModifiedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"key1": to.Ptr("value1"),
-	// 			"key2": to.Ptr("value2"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-12-01-preview/MaccWithMilestonesGet.json
-func ExampleMaccsClient_Get_maccWithMilestonesGet() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armbillingbenefits.NewClientFactory(cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewMaccsClient("10000000-0000-0000-0000-000000000000").Get(ctx, "resource_group_name_01", "macc_20230614", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armbillingbenefits.MaccsClientGetResponse{
-	// 	Macc: armbillingbenefits.Macc{
-	// 		Name: to.Ptr("macc_20230614"),
-	// 		Type: to.Ptr("Microsoft.BillingBenefits/maccs"),
-	// 		ID: to.Ptr("/subscriptions/{primaryCloudSubId}/resourceGroups/resource_group_name_01/providers/Microsoft.BillingBenefits/maccs/macc_20230614"),
-	// 		Location: to.Ptr("global"),
-	// 		Properties: &armbillingbenefits.MaccModelProperties{
-	// 			AllowContributors: to.Ptr(true),
-	// 			AutomaticShortfall: to.Ptr(armbillingbenefits.EnablementModeEnabled),
-	// 			BillingAccountResourceID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{acctId:orgId}"),
-	// 			Commitment: &armbillingbenefits.Commitment{
-	// 				Amount: to.Ptr[float64](20000),
-	// 				CurrencyCode: to.Ptr("USD"),
-	// 				Grain: to.Ptr(armbillingbenefits.CommitmentGrainFullTerm),
-	// 			},
-	// 			DisplayName: to.Ptr("macc 20230614"),
-	// 			EndAt: to.Ptr(time.Date(2028, time.May, 1, 23, 59, 59, 0, time.UTC)),
-	// 			EntityType: to.Ptr(armbillingbenefits.MaccEntityTypePrimary),
-	// 			Milestones: []*armbillingbenefits.MaccMilestone{
-	// 				{
-	// 					AutomaticShortfall: to.Ptr(armbillingbenefits.EnablementModeEnabled),
-	// 					Commitment: &armbillingbenefits.Price{
-	// 						Amount: to.Ptr[float64](10000),
-	// 						CurrencyCode: to.Ptr("USD"),
-	// 					},
-	// 					EndAt: to.Ptr(time.Date(2026, time.May, 31, 23, 59, 59, 0, time.UTC)),
-	// 					MilestoneID: to.Ptr("11111111-1111-1111-1111-111111111111"),
-	// 					Status: to.Ptr(armbillingbenefits.MaccMilestoneStatusActive),
-	// 				},
-	// 				{
-	// 					AutomaticShortfall: to.Ptr(armbillingbenefits.EnablementModeDisabled),
-	// 					Commitment: &armbillingbenefits.Price{
-	// 						Amount: to.Ptr[float64](15000),
-	// 						CurrencyCode: to.Ptr("USD"),
-	// 					},
-	// 					EndAt: to.Ptr(time.Date(2027, time.May, 31, 23, 59, 59, 0, time.UTC)),
-	// 					MilestoneID: to.Ptr("22222222-2222-2222-2222-222222222222"),
-	// 					Status: to.Ptr(armbillingbenefits.MaccMilestoneStatusScheduled),
-	// 				},
-	// 			},
-	// 			ProductCode: to.Ptr("0001d726-0000-0160-330f-a0b98cdbbdc4"),
-	// 			ProvisioningState: to.Ptr("Succeeded"),
-	// 			StartAt: to.Ptr(time.Date(2025, time.May, 1, 0, 0, 0, 0, time.UTC)),
-	// 			Status: to.Ptr(armbillingbenefits.MaccStatusActive),
-	// 			SystemID: to.Ptr("13810867107109237"),
-	// 		},
-	// 		SystemData: &armbillingbenefits.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2023, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
-	// 			CreatedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
-	// 			LastModifiedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"key1": to.Ptr("value1"),
-	// 			"key2": to.Ptr("value2"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-12-01-preview/MaccWithShortfallGet.json
-func ExampleMaccsClient_Get_maccWithShortfallGet() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armbillingbenefits.NewClientFactory(cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewMaccsClient("10000000-0000-0000-0000-000000000000").Get(ctx, "resource_group_name_01", "macc_20230614", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armbillingbenefits.MaccsClientGetResponse{
-	// 	Macc: armbillingbenefits.Macc{
-	// 		Name: to.Ptr("macc_20230614"),
-	// 		Type: to.Ptr("Microsoft.BillingBenefits/maccs"),
-	// 		ID: to.Ptr("/subscriptions/10000000-0000-0000-0000-000000000000/resourceGroups/resource_group_name_01/providers/Microsoft.BillingBenefits/maccs/macc_20230614"),
-	// 		Location: to.Ptr("global"),
-	// 		Properties: &armbillingbenefits.MaccModelProperties{
-	// 			AllowContributors: to.Ptr(true),
-	// 			AutomaticShortfall: to.Ptr(armbillingbenefits.EnablementModeEnabled),
-	// 			Commitment: &armbillingbenefits.Commitment{
-	// 				Amount: to.Ptr[float64](20000),
-	// 				CurrencyCode: to.Ptr("USD"),
-	// 				Grain: to.Ptr(armbillingbenefits.CommitmentGrainFullTerm),
-	// 			},
-	// 			DisplayName: to.Ptr("macc_20230614"),
-	// 			EndAt: to.Ptr(time.Date(2024, time.July, 31, 23, 59, 59, 0, time.UTC)),
-	// 			EntityType: to.Ptr(armbillingbenefits.MaccEntityTypePrimary),
-	// 			ProductCode: to.Ptr("0001d726-0000-0160-330f-a0b98cdbbdc4"),
-	// 			ProvisioningState: to.Ptr("Canceled"),
-	// 			Shortfall: &armbillingbenefits.Shortfall{
-	// 				BalanceVersion: to.Ptr[float32](2),
-	// 				Charge: &armbillingbenefits.Commitment{
-	// 					Amount: to.Ptr[float64](10000),
-	// 					CurrencyCode: to.Ptr("USD"),
-	// 					Grain: to.Ptr(armbillingbenefits.CommitmentGrainFullTerm),
-	// 				},
-	// 				EndAt: to.Ptr(time.Date(2025, time.September, 30, 23, 59, 59, 0, time.UTC)),
-	// 				ProductCode: to.Ptr("000278da-0000-0160-330f-a0b98cdbbdc4"),
-	// 				ResourceID: to.Ptr("/subscriptions/27507203-b094-420a-a716-b6fda046e1c2/resourceGroups/testcredit/providers/Microsoft.BillingBenefits/credits/taco0647052025"),
-	// 				StartAt: to.Ptr(time.Date(2024, time.September, 1, 0, 0, 0, 0, time.UTC)),
-	// 				SystemID: to.Ptr("shortfall12345678"),
-	// 			},
-	// 			StartAt: to.Ptr(time.Date(2023, time.July, 1, 0, 0, 0, 0, time.UTC)),
-	// 			Status: to.Ptr(armbillingbenefits.MaccStatusShortfallCharged),
-	// 			SystemID: to.Ptr("13810867107109237"),
-	// 		},
-	// 		SystemData: &armbillingbenefits.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2023, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
-	// 			CreatedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
-	// 			LastModifiedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"key1": to.Ptr("value1"),
-	// 			"key2": to.Ptr("value2"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-12-01-preview/MaccsListByResourceGroup.json
-func ExampleMaccsClient_NewListByResourceGroupPager_maccsListByResourceGroup() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armbillingbenefits.NewClientFactory(cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewMaccsClient("10000000-0000-0000-0000-000000000000").NewListByResourceGroupPager("resource_group_name_01", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armbillingbenefits.MaccsClientListByResourceGroupResponse{
-		// 	MaccList: armbillingbenefits.MaccList{
-		// 		Value: []*armbillingbenefits.Macc{
-		// 			{
-		// 				Name: to.Ptr("macc_20230614"),
-		// 				Type: to.Ptr("Microsoft.BillingBenefits/maccs"),
-		// 				ID: to.Ptr("/subscriptions/{primaryCloudSubId}/resourceGroups/resource_group_name_01/providers/Microsoft.BillingBenefits/maccs/macc_20230614"),
-		// 				Location: to.Ptr("global"),
-		// 				Properties: &armbillingbenefits.MaccModelProperties{
-		// 					AllowContributors: to.Ptr(true),
-		// 					AutomaticShortfall: to.Ptr(armbillingbenefits.EnablementModeEnabled),
-		// 					BillingAccountResourceID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{acctId:orgId}"),
-		// 					Commitment: &armbillingbenefits.Commitment{
-		// 						Amount: to.Ptr[float64](20000),
-		// 						CurrencyCode: to.Ptr("USD"),
-		// 						Grain: to.Ptr(armbillingbenefits.CommitmentGrainFullTerm),
-		// 					},
-		// 					DisplayName: to.Ptr("macc 20230614"),
-		// 					EndAt: to.Ptr(time.Date(2024, time.July, 1, 0, 0, 0, 0, time.UTC)),
-		// 					EntityType: to.Ptr(armbillingbenefits.MaccEntityTypePrimary),
-		// 					ProductCode: to.Ptr("0001d726-0000-0160-330f-a0b98cdbbdc4"),
-		// 					ProvisioningState: to.Ptr("Succeeded"),
-		// 					StartAt: to.Ptr(time.Date(2023, time.July, 1, 0, 0, 0, 0, time.UTC)),
-		// 					Status: to.Ptr(armbillingbenefits.MaccStatusActive),
-		// 					SystemID: to.Ptr("13810867107109237"),
-		// 				},
-		// 				SystemData: &armbillingbenefits.SystemData{
-		// 					CreatedAt: to.Ptr(time.Date(2023, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
-		// 					CreatedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
-		// 					LastModifiedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 					"key1": to.Ptr("value1"),
-		// 					"key2": to.Ptr("value2"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2025-12-01-preview/MaccsWithMilestonesListByResourceGroup.json
-func ExampleMaccsClient_NewListByResourceGroupPager_maccsWithMilestonesListByResourceGroup() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armbillingbenefits.NewClientFactory(cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewMaccsClient("10000000-0000-0000-0000-000000000000").NewListByResourceGroupPager("resource_group_name_01", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armbillingbenefits.MaccsClientListByResourceGroupResponse{
-		// 	MaccList: armbillingbenefits.MaccList{
-		// 		Value: []*armbillingbenefits.Macc{
-		// 			{
-		// 				Name: to.Ptr("macc_20230614"),
-		// 				Type: to.Ptr("Microsoft.BillingBenefits/maccs"),
-		// 				ID: to.Ptr("/subscriptions/{primaryCloudSubId}/resourceGroups/resource_group_name_01/providers/Microsoft.BillingBenefits/maccs/macc_20230614"),
-		// 				Location: to.Ptr("global"),
-		// 				Properties: &armbillingbenefits.MaccModelProperties{
-		// 					AllowContributors: to.Ptr(true),
-		// 					AutomaticShortfall: to.Ptr(armbillingbenefits.EnablementModeEnabled),
-		// 					BillingAccountResourceID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{acctId:orgId}"),
-		// 					Commitment: &armbillingbenefits.Commitment{
-		// 						Amount: to.Ptr[float64](20000),
-		// 						CurrencyCode: to.Ptr("USD"),
-		// 						Grain: to.Ptr(armbillingbenefits.CommitmentGrainFullTerm),
-		// 					},
-		// 					DisplayName: to.Ptr("macc 20230614"),
-		// 					EndAt: to.Ptr(time.Date(2028, time.May, 1, 23, 59, 59, 0, time.UTC)),
-		// 					EntityType: to.Ptr(armbillingbenefits.MaccEntityTypePrimary),
-		// 					Milestones: []*armbillingbenefits.MaccMilestone{
-		// 						{
-		// 							AutomaticShortfall: to.Ptr(armbillingbenefits.EnablementModeEnabled),
-		// 							Commitment: &armbillingbenefits.Price{
-		// 								Amount: to.Ptr[float64](10000),
-		// 								CurrencyCode: to.Ptr("USD"),
-		// 							},
-		// 							EndAt: to.Ptr(time.Date(2026, time.May, 31, 23, 59, 59, 0, time.UTC)),
-		// 							MilestoneID: to.Ptr("11111111-1111-1111-1111-111111111111"),
-		// 							Status: to.Ptr(armbillingbenefits.MaccMilestoneStatusActive),
-		// 						},
-		// 						{
-		// 							AutomaticShortfall: to.Ptr(armbillingbenefits.EnablementModeDisabled),
-		// 							Commitment: &armbillingbenefits.Price{
-		// 								Amount: to.Ptr[float64](15000),
-		// 								CurrencyCode: to.Ptr("USD"),
-		// 							},
-		// 							EndAt: to.Ptr(time.Date(2027, time.May, 31, 23, 59, 59, 0, time.UTC)),
-		// 							MilestoneID: to.Ptr("22222222-2222-2222-2222-222222222222"),
-		// 							Status: to.Ptr(armbillingbenefits.MaccMilestoneStatusScheduled),
-		// 						},
-		// 					},
-		// 					ProductCode: to.Ptr("0001d726-0000-0160-330f-a0b98cdbbdc4"),
-		// 					ProvisioningState: to.Ptr("Succeeded"),
-		// 					StartAt: to.Ptr(time.Date(2025, time.May, 1, 0, 0, 0, 0, time.UTC)),
-		// 					Status: to.Ptr(armbillingbenefits.MaccStatusActive),
-		// 					SystemID: to.Ptr("13810867107109237"),
-		// 				},
-		// 				SystemData: &armbillingbenefits.SystemData{
-		// 					CreatedAt: to.Ptr(time.Date(2023, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
-		// 					CreatedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
-		// 					LastModifiedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 					"key1": to.Ptr("value1"),
-		// 					"key2": to.Ptr("value2"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2025-12-01-preview/MaccsListBySubscription.json
-func ExampleMaccsClient_NewListBySubscriptionPager_maccsListBySubscription() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armbillingbenefits.NewClientFactory(cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewMaccsClient("10000000-0000-0000-0000-000000000000").NewListBySubscriptionPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armbillingbenefits.MaccsClientListBySubscriptionResponse{
-		// 	MaccList: armbillingbenefits.MaccList{
-		// 		Value: []*armbillingbenefits.Macc{
-		// 			{
-		// 				Name: to.Ptr("macc_20230614"),
-		// 				Type: to.Ptr("Microsoft.BillingBenefits/maccs"),
-		// 				ID: to.Ptr("/subscriptions/{primaryCloudSubId}/resourceGroups/resource_group_name_01/providers/Microsoft.BillingBenefits/maccs/macc_20230614"),
-		// 				Location: to.Ptr("global"),
-		// 				Properties: &armbillingbenefits.MaccModelProperties{
-		// 					AllowContributors: to.Ptr(true),
-		// 					AutomaticShortfall: to.Ptr(armbillingbenefits.EnablementModeEnabled),
-		// 					BillingAccountResourceID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{acctId:orgId}"),
-		// 					Commitment: &armbillingbenefits.Commitment{
-		// 						Amount: to.Ptr[float64](20000),
-		// 						CurrencyCode: to.Ptr("USD"),
-		// 						Grain: to.Ptr(armbillingbenefits.CommitmentGrainFullTerm),
-		// 					},
-		// 					DisplayName: to.Ptr("macc 20230614"),
-		// 					EndAt: to.Ptr(time.Date(2024, time.July, 1, 0, 0, 0, 0, time.UTC)),
-		// 					EntityType: to.Ptr(armbillingbenefits.MaccEntityTypePrimary),
-		// 					ProductCode: to.Ptr("0001d726-0000-0160-330f-a0b98cdbbdc4"),
-		// 					ProvisioningState: to.Ptr("Succeeded"),
-		// 					StartAt: to.Ptr(time.Date(2023, time.July, 1, 0, 0, 0, 0, time.UTC)),
-		// 					Status: to.Ptr(armbillingbenefits.MaccStatusActive),
-		// 					SystemID: to.Ptr("13810867107109237"),
-		// 				},
-		// 				SystemData: &armbillingbenefits.SystemData{
-		// 					CreatedAt: to.Ptr(time.Date(2023, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
-		// 					CreatedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
-		// 					LastModifiedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 					"key1": to.Ptr("value1"),
-		// 					"key2": to.Ptr("value2"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2025-12-01-preview/MaccsWithMilestonesListBySubscription.json
-func ExampleMaccsClient_NewListBySubscriptionPager_maccsWithMilestonesListBySubscription() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armbillingbenefits.NewClientFactory(cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewMaccsClient("10000000-0000-0000-0000-000000000000").NewListBySubscriptionPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armbillingbenefits.MaccsClientListBySubscriptionResponse{
-		// 	MaccList: armbillingbenefits.MaccList{
-		// 		Value: []*armbillingbenefits.Macc{
-		// 			{
-		// 				Name: to.Ptr("macc_20230614"),
-		// 				Type: to.Ptr("Microsoft.BillingBenefits/maccs"),
-		// 				ID: to.Ptr("/subscriptions/{primaryCloudSubId}/resourceGroups/resource_group_name_01/providers/Microsoft.BillingBenefits/maccs/macc_20230614"),
-		// 				Location: to.Ptr("global"),
-		// 				Properties: &armbillingbenefits.MaccModelProperties{
-		// 					AllowContributors: to.Ptr(true),
-		// 					AutomaticShortfall: to.Ptr(armbillingbenefits.EnablementModeEnabled),
-		// 					BillingAccountResourceID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{acctId:orgId}"),
-		// 					Commitment: &armbillingbenefits.Commitment{
-		// 						Amount: to.Ptr[float64](20000),
-		// 						CurrencyCode: to.Ptr("USD"),
-		// 						Grain: to.Ptr(armbillingbenefits.CommitmentGrainFullTerm),
-		// 					},
-		// 					DisplayName: to.Ptr("macc 20230614"),
-		// 					EndAt: to.Ptr(time.Date(2028, time.May, 1, 23, 59, 59, 0, time.UTC)),
-		// 					EntityType: to.Ptr(armbillingbenefits.MaccEntityTypePrimary),
-		// 					Milestones: []*armbillingbenefits.MaccMilestone{
-		// 						{
-		// 							AutomaticShortfall: to.Ptr(armbillingbenefits.EnablementModeEnabled),
-		// 							Commitment: &armbillingbenefits.Price{
-		// 								Amount: to.Ptr[float64](10000),
-		// 								CurrencyCode: to.Ptr("USD"),
-		// 							},
-		// 							EndAt: to.Ptr(time.Date(2026, time.May, 31, 23, 59, 59, 0, time.UTC)),
-		// 							MilestoneID: to.Ptr("11111111-1111-1111-1111-111111111111"),
-		// 							Status: to.Ptr(armbillingbenefits.MaccMilestoneStatusActive),
-		// 						},
-		// 						{
-		// 							AutomaticShortfall: to.Ptr(armbillingbenefits.EnablementModeDisabled),
-		// 							Commitment: &armbillingbenefits.Price{
-		// 								Amount: to.Ptr[float64](15000),
-		// 								CurrencyCode: to.Ptr("USD"),
-		// 							},
-		// 							EndAt: to.Ptr(time.Date(2027, time.May, 31, 23, 59, 59, 0, time.UTC)),
-		// 							MilestoneID: to.Ptr("22222222-2222-2222-2222-222222222222"),
-		// 							Status: to.Ptr(armbillingbenefits.MaccMilestoneStatusScheduled),
-		// 						},
-		// 					},
-		// 					ProductCode: to.Ptr("0001d726-0000-0160-330f-a0b98cdbbdc4"),
-		// 					ProvisioningState: to.Ptr("Succeeded"),
-		// 					StartAt: to.Ptr(time.Date(2025, time.May, 1, 0, 0, 0, 0, time.UTC)),
-		// 					Status: to.Ptr(armbillingbenefits.MaccStatusActive),
-		// 					SystemID: to.Ptr("13810867107109237"),
-		// 				},
-		// 				SystemData: &armbillingbenefits.SystemData{
-		// 					CreatedAt: to.Ptr(time.Date(2023, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
-		// 					CreatedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
-		// 					LastModifiedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 					"key1": to.Ptr("value1"),
-		// 					"key2": to.Ptr("value2"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
 // Generated from example definition: 2025-12-01-preview/ContributorEndDateUpdate.json
 func ExampleMaccsClient_BeginUpdate_contributorUpdateEndDate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -2782,4 +1944,842 @@ func ExampleMaccsClient_BeginWriteOff_maccWriteOff() {
 	// 		},
 	// 	},
 	// }
+}
+
+// Generated from example definition: 2025-12-01-preview/ContributorGet.json
+func ExampleMaccsClient_Get_contributorGet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbillingbenefits.NewClientFactory(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewMaccsClient("10000000-0000-0000-0000-000000000000").Get(ctx, "resource_group_name_02", "macc_contributor_20230614", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armbillingbenefits.MaccsClientGetResponse{
+	// 	Macc: armbillingbenefits.Macc{
+	// 		Name: to.Ptr("macc_contributor_20230614"),
+	// 		Type: to.Ptr("Microsoft.BillingBenefits/maccs"),
+	// 		ID: to.Ptr("/subscriptions/{contributorCloudSubId}/resourceGroups/resource_group_name_02/providers/Microsoft.BillingBenefits/maccs/macc_contributor_20230614"),
+	// 		Location: to.Ptr("global"),
+	// 		Properties: &armbillingbenefits.MaccModelProperties{
+	// 			AutomaticShortfall: to.Ptr(armbillingbenefits.EnablementModeEnabled),
+	// 			BillingAccountResourceID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{acctId:orgId}"),
+	// 			Commitment: &armbillingbenefits.Commitment{
+	// 				Amount: to.Ptr[float64](20000),
+	// 				CurrencyCode: to.Ptr("USD"),
+	// 				Grain: to.Ptr(armbillingbenefits.CommitmentGrainFullTerm),
+	// 			},
+	// 			DisplayName: to.Ptr("Contributor Macc 20230614"),
+	// 			EndAt: to.Ptr(time.Date(2024, time.July, 1, 0, 0, 0, 0, time.UTC)),
+	// 			EntityType: to.Ptr(armbillingbenefits.MaccEntityTypeContributor),
+	// 			PrimaryBillingAccountResourceID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{acctId:orgId}"),
+	// 			PrimaryResourceID: to.Ptr("/subscriptions/{primaryCloudSubId}/resourceGroups/resource_group_name_01/providers/Microsoft.BillingBenefits/maccs/macc_20230614"),
+	// 			ProductCode: to.Ptr("0001d726-0000-0160-330f-a0b98cdbbdc4"),
+	// 			ProvisioningState: to.Ptr("Succeeded"),
+	// 			StartAt: to.Ptr(time.Date(2023, time.July, 1, 0, 0, 0, 0, time.UTC)),
+	// 			Status: to.Ptr(armbillingbenefits.MaccStatusActive),
+	// 			SystemID: to.Ptr("13810867107109237"),
+	// 		},
+	// 		SystemData: &armbillingbenefits.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
+	// 			CreatedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
+	// 			LastModifiedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"key1": to.Ptr("value1"),
+	// 			"key2": to.Ptr("value2"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-12-01-preview/ContributorWithMilestonesAndShortfallGet.json
+func ExampleMaccsClient_Get_contributorWithMilestonesAndShortfallGetFromPrimary() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbillingbenefits.NewClientFactory(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewMaccsClient("10000000-0000-0000-0000-000000000000").Get(ctx, "resource_group_name_02", "macc_contributor_20230614", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armbillingbenefits.MaccsClientGetResponse{
+	// 	Macc: armbillingbenefits.Macc{
+	// 		Name: to.Ptr("macc_contributor_20230614"),
+	// 		Type: to.Ptr("Microsoft.BillingBenefits/maccs"),
+	// 		ID: to.Ptr("/subscriptions/{contributorCloudSubId}/resourceGroups/resource_group_name_02/providers/Microsoft.BillingBenefits/maccs/macc_contributor_20230614"),
+	// 		Location: to.Ptr("global"),
+	// 		Properties: &armbillingbenefits.MaccModelProperties{
+	// 			AutomaticShortfall: to.Ptr(armbillingbenefits.EnablementModeEnabled),
+	// 			BillingAccountResourceID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{acctId:orgId}"),
+	// 			Commitment: &armbillingbenefits.Commitment{
+	// 				Amount: to.Ptr[float64](20000),
+	// 				CurrencyCode: to.Ptr("USD"),
+	// 				Grain: to.Ptr(armbillingbenefits.CommitmentGrainFullTerm),
+	// 			},
+	// 			DisplayName: to.Ptr("macc contributor 20230614"),
+	// 			EndAt: to.Ptr(time.Date(2028, time.May, 31, 23, 59, 59, 0, time.UTC)),
+	// 			EntityType: to.Ptr(armbillingbenefits.MaccEntityTypeContributor),
+	// 			Milestones: []*armbillingbenefits.MaccMilestone{
+	// 				{
+	// 					AutomaticShortfall: to.Ptr(armbillingbenefits.EnablementModeDisabled),
+	// 					Commitment: &armbillingbenefits.Price{
+	// 						Amount: to.Ptr[float64](10000),
+	// 						CurrencyCode: to.Ptr("USD"),
+	// 					},
+	// 					EndAt: to.Ptr(time.Date(2026, time.May, 31, 23, 59, 59, 0, time.UTC)),
+	// 					MilestoneID: to.Ptr("11111111-1111-1111-1111-111111111111"),
+	// 					Status: to.Ptr(armbillingbenefits.MaccMilestoneStatusCompleted),
+	// 				},
+	// 				{
+	// 					AutomaticShortfall: to.Ptr(armbillingbenefits.EnablementModeDisabled),
+	// 					Commitment: &armbillingbenefits.Price{
+	// 						Amount: to.Ptr[float64](15000),
+	// 						CurrencyCode: to.Ptr("USD"),
+	// 					},
+	// 					EndAt: to.Ptr(time.Date(2027, time.May, 31, 23, 59, 59, 0, time.UTC)),
+	// 					MilestoneID: to.Ptr("22222222-2222-2222-2222-222222222222"),
+	// 					Status: to.Ptr(armbillingbenefits.MaccMilestoneStatusCompleted),
+	// 				},
+	// 			},
+	// 			PrimaryBillingAccountResourceID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{acctId:orgId}"),
+	// 			PrimaryResourceID: to.Ptr("/subscriptions/{primaryCloudSubId}/resourceGroups/resource_group_name_01/providers/Microsoft.BillingBenefits/maccs/macc_20230614"),
+	// 			ProductCode: to.Ptr("0001d726-0000-0160-330f-a0b98cdbbdc4"),
+	// 			ProvisioningState: to.Ptr("Succeeded"),
+	// 			Shortfall: &armbillingbenefits.Shortfall{
+	// 				BalanceVersion: to.Ptr[float32](9),
+	// 				Charge: &armbillingbenefits.Commitment{
+	// 					Amount: to.Ptr[float64](5000),
+	// 					CurrencyCode: to.Ptr("USD"),
+	// 					Grain: to.Ptr(armbillingbenefits.CommitmentGrainFullTerm),
+	// 				},
+	// 				EndAt: to.Ptr(time.Date(2029, time.July, 31, 23, 59, 59, 0, time.UTC)),
+	// 				ProductCode: to.Ptr("000278da-0000-0160-330f-a0b98cdbbdc4"),
+	// 				ResourceID: to.Ptr("/subscriptions/27507203-b094-420a-a716-b6fda046e1c2/resourceGroups/testcredit/providers/Microsoft.BillingBenefits/credits/taco0647052025"),
+	// 				StartAt: to.Ptr(time.Date(2028, time.July, 1, 0, 0, 0, 0, time.UTC)),
+	// 				SystemID: to.Ptr("shortfall32109876"),
+	// 			},
+	// 			StartAt: to.Ptr(time.Date(2025, time.May, 1, 0, 0, 0, 0, time.UTC)),
+	// 			Status: to.Ptr(armbillingbenefits.MaccStatusShortfallCharged),
+	// 			SystemID: to.Ptr("13810867107109237"),
+	// 		},
+	// 		SystemData: &armbillingbenefits.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
+	// 			CreatedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
+	// 			LastModifiedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"key1": to.Ptr("value1"),
+	// 			"key2": to.Ptr("value2"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-12-01-preview/ContributorWithMilestonesGet.json
+func ExampleMaccsClient_Get_contributorWithMilestonesGetFromPrimary() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbillingbenefits.NewClientFactory(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewMaccsClient("10000000-0000-0000-0000-000000000000").Get(ctx, "resource_group_name_02", "macc_contributor_20230614", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armbillingbenefits.MaccsClientGetResponse{
+	// 	Macc: armbillingbenefits.Macc{
+	// 		Name: to.Ptr("macc_contributor_20230614"),
+	// 		Type: to.Ptr("Microsoft.BillingBenefits/maccs"),
+	// 		ID: to.Ptr("/subscriptions/{contributorCloudSubId}/resourceGroups/resource_group_name_02/providers/Microsoft.BillingBenefits/maccs/macc_contributor_20230614"),
+	// 		Location: to.Ptr("global"),
+	// 		Properties: &armbillingbenefits.MaccModelProperties{
+	// 			AutomaticShortfall: to.Ptr(armbillingbenefits.EnablementModeEnabled),
+	// 			BillingAccountResourceID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{acctId:orgId}"),
+	// 			Commitment: &armbillingbenefits.Commitment{
+	// 				Amount: to.Ptr[float64](20000),
+	// 				CurrencyCode: to.Ptr("USD"),
+	// 				Grain: to.Ptr(armbillingbenefits.CommitmentGrainFullTerm),
+	// 			},
+	// 			DisplayName: to.Ptr("macc contributor 20230614"),
+	// 			EndAt: to.Ptr(time.Date(2028, time.May, 31, 23, 59, 59, 0, time.UTC)),
+	// 			EntityType: to.Ptr(armbillingbenefits.MaccEntityTypeContributor),
+	// 			Milestones: []*armbillingbenefits.MaccMilestone{
+	// 				{
+	// 					AutomaticShortfall: to.Ptr(armbillingbenefits.EnablementModeEnabled),
+	// 					Commitment: &armbillingbenefits.Price{
+	// 						Amount: to.Ptr[float64](10000),
+	// 						CurrencyCode: to.Ptr("USD"),
+	// 					},
+	// 					EndAt: to.Ptr(time.Date(2026, time.May, 31, 23, 59, 59, 0, time.UTC)),
+	// 					MilestoneID: to.Ptr("11111111-1111-1111-1111-111111111111"),
+	// 					Status: to.Ptr(armbillingbenefits.MaccMilestoneStatusActive),
+	// 				},
+	// 				{
+	// 					AutomaticShortfall: to.Ptr(armbillingbenefits.EnablementModeDisabled),
+	// 					Commitment: &armbillingbenefits.Price{
+	// 						Amount: to.Ptr[float64](15000),
+	// 						CurrencyCode: to.Ptr("USD"),
+	// 					},
+	// 					EndAt: to.Ptr(time.Date(2027, time.May, 31, 23, 59, 59, 0, time.UTC)),
+	// 					MilestoneID: to.Ptr("22222222-2222-2222-2222-222222222222"),
+	// 					Status: to.Ptr(armbillingbenefits.MaccMilestoneStatusScheduled),
+	// 				},
+	// 			},
+	// 			PrimaryBillingAccountResourceID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{acctId:orgId}"),
+	// 			PrimaryResourceID: to.Ptr("/subscriptions/{primaryCloudSubId}/resourceGroups/resource_group_name_01/providers/Microsoft.BillingBenefits/maccs/macc_20230614"),
+	// 			ProductCode: to.Ptr("0001d726-0000-0160-330f-a0b98cdbbdc4"),
+	// 			ProvisioningState: to.Ptr("Succeeded"),
+	// 			StartAt: to.Ptr(time.Date(2025, time.May, 1, 0, 0, 0, 0, time.UTC)),
+	// 			Status: to.Ptr(armbillingbenefits.MaccStatusActive),
+	// 			SystemID: to.Ptr("13810867107109237"),
+	// 		},
+	// 		SystemData: &armbillingbenefits.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
+	// 			CreatedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
+	// 			LastModifiedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"key1": to.Ptr("value1"),
+	// 			"key2": to.Ptr("value2"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-12-01-preview/MaccGet.json
+func ExampleMaccsClient_Get_maccGet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbillingbenefits.NewClientFactory(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewMaccsClient("10000000-0000-0000-0000-000000000000").Get(ctx, "resource_group_name_01", "macc_20230614", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armbillingbenefits.MaccsClientGetResponse{
+	// 	Macc: armbillingbenefits.Macc{
+	// 		Name: to.Ptr("macc_20230614"),
+	// 		Type: to.Ptr("Microsoft.BillingBenefits/maccs"),
+	// 		ID: to.Ptr("/subscriptions/{primaryCloudSubId}/resourceGroups/resource_group_name_01/providers/Microsoft.BillingBenefits/maccs/macc_20230614"),
+	// 		Location: to.Ptr("global"),
+	// 		Properties: &armbillingbenefits.MaccModelProperties{
+	// 			AllowContributors: to.Ptr(true),
+	// 			AutomaticShortfall: to.Ptr(armbillingbenefits.EnablementModeEnabled),
+	// 			BillingAccountResourceID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{acctId:orgId}"),
+	// 			Commitment: &armbillingbenefits.Commitment{
+	// 				Amount: to.Ptr[float64](20000),
+	// 				CurrencyCode: to.Ptr("USD"),
+	// 				Grain: to.Ptr(armbillingbenefits.CommitmentGrainFullTerm),
+	// 			},
+	// 			DisplayName: to.Ptr("macc 20230614"),
+	// 			EndAt: to.Ptr(time.Date(2024, time.July, 1, 0, 0, 0, 0, time.UTC)),
+	// 			EntityType: to.Ptr(armbillingbenefits.MaccEntityTypePrimary),
+	// 			ProductCode: to.Ptr("0001d726-0000-0160-330f-a0b98cdbbdc4"),
+	// 			ProvisioningState: to.Ptr("Succeeded"),
+	// 			StartAt: to.Ptr(time.Date(2023, time.July, 1, 0, 0, 0, 0, time.UTC)),
+	// 			Status: to.Ptr(armbillingbenefits.MaccStatusActive),
+	// 			SystemID: to.Ptr("13810867107109237"),
+	// 		},
+	// 		SystemData: &armbillingbenefits.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
+	// 			CreatedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
+	// 			LastModifiedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"key1": to.Ptr("value1"),
+	// 			"key2": to.Ptr("value2"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-12-01-preview/MaccWithMilestonesAndShortfallGet.json
+func ExampleMaccsClient_Get_maccWithMilestonesAndShortfallGet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbillingbenefits.NewClientFactory(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewMaccsClient("10000000-0000-0000-0000-000000000000").Get(ctx, "resource_group_name_01", "macc_20230614", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armbillingbenefits.MaccsClientGetResponse{
+	// 	Macc: armbillingbenefits.Macc{
+	// 		Name: to.Ptr("macc_20230614"),
+	// 		Type: to.Ptr("Microsoft.BillingBenefits/maccs"),
+	// 		ID: to.Ptr("/subscriptions/{primaryCloudSubId}/resourceGroups/resource_group_name_01/providers/Microsoft.BillingBenefits/maccs/macc_20230614"),
+	// 		Location: to.Ptr("global"),
+	// 		Properties: &armbillingbenefits.MaccModelProperties{
+	// 			AllowContributors: to.Ptr(true),
+	// 			AutomaticShortfall: to.Ptr(armbillingbenefits.EnablementModeEnabled),
+	// 			BillingAccountResourceID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{acctId:orgId}"),
+	// 			Commitment: &armbillingbenefits.Commitment{
+	// 				Amount: to.Ptr[float64](20000),
+	// 				CurrencyCode: to.Ptr("USD"),
+	// 				Grain: to.Ptr(armbillingbenefits.CommitmentGrainFullTerm),
+	// 			},
+	// 			DisplayName: to.Ptr("macc 20230614"),
+	// 			EndAt: to.Ptr(time.Date(2028, time.May, 1, 23, 59, 59, 0, time.UTC)),
+	// 			EntityType: to.Ptr(armbillingbenefits.MaccEntityTypePrimary),
+	// 			Milestones: []*armbillingbenefits.MaccMilestone{
+	// 				{
+	// 					AutomaticShortfall: to.Ptr(armbillingbenefits.EnablementModeEnabled),
+	// 					Commitment: &armbillingbenefits.Price{
+	// 						Amount: to.Ptr[float64](10000),
+	// 						CurrencyCode: to.Ptr("USD"),
+	// 					},
+	// 					EndAt: to.Ptr(time.Date(2026, time.May, 31, 23, 59, 59, 0, time.UTC)),
+	// 					MilestoneID: to.Ptr("11111111-1111-1111-1111-111111111111"),
+	// 					Shortfall: &armbillingbenefits.Shortfall{
+	// 						BalanceVersion: to.Ptr[float32](1),
+	// 						Charge: &armbillingbenefits.Commitment{
+	// 							Amount: to.Ptr[float64](2000),
+	// 							CurrencyCode: to.Ptr("USD"),
+	// 							Grain: to.Ptr(armbillingbenefits.CommitmentGrainFullTerm),
+	// 						},
+	// 						EndAt: to.Ptr(time.Date(2027, time.July, 1, 23, 59, 59, 0, time.UTC)),
+	// 						ProductCode: to.Ptr("000278da-0000-0160-330f-a0b98cdbbdc4"),
+	// 						ResourceID: to.Ptr("/subscriptions/27507203-b094-420a-a716-b6fda046e1c2/resourceGroups/testcredit/providers/Microsoft.BillingBenefits/credits/taco0647052025"),
+	// 						StartAt: to.Ptr(time.Date(2026, time.July, 1, 0, 0, 0, 0, time.UTC)),
+	// 						SystemID: to.Ptr("lotId"),
+	// 					},
+	// 					Status: to.Ptr(armbillingbenefits.MaccMilestoneStatusShortfallCharged),
+	// 				},
+	// 				{
+	// 					AutomaticShortfall: to.Ptr(armbillingbenefits.EnablementModeDisabled),
+	// 					Commitment: &armbillingbenefits.Price{
+	// 						Amount: to.Ptr[float64](15000),
+	// 						CurrencyCode: to.Ptr("USD"),
+	// 					},
+	// 					EndAt: to.Ptr(time.Date(2027, time.May, 31, 23, 59, 59, 0, time.UTC)),
+	// 					MilestoneID: to.Ptr("22222222-2222-2222-2222-222222222222"),
+	// 					Status: to.Ptr(armbillingbenefits.MaccMilestoneStatusCompleted),
+	// 				},
+	// 			},
+	// 			ProductCode: to.Ptr("0001d726-0000-0160-330f-a0b98cdbbdc4"),
+	// 			ProvisioningState: to.Ptr("Succeeded"),
+	// 			Shortfall: &armbillingbenefits.Shortfall{
+	// 				BalanceVersion: to.Ptr[float32](3),
+	// 				Charge: &armbillingbenefits.Commitment{
+	// 					Amount: to.Ptr[float64](5000),
+	// 					CurrencyCode: to.Ptr("USD"),
+	// 					Grain: to.Ptr(armbillingbenefits.CommitmentGrainFullTerm),
+	// 				},
+	// 				EndAt: to.Ptr(time.Date(2029, time.July, 31, 23, 59, 59, 0, time.UTC)),
+	// 				ProductCode: to.Ptr("000278da-0000-0160-330f-a0b98cdbbdc4"),
+	// 				ResourceID: to.Ptr("/subscriptions/27507203-b094-420a-a716-b6fda046e1c2/resourceGroups/testcredit/providers/Microsoft.BillingBenefits/credits/taco0647052025"),
+	// 				StartAt: to.Ptr(time.Date(2028, time.July, 1, 0, 0, 0, 0, time.UTC)),
+	// 				SystemID: to.Ptr("shortfall98765432"),
+	// 			},
+	// 			StartAt: to.Ptr(time.Date(2025, time.May, 1, 0, 0, 0, 0, time.UTC)),
+	// 			Status: to.Ptr(armbillingbenefits.MaccStatusShortfallCharged),
+	// 			SystemID: to.Ptr("13810867107109237"),
+	// 		},
+	// 		SystemData: &armbillingbenefits.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
+	// 			CreatedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
+	// 			LastModifiedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"key1": to.Ptr("value1"),
+	// 			"key2": to.Ptr("value2"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-12-01-preview/MaccWithMilestonesGet.json
+func ExampleMaccsClient_Get_maccWithMilestonesGet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbillingbenefits.NewClientFactory(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewMaccsClient("10000000-0000-0000-0000-000000000000").Get(ctx, "resource_group_name_01", "macc_20230614", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armbillingbenefits.MaccsClientGetResponse{
+	// 	Macc: armbillingbenefits.Macc{
+	// 		Name: to.Ptr("macc_20230614"),
+	// 		Type: to.Ptr("Microsoft.BillingBenefits/maccs"),
+	// 		ID: to.Ptr("/subscriptions/{primaryCloudSubId}/resourceGroups/resource_group_name_01/providers/Microsoft.BillingBenefits/maccs/macc_20230614"),
+	// 		Location: to.Ptr("global"),
+	// 		Properties: &armbillingbenefits.MaccModelProperties{
+	// 			AllowContributors: to.Ptr(true),
+	// 			AutomaticShortfall: to.Ptr(armbillingbenefits.EnablementModeEnabled),
+	// 			BillingAccountResourceID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{acctId:orgId}"),
+	// 			Commitment: &armbillingbenefits.Commitment{
+	// 				Amount: to.Ptr[float64](20000),
+	// 				CurrencyCode: to.Ptr("USD"),
+	// 				Grain: to.Ptr(armbillingbenefits.CommitmentGrainFullTerm),
+	// 			},
+	// 			DisplayName: to.Ptr("macc 20230614"),
+	// 			EndAt: to.Ptr(time.Date(2028, time.May, 1, 23, 59, 59, 0, time.UTC)),
+	// 			EntityType: to.Ptr(armbillingbenefits.MaccEntityTypePrimary),
+	// 			Milestones: []*armbillingbenefits.MaccMilestone{
+	// 				{
+	// 					AutomaticShortfall: to.Ptr(armbillingbenefits.EnablementModeEnabled),
+	// 					Commitment: &armbillingbenefits.Price{
+	// 						Amount: to.Ptr[float64](10000),
+	// 						CurrencyCode: to.Ptr("USD"),
+	// 					},
+	// 					EndAt: to.Ptr(time.Date(2026, time.May, 31, 23, 59, 59, 0, time.UTC)),
+	// 					MilestoneID: to.Ptr("11111111-1111-1111-1111-111111111111"),
+	// 					Status: to.Ptr(armbillingbenefits.MaccMilestoneStatusActive),
+	// 				},
+	// 				{
+	// 					AutomaticShortfall: to.Ptr(armbillingbenefits.EnablementModeDisabled),
+	// 					Commitment: &armbillingbenefits.Price{
+	// 						Amount: to.Ptr[float64](15000),
+	// 						CurrencyCode: to.Ptr("USD"),
+	// 					},
+	// 					EndAt: to.Ptr(time.Date(2027, time.May, 31, 23, 59, 59, 0, time.UTC)),
+	// 					MilestoneID: to.Ptr("22222222-2222-2222-2222-222222222222"),
+	// 					Status: to.Ptr(armbillingbenefits.MaccMilestoneStatusScheduled),
+	// 				},
+	// 			},
+	// 			ProductCode: to.Ptr("0001d726-0000-0160-330f-a0b98cdbbdc4"),
+	// 			ProvisioningState: to.Ptr("Succeeded"),
+	// 			StartAt: to.Ptr(time.Date(2025, time.May, 1, 0, 0, 0, 0, time.UTC)),
+	// 			Status: to.Ptr(armbillingbenefits.MaccStatusActive),
+	// 			SystemID: to.Ptr("13810867107109237"),
+	// 		},
+	// 		SystemData: &armbillingbenefits.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
+	// 			CreatedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
+	// 			LastModifiedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"key1": to.Ptr("value1"),
+	// 			"key2": to.Ptr("value2"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-12-01-preview/MaccWithShortfallGet.json
+func ExampleMaccsClient_Get_maccWithShortfallGet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbillingbenefits.NewClientFactory(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewMaccsClient("10000000-0000-0000-0000-000000000000").Get(ctx, "resource_group_name_01", "macc_20230614", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armbillingbenefits.MaccsClientGetResponse{
+	// 	Macc: armbillingbenefits.Macc{
+	// 		Name: to.Ptr("macc_20230614"),
+	// 		Type: to.Ptr("Microsoft.BillingBenefits/maccs"),
+	// 		ID: to.Ptr("/subscriptions/10000000-0000-0000-0000-000000000000/resourceGroups/resource_group_name_01/providers/Microsoft.BillingBenefits/maccs/macc_20230614"),
+	// 		Location: to.Ptr("global"),
+	// 		Properties: &armbillingbenefits.MaccModelProperties{
+	// 			AllowContributors: to.Ptr(true),
+	// 			AutomaticShortfall: to.Ptr(armbillingbenefits.EnablementModeEnabled),
+	// 			Commitment: &armbillingbenefits.Commitment{
+	// 				Amount: to.Ptr[float64](20000),
+	// 				CurrencyCode: to.Ptr("USD"),
+	// 				Grain: to.Ptr(armbillingbenefits.CommitmentGrainFullTerm),
+	// 			},
+	// 			DisplayName: to.Ptr("macc_20230614"),
+	// 			EndAt: to.Ptr(time.Date(2024, time.July, 31, 23, 59, 59, 0, time.UTC)),
+	// 			EntityType: to.Ptr(armbillingbenefits.MaccEntityTypePrimary),
+	// 			ProductCode: to.Ptr("0001d726-0000-0160-330f-a0b98cdbbdc4"),
+	// 			ProvisioningState: to.Ptr("Canceled"),
+	// 			Shortfall: &armbillingbenefits.Shortfall{
+	// 				BalanceVersion: to.Ptr[float32](2),
+	// 				Charge: &armbillingbenefits.Commitment{
+	// 					Amount: to.Ptr[float64](10000),
+	// 					CurrencyCode: to.Ptr("USD"),
+	// 					Grain: to.Ptr(armbillingbenefits.CommitmentGrainFullTerm),
+	// 				},
+	// 				EndAt: to.Ptr(time.Date(2025, time.September, 30, 23, 59, 59, 0, time.UTC)),
+	// 				ProductCode: to.Ptr("000278da-0000-0160-330f-a0b98cdbbdc4"),
+	// 				ResourceID: to.Ptr("/subscriptions/27507203-b094-420a-a716-b6fda046e1c2/resourceGroups/testcredit/providers/Microsoft.BillingBenefits/credits/taco0647052025"),
+	// 				StartAt: to.Ptr(time.Date(2024, time.September, 1, 0, 0, 0, 0, time.UTC)),
+	// 				SystemID: to.Ptr("shortfall12345678"),
+	// 			},
+	// 			StartAt: to.Ptr(time.Date(2023, time.July, 1, 0, 0, 0, 0, time.UTC)),
+	// 			Status: to.Ptr(armbillingbenefits.MaccStatusShortfallCharged),
+	// 			SystemID: to.Ptr("13810867107109237"),
+	// 		},
+	// 		SystemData: &armbillingbenefits.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
+	// 			CreatedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
+	// 			LastModifiedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"key1": to.Ptr("value1"),
+	// 			"key2": to.Ptr("value2"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-12-01-preview/MaccsListByResourceGroup.json
+func ExampleMaccsClient_NewListByResourceGroupPager_maccsListByResourceGroup() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbillingbenefits.NewClientFactory(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewMaccsClient("10000000-0000-0000-0000-000000000000").NewListByResourceGroupPager("resource_group_name_01", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armbillingbenefits.MaccsClientListByResourceGroupResponse{
+		// 	MaccList: armbillingbenefits.MaccList{
+		// 		Value: []*armbillingbenefits.Macc{
+		// 			{
+		// 				Name: to.Ptr("macc_20230614"),
+		// 				Type: to.Ptr("Microsoft.BillingBenefits/maccs"),
+		// 				ID: to.Ptr("/subscriptions/{primaryCloudSubId}/resourceGroups/resource_group_name_01/providers/Microsoft.BillingBenefits/maccs/macc_20230614"),
+		// 				Location: to.Ptr("global"),
+		// 				Properties: &armbillingbenefits.MaccModelProperties{
+		// 					AllowContributors: to.Ptr(true),
+		// 					AutomaticShortfall: to.Ptr(armbillingbenefits.EnablementModeEnabled),
+		// 					BillingAccountResourceID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{acctId:orgId}"),
+		// 					Commitment: &armbillingbenefits.Commitment{
+		// 						Amount: to.Ptr[float64](20000),
+		// 						CurrencyCode: to.Ptr("USD"),
+		// 						Grain: to.Ptr(armbillingbenefits.CommitmentGrainFullTerm),
+		// 					},
+		// 					DisplayName: to.Ptr("macc 20230614"),
+		// 					EndAt: to.Ptr(time.Date(2024, time.July, 1, 0, 0, 0, 0, time.UTC)),
+		// 					EntityType: to.Ptr(armbillingbenefits.MaccEntityTypePrimary),
+		// 					ProductCode: to.Ptr("0001d726-0000-0160-330f-a0b98cdbbdc4"),
+		// 					ProvisioningState: to.Ptr("Succeeded"),
+		// 					StartAt: to.Ptr(time.Date(2023, time.July, 1, 0, 0, 0, 0, time.UTC)),
+		// 					Status: to.Ptr(armbillingbenefits.MaccStatusActive),
+		// 					SystemID: to.Ptr("13810867107109237"),
+		// 				},
+		// 				SystemData: &armbillingbenefits.SystemData{
+		// 					CreatedAt: to.Ptr(time.Date(2023, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
+		// 					CreatedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
+		// 					LastModifiedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"key1": to.Ptr("value1"),
+		// 					"key2": to.Ptr("value2"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-12-01-preview/MaccsWithMilestonesListByResourceGroup.json
+func ExampleMaccsClient_NewListByResourceGroupPager_maccsWithMilestonesListByResourceGroup() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbillingbenefits.NewClientFactory(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewMaccsClient("10000000-0000-0000-0000-000000000000").NewListByResourceGroupPager("resource_group_name_01", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armbillingbenefits.MaccsClientListByResourceGroupResponse{
+		// 	MaccList: armbillingbenefits.MaccList{
+		// 		Value: []*armbillingbenefits.Macc{
+		// 			{
+		// 				Name: to.Ptr("macc_20230614"),
+		// 				Type: to.Ptr("Microsoft.BillingBenefits/maccs"),
+		// 				ID: to.Ptr("/subscriptions/{primaryCloudSubId}/resourceGroups/resource_group_name_01/providers/Microsoft.BillingBenefits/maccs/macc_20230614"),
+		// 				Location: to.Ptr("global"),
+		// 				Properties: &armbillingbenefits.MaccModelProperties{
+		// 					AllowContributors: to.Ptr(true),
+		// 					AutomaticShortfall: to.Ptr(armbillingbenefits.EnablementModeEnabled),
+		// 					BillingAccountResourceID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{acctId:orgId}"),
+		// 					Commitment: &armbillingbenefits.Commitment{
+		// 						Amount: to.Ptr[float64](20000),
+		// 						CurrencyCode: to.Ptr("USD"),
+		// 						Grain: to.Ptr(armbillingbenefits.CommitmentGrainFullTerm),
+		// 					},
+		// 					DisplayName: to.Ptr("macc 20230614"),
+		// 					EndAt: to.Ptr(time.Date(2028, time.May, 1, 23, 59, 59, 0, time.UTC)),
+		// 					EntityType: to.Ptr(armbillingbenefits.MaccEntityTypePrimary),
+		// 					Milestones: []*armbillingbenefits.MaccMilestone{
+		// 						{
+		// 							AutomaticShortfall: to.Ptr(armbillingbenefits.EnablementModeEnabled),
+		// 							Commitment: &armbillingbenefits.Price{
+		// 								Amount: to.Ptr[float64](10000),
+		// 								CurrencyCode: to.Ptr("USD"),
+		// 							},
+		// 							EndAt: to.Ptr(time.Date(2026, time.May, 31, 23, 59, 59, 0, time.UTC)),
+		// 							MilestoneID: to.Ptr("11111111-1111-1111-1111-111111111111"),
+		// 							Status: to.Ptr(armbillingbenefits.MaccMilestoneStatusActive),
+		// 						},
+		// 						{
+		// 							AutomaticShortfall: to.Ptr(armbillingbenefits.EnablementModeDisabled),
+		// 							Commitment: &armbillingbenefits.Price{
+		// 								Amount: to.Ptr[float64](15000),
+		// 								CurrencyCode: to.Ptr("USD"),
+		// 							},
+		// 							EndAt: to.Ptr(time.Date(2027, time.May, 31, 23, 59, 59, 0, time.UTC)),
+		// 							MilestoneID: to.Ptr("22222222-2222-2222-2222-222222222222"),
+		// 							Status: to.Ptr(armbillingbenefits.MaccMilestoneStatusScheduled),
+		// 						},
+		// 					},
+		// 					ProductCode: to.Ptr("0001d726-0000-0160-330f-a0b98cdbbdc4"),
+		// 					ProvisioningState: to.Ptr("Succeeded"),
+		// 					StartAt: to.Ptr(time.Date(2025, time.May, 1, 0, 0, 0, 0, time.UTC)),
+		// 					Status: to.Ptr(armbillingbenefits.MaccStatusActive),
+		// 					SystemID: to.Ptr("13810867107109237"),
+		// 				},
+		// 				SystemData: &armbillingbenefits.SystemData{
+		// 					CreatedAt: to.Ptr(time.Date(2023, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
+		// 					CreatedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
+		// 					LastModifiedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"key1": to.Ptr("value1"),
+		// 					"key2": to.Ptr("value2"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-12-01-preview/MaccsListBySubscription.json
+func ExampleMaccsClient_NewListBySubscriptionPager_maccsListBySubscription() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbillingbenefits.NewClientFactory(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewMaccsClient("10000000-0000-0000-0000-000000000000").NewListBySubscriptionPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armbillingbenefits.MaccsClientListBySubscriptionResponse{
+		// 	MaccList: armbillingbenefits.MaccList{
+		// 		Value: []*armbillingbenefits.Macc{
+		// 			{
+		// 				Name: to.Ptr("macc_20230614"),
+		// 				Type: to.Ptr("Microsoft.BillingBenefits/maccs"),
+		// 				ID: to.Ptr("/subscriptions/{primaryCloudSubId}/resourceGroups/resource_group_name_01/providers/Microsoft.BillingBenefits/maccs/macc_20230614"),
+		// 				Location: to.Ptr("global"),
+		// 				Properties: &armbillingbenefits.MaccModelProperties{
+		// 					AllowContributors: to.Ptr(true),
+		// 					AutomaticShortfall: to.Ptr(armbillingbenefits.EnablementModeEnabled),
+		// 					BillingAccountResourceID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{acctId:orgId}"),
+		// 					Commitment: &armbillingbenefits.Commitment{
+		// 						Amount: to.Ptr[float64](20000),
+		// 						CurrencyCode: to.Ptr("USD"),
+		// 						Grain: to.Ptr(armbillingbenefits.CommitmentGrainFullTerm),
+		// 					},
+		// 					DisplayName: to.Ptr("macc 20230614"),
+		// 					EndAt: to.Ptr(time.Date(2024, time.July, 1, 0, 0, 0, 0, time.UTC)),
+		// 					EntityType: to.Ptr(armbillingbenefits.MaccEntityTypePrimary),
+		// 					ProductCode: to.Ptr("0001d726-0000-0160-330f-a0b98cdbbdc4"),
+		// 					ProvisioningState: to.Ptr("Succeeded"),
+		// 					StartAt: to.Ptr(time.Date(2023, time.July, 1, 0, 0, 0, 0, time.UTC)),
+		// 					Status: to.Ptr(armbillingbenefits.MaccStatusActive),
+		// 					SystemID: to.Ptr("13810867107109237"),
+		// 				},
+		// 				SystemData: &armbillingbenefits.SystemData{
+		// 					CreatedAt: to.Ptr(time.Date(2023, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
+		// 					CreatedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
+		// 					LastModifiedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"key1": to.Ptr("value1"),
+		// 					"key2": to.Ptr("value2"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-12-01-preview/MaccsWithMilestonesListBySubscription.json
+func ExampleMaccsClient_NewListBySubscriptionPager_maccsWithMilestonesListBySubscription() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbillingbenefits.NewClientFactory(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewMaccsClient("10000000-0000-0000-0000-000000000000").NewListBySubscriptionPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armbillingbenefits.MaccsClientListBySubscriptionResponse{
+		// 	MaccList: armbillingbenefits.MaccList{
+		// 		Value: []*armbillingbenefits.Macc{
+		// 			{
+		// 				Name: to.Ptr("macc_20230614"),
+		// 				Type: to.Ptr("Microsoft.BillingBenefits/maccs"),
+		// 				ID: to.Ptr("/subscriptions/{primaryCloudSubId}/resourceGroups/resource_group_name_01/providers/Microsoft.BillingBenefits/maccs/macc_20230614"),
+		// 				Location: to.Ptr("global"),
+		// 				Properties: &armbillingbenefits.MaccModelProperties{
+		// 					AllowContributors: to.Ptr(true),
+		// 					AutomaticShortfall: to.Ptr(armbillingbenefits.EnablementModeEnabled),
+		// 					BillingAccountResourceID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{acctId:orgId}"),
+		// 					Commitment: &armbillingbenefits.Commitment{
+		// 						Amount: to.Ptr[float64](20000),
+		// 						CurrencyCode: to.Ptr("USD"),
+		// 						Grain: to.Ptr(armbillingbenefits.CommitmentGrainFullTerm),
+		// 					},
+		// 					DisplayName: to.Ptr("macc 20230614"),
+		// 					EndAt: to.Ptr(time.Date(2028, time.May, 1, 23, 59, 59, 0, time.UTC)),
+		// 					EntityType: to.Ptr(armbillingbenefits.MaccEntityTypePrimary),
+		// 					Milestones: []*armbillingbenefits.MaccMilestone{
+		// 						{
+		// 							AutomaticShortfall: to.Ptr(armbillingbenefits.EnablementModeEnabled),
+		// 							Commitment: &armbillingbenefits.Price{
+		// 								Amount: to.Ptr[float64](10000),
+		// 								CurrencyCode: to.Ptr("USD"),
+		// 							},
+		// 							EndAt: to.Ptr(time.Date(2026, time.May, 31, 23, 59, 59, 0, time.UTC)),
+		// 							MilestoneID: to.Ptr("11111111-1111-1111-1111-111111111111"),
+		// 							Status: to.Ptr(armbillingbenefits.MaccMilestoneStatusActive),
+		// 						},
+		// 						{
+		// 							AutomaticShortfall: to.Ptr(armbillingbenefits.EnablementModeDisabled),
+		// 							Commitment: &armbillingbenefits.Price{
+		// 								Amount: to.Ptr[float64](15000),
+		// 								CurrencyCode: to.Ptr("USD"),
+		// 							},
+		// 							EndAt: to.Ptr(time.Date(2027, time.May, 31, 23, 59, 59, 0, time.UTC)),
+		// 							MilestoneID: to.Ptr("22222222-2222-2222-2222-222222222222"),
+		// 							Status: to.Ptr(armbillingbenefits.MaccMilestoneStatusScheduled),
+		// 						},
+		// 					},
+		// 					ProductCode: to.Ptr("0001d726-0000-0160-330f-a0b98cdbbdc4"),
+		// 					ProvisioningState: to.Ptr("Succeeded"),
+		// 					StartAt: to.Ptr(time.Date(2025, time.May, 1, 0, 0, 0, 0, time.UTC)),
+		// 					Status: to.Ptr(armbillingbenefits.MaccStatusActive),
+		// 					SystemID: to.Ptr("13810867107109237"),
+		// 				},
+		// 				SystemData: &armbillingbenefits.SystemData{
+		// 					CreatedAt: to.Ptr(time.Date(2023, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
+		// 					CreatedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
+		// 					LastModifiedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"key1": to.Ptr("value1"),
+		// 					"key2": to.Ptr("value2"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
 }

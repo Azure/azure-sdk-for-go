@@ -109,6 +109,115 @@ func ExampleNamespacesClient_BeginDelete() {
 	}
 }
 
+// Generated from example definition: 2026-03-01-preview/Migrate_Assets_Namespace.json
+func ExampleNamespacesClient_BeginMigrate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdeviceregistry.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewNamespacesClient().BeginMigrate(ctx, "myResourceGroup", "my-namespace-1", armdeviceregistry.NamespaceMigrateRequest{
+		Scope: to.Ptr(armdeviceregistry.ScopeResources),
+		ResourceIDs: []*string{
+			to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.DeviceRegistry/assets/my-asset-1"),
+			to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.DeviceRegistry/assets/my-asset-2"),
+			to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.DeviceRegistry/assets/my-asset-3"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdeviceregistry.NamespacesClientMigrateResponse{
+	// }
+}
+
+// Generated from example definition: 2026-03-01-preview/Update_Namespace_Endpoints.json
+func ExampleNamespacesClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdeviceregistry.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewNamespacesClient().BeginUpdate(ctx, "myResourceGroup", "adr-namespace-gbk0925-n01", armdeviceregistry.NamespaceUpdate{
+		Properties: &armdeviceregistry.NamespaceUpdateProperties{
+			Messaging: &armdeviceregistry.Messaging{
+				Endpoints: map[string]*armdeviceregistry.MessagingEndpoint{
+					"iothubEndpoint": {
+						EndpointType: to.Ptr("Microsoft.Devices/IotHubs"),
+						Address:      to.Ptr("https://iothub-for-dps.azure-devices.net"),
+					},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdeviceregistry.NamespacesClientUpdateResponse{
+	// 	Namespace: armdeviceregistry.Namespace{
+	// 		ID: to.Ptr("/subscriptions/00000000-1366-430f-0000-cc873bcf2d27/resourceGroups/gbktestRG/providers/Microsoft.DeviceRegistry/namespaces/adr-namespace-gbk0925-n01"),
+	// 		Name: to.Ptr("adr-namespace-gbk0925-n01"),
+	// 		Type: to.Ptr("Microsoft.DeviceRegistry/namespaces"),
+	// 		Location: to.Ptr("North Europe"),
+	// 		SystemData: &armdeviceregistry.SystemData{
+	// 			CreatedBy: to.Ptr("00003442-0000-0000-0000-494059220000"),
+	// 			CreatedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.September, 25, 23, 41, 41, 859115700, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("00003442-0000-0000-0000-494059220000"),
+	// 			LastModifiedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.October, 1, 21, 3, 33, 599319200, time.UTC)),
+	// 		},
+	// 		Identity: &armdeviceregistry.SystemAssignedServiceIdentity{
+	// 			PrincipalID: to.Ptr("00000000-0000-0000-9d20-8a5570c3eb6e"),
+	// 			TenantID: to.Ptr("0006f47a-0000-0000-0000-99be82dea000"),
+	// 			Type: to.Ptr(armdeviceregistry.SystemAssignedServiceIdentityTypeSystemAssigned),
+	// 		},
+	// 		Properties: &armdeviceregistry.NamespaceProperties{
+	// 			UUID: to.Ptr("cbfe124a-6971-4c90-a7a9-99be82def1ab"),
+	// 			ProvisioningState: to.Ptr(armdeviceregistry.ProvisioningStateSucceeded),
+	// 			Messaging: &armdeviceregistry.Messaging{
+	// 				Endpoints: map[string]*armdeviceregistry.MessagingEndpoint{
+	// 					"iothubEndpoint1": &armdeviceregistry.MessagingEndpoint{
+	// 						EndpointType: to.Ptr("Microsoft.Devices/IotHubs"),
+	// 						Address: to.Ptr("https://iothub-for-dps.azure-devices.net/api/events"),
+	// 					},
+	// 					"iothubEndpoint2": &armdeviceregistry.MessagingEndpoint{
+	// 						EndpointType: to.Ptr("Microsoft.Devices/IotHubs"),
+	// 						Address: to.Ptr("https://iothub-for-dps-2.azure-devices.net"),
+	// 					},
+	// 					"iothubEndpoint3": &armdeviceregistry.MessagingEndpoint{
+	// 						EndpointType: to.Ptr("Microsoft.Devices/IotHubs"),
+	// 						Address: to.Ptr("https://iothub-for-dps-3.azure-devices.net"),
+	// 					},
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2026-03-01-preview/Get_Namespace.json
 func ExampleNamespacesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -297,113 +406,4 @@ func ExampleNamespacesClient_NewListBySubscriptionPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-03-01-preview/Migrate_Assets_Namespace.json
-func ExampleNamespacesClient_BeginMigrate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdeviceregistry.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewNamespacesClient().BeginMigrate(ctx, "myResourceGroup", "my-namespace-1", armdeviceregistry.NamespaceMigrateRequest{
-		Scope: to.Ptr(armdeviceregistry.ScopeResources),
-		ResourceIDs: []*string{
-			to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.DeviceRegistry/assets/my-asset-1"),
-			to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.DeviceRegistry/assets/my-asset-2"),
-			to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.DeviceRegistry/assets/my-asset-3"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdeviceregistry.NamespacesClientMigrateResponse{
-	// }
-}
-
-// Generated from example definition: 2026-03-01-preview/Update_Namespace_Endpoints.json
-func ExampleNamespacesClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdeviceregistry.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewNamespacesClient().BeginUpdate(ctx, "myResourceGroup", "adr-namespace-gbk0925-n01", armdeviceregistry.NamespaceUpdate{
-		Properties: &armdeviceregistry.NamespaceUpdateProperties{
-			Messaging: &armdeviceregistry.Messaging{
-				Endpoints: map[string]*armdeviceregistry.MessagingEndpoint{
-					"iothubEndpoint": {
-						EndpointType: to.Ptr("Microsoft.Devices/IotHubs"),
-						Address:      to.Ptr("https://iothub-for-dps.azure-devices.net"),
-					},
-				},
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdeviceregistry.NamespacesClientUpdateResponse{
-	// 	Namespace: armdeviceregistry.Namespace{
-	// 		ID: to.Ptr("/subscriptions/00000000-1366-430f-0000-cc873bcf2d27/resourceGroups/gbktestRG/providers/Microsoft.DeviceRegistry/namespaces/adr-namespace-gbk0925-n01"),
-	// 		Name: to.Ptr("adr-namespace-gbk0925-n01"),
-	// 		Type: to.Ptr("Microsoft.DeviceRegistry/namespaces"),
-	// 		Location: to.Ptr("North Europe"),
-	// 		SystemData: &armdeviceregistry.SystemData{
-	// 			CreatedBy: to.Ptr("00003442-0000-0000-0000-494059220000"),
-	// 			CreatedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-	// 			CreatedAt: to.Ptr(time.Date(2024, time.September, 25, 23, 41, 41, 859115700, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("00003442-0000-0000-0000-494059220000"),
-	// 			LastModifiedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.October, 1, 21, 3, 33, 599319200, time.UTC)),
-	// 		},
-	// 		Identity: &armdeviceregistry.SystemAssignedServiceIdentity{
-	// 			PrincipalID: to.Ptr("00000000-0000-0000-9d20-8a5570c3eb6e"),
-	// 			TenantID: to.Ptr("0006f47a-0000-0000-0000-99be82dea000"),
-	// 			Type: to.Ptr(armdeviceregistry.SystemAssignedServiceIdentityTypeSystemAssigned),
-	// 		},
-	// 		Properties: &armdeviceregistry.NamespaceProperties{
-	// 			UUID: to.Ptr("cbfe124a-6971-4c90-a7a9-99be82def1ab"),
-	// 			ProvisioningState: to.Ptr(armdeviceregistry.ProvisioningStateSucceeded),
-	// 			Messaging: &armdeviceregistry.Messaging{
-	// 				Endpoints: map[string]*armdeviceregistry.MessagingEndpoint{
-	// 					"iothubEndpoint1": &armdeviceregistry.MessagingEndpoint{
-	// 						EndpointType: to.Ptr("Microsoft.Devices/IotHubs"),
-	// 						Address: to.Ptr("https://iothub-for-dps.azure-devices.net/api/events"),
-	// 					},
-	// 					"iothubEndpoint2": &armdeviceregistry.MessagingEndpoint{
-	// 						EndpointType: to.Ptr("Microsoft.Devices/IotHubs"),
-	// 						Address: to.Ptr("https://iothub-for-dps-2.azure-devices.net"),
-	// 					},
-	// 					"iothubEndpoint3": &armdeviceregistry.MessagingEndpoint{
-	// 						EndpointType: to.Ptr("Microsoft.Devices/IotHubs"),
-	// 						Address: to.Ptr("https://iothub-for-dps-3.azure-devices.net"),
-	// 					},
-	// 				},
-	// 			},
-	// 		},
-	// 	},
-	// }
 }

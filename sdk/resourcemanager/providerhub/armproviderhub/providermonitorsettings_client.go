@@ -68,7 +68,7 @@ func (client *ProviderMonitorSettingsClient) BeginCreate(ctx context.Context, re
 	}
 }
 
-// Create - Creates the provider monitor setting.
+// create - Creates the provider monitor setting.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ProviderMonitorSettingsClient) create(ctx context.Context, resourceGroupName string, providerMonitorSettingName string, properties ProviderMonitorSetting, options *ProviderMonitorSettingsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
@@ -90,7 +90,7 @@ func (client *ProviderMonitorSettingsClient) create(ctx context.Context, resourc
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *ProviderMonitorSettingsClient) createCreateRequest(ctx context.Context, resourceGroupName string, providerMonitorSettingName string, properties ProviderMonitorSetting, _ *ProviderMonitorSettingsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ProviderHub/providerMonitorSettings/{providerMonitorSettingName}"
 	if client.subscriptionID == "" {

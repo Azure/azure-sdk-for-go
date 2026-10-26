@@ -30,6 +30,10 @@ type InboundEndpointsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, dnsResolverName string, inboundEndpointName string, options *armdnsresolver.InboundEndpointsClientBeginDeleteOptions) (resp azfake.PollerResponder[armdnsresolver.InboundEndpointsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method InboundEndpointsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, dnsResolverName string, inboundEndpointName string, parameters armdnsresolver.InboundEndpointPatch, options *armdnsresolver.InboundEndpointsClientBeginUpdateOptions) (resp azfake.PollerResponder[armdnsresolver.InboundEndpointsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method InboundEndpointsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, dnsResolverName string, inboundEndpointName string, options *armdnsresolver.InboundEndpointsClientGetOptions) (resp azfake.Responder[armdnsresolver.InboundEndpointsClientGetResponse], errResp azfake.ErrorResponder)
@@ -37,10 +41,6 @@ type InboundEndpointsServer struct {
 	// NewListPager is the fake for method InboundEndpointsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(resourceGroupName string, dnsResolverName string, options *armdnsresolver.InboundEndpointsClientListOptions) (resp azfake.PagerResponder[armdnsresolver.InboundEndpointsClientListResponse])
-
-	// BeginUpdate is the fake for method InboundEndpointsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, dnsResolverName string, inboundEndpointName string, parameters armdnsresolver.InboundEndpointPatch, options *armdnsresolver.InboundEndpointsClientBeginUpdateOptions) (resp azfake.PollerResponder[armdnsresolver.InboundEndpointsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewInboundEndpointsServerTransport creates a new instance of InboundEndpointsServerTransport with the provided implementation.
@@ -51,8 +51,8 @@ func NewInboundEndpointsServerTransport(srv *InboundEndpointsServer) *InboundEnd
 		srv:                 srv,
 		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armdnsresolver.InboundEndpointsClientCreateOrUpdateResponse]](),
 		beginDelete:         newTracker[azfake.PollerResponder[armdnsresolver.InboundEndpointsClientDeleteResponse]](),
-		newListPager:        newTracker[azfake.PagerResponder[armdnsresolver.InboundEndpointsClientListResponse]](),
 		beginUpdate:         newTracker[azfake.PollerResponder[armdnsresolver.InboundEndpointsClientUpdateResponse]](),
+		newListPager:        newTracker[azfake.PagerResponder[armdnsresolver.InboundEndpointsClientListResponse]](),
 	}
 }
 
@@ -62,8 +62,8 @@ type InboundEndpointsServerTransport struct {
 	srv                 *InboundEndpointsServer
 	beginCreateOrUpdate *tracker[azfake.PollerResponder[armdnsresolver.InboundEndpointsClientCreateOrUpdateResponse]]
 	beginDelete         *tracker[azfake.PollerResponder[armdnsresolver.InboundEndpointsClientDeleteResponse]]
-	newListPager        *tracker[azfake.PagerResponder[armdnsresolver.InboundEndpointsClientListResponse]]
 	beginUpdate         *tracker[azfake.PollerResponder[armdnsresolver.InboundEndpointsClientUpdateResponse]]
+	newListPager        *tracker[azfake.PagerResponder[armdnsresolver.InboundEndpointsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for InboundEndpointsServerTransport.
@@ -91,12 +91,12 @@ func (i *InboundEndpointsServerTransport) dispatchToMethodFake(req *http.Request
 				res.resp, res.err = i.dispatchBeginCreateOrUpdate(req)
 			case "InboundEndpointsClient.BeginDelete":
 				res.resp, res.err = i.dispatchBeginDelete(req)
+			case "InboundEndpointsClient.BeginUpdate":
+				res.resp, res.err = i.dispatchBeginUpdate(req)
 			case "InboundEndpointsClient.Get":
 				res.resp, res.err = i.dispatchGet(req)
 			case "InboundEndpointsClient.NewListPager":
 				res.resp, res.err = i.dispatchNewListPager(req)
-			case "InboundEndpointsClient.BeginUpdate":
-				res.resp, res.err = i.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -229,6 +229,65 @@ func (i *InboundEndpointsServerTransport) dispatchBeginDelete(req *http.Request)
 	return resp, nil
 }
 
+func (i *InboundEndpointsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if i.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := i.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/dnsResolvers/(?P<dnsResolverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/inboundEndpoints/(?P<inboundEndpointName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armdnsresolver.InboundEndpointPatch](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		dnsResolverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("dnsResolverName")])
+		if err != nil {
+			return nil, err
+		}
+		inboundEndpointNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("inboundEndpointName")])
+		if err != nil {
+			return nil, err
+		}
+		ifMatchParam := getOptional(getHeaderValue(req.Header, "if-match"))
+		var options *armdnsresolver.InboundEndpointsClientBeginUpdateOptions
+		if ifMatchParam != nil {
+			options = &armdnsresolver.InboundEndpointsClientBeginUpdateOptions{
+				IfMatch: ifMatchParam,
+			}
+		}
+		respr, errRespr := i.srv.BeginUpdate(req.Context(), resourceGroupNameParam, dnsResolverNameParam, inboundEndpointNameParam, body, options)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		i.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		i.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		i.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (i *InboundEndpointsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if i.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -321,65 +380,6 @@ func (i *InboundEndpointsServerTransport) dispatchNewListPager(req *http.Request
 	if !server.PagerResponderMore(newListPager) {
 		i.newListPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (i *InboundEndpointsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if i.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := i.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/dnsResolvers/(?P<dnsResolverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/inboundEndpoints/(?P<inboundEndpointName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armdnsresolver.InboundEndpointPatch](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		dnsResolverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("dnsResolverName")])
-		if err != nil {
-			return nil, err
-		}
-		inboundEndpointNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("inboundEndpointName")])
-		if err != nil {
-			return nil, err
-		}
-		ifMatchParam := getOptional(getHeaderValue(req.Header, "if-match"))
-		var options *armdnsresolver.InboundEndpointsClientBeginUpdateOptions
-		if ifMatchParam != nil {
-			options = &armdnsresolver.InboundEndpointsClientBeginUpdateOptions{
-				IfMatch: ifMatchParam,
-			}
-		}
-		respr, errRespr := i.srv.BeginUpdate(req.Context(), resourceGroupNameParam, dnsResolverNameParam, inboundEndpointNameParam, body, options)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		i.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		i.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		i.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

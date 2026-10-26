@@ -50,6 +50,14 @@ type LocalRulestacksServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	ListAdvancedSecurityObjects func(ctx context.Context, resourceGroupName string, localRulestackName string, typeParam armpanngfw.AdvSecurityObjectTypeEnum, options *armpanngfw.LocalRulestacksClientListAdvancedSecurityObjectsOptions) (resp azfake.Responder[armpanngfw.LocalRulestacksClientListAdvancedSecurityObjectsResponse], errResp azfake.ErrorResponder)
 
+	// ListFirewalls is the fake for method LocalRulestacksClient.ListFirewalls
+	// HTTP status codes to indicate success: http.StatusOK
+	ListFirewalls func(ctx context.Context, resourceGroupName string, localRulestackName string, options *armpanngfw.LocalRulestacksClientListFirewallsOptions) (resp azfake.Responder[armpanngfw.LocalRulestacksClientListFirewallsResponse], errResp azfake.ErrorResponder)
+
+	// ListSecurityServices is the fake for method LocalRulestacksClient.ListSecurityServices
+	// HTTP status codes to indicate success: http.StatusOK
+	ListSecurityServices func(ctx context.Context, resourceGroupName string, localRulestackName string, typeParam armpanngfw.SecurityServicesTypeEnum, options *armpanngfw.LocalRulestacksClientListSecurityServicesOptions) (resp azfake.Responder[armpanngfw.LocalRulestacksClientListSecurityServicesResponse], errResp azfake.ErrorResponder)
+
 	// NewListAppIDsPager is the fake for method LocalRulestacksClient.NewListAppIDsPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListAppIDsPager func(resourceGroupName string, localRulestackName string, options *armpanngfw.LocalRulestacksClientListAppIDsOptions) (resp azfake.PagerResponder[armpanngfw.LocalRulestacksClientListAppIDsResponse])
@@ -66,17 +74,9 @@ type LocalRulestacksServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListCountriesPager func(resourceGroupName string, localRulestackName string, options *armpanngfw.LocalRulestacksClientListCountriesOptions) (resp azfake.PagerResponder[armpanngfw.LocalRulestacksClientListCountriesResponse])
 
-	// ListFirewalls is the fake for method LocalRulestacksClient.ListFirewalls
-	// HTTP status codes to indicate success: http.StatusOK
-	ListFirewalls func(ctx context.Context, resourceGroupName string, localRulestackName string, options *armpanngfw.LocalRulestacksClientListFirewallsOptions) (resp azfake.Responder[armpanngfw.LocalRulestacksClientListFirewallsResponse], errResp azfake.ErrorResponder)
-
 	// NewListPredefinedURLCategoriesPager is the fake for method LocalRulestacksClient.NewListPredefinedURLCategoriesPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPredefinedURLCategoriesPager func(resourceGroupName string, localRulestackName string, options *armpanngfw.LocalRulestacksClientListPredefinedURLCategoriesOptions) (resp azfake.PagerResponder[armpanngfw.LocalRulestacksClientListPredefinedURLCategoriesResponse])
-
-	// ListSecurityServices is the fake for method LocalRulestacksClient.ListSecurityServices
-	// HTTP status codes to indicate success: http.StatusOK
-	ListSecurityServices func(ctx context.Context, resourceGroupName string, localRulestackName string, typeParam armpanngfw.SecurityServicesTypeEnum, options *armpanngfw.LocalRulestacksClientListSecurityServicesOptions) (resp azfake.Responder[armpanngfw.LocalRulestacksClientListSecurityServicesResponse], errResp azfake.ErrorResponder)
 
 	// Revert is the fake for method LocalRulestacksClient.Revert
 	// HTTP status codes to indicate success: http.StatusNoContent
@@ -153,6 +153,10 @@ func (l *LocalRulestacksServerTransport) dispatchToMethodFake(req *http.Request,
 				res.resp, res.err = l.dispatchGetSupportInfo(req)
 			case "LocalRulestacksClient.ListAdvancedSecurityObjects":
 				res.resp, res.err = l.dispatchListAdvancedSecurityObjects(req)
+			case "LocalRulestacksClient.ListFirewalls":
+				res.resp, res.err = l.dispatchListFirewalls(req)
+			case "LocalRulestacksClient.ListSecurityServices":
+				res.resp, res.err = l.dispatchListSecurityServices(req)
 			case "LocalRulestacksClient.NewListAppIDsPager":
 				res.resp, res.err = l.dispatchNewListAppIDsPager(req)
 			case "LocalRulestacksClient.NewListByResourceGroupPager":
@@ -161,12 +165,8 @@ func (l *LocalRulestacksServerTransport) dispatchToMethodFake(req *http.Request,
 				res.resp, res.err = l.dispatchNewListBySubscriptionPager(req)
 			case "LocalRulestacksClient.NewListCountriesPager":
 				res.resp, res.err = l.dispatchNewListCountriesPager(req)
-			case "LocalRulestacksClient.ListFirewalls":
-				res.resp, res.err = l.dispatchListFirewalls(req)
 			case "LocalRulestacksClient.NewListPredefinedURLCategoriesPager":
 				res.resp, res.err = l.dispatchNewListPredefinedURLCategoriesPager(req)
-			case "LocalRulestacksClient.ListSecurityServices":
-				res.resp, res.err = l.dispatchListSecurityServices(req)
 			case "LocalRulestacksClient.Revert":
 				res.resp, res.err = l.dispatchRevert(req)
 			case "LocalRulestacksClient.Update":
@@ -482,6 +482,91 @@ func (l *LocalRulestacksServerTransport) dispatchListAdvancedSecurityObjects(req
 	return resp, nil
 }
 
+func (l *LocalRulestacksServerTransport) dispatchListFirewalls(req *http.Request) (*http.Response, error) {
+	if l.srv.ListFirewalls == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListFirewalls not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/PaloAltoNetworks\.Cloudngfw/localRulestacks/(?P<localRulestackName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listFirewalls`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	localRulestackNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("localRulestackName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := l.srv.ListFirewalls(req.Context(), resourceGroupNameParam, localRulestackNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ListFirewallsResponse, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (l *LocalRulestacksServerTransport) dispatchListSecurityServices(req *http.Request) (*http.Response, error) {
+	if l.srv.ListSecurityServices == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListSecurityServices not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/PaloAltoNetworks\.Cloudngfw/localRulestacks/(?P<localRulestackName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listSecurityServices`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	qp := req.URL.Query()
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	localRulestackNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("localRulestackName")])
+	if err != nil {
+		return nil, err
+	}
+	skipParam := getOptional(qp.Get("skip"))
+	topParam, err := parseOptional(qp.Get("top"), func(v string) (int32, error) {
+		p, parseErr := strconv.ParseInt(v, 10, 32)
+		if parseErr != nil {
+			return 0, parseErr
+		}
+		return int32(p), nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	var options *armpanngfw.LocalRulestacksClientListSecurityServicesOptions
+	if skipParam != nil || topParam != nil {
+		options = &armpanngfw.LocalRulestacksClientListSecurityServicesOptions{
+			Skip: skipParam,
+			Top:  topParam,
+		}
+	}
+	respr, errRespr := l.srv.ListSecurityServices(req.Context(), resourceGroupNameParam, localRulestackNameParam, armpanngfw.SecurityServicesTypeEnum(qp.Get("type")), options)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SecurityServicesResponse, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (l *LocalRulestacksServerTransport) dispatchNewListAppIDsPager(req *http.Request) (*http.Response, error) {
 	if l.srv.NewListAppIDsPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListAppIDsPager not implemented")}
@@ -676,39 +761,6 @@ func (l *LocalRulestacksServerTransport) dispatchNewListCountriesPager(req *http
 	return resp, nil
 }
 
-func (l *LocalRulestacksServerTransport) dispatchListFirewalls(req *http.Request) (*http.Response, error) {
-	if l.srv.ListFirewalls == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListFirewalls not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/PaloAltoNetworks\.Cloudngfw/localRulestacks/(?P<localRulestackName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listFirewalls`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	localRulestackNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("localRulestackName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := l.srv.ListFirewalls(req.Context(), resourceGroupNameParam, localRulestackNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ListFirewallsResponse, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (l *LocalRulestacksServerTransport) dispatchNewListPredefinedURLCategoriesPager(req *http.Request) (*http.Response, error) {
 	if l.srv.NewListPredefinedURLCategoriesPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPredefinedURLCategoriesPager not implemented")}
@@ -765,58 +817,6 @@ func (l *LocalRulestacksServerTransport) dispatchNewListPredefinedURLCategoriesP
 	}
 	if !server.PagerResponderMore(newListPredefinedURLCategoriesPager) {
 		l.newListPredefinedURLCategoriesPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (l *LocalRulestacksServerTransport) dispatchListSecurityServices(req *http.Request) (*http.Response, error) {
-	if l.srv.ListSecurityServices == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListSecurityServices not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/PaloAltoNetworks\.Cloudngfw/localRulestacks/(?P<localRulestackName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listSecurityServices`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	qp := req.URL.Query()
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	localRulestackNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("localRulestackName")])
-	if err != nil {
-		return nil, err
-	}
-	skipParam := getOptional(qp.Get("skip"))
-	topParam, err := parseOptional(qp.Get("top"), func(v string) (int32, error) {
-		p, parseErr := strconv.ParseInt(v, 10, 32)
-		if parseErr != nil {
-			return 0, parseErr
-		}
-		return int32(p), nil
-	})
-	if err != nil {
-		return nil, err
-	}
-	var options *armpanngfw.LocalRulestacksClientListSecurityServicesOptions
-	if skipParam != nil || topParam != nil {
-		options = &armpanngfw.LocalRulestacksClientListSecurityServicesOptions{
-			Skip: skipParam,
-			Top:  topParam,
-		}
-	}
-	respr, errRespr := l.srv.ListSecurityServices(req.Context(), resourceGroupNameParam, localRulestackNameParam, armpanngfw.SecurityServicesTypeEnum(qp.Get("type")), options)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SecurityServicesResponse, req)
-	if err != nil {
-		return nil, err
 	}
 	return resp, nil
 }

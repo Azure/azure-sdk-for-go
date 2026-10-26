@@ -128,7 +128,7 @@ func (client *CloudAccountsClient) createOrUpdateCreateRequest(ctx context.Conte
 //     method.
 func (client *CloudAccountsClient) BeginDelete(ctx context.Context, resourceGroupName string, cloudAccountName string, options *CloudAccountsClientBeginDeleteOptions) (*runtime.Poller[CloudAccountsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, cloudAccountName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, cloudAccountName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -143,9 +143,9 @@ func (client *CloudAccountsClient) BeginDelete(ctx context.Context, resourceGrou
 	}
 }
 
-// delete - Delete a CloudAccount
+// deleteOperation - Delete a CloudAccount
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *CloudAccountsClient) delete(ctx context.Context, resourceGroupName string, cloudAccountName string, options *CloudAccountsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *CloudAccountsClient) deleteOperation(ctx context.Context, resourceGroupName string, cloudAccountName string, options *CloudAccountsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CloudAccountsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)

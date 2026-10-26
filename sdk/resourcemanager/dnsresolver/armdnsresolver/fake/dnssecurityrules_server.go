@@ -30,6 +30,10 @@ type DNSSecurityRulesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, dnsResolverPolicyName string, dnsSecurityRuleName string, options *armdnsresolver.DNSSecurityRulesClientBeginDeleteOptions) (resp azfake.PollerResponder[armdnsresolver.DNSSecurityRulesClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method DNSSecurityRulesClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, dnsResolverPolicyName string, dnsSecurityRuleName string, parameters armdnsresolver.DNSSecurityRulePatch, options *armdnsresolver.DNSSecurityRulesClientBeginUpdateOptions) (resp azfake.PollerResponder[armdnsresolver.DNSSecurityRulesClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method DNSSecurityRulesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, dnsResolverPolicyName string, dnsSecurityRuleName string, options *armdnsresolver.DNSSecurityRulesClientGetOptions) (resp azfake.Responder[armdnsresolver.DNSSecurityRulesClientGetResponse], errResp azfake.ErrorResponder)
@@ -37,10 +41,6 @@ type DNSSecurityRulesServer struct {
 	// NewListPager is the fake for method DNSSecurityRulesClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(resourceGroupName string, dnsResolverPolicyName string, options *armdnsresolver.DNSSecurityRulesClientListOptions) (resp azfake.PagerResponder[armdnsresolver.DNSSecurityRulesClientListResponse])
-
-	// BeginUpdate is the fake for method DNSSecurityRulesClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, dnsResolverPolicyName string, dnsSecurityRuleName string, parameters armdnsresolver.DNSSecurityRulePatch, options *armdnsresolver.DNSSecurityRulesClientBeginUpdateOptions) (resp azfake.PollerResponder[armdnsresolver.DNSSecurityRulesClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewDNSSecurityRulesServerTransport creates a new instance of DNSSecurityRulesServerTransport with the provided implementation.
@@ -51,8 +51,8 @@ func NewDNSSecurityRulesServerTransport(srv *DNSSecurityRulesServer) *DNSSecurit
 		srv:                 srv,
 		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armdnsresolver.DNSSecurityRulesClientCreateOrUpdateResponse]](),
 		beginDelete:         newTracker[azfake.PollerResponder[armdnsresolver.DNSSecurityRulesClientDeleteResponse]](),
-		newListPager:        newTracker[azfake.PagerResponder[armdnsresolver.DNSSecurityRulesClientListResponse]](),
 		beginUpdate:         newTracker[azfake.PollerResponder[armdnsresolver.DNSSecurityRulesClientUpdateResponse]](),
+		newListPager:        newTracker[azfake.PagerResponder[armdnsresolver.DNSSecurityRulesClientListResponse]](),
 	}
 }
 
@@ -62,8 +62,8 @@ type DNSSecurityRulesServerTransport struct {
 	srv                 *DNSSecurityRulesServer
 	beginCreateOrUpdate *tracker[azfake.PollerResponder[armdnsresolver.DNSSecurityRulesClientCreateOrUpdateResponse]]
 	beginDelete         *tracker[azfake.PollerResponder[armdnsresolver.DNSSecurityRulesClientDeleteResponse]]
-	newListPager        *tracker[azfake.PagerResponder[armdnsresolver.DNSSecurityRulesClientListResponse]]
 	beginUpdate         *tracker[azfake.PollerResponder[armdnsresolver.DNSSecurityRulesClientUpdateResponse]]
+	newListPager        *tracker[azfake.PagerResponder[armdnsresolver.DNSSecurityRulesClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for DNSSecurityRulesServerTransport.
@@ -91,12 +91,12 @@ func (d *DNSSecurityRulesServerTransport) dispatchToMethodFake(req *http.Request
 				res.resp, res.err = d.dispatchBeginCreateOrUpdate(req)
 			case "DNSSecurityRulesClient.BeginDelete":
 				res.resp, res.err = d.dispatchBeginDelete(req)
+			case "DNSSecurityRulesClient.BeginUpdate":
+				res.resp, res.err = d.dispatchBeginUpdate(req)
 			case "DNSSecurityRulesClient.Get":
 				res.resp, res.err = d.dispatchGet(req)
 			case "DNSSecurityRulesClient.NewListPager":
 				res.resp, res.err = d.dispatchNewListPager(req)
-			case "DNSSecurityRulesClient.BeginUpdate":
-				res.resp, res.err = d.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -229,6 +229,65 @@ func (d *DNSSecurityRulesServerTransport) dispatchBeginDelete(req *http.Request)
 	return resp, nil
 }
 
+func (d *DNSSecurityRulesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if d.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := d.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/dnsResolverPolicies/(?P<dnsResolverPolicyName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/dnsSecurityRules/(?P<dnsSecurityRuleName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armdnsresolver.DNSSecurityRulePatch](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		dnsResolverPolicyNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("dnsResolverPolicyName")])
+		if err != nil {
+			return nil, err
+		}
+		dnsSecurityRuleNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("dnsSecurityRuleName")])
+		if err != nil {
+			return nil, err
+		}
+		ifMatchParam := getOptional(getHeaderValue(req.Header, "if-match"))
+		var options *armdnsresolver.DNSSecurityRulesClientBeginUpdateOptions
+		if ifMatchParam != nil {
+			options = &armdnsresolver.DNSSecurityRulesClientBeginUpdateOptions{
+				IfMatch: ifMatchParam,
+			}
+		}
+		respr, errRespr := d.srv.BeginUpdate(req.Context(), resourceGroupNameParam, dnsResolverPolicyNameParam, dnsSecurityRuleNameParam, body, options)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		d.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		d.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		d.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (d *DNSSecurityRulesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if d.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -321,65 +380,6 @@ func (d *DNSSecurityRulesServerTransport) dispatchNewListPager(req *http.Request
 	if !server.PagerResponderMore(newListPager) {
 		d.newListPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (d *DNSSecurityRulesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if d.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := d.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/dnsResolverPolicies/(?P<dnsResolverPolicyName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/dnsSecurityRules/(?P<dnsSecurityRuleName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armdnsresolver.DNSSecurityRulePatch](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		dnsResolverPolicyNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("dnsResolverPolicyName")])
-		if err != nil {
-			return nil, err
-		}
-		dnsSecurityRuleNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("dnsSecurityRuleName")])
-		if err != nil {
-			return nil, err
-		}
-		ifMatchParam := getOptional(getHeaderValue(req.Header, "if-match"))
-		var options *armdnsresolver.DNSSecurityRulesClientBeginUpdateOptions
-		if ifMatchParam != nil {
-			options = &armdnsresolver.DNSSecurityRulesClientBeginUpdateOptions{
-				IfMatch: ifMatchParam,
-			}
-		}
-		respr, errRespr := d.srv.BeginUpdate(req.Context(), resourceGroupNameParam, dnsResolverPolicyNameParam, dnsSecurityRuleNameParam, body, options)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		d.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		d.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		d.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

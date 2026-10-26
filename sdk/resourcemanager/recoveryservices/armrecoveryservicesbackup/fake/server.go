@@ -22,19 +22,19 @@ import (
 type Server struct {
 	// BeginBMSPrepareDataMove is the fake for method Client.BeginBMSPrepareDataMove
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginBMSPrepareDataMove func(ctx context.Context, vaultName string, resourceGroupName string, parameters armrecoveryservicesbackup.PrepareDataMoveRequest, options *armrecoveryservicesbackup.ClientBeginBMSPrepareDataMoveOptions) (resp azfake.PollerResponder[armrecoveryservicesbackup.ClientBMSPrepareDataMoveResponse], errResp azfake.ErrorResponder)
+	BeginBMSPrepareDataMove func(ctx context.Context, vaultName string, resourceGroupName string, parameters armrecoveryservicesbackup.PrepareDataMoveRequest, options *armrecoveryservicesbackup.ClientBeginBMSPrepareDataMoveOptions) (resp azfake.PollerResponder[armrecoveryservicesbackup.ClientBmsPrepareDataMoveResponse], errResp azfake.ErrorResponder)
 
 	// BeginBMSTriggerDataMove is the fake for method Client.BeginBMSTriggerDataMove
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginBMSTriggerDataMove func(ctx context.Context, vaultName string, resourceGroupName string, parameters armrecoveryservicesbackup.TriggerDataMoveRequest, options *armrecoveryservicesbackup.ClientBeginBMSTriggerDataMoveOptions) (resp azfake.PollerResponder[armrecoveryservicesbackup.ClientBMSTriggerDataMoveResponse], errResp azfake.ErrorResponder)
-
-	// GetOperationStatus is the fake for method Client.GetOperationStatus
-	// HTTP status codes to indicate success: http.StatusOK
-	GetOperationStatus func(ctx context.Context, vaultName string, resourceGroupName string, operationID string, options *armrecoveryservicesbackup.ClientGetOperationStatusOptions) (resp azfake.Responder[armrecoveryservicesbackup.ClientGetOperationStatusResponse], errResp azfake.ErrorResponder)
+	BeginBMSTriggerDataMove func(ctx context.Context, vaultName string, resourceGroupName string, parameters armrecoveryservicesbackup.TriggerDataMoveRequest, options *armrecoveryservicesbackup.ClientBeginBMSTriggerDataMoveOptions) (resp azfake.PollerResponder[armrecoveryservicesbackup.ClientBmsTriggerDataMoveResponse], errResp azfake.ErrorResponder)
 
 	// BeginMoveRecoveryPoint is the fake for method Client.BeginMoveRecoveryPoint
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginMoveRecoveryPoint func(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, recoveryPointID string, parameters armrecoveryservicesbackup.MoveRPAcrossTiersRequest, options *armrecoveryservicesbackup.ClientBeginMoveRecoveryPointOptions) (resp azfake.PollerResponder[armrecoveryservicesbackup.ClientMoveRecoveryPointResponse], errResp azfake.ErrorResponder)
+
+	// GetOperationStatus is the fake for method Client.GetOperationStatus
+	// HTTP status codes to indicate success: http.StatusOK
+	GetOperationStatus func(ctx context.Context, vaultName string, resourceGroupName string, operationID string, options *armrecoveryservicesbackup.ClientGetOperationStatusOptions) (resp azfake.Responder[armrecoveryservicesbackup.ClientGetOperationStatusResponse], errResp azfake.ErrorResponder)
 }
 
 // NewServerTransport creates a new instance of ServerTransport with the provided implementation.
@@ -43,8 +43,8 @@ type Server struct {
 func NewServerTransport(srv *Server) *ServerTransport {
 	return &ServerTransport{
 		srv:                     srv,
-		beginBMSPrepareDataMove: newTracker[azfake.PollerResponder[armrecoveryservicesbackup.ClientBMSPrepareDataMoveResponse]](),
-		beginBMSTriggerDataMove: newTracker[azfake.PollerResponder[armrecoveryservicesbackup.ClientBMSTriggerDataMoveResponse]](),
+		beginBMSPrepareDataMove: newTracker[azfake.PollerResponder[armrecoveryservicesbackup.ClientBmsPrepareDataMoveResponse]](),
+		beginBMSTriggerDataMove: newTracker[azfake.PollerResponder[armrecoveryservicesbackup.ClientBmsTriggerDataMoveResponse]](),
 		beginMoveRecoveryPoint:  newTracker[azfake.PollerResponder[armrecoveryservicesbackup.ClientMoveRecoveryPointResponse]](),
 	}
 }
@@ -53,8 +53,8 @@ func NewServerTransport(srv *Server) *ServerTransport {
 // Don't use this type directly, use NewServerTransport instead.
 type ServerTransport struct {
 	srv                     *Server
-	beginBMSPrepareDataMove *tracker[azfake.PollerResponder[armrecoveryservicesbackup.ClientBMSPrepareDataMoveResponse]]
-	beginBMSTriggerDataMove *tracker[azfake.PollerResponder[armrecoveryservicesbackup.ClientBMSTriggerDataMoveResponse]]
+	beginBMSPrepareDataMove *tracker[azfake.PollerResponder[armrecoveryservicesbackup.ClientBmsPrepareDataMoveResponse]]
+	beginBMSTriggerDataMove *tracker[azfake.PollerResponder[armrecoveryservicesbackup.ClientBmsTriggerDataMoveResponse]]
 	beginMoveRecoveryPoint  *tracker[azfake.PollerResponder[armrecoveryservicesbackup.ClientMoveRecoveryPointResponse]]
 }
 
@@ -83,10 +83,10 @@ func (s *ServerTransport) dispatchToMethodFake(req *http.Request, method string)
 				res.resp, res.err = s.dispatchBeginBMSPrepareDataMove(req)
 			case "Client.BeginBMSTriggerDataMove":
 				res.resp, res.err = s.dispatchBeginBMSTriggerDataMove(req)
-			case "Client.GetOperationStatus":
-				res.resp, res.err = s.dispatchGetOperationStatus(req)
 			case "Client.BeginMoveRecoveryPoint":
 				res.resp, res.err = s.dispatchBeginMoveRecoveryPoint(req)
+			case "Client.GetOperationStatus":
+				res.resp, res.err = s.dispatchGetOperationStatus(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -199,43 +199,6 @@ func (s *ServerTransport) dispatchBeginBMSTriggerDataMove(req *http.Request) (*h
 	return resp, nil
 }
 
-func (s *ServerTransport) dispatchGetOperationStatus(req *http.Request) (*http.Response, error) {
-	if s.srv.GetOperationStatus == nil {
-		return nil, &nonRetriableError{errors.New("fake for method GetOperationStatus not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<vaultName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/backupstorageconfig/vaultstorageconfig/operationStatus/(?P<operationId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	vaultNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("vaultName")])
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	operationIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("operationId")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := s.srv.GetOperationStatus(req.Context(), vaultNameParam, resourceGroupNameParam, operationIDParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).OperationStatus, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (s *ServerTransport) dispatchBeginMoveRecoveryPoint(req *http.Request) (*http.Response, error) {
 	if s.srv.BeginMoveRecoveryPoint == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginMoveRecoveryPoint not implemented")}
@@ -297,6 +260,43 @@ func (s *ServerTransport) dispatchBeginMoveRecoveryPoint(req *http.Request) (*ht
 		s.beginMoveRecoveryPoint.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (s *ServerTransport) dispatchGetOperationStatus(req *http.Request) (*http.Response, error) {
+	if s.srv.GetOperationStatus == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetOperationStatus not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<vaultName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/backupstorageconfig/vaultstorageconfig/operationStatus/(?P<operationId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	vaultNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("vaultName")])
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	operationIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("operationId")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.GetOperationStatus(req.Context(), vaultNameParam, resourceGroupNameParam, operationIDParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).OperationStatus, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 

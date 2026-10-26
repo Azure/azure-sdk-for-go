@@ -29,6 +29,10 @@ type FreeServicesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, freeServiceName string, options *armbillingbenefits.FreeServicesClientBeginDeleteOptions) (resp azfake.PollerResponder[armbillingbenefits.FreeServicesClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method FreeServicesClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, freeServiceName string, body armbillingbenefits.FreeServicesPatchRequest, options *armbillingbenefits.FreeServicesClientBeginUpdateOptions) (resp azfake.PollerResponder[armbillingbenefits.FreeServicesClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method FreeServicesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, freeServiceName string, options *armbillingbenefits.FreeServicesClientGetOptions) (resp azfake.Responder[armbillingbenefits.FreeServicesClientGetResponse], errResp azfake.ErrorResponder)
@@ -40,10 +44,6 @@ type FreeServicesServer struct {
 	// NewListBySubscriptionPager is the fake for method FreeServicesClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armbillingbenefits.FreeServicesClientListBySubscriptionOptions) (resp azfake.PagerResponder[armbillingbenefits.FreeServicesClientListBySubscriptionResponse])
-
-	// BeginUpdate is the fake for method FreeServicesClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, freeServiceName string, body armbillingbenefits.FreeServicesPatchRequest, options *armbillingbenefits.FreeServicesClientBeginUpdateOptions) (resp azfake.PollerResponder[armbillingbenefits.FreeServicesClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewFreeServicesServerTransport creates a new instance of FreeServicesServerTransport with the provided implementation.
@@ -54,9 +54,9 @@ func NewFreeServicesServerTransport(srv *FreeServicesServer) *FreeServicesServer
 		srv:                         srv,
 		beginCreate:                 newTracker[azfake.PollerResponder[armbillingbenefits.FreeServicesClientCreateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armbillingbenefits.FreeServicesClientDeleteResponse]](),
+		beginUpdate:                 newTracker[azfake.PollerResponder[armbillingbenefits.FreeServicesClientUpdateResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armbillingbenefits.FreeServicesClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armbillingbenefits.FreeServicesClientListBySubscriptionResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armbillingbenefits.FreeServicesClientUpdateResponse]](),
 	}
 }
 
@@ -66,9 +66,9 @@ type FreeServicesServerTransport struct {
 	srv                         *FreeServicesServer
 	beginCreate                 *tracker[azfake.PollerResponder[armbillingbenefits.FreeServicesClientCreateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armbillingbenefits.FreeServicesClientDeleteResponse]]
+	beginUpdate                 *tracker[azfake.PollerResponder[armbillingbenefits.FreeServicesClientUpdateResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armbillingbenefits.FreeServicesClientListByResourceGroupResponse]]
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armbillingbenefits.FreeServicesClientListBySubscriptionResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armbillingbenefits.FreeServicesClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for FreeServicesServerTransport.
@@ -96,14 +96,14 @@ func (f *FreeServicesServerTransport) dispatchToMethodFake(req *http.Request, me
 				res.resp, res.err = f.dispatchBeginCreate(req)
 			case "FreeServicesClient.BeginDelete":
 				res.resp, res.err = f.dispatchBeginDelete(req)
+			case "FreeServicesClient.BeginUpdate":
+				res.resp, res.err = f.dispatchBeginUpdate(req)
 			case "FreeServicesClient.Get":
 				res.resp, res.err = f.dispatchGet(req)
 			case "FreeServicesClient.NewListByResourceGroupPager":
 				res.resp, res.err = f.dispatchNewListByResourceGroupPager(req)
 			case "FreeServicesClient.NewListBySubscriptionPager":
 				res.resp, res.err = f.dispatchNewListBySubscriptionPager(req)
-			case "FreeServicesClient.BeginUpdate":
-				res.resp, res.err = f.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -212,6 +212,54 @@ func (f *FreeServicesServerTransport) dispatchBeginDelete(req *http.Request) (*h
 	return resp, nil
 }
 
+func (f *FreeServicesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if f.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := f.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.BillingBenefits/freeServices/(?P<freeServiceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armbillingbenefits.FreeServicesPatchRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		freeServiceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("freeServiceName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := f.srv.BeginUpdate(req.Context(), resourceGroupNameParam, freeServiceNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		f.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		f.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		f.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (f *FreeServicesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if f.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -312,54 +360,6 @@ func (f *FreeServicesServerTransport) dispatchNewListBySubscriptionPager(req *ht
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		f.newListBySubscriptionPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (f *FreeServicesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if f.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := f.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.BillingBenefits/freeServices/(?P<freeServiceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armbillingbenefits.FreeServicesPatchRequest](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		freeServiceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("freeServiceName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := f.srv.BeginUpdate(req.Context(), resourceGroupNameParam, freeServiceNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		f.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		f.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		f.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

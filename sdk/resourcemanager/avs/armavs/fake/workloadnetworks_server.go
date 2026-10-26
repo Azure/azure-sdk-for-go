@@ -77,6 +77,30 @@ type WorkloadNetworksServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDeleteVMGroup func(ctx context.Context, resourceGroupName string, vmGroupID string, privateCloudName string, options *armavs.WorkloadNetworksClientBeginDeleteVMGroupOptions) (resp azfake.PollerResponder[armavs.WorkloadNetworksClientDeleteVMGroupResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdateDNSService is the fake for method WorkloadNetworksClient.BeginUpdateDNSService
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdateDNSService func(ctx context.Context, resourceGroupName string, privateCloudName string, dnsServiceID string, workloadNetworkDNSService armavs.WorkloadNetworkDNSService, options *armavs.WorkloadNetworksClientBeginUpdateDNSServiceOptions) (resp azfake.PollerResponder[armavs.WorkloadNetworksClientUpdateDNSServiceResponse], errResp azfake.ErrorResponder)
+
+	// BeginUpdateDNSZone is the fake for method WorkloadNetworksClient.BeginUpdateDNSZone
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdateDNSZone func(ctx context.Context, resourceGroupName string, privateCloudName string, dnsZoneID string, workloadNetworkDNSZone armavs.WorkloadNetworkDNSZone, options *armavs.WorkloadNetworksClientBeginUpdateDNSZoneOptions) (resp azfake.PollerResponder[armavs.WorkloadNetworksClientUpdateDNSZoneResponse], errResp azfake.ErrorResponder)
+
+	// BeginUpdateDhcp is the fake for method WorkloadNetworksClient.BeginUpdateDhcp
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdateDhcp func(ctx context.Context, resourceGroupName string, privateCloudName string, dhcpID string, workloadNetworkDhcp armavs.WorkloadNetworkDhcp, options *armavs.WorkloadNetworksClientBeginUpdateDhcpOptions) (resp azfake.PollerResponder[armavs.WorkloadNetworksClientUpdateDhcpResponse], errResp azfake.ErrorResponder)
+
+	// BeginUpdatePortMirroring is the fake for method WorkloadNetworksClient.BeginUpdatePortMirroring
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdatePortMirroring func(ctx context.Context, resourceGroupName string, privateCloudName string, portMirroringID string, workloadNetworkPortMirroring armavs.WorkloadNetworkPortMirroring, options *armavs.WorkloadNetworksClientBeginUpdatePortMirroringOptions) (resp azfake.PollerResponder[armavs.WorkloadNetworksClientUpdatePortMirroringResponse], errResp azfake.ErrorResponder)
+
+	// BeginUpdateSegments is the fake for method WorkloadNetworksClient.BeginUpdateSegments
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdateSegments func(ctx context.Context, resourceGroupName string, privateCloudName string, segmentID string, workloadNetworkSegment armavs.WorkloadNetworkSegment, options *armavs.WorkloadNetworksClientBeginUpdateSegmentsOptions) (resp azfake.PollerResponder[armavs.WorkloadNetworksClientUpdateSegmentsResponse], errResp azfake.ErrorResponder)
+
+	// BeginUpdateVMGroup is the fake for method WorkloadNetworksClient.BeginUpdateVMGroup
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdateVMGroup func(ctx context.Context, resourceGroupName string, privateCloudName string, vmGroupID string, workloadNetworkVMGroup armavs.WorkloadNetworkVMGroup, options *armavs.WorkloadNetworksClientBeginUpdateVMGroupOptions) (resp azfake.PollerResponder[armavs.WorkloadNetworksClientUpdateVMGroupResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method WorkloadNetworksClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, privateCloudName string, options *armavs.WorkloadNetworksClientGetOptions) (resp azfake.Responder[armavs.WorkloadNetworksClientGetResponse], errResp azfake.ErrorResponder)
@@ -117,10 +141,6 @@ type WorkloadNetworksServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetVirtualMachine func(ctx context.Context, resourceGroupName string, privateCloudName string, virtualMachineID string, options *armavs.WorkloadNetworksClientGetVirtualMachineOptions) (resp azfake.Responder[armavs.WorkloadNetworksClientGetVirtualMachineResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method WorkloadNetworksClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, privateCloudName string, options *armavs.WorkloadNetworksClientListOptions) (resp azfake.PagerResponder[armavs.WorkloadNetworksClientListResponse])
-
 	// NewListDNSServicesPager is the fake for method WorkloadNetworksClient.NewListDNSServicesPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListDNSServicesPager func(resourceGroupName string, privateCloudName string, options *armavs.WorkloadNetworksClientListDNSServicesOptions) (resp azfake.PagerResponder[armavs.WorkloadNetworksClientListDNSServicesResponse])
@@ -136,6 +156,10 @@ type WorkloadNetworksServer struct {
 	// NewListGatewaysPager is the fake for method WorkloadNetworksClient.NewListGatewaysPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListGatewaysPager func(resourceGroupName string, privateCloudName string, options *armavs.WorkloadNetworksClientListGatewaysOptions) (resp azfake.PagerResponder[armavs.WorkloadNetworksClientListGatewaysResponse])
+
+	// NewListPager is the fake for method WorkloadNetworksClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(resourceGroupName string, privateCloudName string, options *armavs.WorkloadNetworksClientListOptions) (resp azfake.PagerResponder[armavs.WorkloadNetworksClientListResponse])
 
 	// NewListPortMirroringPager is the fake for method WorkloadNetworksClient.NewListPortMirroringPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -156,30 +180,6 @@ type WorkloadNetworksServer struct {
 	// NewListVirtualMachinesPager is the fake for method WorkloadNetworksClient.NewListVirtualMachinesPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListVirtualMachinesPager func(resourceGroupName string, privateCloudName string, options *armavs.WorkloadNetworksClientListVirtualMachinesOptions) (resp azfake.PagerResponder[armavs.WorkloadNetworksClientListVirtualMachinesResponse])
-
-	// BeginUpdateDNSService is the fake for method WorkloadNetworksClient.BeginUpdateDNSService
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdateDNSService func(ctx context.Context, resourceGroupName string, privateCloudName string, dnsServiceID string, workloadNetworkDNSService armavs.WorkloadNetworkDNSService, options *armavs.WorkloadNetworksClientBeginUpdateDNSServiceOptions) (resp azfake.PollerResponder[armavs.WorkloadNetworksClientUpdateDNSServiceResponse], errResp azfake.ErrorResponder)
-
-	// BeginUpdateDNSZone is the fake for method WorkloadNetworksClient.BeginUpdateDNSZone
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdateDNSZone func(ctx context.Context, resourceGroupName string, privateCloudName string, dnsZoneID string, workloadNetworkDNSZone armavs.WorkloadNetworkDNSZone, options *armavs.WorkloadNetworksClientBeginUpdateDNSZoneOptions) (resp azfake.PollerResponder[armavs.WorkloadNetworksClientUpdateDNSZoneResponse], errResp azfake.ErrorResponder)
-
-	// BeginUpdateDhcp is the fake for method WorkloadNetworksClient.BeginUpdateDhcp
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdateDhcp func(ctx context.Context, resourceGroupName string, privateCloudName string, dhcpID string, workloadNetworkDhcp armavs.WorkloadNetworkDhcp, options *armavs.WorkloadNetworksClientBeginUpdateDhcpOptions) (resp azfake.PollerResponder[armavs.WorkloadNetworksClientUpdateDhcpResponse], errResp azfake.ErrorResponder)
-
-	// BeginUpdatePortMirroring is the fake for method WorkloadNetworksClient.BeginUpdatePortMirroring
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdatePortMirroring func(ctx context.Context, resourceGroupName string, privateCloudName string, portMirroringID string, workloadNetworkPortMirroring armavs.WorkloadNetworkPortMirroring, options *armavs.WorkloadNetworksClientBeginUpdatePortMirroringOptions) (resp azfake.PollerResponder[armavs.WorkloadNetworksClientUpdatePortMirroringResponse], errResp azfake.ErrorResponder)
-
-	// BeginUpdateSegments is the fake for method WorkloadNetworksClient.BeginUpdateSegments
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdateSegments func(ctx context.Context, resourceGroupName string, privateCloudName string, segmentID string, workloadNetworkSegment armavs.WorkloadNetworkSegment, options *armavs.WorkloadNetworksClientBeginUpdateSegmentsOptions) (resp azfake.PollerResponder[armavs.WorkloadNetworksClientUpdateSegmentsResponse], errResp azfake.ErrorResponder)
-
-	// BeginUpdateVMGroup is the fake for method WorkloadNetworksClient.BeginUpdateVMGroup
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdateVMGroup func(ctx context.Context, resourceGroupName string, privateCloudName string, vmGroupID string, workloadNetworkVMGroup armavs.WorkloadNetworkVMGroup, options *armavs.WorkloadNetworksClientBeginUpdateVMGroupOptions) (resp azfake.PollerResponder[armavs.WorkloadNetworksClientUpdateVMGroupResponse], errResp azfake.ErrorResponder)
 }
 
 // NewWorkloadNetworksServerTransport creates a new instance of WorkloadNetworksServerTransport with the provided implementation.
@@ -202,22 +202,22 @@ func NewWorkloadNetworksServerTransport(srv *WorkloadNetworksServer) *WorkloadNe
 		beginDeletePublicIP:         newTracker[azfake.PollerResponder[armavs.WorkloadNetworksClientDeletePublicIPResponse]](),
 		beginDeleteSegment:          newTracker[azfake.PollerResponder[armavs.WorkloadNetworksClientDeleteSegmentResponse]](),
 		beginDeleteVMGroup:          newTracker[azfake.PollerResponder[armavs.WorkloadNetworksClientDeleteVMGroupResponse]](),
-		newListPager:                newTracker[azfake.PagerResponder[armavs.WorkloadNetworksClientListResponse]](),
-		newListDNSServicesPager:     newTracker[azfake.PagerResponder[armavs.WorkloadNetworksClientListDNSServicesResponse]](),
-		newListDNSZonesPager:        newTracker[azfake.PagerResponder[armavs.WorkloadNetworksClientListDNSZonesResponse]](),
-		newListDhcpPager:            newTracker[azfake.PagerResponder[armavs.WorkloadNetworksClientListDhcpResponse]](),
-		newListGatewaysPager:        newTracker[azfake.PagerResponder[armavs.WorkloadNetworksClientListGatewaysResponse]](),
-		newListPortMirroringPager:   newTracker[azfake.PagerResponder[armavs.WorkloadNetworksClientListPortMirroringResponse]](),
-		newListPublicIPsPager:       newTracker[azfake.PagerResponder[armavs.WorkloadNetworksClientListPublicIPsResponse]](),
-		newListSegmentsPager:        newTracker[azfake.PagerResponder[armavs.WorkloadNetworksClientListSegmentsResponse]](),
-		newListVMGroupsPager:        newTracker[azfake.PagerResponder[armavs.WorkloadNetworksClientListVMGroupsResponse]](),
-		newListVirtualMachinesPager: newTracker[azfake.PagerResponder[armavs.WorkloadNetworksClientListVirtualMachinesResponse]](),
 		beginUpdateDNSService:       newTracker[azfake.PollerResponder[armavs.WorkloadNetworksClientUpdateDNSServiceResponse]](),
 		beginUpdateDNSZone:          newTracker[azfake.PollerResponder[armavs.WorkloadNetworksClientUpdateDNSZoneResponse]](),
 		beginUpdateDhcp:             newTracker[azfake.PollerResponder[armavs.WorkloadNetworksClientUpdateDhcpResponse]](),
 		beginUpdatePortMirroring:    newTracker[azfake.PollerResponder[armavs.WorkloadNetworksClientUpdatePortMirroringResponse]](),
 		beginUpdateSegments:         newTracker[azfake.PollerResponder[armavs.WorkloadNetworksClientUpdateSegmentsResponse]](),
 		beginUpdateVMGroup:          newTracker[azfake.PollerResponder[armavs.WorkloadNetworksClientUpdateVMGroupResponse]](),
+		newListDNSServicesPager:     newTracker[azfake.PagerResponder[armavs.WorkloadNetworksClientListDNSServicesResponse]](),
+		newListDNSZonesPager:        newTracker[azfake.PagerResponder[armavs.WorkloadNetworksClientListDNSZonesResponse]](),
+		newListDhcpPager:            newTracker[azfake.PagerResponder[armavs.WorkloadNetworksClientListDhcpResponse]](),
+		newListGatewaysPager:        newTracker[azfake.PagerResponder[armavs.WorkloadNetworksClientListGatewaysResponse]](),
+		newListPager:                newTracker[azfake.PagerResponder[armavs.WorkloadNetworksClientListResponse]](),
+		newListPortMirroringPager:   newTracker[azfake.PagerResponder[armavs.WorkloadNetworksClientListPortMirroringResponse]](),
+		newListPublicIPsPager:       newTracker[azfake.PagerResponder[armavs.WorkloadNetworksClientListPublicIPsResponse]](),
+		newListSegmentsPager:        newTracker[azfake.PagerResponder[armavs.WorkloadNetworksClientListSegmentsResponse]](),
+		newListVMGroupsPager:        newTracker[azfake.PagerResponder[armavs.WorkloadNetworksClientListVMGroupsResponse]](),
+		newListVirtualMachinesPager: newTracker[azfake.PagerResponder[armavs.WorkloadNetworksClientListVirtualMachinesResponse]](),
 	}
 }
 
@@ -239,22 +239,22 @@ type WorkloadNetworksServerTransport struct {
 	beginDeletePublicIP         *tracker[azfake.PollerResponder[armavs.WorkloadNetworksClientDeletePublicIPResponse]]
 	beginDeleteSegment          *tracker[azfake.PollerResponder[armavs.WorkloadNetworksClientDeleteSegmentResponse]]
 	beginDeleteVMGroup          *tracker[azfake.PollerResponder[armavs.WorkloadNetworksClientDeleteVMGroupResponse]]
-	newListPager                *tracker[azfake.PagerResponder[armavs.WorkloadNetworksClientListResponse]]
-	newListDNSServicesPager     *tracker[azfake.PagerResponder[armavs.WorkloadNetworksClientListDNSServicesResponse]]
-	newListDNSZonesPager        *tracker[azfake.PagerResponder[armavs.WorkloadNetworksClientListDNSZonesResponse]]
-	newListDhcpPager            *tracker[azfake.PagerResponder[armavs.WorkloadNetworksClientListDhcpResponse]]
-	newListGatewaysPager        *tracker[azfake.PagerResponder[armavs.WorkloadNetworksClientListGatewaysResponse]]
-	newListPortMirroringPager   *tracker[azfake.PagerResponder[armavs.WorkloadNetworksClientListPortMirroringResponse]]
-	newListPublicIPsPager       *tracker[azfake.PagerResponder[armavs.WorkloadNetworksClientListPublicIPsResponse]]
-	newListSegmentsPager        *tracker[azfake.PagerResponder[armavs.WorkloadNetworksClientListSegmentsResponse]]
-	newListVMGroupsPager        *tracker[azfake.PagerResponder[armavs.WorkloadNetworksClientListVMGroupsResponse]]
-	newListVirtualMachinesPager *tracker[azfake.PagerResponder[armavs.WorkloadNetworksClientListVirtualMachinesResponse]]
 	beginUpdateDNSService       *tracker[azfake.PollerResponder[armavs.WorkloadNetworksClientUpdateDNSServiceResponse]]
 	beginUpdateDNSZone          *tracker[azfake.PollerResponder[armavs.WorkloadNetworksClientUpdateDNSZoneResponse]]
 	beginUpdateDhcp             *tracker[azfake.PollerResponder[armavs.WorkloadNetworksClientUpdateDhcpResponse]]
 	beginUpdatePortMirroring    *tracker[azfake.PollerResponder[armavs.WorkloadNetworksClientUpdatePortMirroringResponse]]
 	beginUpdateSegments         *tracker[azfake.PollerResponder[armavs.WorkloadNetworksClientUpdateSegmentsResponse]]
 	beginUpdateVMGroup          *tracker[azfake.PollerResponder[armavs.WorkloadNetworksClientUpdateVMGroupResponse]]
+	newListDNSServicesPager     *tracker[azfake.PagerResponder[armavs.WorkloadNetworksClientListDNSServicesResponse]]
+	newListDNSZonesPager        *tracker[azfake.PagerResponder[armavs.WorkloadNetworksClientListDNSZonesResponse]]
+	newListDhcpPager            *tracker[azfake.PagerResponder[armavs.WorkloadNetworksClientListDhcpResponse]]
+	newListGatewaysPager        *tracker[azfake.PagerResponder[armavs.WorkloadNetworksClientListGatewaysResponse]]
+	newListPager                *tracker[azfake.PagerResponder[armavs.WorkloadNetworksClientListResponse]]
+	newListPortMirroringPager   *tracker[azfake.PagerResponder[armavs.WorkloadNetworksClientListPortMirroringResponse]]
+	newListPublicIPsPager       *tracker[azfake.PagerResponder[armavs.WorkloadNetworksClientListPublicIPsResponse]]
+	newListSegmentsPager        *tracker[azfake.PagerResponder[armavs.WorkloadNetworksClientListSegmentsResponse]]
+	newListVMGroupsPager        *tracker[azfake.PagerResponder[armavs.WorkloadNetworksClientListVMGroupsResponse]]
+	newListVirtualMachinesPager *tracker[azfake.PagerResponder[armavs.WorkloadNetworksClientListVirtualMachinesResponse]]
 }
 
 // Do implements the policy.Transporter interface for WorkloadNetworksServerTransport.
@@ -306,6 +306,18 @@ func (w *WorkloadNetworksServerTransport) dispatchToMethodFake(req *http.Request
 				res.resp, res.err = w.dispatchBeginDeleteSegment(req)
 			case "WorkloadNetworksClient.BeginDeleteVMGroup":
 				res.resp, res.err = w.dispatchBeginDeleteVMGroup(req)
+			case "WorkloadNetworksClient.BeginUpdateDNSService":
+				res.resp, res.err = w.dispatchBeginUpdateDNSService(req)
+			case "WorkloadNetworksClient.BeginUpdateDNSZone":
+				res.resp, res.err = w.dispatchBeginUpdateDNSZone(req)
+			case "WorkloadNetworksClient.BeginUpdateDhcp":
+				res.resp, res.err = w.dispatchBeginUpdateDhcp(req)
+			case "WorkloadNetworksClient.BeginUpdatePortMirroring":
+				res.resp, res.err = w.dispatchBeginUpdatePortMirroring(req)
+			case "WorkloadNetworksClient.BeginUpdateSegments":
+				res.resp, res.err = w.dispatchBeginUpdateSegments(req)
+			case "WorkloadNetworksClient.BeginUpdateVMGroup":
+				res.resp, res.err = w.dispatchBeginUpdateVMGroup(req)
 			case "WorkloadNetworksClient.Get":
 				res.resp, res.err = w.dispatchGet(req)
 			case "WorkloadNetworksClient.GetDNSService":
@@ -326,8 +338,6 @@ func (w *WorkloadNetworksServerTransport) dispatchToMethodFake(req *http.Request
 				res.resp, res.err = w.dispatchGetVMGroup(req)
 			case "WorkloadNetworksClient.GetVirtualMachine":
 				res.resp, res.err = w.dispatchGetVirtualMachine(req)
-			case "WorkloadNetworksClient.NewListPager":
-				res.resp, res.err = w.dispatchNewListPager(req)
 			case "WorkloadNetworksClient.NewListDNSServicesPager":
 				res.resp, res.err = w.dispatchNewListDNSServicesPager(req)
 			case "WorkloadNetworksClient.NewListDNSZonesPager":
@@ -336,6 +346,8 @@ func (w *WorkloadNetworksServerTransport) dispatchToMethodFake(req *http.Request
 				res.resp, res.err = w.dispatchNewListDhcpPager(req)
 			case "WorkloadNetworksClient.NewListGatewaysPager":
 				res.resp, res.err = w.dispatchNewListGatewaysPager(req)
+			case "WorkloadNetworksClient.NewListPager":
+				res.resp, res.err = w.dispatchNewListPager(req)
 			case "WorkloadNetworksClient.NewListPortMirroringPager":
 				res.resp, res.err = w.dispatchNewListPortMirroringPager(req)
 			case "WorkloadNetworksClient.NewListPublicIPsPager":
@@ -346,18 +358,6 @@ func (w *WorkloadNetworksServerTransport) dispatchToMethodFake(req *http.Request
 				res.resp, res.err = w.dispatchNewListVMGroupsPager(req)
 			case "WorkloadNetworksClient.NewListVirtualMachinesPager":
 				res.resp, res.err = w.dispatchNewListVirtualMachinesPager(req)
-			case "WorkloadNetworksClient.BeginUpdateDNSService":
-				res.resp, res.err = w.dispatchBeginUpdateDNSService(req)
-			case "WorkloadNetworksClient.BeginUpdateDNSZone":
-				res.resp, res.err = w.dispatchBeginUpdateDNSZone(req)
-			case "WorkloadNetworksClient.BeginUpdateDhcp":
-				res.resp, res.err = w.dispatchBeginUpdateDhcp(req)
-			case "WorkloadNetworksClient.BeginUpdatePortMirroring":
-				res.resp, res.err = w.dispatchBeginUpdatePortMirroring(req)
-			case "WorkloadNetworksClient.BeginUpdateSegments":
-				res.resp, res.err = w.dispatchBeginUpdateSegments(req)
-			case "WorkloadNetworksClient.BeginUpdateVMGroup":
-				res.resp, res.err = w.dispatchBeginUpdateVMGroup(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -1074,6 +1074,318 @@ func (w *WorkloadNetworksServerTransport) dispatchBeginDeleteVMGroup(req *http.R
 	return resp, nil
 }
 
+func (w *WorkloadNetworksServerTransport) dispatchBeginUpdateDNSService(req *http.Request) (*http.Response, error) {
+	if w.srv.BeginUpdateDNSService == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdateDNSService not implemented")}
+	}
+	beginUpdateDNSService := w.beginUpdateDNSService.get(req)
+	if beginUpdateDNSService == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AVS/privateClouds/(?P<privateCloudName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/workloadNetworks/default/dnsServices/(?P<dnsServiceId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armavs.WorkloadNetworkDNSService](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		privateCloudNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("privateCloudName")])
+		if err != nil {
+			return nil, err
+		}
+		dnsServiceIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("dnsServiceId")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := w.srv.BeginUpdateDNSService(req.Context(), resourceGroupNameParam, privateCloudNameParam, dnsServiceIDParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdateDNSService = &respr
+		w.beginUpdateDNSService.add(req, beginUpdateDNSService)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdateDNSService, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		w.beginUpdateDNSService.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdateDNSService) {
+		w.beginUpdateDNSService.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (w *WorkloadNetworksServerTransport) dispatchBeginUpdateDNSZone(req *http.Request) (*http.Response, error) {
+	if w.srv.BeginUpdateDNSZone == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdateDNSZone not implemented")}
+	}
+	beginUpdateDNSZone := w.beginUpdateDNSZone.get(req)
+	if beginUpdateDNSZone == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AVS/privateClouds/(?P<privateCloudName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/workloadNetworks/default/dnsZones/(?P<dnsZoneId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armavs.WorkloadNetworkDNSZone](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		privateCloudNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("privateCloudName")])
+		if err != nil {
+			return nil, err
+		}
+		dnsZoneIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("dnsZoneId")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := w.srv.BeginUpdateDNSZone(req.Context(), resourceGroupNameParam, privateCloudNameParam, dnsZoneIDParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdateDNSZone = &respr
+		w.beginUpdateDNSZone.add(req, beginUpdateDNSZone)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdateDNSZone, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		w.beginUpdateDNSZone.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdateDNSZone) {
+		w.beginUpdateDNSZone.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (w *WorkloadNetworksServerTransport) dispatchBeginUpdateDhcp(req *http.Request) (*http.Response, error) {
+	if w.srv.BeginUpdateDhcp == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdateDhcp not implemented")}
+	}
+	beginUpdateDhcp := w.beginUpdateDhcp.get(req)
+	if beginUpdateDhcp == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AVS/privateClouds/(?P<privateCloudName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/workloadNetworks/default/dhcpConfigurations/(?P<dhcpId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armavs.WorkloadNetworkDhcp](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		privateCloudNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("privateCloudName")])
+		if err != nil {
+			return nil, err
+		}
+		dhcpIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("dhcpId")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := w.srv.BeginUpdateDhcp(req.Context(), resourceGroupNameParam, privateCloudNameParam, dhcpIDParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdateDhcp = &respr
+		w.beginUpdateDhcp.add(req, beginUpdateDhcp)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdateDhcp, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		w.beginUpdateDhcp.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdateDhcp) {
+		w.beginUpdateDhcp.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (w *WorkloadNetworksServerTransport) dispatchBeginUpdatePortMirroring(req *http.Request) (*http.Response, error) {
+	if w.srv.BeginUpdatePortMirroring == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdatePortMirroring not implemented")}
+	}
+	beginUpdatePortMirroring := w.beginUpdatePortMirroring.get(req)
+	if beginUpdatePortMirroring == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AVS/privateClouds/(?P<privateCloudName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/workloadNetworks/default/portMirroringProfiles/(?P<portMirroringId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armavs.WorkloadNetworkPortMirroring](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		privateCloudNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("privateCloudName")])
+		if err != nil {
+			return nil, err
+		}
+		portMirroringIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("portMirroringId")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := w.srv.BeginUpdatePortMirroring(req.Context(), resourceGroupNameParam, privateCloudNameParam, portMirroringIDParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdatePortMirroring = &respr
+		w.beginUpdatePortMirroring.add(req, beginUpdatePortMirroring)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdatePortMirroring, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		w.beginUpdatePortMirroring.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdatePortMirroring) {
+		w.beginUpdatePortMirroring.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (w *WorkloadNetworksServerTransport) dispatchBeginUpdateSegments(req *http.Request) (*http.Response, error) {
+	if w.srv.BeginUpdateSegments == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdateSegments not implemented")}
+	}
+	beginUpdateSegments := w.beginUpdateSegments.get(req)
+	if beginUpdateSegments == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AVS/privateClouds/(?P<privateCloudName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/workloadNetworks/default/segments/(?P<segmentId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armavs.WorkloadNetworkSegment](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		privateCloudNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("privateCloudName")])
+		if err != nil {
+			return nil, err
+		}
+		segmentIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("segmentId")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := w.srv.BeginUpdateSegments(req.Context(), resourceGroupNameParam, privateCloudNameParam, segmentIDParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdateSegments = &respr
+		w.beginUpdateSegments.add(req, beginUpdateSegments)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdateSegments, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		w.beginUpdateSegments.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdateSegments) {
+		w.beginUpdateSegments.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (w *WorkloadNetworksServerTransport) dispatchBeginUpdateVMGroup(req *http.Request) (*http.Response, error) {
+	if w.srv.BeginUpdateVMGroup == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdateVMGroup not implemented")}
+	}
+	beginUpdateVMGroup := w.beginUpdateVMGroup.get(req)
+	if beginUpdateVMGroup == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AVS/privateClouds/(?P<privateCloudName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/workloadNetworks/default/vmGroups/(?P<vmGroupId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armavs.WorkloadNetworkVMGroup](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		privateCloudNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("privateCloudName")])
+		if err != nil {
+			return nil, err
+		}
+		vmGroupIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("vmGroupId")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := w.srv.BeginUpdateVMGroup(req.Context(), resourceGroupNameParam, privateCloudNameParam, vmGroupIDParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdateVMGroup = &respr
+		w.beginUpdateVMGroup.add(req, beginUpdateVMGroup)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdateVMGroup, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		w.beginUpdateVMGroup.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdateVMGroup) {
+		w.beginUpdateVMGroup.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (w *WorkloadNetworksServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if w.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -1440,47 +1752,6 @@ func (w *WorkloadNetworksServerTransport) dispatchGetVirtualMachine(req *http.Re
 	return resp, nil
 }
 
-func (w *WorkloadNetworksServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if w.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := w.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AVS/privateClouds/(?P<privateCloudName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/workloadNetworks`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		privateCloudNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("privateCloudName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := w.srv.NewListPager(resourceGroupNameParam, privateCloudNameParam, nil)
-		newListPager = &resp
-		w.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armavs.WorkloadNetworksClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		w.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		w.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (w *WorkloadNetworksServerTransport) dispatchNewListDNSServicesPager(req *http.Request) (*http.Response, error) {
 	if w.srv.NewListDNSServicesPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListDNSServicesPager not implemented")}
@@ -1641,6 +1912,47 @@ func (w *WorkloadNetworksServerTransport) dispatchNewListGatewaysPager(req *http
 	}
 	if !server.PagerResponderMore(newListGatewaysPager) {
 		w.newListGatewaysPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (w *WorkloadNetworksServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if w.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := w.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AVS/privateClouds/(?P<privateCloudName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/workloadNetworks`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		privateCloudNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("privateCloudName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := w.srv.NewListPager(resourceGroupNameParam, privateCloudNameParam, nil)
+		newListPager = &resp
+		w.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armavs.WorkloadNetworksClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		w.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		w.newListPager.remove(req)
 	}
 	return resp, nil
 }
@@ -1847,318 +2159,6 @@ func (w *WorkloadNetworksServerTransport) dispatchNewListVirtualMachinesPager(re
 	if !server.PagerResponderMore(newListVirtualMachinesPager) {
 		w.newListVirtualMachinesPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (w *WorkloadNetworksServerTransport) dispatchBeginUpdateDNSService(req *http.Request) (*http.Response, error) {
-	if w.srv.BeginUpdateDNSService == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdateDNSService not implemented")}
-	}
-	beginUpdateDNSService := w.beginUpdateDNSService.get(req)
-	if beginUpdateDNSService == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AVS/privateClouds/(?P<privateCloudName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/workloadNetworks/default/dnsServices/(?P<dnsServiceId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armavs.WorkloadNetworkDNSService](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		privateCloudNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("privateCloudName")])
-		if err != nil {
-			return nil, err
-		}
-		dnsServiceIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("dnsServiceId")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := w.srv.BeginUpdateDNSService(req.Context(), resourceGroupNameParam, privateCloudNameParam, dnsServiceIDParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdateDNSService = &respr
-		w.beginUpdateDNSService.add(req, beginUpdateDNSService)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdateDNSService, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		w.beginUpdateDNSService.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdateDNSService) {
-		w.beginUpdateDNSService.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (w *WorkloadNetworksServerTransport) dispatchBeginUpdateDNSZone(req *http.Request) (*http.Response, error) {
-	if w.srv.BeginUpdateDNSZone == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdateDNSZone not implemented")}
-	}
-	beginUpdateDNSZone := w.beginUpdateDNSZone.get(req)
-	if beginUpdateDNSZone == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AVS/privateClouds/(?P<privateCloudName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/workloadNetworks/default/dnsZones/(?P<dnsZoneId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armavs.WorkloadNetworkDNSZone](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		privateCloudNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("privateCloudName")])
-		if err != nil {
-			return nil, err
-		}
-		dnsZoneIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("dnsZoneId")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := w.srv.BeginUpdateDNSZone(req.Context(), resourceGroupNameParam, privateCloudNameParam, dnsZoneIDParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdateDNSZone = &respr
-		w.beginUpdateDNSZone.add(req, beginUpdateDNSZone)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdateDNSZone, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		w.beginUpdateDNSZone.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdateDNSZone) {
-		w.beginUpdateDNSZone.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (w *WorkloadNetworksServerTransport) dispatchBeginUpdateDhcp(req *http.Request) (*http.Response, error) {
-	if w.srv.BeginUpdateDhcp == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdateDhcp not implemented")}
-	}
-	beginUpdateDhcp := w.beginUpdateDhcp.get(req)
-	if beginUpdateDhcp == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AVS/privateClouds/(?P<privateCloudName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/workloadNetworks/default/dhcpConfigurations/(?P<dhcpId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armavs.WorkloadNetworkDhcp](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		privateCloudNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("privateCloudName")])
-		if err != nil {
-			return nil, err
-		}
-		dhcpIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("dhcpId")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := w.srv.BeginUpdateDhcp(req.Context(), resourceGroupNameParam, privateCloudNameParam, dhcpIDParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdateDhcp = &respr
-		w.beginUpdateDhcp.add(req, beginUpdateDhcp)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdateDhcp, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		w.beginUpdateDhcp.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdateDhcp) {
-		w.beginUpdateDhcp.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (w *WorkloadNetworksServerTransport) dispatchBeginUpdatePortMirroring(req *http.Request) (*http.Response, error) {
-	if w.srv.BeginUpdatePortMirroring == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdatePortMirroring not implemented")}
-	}
-	beginUpdatePortMirroring := w.beginUpdatePortMirroring.get(req)
-	if beginUpdatePortMirroring == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AVS/privateClouds/(?P<privateCloudName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/workloadNetworks/default/portMirroringProfiles/(?P<portMirroringId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armavs.WorkloadNetworkPortMirroring](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		privateCloudNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("privateCloudName")])
-		if err != nil {
-			return nil, err
-		}
-		portMirroringIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("portMirroringId")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := w.srv.BeginUpdatePortMirroring(req.Context(), resourceGroupNameParam, privateCloudNameParam, portMirroringIDParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdatePortMirroring = &respr
-		w.beginUpdatePortMirroring.add(req, beginUpdatePortMirroring)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdatePortMirroring, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		w.beginUpdatePortMirroring.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdatePortMirroring) {
-		w.beginUpdatePortMirroring.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (w *WorkloadNetworksServerTransport) dispatchBeginUpdateSegments(req *http.Request) (*http.Response, error) {
-	if w.srv.BeginUpdateSegments == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdateSegments not implemented")}
-	}
-	beginUpdateSegments := w.beginUpdateSegments.get(req)
-	if beginUpdateSegments == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AVS/privateClouds/(?P<privateCloudName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/workloadNetworks/default/segments/(?P<segmentId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armavs.WorkloadNetworkSegment](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		privateCloudNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("privateCloudName")])
-		if err != nil {
-			return nil, err
-		}
-		segmentIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("segmentId")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := w.srv.BeginUpdateSegments(req.Context(), resourceGroupNameParam, privateCloudNameParam, segmentIDParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdateSegments = &respr
-		w.beginUpdateSegments.add(req, beginUpdateSegments)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdateSegments, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		w.beginUpdateSegments.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdateSegments) {
-		w.beginUpdateSegments.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (w *WorkloadNetworksServerTransport) dispatchBeginUpdateVMGroup(req *http.Request) (*http.Response, error) {
-	if w.srv.BeginUpdateVMGroup == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdateVMGroup not implemented")}
-	}
-	beginUpdateVMGroup := w.beginUpdateVMGroup.get(req)
-	if beginUpdateVMGroup == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AVS/privateClouds/(?P<privateCloudName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/workloadNetworks/default/vmGroups/(?P<vmGroupId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armavs.WorkloadNetworkVMGroup](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		privateCloudNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("privateCloudName")])
-		if err != nil {
-			return nil, err
-		}
-		vmGroupIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("vmGroupId")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := w.srv.BeginUpdateVMGroup(req.Context(), resourceGroupNameParam, privateCloudNameParam, vmGroupIDParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdateVMGroup = &respr
-		w.beginUpdateVMGroup.add(req, beginUpdateVMGroup)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdateVMGroup, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		w.beginUpdateVMGroup.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdateVMGroup) {
-		w.beginUpdateVMGroup.remove(req)
-	}
-
 	return resp, nil
 }
 

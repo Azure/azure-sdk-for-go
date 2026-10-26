@@ -11,6 +11,32 @@ import (
 	"log"
 )
 
+// Generated from example definition: 2026-07-01/DeletedBackupInstanceOperations/UndeleteDeletedBackupInstance.json
+func ExampleDeletedBackupInstancesClient_BeginUndelete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdataprotection.NewClientFactory("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewDeletedBackupInstancesClient().BeginUndelete(ctx, "testrg", "testvault", "testbi", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdataprotection.DeletedBackupInstancesClientUndeleteResponse{
+	// }
+}
+
 // Generated from example definition: 2026-07-01/DeletedBackupInstanceOperations/GetDeletedBackupInstance.json
 func ExampleDeletedBackupInstancesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -142,30 +168,4 @@ func ExampleDeletedBackupInstancesClient_NewListPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-07-01/DeletedBackupInstanceOperations/UndeleteDeletedBackupInstance.json
-func ExampleDeletedBackupInstancesClient_BeginUndelete() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdataprotection.NewClientFactory("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewDeletedBackupInstancesClient().BeginUndelete(ctx, "testrg", "testvault", "testbi", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdataprotection.DeletedBackupInstancesClientUndeleteResponse{
-	// }
 }

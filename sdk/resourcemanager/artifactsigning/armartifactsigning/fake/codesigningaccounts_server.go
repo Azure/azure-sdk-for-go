@@ -21,10 +21,6 @@ import (
 
 // CodeSigningAccountsServer is a fake server for instances of the armartifactsigning.CodeSigningAccountsClient type.
 type CodeSigningAccountsServer struct {
-	// CheckNameAvailability is the fake for method CodeSigningAccountsClient.CheckNameAvailability
-	// HTTP status codes to indicate success: http.StatusOK
-	CheckNameAvailability func(ctx context.Context, body armartifactsigning.CheckNameAvailability, options *armartifactsigning.CodeSigningAccountsClientCheckNameAvailabilityOptions) (resp azfake.Responder[armartifactsigning.CodeSigningAccountsClientCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
-
 	// BeginCreate is the fake for method CodeSigningAccountsClient.BeginCreate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreate func(ctx context.Context, resourceGroupName string, accountName string, resource armartifactsigning.CodeSigningAccount, options *armartifactsigning.CodeSigningAccountsClientBeginCreateOptions) (resp azfake.PollerResponder[armartifactsigning.CodeSigningAccountsClientCreateResponse], errResp azfake.ErrorResponder)
@@ -32,6 +28,14 @@ type CodeSigningAccountsServer struct {
 	// BeginDelete is the fake for method CodeSigningAccountsClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, accountName string, options *armartifactsigning.CodeSigningAccountsClientBeginDeleteOptions) (resp azfake.PollerResponder[armartifactsigning.CodeSigningAccountsClientDeleteResponse], errResp azfake.ErrorResponder)
+
+	// BeginUpdate is the fake for method CodeSigningAccountsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, accountName string, properties armartifactsigning.CodeSigningAccountPatch, options *armartifactsigning.CodeSigningAccountsClientBeginUpdateOptions) (resp azfake.PollerResponder[armartifactsigning.CodeSigningAccountsClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// CheckNameAvailability is the fake for method CodeSigningAccountsClient.CheckNameAvailability
+	// HTTP status codes to indicate success: http.StatusOK
+	CheckNameAvailability func(ctx context.Context, body armartifactsigning.CheckNameAvailability, options *armartifactsigning.CodeSigningAccountsClientCheckNameAvailabilityOptions) (resp azfake.Responder[armartifactsigning.CodeSigningAccountsClientCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method CodeSigningAccountsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -44,10 +48,6 @@ type CodeSigningAccountsServer struct {
 	// NewListBySubscriptionPager is the fake for method CodeSigningAccountsClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armartifactsigning.CodeSigningAccountsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armartifactsigning.CodeSigningAccountsClientListBySubscriptionResponse])
-
-	// BeginUpdate is the fake for method CodeSigningAccountsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, accountName string, properties armartifactsigning.CodeSigningAccountPatch, options *armartifactsigning.CodeSigningAccountsClientBeginUpdateOptions) (resp azfake.PollerResponder[armartifactsigning.CodeSigningAccountsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewCodeSigningAccountsServerTransport creates a new instance of CodeSigningAccountsServerTransport with the provided implementation.
@@ -58,9 +58,9 @@ func NewCodeSigningAccountsServerTransport(srv *CodeSigningAccountsServer) *Code
 		srv:                         srv,
 		beginCreate:                 newTracker[azfake.PollerResponder[armartifactsigning.CodeSigningAccountsClientCreateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armartifactsigning.CodeSigningAccountsClientDeleteResponse]](),
+		beginUpdate:                 newTracker[azfake.PollerResponder[armartifactsigning.CodeSigningAccountsClientUpdateResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armartifactsigning.CodeSigningAccountsClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armartifactsigning.CodeSigningAccountsClientListBySubscriptionResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armartifactsigning.CodeSigningAccountsClientUpdateResponse]](),
 	}
 }
 
@@ -70,9 +70,9 @@ type CodeSigningAccountsServerTransport struct {
 	srv                         *CodeSigningAccountsServer
 	beginCreate                 *tracker[azfake.PollerResponder[armartifactsigning.CodeSigningAccountsClientCreateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armartifactsigning.CodeSigningAccountsClientDeleteResponse]]
+	beginUpdate                 *tracker[azfake.PollerResponder[armartifactsigning.CodeSigningAccountsClientUpdateResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armartifactsigning.CodeSigningAccountsClientListByResourceGroupResponse]]
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armartifactsigning.CodeSigningAccountsClientListBySubscriptionResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armartifactsigning.CodeSigningAccountsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for CodeSigningAccountsServerTransport.
@@ -96,20 +96,20 @@ func (c *CodeSigningAccountsServerTransport) dispatchToMethodFake(req *http.Requ
 		}
 		if !intercepted {
 			switch method {
-			case "CodeSigningAccountsClient.CheckNameAvailability":
-				res.resp, res.err = c.dispatchCheckNameAvailability(req)
 			case "CodeSigningAccountsClient.BeginCreate":
 				res.resp, res.err = c.dispatchBeginCreate(req)
 			case "CodeSigningAccountsClient.BeginDelete":
 				res.resp, res.err = c.dispatchBeginDelete(req)
+			case "CodeSigningAccountsClient.BeginUpdate":
+				res.resp, res.err = c.dispatchBeginUpdate(req)
+			case "CodeSigningAccountsClient.CheckNameAvailability":
+				res.resp, res.err = c.dispatchCheckNameAvailability(req)
 			case "CodeSigningAccountsClient.Get":
 				res.resp, res.err = c.dispatchGet(req)
 			case "CodeSigningAccountsClient.NewListByResourceGroupPager":
 				res.resp, res.err = c.dispatchNewListByResourceGroupPager(req)
 			case "CodeSigningAccountsClient.NewListBySubscriptionPager":
 				res.resp, res.err = c.dispatchNewListBySubscriptionPager(req)
-			case "CodeSigningAccountsClient.BeginUpdate":
-				res.resp, res.err = c.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -124,35 +124,6 @@ func (c *CodeSigningAccountsServerTransport) dispatchToMethodFake(req *http.Requ
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (c *CodeSigningAccountsServerTransport) dispatchCheckNameAvailability(req *http.Request) (*http.Response, error) {
-	if c.srv.CheckNameAvailability == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CheckNameAvailability not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CodeSigning/checkNameAvailability`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 2 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armartifactsigning.CheckNameAvailability](req)
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := c.srv.CheckNameAvailability(req.Context(), body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CheckNameAvailabilityResult, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (c *CodeSigningAccountsServerTransport) dispatchBeginCreate(req *http.Request) (*http.Response, error) {
@@ -244,6 +215,83 @@ func (c *CodeSigningAccountsServerTransport) dispatchBeginDelete(req *http.Reque
 		c.beginDelete.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (c *CodeSigningAccountsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if c.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := c.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CodeSigning/codeSigningAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armartifactsigning.CodeSigningAccountPatch](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := c.srv.BeginUpdate(req.Context(), resourceGroupNameParam, accountNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		c.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		c.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		c.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (c *CodeSigningAccountsServerTransport) dispatchCheckNameAvailability(req *http.Request) (*http.Response, error) {
+	if c.srv.CheckNameAvailability == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CheckNameAvailability not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CodeSigning/checkNameAvailability`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armartifactsigning.CheckNameAvailability](req)
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := c.srv.CheckNameAvailability(req.Context(), body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CheckNameAvailabilityResult, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 
@@ -347,54 +395,6 @@ func (c *CodeSigningAccountsServerTransport) dispatchNewListBySubscriptionPager(
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		c.newListBySubscriptionPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (c *CodeSigningAccountsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if c.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := c.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CodeSigning/codeSigningAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armartifactsigning.CodeSigningAccountPatch](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := c.srv.BeginUpdate(req.Context(), resourceGroupNameParam, accountNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		c.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		c.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		c.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

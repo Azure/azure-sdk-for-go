@@ -92,6 +92,192 @@ func ExampleClient_ClusterGetVersion() {
 	// }
 }
 
+// Generated from example definition: 2024-11-01-preview/GetExtensionType.json
+func ExampleClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armextensiontypes.NewClientFactory("subId1", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewClient().Get(ctx, "rg1", "Microsoft.Kubernetes", "connectedClusters", "my-cluster", "my-extension-type", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armextensiontypes.ClientGetResponse{
+	// 	ExtensionType: armextensiontypes.ExtensionType{
+	// 		Name: to.Ptr("bbbb"),
+	// 		Type: to.Ptr("cccc"),
+	// 		ID: to.Ptr("aaaa"),
+	// 		Properties: &armextensiontypes.ExtensionTypeProperties{
+	// 			Description: to.Ptr("My extension type!"),
+	// 			IsManagedIdentityRequired: to.Ptr(true),
+	// 			IsSystemExtension: to.Ptr(false),
+	// 			PlanInfo: &armextensiontypes.ExtensionTypePropertiesPlanInfo{
+	// 				OfferID: to.Ptr("3333333"),
+	// 				PlanID: to.Ptr("222222"),
+	// 				PublisherID: to.Ptr("111111"),
+	// 			},
+	// 			Publisher: to.Ptr("Microsoft"),
+	// 			SupportedClusterTypes: []*string{
+	// 				to.Ptr("connectedClusters"),
+	// 			},
+	// 			SupportedScopes: &armextensiontypes.ExtensionTypePropertiesSupportedScopes{
+	// 				ClusterScopeSettings: &armextensiontypes.ClusterScopeSettings{
+	// 					Name: to.Ptr("bbbbbbbbbbbbb"),
+	// 					Type: to.Ptr("ccccccccccccccccccccccccc"),
+	// 					ID: to.Ptr("aaaaaaaaaaaaaaaaaa"),
+	// 					Properties: &armextensiontypes.ClusterScopeSettingsProperties{
+	// 						AllowMultipleInstances: to.Ptr(true),
+	// 						DefaultReleaseNamespace: to.Ptr("kube-system"),
+	// 					},
+	// 				},
+	// 				DefaultScope: to.Ptr("cluster"),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2024-11-01-preview/GetExtensionTypeVersionByLocation.json
+func ExampleClient_GetVersion() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armextensiontypes.NewClientFactory("subId1", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewClient().GetVersion(ctx, "westus", "extensionType1", "1.20.0", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armextensiontypes.ClientGetVersionResponse{
+	// 	ExtensionTypeVersionForReleaseTrain: armextensiontypes.ExtensionTypeVersionForReleaseTrain{
+	// 		Name: to.Ptr("bbbb"),
+	// 		Type: to.Ptr("cccc"),
+	// 		ID: to.Ptr("aaaa"),
+	// 		Properties: &armextensiontypes.ExtensionTypeVersionForReleaseTrainProperties{
+	// 			SupportedClusterTypes: []*string{
+	// 				to.Ptr("connectedCluster"),
+	// 			},
+	// 			UnsupportedKubernetesVersions: &armextensiontypes.ExtensionTypeVersionForReleaseTrainPropertiesUnsupportedKubernetesVersions{
+	// 				Appliances: []*armextensiontypes.ExtensionTypeVersionUnsupportedKubernetesMatrixItem{
+	// 					{
+	// 						Distributions: []*string{
+	// 							to.Ptr("AKS"),
+	// 						},
+	// 						UnsupportedVersions: []*string{
+	// 							to.Ptr("1.18..1.21"),
+	// 						},
+	// 					},
+	// 				},
+	// 				ConnectedCluster: []*armextensiontypes.ExtensionTypeVersionUnsupportedKubernetesMatrixItem{
+	// 					{
+	// 						Distributions: []*string{
+	// 							to.Ptr("AKS"),
+	// 						},
+	// 						UnsupportedVersions: []*string{
+	// 						},
+	// 					},
+	// 					{
+	// 						Distributions: []*string{
+	// 							to.Ptr("GKE"),
+	// 						},
+	// 						UnsupportedVersions: []*string{
+	// 							to.Ptr(">1.22"),
+	// 						},
+	// 					},
+	// 				},
+	// 				ManagedCluster: []*armextensiontypes.ExtensionTypeVersionUnsupportedKubernetesMatrixItem{
+	// 					{
+	// 						Distributions: []*string{
+	// 							to.Ptr("AKS"),
+	// 						},
+	// 						UnsupportedVersions: []*string{
+	// 						},
+	// 					},
+	// 				},
+	// 				ProvisionedCluster: []*armextensiontypes.ExtensionTypeVersionUnsupportedKubernetesMatrixItem{
+	// 					{
+	// 						Distributions: []*string{
+	// 							to.Ptr("AKS"),
+	// 						},
+	// 						UnsupportedVersions: []*string{
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 			Version: to.Ptr("1.1.0"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2024-11-01-preview/GetExtensionTypeByLocation.json
+func ExampleClient_LocationGet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armextensiontypes.NewClientFactory("subId1", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewClient().LocationGet(ctx, "westus2", "extensionType1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armextensiontypes.ClientLocationGetResponse{
+	// 	ExtensionType: armextensiontypes.ExtensionType{
+	// 		Name: to.Ptr("bbbb"),
+	// 		Type: to.Ptr("cccc"),
+	// 		ID: to.Ptr("aaaa"),
+	// 		Properties: &armextensiontypes.ExtensionTypeProperties{
+	// 			Description: to.Ptr("My extension type!"),
+	// 			IsManagedIdentityRequired: to.Ptr(true),
+	// 			IsSystemExtension: to.Ptr(false),
+	// 			PlanInfo: &armextensiontypes.ExtensionTypePropertiesPlanInfo{
+	// 				OfferID: to.Ptr("myOfferId"),
+	// 				PlanID: to.Ptr("myPlanId"),
+	// 				PublisherID: to.Ptr("myPublisherId"),
+	// 			},
+	// 			Publisher: to.Ptr("Microsoft"),
+	// 			SupportedClusterTypes: []*string{
+	// 				to.Ptr("connectedClusters"),
+	// 			},
+	// 			SupportedScopes: &armextensiontypes.ExtensionTypePropertiesSupportedScopes{
+	// 				ClusterScopeSettings: &armextensiontypes.ClusterScopeSettings{
+	// 					Name: to.Ptr("bbbbbbbbbbbbb"),
+	// 					Type: to.Ptr("ccccccccccccccccccccccccc"),
+	// 					ID: to.Ptr("aaaaaaaaaaaaaaaaaa"),
+	// 					Properties: &armextensiontypes.ClusterScopeSettingsProperties{
+	// 						AllowMultipleInstances: to.Ptr(true),
+	// 						DefaultReleaseNamespace: to.Ptr("kube-system"),
+	// 					},
+	// 				},
+	// 				DefaultScope: to.Ptr("cluster"),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2024-11-01-preview/ListExtensionTypeVersions.json
 func ExampleClient_NewClusterListVersionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -240,139 +426,6 @@ func ExampleClient_NewClusterListVersionsPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2024-11-01-preview/GetExtensionType.json
-func ExampleClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armextensiontypes.NewClientFactory("subId1", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewClient().Get(ctx, "rg1", "Microsoft.Kubernetes", "connectedClusters", "my-cluster", "my-extension-type", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armextensiontypes.ClientGetResponse{
-	// 	ExtensionType: armextensiontypes.ExtensionType{
-	// 		Name: to.Ptr("bbbb"),
-	// 		Type: to.Ptr("cccc"),
-	// 		ID: to.Ptr("aaaa"),
-	// 		Properties: &armextensiontypes.ExtensionTypeProperties{
-	// 			Description: to.Ptr("My extension type!"),
-	// 			IsManagedIdentityRequired: to.Ptr(true),
-	// 			IsSystemExtension: to.Ptr(false),
-	// 			PlanInfo: &armextensiontypes.ExtensionTypePropertiesPlanInfo{
-	// 				OfferID: to.Ptr("3333333"),
-	// 				PlanID: to.Ptr("222222"),
-	// 				PublisherID: to.Ptr("111111"),
-	// 			},
-	// 			Publisher: to.Ptr("Microsoft"),
-	// 			SupportedClusterTypes: []*string{
-	// 				to.Ptr("connectedClusters"),
-	// 			},
-	// 			SupportedScopes: &armextensiontypes.ExtensionTypePropertiesSupportedScopes{
-	// 				ClusterScopeSettings: &armextensiontypes.ClusterScopeSettings{
-	// 					Name: to.Ptr("bbbbbbbbbbbbb"),
-	// 					Type: to.Ptr("ccccccccccccccccccccccccc"),
-	// 					ID: to.Ptr("aaaaaaaaaaaaaaaaaa"),
-	// 					Properties: &armextensiontypes.ClusterScopeSettingsProperties{
-	// 						AllowMultipleInstances: to.Ptr(true),
-	// 						DefaultReleaseNamespace: to.Ptr("kube-system"),
-	// 					},
-	// 				},
-	// 				DefaultScope: to.Ptr("cluster"),
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2024-11-01-preview/GetExtensionTypeVersionByLocation.json
-func ExampleClient_GetVersion() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armextensiontypes.NewClientFactory("subId1", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewClient().GetVersion(ctx, "westus", "extensionType1", "1.20.0", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armextensiontypes.ClientGetVersionResponse{
-	// 	ExtensionTypeVersionForReleaseTrain: armextensiontypes.ExtensionTypeVersionForReleaseTrain{
-	// 		Name: to.Ptr("bbbb"),
-	// 		Type: to.Ptr("cccc"),
-	// 		ID: to.Ptr("aaaa"),
-	// 		Properties: &armextensiontypes.ExtensionTypeVersionForReleaseTrainProperties{
-	// 			SupportedClusterTypes: []*string{
-	// 				to.Ptr("connectedCluster"),
-	// 			},
-	// 			UnsupportedKubernetesVersions: &armextensiontypes.ExtensionTypeVersionForReleaseTrainPropertiesUnsupportedKubernetesVersions{
-	// 				Appliances: []*armextensiontypes.ExtensionTypeVersionUnsupportedKubernetesMatrixItem{
-	// 					{
-	// 						Distributions: []*string{
-	// 							to.Ptr("AKS"),
-	// 						},
-	// 						UnsupportedVersions: []*string{
-	// 							to.Ptr("1.18..1.21"),
-	// 						},
-	// 					},
-	// 				},
-	// 				ConnectedCluster: []*armextensiontypes.ExtensionTypeVersionUnsupportedKubernetesMatrixItem{
-	// 					{
-	// 						Distributions: []*string{
-	// 							to.Ptr("AKS"),
-	// 						},
-	// 						UnsupportedVersions: []*string{
-	// 						},
-	// 					},
-	// 					{
-	// 						Distributions: []*string{
-	// 							to.Ptr("GKE"),
-	// 						},
-	// 						UnsupportedVersions: []*string{
-	// 							to.Ptr(">1.22"),
-	// 						},
-	// 					},
-	// 				},
-	// 				ManagedCluster: []*armextensiontypes.ExtensionTypeVersionUnsupportedKubernetesMatrixItem{
-	// 					{
-	// 						Distributions: []*string{
-	// 							to.Ptr("AKS"),
-	// 						},
-	// 						UnsupportedVersions: []*string{
-	// 						},
-	// 					},
-	// 				},
-	// 				ProvisionedCluster: []*armextensiontypes.ExtensionTypeVersionUnsupportedKubernetesMatrixItem{
-	// 					{
-	// 						Distributions: []*string{
-	// 							to.Ptr("AKS"),
-	// 						},
-	// 						UnsupportedVersions: []*string{
-	// 						},
-	// 					},
-	// 				},
-	// 			},
-	// 			Version: to.Ptr("1.1.0"),
-	// 		},
-	// 	},
-	// }
 }
 
 // Generated from example definition: 2024-11-01-preview/ListExtensionTypes.json
@@ -590,59 +643,6 @@ func ExampleClient_NewListVersionsPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2024-11-01-preview/GetExtensionTypeByLocation.json
-func ExampleClient_LocationGet() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armextensiontypes.NewClientFactory("subId1", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewClient().LocationGet(ctx, "westus2", "extensionType1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armextensiontypes.ClientLocationGetResponse{
-	// 	ExtensionType: armextensiontypes.ExtensionType{
-	// 		Name: to.Ptr("bbbb"),
-	// 		Type: to.Ptr("cccc"),
-	// 		ID: to.Ptr("aaaa"),
-	// 		Properties: &armextensiontypes.ExtensionTypeProperties{
-	// 			Description: to.Ptr("My extension type!"),
-	// 			IsManagedIdentityRequired: to.Ptr(true),
-	// 			IsSystemExtension: to.Ptr(false),
-	// 			PlanInfo: &armextensiontypes.ExtensionTypePropertiesPlanInfo{
-	// 				OfferID: to.Ptr("myOfferId"),
-	// 				PlanID: to.Ptr("myPlanId"),
-	// 				PublisherID: to.Ptr("myPublisherId"),
-	// 			},
-	// 			Publisher: to.Ptr("Microsoft"),
-	// 			SupportedClusterTypes: []*string{
-	// 				to.Ptr("connectedClusters"),
-	// 			},
-	// 			SupportedScopes: &armextensiontypes.ExtensionTypePropertiesSupportedScopes{
-	// 				ClusterScopeSettings: &armextensiontypes.ClusterScopeSettings{
-	// 					Name: to.Ptr("bbbbbbbbbbbbb"),
-	// 					Type: to.Ptr("ccccccccccccccccccccccccc"),
-	// 					ID: to.Ptr("aaaaaaaaaaaaaaaaaa"),
-	// 					Properties: &armextensiontypes.ClusterScopeSettingsProperties{
-	// 						AllowMultipleInstances: to.Ptr(true),
-	// 						DefaultReleaseNamespace: to.Ptr("kube-system"),
-	// 					},
-	// 				},
-	// 				DefaultScope: to.Ptr("cluster"),
-	// 			},
-	// 		},
-	// 	},
-	// }
 }
 
 // Generated from example definition: 2024-11-01-preview/ListExtensionTypesByLocation.json

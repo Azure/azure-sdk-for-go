@@ -540,6 +540,311 @@ func ExampleWorkloadNetworksClient_BeginDeleteVMGroup() {
 	// }
 }
 
+// Generated from example definition: 2026-03-01/WorkloadNetworks_UpdateDnsService.json
+func ExampleWorkloadNetworksClient_BeginUpdateDNSService() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armavs.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewWorkloadNetworksClient().BeginUpdateDNSService(ctx, "group1", "cloud1", "dnsService1", armavs.WorkloadNetworkDNSService{
+		Properties: &armavs.WorkloadNetworkDNSServiceProperties{
+			DisplayName:    to.Ptr("dnsService1"),
+			DNSServiceIP:   to.Ptr("5.5.5.5"),
+			DefaultDNSZone: to.Ptr("defaultDnsZone1"),
+			FqdnZones: []*string{
+				to.Ptr("fqdnZone1"),
+			},
+			LogLevel: to.Ptr(armavs.DNSServiceLogLevelEnumINFO),
+			Revision: to.Ptr[int64](1),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armavs.WorkloadNetworksClientUpdateDNSServiceResponse{
+	// 	WorkloadNetworkDNSService: armavs.WorkloadNetworkDNSService{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/dnsServices/dnsService1"),
+	// 		Name: to.Ptr("dnsService1"),
+	// 		Properties: &armavs.WorkloadNetworkDNSServiceProperties{
+	// 			DisplayName: to.Ptr("dnsService1"),
+	// 			DNSServiceIP: to.Ptr("5.5.5.5"),
+	// 			DefaultDNSZone: to.Ptr("defaultDnsZone1"),
+	// 			FqdnZones: []*string{
+	// 				to.Ptr("fqdnZone1"),
+	// 			},
+	// 			LogLevel: to.Ptr(armavs.DNSServiceLogLevelEnumINFO),
+	// 			Status: to.Ptr(armavs.DNSServiceStatusEnumSUCCESS),
+	// 			Revision: to.Ptr[int64](1),
+	// 		},
+	// 		Type: to.Ptr("Microsoft.AVS/privateClouds/workloadNetworks/dnsServices"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-03-01/WorkloadNetworks_UpdateDnsZone.json
+func ExampleWorkloadNetworksClient_BeginUpdateDNSZone() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armavs.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewWorkloadNetworksClient().BeginUpdateDNSZone(ctx, "group1", "cloud1", "dnsZone1", armavs.WorkloadNetworkDNSZone{
+		Properties: &armavs.WorkloadNetworkDNSZoneProperties{
+			DisplayName: to.Ptr("dnsZone1"),
+			Domain:      []*string{},
+			DNSServerIPs: []*string{
+				to.Ptr("1.1.1.1"),
+			},
+			SourceIP: to.Ptr("8.8.8.8"),
+			Revision: to.Ptr[int64](1),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armavs.WorkloadNetworksClientUpdateDNSZoneResponse{
+	// 	WorkloadNetworkDNSZone: armavs.WorkloadNetworkDNSZone{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/dnsZones/dnsZone1"),
+	// 		Name: to.Ptr("dnsZone1"),
+	// 		Properties: &armavs.WorkloadNetworkDNSZoneProperties{
+	// 			DisplayName: to.Ptr("dnsZone1"),
+	// 			Domain: []*string{
+	// 			},
+	// 			DNSServerIPs: []*string{
+	// 				to.Ptr("1.1.1.1"),
+	// 			},
+	// 			SourceIP: to.Ptr("8.8.8.8"),
+	// 			DNSServices: to.Ptr[int64](0),
+	// 			Revision: to.Ptr[int64](1),
+	// 		},
+	// 		Type: to.Ptr("Microsoft.AVS/privateClouds/workloadNetworks/dnsZones"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-03-01/WorkloadNetworks_UpdateDhcp.json
+func ExampleWorkloadNetworksClient_BeginUpdateDhcp() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armavs.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewWorkloadNetworksClient().BeginUpdateDhcp(ctx, "group1", "cloud1", "dhcp1", armavs.WorkloadNetworkDhcp{
+		Properties: &armavs.WorkloadNetworkDhcpServer{
+			DhcpType:      to.Ptr(armavs.DhcpTypeEnumSERVER),
+			ServerAddress: to.Ptr("40.1.5.1/24"),
+			LeaseTime:     to.Ptr[int64](86400),
+			Revision:      to.Ptr[int64](1),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armavs.WorkloadNetworksClientUpdateDhcpResponse{
+	// 	WorkloadNetworkDhcp: armavs.WorkloadNetworkDhcp{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/dhcpConfigurations/dhcpConfigurations1"),
+	// 		Name: to.Ptr("dhcp1"),
+	// 		Properties: &armavs.WorkloadNetworkDhcpServer{
+	// 			DisplayName: to.Ptr("dhcpConfigurations1"),
+	// 			DhcpType: to.Ptr(armavs.DhcpTypeEnumSERVER),
+	// 			Segments: []*string{
+	// 				to.Ptr("segment1"),
+	// 				to.Ptr("segment2"),
+	// 			},
+	// 			ServerAddress: to.Ptr("40.1.5.1/24"),
+	// 			LeaseTime: to.Ptr[int64](86400),
+	// 			Revision: to.Ptr[int64](2),
+	// 		},
+	// 		Type: to.Ptr("Microsoft.AVS/privateClouds/workloadNetworks/dhcpConfigurations"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-03-01/WorkloadNetworks_UpdatePortMirroring.json
+func ExampleWorkloadNetworksClient_BeginUpdatePortMirroring() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armavs.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewWorkloadNetworksClient().BeginUpdatePortMirroring(ctx, "group1", "cloud1", "portMirroring1", armavs.WorkloadNetworkPortMirroring{
+		Properties: &armavs.WorkloadNetworkPortMirroringProperties{
+			Direction:   to.Ptr(armavs.PortMirroringDirectionEnumBIDIRECTIONAL),
+			Source:      to.Ptr("vmGroup1"),
+			Destination: to.Ptr("vmGroup2"),
+			Revision:    to.Ptr[int64](1),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armavs.WorkloadNetworksClientUpdatePortMirroringResponse{
+	// 	WorkloadNetworkPortMirroring: armavs.WorkloadNetworkPortMirroring{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/portMirroringProfiles/portMirroring1"),
+	// 		Name: to.Ptr("portMirroring1"),
+	// 		Properties: &armavs.WorkloadNetworkPortMirroringProperties{
+	// 			DisplayName: to.Ptr("portMirroring1"),
+	// 			Direction: to.Ptr(armavs.PortMirroringDirectionEnumBIDIRECTIONAL),
+	// 			Source: to.Ptr("vmGroup1"),
+	// 			Destination: to.Ptr("vmGroup2"),
+	// 			Status: to.Ptr(armavs.PortMirroringStatusEnumSUCCESS),
+	// 			Revision: to.Ptr[int64](2),
+	// 		},
+	// 		Type: to.Ptr("Microsoft.AVS/privateClouds/workloadNetworks/portMirroringProfiles"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-03-01/WorkloadNetworks_UpdateSegments.json
+func ExampleWorkloadNetworksClient_BeginUpdateSegments() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armavs.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewWorkloadNetworksClient().BeginUpdateSegments(ctx, "group1", "cloud1", "segment1", armavs.WorkloadNetworkSegment{
+		Properties: &armavs.WorkloadNetworkSegmentProperties{
+			ConnectedGateway: to.Ptr("/infra/tier-1s/gateway"),
+			Subnet: &armavs.WorkloadNetworkSegmentSubnet{
+				DhcpRanges: []*string{
+					to.Ptr("40.20.0.0-40.20.0.1"),
+				},
+				GatewayAddress: to.Ptr("40.20.20.20/16"),
+			},
+			Revision: to.Ptr[int64](1),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armavs.WorkloadNetworksClientUpdateSegmentsResponse{
+	// 	WorkloadNetworkSegment: armavs.WorkloadNetworkSegment{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/segments/segment1"),
+	// 		Name: to.Ptr("segment1"),
+	// 		Properties: &armavs.WorkloadNetworkSegmentProperties{
+	// 			DisplayName: to.Ptr("segment1"),
+	// 			ConnectedGateway: to.Ptr("/infra/tier-1s/gateway"),
+	// 			Subnet: &armavs.WorkloadNetworkSegmentSubnet{
+	// 				DhcpRanges: []*string{
+	// 					to.Ptr("40.20.0.0-40.20.0.1"),
+	// 				},
+	// 				GatewayAddress: to.Ptr("40.20.20.20/16"),
+	// 			},
+	// 			PortVif: []*armavs.WorkloadNetworkSegmentPortVif{
+	// 				{
+	// 					PortName: to.Ptr("vm1"),
+	// 				},
+	// 			},
+	// 			Status: to.Ptr(armavs.SegmentStatusEnumSUCCESS),
+	// 			Revision: to.Ptr[int64](2),
+	// 		},
+	// 		Type: to.Ptr("Microsoft.AVS/privateClouds/workloadNetworks/segments"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-03-01/WorkloadNetworks_UpdateVMGroup.json
+func ExampleWorkloadNetworksClient_BeginUpdateVMGroup() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armavs.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewWorkloadNetworksClient().BeginUpdateVMGroup(ctx, "group1", "cloud1", "vmGroup1", armavs.WorkloadNetworkVMGroup{
+		Properties: &armavs.WorkloadNetworkVMGroupProperties{
+			Members: []*string{
+				to.Ptr("564d43da-fefc-2a3b-1d92-42855622fa50"),
+			},
+			Revision: to.Ptr[int64](1),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armavs.WorkloadNetworksClientUpdateVMGroupResponse{
+	// 	WorkloadNetworkVMGroup: armavs.WorkloadNetworkVMGroup{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/vmGroups/vmGroup1"),
+	// 		Name: to.Ptr("cloud1"),
+	// 		Properties: &armavs.WorkloadNetworkVMGroupProperties{
+	// 			DisplayName: to.Ptr("vmGroup1"),
+	// 			Members: []*string{
+	// 				to.Ptr("564d43da-fefc-2a3b-1d92-42855622fa50"),
+	// 			},
+	// 			Status: to.Ptr(armavs.VMGroupStatusEnumSUCCESS),
+	// 			Revision: to.Ptr[int64](2),
+	// 		},
+	// 		Type: to.Ptr("Microsoft.AVS/privateClouds/workloadNetworks/vmGroups"),
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2026-03-01/WorkloadNetworks_Get.json
 func ExampleWorkloadNetworksClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -888,42 +1193,6 @@ func ExampleWorkloadNetworksClient_GetVirtualMachine() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/WorkloadNetworks_List.json
-func ExampleWorkloadNetworksClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armavs.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewWorkloadNetworksClient().NewListPager("group1", "cloud1", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armavs.WorkloadNetworksClientListResponse{
-		// 	WorkloadNetworkList: armavs.WorkloadNetworkList{
-		// 		Value: []*armavs.WorkloadNetwork{
-		// 			{
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default"),
-		// 				Name: to.Ptr("default"),
-		// 				Type: to.Ptr("Microsoft.AVS/privateClouds/workloadNetworks"),
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
 // Generated from example definition: 2026-03-01/WorkloadNetworks_ListDnsServices.json
 func ExampleWorkloadNetworksClient_NewListDNSServicesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -1098,6 +1367,42 @@ func ExampleWorkloadNetworksClient_NewListGatewaysPager() {
 		// 					Path: to.Ptr("/infra/tier-1s/gateway1"),
 		// 				},
 		// 				Type: to.Ptr("Microsoft.AVS/privateClouds/workloadNetworks/segments"),
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-03-01/WorkloadNetworks_List.json
+func ExampleWorkloadNetworksClient_NewListPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armavs.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewWorkloadNetworksClient().NewListPager("group1", "cloud1", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armavs.WorkloadNetworksClientListResponse{
+		// 	WorkloadNetworkList: armavs.WorkloadNetworkList{
+		// 		Value: []*armavs.WorkloadNetwork{
+		// 			{
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default"),
+		// 				Name: to.Ptr("default"),
+		// 				Type: to.Ptr("Microsoft.AVS/privateClouds/workloadNetworks"),
 		// 			},
 		// 		},
 		// 	},
@@ -1324,309 +1629,4 @@ func ExampleWorkloadNetworksClient_NewListVirtualMachinesPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-03-01/WorkloadNetworks_UpdateDnsService.json
-func ExampleWorkloadNetworksClient_BeginUpdateDNSService() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armavs.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewWorkloadNetworksClient().BeginUpdateDNSService(ctx, "group1", "cloud1", "dnsService1", armavs.WorkloadNetworkDNSService{
-		Properties: &armavs.WorkloadNetworkDNSServiceProperties{
-			DisplayName:    to.Ptr("dnsService1"),
-			DNSServiceIP:   to.Ptr("5.5.5.5"),
-			DefaultDNSZone: to.Ptr("defaultDnsZone1"),
-			FqdnZones: []*string{
-				to.Ptr("fqdnZone1"),
-			},
-			LogLevel: to.Ptr(armavs.DNSServiceLogLevelEnumINFO),
-			Revision: to.Ptr[int64](1),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armavs.WorkloadNetworksClientUpdateDNSServiceResponse{
-	// 	WorkloadNetworkDNSService: armavs.WorkloadNetworkDNSService{
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/dnsServices/dnsService1"),
-	// 		Name: to.Ptr("dnsService1"),
-	// 		Properties: &armavs.WorkloadNetworkDNSServiceProperties{
-	// 			DisplayName: to.Ptr("dnsService1"),
-	// 			DNSServiceIP: to.Ptr("5.5.5.5"),
-	// 			DefaultDNSZone: to.Ptr("defaultDnsZone1"),
-	// 			FqdnZones: []*string{
-	// 				to.Ptr("fqdnZone1"),
-	// 			},
-	// 			LogLevel: to.Ptr(armavs.DNSServiceLogLevelEnumINFO),
-	// 			Status: to.Ptr(armavs.DNSServiceStatusEnumSUCCESS),
-	// 			Revision: to.Ptr[int64](1),
-	// 		},
-	// 		Type: to.Ptr("Microsoft.AVS/privateClouds/workloadNetworks/dnsServices"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-03-01/WorkloadNetworks_UpdateDnsZone.json
-func ExampleWorkloadNetworksClient_BeginUpdateDNSZone() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armavs.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewWorkloadNetworksClient().BeginUpdateDNSZone(ctx, "group1", "cloud1", "dnsZone1", armavs.WorkloadNetworkDNSZone{
-		Properties: &armavs.WorkloadNetworkDNSZoneProperties{
-			DisplayName: to.Ptr("dnsZone1"),
-			Domain:      []*string{},
-			DNSServerIPs: []*string{
-				to.Ptr("1.1.1.1"),
-			},
-			SourceIP: to.Ptr("8.8.8.8"),
-			Revision: to.Ptr[int64](1),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armavs.WorkloadNetworksClientUpdateDNSZoneResponse{
-	// 	WorkloadNetworkDNSZone: armavs.WorkloadNetworkDNSZone{
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/dnsZones/dnsZone1"),
-	// 		Name: to.Ptr("dnsZone1"),
-	// 		Properties: &armavs.WorkloadNetworkDNSZoneProperties{
-	// 			DisplayName: to.Ptr("dnsZone1"),
-	// 			Domain: []*string{
-	// 			},
-	// 			DNSServerIPs: []*string{
-	// 				to.Ptr("1.1.1.1"),
-	// 			},
-	// 			SourceIP: to.Ptr("8.8.8.8"),
-	// 			DNSServices: to.Ptr[int64](0),
-	// 			Revision: to.Ptr[int64](1),
-	// 		},
-	// 		Type: to.Ptr("Microsoft.AVS/privateClouds/workloadNetworks/dnsZones"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-03-01/WorkloadNetworks_UpdateDhcp.json
-func ExampleWorkloadNetworksClient_BeginUpdateDhcp() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armavs.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewWorkloadNetworksClient().BeginUpdateDhcp(ctx, "group1", "cloud1", "dhcp1", armavs.WorkloadNetworkDhcp{
-		Properties: &armavs.WorkloadNetworkDhcpServer{
-			DhcpType:      to.Ptr(armavs.DhcpTypeEnumSERVER),
-			ServerAddress: to.Ptr("40.1.5.1/24"),
-			LeaseTime:     to.Ptr[int64](86400),
-			Revision:      to.Ptr[int64](1),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armavs.WorkloadNetworksClientUpdateDhcpResponse{
-	// 	WorkloadNetworkDhcp: armavs.WorkloadNetworkDhcp{
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/dhcpConfigurations/dhcpConfigurations1"),
-	// 		Name: to.Ptr("dhcp1"),
-	// 		Properties: &armavs.WorkloadNetworkDhcpServer{
-	// 			DisplayName: to.Ptr("dhcpConfigurations1"),
-	// 			DhcpType: to.Ptr(armavs.DhcpTypeEnumSERVER),
-	// 			Segments: []*string{
-	// 				to.Ptr("segment1"),
-	// 				to.Ptr("segment2"),
-	// 			},
-	// 			ServerAddress: to.Ptr("40.1.5.1/24"),
-	// 			LeaseTime: to.Ptr[int64](86400),
-	// 			Revision: to.Ptr[int64](2),
-	// 		},
-	// 		Type: to.Ptr("Microsoft.AVS/privateClouds/workloadNetworks/dhcpConfigurations"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-03-01/WorkloadNetworks_UpdatePortMirroring.json
-func ExampleWorkloadNetworksClient_BeginUpdatePortMirroring() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armavs.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewWorkloadNetworksClient().BeginUpdatePortMirroring(ctx, "group1", "cloud1", "portMirroring1", armavs.WorkloadNetworkPortMirroring{
-		Properties: &armavs.WorkloadNetworkPortMirroringProperties{
-			Direction:   to.Ptr(armavs.PortMirroringDirectionEnumBIDIRECTIONAL),
-			Source:      to.Ptr("vmGroup1"),
-			Destination: to.Ptr("vmGroup2"),
-			Revision:    to.Ptr[int64](1),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armavs.WorkloadNetworksClientUpdatePortMirroringResponse{
-	// 	WorkloadNetworkPortMirroring: armavs.WorkloadNetworkPortMirroring{
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/portMirroringProfiles/portMirroring1"),
-	// 		Name: to.Ptr("portMirroring1"),
-	// 		Properties: &armavs.WorkloadNetworkPortMirroringProperties{
-	// 			DisplayName: to.Ptr("portMirroring1"),
-	// 			Direction: to.Ptr(armavs.PortMirroringDirectionEnumBIDIRECTIONAL),
-	// 			Source: to.Ptr("vmGroup1"),
-	// 			Destination: to.Ptr("vmGroup2"),
-	// 			Status: to.Ptr(armavs.PortMirroringStatusEnumSUCCESS),
-	// 			Revision: to.Ptr[int64](2),
-	// 		},
-	// 		Type: to.Ptr("Microsoft.AVS/privateClouds/workloadNetworks/portMirroringProfiles"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-03-01/WorkloadNetworks_UpdateSegments.json
-func ExampleWorkloadNetworksClient_BeginUpdateSegments() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armavs.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewWorkloadNetworksClient().BeginUpdateSegments(ctx, "group1", "cloud1", "segment1", armavs.WorkloadNetworkSegment{
-		Properties: &armavs.WorkloadNetworkSegmentProperties{
-			ConnectedGateway: to.Ptr("/infra/tier-1s/gateway"),
-			Subnet: &armavs.WorkloadNetworkSegmentSubnet{
-				DhcpRanges: []*string{
-					to.Ptr("40.20.0.0-40.20.0.1"),
-				},
-				GatewayAddress: to.Ptr("40.20.20.20/16"),
-			},
-			Revision: to.Ptr[int64](1),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armavs.WorkloadNetworksClientUpdateSegmentsResponse{
-	// 	WorkloadNetworkSegment: armavs.WorkloadNetworkSegment{
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/segments/segment1"),
-	// 		Name: to.Ptr("segment1"),
-	// 		Properties: &armavs.WorkloadNetworkSegmentProperties{
-	// 			DisplayName: to.Ptr("segment1"),
-	// 			ConnectedGateway: to.Ptr("/infra/tier-1s/gateway"),
-	// 			Subnet: &armavs.WorkloadNetworkSegmentSubnet{
-	// 				DhcpRanges: []*string{
-	// 					to.Ptr("40.20.0.0-40.20.0.1"),
-	// 				},
-	// 				GatewayAddress: to.Ptr("40.20.20.20/16"),
-	// 			},
-	// 			PortVif: []*armavs.WorkloadNetworkSegmentPortVif{
-	// 				{
-	// 					PortName: to.Ptr("vm1"),
-	// 				},
-	// 			},
-	// 			Status: to.Ptr(armavs.SegmentStatusEnumSUCCESS),
-	// 			Revision: to.Ptr[int64](2),
-	// 		},
-	// 		Type: to.Ptr("Microsoft.AVS/privateClouds/workloadNetworks/segments"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-03-01/WorkloadNetworks_UpdateVMGroup.json
-func ExampleWorkloadNetworksClient_BeginUpdateVMGroup() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armavs.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewWorkloadNetworksClient().BeginUpdateVMGroup(ctx, "group1", "cloud1", "vmGroup1", armavs.WorkloadNetworkVMGroup{
-		Properties: &armavs.WorkloadNetworkVMGroupProperties{
-			Members: []*string{
-				to.Ptr("564d43da-fefc-2a3b-1d92-42855622fa50"),
-			},
-			Revision: to.Ptr[int64](1),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armavs.WorkloadNetworksClientUpdateVMGroupResponse{
-	// 	WorkloadNetworkVMGroup: armavs.WorkloadNetworkVMGroup{
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/vmGroups/vmGroup1"),
-	// 		Name: to.Ptr("cloud1"),
-	// 		Properties: &armavs.WorkloadNetworkVMGroupProperties{
-	// 			DisplayName: to.Ptr("vmGroup1"),
-	// 			Members: []*string{
-	// 				to.Ptr("564d43da-fefc-2a3b-1d92-42855622fa50"),
-	// 			},
-	// 			Status: to.Ptr(armavs.VMGroupStatusEnumSUCCESS),
-	// 			Revision: to.Ptr[int64](2),
-	// 		},
-	// 		Type: to.Ptr("Microsoft.AVS/privateClouds/workloadNetworks/vmGroups"),
-	// 	},
-	// }
 }

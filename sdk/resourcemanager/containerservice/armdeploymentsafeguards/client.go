@@ -59,7 +59,7 @@ func (client *Client) BeginCreate(ctx context.Context, resourceURI string, resou
 	}
 }
 
-// Create - Creates or updates a deploymentSafeguard
+// create - Creates or updates a deploymentSafeguard
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *Client) create(ctx context.Context, resourceURI string, resource DeploymentSafeguard, options *ClientBeginCreateOptions) (*http.Response, error) {
 	var err error
@@ -81,7 +81,7 @@ func (client *Client) create(ctx context.Context, resourceURI string, resource D
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *Client) createCreateRequest(ctx context.Context, resourceURI string, resource DeploymentSafeguard, _ *ClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.ContainerService/deploymentSafeguards/default"
 	if resourceURI == "" {
@@ -124,7 +124,7 @@ func (client *Client) BeginDelete(ctx context.Context, resourceURI string, optio
 	}
 }
 
-// Delete - Delete DeploymentSafeguards
+// deleteOperation - Delete DeploymentSafeguards
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *Client) deleteOperation(ctx context.Context, resourceURI string, options *ClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -146,7 +146,7 @@ func (client *Client) deleteOperation(ctx context.Context, resourceURI string, o
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *Client) deleteCreateRequest(ctx context.Context, resourceURI string, _ *ClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.ContainerService/deploymentSafeguards/default"
 	if resourceURI == "" {

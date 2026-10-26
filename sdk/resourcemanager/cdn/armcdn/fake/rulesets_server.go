@@ -22,13 +22,13 @@ import (
 
 // RuleSetsServer is a fake server for instances of the armcdn.RuleSetsClient type.
 type RuleSetsServer struct {
-	// Create is the fake for method RuleSetsClient.Create
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	Create func(ctx context.Context, resourceGroupName string, profileName string, ruleSetName string, options *armcdn.RuleSetsClientCreateOptions) (resp azfake.Responder[armcdn.RuleSetsClientCreateResponse], errResp azfake.ErrorResponder)
-
 	// BeginDelete is the fake for method RuleSetsClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, profileName string, ruleSetName string, options *armcdn.RuleSetsClientBeginDeleteOptions) (resp azfake.PollerResponder[armcdn.RuleSetsClientDeleteResponse], errResp azfake.ErrorResponder)
+
+	// Create is the fake for method RuleSetsClient.Create
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	Create func(ctx context.Context, resourceGroupName string, profileName string, ruleSetName string, options *armcdn.RuleSetsClientCreateOptions) (resp azfake.Responder[armcdn.RuleSetsClientCreateResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method RuleSetsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -85,10 +85,10 @@ func (r *RuleSetsServerTransport) dispatchToMethodFake(req *http.Request, method
 		}
 		if !intercepted {
 			switch method {
-			case "RuleSetsClient.Create":
-				res.resp, res.err = r.dispatchCreate(req)
 			case "RuleSetsClient.BeginDelete":
 				res.resp, res.err = r.dispatchBeginDelete(req)
+			case "RuleSetsClient.Create":
+				res.resp, res.err = r.dispatchCreate(req)
 			case "RuleSetsClient.Get":
 				res.resp, res.err = r.dispatchGet(req)
 			case "RuleSetsClient.NewListByProfilePager":
@@ -109,46 +109,6 @@ func (r *RuleSetsServerTransport) dispatchToMethodFake(req *http.Request, method
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (r *RuleSetsServerTransport) dispatchCreate(req *http.Request) (*http.Response, error) {
-	if r.srv.Create == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Create not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Cdn/profiles/(?P<profileName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/ruleSets/(?P<ruleSetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	profileNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("profileName")])
-	if err != nil {
-		return nil, err
-	}
-	ruleSetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("ruleSetName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := r.srv.Create(req.Context(), resourceGroupNameParam, profileNameParam, ruleSetNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RuleSet, req)
-	if err != nil {
-		return nil, err
-	}
-	if val := server.GetResponse(respr).RetryAfter; val != nil {
-		resp.Header.Set("Retry-After", strconv.FormatInt(int64(*val), 10))
-	}
-	return resp, nil
 }
 
 func (r *RuleSetsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
@@ -196,6 +156,46 @@ func (r *RuleSetsServerTransport) dispatchBeginDelete(req *http.Request) (*http.
 		r.beginDelete.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (r *RuleSetsServerTransport) dispatchCreate(req *http.Request) (*http.Response, error) {
+	if r.srv.Create == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Create not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Cdn/profiles/(?P<profileName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/ruleSets/(?P<ruleSetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	profileNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("profileName")])
+	if err != nil {
+		return nil, err
+	}
+	ruleSetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("ruleSetName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := r.srv.Create(req.Context(), resourceGroupNameParam, profileNameParam, ruleSetNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RuleSet, req)
+	if err != nil {
+		return nil, err
+	}
+	if val := server.GetResponse(respr).RetryAfter; val != nil {
+		resp.Header.Set("Retry-After", strconv.FormatInt(int64(*val), 10))
+	}
 	return resp, nil
 }
 

@@ -67,7 +67,7 @@ func (client *MachinesClient) BeginAssessPatches(ctx context.Context, resourceGr
 	}
 }
 
-// AssessPatches - The operation to assess patches on a hybrid machine identity in Azure.
+// assessPatches - The operation to assess patches on a hybrid machine identity in Azure.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *MachinesClient) assessPatches(ctx context.Context, resourceGroupName string, name string, options *MachinesClientBeginAssessPatchesOptions) (*http.Response, error) {
 	var err error
@@ -89,7 +89,7 @@ func (client *MachinesClient) assessPatches(ctx context.Context, resourceGroupNa
 	return httpResp, nil
 }
 
-// assessPatchesCreateRequest creates the AssessPatches request.
+// assessPatchesCreateRequest creates the assessPatches request.
 func (client *MachinesClient) assessPatchesCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *MachinesClientBeginAssessPatchesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{name}/assessPatches"
 	if client.subscriptionID == "" {
@@ -112,6 +112,151 @@ func (client *MachinesClient) assessPatchesCreateRequest(ctx context.Context, re
 	reqQP.Set("api-version", version20260715)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// BeginDelete - The operation to delete a hybrid machine.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - machineName - The name of the hybrid machine.
+//   - options - MachinesClientBeginDeleteOptions contains the optional parameters for the MachinesClient.BeginDelete method.
+func (client *MachinesClient) BeginDelete(ctx context.Context, resourceGroupName string, machineName string, options *MachinesClientBeginDeleteOptions) (*runtime.Poller[MachinesClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, machineName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[MachinesClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[MachinesClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// deleteOperation - The operation to delete a hybrid machine.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *MachinesClient) deleteOperation(ctx context.Context, resourceGroupName string, machineName string, options *MachinesClientBeginDeleteOptions) (*http.Response, error) {
+	var err error
+	const operationName = "MachinesClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, machineName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// deleteCreateRequest creates the delete request.
+func (client *MachinesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, machineName string, _ *MachinesClientBeginDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{machineName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if machineName == "" {
+		return nil, errors.New("parameter machineName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{machineName}", url.PathEscape(machineName))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginInstallPatches - The operation to install patches on a hybrid machine identity in Azure.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - name - The name of the hybrid machine.
+//   - installPatchesInput - Input for InstallPatches as directly received by the API
+//   - options - MachinesClientBeginInstallPatchesOptions contains the optional parameters for the MachinesClient.BeginInstallPatches
+//     method.
+func (client *MachinesClient) BeginInstallPatches(ctx context.Context, resourceGroupName string, name string, installPatchesInput MachineInstallPatchesParameters, options *MachinesClientBeginInstallPatchesOptions) (*runtime.Poller[MachinesClientInstallPatchesResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.installPatches(ctx, resourceGroupName, name, installPatchesInput, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[MachinesClientInstallPatchesResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[MachinesClientInstallPatchesResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// installPatches - The operation to install patches on a hybrid machine identity in Azure.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *MachinesClient) installPatches(ctx context.Context, resourceGroupName string, name string, installPatchesInput MachineInstallPatchesParameters, options *MachinesClientBeginInstallPatchesOptions) (*http.Response, error) {
+	var err error
+	const operationName = "MachinesClient.BeginInstallPatches"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.installPatchesCreateRequest(ctx, resourceGroupName, name, installPatchesInput, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// installPatchesCreateRequest creates the installPatches request.
+func (client *MachinesClient) installPatchesCreateRequest(ctx context.Context, resourceGroupName string, name string, installPatchesInput MachineInstallPatchesParameters, _ *MachinesClientBeginInstallPatchesOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{name}/installPatches"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if name == "" {
+		return nil, errors.New("parameter name cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, installPatchesInput); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -184,75 +329,6 @@ func (client *MachinesClient) createOrUpdateHandleResponse(resp *http.Response, 
 	return result, nil
 }
 
-// BeginDelete - The operation to delete a hybrid machine.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - machineName - The name of the hybrid machine.
-//   - options - MachinesClientBeginDeleteOptions contains the optional parameters for the MachinesClient.BeginDelete method.
-func (client *MachinesClient) BeginDelete(ctx context.Context, resourceGroupName string, machineName string, options *MachinesClientBeginDeleteOptions) (*runtime.Poller[MachinesClientDeleteResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, machineName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[MachinesClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[MachinesClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Delete - The operation to delete a hybrid machine.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *MachinesClient) deleteOperation(ctx context.Context, resourceGroupName string, machineName string, options *MachinesClientBeginDeleteOptions) (*http.Response, error) {
-	var err error
-	const operationName = "MachinesClient.BeginDelete"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, machineName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// deleteCreateRequest creates the Delete request.
-func (client *MachinesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, machineName string, _ *MachinesClientBeginDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{machineName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if machineName == "" {
-		return nil, errors.New("parameter machineName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{machineName}", url.PathEscape(machineName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260715)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
-}
-
 // Get - Retrieves information about the model view or the instance view of a hybrid machine.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -314,82 +390,6 @@ func (client *MachinesClient) getHandleResponse(resp *http.Response, successCode
 		return MachinesClientGetResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginInstallPatches - The operation to install patches on a hybrid machine identity in Azure.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - name - The name of the hybrid machine.
-//   - installPatchesInput - Input for InstallPatches as directly received by the API
-//   - options - MachinesClientBeginInstallPatchesOptions contains the optional parameters for the MachinesClient.BeginInstallPatches
-//     method.
-func (client *MachinesClient) BeginInstallPatches(ctx context.Context, resourceGroupName string, name string, installPatchesInput MachineInstallPatchesParameters, options *MachinesClientBeginInstallPatchesOptions) (*runtime.Poller[MachinesClientInstallPatchesResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.installPatches(ctx, resourceGroupName, name, installPatchesInput, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[MachinesClientInstallPatchesResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[MachinesClientInstallPatchesResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// InstallPatches - The operation to install patches on a hybrid machine identity in Azure.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *MachinesClient) installPatches(ctx context.Context, resourceGroupName string, name string, installPatchesInput MachineInstallPatchesParameters, options *MachinesClientBeginInstallPatchesOptions) (*http.Response, error) {
-	var err error
-	const operationName = "MachinesClient.BeginInstallPatches"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.installPatchesCreateRequest(ctx, resourceGroupName, name, installPatchesInput, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// installPatchesCreateRequest creates the InstallPatches request.
-func (client *MachinesClient) installPatchesCreateRequest(ctx context.Context, resourceGroupName string, name string, installPatchesInput MachineInstallPatchesParameters, _ *MachinesClientBeginInstallPatchesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{name}/installPatches"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260715)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, installPatchesInput); err != nil {
-		return nil, err
-	}
-	return req, nil
 }
 
 // NewListByResourceGroupPager - Lists all the hybrid machines in the specified resource group. Use the nextLink property

@@ -45,8 +45,8 @@ func ExampleReplicationNetworksClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/ReplicationNetworks_List.json
-func ExampleReplicationNetworksClient_NewListPager() {
+// Generated from example definition: 2025-08-01/ReplicationNetworks_ListByReplicationFabrics.json
+func ExampleReplicationNetworksClient_NewListByReplicationFabricsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -56,7 +56,7 @@ func ExampleReplicationNetworksClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewReplicationNetworksClient().NewListPager("srcBvte2a14C27", "srce2avaultbvtaC27", nil)
+	pager := clientFactory.NewReplicationNetworksClient().NewListByReplicationFabricsPager("srcBvte2a14C27", "srce2avaultbvtaC27", "b0cef6e9a4437b81803d0b55ada4f700ab66caae59c35d62723a1589c0cd13ac", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -67,7 +67,7 @@ func ExampleReplicationNetworksClient_NewListPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armrecoveryservicessiterecovery.ReplicationNetworksClientListResponse{
+		// page = armrecoveryservicessiterecovery.ReplicationNetworksClientListByReplicationFabricsResponse{
 		// 	NetworkCollection: armrecoveryservicessiterecovery.NetworkCollection{
 		// 		Value: []*armrecoveryservicessiterecovery.Network{
 		// 			{
@@ -112,8 +112,8 @@ func ExampleReplicationNetworksClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-08-01/ReplicationNetworks_ListByReplicationFabrics.json
-func ExampleReplicationNetworksClient_NewListByReplicationFabricsPager() {
+// Generated from example definition: 2025-08-01/ReplicationNetworks_List.json
+func ExampleReplicationNetworksClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -123,7 +123,7 @@ func ExampleReplicationNetworksClient_NewListByReplicationFabricsPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewReplicationNetworksClient().NewListByReplicationFabricsPager("srcBvte2a14C27", "srce2avaultbvtaC27", "b0cef6e9a4437b81803d0b55ada4f700ab66caae59c35d62723a1589c0cd13ac", nil)
+	pager := clientFactory.NewReplicationNetworksClient().NewListPager("srcBvte2a14C27", "srce2avaultbvtaC27", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -134,7 +134,7 @@ func ExampleReplicationNetworksClient_NewListByReplicationFabricsPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armrecoveryservicessiterecovery.ReplicationNetworksClientListByReplicationFabricsResponse{
+		// page = armrecoveryservicessiterecovery.ReplicationNetworksClientListResponse{
 		// 	NetworkCollection: armrecoveryservicessiterecovery.NetworkCollection{
 		// 		Value: []*armrecoveryservicessiterecovery.Network{
 		// 			{

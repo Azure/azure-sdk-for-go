@@ -53,6 +53,11 @@ func (f *FileClientUploadRangeFromURLOptions) SetSourceContentCRC64(v []byte) {
 	f.SourceContentCRC64 = v
 }
 
+type StringEncoded struct {
+	Content *string `xml:",chardata"`
+	Encoded *bool   `xml:"Encoded,attr"`
+}
+
 // Custom MarshalXML/UnmarshalXML functions for types that need special handling.
 
 // MarshalXML implements the xml.Marshaller interface for type Handle.
@@ -196,125 +201,5 @@ func (l *ListFilesAndDirectoriesSegmentResponse) UnmarshalXML(dec *xml.Decoder, 
 			}
 		}
 	}
-	return nil
-}
-
-// FileType - The type of a listed file system item. It is not defined by the service; it is derived from the XML element
-// in which the item was returned by the List Directories and Files operation.
-type FileType string
-
-const (
-	// FileTypeRegular - Regular file.
-	FileTypeRegular FileType = "Regular"
-	// FileTypeDirectory - Directory.
-	FileTypeDirectory FileType = "Directory"
-	// FileTypeSymLink - Symbolic link.
-	FileTypeSymLink FileType = "SymLink"
-	// FileTypeBlockDevice - Block device.
-	FileTypeBlockDevice FileType = "BlockDevice"
-	// FileTypeCharacterDevice - Character device.
-	FileTypeCharacterDevice FileType = "CharacterDevice"
-	// FileTypeSocket - Socket.
-	FileTypeSocket FileType = "Socket"
-	// FileTypeFifo - FIFO.
-	FileTypeFifo FileType = "Fifo"
-)
-
-// PossibleFileTypeValues returns the possible values for the FileType const type.
-func PossibleFileTypeValues() []FileType {
-	return []FileType{
-		FileTypeRegular,
-		FileTypeDirectory,
-		FileTypeSymLink,
-		FileTypeBlockDevice,
-		FileTypeCharacterDevice,
-		FileTypeSocket,
-		FileTypeFifo,
-	}
-}
-
-// FileType returns FileTypeDirectory. It is intended to be used for NFS shares.
-func (d *Directory) FileType() FileType { return FileTypeDirectory }
-
-// FileType returns FileTypeRegular. It is intended to be used for NFS shares.
-func (f *File) FileType() FileType { return FileTypeRegular }
-
-// FileType returns FileTypeSymLink.
-func (s *SymLinkItem) FileType() FileType { return FileTypeSymLink }
-
-// FileType returns FileTypeBlockDevice.
-func (b *BlockDeviceItem) FileType() FileType { return FileTypeBlockDevice }
-
-// FileType returns FileTypeCharacterDevice.
-func (c *CharDeviceItem) FileType() FileType { return FileTypeCharacterDevice }
-
-// FileType returns FileTypeFifo.
-func (f *FifoItem) FileType() FileType { return FileTypeFifo }
-
-// FileType returns FileTypeSocket.
-func (s *SocketItem) FileType() FileType { return FileTypeSocket }
-
-// decodeStringEncoded URL-decodes s.Content in place if the service returned it encoded, and sets s.Encoded to false.
-// If s.Content is not a valid URL encoding, it is left as returned by the service with s.Encoded still true, so that a
-// single malformed name does not fail the whole list response.
-func decodeStringEncoded(s *StringEncoded) {
-	if s == nil || s.Content == nil || s.Encoded == nil || !*s.Encoded {
-		return
-	}
-	content, err := url.QueryUnescape(*s.Content)
-	if err != nil {
-		return
-	}
-	s.Content = &content
-	s.Encoded = to.Ptr(false)
-}
-
-// UnmarshalXML implements the xml.Unmarshaller interface for type SymLinkItem.
-func (s *SymLinkItem) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) error {
-	type alias SymLinkItem
-	if err := dec.DecodeElement((*alias)(s), &start); err != nil {
-		return err
-	}
-	decodeStringEncoded(s.Name)
-	return nil
-}
-
-// UnmarshalXML implements the xml.Unmarshaller interface for type BlockDeviceItem.
-func (b *BlockDeviceItem) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) error {
-	type alias BlockDeviceItem
-	if err := dec.DecodeElement((*alias)(b), &start); err != nil {
-		return err
-	}
-	decodeStringEncoded(b.Name)
-	return nil
-}
-
-// UnmarshalXML implements the xml.Unmarshaller interface for type CharDeviceItem.
-func (c *CharDeviceItem) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) error {
-	type alias CharDeviceItem
-	if err := dec.DecodeElement((*alias)(c), &start); err != nil {
-		return err
-	}
-	decodeStringEncoded(c.Name)
-	return nil
-}
-
-// UnmarshalXML implements the xml.Unmarshaller interface for type FifoItem.
-func (f *FifoItem) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) error {
-	type alias FifoItem
-	if err := dec.DecodeElement((*alias)(f), &start); err != nil {
-		return err
-	}
-	decodeStringEncoded(f.Name)
-	return nil
-}
-
-// UnmarshalXML implements the xml.Unmarshaller interface for type SocketItem.
-func (s *SocketItem) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) error {
-	type alias SocketItem
-	if err := dec.DecodeElement((*alias)(s), &start); err != nil {
-		return err
-	}
-	decodeStringEncoded(s.Name)
 	return nil
 }

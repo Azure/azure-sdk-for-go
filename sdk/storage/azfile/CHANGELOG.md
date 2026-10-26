@@ -12,12 +12,6 @@
   * Added `GetFileLinks` method on file `Client` that returns the hard links of a file. It is only supported on a file `Client` that addresses the file by file ID.
   * `GetProperties` on file and directory `Client` returns the name of the resource in `FileName` when it is addressed by file ID.
   * A file or directory `Client` that addresses the resource by file ID only supports `GetProperties` and `GetFileLinks` (files only). All other operations, including lease operations and `GetSASURL`, return an error wrapping the new `fileerror.ErrFileIDNotSupported` without sending a request. `GetFileLinks` on a path based file `Client` returns an error wrapping the new `fileerror.ErrFileIDRequired`.
-* Added NFS List V2 Files and Directories support for service version `2027-03-07`:
-  * Added `Permissions`, `LinkCount`, `NfsAttributes` and `All` to `directory.ListFilesInclude`. `All` is sent to the service as the literal value `All`.
-  * Added `SymLinkItems`, `BlockDeviceItems`, `CharDeviceItems`, `FifoItems` and `SocketItems` to `directory.FilesAndDirectoriesListSegment`, with new types `directory.SymLinkItem` (including `LinkText`), `directory.BlockDeviceItem` and `directory.CharDeviceItem` (including `DeviceMajor` and `DeviceMinor`), `directory.FifoItem` and `directory.SocketItem`.
-  * Added `LinkCount` to `directory.File` and `directory.Directory`, and `Owner`, `Group` and `FileMode` to `directory.FileProperty`.
-  * Added `directory.FileType` (`Regular`, `Directory`, `SymLink`, `BlockDevice`, `CharacterDevice`, `Socket`, `Fifo`) and a `FileType()` method on each listed item type.
-  * URL-encoded names of NFS items (`Encoded="true"`) are decoded before being returned.
 * Added Files Change Feed support on shares: `EnableChangeFeed` and `ChangeFeedRetentionInDays` in share `CreateOptions` and `SetPropertiesOptions`, and `EnableChangeFeed`, `ChangeFeedRetentionInDays` and `ChangeFeedBlobContainerName` in the share `GetProperties` response.
 * Added support for share creation time for service version `2027-03-07`. The creation time of a share is returned in `CreationTime` by `GetProperties` on share `Client` and in `ShareProperties` by `NewListSharesPager` on service `Client`.
 

@@ -2,7 +2,7 @@
 
 <!-- cspell:ignore azcertificates francescomari -->
 
-## 1.6.0 (2026-10-23)
+## 1.6.0 (2026-10-27)
 ### Features Added
 
 - New function `NewPlatformManaged(certificateUsage string, metadata map[string]any) *PlatformManaged`

@@ -42,6 +42,7 @@ const (
 )
 
 // PossibleListFilesIncludeTypeValues returns the possible values for the ListFilesIncludeType const type.
+// NFS List V2 values are generated but not yet exposed.
 func PossibleListFilesIncludeTypeValues() []ListFilesIncludeType {
 	return []ListFilesIncludeType{
 		ListFilesIncludeTypeAttributes,

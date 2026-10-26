@@ -64,6 +64,7 @@ func (r ItemResponse) IntoModel[T any]() (T, error) {
 		failure := queryResponseError(r.Response, r.SessionToken, err)
 		failure.Message = "decoding item response"
 		failure.ETag = r.ETag
+		failure.PatchTrackingID = r.PatchTrackingID
 		return model, failure
 	}
 	return model, nil

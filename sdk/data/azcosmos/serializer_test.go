@@ -123,6 +123,7 @@ func TestItemResponseConversionFailureMetadata(t *testing.T) {
 			ActivityID: "synthetic-activity", Diagnostics: &Diagnostics{StatusCode: 201},
 		},
 		ETag: "synthetic-etag", SessionToken: "0:5", Value: []byte(`{"id":"one"}`),
+		PatchTrackingID: "synthetic-patch-tracking-id",
 		serializer: &serializerFuncs{unmarshal: func(_ []byte, value any) error {
 			*value.(*map[string]any) = map[string]any{"partial": true}
 			return sentinel
@@ -136,6 +137,7 @@ func TestItemResponseConversionFailureMetadata(t *testing.T) {
 		StatusCode: 201, SubStatus: 4, AttemptCount: 2, RequestCharge: 5.5,
 		ActivityID: response.ActivityID, Diagnostics: response.Diagnostics,
 		ETag: response.ETag, SessionToken: response.SessionToken, cause: sentinel,
+		PatchTrackingID: response.PatchTrackingID,
 	}, err)
 }
 

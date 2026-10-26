@@ -1,0 +1,47 @@
+{
+  "$schema": "../../schema/scenario.v1.json",
+  "specVersion": "1.0",
+  "id": "consistency.session-staleness",
+  "title": "Disabled session capture exposes deterministic replica staleness",
+  "requirement": "With automatic session capture disabled, an immediate Eventual read from a delayed replica can return a plain NotFound before replication converges.",
+  "maturity": "candidate",
+  "precedents": [
+    {
+      "sdk": "rust",
+      "path": "sdk/cosmos/azure_data_cosmos/tests/in_memory_emulator_tests/session_token.rs",
+      "test": "session_capturing_disabled_omits_session_token"
+    }
+  ],
+  "profiles": [
+    "configurationResilience"
+  ],
+  "tags": [
+    "consistency",
+    "session",
+    "simulated"
+  ],
+  "backends": {
+    "hostedEmulatorGatewayV1": {
+      "applicability": "simulated",
+      "fidelity": "simulated",
+      "reason": "A fixed replication delay deterministically exposes the stale replica.",
+      "requires": [
+        "item"
+      ]
+    },
+    "hostedEmulatorGatewayV2": {
+      "applicability": "simulated",
+      "fidelity": "simulated",
+      "reason": "A fixed replication delay deterministically exposes the stale replica.",
+      "requires": [
+        "item",
+        "gatewayV2"
+      ]
+    },
+    "azureLive": {
+      "applicability": "notApplicable",
+      "fidelity": "none",
+      "reason": "Live replication may converge before the first read, so immediate staleness is not a service contract."
+    }
+  }
+}

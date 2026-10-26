@@ -1,0 +1,49 @@
+{
+  "$schema": "../schema/profile.v1.json",
+  "specVersion": "1.0",
+  "id": "lifecycleConsistencyMatrix",
+  "accounts": [
+    {
+      "id": "strong",
+      "writeMode": "single",
+      "consistency": "strong",
+      "regions": [{ "name": "East US" }, { "name": "West US" }],
+      "replication": { "minDelayMs": 0, "maxDelayMs": 0 },
+      "perPartitionFailover": false
+    },
+    {
+      "id": "boundedStaleness",
+      "writeMode": "single",
+      "consistency": "boundedStaleness",
+      "regions": [{ "name": "East US" }, { "name": "West US" }],
+      "replication": { "minDelayMs": 500, "maxDelayMs": 500 },
+      "perPartitionFailover": false
+    },
+    {
+      "id": "session",
+      "writeMode": "single",
+      "consistency": "session",
+      "regions": [{ "name": "East US" }, { "name": "West US" }],
+      "replication": { "minDelayMs": 500, "maxDelayMs": 500 },
+      "perPartitionFailover": false
+    },
+    {
+      "id": "consistentPrefix",
+      "writeMode": "single",
+      "consistency": "consistentPrefix",
+      "regions": [{ "name": "East US" }, { "name": "West US" }],
+      "replication": { "minDelayMs": 500, "maxDelayMs": 500 },
+      "perPartitionFailover": false
+    },
+    {
+      "id": "eventual",
+      "writeMode": "single",
+      "consistency": "eventual",
+      "regions": [{ "name": "East US" }, { "name": "West US" }],
+      "replication": { "minDelayMs": 500, "maxDelayMs": 500 },
+      "perPartitionFailover": false
+    }
+  ],
+  "runtimes": [{ "id": "unset", "gatewayV2": "backendDefault", "ppcb": "disabled" }],
+  "clients": [{ "id": "unset", "binaryEncoding": "sdkDefault", "routing": "preferredRegions" }]
+}

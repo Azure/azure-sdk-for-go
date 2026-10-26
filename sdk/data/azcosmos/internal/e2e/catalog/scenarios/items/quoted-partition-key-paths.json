@@ -1,0 +1,55 @@
+{
+    "$schema": "../../schema/scenario.v1.json",
+    "specVersion": "1.0",
+    "id": "item.quoted-partition-key-paths",
+    "title": "Quoted partition-key paths work across item operations",
+    "requirement": "Quoted path segments, including property names containing slash characters or matching quotes preceded by literal backslashes, preserve partition routing for Hash V1, Hash V2, and hierarchical partition keys across item operations.",
+    "maturity": "candidate",
+    "precedents": [
+        {
+            "sdk": "python",
+            "path": "sdk/cosmos/azure-cosmos/tests/test_crud_subpartition.py",
+            "test": "test_partitioned_collection_partition_key_extraction_special_chars_subpartition"
+        }
+    ],
+    "profiles": [
+        "coreOperations"
+    ],
+    "tags": [
+        "item",
+        "partitionKey",
+        "hierarchicalPartitionKey",
+        "coreOperations"
+    ],
+    "backends": {
+        "hostedEmulatorGatewayV1": {
+            "applicability": "required",
+            "fidelity": "full",
+            "requires": [
+                "container",
+                "item",
+                "patch",
+                "query",
+                "changeFeed",
+                "transactionalBatch"
+            ]
+        },
+        "hostedEmulatorGatewayV2": {
+            "applicability": "required",
+            "fidelity": "full",
+            "requires": [
+                "container",
+                "item",
+                "patch",
+                "query",
+                "changeFeed",
+                "transactionalBatch",
+                "gatewayV2"
+            ]
+        },
+        "azureLive": {
+            "applicability": "supported",
+            "fidelity": "full"
+        }
+    }
+}

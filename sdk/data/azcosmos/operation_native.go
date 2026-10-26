@@ -90,7 +90,7 @@ func patchCancellationError(err error, requestedID PatchTrackingID) error {
 }
 
 // awaitCompletion submits one operation and waits for its completion or the caller's context,
-// whichever comes first. Driver creation, container resolution, and item operations use it.
+// whichever comes first. Driver creation, container resolution, and item and batch operations use it.
 //
 // The submit closure receives what the driver needs to answer: the queue to post the completion
 // to, the cookie to round-trip onto it, and somewhere to report a pre-flight rejection. It returns

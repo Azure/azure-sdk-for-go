@@ -105,6 +105,9 @@
 
 ### Other Changes
 
+* Moved completion response copying and diagnostics conversion onto waiting callers so one
+  caller's response preparation no longer delays unrelated completions.
+
 ## 1.6.0-beta.2 (2026-08-03)
 
 ### Bugs Fixed

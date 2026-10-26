@@ -381,3 +381,38 @@ type SettingsClientUpdateResponse struct {
 	// Concrete proxy resource types can be created by aliasing this type using a specific property type.
 	Settings
 }
+
+// VMApplicationsClientCreateOrUpdateResponse contains the response from method VMApplicationsClient.BeginCreateOrUpdate.
+type VMApplicationsClientCreateOrUpdateResponse struct {
+	// A VM application installed on a hybrid machine.
+	VMApplication
+}
+
+// VMApplicationsClientDeleteResponse contains the response from method VMApplicationsClient.BeginDelete.
+type VMApplicationsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// VMApplicationsClientGetInstanceViewResponse contains the response from method VMApplicationsClient.GetInstanceView.
+type VMApplicationsClientGetInstanceViewResponse struct {
+	// A VM application installed on a hybrid machine.
+	VMApplication
+}
+
+// VMApplicationsClientGetResponse contains the response from method VMApplicationsClient.Get.
+type VMApplicationsClientGetResponse struct {
+	// A VM application installed on a hybrid machine.
+	VMApplication
+}
+
+// VMApplicationsClientListResponse contains the response from method VMApplicationsClient.NewListPager.
+type VMApplicationsClientListResponse struct {
+	// A page of VM applications.
+	VMApplicationsListResult
+}
+
+// VMApplicationsClientUpdateResponse contains the response from method VMApplicationsClient.BeginUpdate.
+type VMApplicationsClientUpdateResponse struct {
+	// A VM application installed on a hybrid machine.
+	VMApplication
+}

@@ -384,3 +384,42 @@ type SettingsClientPatchOptions struct {
 type SettingsClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
+
+// VMApplicationsClientBeginCreateOrUpdateOptions contains the optional parameters for the VMApplicationsClient.BeginCreateOrUpdate
+// method.
+type VMApplicationsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// VMApplicationsClientBeginDeleteOptions contains the optional parameters for the VMApplicationsClient.BeginDelete method.
+type VMApplicationsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// VMApplicationsClientBeginUpdateOptions contains the optional parameters for the VMApplicationsClient.BeginUpdate method.
+type VMApplicationsClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// VMApplicationsClientGetInstanceViewOptions contains the optional parameters for the VMApplicationsClient.GetInstanceView
+// method.
+type VMApplicationsClientGetInstanceViewOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VMApplicationsClientGetOptions contains the optional parameters for the VMApplicationsClient.Get method.
+type VMApplicationsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VMApplicationsClientListOptions contains the optional parameters for the VMApplicationsClient.NewListPager method.
+type VMApplicationsClientListOptions struct {
+	// The continuation token for the next page of results.
+	SkipToken *string
+
+	// The maximum number of results to return.
+	Top *int32
+}

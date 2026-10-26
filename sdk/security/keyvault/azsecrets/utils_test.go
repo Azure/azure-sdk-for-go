@@ -5,12 +5,14 @@ package azsecrets_test
 
 import (
 	"context"
+	"encoding/base64"
 	"encoding/json"
 	"errors"
 	"fmt"
 	"hash/fnv"
 	"os"
 	"regexp"
+	"strings"
 	"sync"
 	"testing"
 	"time"
@@ -73,6 +75,20 @@ func run(m *testing.M) int {
 		if err != nil {
 			panic(err)
 		}
+		err = recording.AddGeneralRegexSanitizer(strings.TrimSuffix(fakeVaultURL, "/"), regexp.QuoteMeta(strings.TrimSuffix(vaultURL, "/")), nil)
+		if err != nil {
+			panic(err)
+		}
+		err = recording.AddHeaderRegexSanitizer("WWW-Authenticate", "00000000-0000-0000-0000-000000000000", `[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}`, nil)
+		if err != nil {
+			panic(err)
+		}
+		for _, header := range []string{"x-ms-keyvault-network-info", "x-ms-keyvault-rbac-assignment-id"} {
+			err = recording.AddRemoveHeaderSanitizer([]string{header}, nil)
+			if err != nil {
+				panic(err)
+			}
+		}
 	}
 
 	code := m.Run()
@@ -112,14 +128,14 @@ func startTest(t *testing.T) *azsecrets.Client {
 		err := recording.Stop(t, nil)
 		require.NoError(t, err)
 	})
+	if t.Name() == "TestBackupRestore" {
+		// Preserve the synthetic secret value while removing the opaque backup.
+		err = recording.AddBodyKeySanitizer("$.value", base64.RawURLEncoding.EncodeToString([]byte(recording.SanitizedValue)), `^[A-Za-z0-9+/_-]{128,}={0,2}$`, &recording.RecordingOptions{TestInstance: t, UseHTTPS: true})
+		require.NoError(t, err)
+	}
 	transport, err := recording.NewRecordingHTTPClient(t, nil)
 	require.NoError(t, err)
-	opts := &azsecrets.ClientOptions{
-		ClientOptions: azcore.ClientOptions{
-			Transport:  transport,
-			APIVersion: "2025-07-01",
-		},
-	}
+	opts := &azsecrets.ClientOptions{ClientOptions: azcore.ClientOptions{Transport: transport}}
 	client, err := azsecrets.NewClient(vaultURL, credential, opts)
 	require.NoError(t, err)
 	return client

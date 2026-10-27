@@ -4,14 +4,14 @@
 
 package armcdn
 
-// AFDDomainMtlsParametersClassification provides polymorphic access to related types.
-// Call the interface's GetAFDDomainMtlsParameters() method to access the common type.
+// AFDDomainMTLSParametersClassification provides polymorphic access to related types.
+// Call the interface's GetAFDDomainMTLSParameters() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *AFDDomainMtlsParameters, *ClientCertificateRequiredAndOriginValidatesAdvancedSettings, *ClientCertificateRequiredAndValidatedAdvancedSettings,
+// - *AFDDomainMTLSParameters, *ClientCertificateRequiredAndOriginValidatesAdvancedSettings, *ClientCertificateRequiredAndValidatedAdvancedSettings,
 // - *ClientCertificateValidatedIfPresentedAdvancedSettings, *CompleteMtlsPassthroughToOriginAdvancedSettings
-type AFDDomainMtlsParametersClassification interface {
-	// GetAFDDomainMtlsParameters returns the AFDDomainMtlsParameters content of the underlying type.
-	GetAFDDomainMtlsParameters() *AFDDomainMtlsParameters
+type AFDDomainMTLSParametersClassification interface {
+	// GetAFDDomainMTLSParameters returns the AFDDomainMTLSParameters content of the underlying type.
+	GetAFDDomainMTLSParameters() *AFDDomainMTLSParameters
 }
 
 // CertificateSourceParametersBaseClassification provides polymorphic access to related types.

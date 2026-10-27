@@ -6,7 +6,7 @@ package armcdn
 
 import "encoding/json"
 
-func unmarshalAFDDomainMtlsParametersClassification(rawMsg json.RawMessage) (AFDDomainMtlsParametersClassification, error) {
+func unmarshalAFDDomainMTLSParametersClassification(rawMsg json.RawMessage) (AFDDomainMTLSParametersClassification, error) {
 	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
@@ -14,7 +14,7 @@ func unmarshalAFDDomainMtlsParametersClassification(rawMsg json.RawMessage) (AFD
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
-	var b AFDDomainMtlsParametersClassification
+	var b AFDDomainMTLSParametersClassification
 	switch m["scenario"] {
 	case string(MtlsScenarioTypeClientCertificateRequiredAndOriginValidates):
 		b = &ClientCertificateRequiredAndOriginValidatesAdvancedSettings{}
@@ -25,7 +25,7 @@ func unmarshalAFDDomainMtlsParametersClassification(rawMsg json.RawMessage) (AFD
 	case string(MtlsScenarioTypeCompleteMtlsPassthroughToOrigin):
 		b = &CompleteMtlsPassthroughToOriginAdvancedSettings{}
 	default:
-		b = &AFDDomainMtlsParameters{}
+		b = &AFDDomainMTLSParameters{}
 	}
 	if err := json.Unmarshal(rawMsg, b); err != nil {
 		return nil, err

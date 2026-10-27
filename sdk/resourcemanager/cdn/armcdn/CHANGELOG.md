@@ -18,12 +18,12 @@
 - New enum type `InvocationPoint` with values `InvocationPointClientRequest`, `InvocationPointClientResponse`, `InvocationPointOriginRequest`
 - New enum type `MtlsScenarioType` with values `MtlsScenarioTypeClientCertificateRequiredAndOriginValidates`, `MtlsScenarioTypeClientCertificateRequiredAndValidated`, `MtlsScenarioTypeClientCertificateValidatedIfPresented`, `MtlsScenarioTypeCompleteMtlsPassthroughToOrigin`
 - New enum type `OriginAuthenticationTokenDestinationHeader` with values `OriginAuthenticationTokenDestinationHeaderAuthorization`, `OriginAuthenticationTokenDestinationHeaderXAzureAuthorization`
-- New function `*AFDDomainMtlsParameters.GetAFDDomainMtlsParameters() *AFDDomainMtlsParameters`
+- New function `*AFDDomainMTLSParameters.GetAFDDomainMTLSParameters() *AFDDomainMTLSParameters`
 - New function `*AfdSecretMtlsCertificateChain.GetSecretParameters() *SecretParameters`
-- New function `*ClientCertificateRequiredAndOriginValidatesAdvancedSettings.GetAFDDomainMtlsParameters() *AFDDomainMtlsParameters`
-- New function `*ClientCertificateRequiredAndValidatedAdvancedSettings.GetAFDDomainMtlsParameters() *AFDDomainMtlsParameters`
-- New function `*ClientCertificateValidatedIfPresentedAdvancedSettings.GetAFDDomainMtlsParameters() *AFDDomainMtlsParameters`
-- New function `*CompleteMtlsPassthroughToOriginAdvancedSettings.GetAFDDomainMtlsParameters() *AFDDomainMtlsParameters`
+- New function `*ClientCertificateRequiredAndOriginValidatesAdvancedSettings.GetAFDDomainMTLSParameters() *AFDDomainMTLSParameters`
+- New function `*ClientCertificateRequiredAndValidatedAdvancedSettings.GetAFDDomainMTLSParameters() *AFDDomainMTLSParameters`
+- New function `*ClientCertificateValidatedIfPresentedAdvancedSettings.GetAFDDomainMTLSParameters() *AFDDomainMTLSParameters`
+- New function `*CompleteMtlsPassthroughToOriginAdvancedSettings.GetAFDDomainMTLSParameters() *AFDDomainMTLSParameters`
 - New function `*DeliveryRuleEdgeActionParameters.GetDeliveryRuleActionParameters() *DeliveryRuleActionParameters`
 - New function `*EdgeAction.GetDeliveryRuleAction() *DeliveryRuleAction`
 - New function `PossibleAfdServerTLSGroupValues() []AfdServerTLSGroup`

@@ -169,15 +169,15 @@ func (a *AFDDomainListResult) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AFDDomainMtlsParameters.
-func (a AFDDomainMtlsParameters) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type AFDDomainMTLSParameters.
+func (a AFDDomainMTLSParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "scenario", a.Scenario)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AFDDomainMtlsParameters.
-func (a *AFDDomainMtlsParameters) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type AFDDomainMTLSParameters.
+func (a *AFDDomainMTLSParameters) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %s", a, err.Error())
@@ -238,7 +238,7 @@ func (a *AFDDomainProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "HostName", &a.HostName)
 			delete(rawMsg, key)
 		case "mtlsSettings":
-			a.MtlsSettings, err = unmarshalAFDDomainMtlsParametersClassification(val)
+			a.MtlsSettings, err = unmarshalAFDDomainMTLSParametersClassification(val)
 			delete(rawMsg, key)
 		case "preValidatedCustomDomainResourceId":
 			err = unpopulate(val, "PreValidatedCustomDomainResourceID", &a.PreValidatedCustomDomainResourceID)
@@ -314,7 +314,7 @@ func (a *AFDDomainUpdatePropertiesParameters) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "AzureDNSZone", &a.AzureDNSZone)
 			delete(rawMsg, key)
 		case "mtlsSettings":
-			a.MtlsSettings, err = unmarshalAFDDomainMtlsParametersClassification(val)
+			a.MtlsSettings, err = unmarshalAFDDomainMTLSParametersClassification(val)
 			delete(rawMsg, key)
 		case "preValidatedCustomDomainResourceId":
 			err = unpopulate(val, "PreValidatedCustomDomainResourceID", &a.PreValidatedCustomDomainResourceID)

@@ -68,15 +68,15 @@ type AFDDomainListResult struct {
 	NextLink *string
 }
 
-// AFDDomainMtlsParameters - Contains the properties to configure mutual TLS for a custom domain with FQDN. Mutual TLS cannot
+// AFDDomainMTLSParameters - Contains the properties to configure mutual TLS for a custom domain with FQDN. Mutual TLS cannot
 // be configured for custom domains with wildcard host names.
-type AFDDomainMtlsParameters struct {
+type AFDDomainMTLSParameters struct {
 	// REQUIRED; Supported scenarios for establishing mTLS connection.
 	Scenario *MtlsScenarioType
 }
 
-// GetAFDDomainMtlsParameters implements the AFDDomainMtlsParametersClassification interface for type AFDDomainMtlsParameters.
-func (a *AFDDomainMtlsParameters) GetAFDDomainMtlsParameters() *AFDDomainMtlsParameters { return a }
+// GetAFDDomainMTLSParameters implements the AFDDomainMTLSParametersClassification interface for type AFDDomainMTLSParameters.
+func (a *AFDDomainMTLSParameters) GetAFDDomainMTLSParameters() *AFDDomainMTLSParameters { return a }
 
 // AFDDomainProperties - The JSON object that contains the properties of the domain to create.
 type AFDDomainProperties struct {
@@ -91,7 +91,7 @@ type AFDDomainProperties struct {
 
 	// The configuration specifying how to enable mutual TLS for the domain, including specifying allowed FQDNs and which server
 	// certificate(s) to use.
-	MtlsSettings AFDDomainMtlsParametersClassification
+	MtlsSettings AFDDomainMTLSParametersClassification
 
 	// Resource reference to the Azure resource where custom domain ownership was prevalidated
 	PreValidatedCustomDomainResourceID *ResourceReference
@@ -130,7 +130,7 @@ type AFDDomainUpdatePropertiesParameters struct {
 
 	// The configuration specifying how to enable mutual TLS for the domain, including specifying allowed FQDNs and which server
 	// certificate(s) to use.
-	MtlsSettings AFDDomainMtlsParametersClassification
+	MtlsSettings AFDDomainMTLSParametersClassification
 
 	// Resource reference to the Azure resource where custom domain ownership was prevalidated
 	PreValidatedCustomDomainResourceID *ResourceReference
@@ -747,9 +747,9 @@ type ClientCertificateRequiredAndOriginValidatesAdvancedSettings struct {
 	Scenario *MtlsScenarioType
 }
 
-// GetAFDDomainMtlsParameters implements the AFDDomainMtlsParametersClassification interface for type ClientCertificateRequiredAndOriginValidatesAdvancedSettings.
-func (c *ClientCertificateRequiredAndOriginValidatesAdvancedSettings) GetAFDDomainMtlsParameters() *AFDDomainMtlsParameters {
-	return &AFDDomainMtlsParameters{
+// GetAFDDomainMTLSParameters implements the AFDDomainMTLSParametersClassification interface for type ClientCertificateRequiredAndOriginValidatesAdvancedSettings.
+func (c *ClientCertificateRequiredAndOriginValidatesAdvancedSettings) GetAFDDomainMTLSParameters() *AFDDomainMTLSParameters {
+	return &AFDDomainMTLSParameters{
 		Scenario: c.Scenario,
 	}
 }
@@ -772,9 +772,9 @@ type ClientCertificateRequiredAndValidatedAdvancedSettings struct {
 	CertificateRevocationCheck *CertificateRevocationCheckEnabledState
 }
 
-// GetAFDDomainMtlsParameters implements the AFDDomainMtlsParametersClassification interface for type ClientCertificateRequiredAndValidatedAdvancedSettings.
-func (c *ClientCertificateRequiredAndValidatedAdvancedSettings) GetAFDDomainMtlsParameters() *AFDDomainMtlsParameters {
-	return &AFDDomainMtlsParameters{
+// GetAFDDomainMTLSParameters implements the AFDDomainMTLSParametersClassification interface for type ClientCertificateRequiredAndValidatedAdvancedSettings.
+func (c *ClientCertificateRequiredAndValidatedAdvancedSettings) GetAFDDomainMTLSParameters() *AFDDomainMTLSParameters {
+	return &AFDDomainMTLSParameters{
 		Scenario: c.Scenario,
 	}
 }
@@ -797,9 +797,9 @@ type ClientCertificateValidatedIfPresentedAdvancedSettings struct {
 	CertificateRevocationCheck *CertificateRevocationCheckEnabledState
 }
 
-// GetAFDDomainMtlsParameters implements the AFDDomainMtlsParametersClassification interface for type ClientCertificateValidatedIfPresentedAdvancedSettings.
-func (c *ClientCertificateValidatedIfPresentedAdvancedSettings) GetAFDDomainMtlsParameters() *AFDDomainMtlsParameters {
-	return &AFDDomainMtlsParameters{
+// GetAFDDomainMTLSParameters implements the AFDDomainMTLSParametersClassification interface for type ClientCertificateValidatedIfPresentedAdvancedSettings.
+func (c *ClientCertificateValidatedIfPresentedAdvancedSettings) GetAFDDomainMTLSParameters() *AFDDomainMTLSParameters {
+	return &AFDDomainMTLSParameters{
 		Scenario: c.Scenario,
 	}
 }
@@ -837,9 +837,9 @@ type CompleteMtlsPassthroughToOriginAdvancedSettings struct {
 	Scenario *MtlsScenarioType
 }
 
-// GetAFDDomainMtlsParameters implements the AFDDomainMtlsParametersClassification interface for type CompleteMtlsPassthroughToOriginAdvancedSettings.
-func (c *CompleteMtlsPassthroughToOriginAdvancedSettings) GetAFDDomainMtlsParameters() *AFDDomainMtlsParameters {
-	return &AFDDomainMtlsParameters{
+// GetAFDDomainMTLSParameters implements the AFDDomainMTLSParametersClassification interface for type CompleteMtlsPassthroughToOriginAdvancedSettings.
+func (c *CompleteMtlsPassthroughToOriginAdvancedSettings) GetAFDDomainMTLSParameters() *AFDDomainMTLSParameters {
+	return &AFDDomainMTLSParameters{
 		Scenario: c.Scenario,
 	}
 }

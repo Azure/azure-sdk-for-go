@@ -188,14 +188,38 @@ func queryContractContainer(t *testing.T, intercept func(http.ResponseWriter, *h
 	proxyURL = "http://" + server.Listener.Addr().String()
 	server.Start()
 	t.Cleanup(server.Close)
+	// Do not retain routing caches or pooled connections beyond this temporary proxy's lifetime.
+	runtime, err := NewRuntime(nil)
+	require.NoError(t, err)
+	t.Cleanup(func() { require.NoError(t, runtime.Close()) })
 	credential, err := NewKeyCredential(emulatorKey)
 	require.NoError(t, err)
-	client, err := NewClientWithKey(server.URL, credential, nil)
+	client, err := NewClientWithKey(server.URL, credential, &ClientOptions{Runtime: runtime})
 	require.NoError(t, err)
 	t.Cleanup(func() { require.NoError(t, client.Close()) })
 	container, err := client.NewContainer(databaseID, containerID)
 	require.NoError(t, err)
 	return container
+}
+
+func TestEmulatorQueryContractRuntimeIsolation(t *testing.T) {
+	emulatorConfiguration(t)
+	var previous *Runtime
+	for _, name := range []string{"first proxy", "replacement proxy"} {
+		var current *Runtime
+		t.Run(name, func(t *testing.T) {
+			container := queryContractContainer(t, nil, nil)
+			current = container.database.client.runtime
+			require.NotNil(t, current)
+			require.NotSame(t, previous, current)
+			require.NoError(t, container.database.client.Initialize(t.Context()))
+		})
+		require.NotNil(t, current)
+		require.True(t, current.closed)
+		require.Zero(t, current.clients)
+		require.Nil(t, current.native, "native resources must be released before the proxy is retired")
+		previous = current
+	}
 }
 
 func seedQueryContractItems(t *testing.T, container *ContainerClient) (PartitionKey, Query, SessionToken) {

@@ -47,7 +47,7 @@ func TestOperationOptionsCloneOwnsAllMutableValues(t *testing.T) {
 		EnableContentResponseOnWrite: to(true), ExcludedRegions: []Region{RegionEastUS},
 		SessionCapturingDisabled: to(true), MaxFailoverRetryCount: to(uint32(1)), MaxSessionRetryCount: to(uint32(2)),
 		EndpointUnavailabilityTTL: to(time.Second), CustomHeaders: map[string]string{"x-custom": "first"},
-		BinaryEncoding: &BinaryEncodingOptions{Enabled: to(true)}, HedgingEnabled: to(true),
+		BinaryEncoding: &BinaryEncodingOptions{Disabled: false}, HedgingEnabled: to(true),
 		ThroughputControl: ThroughputControlOptions{ThroughputBucket: to(uint32(3))},
 		ThrottlingRetry:   ThrottlingRetryOptions{MaxRetryCount: to(uint32(4)), MaxRetryWaitTime: to(time.Second)},
 	}
@@ -60,7 +60,7 @@ func TestOperationOptionsCloneOwnsAllMutableValues(t *testing.T) {
 	*original.MaxSessionRetryCount = 9
 	*original.EndpointUnavailabilityTTL = 2 * time.Second
 	original.CustomHeaders["x-custom"] = "second"
-	original.BinaryEncoding.Enabled = to(false)
+	original.BinaryEncoding.Disabled = true
 	*original.HedgingEnabled = false
 	*original.ThroughputControl.ThroughputBucket = 8
 	*original.ThrottlingRetry.MaxRetryCount = 8
@@ -75,8 +75,7 @@ func TestOperationOptionsCloneOwnsAllMutableValues(t *testing.T) {
 
 func TestCommonValidationAcrossAllItemOperations(t *testing.T) {
 	client := &Client{closed: true}
-	container, err := client.NewContainer("db", "container")
-	require.NoError(t, err)
+	container := localTestContainer(client, "db", "container")
 	options := OperationOptions{MaxSessionRetryCount: to(uint32(0)), EndToEndTimeout: to(time.Duration(-1))}
 	pk := NewPartitionKeyString("pk")
 	ctx := context.Background()

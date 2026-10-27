@@ -35,7 +35,6 @@ type Response struct {
 // ItemResponse is the response from an operation on a single item.
 type ItemResponse struct {
 	Response
-	serializer Serializer
 	// PatchTrackingID is the effective client-side patch identity, when tracking was used.
 	PatchTrackingID PatchTrackingID
 
@@ -54,12 +53,12 @@ type ItemResponse struct {
 	Value []byte
 }
 
-// IntoModel decodes the item using the client's serializer, or encoding/json for a manually
-// constructed response. It performs no I/O and can be called after Client.Close.
+// IntoModel decodes the item using encoding/json, including model JSON hooks.
+// It performs no I/O and can be called after Client.Close.
 // An absent body or decoding failure returns zero T and CodeSerializationFailed with response
 // metadata. A write has already succeeded at this point; decoding never retries or rolls it back.
 func (r ItemResponse) IntoModel[T any]() (T, error) {
-	model, err := unmarshalModel[T](r.serializer, r.Value)
+	model, err := unmarshalModel[T](r.Value)
 	if err != nil {
 		failure := queryResponseError(r.Response, r.SessionToken, err)
 		failure.Message = "decoding item response"

@@ -10,20 +10,37 @@ import (
 	"fmt"
 	"strings"
 	"sync"
-	"sync/atomic"
 	"testing"
 
 	"github.com/stretchr/testify/require"
 )
 
-type serializerFuncs struct {
-	marshal   func(any) ([]byte, error)
-	unmarshal func([]byte, any) error
+type failingModel struct{ err error }
+
+func (m failingModel) MarshalJSON() ([]byte, error) { return nil, m.err }
+
+var decodeFailure = errors.New("decode failed")
+
+type failingDecodeModel struct{ Partial bool }
+
+func (m *failingDecodeModel) UnmarshalJSON([]byte) error {
+	m.Partial = true
+	return decodeFailure
 }
 
-func (s *serializerFuncs) Marshal(value any) ([]byte, error) { return s.marshal(value) }
-func (s *serializerFuncs) Unmarshal(data []byte, value any) error {
-	return s.unmarshal(data, value)
+// These model-hook tests are serial and join every decoding goroutine before cleanup.
+var modelDecodeHook func()
+
+type callbackModel int
+
+func (m *callbackModel) UnmarshalJSON(body []byte) error {
+	modelDecodeHook()
+	var value int
+	if err := json.Unmarshal(body, &value); err != nil {
+		return err
+	}
+	*m = callbackModel(value)
+	return nil
 }
 
 type modelName string
@@ -42,7 +59,7 @@ func TestSerializerDefaultModelHooksAndRawMessage(t *testing.T) {
 	type document struct {
 		Name modelName `json:"customName"`
 	}
-	body, err := marshalItem(nil, document{Name: "example"})
+	body, err := marshalItem(document{Name: "example"})
 	require.NoError(t, err)
 	require.JSONEq(t, `{"customName":"EXAMPLE"}`, string(body))
 	response := ItemResponse{Value: body}
@@ -59,45 +76,25 @@ func TestSerializerDefaultModelHooksAndRawMessage(t *testing.T) {
 		{[]byte(`one`), `"b25l"`},
 		{(*document)(nil), `null`},
 	} {
-		body, err := marshalItem(nil, tc.value)
+		body, err := marshalItem(tc.value)
 		require.NoError(t, err)
 		require.Equal(t, tc.want, string(body))
 	}
-}
-
-func TestSerializerClientValidationAndSnapshot(t *testing.T) {
-	var typedNil *serializerFuncs
-	client, err := newClient("https://myaccount.documents.azure.com", testAccountKey, nil, &ClientOptions{Serializer: typedNil})
-	require.ErrorContains(t, err, "nil implementation")
-	require.Nil(t, client)
-
-	codec := &serializerFuncs{marshal: json.Marshal, unmarshal: json.Unmarshal}
-	options := &ClientOptions{Serializer: codec}
-	client, err = newClient("https://myaccount.documents.azure.com", testAccountKey, nil, options)
-	require.NoError(t, err)
-	t.Cleanup(func() { require.NoError(t, client.Close()) })
-	options.Serializer = typedNil
-	require.Same(t, codec, client.options.Serializer)
-	require.Nil(t, newTestContainer(t).database.client.options.Serializer)
 }
 
 func TestSerializerWriteFailureDoesNotAcquireClient(t *testing.T) {
 	sentinel := errors.New("private model details")
 	container := newTestContainer(t)
 	container.database.client.beforeItemAcquire = func() { t.Fatal("failed serialization must not reach native execution") }
-	container.database.client.options.Serializer = &serializerFuncs{
-		marshal:   func(any) ([]byte, error) { return nil, sentinel },
-		unmarshal: func([]byte, any) error { t.Fatal("write must not deserialize"); return nil },
-	}
 	for _, call := range []func() (ItemResponse, error){
 		func() (ItemResponse, error) {
-			return container.CreateItem(t.Context(), NewPartitionKeyString("pk"), "id", struct{}{}, nil)
+			return container.CreateItem(t.Context(), NewPartitionKeyString("pk"), "id", failingModel{sentinel}, nil)
 		},
 		func() (ItemResponse, error) {
-			return container.ReplaceItem(t.Context(), NewPartitionKeyString("pk"), "id", struct{}{}, nil)
+			return container.ReplaceItem(t.Context(), NewPartitionKeyString("pk"), "id", failingModel{sentinel}, nil)
 		},
 		func() (ItemResponse, error) {
-			return container.UpsertItem(t.Context(), NewPartitionKeyString("pk"), "id", struct{}{}, nil)
+			return container.UpsertItem(t.Context(), NewPartitionKeyString("pk"), "id", failingModel{sentinel}, nil)
 		},
 	} {
 		response, err := call()
@@ -110,13 +107,12 @@ func TestSerializerWriteFailureDoesNotAcquireClient(t *testing.T) {
 		require.False(t, failure.FromWire)
 		require.NotContains(t, err.Error(), sentinel.Error())
 	}
-	_, err := marshalItem(nil, make(chan int))
+	_, err := marshalItem(make(chan int))
 	var unsupported *json.UnsupportedTypeError
 	require.ErrorAs(t, err, &unsupported)
 }
 
 func TestItemResponseConversionFailureMetadata(t *testing.T) {
-	sentinel := errors.New("decode failed")
 	response := ItemResponse{
 		Response: Response{
 			StatusCode: 201, SubStatus: 4, AttemptCount: 2, RequestCharge: 5.5,
@@ -124,19 +120,15 @@ func TestItemResponseConversionFailureMetadata(t *testing.T) {
 		},
 		ETag: "synthetic-etag", SessionToken: "0:5", Value: []byte(`{"id":"one"}`),
 		PatchTrackingID: "synthetic-patch-tracking-id",
-		serializer: &serializerFuncs{unmarshal: func(_ []byte, value any) error {
-			*value.(*map[string]any) = map[string]any{"partial": true}
-			return sentinel
-		}},
 	}
-	model, err := response.IntoModel[map[string]any]()
-	require.Nil(t, model)
-	require.ErrorIs(t, err, sentinel)
+	model, err := response.IntoModel[failingDecodeModel]()
+	require.Zero(t, model)
+	require.ErrorIs(t, err, decodeFailure)
 	require.Equal(t, &Error{
 		Code: CodeSerializationFailed, Message: "decoding item response",
 		StatusCode: 201, SubStatus: 4, AttemptCount: 2, RequestCharge: 5.5,
 		ActivityID: response.ActivityID, Diagnostics: response.Diagnostics,
-		ETag: response.ETag, SessionToken: response.SessionToken, cause: sentinel,
+		ETag: response.ETag, SessionToken: response.SessionToken, cause: decodeFailure,
 		PatchTrackingID: response.PatchTrackingID,
 	}, err)
 }
@@ -157,36 +149,23 @@ func TestItemResponseMissingMalformedAndNull(t *testing.T) {
 	scalar, err := response.IntoModel[int]()
 	require.NoError(t, err)
 	require.Zero(t, scalar)
-	var calls int
-	response.serializer = &serializerFuncs{unmarshal: func([]byte, any) error { calls++; return nil }}
 	response.Value = []byte{0x80, 1}
 	_, err = response.IntoModel[int]()
 	require.ErrorContains(t, errors.Unwrap(err), "binary JSON")
-	require.Zero(t, calls)
 }
 
 func TestSerializerCustomConcurrentDecodingAfterClose(t *testing.T) {
-	var calls atomic.Int32
-	codec := &serializerFuncs{unmarshal: func(body []byte, target any) error {
-		calls.Add(1)
-		var envelope struct{ Payload int }
-		if err := json.Unmarshal(body, &envelope); err != nil {
-			return err
-		}
-		*target.(*int) = envelope.Payload
-		return nil
-	}}
-	client, err := newClient("https://myaccount.documents.azure.com", testAccountKey, nil, &ClientOptions{Serializer: codec})
+	client, err := newClient("https://myaccount.documents.azure.com", testAccountKey, nil, nil)
 	require.NoError(t, err)
-	response := ItemResponse{Value: []byte(`{"Payload":42}`), serializer: client.options.Serializer}
+	response := ItemResponse{Value: []byte(`"EXAMPLE"`)}
 	require.NoError(t, client.Close())
 	var workers sync.WaitGroup
 	errs := make(chan error, 32)
 	for range 32 {
 		workers.Go(func() {
-			value, err := response.IntoModel[int]()
-			if err == nil && value != 42 {
-				err = fmt.Errorf("decoded %d, want 42", value)
+			value, err := response.IntoModel[modelName]()
+			if err == nil && value != "example" {
+				err = fmt.Errorf("decoded %q, want example", value)
 			}
 			errs <- err
 		})
@@ -196,7 +175,6 @@ func TestSerializerCustomConcurrentDecodingAfterClose(t *testing.T) {
 	for err := range errs {
 		require.NoError(t, err)
 	}
-	require.Equal(t, int32(32), calls.Load())
 }
 
 type modelQueryCursor struct {
@@ -216,7 +194,7 @@ func TestTypedQueryModelsAndMetadata(t *testing.T) {
 		Items: [][]byte{[]byte(`{"name":"first"}`), []byte(`null`)},
 	}
 	type projection struct{ Name string }
-	result, err := decodeModels[*projection](t.Context(), page, nil)
+	result, err := decodeModels[*projection](t.Context(), page)
 	require.NoError(t, err)
 	require.Equal(t, []*projection{{Name: "first"}, nil}, result.Items)
 	require.Equal(t, page.Response, result.Response)
@@ -224,7 +202,7 @@ func TestTypedQueryModelsAndMetadata(t *testing.T) {
 	require.Equal(t, page.IndexMetrics, result.IndexMetrics)
 	require.Equal(t, page.QueryMetrics, result.QueryMetrics)
 	page.Items = [][]byte{[]byte(`1`), []byte(`2`)}
-	scalars, err := decodeModels[int](t.Context(), page, nil)
+	scalars, err := decodeModels[int](t.Context(), page)
 	require.NoError(t, err)
 	require.Equal(t, []int{1, 2}, scalars.Items)
 }
@@ -259,14 +237,12 @@ func TestTypedQueryCancellationDuringConversion(t *testing.T) {
 	ctx, cancel := context.WithCancel(t.Context())
 	defer cancel()
 	client := newTestContainer(t).database.client
-	client.options.Serializer = &serializerFuncs{unmarshal: func(body []byte, target any) error {
-		cancel()
-		return json.Unmarshal(body, target)
-	}}
+	modelDecodeHook = cancel
+	t.Cleanup(func() { modelDecodeHook = nil })
 	cursor := &modelQueryCursor{page: queryPage{
 		Response: Response{RequestCharge: 3}, Items: [][]byte{[]byte("1")},
 	}}
-	pager := &QueryItemsPager[int]{client: client, cursor: cursor}
+	pager := &QueryItemsPager[callbackModel]{client: client, cursor: cursor}
 	page, err := pager.NextPage(ctx)
 	require.Zero(t, page)
 	require.ErrorIs(t, err, context.Canceled)
@@ -282,13 +258,13 @@ func TestTypedQueryCloseWaitsForConversion(t *testing.T) {
 	entered, release := make(chan struct{}), make(chan struct{})
 	unblock := sync.OnceFunc(func() { close(release) })
 	t.Cleanup(unblock)
-	client.options.Serializer = &serializerFuncs{unmarshal: func(body []byte, target any) error {
+	modelDecodeHook = func() {
 		close(entered)
 		<-release
-		return json.Unmarshal(body, target)
-	}}
+	}
+	t.Cleanup(func() { modelDecodeHook = nil })
 	cursor := &modelQueryCursor{page: queryPage{Items: [][]byte{[]byte("1")}}}
-	pager := &QueryItemsPager[int]{client: client, cursor: cursor}
+	pager := &QueryItemsPager[callbackModel]{client: client, cursor: cursor}
 	nextDone := make(chan error, 1)
 	go func() { _, err := pager.NextPage(t.Context()); nextDone <- err }()
 	<-entered
@@ -349,7 +325,7 @@ func benchmarkQueryModels(b *testing.B, typed bool) {
 			b.ReportAllocs()
 			for b.Loop() {
 				if typed {
-					if _, err := decodeModels[struct{ Value string }](b.Context(), page, nil); err != nil {
+					if _, err := decodeModels[struct{ Value string }](b.Context(), page); err != nil {
 						b.Fatal(err)
 					}
 				} else {

@@ -49,7 +49,7 @@ func TestEmulatorBinaryNumericValues(t *testing.T) {
 				}
 				return nil
 			})
-			options := OperationOptions{BinaryEncoding: &BinaryEncodingOptions{Enabled: to(enabled)}}
+			options := OperationOptions{BinaryEncoding: &BinaryEncodingOptions{Disabled: !enabled}}
 			for _, number := range []string{
 				"9007199254740993", "9223372036854775807", "-9223372036854775808",
 				"0.1", "0.125", "-1234.5678", "1e-6",
@@ -95,19 +95,24 @@ func TestEmulatorQueryBinaryWirePreferenceAndTextResults(t *testing.T) {
 		request *BinaryEncodingOptions
 		want    bool
 		runtime *BinaryEncodingOptions
-		common  *BinaryEncodingOptions
+		env     string
 	}{
 		{name: "default", want: true},
-		{name: "client disabled", client: &BinaryEncodingOptions{Enabled: to(false)}},
-		{name: "request enables", client: &BinaryEncodingOptions{Enabled: to(false)}, request: &BinaryEncodingOptions{}, want: true},
-		{name: "request disables", client: &BinaryEncodingOptions{}, request: &BinaryEncodingOptions{Enabled: to(false)}},
-		{name: "runtime disables", runtime: &BinaryEncodingOptions{Enabled: to(false)}},
-		{name: "common client disables", common: &BinaryEncodingOptions{Enabled: to(false)}},
-		{name: "common client overrides runtime", runtime: &BinaryEncodingOptions{Enabled: to(false)}, common: &BinaryEncodingOptions{}, want: true},
-		{name: "dedicated overrides common", common: &BinaryEncodingOptions{Enabled: to(false)}, client: &BinaryEncodingOptions{}, want: true},
-		{name: "request overrides runtime", runtime: &BinaryEncodingOptions{Enabled: to(false)}, request: &BinaryEncodingOptions{}, want: true},
+		{name: "client disabled", client: &BinaryEncodingOptions{Disabled: true}},
+		{name: "request enables", client: &BinaryEncodingOptions{Disabled: true}, request: &BinaryEncodingOptions{}, want: true},
+		{name: "request disables", client: &BinaryEncodingOptions{}, request: &BinaryEncodingOptions{Disabled: true}},
+		{name: "runtime disables", runtime: &BinaryEncodingOptions{Disabled: true}},
+		{name: "client overrides runtime", runtime: &BinaryEncodingOptions{Disabled: true}, client: &BinaryEncodingOptions{}, want: true},
+		{name: "environment disables", env: "false"},
+		{name: "runtime overrides environment", env: "false", runtime: &BinaryEncodingOptions{}, want: true},
+		{name: "client overrides environment", env: "false", client: &BinaryEncodingOptions{}, want: true},
+		{name: "request overrides environment", env: "false", request: &BinaryEncodingOptions{}, want: true},
+		{name: "request overrides runtime", runtime: &BinaryEncodingOptions{Disabled: true}, request: &BinaryEncodingOptions{}, want: true},
 	} {
 		t.Run(tt.name, func(t *testing.T) {
+			if tt.env != "" {
+				t.Setenv("AZURE_COSMOS_BINARY_ENCODING_ENABLED", tt.env)
+			}
 			var mu sync.Mutex
 			var negotiated []bool
 			var itemNegotiated []bool
@@ -155,11 +160,11 @@ func TestEmulatorQueryBinaryWirePreferenceAndTextResults(t *testing.T) {
 			runtime, err := NewRuntime(&RuntimeOptions{Operation: OperationOptions{BinaryEncoding: tt.runtime}})
 			require.NoError(t, err)
 			t.Cleanup(func() { require.NoError(t, runtime.Close()) })
-			client, err := NewClientWithKey(server.URL, KeyCredential{accountKey: emulatorKey},
-				&ClientOptions{Runtime: runtime, BinaryEncoding: tt.client, Operation: OperationOptions{BinaryEncoding: tt.common}})
+			client, err := NewClientWithKey(t.Context(), server.URL, KeyCredential{accountKey: emulatorKey},
+				&ClientOptions{Runtime: runtime, Operation: OperationOptions{BinaryEncoding: tt.client}})
 			require.NoError(t, err)
 			t.Cleanup(func() { require.NoError(t, client.Close()) })
-			container, err := client.NewContainer(databaseID, containerID)
+			container, err := client.NewContainer(t.Context(), databaseID, containerID)
 			require.NoError(t, err)
 			id := uniqueItemID(t)
 			key := NewPartitionKeyString(id)

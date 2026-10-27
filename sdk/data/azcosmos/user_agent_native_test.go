@@ -61,11 +61,11 @@ func TestNativeUserAgentOnWire(t *testing.T) {
 				t.Cleanup(func() { require.NoError(t, shared.Close()) })
 				options.Runtime = shared
 			}
-			client, err := NewClientWithKey(server.URL, credential, options)
+			client, err := newTestClientWithKey(server.URL, credential, options)
 			require.NoError(t, err)
 			defer func() { require.NoError(t, client.Close()) }()
 
-			require.Error(t, client.Initialize(t.Context()))
+			require.Error(t, client.initialize(t.Context()))
 
 			mu.Lock()
 			defer mu.Unlock()

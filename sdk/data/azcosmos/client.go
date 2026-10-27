@@ -18,14 +18,10 @@ import (
 // This does not embed [azcore.ClientOptions]. v2 executes operations through the Cosmos driver
 // rather than an azcore HTTP pipeline, so the transport, retry and per-call policy knobs on that
 // type have no effect here, and advertising options the client would silently ignore is worse than
-// not offering them. Serializer is a Go-side model conversion setting.
+// not offering them.
 //
 // A nil *ClientOptions selects the defaults for every field.
 type ClientOptions struct {
-	// Serializer converts application models. Nil uses encoding/json, including model JSON hooks.
-	// The client retains, but does not own or close, this concurrency-safe implementation.
-	// It is not used for query parameters, PATCH values, or protocol metadata.
-	Serializer Serializer
 	// Runtime shares execution resources and same-account caches, including credentials.
 	// Nil uses the process-wide runtime. Supply separate runtimes for identity isolation.
 	Runtime *Runtime
@@ -37,12 +33,6 @@ type ClientOptions struct {
 	// [ProximityTo] expands a known application region to the SDK's estimated proximity order.
 	Routing RoutingStrategy
 
-	// BinaryEncoding sets the SDK's client wire-encoding default for create/read/replace/upsert and queries.
-	// Nil resolves AZURE_COSMOS_BINARY_ENCODING_ENABLED at construction; if unset, common
-	// client/runtime Operation options apply, ultimately defaulting to enabled.
-	// Explicit request encoding overrides this value. Responses are text JSON.
-	// PATCH and delete use Operation inheritance.
-	BinaryEncoding *BinaryEncodingOptions
 	// DiagnosticsHandler observes completed item calls after their lifetime guard is released.
 	// It must be safe for concurrent calls. Query-specific diagnostics are not configured here.
 	DiagnosticsHandler func(context.Context, OperationDiagnostic)
@@ -59,10 +49,9 @@ type ClientOptions struct {
 // resources backing it, along with the routing and metadata caches that make requests cheap, so
 // creating one per operation is expensive and defeats them. Call [Client.Close] when done.
 type Client struct {
-	endpoint       string
-	options        ClientOptions
-	runtime        *Runtime
-	binaryEncoding *BinaryEncodingOptions
+	endpoint string
+	options  ClientOptions
+	runtime  *Runtime
 	// mu guards the client's lifetime rather than its fields. Operations hold it for read while
 	// they run, so Close taking it for write is exactly "wait for in-flight operations to
 	// finish". That matters more here than it would in a pure-Go client: closing releases handles
@@ -91,29 +80,51 @@ type Client struct {
 //
 // endpoint is the Cosmos DB account endpoint. cred is any [azcore.TokenCredential], such as the
 // implementations in the azidentity module. options may be nil to accept the defaults. Construction
-// performs no network I/O; call [Client.Initialize] to fill account-level caches eagerly.
+// initializes account metadata and routing before returning success.
+// Failure returns a nil client. Context cancellation bounds the wait; native cleanup may finish later.
 //
 // Clients sharing a runtime and account also share native authentication state; cached resources
 // may use a credential supplied by another client, even after that client closes. This reuse
 // reduces duplicate token requests and authentication-service load. A nil Runtime uses the
 // process-wide runtime; supply separate runtimes when credential identities must be isolated.
-func NewClient(endpoint string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
+func NewClient(ctx context.Context, endpoint string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
 	if cred == nil {
 		return nil, errors.New("azcosmos: credential must not be nil")
 	}
-	return newClient(endpoint, "", cred, options)
+	return newInitializedClient(ctx, endpoint, "", cred, options)
 }
 
 // NewClientWithKey creates a client that authenticates with an account key.
 //
 // Prefer [NewClient] where possible; account keys grant full access to the account and cannot be
-// scoped down. options may be nil to accept the defaults. Construction performs no network I/O;
-// call [Client.Initialize] to fill account-level caches eagerly.
-func NewClientWithKey(endpoint string, cred KeyCredential, options *ClientOptions) (*Client, error) {
+// scoped down. options may be nil to accept the defaults. Construction initializes account
+// metadata and routing before returning success.
+// Failure returns a nil client. Context cancellation bounds the wait; native cleanup may finish later.
+func NewClientWithKey(ctx context.Context, endpoint string, cred KeyCredential, options *ClientOptions) (*Client, error) {
 	if cred.accountKey == "" {
 		return nil, errors.New("azcosmos: credential must be created with NewKeyCredential")
 	}
-	return newClient(endpoint, cred.accountKey, nil, options)
+	return newInitializedClient(ctx, endpoint, cred.accountKey, nil, options)
+}
+
+func newInitializedClient(ctx context.Context, endpoint, accountKey string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
+	if ctx == nil {
+		return nil, errors.New("azcosmos: context must not be nil")
+	}
+	if err := ctx.Err(); err != nil {
+		return nil, err
+	}
+	client, err := newClient(endpoint, accountKey, cred, options)
+	if err != nil {
+		return nil, err
+	}
+	if err := client.initialize(ctx); err != nil {
+		// Cancellation can leave native submissions in flight. Teardown drains their late
+		// completions before releasing handles and detaching the runtime, without delaying ctx.
+		go client.close()
+		return nil, err
+	}
+	return client, nil
 }
 
 // newClient validates the inputs shared by every constructor and opens the client's driver
@@ -150,12 +161,10 @@ func newClient(
 		client.options = *options
 		client.options.Routing = options.Routing.clone()
 		client.options.Operation = options.Operation.clone()
-		client.options.BinaryEncoding = options.BinaryEncoding.clone()
 	}
 	if err := client.options.validate(); err != nil {
 		return nil, err
 	}
-	client.binaryEncoding = resolveClientBinaryEncoding(client.options.BinaryEncoding)
 	client.runtime = client.options.Runtime
 	if client.runtime == nil && driverAvailable {
 		client.runtime, err = defaultRuntime()
@@ -192,12 +201,8 @@ func newClient(
 	return client, nil
 }
 
-// Initialize eagerly creates the driver and fills its account-properties and routing caches.
-//
-// Initialize is idempotent and safe for concurrent use. Operations also initialize lazily, so
-// callers only need this when they want readiness and initialization failures before the first
-// operation.
-func (c *Client) Initialize(ctx context.Context) error {
+// initialize is also used by offline tests to exercise native initialization ownership.
+func (c *Client) initialize(ctx context.Context) error {
 	if ctx == nil {
 		return errors.New("azcosmos: context must not be nil")
 	}
@@ -281,22 +286,19 @@ func (c *Client) CreateDatabase(ctx context.Context, properties DatabaseProperti
 	return c.createDatabase(ctx, properties, options)
 }
 
-// NewContainer returns a client for a container in the account. It does not contact the service,
-// so it succeeds whether or not the container exists.
-func (c *Client) NewContainer(databaseID string, containerID string) (*ContainerClient, error) {
+// NewContainer resolves existing container metadata through the native cache before returning.
+// Cache misses contact the service; this method does not create a container.
+func (c *Client) NewContainer(ctx context.Context, databaseID string, containerID string) (*ContainerClient, error) {
 	database, err := c.NewDatabase(databaseID)
 	if err != nil {
 		return nil, err
 	}
-	return database.NewContainer(containerID)
+	return database.NewContainer(ctx, containerID)
 }
 
 // validate reports option values that cannot be passed through the C ABI. Values the driver
 // understands are passed through and validated there, so this package does not duplicate its rules.
 func (o ClientOptions) validate() error {
-	if err := validateSerializer(o.Serializer); err != nil {
-		return err
-	}
 	switch o.DiagnosticsVerbosity {
 	case DiagnosticsVerbosityDefault, DiagnosticsVerbositySummary, DiagnosticsVerbosityDetailed:
 	default:

@@ -42,6 +42,8 @@ type OperationOptions struct {
 	// CustomHeaders replaces inherited custom headers. Nil inherits; an empty map clears them.
 	CustomHeaders map[string]string
 	// BinaryEncoding controls binary wire encoding. Nil uses the operation's inherited default.
+	// Precedence is request, client, runtime, then AZURE_COSMOS_BINARY_ENCODING_ENABLED
+	// (read at runtime creation), then enabled. A non-nil zero group explicitly enables it.
 	// Responses are always returned as text JSON, with native conversion when binary is enabled.
 	BinaryEncoding *BinaryEncodingOptions
 	// ThroughputControl configures independently inherited throughput controls.
@@ -103,36 +105,34 @@ func HedgingAvailability(threshold time.Duration) AvailabilityStrategy {
 // BinaryEncodingOptions controls Cosmos binary JSON wire encoding.
 // A zero-valued group enables binary; native code automatically converts responses to text JSON.
 type BinaryEncodingOptions struct {
-	// Enabled permits binary JSON on the wire. Nil defaults to true; false explicitly disables it.
-	Enabled *bool
+	// Disabled disables binary JSON on the wire. False explicitly enables it.
+	Disabled bool
 }
 
 func (o *BinaryEncodingOptions) clone() *BinaryEncodingOptions {
 	if o == nil {
 		return nil
 	}
-	return &BinaryEncodingOptions{Enabled: clonePointer(o.Enabled)}
+	copy := *o
+	return &copy
 }
 
-func (o BinaryEncodingOptions) enabled() bool {
-	return o.Enabled == nil || *o.Enabled
-}
-
-func resolveClientBinaryEncoding(explicit *BinaryEncodingOptions) *BinaryEncodingOptions {
+// Native 0.2.0 layers binary options but does not read this environment variable.
+// Apply its fallback at runtime construction so all explicit programmatic layers win.
+func runtimeBinaryEncoding(explicit *BinaryEncodingOptions) *BinaryEncodingOptions {
 	if explicit != nil {
 		return explicit.clone()
 	}
 	value, set := os.LookupEnv("AZURE_COSMOS_BINARY_ENCODING_ENABLED")
 	if !set {
-		return nil
+		return &BinaryEncodingOptions{}
 	}
-	enabled := true
 	switch strings.ToLower(strings.TrimSpace(value)) {
 	case "1", "true", "yes", "on":
+		return &BinaryEncodingOptions{}
 	default:
-		enabled = false
+		return &BinaryEncodingOptions{Disabled: true}
 	}
-	return &BinaryEncodingOptions{Enabled: &enabled}
 }
 
 func clonePointer[T any](value *T) *T {

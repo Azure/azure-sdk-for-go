@@ -67,12 +67,14 @@ func emulatorClientConfigured(
 	cred, err := NewKeyCredential(emulatorKey)
 	require.NoError(t, err)
 
-	client, err := NewClientWithKey(endpoint, cred, options)
+	var client *Client
+	if initialize {
+		client, err = NewClientWithKey(t.Context(), endpoint, cred, options)
+	} else {
+		client, err = newTestClientWithKey(endpoint, cred, options)
+	}
 	require.NoError(t, err)
 	t.Cleanup(func() { require.NoError(t, client.Close()) })
-	if initialize {
-		require.NoError(t, client.Initialize(t.Context()))
-	}
 
 	return client, databaseID, containerID
 }
@@ -185,7 +187,7 @@ func emulatorContainer(t *testing.T) *ContainerClient {
 	t.Helper()
 
 	client, databaseID, containerID := emulatorClient(t)
-	container, err := client.NewContainer(databaseID, containerID)
+	container, err := client.NewContainer(t.Context(), databaseID, containerID)
 	require.NoError(t, err)
 	return container
 }
@@ -927,10 +929,8 @@ func TestEmulatorConcurrentOperations(t *testing.T) {
 func TestEmulatorUnknownContainer(t *testing.T) {
 	client, databaseID, _ := emulatorClient(t)
 
-	container, err := client.NewContainer(databaseID, "no-such-container")
-	require.NoError(t, err, "naming a container does not contact the service")
-
-	_, err = container.ReadItem(context.Background(), NewPartitionKeyString("pk"), "item-1", nil)
+	container, err := client.NewContainer(t.Context(), databaseID, "no-such-container")
+	require.Nil(t, container)
 	require.Error(t, err)
 
 	var cosmosErr *Error
@@ -943,7 +943,7 @@ func emulatorContainerWithOptions(t *testing.T, options *ClientOptions) *Contain
 	t.Helper()
 
 	client, databaseID, containerID := emulatorClientWithOptions(t, options)
-	container, err := client.NewContainer(databaseID, containerID)
+	container, err := client.NewContainer(t.Context(), databaseID, containerID)
 	require.NoError(t, err)
 	return container
 }
@@ -1060,9 +1060,9 @@ func TestEmulatorApplicationID(t *testing.T) {
 	createForClientOptions(t, container, nil)
 }
 
-// Initialize does not return until it has fetched account properties and seeded routing state. A
+// Construction does not return until it has fetched account properties and seeded routing state. A
 // later operation therefore sees the same cached driver handle.
-func TestEmulatorInitializeCreatesDriver(t *testing.T) {
+func TestEmulatorConstructorCreatesDriver(t *testing.T) {
 	client, _, _ := emulatorClient(t)
 
 	client.driver.mu.Lock()
@@ -1086,12 +1086,12 @@ func TestEmulatorTokenCredential(t *testing.T) {
 	runtime, err := NewRuntime(nil)
 	require.NoError(t, err)
 	t.Cleanup(func() { require.NoError(t, runtime.Close()) })
-	client, err := NewClient(endpoint, credential, &ClientOptions{Runtime: runtime})
+	client, err := NewClient(t.Context(), endpoint, credential, &ClientOptions{Runtime: runtime})
 	require.NoError(t, err)
 	t.Cleanup(func() { require.NoError(t, client.Close()) })
 	ctx, cancel := context.WithTimeout(t.Context(), 10*time.Second)
 	defer cancel()
-	require.NoError(t, client.Initialize(ctx))
+	require.NoError(t, client.initialize(ctx))
 	select {
 	case scopes := <-credential.requests:
 		require.Equal(t, []string{"https://cosmos.azure.com/.default"}, scopes)
@@ -1099,7 +1099,7 @@ func TestEmulatorTokenCredential(t *testing.T) {
 		t.Fatal("Initialize did not invoke the supplied credential")
 	}
 
-	container, err := client.NewContainer(databaseID, containerID)
+	container, err := client.NewContainer(t.Context(), databaseID, containerID)
 	require.NoError(t, err)
 	id := uniqueItemID(t)
 	pk := NewPartitionKeyString(id)
@@ -1114,27 +1114,25 @@ func TestEmulatorTokenCredential(t *testing.T) {
 	require.NotEmpty(t, read.Value)
 }
 
-// Rust retries token acquisition twice within one initialization. Once those transient failures
-// are exhausted, a later Initialize must start a fresh driver-creation attempt.
+// A failed eager constructor returns nil; a fresh constructor can recover.
 func TestEmulatorInitializationRecoversFromTokenFailure(t *testing.T) {
 	endpoint, _, _ := emulatorConfiguration(t)
 	credential := &recoveringTokenCredential{}
 	runtime, err := NewRuntime(nil)
 	require.NoError(t, err)
 	t.Cleanup(func() { require.NoError(t, runtime.Close()) })
-	client, err := NewClient(endpoint, credential, &ClientOptions{Runtime: runtime})
-	require.NoError(t, err)
-	t.Cleanup(func() { require.NoError(t, client.Close()) })
-
 	ctx, cancel := context.WithTimeout(t.Context(), 10*time.Second)
 	defer cancel()
-	err = client.Initialize(ctx)
+	client, err := NewClient(ctx, endpoint, credential, &ClientOptions{Runtime: runtime})
+	require.Nil(t, client)
 	var cosmosErr *Error
 	require.ErrorAs(t, err, &cosmosErr)
 	require.Equal(t, CodeAuthenticationFailed, cosmosErr.Code)
 	require.Equal(t, int32(2), credential.attempts.Load())
 
-	require.NoError(t, client.Initialize(ctx))
+	client, err = NewClient(ctx, endpoint, credential, &ClientOptions{Runtime: runtime})
+	require.NoError(t, err)
+	t.Cleanup(func() { require.NoError(t, client.Close()) })
 	require.Equal(t, int32(3), credential.attempts.Load())
 }
 
@@ -1149,7 +1147,7 @@ func TestEmulatorInitializationFollowerOutlivesLeader(t *testing.T) {
 	runtime, err := NewRuntime(nil)
 	require.NoError(t, err)
 	t.Cleanup(func() { require.NoError(t, runtime.Close()) })
-	client, err := NewClient(endpoint, credential, &ClientOptions{Runtime: runtime})
+	client, err := newTestTokenClient(endpoint, credential, &ClientOptions{Runtime: runtime})
 	require.NoError(t, err)
 	t.Cleanup(func() { require.NoError(t, client.Close()) })
 	var releaseOnce sync.Once
@@ -1164,7 +1162,7 @@ func TestEmulatorInitializationFollowerOutlivesLeader(t *testing.T) {
 	leaderCtx, cancelLeader := context.WithCancel(ctx)
 	defer cancelLeader()
 	leaderResult := make(chan error, 1)
-	go func() { leaderResult <- client.Initialize(leaderCtx) }()
+	go func() { leaderResult <- client.initialize(leaderCtx) }()
 	select {
 	case <-credential.started:
 	case <-ctx.Done():
@@ -1172,7 +1170,7 @@ func TestEmulatorInitializationFollowerOutlivesLeader(t *testing.T) {
 	}
 
 	followerResult := make(chan error, 1)
-	go func() { followerResult <- client.Initialize(ctx) }()
+	go func() { followerResult <- client.initialize(ctx) }()
 	select {
 	case <-waiting:
 	case <-ctx.Done():
@@ -1195,16 +1193,15 @@ func TestEmulatorInitializationFollowerOutlivesLeader(t *testing.T) {
 	}
 }
 
-// Initialize is optional: the first operation performs the same work when callers skip it.
-func TestEmulatorOperationInitializesLazily(t *testing.T) {
+// The private offline seam still exercises the internal lazy initialization guard.
+func TestEmulatorInternalOperationInitializesLazily(t *testing.T) {
 	client, databaseID, containerID := emulatorClientConfigured(t, nil, false)
 
 	client.driver.mu.Lock()
 	require.False(t, client.driver.created)
 	client.driver.mu.Unlock()
 
-	container, err := client.NewContainer(databaseID, containerID)
-	require.NoError(t, err)
+	container := localTestContainer(client, databaseID, containerID)
 	id := uniqueItemID(t)
 	pk := NewPartitionKeyString(id)
 	trackEmulatorItem(t, container, pk, id)

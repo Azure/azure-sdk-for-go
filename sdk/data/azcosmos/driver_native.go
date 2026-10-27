@@ -40,9 +40,8 @@ const driverAvailable = true
 // Runtime ownership belongs to Runtime. Each client retains independent driver/account handles,
 // credentials, options, metadata caches, and a completion queue.
 //
-// The runtime, account reference and completion queue are built locally. Initialize or the first
-// operation creates the driver, which fetches account properties, seeds routing state and creates
-// the account transport.
+// Local setup builds the runtime, account reference and completion queue. The public account
+// constructors then initialize the driver, fetching account properties and seeding routing state.
 //
 // The queue binds to the runtime, not to the driver, so it exists before driver creation and makes
 // callers can stop waiting without cancelling native work.
@@ -144,8 +143,8 @@ func validateDriverVersions(header, linked string) error {
 }
 
 // openDriver acquires the resources a client can acquire locally: the runtime, the account
-// reference and the completion queue, none of which touch the network. Initialize and operations
-// create the driver separately so that network work receives their context.
+// reference and the completion queue, none of which touch the network. Initialization is awaited
+// separately so the caller's context bounds network waiting without abandoning ownership.
 func openDriver(cfg driverConfig) (*nativeDriver, error) {
 	if err := verifyDriverVersion(); err != nil {
 		return nil, err

@@ -22,8 +22,8 @@ func faultInjectedContainer(t *testing.T, rule nativeFaultRule) *ContainerClient
 	t.Helper()
 	client, databaseID, containerID := emulatorClientConfigured(t, nil, false)
 	client.driver.faultRules = []nativeFaultRule{rule}
-	require.NoError(t, client.Initialize(t.Context()))
-	container, err := client.NewContainer(databaseID, containerID)
+	require.NoError(t, client.initialize(t.Context()))
+	container, err := client.NewContainer(t.Context(), databaseID, containerID)
 	require.NoError(t, err)
 	return container
 }

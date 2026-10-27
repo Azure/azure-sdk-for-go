@@ -23,6 +23,19 @@ import (
 // placeholder like "key" would be rejected.
 const testAccountKey = "dGVzdC1hY2NvdW50LWtleQ=="
 
+// Offline tests construct local handles without claiming public constructor readiness.
+func newTestTokenClient(endpoint string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
+	return newClient(endpoint, "", cred, options)
+}
+
+func newTestClientWithKey(endpoint string, cred KeyCredential, options *ClientOptions) (*Client, error) {
+	return newClient(endpoint, cred.accountKey, nil, options)
+}
+
+func localTestContainer(client *Client, databaseID, containerID string) *ContainerClient {
+	return &ContainerClient{id: containerID, database: &DatabaseClient{id: databaseID, client: client}}
+}
+
 func mustKeyCredential(t *testing.T) KeyCredential {
 	t.Helper()
 
@@ -49,22 +62,22 @@ func (fakeTokenCredential) GetToken(context.Context, policy.TokenRequestOptions)
 	}, nil
 }
 
-// Token credentials are accepted without network I/O; Initialize or an operation acquires a token.
-func TestNewClientAcceptsTokenCredential(t *testing.T) {
-	client, err := NewClient("https://myaccount.documents.azure.com", fakeTokenCredential{}, nil)
+// The private construction seam lets unit tests configure credentials without network I/O.
+func TestLocalClientAcceptsTokenCredential(t *testing.T) {
+	client, err := newTestTokenClient("https://myaccount.documents.azure.com", fakeTokenCredential{}, nil)
 	require.NoError(t, err)
 	t.Cleanup(func() { require.NoError(t, client.Close()) })
 	require.Equal(t, "https://myaccount.documents.azure.com", client.Endpoint())
 }
 
 func TestNewClientRejectsNilCredential(t *testing.T) {
-	_, err := NewClient("https://myaccount.documents.azure.com", nil, nil)
+	_, err := NewClient(t.Context(), "https://myaccount.documents.azure.com", nil, nil)
 	require.Error(t, err)
 }
 
 func TestInitializeRejectsNilContext(t *testing.T) {
 	client := newTestClient(t)
-	err := client.Initialize(nil) //nolint:staticcheck // verifies the guard
+	err := client.initialize(nil) //nolint:staticcheck // verifies the guard
 	require.Error(t, err)
 }
 
@@ -72,16 +85,36 @@ func TestInitializeReportsUnavailableDriver(t *testing.T) {
 	if driverAvailable {
 		t.Skip("the driver is available in this build")
 	}
-	client := newTestClient(t)
-	err := client.Initialize(t.Context())
+	client, err := NewClientWithKey(t.Context(), "https://myaccount.documents.azure.com", mustKeyCredential(t), nil)
+	require.Nil(t, client)
 	var cosmosErr *Error
 	require.ErrorAs(t, err, &cosmosErr)
 	require.Contains(t, cosmosErr.Message, "cannot reach the Cosmos driver")
 }
 
+func TestAccountConstructorsRejectInvalidContext(t *testing.T) {
+	for _, constructor := range []func(context.Context) (*Client, error){
+		func(ctx context.Context) (*Client, error) {
+			return NewClient(ctx, "https://myaccount.documents.azure.com", fakeTokenCredential{}, nil)
+		},
+		func(ctx context.Context) (*Client, error) {
+			return NewClientWithKey(ctx, "https://myaccount.documents.azure.com", mustKeyCredential(t), nil)
+		},
+	} {
+		client, err := constructor(nil)
+		require.Nil(t, client)
+		require.ErrorContains(t, err, "context")
+		ctx, cancel := context.WithCancel(t.Context())
+		cancel()
+		client, err = constructor(ctx)
+		require.Nil(t, client)
+		require.ErrorIs(t, err, context.Canceled)
+	}
+}
+
 // The zero value is what a caller gets if they ignore the error from NewKeyCredential.
 func TestNewClientWithKeyRejectsZeroCredential(t *testing.T) {
-	_, err := NewClientWithKey("https://myaccount.documents.azure.com", KeyCredential{}, nil)
+	_, err := NewClientWithKey(t.Context(), "https://myaccount.documents.azure.com", KeyCredential{}, nil)
 	require.Error(t, err)
 }
 
@@ -144,7 +177,7 @@ func TestNewClientRejectsNonAbsoluteEndpoint(t *testing.T) {
 	// on Hostname rather than Host.
 	for _, endpoint := range []string{"", "myaccount.documents.azure.com", "/relative/path", "https://", "https://:8081"} {
 		t.Run(endpoint, func(t *testing.T) {
-			_, err := NewClientWithKey(endpoint, cred, nil)
+			_, err := newTestClientWithKey(endpoint, cred, nil)
 			require.Error(t, err, "endpoint %q should be rejected", endpoint)
 		})
 	}
@@ -209,21 +242,32 @@ func TestCloseIsIdempotentAndConcurrencySafe(t *testing.T) {
 	require.NoError(t, client.Close())
 }
 
-func TestNewDatabaseAndNewContainer(t *testing.T) {
+func TestNewDatabaseIsLocalAndContainerFactoriesHonorContext(t *testing.T) {
 	client := newTestClient(t)
 
 	database, err := client.NewDatabase("db")
 	require.NoError(t, err)
 	require.Equal(t, "db", database.ID())
 
-	container, err := database.NewContainer("items")
-	require.NoError(t, err)
-	require.Equal(t, "items", container.ID())
-
-	direct, err := client.NewContainer("db", "items")
-	require.NoError(t, err)
-	require.Equal(t, "items", direct.ID())
-	require.Equal(t, "db", direct.database.ID())
+	ctx, cancel := context.WithCancel(t.Context())
+	cancel()
+	for _, factory := range []func(context.Context) (*ContainerClient, error){
+		func(ctx context.Context) (*ContainerClient, error) { return database.NewContainer(ctx, "items") },
+		func(ctx context.Context) (*ContainerClient, error) { return client.NewContainer(ctx, "db", "items") },
+	} {
+		container, err := factory(ctx)
+		require.Nil(t, container)
+		require.ErrorIs(t, err, context.Canceled)
+		container, err = factory(nil)
+		require.Nil(t, container)
+		require.ErrorContains(t, err, "context")
+	}
+	require.NoError(t, client.Close())
+	container, err := client.NewContainer(ctx, "db", "items")
+	require.Nil(t, container)
+	var failure *Error
+	require.ErrorAs(t, err, &failure)
+	require.Equal(t, CodeClientClosed, failure.Code)
 }
 
 func TestNewDatabaseAndNewContainerRejectEmptyIDs(t *testing.T) {
@@ -232,10 +276,10 @@ func TestNewDatabaseAndNewContainerRejectEmptyIDs(t *testing.T) {
 	_, err := client.NewDatabase("")
 	require.Error(t, err)
 
-	_, err = client.NewContainer("db", "")
+	_, err = client.NewContainer(t.Context(), "db", "")
 	require.Error(t, err)
 
-	_, err = client.NewContainer("", "items")
+	_, err = client.NewContainer(t.Context(), "", "items")
 	require.Error(t, err)
 }
 
@@ -246,7 +290,7 @@ func TestNewClientRejectsNonHTTPSchemes(t *testing.T) {
 
 	for _, endpoint := range []string{"ftp://myaccount", "file:///tmp/x", "wss://myaccount"} {
 		t.Run(endpoint, func(t *testing.T) {
-			_, err := NewClientWithKey(endpoint, cred, nil)
+			_, err := newTestClientWithKey(endpoint, cred, nil)
 			require.Error(t, err)
 		})
 	}
@@ -257,7 +301,7 @@ func TestNewClientRejectsNonHTTPSchemes(t *testing.T) {
 func TestEndpointErrorNamesTheEndpoint(t *testing.T) {
 	cred := mustKeyCredential(t)
 
-	_, err := NewClientWithKey("notaurl", cred, nil)
+	_, err := newTestClientWithKey("notaurl", cred, nil)
 	require.Error(t, err)
 	require.True(t, strings.Contains(err.Error(), "notaurl"))
 }
@@ -266,11 +310,10 @@ func TestEndpointErrorNamesTheEndpoint(t *testing.T) {
 // operation.
 func TestOperationsAfterCloseAreRejected(t *testing.T) {
 	client := newTestClient(t)
-	container, err := client.NewContainer("db", "items")
-	require.NoError(t, err)
+	container := localTestContainer(client, "db", "items")
 	require.NoError(t, client.Close())
 
-	_, err = container.ReadItem(context.Background(), NewPartitionKeyString("pk"), "item-1", nil)
+	_, err := container.ReadItem(context.Background(), NewPartitionKeyString("pk"), "item-1", nil)
 	var cosmosErr *Error
 	require.True(t, errors.As(err, &cosmosErr))
 	require.Equal(t, CodeClientClosed, cosmosErr.Code)
@@ -315,7 +358,7 @@ func TestNewClientWithKeyRejectsInvalidOptions(t *testing.T) {
 	credential, err := NewKeyCredential(testAccountKey)
 	require.NoError(t, err)
 
-	client, err := NewClientWithKey(
+	client, err := newTestClientWithKey(
 		"https://myaccount.documents.azure.com",
 		credential,
 		&ClientOptions{Operation: OperationOptions{CustomHeaders: map[string]string{"x-test": "\x00"}}})

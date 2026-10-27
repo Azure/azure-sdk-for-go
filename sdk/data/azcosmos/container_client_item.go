@@ -165,7 +165,7 @@ func (c *ContainerClient) ReadItem(ctx context.Context, partitionKey PartitionKe
 //
 // partitionKey is the item's partition key value, and must have one component per path in the
 // container's partition key definition and match the values in item. id addresses the item being
-// created and must match the item's own id property. item is encoded using the client's serializer.
+// created and must match the item's own id property. item is encoded using encoding/json.
 // options may be nil.
 //
 // The id is taken separately because the driver ABI requires an item reference. The SDK passes the
@@ -187,7 +187,7 @@ func (c *ContainerClient) CreateItem[T any](ctx context.Context, partitionKey Pa
 			return ItemResponse{}, err
 		}
 	}
-	body, err := marshalItem(c.database.client.options.Serializer, item)
+	body, err := marshalItem(item)
 	if err != nil {
 		return ItemResponse{}, err
 	}
@@ -210,7 +210,7 @@ func (c *ContainerClient) CreateItem[T any](ctx context.Context, partitionKey Pa
 // ReplaceItem replaces an existing item.
 //
 // partitionKey is the item's partition key value. id is the item's id property and must match the
-// id in item. item is encoded using the client's serializer. options may be nil.
+// id in item. item is encoded using encoding/json. options may be nil.
 // The SDK does not infer or compare the item's id or partition key fields.
 //
 // The response carries the replaced item only when content responses are enabled. If an IfMatch
@@ -225,7 +225,7 @@ func (c *ContainerClient) ReplaceItem[T any](ctx context.Context, partitionKey P
 		}
 	}
 
-	body, err := marshalItem(c.database.client.options.Serializer, item)
+	body, err := marshalItem(item)
 	if err != nil {
 		return ItemResponse{}, err
 	}
@@ -248,7 +248,7 @@ func (c *ContainerClient) ReplaceItem[T any](ctx context.Context, partitionKey P
 // UpsertItem creates an item when it does not exist or replaces it when it does.
 //
 // partitionKey is the item's partition key value. id is the item's id property and must match the
-// id in item. item is encoded using the client's serializer. options may be nil.
+// id in item. item is encoded using encoding/json. options may be nil.
 // The SDK does not infer or compare the item's id or partition key fields.
 //
 // The response carries the upserted item only when content responses are enabled. An IfMatch
@@ -263,7 +263,7 @@ func (c *ContainerClient) UpsertItem[T any](ctx context.Context, partitionKey Pa
 		}
 	}
 
-	body, err := marshalItem(c.database.client.options.Serializer, item)
+	body, err := marshalItem(item)
 	if err != nil {
 		return ItemResponse{}, err
 	}
@@ -416,7 +416,6 @@ func (c *ContainerClient) executeItem(ctx context.Context, req itemRequest, incl
 	if includeValue {
 		response.Value = body
 	}
-	response.serializer = c.database.client.options.Serializer
 	return response, nil
 }
 

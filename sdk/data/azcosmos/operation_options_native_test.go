@@ -20,8 +20,8 @@ func TestNativeBinaryEncodingAutomaticallyRequestsText(t *testing.T) {
 	}{
 		{nil, 0},
 		{&BinaryEncodingOptions{}, 2},
-		{&BinaryEncodingOptions{Enabled: to(true)}, 2},
-		{&BinaryEncodingOptions{Enabled: to(false)}, 1},
+		{&BinaryEncodingOptions{Disabled: false}, 2},
+		{&BinaryEncodingOptions{Disabled: true}, 1},
 	} {
 		options, release := inspectNativeOperationOptions(OperationOptions{BinaryEncoding: tt.encoding})
 		require.Equal(t, tt.want, options.binaryEncodingEnabled)
@@ -36,7 +36,7 @@ func TestFullOperationOptionsNativePresence(t *testing.T) {
 		ExcludedRegions: []Region{}, EndToEndTimeout: to(time.Duration(3 * time.Second)), PatchStrategy: PatchStrategyClientSide,
 		SessionCapturingDisabled: to(false), MaxFailoverRetryCount: to(uint32(math.MaxUint32)),
 		MaxSessionRetryCount: to(uint32(0)), EndpointUnavailabilityTTL: to(time.Duration(0)),
-		CustomHeaders: map[string]string{"X-Test": "value"}, BinaryEncoding: &BinaryEncodingOptions{Enabled: to(true)},
+		CustomHeaders: map[string]string{"X-Test": "value"}, BinaryEncoding: &BinaryEncodingOptions{Disabled: false},
 		ThroughputControl: ThroughputControlOptions{ThroughputBucket: to(uint32(math.MaxUint32)), PriorityLevel: PriorityLevelLow},
 		ThrottlingRetry:   ThrottlingRetryOptions{MaxRetryCount: to(uint32(0)), MaxRetryWaitTime: to(time.Duration(0))},
 		HedgingEnabled:    to(false), AvailabilityStrategy: HedgingAvailability(time.Nanosecond),

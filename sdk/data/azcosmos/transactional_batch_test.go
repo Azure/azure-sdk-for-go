@@ -272,7 +272,7 @@ func TestTransactionalBatchRequestOwnsOptions(t *testing.T) {
 			ExcludedRegions:              []Region{RegionEastUS},
 			EndToEndTimeout:              to(time.Second),
 			CustomHeaders:                map[string]string{"x-test": "original"},
-			BinaryEncoding:               &BinaryEncodingOptions{Enabled: to(false)},
+			BinaryEncoding:               &BinaryEncodingOptions{Disabled: true},
 			ThrottlingRetry:              ThrottlingRetryOptions{MaxRetryCount: to(uint32(2))},
 		},
 		SessionToken: "0:1",
@@ -283,7 +283,7 @@ func TestTransactionalBatchRequestOwnsOptions(t *testing.T) {
 	options.Operation.ExcludedRegions[0] = RegionWestUS
 	*options.Operation.EndToEndTimeout = 2 * time.Second
 	options.Operation.CustomHeaders["x-test"] = "changed"
-	*options.Operation.BinaryEncoding.Enabled = true
+	options.Operation.BinaryEncoding.Disabled = false
 	*options.Operation.ThrottlingRetry.MaxRetryCount = 3
 	options.SessionToken = "different"
 	require.True(t, *req.options.EnableContentResponseOnWrite)
@@ -291,7 +291,7 @@ func TestTransactionalBatchRequestOwnsOptions(t *testing.T) {
 	require.Equal(t, SessionToken("0:1"), req.sessionToken)
 	require.Equal(t, time.Second, *req.options.EndToEndTimeout)
 	require.Equal(t, map[string]string{"x-test": "original"}, req.options.CustomHeaders)
-	require.False(t, *req.options.BinaryEncoding.Enabled)
+	require.True(t, req.options.BinaryEncoding.Disabled)
 	require.Equal(t, uint32(2), *req.options.ThrottlingRetry.MaxRetryCount)
 	require.Empty(t, req.itemID)
 	require.Equal(t, operationKindBatch, req.kind)

@@ -20,11 +20,10 @@ func TestQuerySnapshotTimeoutIncludesLazyInitialization(t *testing.T) {
 	require.NoError(t, err)
 	t.Cleanup(func() { require.NoError(t, shared.Close()) })
 	credential := &blockingTokenCredential{started: make(chan struct{}), stopped: make(chan struct{})}
-	client, err := NewClient("https://myaccount.documents.azure.com", credential, &ClientOptions{Runtime: shared})
+	client, err := newTestTokenClient("https://myaccount.documents.azure.com", credential, &ClientOptions{Runtime: shared})
 	require.NoError(t, err)
 	t.Cleanup(func() { client.driver.tokenProvider.cancel(); require.NoError(t, client.Close()) })
-	container, err := client.NewContainer("db", "items")
-	require.NoError(t, err)
+	container := localTestContainer(client, "db", "items")
 	pager := container.NewQueryItemsPager[json.RawMessage](NewQuery("SELECT * FROM c"),
 		NewFeedScopeForPartitionKey(NewPartitionKeyString("pk")), nil)
 	done := make(chan error, 1)

@@ -87,10 +87,10 @@ func TestEmulatorQueryPaginationAfterContainerRecreation(t *testing.T) {
 	t.Cleanup(server.Close)
 	credential, err := NewKeyCredential(emulatorKey)
 	require.NoError(t, err)
-	client, err := NewClientWithKey(server.URL, credential, nil)
+	client, err := NewClientWithKey(t.Context(), server.URL, credential, nil)
 	require.NoError(t, err)
 	t.Cleanup(func() { require.NoError(t, client.Close()) })
-	container, err := client.NewContainer(databaseID, containerID)
+	container, err := client.NewContainer(t.Context(), databaseID, containerID)
 	require.NoError(t, err)
 	key := NewPartitionKeyString("partition")
 	seed := func(container *ContainerClient) {
@@ -122,7 +122,7 @@ func TestEmulatorQueryPaginationAfterContainerRecreation(t *testing.T) {
 	require.NotEmpty(t, replacement.RID)
 	require.NotEqual(t, original.RID, replacement.RID)
 	freshClient, _, _ := emulatorClient(t)
-	freshContainer, err := freshClient.NewContainer(databaseID, containerID)
+	freshContainer, err := freshClient.NewContainer(t.Context(), databaseID, containerID)
 	require.NoError(t, err)
 	seed(freshContainer)
 
@@ -239,7 +239,7 @@ func TestEmulatorQueryPagination(t *testing.T) {
 
 func TestEmulatorQueryHierarchicalScope(t *testing.T) {
 	client, databaseID, _ := emulatorClient(t)
-	container, err := client.NewContainer(databaseID, "query-hierarchical")
+	container, err := client.NewContainer(t.Context(), databaseID, "query-hierarchical")
 	require.NoError(t, err)
 	partition := uniqueItemID(t)
 	key := NewPartitionKeyString(partition).AppendString("child")
@@ -366,7 +366,7 @@ func TestEmulatorQueryCrossPartition(t *testing.T) {
 					require.Equal(t, expected[len(first.Items):], tail, "snapshotting must not advance the original cursor")
 
 					client, databaseID, containerID := emulatorClient(t)
-					freshContainer, err := client.NewContainer(databaseID, containerID)
+					freshContainer, err := client.NewContainer(t.Context(), databaseID, containerID)
 					require.NoError(t, err)
 					resumed := freshContainer.NewQueryItemsPager[json.RawMessage](query, scope, &QueryOptions{
 						Feed: FeedOptions{PageSizeHint: 2, ContinuationToken: token}, QueryPlanMode: mode,
@@ -465,14 +465,13 @@ func TestEmulatorQueryCancellationAndClose(t *testing.T) {
 			runtime, err := NewRuntime(nil)
 			require.NoError(t, err)
 			t.Cleanup(func() { require.NoError(t, runtime.Close()) })
-			client, err := NewClient(endpoint, credential, &ClientOptions{Runtime: runtime})
+			client, err := newTestTokenClient(endpoint, credential, &ClientOptions{Runtime: runtime})
 			require.NoError(t, err)
 			t.Cleanup(func() { require.NoError(t, client.Close()) })
 			var releaseOnce sync.Once
 			unblock := func() { releaseOnce.Do(func() { close(credential.release) }) }
 			t.Cleanup(unblock)
-			container, err := client.NewContainer(databaseID, containerID)
-			require.NoError(t, err)
+			container := localTestContainer(client, databaseID, containerID)
 			ctx, cancel := context.WithCancel(t.Context())
 			defer cancel()
 			type result struct {
@@ -524,7 +523,7 @@ func TestEmulatorQueryCancellationAndClose(t *testing.T) {
 
 func TestEmulatorQueryEncodingAndRuntimeDefaults(t *testing.T) {
 	shared, err := NewRuntime(&RuntimeOptions{Operation: OperationOptions{
-		BinaryEncoding:  &BinaryEncodingOptions{Enabled: to(true)},
+		BinaryEncoding:  &BinaryEncodingOptions{Disabled: false},
 		EndToEndTimeout: to(time.Duration(10 * time.Second)),
 	}})
 	require.NoError(t, err)
@@ -537,8 +536,8 @@ func TestEmulatorQueryEncodingAndRuntimeDefaults(t *testing.T) {
 	trackEmulatorItem(t, container, pk, id)
 	for _, encoding := range []*BinaryEncodingOptions{
 		nil,
-		{Enabled: to(false)},
-		{Enabled: to(true)},
+		{Disabled: true},
+		{Disabled: false},
 	} {
 		pager := container.NewQueryItemsPager[json.RawMessage](NewQuery("SELECT VALUE c.value FROM c"),
 			NewFeedScopeForPartitionKey(pk), &QueryOptions{Operation: OperationOptions{BinaryEncoding: encoding}})
@@ -609,13 +608,13 @@ func TestEmulatorQueryAdmittedPageLifetime(t *testing.T) {
 			t.Cleanup(server.Close)
 			credential, err := NewKeyCredential(emulatorKey)
 			require.NoError(t, err)
-			client, err := NewClientWithKey(server.URL, credential, nil)
+			client, err := NewClientWithKey(t.Context(), server.URL, credential, nil)
 			require.NoError(t, err)
 			cleanupStarted := make(chan struct{})
 			client.driver.beforePendingWait = func() { close(cleanupStarted) }
 			t.Cleanup(func() { require.NoError(t, client.Close()) })
 			t.Cleanup(func() { once.Do(func() { close(release) }) })
-			container, err := client.NewContainer(databaseID, containerID)
+			container, err := client.NewContainer(t.Context(), databaseID, containerID)
 			require.NoError(t, err)
 			pager := container.NewQueryItemsPager[json.RawMessage](NewQuery("SELECT VALUE c.id FROM c WHERE c.value >= 0"), NewFeedScopeForFullContainer(), nil)
 			ctx, cancel := context.WithCancel(t.Context())

@@ -268,8 +268,13 @@ func newEntityManagerImpl(provider *sbauth.TokenProvider, version string, option
 
 	pl := runtime.NewPipeline("azsbadmin", version, popts, options)
 
+	scheme := "https"
+	if provider.InsecureDisableTLS {
+		scheme = "http"
+	}
+
 	return &entityManager{
-		Host:          fmt.Sprintf("https://%s/", ns),
+		Host:          fmt.Sprintf("%s://%s/", scheme, ns),
 		tokenProvider: provider,
 		pl:            pl,
 	}, nil

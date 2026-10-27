@@ -51,6 +51,9 @@ type ClientOptions struct {
 // Or it can be a connection string with a SharedAccessSignature:
 //
 //	Endpoint=sb://<sb>.servicebus.windows.net;SharedAccessSignature=SharedAccessSignature sr=<sb>.servicebus.windows.net&sig=<base64-sig>&se=<expiry>&skn=<keyname>
+//
+// For the Service Bus emulator, set UseDevelopmentEmulator=true and use the emulator's HTTP management
+// port in Endpoint (5300 by default). This enables unencrypted HTTP and is intended only for development.
 func NewClientFromConnectionString(connectionString string, options *ClientOptions) (*Client, error) {
 	var clientOptions *azcore.ClientOptions
 

@@ -8,6 +8,10 @@
 
 * Added optional `ClientOptions.Serializer`, generic item writes, `ItemResponse.IntoModel[T]()`,
   and generic query results with metadata-preserving model conversion errors.
+* Query model-conversion failures stop iteration but retain supported checkpoints so callers
+  can explicitly resume after the entire failed page before closing the failed pager.
+* Query serializer callbacks run outside pager and client lifetime locks, allowing reentrant
+  inspection and shutdown without deadlocking.
 * Added transactional batches for create, read, upsert, replace, and delete with complete
   hierarchical partition keys, owned builders, Rust-compatible conditional options,
   ordered raw result metadata, and cancellation behavior consistent with point operations.
@@ -96,6 +100,11 @@
 * Replaced provisional byte-oriented writes with generic `CreateItem`, `ReplaceItem`, and
   `UpsertItem`. Pass models directly or use `json.RawMessage` for pre-encoded JSON; plain
   `[]byte` is now serialized using the configured serializer.
+* Item writes reject serialized bodies that are not valid JSON objects before submission.
+  With the default serializer, this includes plain `[]byte` and nil models.
+* Transactional batch writes accept models or `json.RawMessage` instead of raw `[]byte`.
+  `ContainerClient.NewTransactionalBatch` captures the client serializer; the package-level
+  constructor uses `encoding/json`. Item serialization and copying occur when appended.
 * `NewQueryItemsPager[T]`, `QueryItemsPager[T]`, and `QueryItemsResponse[T]` require an
   explicit query result type. There are no separate raw operation variants.
 * This is the first release of `github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos/v2`. The v2

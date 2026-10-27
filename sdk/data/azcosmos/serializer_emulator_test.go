@@ -14,6 +14,52 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func TestEmulatorBatchModelSerialization(t *testing.T) {
+	type model struct {
+		Key   string
+		Value int
+	}
+	var marshals atomic.Int32
+	codec := &serializerFuncs{marshal: func(value any) ([]byte, error) {
+		marshals.Add(1)
+		item := value.(model)
+		return json.Marshal(map[string]any{"id": item.Key, "pk": item.Key, "value": item.Value})
+	}, unmarshal: func([]byte, any) error {
+		t.Fatal("batch responses must not invoke the application serializer")
+		return nil
+	}}
+	client, databaseID, containerID := emulatorClientWithOptions(t, &ClientOptions{Serializer: codec})
+	container, err := client.NewContainer(databaseID, containerID)
+	require.NoError(t, err)
+	id := uniqueItemID(t)
+	pk := NewPartitionKeyString(id)
+	trackEmulatorItem(t, container, pk, id)
+	batch := container.NewTransactionalBatch(pk)
+	require.NoError(t, batch.CreateItem(model{Key: id, Value: 1}, nil))
+	require.NoError(t, batch.UpsertItem(model{Key: id, Value: 2}, nil))
+	require.NoError(t, batch.ReplaceItem(id, model{Key: id, Value: 3}, nil))
+	require.NoError(t, batch.ReadItem(id, nil))
+	require.Equal(t, int32(3), marshals.Load())
+	enabled := true
+	response, err := container.ExecuteTransactionalBatch(t.Context(), batch, &TransactionalBatchOptions{
+		Operation: OperationOptions{EnableContentResponseOnWrite: &enabled},
+	})
+	require.NoError(t, err)
+	require.Len(t, response.OperationResults, 4)
+	for _, result := range response.OperationResults {
+		require.GreaterOrEqual(t, result.StatusCode, 200)
+		require.Less(t, result.StatusCode, 300)
+	}
+	var document struct {
+		ID    string `json:"id"`
+		Value int    `json:"value"`
+	}
+	require.NoError(t, json.Unmarshal(response.OperationResults[3].ResourceBody, &document))
+	require.Equal(t, id, document.ID)
+	require.Equal(t, 3, document.Value)
+	require.Equal(t, int32(3), marshals.Load(), "execution must not serialize items again")
+}
+
 func TestEmulatorModelWorkflow(t *testing.T) {
 	type document struct {
 		ID    string `json:"id"`
@@ -123,7 +169,18 @@ func TestEmulatorModelWorkflow(t *testing.T) {
 			require.Equal(t, CodeSerializationFailed, failure.Code)
 			require.Positive(t, failure.RequestCharge)
 			require.False(t, failed.More())
-			require.Nil(t, failed.cursor)
+			require.NotNil(t, failed.cursor)
+			token, err := failed.ContinuationToken(t.Context())
+			require.NoError(t, err)
+			resumed := container.NewQueryItemsPager[json.RawMessage](NewQuery("SELECT * FROM c"), scope, &QueryOptions{
+				Feed: FeedOptions{ContinuationToken: token},
+			})
+			defer resumed.Close()
+			for resumed.More() {
+				page, err := resumed.NextPage(t.Context())
+				require.NoError(t, err)
+				require.Empty(t, page.Items, "resumption must skip the failed page's sole document")
+			}
 			require.NoError(t, failed.Close())
 
 			noContent := false

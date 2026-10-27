@@ -4,6 +4,7 @@
 package azcosmos
 
 import (
+	"bytes"
 	"encoding/json"
 	"errors"
 	"reflect"
@@ -56,6 +57,12 @@ func marshalItem(serializer Serializer, item any) ([]byte, error) {
 	}
 	if err != nil {
 		return nil, &Error{Code: CodeSerializationFailed, Message: "encoding item", cause: err}
+	}
+	if !json.Valid(body) || bytes.TrimSpace(body)[0] != '{' {
+		return nil, &Error{
+			Code:    CodeSerializationFailed,
+			Message: "encoding item: serializer must produce a valid JSON object",
+		}
 	}
 	return body, nil
 }

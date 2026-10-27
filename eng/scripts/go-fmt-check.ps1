@@ -15,8 +15,8 @@ function Invoke-CopyrightCheck {
         Push-Location $Path
         try {
             $output = gofmt -s -l -d .
-            if ($LASTEXITCODE -ne 0) {
-                throw "gofmt failed for $Path"
+            if ($LASTEXITCODE -notin @(0, 1)) {
+                throw "gofmt failed for $Path (exit code $LASTEXITCODE)"
             }
             $output
         }

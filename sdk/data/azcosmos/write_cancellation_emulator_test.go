@@ -120,7 +120,7 @@ func TestEmulatorTransactionalBatchCancellationDrainsBeforeClose(t *testing.T) {
 			}, nil)
 			t.Cleanup(func() { unblockOnce.Do(func() { close(unblock) }) })
 			batch := NewTransactionalBatch(pk)
-			require.NoError(t, batch.CreateItem(body, nil))
+			require.NoError(t, batch.CreateItem(json.RawMessage(body), nil))
 			if rollback {
 				require.NoError(t, batch.ReadItem(id+"-missing", nil))
 			}

@@ -6,6 +6,7 @@ package azcosmos
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"math"
 	"strings"
 	"testing"
@@ -18,10 +19,10 @@ import (
 func TestTransactionalBatchEncodesSupportedOperations(t *testing.T) {
 	batch := NewTransactionalBatch(NewPartitionKeyString("tenant").AppendString("region").AppendNumber(7))
 	etag := azcore.ETag(`"original"`)
-	require.NoError(t, batch.CreateItem([]byte(`{"id":"created","n":9007199254740993}`), nil))
+	require.NoError(t, batch.CreateItem(json.RawMessage(`{"id":"created","n":9007199254740993}`), nil))
 	require.NoError(t, batch.ReadItem("read", &TransactionalBatchReadItemOptions{IfMatchETag: &etag}))
-	require.NoError(t, batch.UpsertItem([]byte(`{"id":"upserted"}`), &TransactionalBatchUpsertItemOptions{IfMatchETag: &etag}))
-	require.NoError(t, batch.ReplaceItem("replaced", []byte(`{"id":"replaced"}`), &TransactionalBatchReplaceItemOptions{IfMatchETag: &etag}))
+	require.NoError(t, batch.UpsertItem(json.RawMessage(`{"id":"upserted"}`), &TransactionalBatchUpsertItemOptions{IfMatchETag: &etag}))
+	require.NoError(t, batch.ReplaceItem("replaced", json.RawMessage(`{"id":"replaced"}`), &TransactionalBatchReplaceItemOptions{IfMatchETag: &etag}))
 	require.NoError(t, batch.DeleteItem("deleted", &TransactionalBatchDeleteItemOptions{IfMatchETag: &etag}))
 	body, err := batch.marshal()
 	require.NoError(t, err)
@@ -37,7 +38,7 @@ func TestTransactionalBatchEncodesSupportedOperations(t *testing.T) {
 }
 
 func TestTransactionalBatchOwnsAppendSnapshots(t *testing.T) {
-	item := []byte(`{"id":"item","value":"original"}`)
+	item := json.RawMessage(`{"id":"item","value":"original"}`)
 	etag := azcore.ETag(`"original"`)
 	options := &TransactionalBatchReplaceItemOptions{IfMatchETag: &etag}
 	batch := NewTransactionalBatch(NewPartitionKeyString("pk"))
@@ -113,18 +114,106 @@ func TestTransactionalBatchEscapesEnvelopeStrings(t *testing.T) {
 	require.Equal(t, string(etag), operations[1].IfNoneMatch)
 }
 
+func TestTransactionalBatchWriteSerializationMatchesPointWrites(t *testing.T) {
+	for _, value := range []any{
+		map[string]any{"id": "item", "value": 42},
+		json.RawMessage(`{"id":"item","value":42}`),
+		[]byte(`{"id":"item","value":42}`),
+		(*struct{})(nil), "text", []int{1},
+	} {
+		expected, expectedErr := marshalItem(nil, value)
+		for _, appendItem := range []func(*TransactionalBatch) error{
+			func(b *TransactionalBatch) error { return b.CreateItem(value, nil) },
+			func(b *TransactionalBatch) error { return b.UpsertItem(value, nil) },
+			func(b *TransactionalBatch) error { return b.ReplaceItem("item", value, nil) },
+		} {
+			batch := NewTransactionalBatch(NewPartitionKeyString("pk"))
+			err := appendItem(&batch)
+			if expectedErr != nil {
+				var failure *Error
+				require.ErrorAs(t, err, &failure)
+				require.Equal(t, CodeSerializationFailed, failure.Code)
+				require.Empty(t, batch.operations)
+				require.Same(t, err, batch.DeleteItem("later", nil))
+				continue
+			}
+			require.NoError(t, err)
+			require.Equal(t, json.RawMessage(expected), batch.operations[0].ResourceBody)
+		}
+	}
+}
+
+func TestTransactionalBatchCapturesSerializerAndOwnsSerializedModels(t *testing.T) {
+	container := newTestContainer(t)
+	var calls int
+	var buffer []byte
+	codec := &serializerFuncs{marshal: func(value any) ([]byte, error) {
+		calls++
+		encoded, err := json.Marshal(map[string]any{"id": "item", "custom": value})
+		buffer = append(buffer[:0], encoded...)
+		return buffer, err
+	}}
+	container.database.client.options.Serializer = codec
+	batch := container.NewTransactionalBatch(NewPartitionKeyString("pk"))
+	container.database.client.options.Serializer = &serializerFuncs{marshal: func(any) ([]byte, error) {
+		t.Fatal("batch must retain its construction-time serializer")
+		return nil, nil
+	}}
+	model := map[string]string{"name": "original"}
+	require.NoError(t, batch.CreateItem(model, nil))
+	model["name"] = "changed"
+	require.NoError(t, batch.UpsertItem("second", nil))
+	require.NoError(t, batch.ReplaceItem("item", []byte("third"), nil))
+	clear(buffer)
+	require.Equal(t, 3, calls)
+	require.JSONEq(t, `{"id":"item","custom":{"name":"original"}}`, string(batch.operations[0].ResourceBody))
+	require.JSONEq(t, `{"id":"item","custom":"second"}`, string(batch.operations[1].ResourceBody))
+	require.JSONEq(t, `{"id":"item","custom":"dGhpcmQ="}`, string(batch.operations[2].ResourceBody))
+	first, err := batch.marshal()
+	require.NoError(t, err)
+	second, err := batch.marshal()
+	require.NoError(t, err)
+	require.Equal(t, first, second)
+	require.Equal(t, 3, calls, "encoding the envelope must not invoke the application serializer")
+}
+
+func TestTransactionalBatchSerializerFailurePoisonsBuilder(t *testing.T) {
+	container := newTestContainer(t)
+	sentinel := errors.New("custom serialization failed")
+	calls := 0
+	container.database.client.options.Serializer = &serializerFuncs{marshal: func(any) ([]byte, error) {
+		calls++
+		return nil, sentinel
+	}}
+	for _, appendItem := range []func(*TransactionalBatch) error{
+		func(b *TransactionalBatch) error { return b.CreateItem(struct{}{}, nil) },
+		func(b *TransactionalBatch) error { return b.UpsertItem(struct{}{}, nil) },
+		func(b *TransactionalBatch) error { return b.ReplaceItem("item", struct{}{}, nil) },
+	} {
+		batch := container.NewTransactionalBatch(NewPartitionKeyString("pk"))
+		err := appendItem(&batch)
+		require.ErrorIs(t, err, sentinel)
+		require.Same(t, err, batch.CreateItem(struct{}{}, nil))
+		body, marshalErr := batch.marshal()
+		require.Nil(t, body)
+		require.Same(t, err, marshalErr)
+	}
+	require.Equal(t, 3, calls)
+}
+
 func TestTransactionalBatchInvalidAppendIsSticky(t *testing.T) {
 	for _, test := range []struct {
 		name   string
 		append func(*TransactionalBatch) error
 	}{
-		{"nil body", func(b *TransactionalBatch) error { return b.CreateItem(nil, nil) }},
-		{"empty body", func(b *TransactionalBatch) error { return b.UpsertItem([]byte{}, nil) }},
-		{"invalid JSON", func(b *TransactionalBatch) error { return b.CreateItem([]byte(`{"id":`), nil) }},
-		{"multiple JSON values", func(b *TransactionalBatch) error { return b.CreateItem([]byte(`{} {}`), nil) }},
-		{"invalid UTF-8 body", func(b *TransactionalBatch) error { return b.CreateItem([]byte{'"', 0xff, '"'}, nil) }},
+		{"nil body", func(b *TransactionalBatch) error { return b.CreateItem[any](nil, nil) }},
+		{"empty body", func(b *TransactionalBatch) error { return b.UpsertItem(json.RawMessage{}, nil) }},
+		{"invalid JSON", func(b *TransactionalBatch) error { return b.CreateItem(json.RawMessage(`{"id":`), nil) }},
+		{"multiple JSON values", func(b *TransactionalBatch) error { return b.CreateItem(json.RawMessage(`{} {}`), nil) }},
+		{"non-object body", func(b *TransactionalBatch) error { return b.CreateItem(json.RawMessage(`"text"`), nil) }},
+		{"invalid UTF-8 body", func(b *TransactionalBatch) error { return b.CreateItem(json.RawMessage("{\"id\":\"\xff\"}"), nil) }},
 		{"empty read ID", func(b *TransactionalBatch) error { return b.ReadItem("", nil) }},
-		{"empty replace ID", func(b *TransactionalBatch) error { return b.ReplaceItem("", []byte(`{}`), nil) }},
+		{"empty replace ID", func(b *TransactionalBatch) error { return b.ReplaceItem("", json.RawMessage(`{}`), nil) }},
 		{"empty delete ID", func(b *TransactionalBatch) error { return b.DeleteItem("", nil) }},
 		{"NUL ID", func(b *TransactionalBatch) error { return b.ReadItem("a\x00b", nil) }},
 		{"invalid UTF-8 ID", func(b *TransactionalBatch) error { return b.ReadItem(string([]byte{0xff}), nil) }},
@@ -142,10 +231,10 @@ func TestTransactionalBatchInvalidAppendIsSticky(t *testing.T) {
 		})
 	}
 	var batch *TransactionalBatch
-	require.Error(t, batch.CreateItem([]byte(`{}`), nil))
+	require.Error(t, batch.CreateItem(json.RawMessage(`{}`), nil))
 	require.Error(t, batch.ReadItem("item", nil))
-	require.Error(t, batch.UpsertItem([]byte(`{}`), nil))
-	require.Error(t, batch.ReplaceItem("item", []byte(`{}`), nil))
+	require.Error(t, batch.UpsertItem(json.RawMessage(`{}`), nil))
+	require.Error(t, batch.ReplaceItem("item", json.RawMessage(`{}`), nil))
 	require.Error(t, batch.DeleteItem("item", nil))
 }
 
@@ -161,16 +250,16 @@ func TestTransactionalBatchValidatesConditions(t *testing.T) {
 					return b.ReadItem("item", &TransactionalBatchReadItemOptions{IfNoneMatchETag: &etag})
 				},
 				func(b *TransactionalBatch) error {
-					return b.ReplaceItem("item", []byte(`{}`), &TransactionalBatchReplaceItemOptions{IfMatchETag: &etag})
+					return b.ReplaceItem("item", json.RawMessage(`{}`), &TransactionalBatchReplaceItemOptions{IfMatchETag: &etag})
 				},
 				func(b *TransactionalBatch) error {
 					return b.DeleteItem("item", &TransactionalBatchDeleteItemOptions{IfMatchETag: &etag})
 				},
 				func(b *TransactionalBatch) error {
-					return b.UpsertItem([]byte(`{}`), &TransactionalBatchUpsertItemOptions{IfMatchETag: &etag})
+					return b.UpsertItem(json.RawMessage(`{}`), &TransactionalBatchUpsertItemOptions{IfMatchETag: &etag})
 				},
 				func(b *TransactionalBatch) error {
-					return b.UpsertItem([]byte(`{}`), &TransactionalBatchUpsertItemOptions{IfNoneMatchETag: &etag})
+					return b.UpsertItem(json.RawMessage(`{}`), &TransactionalBatchUpsertItemOptions{IfNoneMatchETag: &etag})
 				},
 			}
 			for _, appendOperation := range constructors {
@@ -188,9 +277,9 @@ func TestTransactionalBatchValidatesConditions(t *testing.T) {
 	require.Nil(t, body)
 	require.Equal(t, err, marshalErr, "an invalid conditional read must not submit the preceding operation")
 	batch = NewTransactionalBatch(NewPartitionKeyString("pk"))
-	require.Error(t, batch.UpsertItem([]byte(`{}`), &TransactionalBatchUpsertItemOptions{IfMatchETag: &etag, IfNoneMatchETag: &etag}))
+	require.Error(t, batch.UpsertItem(json.RawMessage(`{}`), &TransactionalBatchUpsertItemOptions{IfMatchETag: &etag, IfNoneMatchETag: &etag}))
 	batch = NewTransactionalBatch(NewPartitionKeyString("pk"))
-	require.NoError(t, batch.UpsertItem([]byte(`{"id":"new"}`), &TransactionalBatchUpsertItemOptions{IfNoneMatchETag: &etag}))
+	require.NoError(t, batch.UpsertItem(json.RawMessage(`{"id":"new"}`), &TransactionalBatchUpsertItemOptions{IfNoneMatchETag: &etag}))
 	body, err = batch.marshal()
 	require.NoError(t, err)
 	require.JSONEq(t, `[{"operationType":"Upsert","resourceBody":{"id":"new"},"ifNoneMatch":"*"}]`, string(body))
@@ -215,13 +304,13 @@ func TestTransactionalBatchOperationCountLimits(t *testing.T) {
 
 func TestTransactionalBatchEncodedPayloadLimits(t *testing.T) {
 	base := NewTransactionalBatch(NewPartitionKeyUndefined())
-	require.NoError(t, base.CreateItem([]byte(`{"id":"item","value":""}`), nil))
+	require.NoError(t, base.CreateItem(json.RawMessage(`{"id":"item","value":""}`), nil))
 	encoded, err := base.marshal()
 	require.NoError(t, err)
 	for _, delta := range []int{-1, 0, 1} {
 		t.Run(string(rune('b'+delta)), func(t *testing.T) {
 			batch := NewTransactionalBatch(NewPartitionKeyUndefined())
-			item := []byte(`{"id":"item","value":"` + strings.Repeat("x", maxTransactionalBatchBytes-len(encoded)+delta) + `"}`)
+			item := json.RawMessage(`{"id":"item","value":"` + strings.Repeat("x", maxTransactionalBatchBytes-len(encoded)+delta) + `"}`)
 			require.NoError(t, batch.CreateItem(item, nil))
 			body, err := batch.marshal()
 			if delta > 0 {
@@ -234,7 +323,7 @@ func TestTransactionalBatchEncodedPayloadLimits(t *testing.T) {
 		})
 	}
 	batch := NewTransactionalBatch(NewPartitionKeyString("pk"))
-	require.NoError(t, batch.CreateItem([]byte(strings.Repeat(" ", maxTransactionalBatchBytes+1)+`{"id":"item"}`), nil))
+	require.NoError(t, batch.CreateItem(json.RawMessage(strings.Repeat(" ", maxTransactionalBatchBytes+1)+`{"id":"item"}`), nil))
 	body, err := batch.marshal()
 	require.NoError(t, err, "the limit applies to the encoded envelope, not the unencoded input length")
 	require.JSONEq(t, `[{"operationType":"Create","resourceBody":{"id":"item"}}]`, string(body))

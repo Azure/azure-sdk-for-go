@@ -24,16 +24,6 @@ const (
 	FileIDOnly
 )
 
-// FileID returns the file ID in the given file or directory URL, or an empty string if the URL addresses the
-// resource by its path.
-func FileID(resourceURL string) string {
-	urlParts, err := sas.ParseURL(resourceURL)
-	if err != nil {
-		return ""
-	}
-	return urlParts.FileID
-}
-
 // CheckAddressing returns an error if the operation cannot be called on a client with the given URL, so that the
 // operation fails before a request is sent to the service.
 func CheckAddressing(resourceURL string, operation string, addressing Addressing) error {

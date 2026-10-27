@@ -133,16 +133,6 @@ func (d *Client) URL() string {
 	return d.generated().Endpoint()
 }
 
-// FileID returns the file ID of the directory if the Client addresses the directory by its file ID rather than by its
-// path, e.g. a Client returned by share.Client.NewDirectoryClientByFileID. It returns an empty string if the Client
-// addresses the directory by its path.
-//
-// A Client that addresses the directory by its file ID only supports GetProperties. All other operations return an
-// error wrapping fileerror.ErrFileIDNotSupported without sending a request.
-func (d *Client) FileID() string {
-	return base.FileID(d.URL())
-}
-
 func (d *Client) checkAddressing(operation string, addressing base.Addressing) error {
 	return base.CheckAddressing(d.URL(), "directory.Client."+operation, addressing)
 }

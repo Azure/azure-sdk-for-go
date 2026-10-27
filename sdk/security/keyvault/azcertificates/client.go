@@ -47,7 +47,8 @@ func (client *Client) BackupCertificate(ctx context.Context, name string, option
 	if err != nil {
 		return BackupCertificateResponse{}, err
 	}
-	return client.backupCertificateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.backupCertificateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // backupCertificateCreateRequest creates the BackupCertificate request.
@@ -102,7 +103,8 @@ func (client *Client) CreateCertificate(ctx context.Context, name string, parame
 	if err != nil {
 		return CreateCertificateResponse{}, err
 	}
-	return client.createCertificateHandleResponse(httpResp, http.StatusAccepted)
+	resp, err := client.createCertificateHandleResponse(httpResp, http.StatusAccepted)
+	return resp, err
 }
 
 // createCertificateCreateRequest creates the CreateCertificate request.
@@ -160,7 +162,8 @@ func (client *Client) DeleteCertificate(ctx context.Context, name string, option
 	if err != nil {
 		return DeleteCertificateResponse{}, err
 	}
-	return client.deleteCertificateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.deleteCertificateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // deleteCertificateCreateRequest creates the DeleteCertificate request.
@@ -215,7 +218,8 @@ func (client *Client) DeleteCertificateOperation(ctx context.Context, name strin
 	if err != nil {
 		return DeleteCertificateOperationResponse{}, err
 	}
-	return client.deleteCertificateOperationHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.deleteCertificateOperationHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // deleteCertificateOperationCreateRequest creates the DeleteCertificateOperation request.
@@ -268,7 +272,8 @@ func (client *Client) DeleteContacts(ctx context.Context, options *DeleteContact
 	if err != nil {
 		return DeleteContactsResponse{}, err
 	}
-	return client.deleteContactsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.deleteContactsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // deleteContactsCreateRequest creates the DeleteContacts request.
@@ -318,7 +323,8 @@ func (client *Client) DeleteIssuer(ctx context.Context, name string, options *De
 	if err != nil {
 		return DeleteIssuerResponse{}, err
 	}
-	return client.deleteIssuerHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.deleteIssuerHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // deleteIssuerCreateRequest creates the DeleteIssuer request.
@@ -373,7 +379,8 @@ func (client *Client) GetCertificate(ctx context.Context, name string, version s
 	if err != nil {
 		return GetCertificateResponse{}, err
 	}
-	return client.getCertificateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getCertificateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCertificateCreateRequest creates the GetCertificate request.
@@ -427,7 +434,8 @@ func (client *Client) GetCertificateOperation(ctx context.Context, name string, 
 	if err != nil {
 		return GetCertificateOperationResponse{}, err
 	}
-	return client.getCertificateOperationHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getCertificateOperationHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCertificateOperationCreateRequest creates the GetCertificateOperation request.
@@ -481,7 +489,8 @@ func (client *Client) GetCertificatePolicy(ctx context.Context, name string, opt
 	if err != nil {
 		return GetCertificatePolicyResponse{}, err
 	}
-	return client.getCertificatePolicyHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getCertificatePolicyHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCertificatePolicyCreateRequest creates the GetCertificatePolicy request.
@@ -534,7 +543,8 @@ func (client *Client) GetContacts(ctx context.Context, options *GetContactsOptio
 	if err != nil {
 		return GetContactsResponse{}, err
 	}
-	return client.getContactsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getContactsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getContactsCreateRequest creates the GetContacts request.
@@ -585,7 +595,8 @@ func (client *Client) GetDeletedCertificate(ctx context.Context, name string, op
 	if err != nil {
 		return GetDeletedCertificateResponse{}, err
 	}
-	return client.getDeletedCertificateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getDeletedCertificateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getDeletedCertificateCreateRequest creates the GetDeletedCertificate request.
@@ -639,7 +650,8 @@ func (client *Client) GetIssuer(ctx context.Context, name string, options *GetIs
 	if err != nil {
 		return GetIssuerResponse{}, err
 	}
-	return client.getIssuerHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getIssuerHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getIssuerCreateRequest creates the GetIssuer request.
@@ -696,7 +708,8 @@ func (client *Client) ImportCertificate(ctx context.Context, name string, parame
 	if err != nil {
 		return ImportCertificateResponse{}, err
 	}
-	return client.importCertificateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.importCertificateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // importCertificateCreateRequest creates the ImportCertificate request.
@@ -755,7 +768,8 @@ func (client *Client) MergeCertificate(ctx context.Context, name string, paramet
 	if err != nil {
 		return MergeCertificateResponse{}, err
 	}
-	return client.mergeCertificateHandleResponse(httpResp, http.StatusCreated)
+	resp, err := client.mergeCertificateHandleResponse(httpResp, http.StatusCreated)
+	return resp, err
 }
 
 // mergeCertificateCreateRequest creates the MergeCertificate request.
@@ -1091,7 +1105,8 @@ func (client *Client) PurgeDeletedCertificate(ctx context.Context, name string, 
 		return PurgeDeletedCertificateResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return PurgeDeletedCertificateResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return PurgeDeletedCertificateResponse{}, err
 	}
 	return PurgeDeletedCertificateResponse{}, nil
 }
@@ -1135,7 +1150,8 @@ func (client *Client) RecoverDeletedCertificate(ctx context.Context, name string
 	if err != nil {
 		return RecoverDeletedCertificateResponse{}, err
 	}
-	return client.recoverDeletedCertificateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.recoverDeletedCertificateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // recoverDeletedCertificateCreateRequest creates the RecoverDeletedCertificate request.
@@ -1188,7 +1204,8 @@ func (client *Client) RestoreCertificate(ctx context.Context, parameters Restore
 	if err != nil {
 		return RestoreCertificateResponse{}, err
 	}
-	return client.restoreCertificateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.restoreCertificateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // restoreCertificateCreateRequest creates the RestoreCertificate request.
@@ -1241,7 +1258,8 @@ func (client *Client) SetContacts(ctx context.Context, contacts Contacts, option
 	if err != nil {
 		return SetContactsResponse{}, err
 	}
-	return client.setContactsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.setContactsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // setContactsCreateRequest creates the SetContacts request.
@@ -1297,7 +1315,8 @@ func (client *Client) SetIssuer(ctx context.Context, name string, parameter SetI
 	if err != nil {
 		return SetIssuerResponse{}, err
 	}
-	return client.setIssuerHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.setIssuerHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // setIssuerCreateRequest creates the SetIssuer request.
@@ -1357,7 +1376,8 @@ func (client *Client) UpdateCertificate(ctx context.Context, name string, versio
 	if err != nil {
 		return UpdateCertificateResponse{}, err
 	}
-	return client.updateCertificateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateCertificateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCertificateCreateRequest creates the UpdateCertificate request.
@@ -1417,7 +1437,8 @@ func (client *Client) UpdateCertificateOperation(ctx context.Context, name strin
 	if err != nil {
 		return UpdateCertificateOperationResponse{}, err
 	}
-	return client.updateCertificateOperationHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateCertificateOperationHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCertificateOperationCreateRequest creates the UpdateCertificateOperation request.
@@ -1476,7 +1497,8 @@ func (client *Client) UpdateCertificatePolicy(ctx context.Context, name string, 
 	if err != nil {
 		return UpdateCertificatePolicyResponse{}, err
 	}
-	return client.updateCertificatePolicyHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateCertificatePolicyHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCertificatePolicyCreateRequest creates the UpdateCertificatePolicy request.
@@ -1535,7 +1557,8 @@ func (client *Client) UpdateIssuer(ctx context.Context, name string, parameter U
 	if err != nil {
 		return UpdateIssuerResponse{}, err
 	}
-	return client.updateIssuerHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateIssuerHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateIssuerCreateRequest creates the UpdateIssuer request.

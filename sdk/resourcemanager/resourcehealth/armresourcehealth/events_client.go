@@ -19,7 +19,7 @@ import (
 // EventsClient contains the methods for the Events group.
 // Don't use this type directly, use NewEventsClient() instead.
 //
-// Generated from API version 2025-05-01
+// Generated from API version 2026-07-01
 type EventsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -96,7 +96,7 @@ func (client *EventsClient) listBySingleResourceCreateRequest(ctx context.Contex
 		if options != nil && options.Filter != nil {
 			reqQP.Set("$filter", *options.Filter)
 		}
-		reqQP.Set("api-version", version20250501)
+		reqQP.Set("api-version", version20260701)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -166,7 +166,7 @@ func (client *EventsClient) listBySubscriptionIDCreateRequest(ctx context.Contex
 		if options != nil && options.Filter != nil {
 			reqQP.Set("$filter", *options.Filter)
 		}
-		reqQP.Set("api-version", version20250501)
+		reqQP.Set("api-version", version20260701)
 		if options != nil && options.QueryStartTime != nil {
 			reqQP.Set("queryStartTime", *options.QueryStartTime)
 		}
@@ -235,7 +235,7 @@ func (client *EventsClient) listByTenantIDCreateRequest(ctx context.Context, nex
 		if options != nil && options.Filter != nil {
 			reqQP.Set("$filter", *options.Filter)
 		}
-		reqQP.Set("api-version", version20250501)
+		reqQP.Set("api-version", version20260701)
 		if options != nil && options.QueryStartTime != nil {
 			reqQP.Set("queryStartTime", *options.QueryStartTime)
 		}

@@ -19,7 +19,7 @@ import (
 // AvailabilityStatusesClient contains the methods for the AvailabilityStatuses group.
 // Don't use this type directly, use NewAvailabilityStatusesClient() instead.
 //
-// Generated from API version 2025-05-01
+// Generated from API version 2026-07-01
 type AvailabilityStatusesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -84,7 +84,7 @@ func (client *AvailabilityStatusesClient) getByResourceCreateRequest(ctx context
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", version20250501)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -98,80 +98,6 @@ func (client *AvailabilityStatusesClient) getByResourceHandleResponse(resp *http
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AvailabilityStatus); err != nil {
 		return AvailabilityStatusesClientGetByResourceResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListPager - Lists all historical availability transitions and impacting events for a single resource.
-//   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
-//   - options - AvailabilityStatusesClientListOptions contains the optional parameters for the AvailabilityStatusesClient.NewListPager
-//     method.
-func (client *AvailabilityStatusesClient) NewListPager(resourceURI string, options *AvailabilityStatusesClientListOptions) *runtime.Pager[AvailabilityStatusesClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[AvailabilityStatusesClientListResponse]{
-		More: func(page AvailabilityStatusesClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *AvailabilityStatusesClientListResponse) (AvailabilityStatusesClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AvailabilityStatusesClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listCreateRequest(ctx, resourceURI, nextLink, options)
-			if err != nil {
-				return AvailabilityStatusesClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return AvailabilityStatusesClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *AvailabilityStatusesClient) listCreateRequest(ctx context.Context, resourceURI string, nextLink string, options *AvailabilityStatusesClientListOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/{resourceUri}/providers/Microsoft.ResourceHealth/availabilityStatuses"
-		if resourceURI == "" {
-			return nil, errors.New("parameter resourceURI cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		if options != nil && options.Expand != nil {
-			reqQP.Set("$expand", *options.Expand)
-		}
-		if options != nil && options.Filter != nil {
-			reqQP.Set("$filter", *options.Filter)
-		}
-		reqQP.Set("api-version", version20250501)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *AvailabilityStatusesClient) listHandleResponse(resp *http.Response, successCodes ...int) (AvailabilityStatusesClientListResponse, error) {
-	result := AvailabilityStatusesClientListResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.AvailabilityStatusListResult); err != nil {
-		return AvailabilityStatusesClientListResponse{}, err
 	}
 	return result, nil
 }
@@ -235,7 +161,7 @@ func (client *AvailabilityStatusesClient) listByResourceGroupCreateRequest(ctx c
 		if options != nil && options.Filter != nil {
 			reqQP.Set("$filter", *options.Filter)
 		}
-		reqQP.Set("api-version", version20250501)
+		reqQP.Set("api-version", version20260701)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -308,7 +234,7 @@ func (client *AvailabilityStatusesClient) listBySubscriptionIDCreateRequest(ctx 
 		if options != nil && options.Filter != nil {
 			reqQP.Set("$filter", *options.Filter)
 		}
-		reqQP.Set("api-version", version20250501)
+		reqQP.Set("api-version", version20260701)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -323,6 +249,80 @@ func (client *AvailabilityStatusesClient) listBySubscriptionIDHandleResponse(res
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AvailabilityStatusListResult); err != nil {
 		return AvailabilityStatusesClientListBySubscriptionIDResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListPager - Lists all historical availability transitions and impacting events for a single resource.
+//   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
+//   - options - AvailabilityStatusesClientListOptions contains the optional parameters for the AvailabilityStatusesClient.NewListPager
+//     method.
+func (client *AvailabilityStatusesClient) NewListPager(resourceURI string, options *AvailabilityStatusesClientListOptions) *runtime.Pager[AvailabilityStatusesClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[AvailabilityStatusesClientListResponse]{
+		More: func(page AvailabilityStatusesClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *AvailabilityStatusesClientListResponse) (AvailabilityStatusesClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AvailabilityStatusesClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, resourceURI, nextLink, options)
+			if err != nil {
+				return AvailabilityStatusesClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return AvailabilityStatusesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listCreateRequest creates the List request.
+func (client *AvailabilityStatusesClient) listCreateRequest(ctx context.Context, resourceURI string, nextLink string, options *AvailabilityStatusesClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/{resourceUri}/providers/Microsoft.ResourceHealth/availabilityStatuses"
+		if resourceURI == "" {
+			return nil, errors.New("parameter resourceURI cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Expand != nil {
+			reqQP.Set("$expand", *options.Expand)
+		}
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		reqQP.Set("api-version", version20260701)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listHandleResponse handles the List response.
+func (client *AvailabilityStatusesClient) listHandleResponse(resp *http.Response, successCodes ...int) (AvailabilityStatusesClientListResponse, error) {
+	result := AvailabilityStatusesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AvailabilityStatusListResult); err != nil {
+		return AvailabilityStatusesClientListResponse{}, err
 	}
 	return result, nil
 }

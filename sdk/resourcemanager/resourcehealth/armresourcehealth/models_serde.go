@@ -13,6 +13,41 @@ import (
 	"time"
 )
 
+// MarshalJSON implements the json.Marshaller interface for type APIOperationLink.
+func (a APIOperationLink) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "description", a.Description)
+	populate(objectMap, "httpMethod", a.HTTPMethod)
+	populate(objectMap, "url", a.URL)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type APIOperationLink.
+func (a *APIOperationLink) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", a, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "description":
+			err = unpopulate(val, "Description", &a.Description)
+			delete(rawMsg, key)
+		case "httpMethod":
+			err = unpopulate(val, "HTTPMethod", &a.HTTPMethod)
+			delete(rawMsg, key)
+		case "url":
+			err = unpopulate(val, "URL", &a.URL)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", a, err.Error())
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type AvailabilityStatus.
 func (a AvailabilityStatus) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -529,6 +564,7 @@ func (e *EventImpactedResourceProperties) UnmarshalJSON(data []byte) error {
 func (e EventProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "additionalInformation", e.AdditionalInformation)
+	populate(objectMap, "advisorRecommendations", e.AdvisorRecommendations)
 	populate(objectMap, "article", e.Article)
 	populate(objectMap, "billingId", e.BillingID)
 	populate(objectMap, "currencyType", e.CurrencyType)
@@ -577,6 +613,9 @@ func (e *EventProperties) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "additionalInformation":
 			err = unpopulate(val, "AdditionalInformation", &e.AdditionalInformation)
+			delete(rawMsg, key)
+		case "advisorRecommendations":
+			err = unpopulate(val, "AdvisorRecommendations", &e.AdvisorRecommendations)
 			delete(rawMsg, key)
 		case "article":
 			err = unpopulate(val, "Article", &e.Article)

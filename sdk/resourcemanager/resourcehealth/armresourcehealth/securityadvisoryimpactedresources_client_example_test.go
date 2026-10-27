@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-05-01/SecurityAdvisoryImpactedResources_ListBySubscriptionId_ListByEventId.json
+// Generated from example definition: 2026-07-01/SecurityAdvisoryImpactedResources_ListBySubscriptionId_ListByEventId.json
 func ExampleSecurityAdvisoryImpactedResourcesClient_NewListBySubscriptionIDAndEventIDPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -93,7 +93,7 @@ func ExampleSecurityAdvisoryImpactedResourcesClient_NewListBySubscriptionIDAndEv
 	}
 }
 
-// Generated from example definition: 2025-05-01/SecurityAdvisoryImpactedResources_ListByTenantId_ListByEventId.json
+// Generated from example definition: 2026-07-01/SecurityAdvisoryImpactedResources_ListByTenantId_ListByEventId.json
 func ExampleSecurityAdvisoryImpactedResourcesClient_NewListByTenantIDAndEventIDPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

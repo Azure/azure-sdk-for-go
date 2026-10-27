@@ -10,14 +10,6 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestFileID(t *testing.T) {
-	require.Equal(t, "123", FileID("https://account.file.core.windows.net/share?fileid=123"))
-	require.Equal(t, "123", FileID("https://account.file.core.windows.net/share?sharesnapshot=2011-03-09T01:42:34.9360000Z&FileId=123"))
-	require.Empty(t, FileID("https://account.file.core.windows.net/share/dir/file"))
-	require.Empty(t, FileID("https://account.file.core.windows.net/share"))
-	require.Empty(t, FileID("://not a url"))
-}
-
 func TestCheckAddressing(t *testing.T) {
 	const (
 		pathURL       = "https://account.file.core.windows.net/share/dir/file"

@@ -948,7 +948,7 @@ func (d *DirectoryRecordedTestsSuite) TestDirGetPropertiesByFileID() {
 	_require.Nil(pathProps.FileName)
 
 	dirIDClient := shareClient.NewDirectoryClientByFileID(*pathProps.ID)
-	_require.Equal(*pathProps.ID, dirIDClient.FileID())
+	_require.Equal(*pathProps.ID, fileIDFromURL(d.T(), dirIDClient.URL()))
 
 	resp, err := dirIDClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
@@ -1009,6 +1009,12 @@ func (f *fileIDTransport) Do(req *http.Request) (*http.Response, error) {
 	}, nil
 }
 
+func fileIDFromURL(t *testing.T, resourceURL string) string {
+	urlParts, err := sas.ParseURL(resourceURL)
+	require.NoError(t, err)
+	return urlParts.FileID
+}
+
 func newFakeShareClient(t *testing.T, transport policy.Transporter) *share.Client {
 	shareClient, err := share.NewClientWithNoCredential(fakeShareURL, &share.ClientOptions{ClientOptions: policy.ClientOptions{
 		Transport: transport,
@@ -1022,7 +1028,6 @@ func TestNewDirectoryClientByFileIDURL(t *testing.T) {
 	dirClient := newFakeShareClient(t, &fileIDTransport{}).NewDirectoryClientByFileID(fakeFileID)
 
 	require.Equal(t, fakeFileIDURL, dirClient.URL())
-	require.Equal(t, fakeFileID, dirClient.FileID())
 
 	urlParts, err := sas.ParseURL(dirClient.URL())
 	require.NoError(t, err)
@@ -1034,15 +1039,15 @@ func TestNewDirectoryClientByFileIDURL(t *testing.T) {
 func TestDirectoryClientFileIDFromConstructorURL(t *testing.T) {
 	dirClient, err := directory.NewClientWithNoCredential(fakeFileIDURL, nil)
 	require.NoError(t, err)
-	require.Equal(t, fakeFileID, dirClient.FileID())
+	require.Equal(t, fakeFileID, fileIDFromURL(t, dirClient.URL()))
 }
 
 func TestDirectoryClientFileIDEmptyForPathBasedClient(t *testing.T) {
 	dirClient, err := directory.NewClientWithNoCredential(fakeShareURL+"/directory", nil)
 	require.NoError(t, err)
-	require.Empty(t, dirClient.FileID())
+	require.Empty(t, fileIDFromURL(t, dirClient.URL()))
 
-	require.Empty(t, newFakeShareClient(t, &fileIDTransport{}).NewRootDirectoryClient().FileID())
+	require.Empty(t, fileIDFromURL(t, newFakeShareClient(t, &fileIDTransport{}).NewRootDirectoryClient().URL()))
 }
 
 func TestDirectoryClientByFileIDGetProperties(t *testing.T) {

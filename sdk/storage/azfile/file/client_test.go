@@ -6469,6 +6469,12 @@ func fileIDClientOptions(transport policy.Transporter) *share.ClientOptions {
 	}}
 }
 
+func fileIDFromURL(t *testing.T, resourceURL string) string {
+	urlParts, err := sas.ParseURL(resourceURL)
+	require.NoError(t, err)
+	return urlParts.FileID
+}
+
 func newFakeShareClient(t *testing.T, shareURL string, transport policy.Transporter) *share.Client {
 	shareClient, err := share.NewClientWithNoCredential(shareURL, fileIDClientOptions(transport))
 	require.NoError(t, err)
@@ -6479,7 +6485,6 @@ func TestNewFileClientByFileIDURL(t *testing.T) {
 	fileClient := newFakeShareClient(t, fakeShareURL, &fileIDTransport{}).NewFileClientByFileID(fakeFileID)
 
 	require.Equal(t, fakeFileIDURL, fileClient.URL())
-	require.Equal(t, fakeFileID, fileClient.FileID())
 
 	urlParts, err := file.ParseURL(fileClient.URL())
 	require.NoError(t, err)
@@ -6497,7 +6502,6 @@ func TestNewFileClientByFileIDPreservesShareSnapshot(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, fakeFileID, urlParts.FileID)
 	require.Equal(t, fakeShareSnap, urlParts.ShareSnapshot)
-	require.Equal(t, fakeFileID, fileClient.FileID())
 }
 
 func TestNewFileClientByFileIDPreservesSAS(t *testing.T) {
@@ -6505,29 +6509,29 @@ func TestNewFileClientByFileIDPreservesSAS(t *testing.T) {
 	fileClient := newFakeShareClient(t, fakeShareURL+"?"+sasQuery, &fileIDTransport{}).NewFileClientByFileID(fakeFileID)
 
 	require.Equal(t, fakeFileIDURL+"&"+sasQuery, fileClient.URL())
-	require.Equal(t, fakeFileID, fileClient.FileID())
+	require.Equal(t, fakeFileID, fileIDFromURL(t, fileClient.URL()))
 }
 
 func TestFileClientFileIDFromConstructorURL(t *testing.T) {
 	// a URL that already contains a file ID produces a client that addresses the file by its file ID
 	fileClient, err := file.NewClientWithNoCredential(fakeShareURL+"?FileId="+fakeFileID, nil)
 	require.NoError(t, err)
-	require.Equal(t, fakeFileID, fileClient.FileID())
+	require.Equal(t, fakeFileID, fileIDFromURL(t, fileClient.URL()))
 
 	cred, err := file.NewSharedKeyCredential("account", "ZmFrZQ==")
 	require.NoError(t, err)
 	fileClient, err = file.NewClientWithSharedKeyCredential(fakeFileIDURL, cred, nil)
 	require.NoError(t, err)
-	require.Equal(t, fakeFileID, fileClient.FileID())
+	require.Equal(t, fakeFileID, fileIDFromURL(t, fileClient.URL()))
 }
 
 func TestFileClientFileIDEmptyForPathBasedClient(t *testing.T) {
 	fileClient, err := file.NewClientWithNoCredential(fakeShareURL+"/directory/file", nil)
 	require.NoError(t, err)
-	require.Empty(t, fileClient.FileID())
+	require.Empty(t, fileIDFromURL(t, fileClient.URL()))
 
 	fileClient = newFakeShareClient(t, fakeShareURL, &fileIDTransport{}).NewRootDirectoryClient().NewFileClient("file")
-	require.Empty(t, fileClient.FileID())
+	require.Empty(t, fileIDFromURL(t, fileClient.URL()))
 }
 
 func TestFileClientByFileIDGetProperties(t *testing.T) {
@@ -6859,7 +6863,7 @@ func (f *FileRecordedTestsSuite) TestFileGetPropertiesByFileID() {
 	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
 
 	fileIDClient := shareClient.NewFileClientByFileID(*pathProps.ID)
-	_require.Equal(*pathProps.ID, fileIDClient.FileID())
+	_require.Equal(*pathProps.ID, fileIDFromURL(f.T(), fileIDClient.URL()))
 
 	resp, err := fileIDClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
@@ -7191,7 +7195,7 @@ func (f *FileUnrecordedTestsSuite) TestFileClientByFileIDSASInURL() {
 
 	fileIDClient, err := file.NewClientWithNoCredential(urlParts.String(), nil)
 	_require.NoError(err)
-	_require.Equal(*fileProps.ID, fileIDClient.FileID())
+	_require.Equal(*fileProps.ID, fileIDFromURL(f.T(), fileIDClient.URL()))
 
 	resp, err := fileIDClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)

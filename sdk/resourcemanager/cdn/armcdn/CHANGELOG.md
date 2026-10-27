@@ -1,6 +1,6 @@
 # Release History
 
-## 4.0.0 (2026-10-23)
+## 4.0.0 (2026-10-27)
 ### Breaking Changes
 
 - Operation `*RuleSetsClient.Create` has been changed to LRO, use `*RuleSetsClient.BeginCreate` instead.

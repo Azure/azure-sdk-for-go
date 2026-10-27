@@ -134,7 +134,7 @@ func (client *CommitsClient) createOrUpdateCreateRequest(ctx context.Context, re
 //   - options - CommitsClientBeginDeleteOptions contains the optional parameters for the CommitsClient.BeginDelete method.
 func (client *CommitsClient) BeginDelete(ctx context.Context, resourceGroupName string, networkManagerName string, commitName string, options *CommitsClientBeginDeleteOptions) (*runtime.Poller[CommitsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, networkManagerName, commitName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, networkManagerName, commitName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -149,9 +149,9 @@ func (client *CommitsClient) BeginDelete(ctx context.Context, resourceGroupName 
 	}
 }
 
-// delete - Deletes a commit.
+// deleteOperation - Deletes a commit.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *CommitsClient) delete(ctx context.Context, resourceGroupName string, networkManagerName string, commitName string, options *CommitsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *CommitsClient) deleteOperation(ctx context.Context, resourceGroupName string, networkManagerName string, commitName string, options *CommitsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CommitsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)

@@ -55,7 +55,7 @@ func NewSecurityUserRuleCollectionsClient(subscriptionID string, credential azco
 //     method.
 func (client *SecurityUserRuleCollectionsClient) BeginDelete(ctx context.Context, resourceGroupName string, networkManagerName string, configurationName string, ruleCollectionName string, options *SecurityUserRuleCollectionsClientBeginDeleteOptions) (*runtime.Poller[SecurityUserRuleCollectionsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, networkManagerName, configurationName, ruleCollectionName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, networkManagerName, configurationName, ruleCollectionName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -70,9 +70,9 @@ func (client *SecurityUserRuleCollectionsClient) BeginDelete(ctx context.Context
 	}
 }
 
-// delete - Deletes a Security User Rule collection.
+// deleteOperation - Deletes a Security User Rule collection.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *SecurityUserRuleCollectionsClient) delete(ctx context.Context, resourceGroupName string, networkManagerName string, configurationName string, ruleCollectionName string, options *SecurityUserRuleCollectionsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *SecurityUserRuleCollectionsClient) deleteOperation(ctx context.Context, resourceGroupName string, networkManagerName string, configurationName string, ruleCollectionName string, options *SecurityUserRuleCollectionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SecurityUserRuleCollectionsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)

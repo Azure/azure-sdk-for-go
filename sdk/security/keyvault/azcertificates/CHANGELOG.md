@@ -5,10 +5,7 @@
 ## 1.6.0 (2026-10-27)
 ### Features Added
 
-- New function `NewPlatformManaged(certificateUsage string, metadata map[string]any) *PlatformManaged`
-- New struct `PlatformManaged`
-- New field `PlatformManaged` in struct `CertificatePolicy`
-
+* Added support for service API version `2026-04-01`, which is now the default, and for explicitly selecting it via `serviceVersion`.
 
 ## 1.5.1-beta.1 (2026-06-04)
 

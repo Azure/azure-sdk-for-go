@@ -8,6 +8,13 @@ import (
 	"errors"
 )
 
+// NewTransactionalBatch constructs a batch using encoding/json and model JSON hooks.
+// Items are serialized and copied when appended; execution never serializes them again.
+// Partition key requirements are the same as [NewTransactionalBatch].
+func (c *ContainerClient) NewTransactionalBatch(partitionKey PartitionKey) TransactionalBatch {
+	return NewTransactionalBatch(partitionKey)
+}
+
 // TransactionalBatchOptions configures [ContainerClient.ExecuteTransactionalBatch].
 // A nil options pointer selects defaults.
 type TransactionalBatchOptions struct {

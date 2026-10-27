@@ -237,7 +237,10 @@ on an absent body returns an error. Check for a body before decoding an optional
 
 Serialization uses `encoding/json`, honoring struct tags and model-level
 `json.Marshaler` / `json.Unmarshaler` hooks. Clients and responses retain no serializer state.
-Model hooks are synchronous and cannot be interrupted by context cancellation. See the compiling
+Model hooks are synchronous and cannot be interrupted by context cancellation.
+Query hooks run without holding pager or client lifetime locks.
+They may call `More`, pager `Close`, or `Client.Close`; reentrant fetches and checkpoints
+during conversion return an error instead of advancing the query. See the compiling
 [examples](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos/v2#pkg-examples)
 for model-based operations and a model hook that preserves numbers in untyped projections.
 
@@ -252,7 +255,10 @@ No partial model or partial query page is returned on error.
 There are no separate `Typed` or `Raw` operation variants. Pass models directly instead of
 calling `json.Marshal` before each write. For intentionally pre-encoded JSON, pass
 `json.RawMessage(payload)`; plain `[]byte` now follows encoding/json's base64 encoding
-behavior rather than acting as a passthrough. Select
+behavior rather than acting as a passthrough and is rejected locally as a non-object item.
+Item writes require `encoding/json` to produce a valid JSON object; null, scalar,
+array, and malformed output returns `CodeSerializationFailed` before submission.
+Select
 `NewQueryItemsPager[json.RawMessage]` to obtain encoded query values.
 
 Pass context first to both account constructors and both container factories, and remove calls
@@ -288,10 +294,14 @@ Client-side execution of a patch that is not intrinsically retry-safe permanentl
 
 ### Transactional batches
 
-Build a `TransactionalBatch` with `NewTransactionalBatch(partitionKey)` and append `CreateItem`,
+Build a `TransactionalBatch` with `container.NewTransactionalBatch(partitionKey)` and append `CreateItem`,
 `ReadItem`, `UpsertItem`, `ReplaceItem`, or `DeleteItem` operations. Execute it with
 `ContainerClient.ExecuteTransactionalBatch(ctx, batch, options)`. A nil options pointer selects
 defaults. Transactional PATCH is not exposed.
+
+Batch writes accept models or `json.RawMessage`, just like point writes. Both the container-scoped
+and package-level constructors use `encoding/json` and model JSON hooks. Plain `[]byte` is rejected
+as a non-object item, not treated as pre-encoded JSON.
 
 The key must be complete: include every component of a hierarchical partition key. Unlike query
 scopes, batches cannot use a prefix or span logical partitions. Execution reads the container's
@@ -302,7 +312,10 @@ establish that any writes were admitted.
 The driver/service checks application-defined item IDs and partition key fields; Go does not
 parse these fields or implement a separate transaction transport.
 
-Append methods copy item JSON and conditional options. Extending a copied builder does not modify
+Append methods serialize and copy item JSON and conditional options. The batch retains no
+serializer state. Execution never invokes model hooks again, and the SDK encodes the batch
+envelope independently.
+Extending a copied builder does not modify
 the original. Any append error makes that builder unusable, preventing an ignored error from
 silently submitting only part of a transaction. A batch must contain 1-100 operations; the encoded
 JSON operation envelope sent to the native driver must be at most 2 MiB. Reusing a batch executes
@@ -387,10 +400,14 @@ mark exhaustion; check `More()` again after fetching it.
 Each new pager resolves its container reference through the native driver's cache, allowing queries
 started after container recreation to use the replacement. Tokens from the deleted container
 cannot be used to resume against the replacement.
-An execution or model-decoding failure terminates and closes the pager; the native driver
-owns execution retries. A failed page delivers no partial results and cannot be checkpointed.
-Resume from a checkpoint saved before the failure if needed. An unsupported checkpoint does
-not terminate the pager.
+An execution failure or cancellation closes the pager; the native driver owns execution retries.
+A model-decoding failure stops iteration and delivers no partial results, but retains the cursor.
+Where supported, call `ContinuationToken` after that failure, then `Close`, and resume with a new
+pager to skip the entire failed page, including any valid items in it. This does not retry decoding.
+To replay the failed page instead, use a checkpoint saved before the failure and a compatible
+model (or `json.RawMessage`). Reusing the same model and JSON hooks will repeat a deterministic
+decoding failure. Without a usable checkpoint, restart
+the query. An unsupported checkpoint does not close the cursor; callers must still call `Close`.
 
 Pager construction performs no network I/O and snapshots its inputs. Each pager's first fetch
 (including a resumed pager) performs an additional container-metadata read to verify that the
@@ -401,7 +418,8 @@ reported by a later native completion cannot be surfaced to the caller; a zero r
 charge does not mean the operation consumed no RUs.
 The metadata read shares the page's context and end-to-end timeout. This requires permission to read container
 metadata. Iteration and checkpoint calls must not be concurrent; independent pagers can share a
-client. `Close` safely synchronizes with active calls.
+client. `Close` waits for native fetching but not application model conversion; a page already
+fetched can finish decoding and be returned after the pager or client closes.
 All cursors on a client share a cursor-format completion reactor, separate from the legacy
 operation queue. Query callers wait on Go channels rather than each blocking an OS thread.
 

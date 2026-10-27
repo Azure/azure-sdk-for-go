@@ -25,7 +25,8 @@ func (c *ContainerClient) NewQueryItemsPager[T any](query Query, scope FeedScope
 }
 
 // QueryItemsPager owns a retained query plan. Close releases it when iteration stops early.
-// Iteration and checkpoint calls must not be concurrent; Close safely waits for an active call.
+// Iteration and checkpoint calls must not be concurrent. Close waits for native fetching,
+// but not model conversion; an already-fetched page can still be returned after Close.
 // An empty token is not an exhaustion signal. Use More instead.
 type QueryItemsPager[T any] struct {
 	mu            sync.Mutex
@@ -34,6 +35,7 @@ type QueryItemsPager[T any] struct {
 	validationErr error
 	cursor        queryCursor
 	done          bool
+	converting    bool
 }
 
 type queryCursor interface {
@@ -53,7 +55,8 @@ func (p *QueryItemsPager[T]) More() bool {
 // Failures after execution starts terminate this pager; retries belong to the native driver.
 // The context bounds the Go wait, not admitted native execution. Client.Close may wait
 // for native work to finish after this method returns a context error.
-// Decoding failures return a zero page and close the pager; no partial results are delivered.
+// Decoding failures return a zero page and stop iteration, retaining the cursor for checkpointing.
+// A subsequent checkpoint skips the entire failed page. Call Close to release the cursor.
 func (p *QueryItemsPager[T]) NextPage(ctx context.Context) (QueryItemsResponse[T], error) {
 	p.mu.Lock()
 	defer p.mu.Unlock()
@@ -67,7 +70,14 @@ func (p *QueryItemsPager[T]) NextPage(ctx context.Context) (QueryItemsResponse[T
 	if err != nil {
 		return QueryItemsResponse[T]{}, err
 	}
-	defer release()
+	defer func() {
+		if release != nil {
+			release()
+		}
+	}()
+	if p.converting {
+		return QueryItemsResponse[T]{}, &Error{Code: CodeClientError, Message: "azcosmos: query page conversion is in progress"}
+	}
 	if p.done {
 		return QueryItemsResponse[T]{}, &Error{Code: CodeClientError, Message: "azcosmos: query pager is closed or exhausted"}
 	}
@@ -96,13 +106,24 @@ func (p *QueryItemsPager[T]) NextPage(ctx context.Context) (QueryItemsResponse[T
 	if page.ActivityID == "" && setup.RequestCharge != 0 {
 		page.ActivityID = setup.ActivityID
 	}
+	p.converting = true
+	defer func() { p.converting = false }()
+	release()
+	release = nil
+	decoded, err := func() (QueryItemsResponse[T], error) {
+		p.mu.Unlock()
+		defer p.mu.Lock()
+		return decodeModels[T](ctx, page)
+	}()
+	if err != nil {
+		p.done = true
+		if ctx.Err() != nil || errors.Is(err, context.Canceled) || errors.Is(err, context.DeadlineExceeded) {
+			p.finish()
+		}
+		return QueryItemsResponse[T]{}, err
+	}
 	if end {
 		p.finish()
-	}
-	decoded, err := decodeModels[T](ctx, page)
-	if err != nil {
-		p.finish()
-		return QueryItemsResponse[T]{}, err
 	}
 	return decoded, nil
 }
@@ -137,9 +158,11 @@ func decodeModels[T any](ctx context.Context, page queryPage) (QueryItemsRespons
 	return result, nil
 }
 
-// ContinuationToken snapshots delivered progress without advancing the query.
+// ContinuationToken snapshots fetched progress without advancing the query.
 // Call after a successful NextPage and before exhaustion or Close. Unsupported snapshots
 // return an error but do not prevent further paging. Resume with the same query and scope.
+// After a model-decoding failure, a supported checkpoint skips the entire undelivered page.
+// Capture it before Close, then use a new pager to resume.
 // The context bounds the Go wait; it does not cancel admitted native checkpoint work.
 func (p *QueryItemsPager[T]) ContinuationToken(ctx context.Context) (string, error) {
 	p.mu.Lock()
@@ -155,7 +178,10 @@ func (p *QueryItemsPager[T]) ContinuationToken(ctx context.Context) (string, err
 		return "", err
 	}
 	defer release()
-	if p.done || p.cursor == nil {
+	if p.converting {
+		return "", &Error{Code: CodeClientError, Message: "azcosmos: query page conversion is in progress"}
+	}
+	if p.cursor == nil {
 		return "", &Error{Code: CodeClientError, Message: "azcosmos: checkpoint requires an open query pager"}
 	}
 	if err := ctx.Err(); err != nil {

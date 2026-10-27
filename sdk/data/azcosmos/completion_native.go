@@ -3,6 +3,8 @@
 
 //go:build cgo && ((darwin && !ios && arm64) || (linux && !android && amd64))
 
+// cSpell:ignore gocritic
+
 package azcosmos
 
 /*
@@ -523,7 +525,7 @@ func dispatchSyntheticCompletion(r *reactor, cookie uintptr, status int, body st
 	cleared := source == (C.cosmos_completion_t{})
 	// Reusing the slot must not change the record handed to the caller.
 	source.http_status_code = 599
-	C.cosmos_completion_queue_free_completions(&source, 1)
+	C.cosmos_completion_queue_free_completions(&source, 1) //nolint:gocritic // dupSubExpr targets cgo-generated code.
 	return cleared, func() { C.free(memory) }
 }
 
@@ -570,10 +572,10 @@ func (d *nativeDriver) captureHandleCompletionForTest(driver bool, databaseID, c
 	}
 	defer C.cosmos_operation_handle_free(op)
 	var source C.cosmos_completion_t
-	if C.cosmos_completion_queue_wait(queue, &source, 1, 10_000) != 1 {
+	if C.cosmos_completion_queue_wait(queue, &source, 1, 10_000) != 1 { //nolint:gocritic // dupSubExpr targets cgo-generated code.
 		return completionResult{}, &Error{Code: CodeClientError, Message: "waiting for test handle completion"}
 	}
 	result := moveCompletion(&source, d.reactor.verbosity)
-	C.cosmos_completion_queue_free_completions(&source, 1)
+	C.cosmos_completion_queue_free_completions(&source, 1) //nolint:gocritic // dupSubExpr targets cgo-generated code.
 	return result, nil
 }

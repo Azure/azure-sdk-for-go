@@ -288,7 +288,7 @@ func TestTypedQueryFailureIsAtomicAndRetainsCheckpoint(t *testing.T) {
 func TestTypedQueryFinalPageFailureRetainsCheckpoint(t *testing.T) {
 	cursor := &modelQueryCursor{page: queryPage{Items: [][]byte{[]byte(`"bad"`)}}, end: true}
 	pager := &QueryItemsPager[int]{client: newTestContainer(t).database.client, cursor: cursor}
-	defer pager.Close()
+	defer func() { require.NoError(t, pager.Close()) }()
 	page, err := pager.NextPage(t.Context())
 	require.Error(t, err)
 	require.Zero(t, page)
@@ -387,7 +387,7 @@ func TestTypedQueryModelHookReentry(t *testing.T) {
 			client := newTestContainer(t).database.client
 			cursor := &modelQueryCursor{page: queryPage{Items: [][]byte{[]byte("1")}}}
 			pager := &QueryItemsPager[callbackModel]{client: client, cursor: cursor}
-			defer pager.Close()
+			defer func() { require.NoError(t, pager.Close()) }()
 			sentinel := errors.New("conversion failed")
 			modelDecodeHook = func() error {
 				switch action {

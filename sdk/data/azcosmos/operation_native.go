@@ -142,6 +142,8 @@ func (d *nativeDriver) awaitCompletion(
 			C.cosmos_operation_handle_free(op)
 			handle.Delete()
 		}
+		// Active callers prepare and free their completion before this defer releases handles.
+		// Abandoned callers retain handles until late delivery finishes discarding native backing.
 		select {
 		case <-pending.delivered:
 			release()
@@ -161,11 +163,11 @@ func (d *nativeDriver) awaitCompletion(
 func awaitOperationResult(ctx context.Context, pending *pendingOperation) (completionResult, error) {
 	select {
 	case result := <-pending.result:
-		return result, nil
+		return result.prepare(), nil
 	case <-ctx.Done():
 		// Preserve an available outcome; otherwise let late delivery release the result.
 		if result, ok := pending.abandon(); ok {
-			return result, nil
+			return result.prepare(), nil
 		}
 		return completionResult{}, newOperationCancelledError(ctx.Err(), 0, "")
 	}

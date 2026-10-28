@@ -20,7 +20,11 @@ import (
 // submits once; the driver's diagnostics count the attempts made inside that submission.
 func faultInjectedContainer(t *testing.T, rule nativeFaultRule) *ContainerClient {
 	t.Helper()
-	client, databaseID, containerID := emulatorClientConfigured(t, nil, false)
+	// Capture test-scoped environment overrides rather than reusing the default runtime's snapshot.
+	runtime, err := NewRuntime(nil)
+	require.NoError(t, err)
+	t.Cleanup(func() { require.NoError(t, runtime.Close()) })
+	client, databaseID, containerID := emulatorClientConfigured(t, &ClientOptions{Runtime: runtime}, false)
 	client.driver.faultRules = []nativeFaultRule{rule}
 	require.NoError(t, client.initialize(t.Context()))
 	container, err := client.NewContainer(t.Context(), databaseID, containerID)
@@ -41,8 +45,9 @@ func seedFaultInjectedItem(t *testing.T, container *ContainerClient) (string, Pa
 
 func TestNativeThrottleRetryReturnsSingleFinalResponse(t *testing.T) {
 	container := faultInjectedContainer(t, nativeFaultRule{
-		id: "throttle-twice", kind: 1, errorType: 2, hitLimit: 2,
-		delayMS: -1, retryAfter: 1,
+		id: "throttle-twice", kind: nativeFaultOperationReadItem,
+		errorType: nativeFaultErrorTooManyRequests, hitLimit: to(int64(2)),
+		retryAfter: to(time.Millisecond),
 	})
 	id, pk, token := seedFaultInjectedItem(t, container)
 	response, err := container.ReadItem(t.Context(), pk, id, &ReadItemOptions{SessionToken: token})
@@ -65,7 +70,7 @@ func TestNativeThrottleRetryReturnsSingleFinalResponse(t *testing.T) {
 	require.True(t, json.Valid([]byte(response.Diagnostics.JSON)))
 	for _, attempt := range response.Diagnostics.Attempts[:2] {
 		require.Equal(t, http.StatusTooManyRequests, attempt.StatusCode)
-		require.Equal(t, 3200, attempt.SubStatus)
+		require.Equal(t, int(nativeFaultThrottleSubStatus), attempt.SubStatus)
 		require.NotEmpty(t, attempt.Endpoint)
 	}
 	require.Equal(t, http.StatusOK, response.Diagnostics.Attempts[2].StatusCode)
@@ -80,8 +85,9 @@ func TestNativeThrottleRetryReturnsSingleFinalResponse(t *testing.T) {
 
 func TestNativeThrottleRetryExhaustion(t *testing.T) {
 	container := faultInjectedContainer(t, nativeFaultRule{
-		id: "always-throttle", kind: 1, errorType: 2, hitLimit: 100,
-		delayMS: -1, retryAfter: 1,
+		id: "always-throttle", kind: nativeFaultOperationReadItem,
+		errorType: nativeFaultErrorTooManyRequests, hitLimit: to(int64(100)),
+		retryAfter: to(time.Millisecond),
 	})
 	id, pk, _ := seedFaultInjectedItem(t, container)
 	response, err := container.ReadItem(t.Context(), pk, id, nil)
@@ -90,7 +96,7 @@ func TestNativeThrottleRetryExhaustion(t *testing.T) {
 	require.True(t, errors.As(err, &cosmosErr))
 	require.Equal(t, CodeThrottled, cosmosErr.Code)
 	require.Equal(t, http.StatusTooManyRequests, cosmosErr.StatusCode)
-	require.Equal(t, 3200, cosmosErr.SubStatus)
+	require.Equal(t, int(nativeFaultThrottleSubStatus), cosmosErr.SubStatus)
 	require.NotNil(t, cosmosErr.Diagnostics)
 	require.Equal(t, cosmosErr.AttemptCount, cosmosErr.Diagnostics.AttemptCount)
 	require.Equal(t, cosmosErr.StatusCode, cosmosErr.Diagnostics.StatusCode)
@@ -103,7 +109,7 @@ func TestNativeThrottleRetryExhaustion(t *testing.T) {
 	require.Equal(t, int(cosmosErr.AttemptCount), len(cosmosErr.Diagnostics.Attempts))
 	for _, attempt := range cosmosErr.Diagnostics.Attempts {
 		require.Equal(t, http.StatusTooManyRequests, attempt.StatusCode)
-		require.Equal(t, 3200, attempt.SubStatus)
+		require.Equal(t, int(nativeFaultThrottleSubStatus), attempt.SubStatus)
 	}
 	require.True(t, cosmosErr.FromWire)
 	require.Positive(t, cosmosErr.RetryAfter)
@@ -111,8 +117,8 @@ func TestNativeThrottleRetryExhaustion(t *testing.T) {
 
 func TestNativeStaleSessionRecovery(t *testing.T) {
 	container := faultInjectedContainer(t, nativeFaultRule{
-		id: "stale-session-once", kind: 1, errorType: 4, hitLimit: 1,
-		delayMS: -1, retryAfter: -1,
+		id: "stale-session-once", kind: nativeFaultOperationReadItem,
+		errorType: nativeFaultErrorReadSessionNotAvailable, hitLimit: to(int64(1)),
 	})
 	id, pk, token := seedFaultInjectedItem(t, container)
 	response, err := container.ReadItem(t.Context(), pk, id, &ReadItemOptions{
@@ -135,8 +141,9 @@ func TestNativeStaleSessionRecovery(t *testing.T) {
 
 func TestNativeThrottleCancellationReturnsPromptly(t *testing.T) {
 	container := faultInjectedContainer(t, nativeFaultRule{
-		id: "delayed-throttle", kind: 1, errorType: 2, hitLimit: 100,
-		delayMS: 2000, retryAfter: 1,
+		id: "delayed-throttle", kind: nativeFaultOperationReadItem,
+		errorType: nativeFaultErrorTooManyRequests, hitLimit: to(int64(100)),
+		delay: to(2 * time.Second), retryAfter: to(time.Millisecond),
 	})
 	id, pk, _ := seedFaultInjectedItem(t, container)
 	ctx, cancel := context.WithTimeout(t.Context(), 50*time.Millisecond)
@@ -148,4 +155,72 @@ func TestNativeThrottleCancellationReturnsPromptly(t *testing.T) {
 	require.Less(t, time.Since(start), time.Second)
 	// The v0.2 ABI has no native cancellation. This checks the Go wait/handle lifecycle,
 	// not termination of the native retry task.
+}
+
+func TestNativeFaultTargetsRegionAndContainerWithCustomStatus(t *testing.T) {
+	t.Setenv("AZURE_COSMOS_HEDGING_ENABLED_OVERRIDE", "false")
+	baseline := emulatorContainerWithOptions(t, nil)
+	id, pk, token := seedFaultInjectedItem(t, baseline)
+	response, err := baseline.ReadItem(t.Context(), pk, id, &ReadItemOptions{SessionToken: token})
+	require.NoError(t, err)
+	require.NotNil(t, response.Diagnostics)
+	require.NotEmpty(t, response.Diagnostics.RegionsContacted)
+	region := response.Diagnostics.RegionsContacted[0]
+	_, _, containerID := emulatorConfiguration(t)
+
+	for _, tt := range []struct {
+		name          string
+		ruleRegion    string
+		ruleContainer string
+		wantInjected  bool
+	}{
+		{"matching selectors", region, containerID, true},
+		{"nonmatching region", region + "-other", containerID, false},
+		{"nonmatching container", region, containerID + "-other", false},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			statusCode := int32(http.StatusTeapot)
+			subStatus := int32(4242)
+			container := faultInjectedContainer(t, nativeFaultRule{
+				id: "targeted-custom-status", kind: nativeFaultOperationReadItem,
+				region: tt.ruleRegion, containerID: tt.ruleContainer,
+				hitLimit: to(int64(1)), customStatusCode: &statusCode, customSubStatus: &subStatus,
+			})
+
+			response, err := container.ReadItem(t.Context(), pk, id, &ReadItemOptions{SessionToken: token})
+			if !tt.wantInjected {
+				require.NoError(t, err)
+				requireItemFields(t, response.Value, map[string]any{"id": id, "pk": id})
+				return
+			}
+
+			require.Equal(t, ItemResponse{}, response)
+			var cosmosErr *Error
+			require.ErrorAs(t, err, &cosmosErr)
+			require.Equal(t, int(statusCode), cosmosErr.StatusCode)
+			require.Equal(t, int(subStatus), cosmosErr.SubStatus)
+			require.NotNil(t, cosmosErr.Diagnostics)
+			require.Equal(t, int(statusCode), cosmosErr.Diagnostics.StatusCode)
+			require.Equal(t, int(subStatus), cosmosErr.Diagnostics.SubStatus)
+			require.Len(t, cosmosErr.Diagnostics.Attempts, 1)
+			require.Equal(t, region, cosmosErr.Diagnostics.Attempts[0].Region)
+			require.Equal(t, int(statusCode), cosmosErr.Diagnostics.Attempts[0].StatusCode)
+			require.Equal(t, int(subStatus), cosmosErr.Diagnostics.Attempts[0].SubStatus)
+		})
+	}
+}
+
+func TestNativeFaultExpirationAtStartDisablesInjection(t *testing.T) {
+	statusCode := int32(http.StatusTeapot)
+	expireImmediately := time.Duration(0)
+	container := faultInjectedContainer(t, nativeFaultRule{
+		id: "expired-at-start", kind: nativeFaultOperationReadItem,
+		hitLimit: to(int64(1)), customStatusCode: &statusCode, expireAfter: &expireImmediately,
+	})
+	id, pk, token := seedFaultInjectedItem(t, container)
+
+	response, err := container.ReadItem(t.Context(), pk, id, &ReadItemOptions{SessionToken: token})
+	require.NoError(t, err)
+	requireItemFields(t, response.Value, map[string]any{"id": id, "pk": id})
+	require.Equal(t, uint32(1), response.AttemptCount)
 }

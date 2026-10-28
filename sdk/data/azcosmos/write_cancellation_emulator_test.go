@@ -27,8 +27,10 @@ func TestEmulatorSubmittedWritesStopWaitingAndDrain(t *testing.T) {
 			pk := NewPartitionKeyString(id)
 			body := json.RawMessage(fmt.Sprintf(`{"id":%q,"pk":%q,"value":1}`, id, id))
 			seed := emulatorContainer(t)
-			_, err := seed.CreateItem(t.Context(), pk, id, body, nil)
-			require.NoError(t, err)
+			if operation != "create" {
+				_, err := seed.CreateItem(t.Context(), pk, id, body, nil)
+				require.NoError(t, err)
+			}
 			trackEmulatorItem(t, seed, pk, id)
 			gated := queryContractContainer(t, func(w http.ResponseWriter, r *http.Request) bool {
 				isWrite := r.Method == http.MethodPost || r.Method == http.MethodPut ||
@@ -92,6 +94,21 @@ func TestEmulatorSubmittedWritesStopWaitingAndDrain(t *testing.T) {
 				require.NoError(t, err)
 			case <-time.After(10 * time.Second):
 				t.Fatal("client did not finish draining write")
+			}
+			persisted, err := seed.ReadItem(t.Context(), pk, id, nil)
+			if operation == "delete" {
+				var cosmosErr *Error
+				require.ErrorAs(t, err, &cosmosErr)
+				require.Equal(t, CodeNotFound, cosmosErr.Code)
+			} else {
+				require.NoError(t, err, "cancelling the wait must not prevent an admitted write from committing")
+				var document map[string]any
+				require.NoError(t, json.Unmarshal(persisted.Value, &document))
+				expected := float64(1)
+				if operation == "patch" {
+					expected = 2
+				}
+				require.Equal(t, expected, document["value"])
 			}
 		})
 	}

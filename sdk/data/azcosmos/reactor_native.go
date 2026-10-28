@@ -55,7 +55,7 @@ type reactor struct {
 	stopOnce sync.Once
 }
 
-// pendingOperation receives the single completion for one submitted operation.
+// pendingOperation transfers exclusive completion ownership to one waiting caller or discard path.
 //
 // The channel is buffered so the reactor never blocks delivering a result, even if the submitting
 // goroutine has already abandoned the wait because its context was cancelled.
@@ -178,8 +178,7 @@ func (r *reactor) drainOnce(batch []C.cosmos_completion_t, timeoutMillis uint32)
 	if n == 0 {
 		return
 	}
-	// Every completion the wait wrote has to be freed, whether or not it was delivered, and the
-	// whole run can be freed at once. Translation copies out of it first.
+	// Delivered records were moved and zeroed; only unclaimed slots still own native backing.
 	defer C.cosmos_completion_queue_free_completions(&batch[0], n)
 
 	for i := 0; i < int(n); i++ {
@@ -191,7 +190,7 @@ func (r *reactor) drainOnce(batch []C.cosmos_completion_t, timeoutMillis uint32)
 //
 // The cookie is a cgo.Handle for the pendingOperation. A completion whose cookie is zero or no
 // longer valid is dropped: that means the submitting goroutine has already gone away, which is not
-// an error, and dereferencing it would be a use-after-free. Those paths return before translation,
+// an error, and dereferencing it would be a use-after-free. Those paths return before transfer,
 // so the completion still owns anything it carries and the free at the end of the drain reclaims
 // it.
 func (r *reactor) deliver(completion *C.cosmos_completion_t) {
@@ -209,9 +208,9 @@ func (r *reactor) deliver(completion *C.cosmos_completion_t) {
 		return
 	}
 
-	// Translation copies every field it needs, because the completion's memory is reclaimed as
-	// soon as this drain returns, and detaches any handle the completion carries.
-	pending.deliver(translateCompletion(completion, r.verbosity))
+	// Clear the source before publishing: the caller can prepare and free its record immediately,
+	// independently of batch cleanup and the next poll.
+	pending.deliver(moveCompletion(completion, r.verbosity))
 }
 
 // close stops the reactor and releases the queue. It is idempotent.

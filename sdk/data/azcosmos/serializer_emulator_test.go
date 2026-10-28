@@ -146,7 +146,7 @@ func TestEmulatorModelWorkflow(t *testing.T) {
 		resumed := container.NewQueryItemsPager[json.RawMessage](NewQuery("SELECT * FROM c"), scope, &QueryOptions{
 			Feed: FeedOptions{ContinuationToken: token},
 		})
-		defer resumed.Close()
+		defer func() { require.NoError(t, resumed.Close()) }()
 		for resumed.More() {
 			page, err := resumed.NextPage(t.Context())
 			require.NoError(t, err)

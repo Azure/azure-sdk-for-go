@@ -150,6 +150,10 @@ func TestEmulatorQueryBinaryWirePreferenceAndTextResults(t *testing.T) {
 				proxy.ServeHTTP(w, r)
 			}))
 			proxyURL = "http://" + server.Listener.Addr().String()
+			// Support the native HTTP/2 bootstrap probe instead of relying on HTTP/1.1 fallback.
+			server.Config.Protocols = new(http.Protocols)
+			server.Config.Protocols.SetHTTP1(true)
+			server.Config.Protocols.SetUnencryptedHTTP2(true)
 			server.Start()
 			t.Cleanup(server.Close)
 			runtime, err := NewRuntime(&RuntimeOptions{Operation: OperationOptions{BinaryEncoding: tt.runtime}})

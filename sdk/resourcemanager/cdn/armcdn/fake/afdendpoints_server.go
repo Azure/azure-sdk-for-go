@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v4"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -29,6 +29,14 @@ type AFDEndpointsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, profileName string, endpointName string, options *armcdn.AFDEndpointsClientBeginDeleteOptions) (resp azfake.PollerResponder[armcdn.AFDEndpointsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginPurgeContent is the fake for method AFDEndpointsClient.BeginPurgeContent
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginPurgeContent func(ctx context.Context, resourceGroupName string, profileName string, endpointName string, contents armcdn.AfdPurgeParameters, options *armcdn.AFDEndpointsClientBeginPurgeContentOptions) (resp azfake.PollerResponder[armcdn.AFDEndpointsClientPurgeContentResponse], errResp azfake.ErrorResponder)
+
+	// BeginUpdate is the fake for method AFDEndpointsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, profileName string, endpointName string, endpointUpdateProperties armcdn.AFDEndpointUpdateParameters, options *armcdn.AFDEndpointsClientBeginUpdateOptions) (resp azfake.PollerResponder[armcdn.AFDEndpointsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method AFDEndpointsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, profileName string, endpointName string, options *armcdn.AFDEndpointsClientGetOptions) (resp azfake.Responder[armcdn.AFDEndpointsClientGetResponse], errResp azfake.ErrorResponder)
@@ -40,14 +48,6 @@ type AFDEndpointsServer struct {
 	// NewListResourceUsagePager is the fake for method AFDEndpointsClient.NewListResourceUsagePager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListResourceUsagePager func(resourceGroupName string, profileName string, endpointName string, options *armcdn.AFDEndpointsClientListResourceUsageOptions) (resp azfake.PagerResponder[armcdn.AFDEndpointsClientListResourceUsageResponse])
-
-	// BeginPurgeContent is the fake for method AFDEndpointsClient.BeginPurgeContent
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginPurgeContent func(ctx context.Context, resourceGroupName string, profileName string, endpointName string, contents armcdn.AfdPurgeParameters, options *armcdn.AFDEndpointsClientBeginPurgeContentOptions) (resp azfake.PollerResponder[armcdn.AFDEndpointsClientPurgeContentResponse], errResp azfake.ErrorResponder)
-
-	// BeginUpdate is the fake for method AFDEndpointsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, profileName string, endpointName string, endpointUpdateProperties armcdn.AFDEndpointUpdateParameters, options *armcdn.AFDEndpointsClientBeginUpdateOptions) (resp azfake.PollerResponder[armcdn.AFDEndpointsClientUpdateResponse], errResp azfake.ErrorResponder)
 
 	// ValidateCustomDomain is the fake for method AFDEndpointsClient.ValidateCustomDomain
 	// HTTP status codes to indicate success: http.StatusOK
@@ -62,10 +62,10 @@ func NewAFDEndpointsServerTransport(srv *AFDEndpointsServer) *AFDEndpointsServer
 		srv:                       srv,
 		beginCreate:               newTracker[azfake.PollerResponder[armcdn.AFDEndpointsClientCreateResponse]](),
 		beginDelete:               newTracker[azfake.PollerResponder[armcdn.AFDEndpointsClientDeleteResponse]](),
-		newListByProfilePager:     newTracker[azfake.PagerResponder[armcdn.AFDEndpointsClientListByProfileResponse]](),
-		newListResourceUsagePager: newTracker[azfake.PagerResponder[armcdn.AFDEndpointsClientListResourceUsageResponse]](),
 		beginPurgeContent:         newTracker[azfake.PollerResponder[armcdn.AFDEndpointsClientPurgeContentResponse]](),
 		beginUpdate:               newTracker[azfake.PollerResponder[armcdn.AFDEndpointsClientUpdateResponse]](),
+		newListByProfilePager:     newTracker[azfake.PagerResponder[armcdn.AFDEndpointsClientListByProfileResponse]](),
+		newListResourceUsagePager: newTracker[azfake.PagerResponder[armcdn.AFDEndpointsClientListResourceUsageResponse]](),
 	}
 }
 
@@ -75,10 +75,10 @@ type AFDEndpointsServerTransport struct {
 	srv                       *AFDEndpointsServer
 	beginCreate               *tracker[azfake.PollerResponder[armcdn.AFDEndpointsClientCreateResponse]]
 	beginDelete               *tracker[azfake.PollerResponder[armcdn.AFDEndpointsClientDeleteResponse]]
-	newListByProfilePager     *tracker[azfake.PagerResponder[armcdn.AFDEndpointsClientListByProfileResponse]]
-	newListResourceUsagePager *tracker[azfake.PagerResponder[armcdn.AFDEndpointsClientListResourceUsageResponse]]
 	beginPurgeContent         *tracker[azfake.PollerResponder[armcdn.AFDEndpointsClientPurgeContentResponse]]
 	beginUpdate               *tracker[azfake.PollerResponder[armcdn.AFDEndpointsClientUpdateResponse]]
+	newListByProfilePager     *tracker[azfake.PagerResponder[armcdn.AFDEndpointsClientListByProfileResponse]]
+	newListResourceUsagePager *tracker[azfake.PagerResponder[armcdn.AFDEndpointsClientListResourceUsageResponse]]
 }
 
 // Do implements the policy.Transporter interface for AFDEndpointsServerTransport.
@@ -106,16 +106,16 @@ func (a *AFDEndpointsServerTransport) dispatchToMethodFake(req *http.Request, me
 				res.resp, res.err = a.dispatchBeginCreate(req)
 			case "AFDEndpointsClient.BeginDelete":
 				res.resp, res.err = a.dispatchBeginDelete(req)
+			case "AFDEndpointsClient.BeginPurgeContent":
+				res.resp, res.err = a.dispatchBeginPurgeContent(req)
+			case "AFDEndpointsClient.BeginUpdate":
+				res.resp, res.err = a.dispatchBeginUpdate(req)
 			case "AFDEndpointsClient.Get":
 				res.resp, res.err = a.dispatchGet(req)
 			case "AFDEndpointsClient.NewListByProfilePager":
 				res.resp, res.err = a.dispatchNewListByProfilePager(req)
 			case "AFDEndpointsClient.NewListResourceUsagePager":
 				res.resp, res.err = a.dispatchNewListResourceUsagePager(req)
-			case "AFDEndpointsClient.BeginPurgeContent":
-				res.resp, res.err = a.dispatchBeginPurgeContent(req)
-			case "AFDEndpointsClient.BeginUpdate":
-				res.resp, res.err = a.dispatchBeginUpdate(req)
 			case "AFDEndpointsClient.ValidateCustomDomain":
 				res.resp, res.err = a.dispatchValidateCustomDomain(req)
 			default:
@@ -229,6 +229,110 @@ func (a *AFDEndpointsServerTransport) dispatchBeginDelete(req *http.Request) (*h
 	}
 	if !server.PollerResponderMore(beginDelete) {
 		a.beginDelete.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (a *AFDEndpointsServerTransport) dispatchBeginPurgeContent(req *http.Request) (*http.Response, error) {
+	if a.srv.BeginPurgeContent == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginPurgeContent not implemented")}
+	}
+	beginPurgeContent := a.beginPurgeContent.get(req)
+	if beginPurgeContent == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Cdn/profiles/(?P<profileName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/afdEndpoints/(?P<endpointName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/purge`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armcdn.AfdPurgeParameters](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		profileNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("profileName")])
+		if err != nil {
+			return nil, err
+		}
+		endpointNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("endpointName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := a.srv.BeginPurgeContent(req.Context(), resourceGroupNameParam, profileNameParam, endpointNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginPurgeContent = &respr
+		a.beginPurgeContent.add(req, beginPurgeContent)
+	}
+
+	resp, err := server.PollerResponderNext(beginPurgeContent, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		a.beginPurgeContent.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginPurgeContent) {
+		a.beginPurgeContent.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (a *AFDEndpointsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if a.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := a.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Cdn/profiles/(?P<profileName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/afdEndpoints/(?P<endpointName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armcdn.AFDEndpointUpdateParameters](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		profileNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("profileName")])
+		if err != nil {
+			return nil, err
+		}
+		endpointNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("endpointName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := a.srv.BeginUpdate(req.Context(), resourceGroupNameParam, profileNameParam, endpointNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		a.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		a.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		a.beginUpdate.remove(req)
 	}
 
 	return resp, nil
@@ -354,110 +458,6 @@ func (a *AFDEndpointsServerTransport) dispatchNewListResourceUsagePager(req *htt
 	if !server.PagerResponderMore(newListResourceUsagePager) {
 		a.newListResourceUsagePager.remove(req)
 	}
-	return resp, nil
-}
-
-func (a *AFDEndpointsServerTransport) dispatchBeginPurgeContent(req *http.Request) (*http.Response, error) {
-	if a.srv.BeginPurgeContent == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginPurgeContent not implemented")}
-	}
-	beginPurgeContent := a.beginPurgeContent.get(req)
-	if beginPurgeContent == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Cdn/profiles/(?P<profileName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/afdEndpoints/(?P<endpointName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/purge`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcdn.AfdPurgeParameters](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		profileNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("profileName")])
-		if err != nil {
-			return nil, err
-		}
-		endpointNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("endpointName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := a.srv.BeginPurgeContent(req.Context(), resourceGroupNameParam, profileNameParam, endpointNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginPurgeContent = &respr
-		a.beginPurgeContent.add(req, beginPurgeContent)
-	}
-
-	resp, err := server.PollerResponderNext(beginPurgeContent, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		a.beginPurgeContent.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginPurgeContent) {
-		a.beginPurgeContent.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (a *AFDEndpointsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if a.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := a.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Cdn/profiles/(?P<profileName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/afdEndpoints/(?P<endpointName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcdn.AFDEndpointUpdateParameters](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		profileNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("profileName")])
-		if err != nil {
-			return nil, err
-		}
-		endpointNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("endpointName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := a.srv.BeginUpdate(req.Context(), resourceGroupNameParam, profileNameParam, endpointNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		a.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		a.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		a.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

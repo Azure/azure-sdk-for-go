@@ -154,7 +154,7 @@ func (s *Client) NewRootDirectoryClient() *directory.Client {
 //     fileID must not be empty, as the returned file.Client would then address the share rather than a file.
 //
 // The file.Client only supports GetProperties and GetFileLinks. All other operations return an error wrapping
-// fileerror.ErrFileIDNotSupported without sending a request.
+// fileerror.FileIDNotSupported without sending a request.
 func (s *Client) NewFileClientByFileID(fileID string) *file.Client {
 	p, _ := sas.ParseURL(s.URL())
 	p.DirectoryOrFilePath = ""
@@ -170,7 +170,7 @@ func (s *Client) NewFileClientByFileID(fileID string) *file.Client {
 //     fileID must not be empty, as the returned directory.Client would then address the root directory of the share.
 //
 // The directory.Client only supports GetProperties. All other operations return an error wrapping
-// fileerror.ErrFileIDNotSupported without sending a request.
+// fileerror.FileIDNotSupported without sending a request.
 func (s *Client) NewDirectoryClientByFileID(fileID string) *directory.Client {
 	p, _ := sas.ParseURL(s.URL())
 	p.DirectoryOrFilePath = ""

@@ -959,7 +959,7 @@ func (d *DirectoryRecordedTestsSuite) TestDirGetPropertiesByFileID() {
 
 	// unsupported operations fail before a request is sent, so the directory is left untouched
 	_, err = dirIDClient.Delete(context.Background(), nil)
-	_require.ErrorIs(err, fileerror.ErrFileIDNotSupported)
+	_require.ErrorIs(err, fileerror.FileIDNotSupported)
 	_, err = dirClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
 }
@@ -1109,7 +1109,7 @@ func TestDirectoryClientByFileIDUnsupportedOperations(t *testing.T) {
 	for name, operation := range operations {
 		t.Run(name, func(t *testing.T) {
 			err := operation()
-			require.ErrorIs(t, err, fileerror.ErrFileIDNotSupported)
+			require.ErrorIs(t, err, fileerror.FileIDNotSupported)
 			require.Contains(t, err.Error(), "directory.Client."+name)
 		})
 	}
@@ -1123,13 +1123,13 @@ func TestDirectoryClientByFileIDNavigation(t *testing.T) {
 	dirClient := newFakeShareClient(t, transport).NewDirectoryClientByFileID(fakeFileID)
 
 	_, err := dirClient.NewFileClient("file").GetProperties(ctx, nil)
-	require.ErrorIs(t, err, fileerror.ErrFileIDNotSupported)
+	require.ErrorIs(t, err, fileerror.FileIDNotSupported)
 	_, err = dirClient.NewFileClient("file").GetFileLinks(ctx, nil)
-	require.ErrorIs(t, err, fileerror.ErrFileIDNotSupported)
+	require.ErrorIs(t, err, fileerror.FileIDNotSupported)
 	_, err = dirClient.NewSubdirectoryClient("subdirectory").GetProperties(ctx, nil)
-	require.ErrorIs(t, err, fileerror.ErrFileIDNotSupported)
+	require.ErrorIs(t, err, fileerror.FileIDNotSupported)
 	_, err = dirClient.NewSubdirectoryClient("subdirectory").Create(ctx, nil)
-	require.ErrorIs(t, err, fileerror.ErrFileIDNotSupported)
+	require.ErrorIs(t, err, fileerror.FileIDNotSupported)
 
 	require.Empty(t, transport.requests)
 }

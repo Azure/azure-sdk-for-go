@@ -148,7 +148,7 @@ func Example_share_Client_NewFileClientByFileID() {
 
 	// other operations return an error without sending a request
 	_, err = fileClient.Delete(context.TODO(), nil)
-	fmt.Println(errors.Is(err, fileerror.ErrFileIDNotSupported))
+	fmt.Println(errors.Is(err, fileerror.FileIDNotSupported))
 }
 
 func Example_share_Client_CreateSnapshot() {

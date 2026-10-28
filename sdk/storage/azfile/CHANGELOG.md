@@ -11,7 +11,7 @@
   * Added `FileID` field on `sas.URLParts`.
   * Added `GetFileLinks` method on file `Client` that returns the hard links of a file. It is only supported on a file `Client` that addresses the file by file ID.
   * `GetProperties` on file and directory `Client` returns the name of the resource in `FileName` when it is addressed by file ID.
-  * A file or directory `Client` that addresses the resource by file ID only supports `GetProperties` and `GetFileLinks` (files only). All other operations, including lease operations and `GetSASURL`, return an error wrapping the new `fileerror.ErrFileIDNotSupported` without sending a request. `GetFileLinks` on a path based file `Client` returns an error wrapping the new `fileerror.ErrFileIDRequired`.
+  * A file or directory `Client` that addresses the resource by file ID only supports `GetProperties` and `GetFileLinks` (files only). All other operations, including lease operations and `GetSASURL`, return an error wrapping the new `fileerror.FileIDNotSupported` without sending a request. `GetFileLinks` on a path based file `Client` returns an error wrapping the new `fileerror.FileIDRequired`.
 * Added Files Change Feed support on shares: `EnableChangeFeed` and `ChangeFeedRetentionInDays` in share `CreateOptions` and `SetPropertiesOptions`, and `EnableChangeFeed`, `ChangeFeedRetentionInDays` and `ChangeFeedBlobContainerName` in the share `GetProperties` response.
 * Added support for share creation time for service version `2027-03-07`. The creation time of a share is returned in `CreationTime` by `GetProperties` on share `Client` and in `ShareProperties` by `NewListSharesPager` on service `Client`.
 

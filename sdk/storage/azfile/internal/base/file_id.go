@@ -35,18 +35,18 @@ func CheckAddressing(resourceURL string, operation string, addressing Addressing
 
 	if urlParts.FileID == "" {
 		if addressing == FileIDOnly {
-			return fmt.Errorf("%s: %w", operation, fileerror.ErrFileIDRequired)
+			return fmt.Errorf("%s: %w", operation, fileerror.FileIDRequired)
 		}
 		return nil
 	}
 
 	if addressing == PathOnly {
-		return fmt.Errorf("%s: %w", operation, fileerror.ErrFileIDNotSupported)
+		return fmt.Errorf("%s: %w", operation, fileerror.FileIDNotSupported)
 	}
 	if urlParts.DirectoryOrFilePath != "" {
 		// A file ID identifies the resource within the share on its own, e.g. a client navigated to with
 		// directory.Client.NewFileClient from a client that addresses a directory by its file ID.
-		return fmt.Errorf("%s: the URL must not contain both a path and a file ID: %w", operation, fileerror.ErrFileIDNotSupported)
+		return fmt.Errorf("%s: the URL must not contain both a path and a file ID: %w", operation, fileerror.FileIDNotSupported)
 	}
 	return nil
 }

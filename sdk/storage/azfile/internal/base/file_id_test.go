@@ -25,13 +25,13 @@ func TestCheckAddressing(t *testing.T) {
 	}{
 		{"path/PathOnly", pathURL, PathOnly, nil},
 		{"path/PathOrFileID", pathURL, PathOrFileID, nil},
-		{"path/FileIDOnly", pathURL, FileIDOnly, fileerror.ErrFileIDRequired},
-		{"fileID/PathOnly", fileIDURL, PathOnly, fileerror.ErrFileIDNotSupported},
+		{"path/FileIDOnly", pathURL, FileIDOnly, fileerror.FileIDRequired},
+		{"fileID/PathOnly", fileIDURL, PathOnly, fileerror.FileIDNotSupported},
 		{"fileID/PathOrFileID", fileIDURL, PathOrFileID, nil},
 		{"fileID/FileIDOnly", fileIDURL, FileIDOnly, nil},
-		{"pathAndFileID/PathOnly", pathAndFileID, PathOnly, fileerror.ErrFileIDNotSupported},
-		{"pathAndFileID/PathOrFileID", pathAndFileID, PathOrFileID, fileerror.ErrFileIDNotSupported},
-		{"pathAndFileID/FileIDOnly", pathAndFileID, FileIDOnly, fileerror.ErrFileIDNotSupported},
+		{"pathAndFileID/PathOnly", pathAndFileID, PathOnly, fileerror.FileIDNotSupported},
+		{"pathAndFileID/PathOrFileID", pathAndFileID, PathOrFileID, fileerror.FileIDNotSupported},
+		{"pathAndFileID/FileIDOnly", pathAndFileID, FileIDOnly, fileerror.FileIDNotSupported},
 		// an unparsable URL is left for the request to report, as before file ID support
 		{"invalid/PathOnly", "://not a url", PathOnly, nil},
 	} {

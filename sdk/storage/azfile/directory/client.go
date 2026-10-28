@@ -141,7 +141,7 @@ func (d *Client) checkAddressing(operation string, addressing base.Addressing) e
 // The new subdirectory Client uses the same request policy pipeline as the parent directory Client.
 //
 // The path of a directory addressed by its file ID is not known, so if this Client addresses the directory by its
-// file ID, every operation on the returned Client returns an error wrapping fileerror.ErrFileIDNotSupported.
+// file ID, every operation on the returned Client returns an error wrapping fileerror.FileIDNotSupported.
 func (d *Client) NewSubdirectoryClient(subDirectoryName string) *Client {
 	subDirectoryName = url.PathEscape(strings.TrimRight(subDirectoryName, "/"))
 	subDirectoryURL := runtime.JoinPaths(d.URL(), subDirectoryName)
@@ -152,7 +152,7 @@ func (d *Client) NewSubdirectoryClient(subDirectoryName string) *Client {
 // The new file.Client uses the same request policy pipeline as the Client.
 //
 // The path of a directory addressed by its file ID is not known, so if this Client addresses the directory by its
-// file ID, every operation on the returned file.Client returns an error wrapping fileerror.ErrFileIDNotSupported.
+// file ID, every operation on the returned file.Client returns an error wrapping fileerror.FileIDNotSupported.
 func (d *Client) NewFileClient(fileName string) *file.Client {
 	fileName = url.PathEscape(fileName)
 	fileURL := runtime.JoinPaths(d.URL(), fileName)

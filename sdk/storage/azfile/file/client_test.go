@@ -6692,7 +6692,7 @@ func TestFileClientGetFileLinksPathBasedClient(t *testing.T) {
 	fileClient := newFakeShareClient(t, fakeShareURL, transport).NewDirectoryClient("directory").NewFileClient("file")
 
 	_, err := fileClient.GetFileLinks(context.Background(), nil)
-	require.ErrorIs(t, err, fileerror.ErrFileIDRequired)
+	require.ErrorIs(t, err, fileerror.FileIDRequired)
 	require.Contains(t, err.Error(), "GetFileLinks")
 	require.Empty(t, transport.requests)
 }
@@ -6769,7 +6769,7 @@ func TestFileClientByFileIDUnsupportedOperations(t *testing.T) {
 	for name, operation := range operations {
 		t.Run(name, func(t *testing.T) {
 			err := operation()
-			require.ErrorIs(t, err, fileerror.ErrFileIDNotSupported)
+			require.ErrorIs(t, err, fileerror.FileIDNotSupported)
 			require.Contains(t, err.Error(), "file.Client."+name)
 		})
 	}
@@ -6784,7 +6784,7 @@ func TestFileClientByFileIDGetSASURLWithSharedKey(t *testing.T) {
 	require.NoError(t, err)
 
 	_, err = shareClient.NewFileClientByFileID(fakeFileID).GetSASURL(sas.FilePermissions{Read: true}, time.Now().Add(time.Hour), nil)
-	require.ErrorIs(t, err, fileerror.ErrFileIDNotSupported)
+	require.ErrorIs(t, err, fileerror.FileIDNotSupported)
 
 	// the share is still known, so a share SAS can be generated as before
 	_, err = shareClient.GetSASURL(sas.SharePermissions{Read: true}, time.Now().Add(time.Hour), nil)
@@ -6800,13 +6800,13 @@ func TestFileClientByFileIDLeaseOperations(t *testing.T) {
 	require.NoError(t, err)
 
 	_, err = leaseClient.Acquire(ctx, nil)
-	require.ErrorIs(t, err, fileerror.ErrFileIDNotSupported)
+	require.ErrorIs(t, err, fileerror.FileIDNotSupported)
 	_, err = leaseClient.Release(ctx, nil)
-	require.ErrorIs(t, err, fileerror.ErrFileIDNotSupported)
+	require.ErrorIs(t, err, fileerror.FileIDNotSupported)
 	_, err = leaseClient.Change(ctx, "6b3e65e5-e1bb-4a3f-8b72-13e9bc9cd3bf", nil)
-	require.ErrorIs(t, err, fileerror.ErrFileIDNotSupported)
+	require.ErrorIs(t, err, fileerror.FileIDNotSupported)
 	_, err = leaseClient.Break(ctx, nil)
-	require.ErrorIs(t, err, fileerror.ErrFileIDNotSupported)
+	require.ErrorIs(t, err, fileerror.FileIDNotSupported)
 
 	require.Empty(t, transport.requests)
 }
@@ -7240,5 +7240,5 @@ func (f *FileUnrecordedTestsSuite) TestFileClientByFileIDOAuth() {
 
 	// the file ID client still rejects unsupported operations before sending a request
 	_, err = oauthShareClient.NewFileClientByFileID(*fileProps.ID).Delete(context.Background(), nil)
-	_require.ErrorIs(err, fileerror.ErrFileIDNotSupported)
+	_require.ErrorIs(err, fileerror.FileIDNotSupported)
 }

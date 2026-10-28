@@ -468,7 +468,7 @@ func (f *Client) GetSymbolicLink(ctx context.Context, options *GetSymbolicLinkOp
 //
 // This operation is only supported when the Client addresses the file by its file ID; use
 // share.Client.NewFileClientByFileID to create such a Client. On a Client that addresses the file by its path,
-// it returns an error wrapping fileerror.ErrFileIDRequired without sending a request.
+// it returns an error wrapping fileerror.FileIDRequired without sending a request.
 func (f *Client) GetFileLinks(ctx context.Context, options *GetFileLinksOptions) (GetFileLinksResponse, error) {
 	if err := f.checkAddressing("GetFileLinks", base.FileIDOnly); err != nil {
 		return GetFileLinksResponse{}, err

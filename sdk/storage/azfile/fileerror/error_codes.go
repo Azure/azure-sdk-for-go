@@ -116,14 +116,15 @@ var (
 	UnsupportedChecksum = errors.New("for multi-part uploads, user generated checksums cannot be validated")
 )
 
+// nolint:staticcheck // ST1012: Named without the Err prefix to match the other errors in this package.
 var (
-	// ErrFileIDNotSupported is returned when an operation that requires the path of a file or directory is called
+	// FileIDNotSupported is returned when an operation that requires the path of a file or directory is called
 	// on a client that addresses the resource by its file ID, e.g. one created by share.Client.NewFileClientByFileID.
 	// The request is not sent to the service. Use a client constructed with the path of the resource instead.
-	ErrFileIDNotSupported = errors.New("operation is not supported when the client addresses the resource by file ID; use a client constructed with the path of the resource instead")
+	FileIDNotSupported = errors.New("operation is not supported when the client addresses the resource by file ID; use a client constructed with the path of the resource instead")
 
-	// ErrFileIDRequired is returned when an operation that is only supported on a client that addresses the
+	// FileIDRequired is returned when an operation that is only supported on a client that addresses the
 	// resource by its file ID is called on a client that addresses it by path. The request is not sent to the
 	// service. Use share.Client.NewFileClientByFileID to create a client that addresses the file by its file ID.
-	ErrFileIDRequired = errors.New("operation is only supported when the client addresses the resource by file ID; use share.Client.NewFileClientByFileID to create one")
+	FileIDRequired = errors.New("operation is only supported when the client addresses the resource by file ID; use share.Client.NewFileClientByFileID to create one")
 )

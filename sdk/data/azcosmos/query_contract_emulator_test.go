@@ -170,7 +170,6 @@ func queryContractContainer(t *testing.T, intercept func(http.ResponseWriter, *h
 	target, err := url.Parse(endpoint)
 	require.NoError(t, err)
 	proxy := httputil.NewSingleHostReverseProxy(target)
-	diagnostics := newProxyDiagnostics(t, proxy)
 	var proxyURL string
 	proxy.ModifyResponse = func(r *http.Response) error {
 		if err := rewriteQueryAccountResponse(r, proxyURL); err != nil {
@@ -187,7 +186,6 @@ func queryContractContainer(t *testing.T, intercept func(http.ResponseWriter, *h
 		}
 	}))
 	proxyURL = "http://" + server.Listener.Addr().String()
-	diagnostics.observeServer(server)
 	server.Start()
 	t.Cleanup(server.Close)
 	// Do not retain routing caches or pooled connections beyond this temporary proxy's lifetime.
@@ -196,9 +194,7 @@ func queryContractContainer(t *testing.T, intercept func(http.ResponseWriter, *h
 	t.Cleanup(func() { require.NoError(t, runtime.Close()) })
 	credential, err := NewKeyCredential(emulatorKey)
 	require.NoError(t, err)
-	client, err := NewClientWithKey(server.URL, credential, &ClientOptions{
-		Runtime: runtime, DiagnosticsVerbosity: DiagnosticsVerbosityDetailed, DiagnosticsHandler: diagnostics.operation,
-	})
+	client, err := NewClientWithKey(server.URL, credential, &ClientOptions{Runtime: runtime})
 	require.NoError(t, err)
 	t.Cleanup(func() { require.NoError(t, client.Close()) })
 	container, err := client.NewContainer(databaseID, containerID)

@@ -114,7 +114,6 @@ func TestEmulatorQueryBinaryWirePreferenceAndTextResults(t *testing.T) {
 			var binaryResponses int
 			var proxyURL string
 			proxy := httputil.NewSingleHostReverseProxy(target)
-			diagnostics := newProxyDiagnostics(t, proxy)
 			proxy.ModifyResponse = func(r *http.Response) error {
 				if err := rewriteQueryAccountResponse(r, proxyURL); err != nil {
 					return err
@@ -151,17 +150,13 @@ func TestEmulatorQueryBinaryWirePreferenceAndTextResults(t *testing.T) {
 				proxy.ServeHTTP(w, r)
 			}))
 			proxyURL = "http://" + server.Listener.Addr().String()
-			diagnostics.observeServer(server)
 			server.Start()
 			t.Cleanup(server.Close)
 			runtime, err := NewRuntime(&RuntimeOptions{Operation: OperationOptions{BinaryEncoding: tt.runtime}})
 			require.NoError(t, err)
 			t.Cleanup(func() { require.NoError(t, runtime.Close()) })
 			client, err := NewClientWithKey(server.URL, KeyCredential{accountKey: emulatorKey},
-				&ClientOptions{
-					Runtime: runtime, BinaryEncoding: tt.client, Operation: OperationOptions{BinaryEncoding: tt.common},
-					DiagnosticsVerbosity: DiagnosticsVerbosityDetailed, DiagnosticsHandler: diagnostics.operation,
-				})
+				&ClientOptions{Runtime: runtime, BinaryEncoding: tt.client, Operation: OperationOptions{BinaryEncoding: tt.common}})
 			require.NoError(t, err)
 			t.Cleanup(func() { require.NoError(t, client.Close()) })
 			container, err := client.NewContainer(databaseID, containerID)

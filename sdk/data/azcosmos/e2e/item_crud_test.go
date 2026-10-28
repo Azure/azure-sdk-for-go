@@ -7,6 +7,7 @@ package e2e
 
 import (
 	"context"
+	"encoding/json"
 	"testing"
 
 	azcosmos "github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos/v2"
@@ -124,7 +125,7 @@ func TestItemCreateConflictPreservesOriginal(t *testing.T) {
 			fx := newFixture(t, "item.create-conflict", "query-hierarchical")
 			id := uniqueID(t)
 			pk := azcosmos.NewPartitionKeyString("tenant-a").AppendString("user-1")
-			body := func(value int64) []byte {
+			body := func(value int64) json.RawMessage {
 				v, err := jsonMarshalTenantItem(id, "tenant-a", "user-1", value)
 				require.NoError(t, err)
 				return v

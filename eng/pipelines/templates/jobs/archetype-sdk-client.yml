@@ -17,6 +17,12 @@ parameters:
   - name: LicenseCheck
     type: boolean
     default: true
+  - name: AnalysisGoVersion
+    type: string
+    default: '1.23.2'
+  - name: LintVersion
+    type: string
+    default: $(GoLintCLIVersion)
   - name: EnvVars
     type: object
     default: {}
@@ -199,7 +205,7 @@ extends:
 
               - task: GoTool@0
                 inputs:
-                  version: '1.23.2'
+                  version: ${{ parameters.AnalysisGoVersion }}
                 displayName: "Select Go Version"
 
               - template: /eng/pipelines/templates/steps/create-go-workspace.yml
@@ -207,7 +213,7 @@ extends:
               - template: /eng/pipelines/templates/steps/analyze.yml
                 parameters:
                   ServiceDirectory: ${{ parameters.ServiceDirectory }}
-                  LintVersion: $(GoLintCLIVersion)
+                  LintVersion: ${{ parameters.LintVersion }}
                   NonShipping: ${{ parameters.NonShipping }}
                   LicenseCheck: ${{ parameters.LicenseCheck }}
                   IsSdkLibrary: ${{ parameters.IsSdkLibrary }}

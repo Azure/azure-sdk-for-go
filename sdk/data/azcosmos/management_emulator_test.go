@@ -7,6 +7,7 @@ package azcosmos
 
 import (
 	"context"
+	"encoding/json"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -74,7 +75,7 @@ func TestEmulatorDatabaseAndContainerLifecycle(t *testing.T) {
 	// just visible to management reads.
 	id := uniqueItemID(t)
 	pk := NewPartitionKeyString(id)
-	item := []byte(`{"id":"` + id + `","pk":"` + id + `","email":"a@example.com"}`)
+	item := json.RawMessage(`{"id":"` + id + `","pk":"` + id + `","email":"a@example.com"}`)
 	_, err = container.CreateItem(ctx, pk, id, item, nil)
 	require.NoError(t, err)
 
@@ -133,7 +134,7 @@ func TestEmulatorDatabaseRecreationResolvesReplacementContainers(t *testing.T) {
 		require.NoError(t, err)
 		itemID := uniqueItemID(t)
 		_, err = container.CreateItem(ctx, NewPartitionKeyString(itemID), itemID,
-			[]byte(`{"id":"`+itemID+`","pk":"`+itemID+`"}`), nil)
+			json.RawMessage(`{"id":"`+itemID+`","pk":"`+itemID+`"}`), nil)
 		require.NoError(t, err)
 	}
 
@@ -155,7 +156,7 @@ func TestEmulatorDatabaseRecreationResolvesReplacementContainers(t *testing.T) {
 		require.NoError(t, err)
 		itemID := uniqueItemID(t)
 		_, err = container.CreateItem(ctx, NewPartitionKeyString(itemID), itemID,
-			[]byte(`{"id":"`+itemID+`","pk":"`+itemID+`"}`), nil)
+			json.RawMessage(`{"id":"`+itemID+`","pk":"`+itemID+`"}`), nil)
 		require.NoError(t, err, "a recreated container must resolve its fresh resource id")
 	}
 }
@@ -194,7 +195,7 @@ func TestEmulatorOutOfBandContainerRecreationResolvesFreshIdentity(t *testing.T)
 	createItem := func(container *ContainerClient) {
 		itemID := uniqueItemID(t)
 		_, err := container.CreateItem(ctx, NewPartitionKeyString(itemID), itemID,
-			[]byte(`{"id":"`+itemID+`","pk":"`+itemID+`"}`), nil)
+			json.RawMessage(`{"id":"`+itemID+`","pk":"`+itemID+`"}`), nil)
 		require.NoError(t, err)
 	}
 	createItem(containerA)

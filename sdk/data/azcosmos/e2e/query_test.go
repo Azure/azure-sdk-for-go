@@ -7,6 +7,7 @@ package e2e
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"testing"
 
@@ -48,7 +49,7 @@ func TestQueryParameterizedFilterAndOrder(t *testing.T) {
 // assertions read as the bare case labels ("a", "b", "c") the scenario uses.
 func queryOrderedSuffixes(t *testing.T, fx fixture, query azcosmos.Query, scope azcosmos.PartitionKey, prefix string) []string {
 	t.Helper()
-	pager := fx.Container.NewQueryItemsPager(query, azcosmos.NewFeedScopeForPartitionKey(scope), nil)
+	pager := fx.Container.NewQueryItemsPager[json.RawMessage](query, azcosmos.NewFeedScopeForPartitionKey(scope), nil)
 	defer func() { require.NoError(t, pager.Close()) }()
 	var ids []string
 	for pager.More() {
@@ -70,7 +71,7 @@ func TestQueryInvalidSyntaxIsNotAnEmptyFeed(t *testing.T) {
 		fx := newFixture(t, "query.invalid-syntax", "")
 		scope := azcosmos.NewFeedScopeForPartitionKey(azcosmos.NewPartitionKeyString("A"))
 
-		pager := fx.Container.NewQueryItemsPager(azcosmos.NewQuery("SELECT FROM"), scope, nil)
+		pager := fx.Container.NewQueryItemsPager[json.RawMessage](azcosmos.NewQuery("SELECT FROM"), scope, nil)
 		defer func() { require.NoError(t, pager.Close()) }()
 		_, err := pager.NextPage(context.Background())
 		_ = requireCode(t, err, azcosmos.CodeBadRequest)
@@ -106,7 +107,7 @@ func TestQueryPaginationResumesWithoutLossOrDuplication(t *testing.T) {
 		require.NoError(t, err)
 		options := &azcosmos.QueryOptions{Feed: azcosmos.FeedOptions{PageSizeHint: 2}}
 
-		first := fx.Container.NewQueryItemsPager(query, azcosmos.NewFeedScopeForFullContainer(), options)
+		first := fx.Container.NewQueryItemsPager[json.RawMessage](query, azcosmos.NewFeedScopeForFullContainer(), options)
 		firstPage, err := first.NextPage(ctx)
 		require.NoError(t, err)
 		require.NotEmpty(t, firstPage.Items)
@@ -120,7 +121,7 @@ func TestQueryPaginationResumesWithoutLossOrDuplication(t *testing.T) {
 			values = append(values, mustUnmarshalItem(t, raw).Value)
 		}
 
-		resumed := fx.Container.NewQueryItemsPager(query, azcosmos.NewFeedScopeForFullContainer(), &azcosmos.QueryOptions{
+		resumed := fx.Container.NewQueryItemsPager[json.RawMessage](query, azcosmos.NewFeedScopeForFullContainer(), &azcosmos.QueryOptions{
 			Feed: azcosmos.FeedOptions{PageSizeHint: 2, ContinuationToken: token},
 		})
 		defer func() { require.NoError(t, resumed.Close()) }()

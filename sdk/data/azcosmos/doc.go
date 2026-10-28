@@ -10,6 +10,10 @@
 // and response model, partition keys, client construction, and creating, reading, replacing,
 // upserting, deleting, and patching single items, plus retained item-query paging.
 //
+// Go 1.27 or later is required. Item writes accept models using encoding/json or ClientOptions.Serializer.
+// ItemResponse.IntoModel decodes response bodies; generic query pagers decode each result as T.
+// Use json.RawMessage for pre-encoded write payloads instead of plain []byte.
+//
 // QueryItemsPager supports logical-partition, hierarchical-prefix, and full-container scopes.
 // Defer its Close method when stopping early. ContinuationToken captures resumable progress
 // separately from paging; not every native query plan supports a checkpoint.

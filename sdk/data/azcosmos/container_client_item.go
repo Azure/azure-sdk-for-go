@@ -165,30 +165,31 @@ func (c *ContainerClient) ReadItem(ctx context.Context, partitionKey PartitionKe
 //
 // partitionKey is the item's partition key value, and must have one component per path in the
 // container's partition key definition and match the values in item. id addresses the item being
-// created and must match the item's own id property. item is the JSON encoding of the item.
+// created and must match the item's own id property. item is encoded using the client's serializer.
 // options may be nil.
 //
 // The id is taken separately because the driver ABI requires an item reference. The SDK passes the
-// id and item through unchanged and does not parse the payload to compare them; callers must provide
+// id and serialized item through without comparing them; callers must provide
 // matching values, and service behavior is undefined when they differ.
 //
 // When an item with the same id already exists the returned error is an [Error] with [Error.Code]
 // set to [CodeConflict]. The response carries the created item only when content responses are
 // enabled through [OperationOptions.EnableContentResponseOnWrite] at runtime, client, or request scope.
-func (c *ContainerClient) CreateItem(ctx context.Context, partitionKey PartitionKey, id string, item []byte, options *CreateItemOptions) (ItemResponse, error) {
+func (c *ContainerClient) CreateItem[T any](ctx context.Context, partitionKey PartitionKey, id string, item T, options *CreateItemOptions) (ItemResponse, error) {
 	if err := validateItemArguments(partitionKey); err != nil {
 		return ItemResponse{}, err
 	}
 	if id == "" {
 		return ItemResponse{}, errors.New("azcosmos: item id must not be empty")
 	}
-	if len(item) == 0 {
-		return ItemResponse{}, errors.New("azcosmos: item must not be empty")
-	}
 	if options != nil {
 		if err := options.SessionToken.validate(); err != nil {
 			return ItemResponse{}, err
 		}
+	}
+	body, err := marshalItem(c.database.client.options.Serializer, item)
+	if err != nil {
+		return ItemResponse{}, err
 	}
 	req := itemRequest{
 		kind:         operationKindCreateItem,
@@ -196,7 +197,7 @@ func (c *ContainerClient) CreateItem(ctx context.Context, partitionKey Partition
 		containerID:  c.id,
 		itemID:       id,
 		partitionKey: partitionKey,
-		body:         item,
+		body:         body,
 	}
 	if options != nil {
 		req.options = options.Operation
@@ -209,13 +210,13 @@ func (c *ContainerClient) CreateItem(ctx context.Context, partitionKey Partition
 // ReplaceItem replaces an existing item.
 //
 // partitionKey is the item's partition key value. id is the item's id property and must match the
-// id in item. item is the JSON encoding of the replacement. options may be nil. The SDK passes id
-// and item through unchanged and does not parse the payload to compare them.
+// id in item. item is encoded using the client's serializer. options may be nil.
+// The SDK does not infer or compare the item's id or partition key fields.
 //
 // The response carries the replaced item only when content responses are enabled. If an IfMatch
 // precondition does not match, the returned error has [Error.Code] set to [CodePreconditionFailed].
-func (c *ContainerClient) ReplaceItem(ctx context.Context, partitionKey PartitionKey, id string, item []byte, options *ReplaceItemOptions) (ItemResponse, error) {
-	if err := validateItemWriteArguments(partitionKey, id, item, true); err != nil {
+func (c *ContainerClient) ReplaceItem[T any](ctx context.Context, partitionKey PartitionKey, id string, item T, options *ReplaceItemOptions) (ItemResponse, error) {
+	if err := validateItemWriteArguments(partitionKey, id); err != nil {
 		return ItemResponse{}, err
 	}
 	if options != nil {
@@ -224,13 +225,17 @@ func (c *ContainerClient) ReplaceItem(ctx context.Context, partitionKey Partitio
 		}
 	}
 
+	body, err := marshalItem(c.database.client.options.Serializer, item)
+	if err != nil {
+		return ItemResponse{}, err
+	}
 	req := itemRequest{
 		kind:         operationKindReplaceItem,
 		databaseID:   c.database.id,
 		containerID:  c.id,
 		itemID:       id,
 		partitionKey: partitionKey,
-		body:         item,
+		body:         body,
 	}
 	if options != nil {
 		req.options = options.Operation
@@ -243,13 +248,13 @@ func (c *ContainerClient) ReplaceItem(ctx context.Context, partitionKey Partitio
 // UpsertItem creates an item when it does not exist or replaces it when it does.
 //
 // partitionKey is the item's partition key value. id is the item's id property and must match the
-// id in item. item is the JSON encoding of the item. options may be nil. The SDK passes id and item
-// through unchanged and does not parse the payload to compare them.
+// id in item. item is encoded using the client's serializer. options may be nil.
+// The SDK does not infer or compare the item's id or partition key fields.
 //
 // The response carries the upserted item only when content responses are enabled. An IfMatch
 // precondition is evaluated when the item exists; a missing item is created even when it is set.
-func (c *ContainerClient) UpsertItem(ctx context.Context, partitionKey PartitionKey, id string, item []byte, options *UpsertItemOptions) (ItemResponse, error) {
-	if err := validateItemWriteArguments(partitionKey, id, item, true); err != nil {
+func (c *ContainerClient) UpsertItem[T any](ctx context.Context, partitionKey PartitionKey, id string, item T, options *UpsertItemOptions) (ItemResponse, error) {
+	if err := validateItemWriteArguments(partitionKey, id); err != nil {
 		return ItemResponse{}, err
 	}
 	if options != nil {
@@ -258,13 +263,17 @@ func (c *ContainerClient) UpsertItem(ctx context.Context, partitionKey Partition
 		}
 	}
 
+	body, err := marshalItem(c.database.client.options.Serializer, item)
+	if err != nil {
+		return ItemResponse{}, err
+	}
 	req := itemRequest{
 		kind:         operationKindUpsertItem,
 		databaseID:   c.database.id,
 		containerID:  c.id,
 		itemID:       id,
 		partitionKey: partitionKey,
-		body:         item,
+		body:         body,
 	}
 	if options != nil {
 		req.options = options.Operation
@@ -280,7 +289,7 @@ func (c *ContainerClient) UpsertItem(ctx context.Context, partitionKey Partition
 // The returned ItemResponse never carries a Value. If an IfMatch precondition does not match, the returned
 // error has [Error.Code] set to [CodePreconditionFailed].
 func (c *ContainerClient) DeleteItem(ctx context.Context, partitionKey PartitionKey, id string, options *DeleteItemOptions) (ItemResponse, error) {
-	if err := validateItemWriteArguments(partitionKey, id, nil, false); err != nil {
+	if err := validateItemWriteArguments(partitionKey, id); err != nil {
 		return ItemResponse{}, err
 	}
 	if options != nil {
@@ -317,7 +326,7 @@ func (c *ContainerClient) DeleteItem(ctx context.Context, partitionKey Partition
 // options can select an explicit strategy. Client-side execution can permanently add the internal
 // _azsdkPatchTracking property described by [PatchOperations].
 func (c *ContainerClient) PatchItem(ctx context.Context, partitionKey PartitionKey, id string, operations PatchOperations, options *PatchItemOptions) (ItemResponse, error) {
-	if err := validateItemWriteArguments(partitionKey, id, nil, false); err != nil {
+	if err := validateItemWriteArguments(partitionKey, id); err != nil {
 		return ItemResponse{}, err
 	}
 	body, err := operations.marshal()
@@ -407,6 +416,7 @@ func (c *ContainerClient) executeItem(ctx context.Context, req itemRequest, incl
 	if includeValue {
 		response.Value = body
 	}
+	response.serializer = c.database.client.options.Serializer
 	return response, nil
 }
 
@@ -425,15 +435,12 @@ func normalizeItemOperationError(kind operationKind, err error) error {
 	return normalized
 }
 
-func validateItemWriteArguments(partitionKey PartitionKey, id string, item []byte, requireItem bool) error {
+func validateItemWriteArguments(partitionKey PartitionKey, id string) error {
 	if err := validateItemArguments(partitionKey); err != nil {
 		return err
 	}
 	if id == "" {
 		return errors.New("azcosmos: item id must not be empty")
-	}
-	if requireItem && len(item) == 0 {
-		return errors.New("azcosmos: item must not be empty")
 	}
 	return nil
 }

@@ -8,6 +8,14 @@ import (
 	"errors"
 )
 
+// NewTransactionalBatch constructs a batch using this client's configured serializer.
+// Items are serialized and copied when appended; execution never serializes them again.
+// The batch retains the serializer even if executed by a different client.
+// Partition key requirements are the same as [NewTransactionalBatch].
+func (c *ContainerClient) NewTransactionalBatch(partitionKey PartitionKey) TransactionalBatch {
+	return TransactionalBatch{partitionKey: partitionKey, serializer: c.database.client.options.Serializer}
+}
+
 // TransactionalBatchOptions configures [ContainerClient.ExecuteTransactionalBatch].
 // A nil options pointer selects defaults.
 type TransactionalBatchOptions struct {

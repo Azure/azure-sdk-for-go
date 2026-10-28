@@ -18,8 +18,13 @@ func ExampleContainerClient_ExecuteTransactionalBatch() {
 	container, closeClient := exampleContainer()
 	// The container in this example has the hierarchical paths /tenant and /region.
 	key := azcosmos.NewPartitionKeyString("Contoso").AppendString("west")
-	batch := azcosmos.NewTransactionalBatch(key)
-	err := batch.CreateItem([]byte(`{"id":"order-1","tenant":"Contoso","region":"west","total":42}`), nil)
+	batch := container.NewTransactionalBatch(key)
+	err := batch.CreateItem(struct {
+		ID     string `json:"id"`
+		Tenant string `json:"tenant"`
+		Region string `json:"region"`
+		Total  int    `json:"total"`
+	}{ID: "order-1", Tenant: "Contoso", Region: "west", Total: 42}, nil)
 	if err != nil {
 		closeClient()
 		// TODO: Update the following line with your application specific error handling logic

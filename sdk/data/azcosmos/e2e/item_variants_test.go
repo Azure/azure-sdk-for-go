@@ -7,6 +7,7 @@ package e2e
 
 import (
 	"context"
+	"encoding/json"
 	"testing"
 
 	azcosmos "github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos/v2"
@@ -81,7 +82,7 @@ func TestItemScalarPartitionKeysRemainDistinct(t *testing.T) {
 	}
 
 	for _, c := range cases {
-		created, err := fx.Container.CreateItem(ctx, c.pk, sharedID, c.body, nil)
+		created, err := fx.Container.CreateItem(ctx, c.pk, sharedID, json.RawMessage(c.body), nil)
 		require.NoErrorf(t, err, "case %s", c.name)
 		require.Equalf(t, 201, created.StatusCode, "case %s", c.name)
 		t.Cleanup(func(pk azcosmos.PartitionKey, name string) func() {
@@ -150,7 +151,7 @@ func TestItemHierarchicalPartitionKeyPointAndPrefix(t *testing.T) {
 			trackItem(t, fx.Container, c.pk, c.id)
 		}
 
-		replaced, err := fx.Container.ReplaceItem(ctx, firstPK, firstID, func() []byte {
+		replaced, err := fx.Container.ReplaceItem(ctx, firstPK, firstID, func() json.RawMessage {
 			b, err := jsonMarshalTenantItem(firstID, tenant, "user-1", 10)
 			require.NoError(t, err)
 			return b
@@ -163,7 +164,7 @@ func TestItemHierarchicalPartitionKeyPointAndPrefix(t *testing.T) {
 		require.Equal(t, int64(10), mustUnmarshalTenantItem(t, read.Value).Value)
 
 		prefix := azcosmos.NewPartitionKeyString(tenant)
-		pager := fx.Container.NewQueryItemsPager(
+		pager := fx.Container.NewQueryItemsPager[json.RawMessage](
 			azcosmos.NewQuery("SELECT VALUE c.id FROM c ORDER BY c.id ASC"),
 			azcosmos.NewFeedScopeForPartitionKey(prefix), nil)
 		defer func() { require.NoError(t, pager.Close()) }()

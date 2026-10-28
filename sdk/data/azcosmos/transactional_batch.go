@@ -21,8 +21,9 @@ const (
 
 // TransactionalBatch is an ordered set of operations for one complete logical partition.
 //
-// Construct it with [NewTransactionalBatch]. Item bodies and conditional options are copied
-// when appended. Copies of a batch can be extended independently. A completed builder can be
+// Construct it with [NewTransactionalBatch] or [ContainerClient.NewTransactionalBatch].
+// Items are serialized and copied when appended, along with conditional options.
+// Copies of a batch can be extended independently. A completed builder can be
 // executed repeatedly or concurrently, but must not be mutated concurrently with other access.
 // Executing a batch again starts a new transaction, not an idempotent replay.
 //
@@ -33,9 +34,11 @@ type TransactionalBatch struct {
 	partitionKey PartitionKey
 	operations   []transactionalBatchOperation
 	err          error
+	serializer   Serializer
 }
 
-// NewTransactionalBatch constructs an empty batch for partitionKey.
+// NewTransactionalBatch constructs an empty batch for partitionKey using encoding/json.
+// Use [ContainerClient.NewTransactionalBatch] to use a client's configured serializer.
 //
 // The key must have exactly one component per path in the container's partition key definition,
 // including every level of a hierarchical partition key. Prefix and cross-partition batches
@@ -101,11 +104,11 @@ type transactionalBatchOperation struct {
 	IfNoneMatch   string          `json:"ifNoneMatch,omitempty"`
 }
 
-// CreateItem appends a create operation. item is the item's encoded JSON.
+// CreateItem serializes item with the batch's serializer and appends a create operation.
 //
 // The SDK does not inspect application-defined fields, including id and partition key properties.
 // All item bodies must belong to the batch's logical partition. options may be nil.
-func (b *TransactionalBatch) CreateItem(item []byte, options *TransactionalBatchCreateItemOptions) error {
+func (b *TransactionalBatch) CreateItem[T any](item T, options *TransactionalBatchCreateItemOptions) error {
 	return b.appendOperation(transactionalBatchOperation{OperationType: "Create"}, item, true, nil, nil)
 }
 
@@ -122,10 +125,10 @@ func (b *TransactionalBatch) ReadItem(itemID string, options *TransactionalBatch
 	return b.appendOperation(transactionalBatchOperation{OperationType: "Read", ID: itemID}, nil, false, ifMatch, ifNoneMatch)
 }
 
-// UpsertItem appends an operation that creates or replaces the item encoded in item.
+// UpsertItem serializes item with the batch's serializer and appends a create-or-replace operation.
 // The SDK leaves application id and partition key consistency checks to the driver/service.
 // options may be nil.
-func (b *TransactionalBatch) UpsertItem(item []byte, options *TransactionalBatchUpsertItemOptions) error {
+func (b *TransactionalBatch) UpsertItem[T any](item T, options *TransactionalBatchUpsertItemOptions) error {
 	var ifMatch, ifNoneMatch *azcore.ETag
 	if options != nil {
 		ifMatch, ifNoneMatch = options.IfMatchETag, options.IfNoneMatchETag
@@ -133,10 +136,10 @@ func (b *TransactionalBatch) UpsertItem(item []byte, options *TransactionalBatch
 	return b.appendOperation(transactionalBatchOperation{OperationType: "Upsert"}, item, true, ifMatch, ifNoneMatch)
 }
 
-// ReplaceItem appends a replacement for itemID. item is the replacement's encoded JSON.
+// ReplaceItem serializes item with the batch's serializer and appends a replacement for itemID.
 // itemID must match the item's id property; the SDK does not parse the body to compare them.
 // options may be nil.
-func (b *TransactionalBatch) ReplaceItem(itemID string, item []byte, options *TransactionalBatchReplaceItemOptions) error {
+func (b *TransactionalBatch) ReplaceItem[T any](itemID string, item T, options *TransactionalBatchReplaceItemOptions) error {
 	var ifMatch *azcore.ETag
 	if options != nil {
 		ifMatch = options.IfMatchETag
@@ -153,7 +156,7 @@ func (b *TransactionalBatch) DeleteItem(itemID string, options *TransactionalBat
 	return b.appendOperation(transactionalBatchOperation{OperationType: "Delete", ID: itemID}, nil, false, ifMatch, nil)
 }
 
-func (b *TransactionalBatch) appendOperation(operation transactionalBatchOperation, item []byte, requireItem bool, ifMatch, ifNoneMatch *azcore.ETag) error {
+func (b *TransactionalBatch) appendOperation(operation transactionalBatchOperation, item any, requireItem bool, ifMatch, ifNoneMatch *azcore.ETag) error {
 	if b == nil {
 		return errors.New("azcosmos: TransactionalBatch must not be nil")
 	}
@@ -176,10 +179,14 @@ func (b *TransactionalBatch) appendOperation(operation transactionalBatchOperati
 		}
 	}
 	if requireItem {
-		if len(item) == 0 || !utf8.Valid(item) || !json.Valid(item) {
-			return fail(errors.New("azcosmos: batch item must contain valid, non-empty UTF-8 JSON"))
+		body, err := marshalItem(b.serializer, item)
+		if err != nil {
+			return fail(err)
 		}
-		operation.ResourceBody = append(json.RawMessage(nil), item...)
+		if !utf8.Valid(body) {
+			return fail(&Error{Code: CodeSerializationFailed, Message: "encoding batch item: serializer must produce valid UTF-8"})
+		}
+		operation.ResourceBody = append(json.RawMessage(nil), body...)
 	}
 	if ifMatch != nil && ifNoneMatch != nil {
 		return fail(errors.New("azcosmos: IfMatchETag and IfNoneMatchETag must not both be set"))

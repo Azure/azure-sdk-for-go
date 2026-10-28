@@ -222,7 +222,7 @@ func itemWithScore(id, pk string, score int64) Item {
 	return Item{ID: id, PK: pk, Value: score, Score: &score}
 }
 
-func mustMarshalItem(t *testing.T, value Item) []byte {
+func mustMarshalItem(t *testing.T, value Item) json.RawMessage {
 	t.Helper()
 	body, err := json.Marshal(value)
 	require.NoError(t, err)
@@ -257,7 +257,7 @@ func tenantItem(id, pk, child string, value int64) TenantItem {
 	return TenantItem{ID: id, PK: pk, Child: child, Value: value}
 }
 
-func jsonMarshalTenantItem(id, pk, child string, value int64) ([]byte, error) {
+func jsonMarshalTenantItem(id, pk, child string, value int64) (json.RawMessage, error) {
 	return json.Marshal(tenantItem(id, pk, child, value))
 }
 

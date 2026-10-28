@@ -370,8 +370,8 @@ test("compiled reviewer retains validated targets in both agent and publisher co
   assert.match(source, /bots: \[github-actions\]/);
   assert.match(source, /cancel-in-progress: false/);
   assert.match(source, /do not check out or execute PR code/);
-  assert.match(compiled, /^  agent:\n    needs:\n(?:      - [\w-]+\n)*      - validate_request\n/m);
-  assert.match(compiled, /^  safe_outputs:\n    needs:\n(?:      - [\w-]+\n)*      - validate_request\n/m);
+  assert.match(compiled, /^  agent:\n(?:    name:[^\n]*\n)?    needs:\n(?:      - [\w-]+\n)*      - validate_request\n/m);
+  assert.match(compiled, /^  safe_outputs:\n(?:    name:[^\n]*\n)?    needs:\n(?:      - [\w-]+\n)*      - validate_request\n/m);
   const config = (key) => JSON.parse(JSON.parse(
     compiled.match(new RegExp(`^\\s+${key}: (.+)$`, "m"))[1],
   ));
@@ -385,6 +385,23 @@ test("compiled reviewer retains validated targets in both agent and publisher co
   assert.deepEqual(agent.remove_labels.allowed, ["mgmt-review-in-progress"]);
   const safeOutputs = compiled.slice(compiled.indexOf("\n  safe_outputs:\n"));
   assert.ok(safeOutputs.indexOf("Reject stale review outputs") < safeOutputs.indexOf("Process Safe Outputs"));
+});
+
+test("collector credentials stay outside the agent and detection environments", () => {
+  const source = text("mgmt-review.md");
+  const compiled = text("mgmt-review.lock.yml");
+  const excluded = source.match(/^excluded-env:\n((?:  - [^\n]+\n)+)/m)?.[1];
+  assert.ok(excluded, "source declares credential exclusions");
+  const commands = compiled.split("\n").filter((line) => line.includes("--env-all"));
+  assert.equal(commands.length, 2, "checks both agent and detection commands");
+  for (const name of ["GH_AW_OTLP_ENDPOINTS", "OTEL_EXPORTER_OTLP_HEADERS"]) {
+    assert.match(excluded, new RegExp(`^  - ${name}$`, "m"));
+    for (const command of commands) {
+      assert.match(command, new RegExp(`--exclude-env ${name}(?:\\s|$)`));
+    }
+    assert.match(compiled, new RegExp(`^  ${name}: .*secrets.GH_AW_DEFAULT_OTLP_HEADERS`, "m"),
+      "trusted exporters retain collector credentials");
+  }
 });
 
 test("the actual safe-output guard cleans up rejected reviews without consuming new requests", async (t) => {

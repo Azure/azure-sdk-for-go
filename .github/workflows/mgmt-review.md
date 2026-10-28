@@ -64,6 +64,9 @@ permissions:
   checks: read
   copilot-requests: write
 strict: false
+excluded-env:
+  - GH_AW_OTLP_ENDPOINTS
+  - OTEL_EXPORTER_OTLP_HEADERS
 network:
   allowed:
     - defaults

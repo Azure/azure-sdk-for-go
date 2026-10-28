@@ -3,6 +3,8 @@
 
 //go:build cgo && ((darwin && !ios && arm64) || (linux && !android && amd64))
 
+// cSpell:ignore gocritic
+
 package azcosmos
 
 /*
@@ -33,6 +35,7 @@ static cosmos_value_t cosmos_test_f64_value(double value) {
 import "C"
 
 import (
+	"sync/atomic"
 	"time"
 	"unsafe"
 
@@ -40,9 +43,10 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
 
-// completionResult is everything an operation needs from a completion, copied out of driver-owned
-// memory so it stays valid after the completion is freed.
+// completionResult carries an exclusively owned native record until the waiting caller prepares
+// its Go-owned response. Prepared results contain no borrowed native data.
 type completionResult struct {
+	native           *ownedCompletion
 	response         ItemResponse
 	body             []byte
 	err              error
@@ -62,24 +66,52 @@ type completionResult struct {
 	container *C.cosmos_container_ref_t
 }
 
-// release frees the handles a result owns. It is for the paths that drop a result rather than
-// returning it, which would otherwise leak whatever the completion carried.
+// release frees native backing and handles when a result is discarded instead of returned.
 func (r completionResult) release() {
+	if r.native != nil {
+		r.native.release()
+	}
 	// Freeing is a no-op on NULL, so the common case of a result carrying neither is free.
 	C.cosmos_driver_free(r.driver)
 	C.cosmos_container_ref_free(r.container)
 }
 
+// ownedCompletion never points into the reusable poll batch. Keep the C-only record in its own
+// allocation so passing it to C cannot expose Go-pointer-bearing bookkeeping.
+type ownedCompletion struct {
+	record    *C.cosmos_completion_t
+	verbosity DiagnosticsVerbosity
+}
+
+func moveCompletion(source *C.cosmos_completion_t, verbosity DiagnosticsVerbosity) completionResult {
+	record := new(C.cosmos_completion_t)
+	*record = *source
+	*source = C.cosmos_completion_t{}
+	return completionResult{native: &ownedCompletion{record: record, verbosity: verbosity}}
+}
+
+func (c *ownedCompletion) release() {
+	C.cosmos_completion_queue_free_completions(c.record, 1)
+	*c.record = C.cosmos_completion_t{}
+}
+
+func (r completionResult) prepare() completionResult {
+	if r.native == nil {
+		return r
+	}
+	defer r.native.release()
+	return translateCompletion(r.native.record, r.native.verbosity)
+}
+
 // translateCompletion copies a completion into Go memory.
 //
-// Everything it reads is borrowed from the driver and reclaimed when the completion is freed at the
-// end of the drain, so every string and byte slice is copied rather than referenced.
+// Everything it reads is borrowed until the caller frees the completion after preparation,
+// so every string and byte slice is copied rather than referenced.
 func translateCompletion(completion *C.cosmos_completion_t, verbosity DiagnosticsVerbosity) completionResult {
 	result := translateCompletionOutcome(completion, verbosity)
 
-	// Taken here rather than by the waiter, because the completion is freed at the end of this
-	// drain and a handle left on it would be reclaimed with it. Both return NULL when the
-	// completion carries nothing, so this is unconditional.
+	// Detach before freeing the completion, since a handle left on it would be reclaimed with
+	// its backing. Both return NULL when the completion carries nothing.
 	result.driver = C.cosmos_completion_take_driver(completion)
 	result.container = C.cosmos_completion_take_container(completion)
 	return result
@@ -389,7 +421,7 @@ func syntheticCompletionWithHeaders(outcome C.cosmos_completion_outcome_t, httpS
 		body:             (*C.uint8_t)(bodyMemory),
 		body_len:         C.uintptr_t(len(body)),
 	}
-	return translateCompletion(&completion, DiagnosticsVerbosityDefault)
+	return moveCompletion(&completion, DiagnosticsVerbosityDefault).prepare()
 }
 
 // syntheticOutcome mirrors cosmos_completion_outcome_t without exposing the cgo type to tests, so
@@ -436,7 +468,7 @@ func syntheticCompletionResultWithVerbosity(
 	if fromWire {
 		completion.is_from_wire = 1
 	}
-	return translateCompletionOutcome(&completion, verbosity)
+	return moveCompletion(&completion, verbosity).prepare()
 }
 
 // stubCopyDiagnosticsForCompletion installs a fake copyDiagnosticsForCompletion and returns a
@@ -475,5 +507,75 @@ func syntheticSessionCompletion() ItemResponse {
 		headers:          header,
 		headers_len:      1,
 	}
-	return translateCompletionOutcome(&completion, DiagnosticsVerbosityDefault).response
+	return moveCompletion(&completion, DiagnosticsVerbosityDefault).prepare().response
+}
+
+// dispatchSyntheticCompletion borrows C buffers, not Rust backing. The caller must keep them
+// alive until preparation finishes; real backing and side handles are exercised by emulator tests.
+func dispatchSyntheticCompletion(r *reactor, cookie uintptr, status int, body string) (bool, func()) {
+	var memory unsafe.Pointer
+	if body != "" {
+		memory = C.CBytes([]byte(body))
+	}
+	source := C.cosmos_completion_t{
+		outcome: C.COSMOS_COMPLETION_OUTCOME_OK, user_data: C.intptr_t(cookie),
+		http_status_code: C.uint16_t(status), body: (*C.uint8_t)(memory), body_len: C.uintptr_t(len(body)),
+	}
+	r.deliver(&source)
+	cleared := source == (C.cosmos_completion_t{})
+	// Reusing the slot must not change the record handed to the caller.
+	source.http_status_code = 599
+	C.cosmos_completion_queue_free_completions(&source, 1) //nolint:gocritic // dupSubExpr targets cgo-generated code.
+	return cleared, func() { C.free(memory) }
+}
+
+func stubBlockingDiagnosticsCopy(started chan<- struct{}, resume <-chan struct{}) func() {
+	original := copyDiagnosticsForCompletion
+	var first atomic.Bool
+	copyDiagnosticsForCompletion = func(d *C.cosmos_diagnostics_t, verbosity DiagnosticsVerbosity) (*Diagnostics, error) {
+		if first.CompareAndSwap(false, true) {
+			close(started)
+			<-resume
+		}
+		return original(d, verbosity)
+	}
+	return func() { copyDiagnosticsForCompletion = original }
+}
+
+// captureHandleCompletionForTest obtains real Rust backing and an owned side handle on an isolated
+// queue. It frees the reusable poll slot before returning the moved record to the test.
+func (d *nativeDriver) captureHandleCompletionForTest(driver bool, databaseID, containerID string) (completionResult, error) {
+	options := C.cosmos_completion_queue_options_t{include_error_details: C.bool(true)}
+	queue := C.cosmos_completion_queue_create(d.runtime, &options)
+	if queue == nil {
+		return completionResult{}, &Error{Code: CodeClientError, Message: "creating test completion queue"}
+	}
+	defer C.cosmos_completion_queue_free(queue)
+	var preError C.cosmos_status_code_t
+	var op *C.cosmos_operation_handle_t
+	if driver {
+		driverOptions, err := d.buildDriverOptions()
+		if err != nil {
+			return completionResult{}, err
+		}
+		defer C.cosmos_driver_options_free(driverOptions)
+		op = C.cosmos_driver_get_or_create_submit(d.runtime, d.account, driverOptions, queue, 0, &preError)
+	} else {
+		database, freeDatabase := toNativeString(databaseID)
+		defer C.free(freeDatabase)
+		container, freeContainer := toNativeString(containerID)
+		defer C.free(freeContainer)
+		op = C.cosmos_driver_resolve_container_submit(d.driver, database, container, queue, 0, &preError)
+	}
+	if op == nil {
+		return completionResult{}, &Error{Code: CodeClientError, Message: "submitting test handle completion"}
+	}
+	defer C.cosmos_operation_handle_free(op)
+	var source C.cosmos_completion_t
+	if C.cosmos_completion_queue_wait(queue, &source, 1, 10_000) != 1 { //nolint:gocritic // dupSubExpr targets cgo-generated code.
+		return completionResult{}, &Error{Code: CodeClientError, Message: "waiting for test handle completion"}
+	}
+	result := moveCompletion(&source, d.reactor.verbosity)
+	C.cosmos_completion_queue_free_completions(&source, 1) //nolint:gocritic // dupSubExpr targets cgo-generated code.
+	return result, nil
 }

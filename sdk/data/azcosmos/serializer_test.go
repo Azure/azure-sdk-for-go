@@ -24,13 +24,13 @@ type marshalModelFunc func() ([]byte, error)
 
 func (m marshalModelFunc) MarshalJSON() ([]byte, error) { return m() }
 
-var decodeFailure = errors.New("decode failed")
+var errDecodeFailure = errors.New("decode failed")
 
 type failingDecodeModel struct{ Partial bool }
 
 func (m *failingDecodeModel) UnmarshalJSON([]byte) error {
 	m.Partial = true
-	return decodeFailure
+	return errDecodeFailure
 }
 
 // These model-hook tests are serial and join every decoding goroutine before cleanup.
@@ -170,12 +170,12 @@ func TestItemResponseConversionFailureMetadata(t *testing.T) {
 	}
 	model, err := response.IntoModel[failingDecodeModel]()
 	require.Zero(t, model)
-	require.ErrorIs(t, err, decodeFailure)
+	require.ErrorIs(t, err, errDecodeFailure)
 	require.Equal(t, &Error{
 		Code: CodeSerializationFailed, Message: "decoding item response",
 		StatusCode: 201, SubStatus: 4, AttemptCount: 2, RequestCharge: 5.5,
 		ActivityID: response.ActivityID, Diagnostics: response.Diagnostics,
-		ETag: response.ETag, SessionToken: response.SessionToken, cause: decodeFailure,
+		ETag: response.ETag, SessionToken: response.SessionToken, cause: errDecodeFailure,
 		PatchTrackingID: response.PatchTrackingID,
 	}, err)
 }

@@ -121,7 +121,9 @@ func newInitializedClient(ctx context.Context, endpoint, accountKey string, cred
 	if err := client.initialize(ctx); err != nil {
 		// Cancellation can leave native submissions in flight. Teardown drains their late
 		// completions before releasing handles and detaching the runtime, without delaying ctx.
-		go client.close()
+		go func() {
+			_ = client.close() // Native and stub teardown currently return nil.
+		}()
 		return nil, err
 	}
 	return client, nil

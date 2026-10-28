@@ -79,7 +79,7 @@ func newMetadataServer(t *testing.T, intercept func(http.ResponseWriter, *http.R
 			return
 		}
 		if r.URL.Path == "/" {
-			fmt.Fprintf(w, `{
+			_, _ = fmt.Fprintf(w, `{
 				"id":"synthetic","_rid":"synthetic.documents.azure.com","_self":"",
 				"media":"//media/","addresses":"//addresses/","_dbs":"//dbs/",
 				"readableLocations":[{"name":"West US","databaseAccountEndpoint":%q}],
@@ -98,17 +98,17 @@ func newMetadataServer(t *testing.T, intercept func(http.ResponseWriter, *http.R
 				w.WriteHeader(http.StatusNotModified)
 				return
 			}
-			fmt.Fprint(w, `{"PartitionKeyRanges":[{"id":"0","minInclusive":"","maxExclusive":"FF","parents":[]}],"_count":1}`)
+			_, _ = fmt.Fprint(w, `{"PartitionKeyRanges":[{"id":"0","minInclusive":"","maxExclusive":"FF","parents":[]}],"_count":1}`)
 			return
 		}
 		if strings.HasSuffix(r.URL.Path, "/colls/items") {
-			fmt.Fprint(w, `{"id":"items","_rid":"AAAAAIAAAAA=","_etag":"synthetic","partitionKey":{"paths":["/pk"],"kind":"Hash","version":2}}`)
+			_, _ = fmt.Fprint(w, `{"id":"items","_rid":"AAAAAIAAAAA=","_etag":"synthetic","partitionKey":{"paths":["/pk"],"kind":"Hash","version":2}}`)
 			return
 		}
 		w.Header().Set("x-ms-request-charge", "2.5")
 		w.Header().Set("x-ms-activity-id", "synthetic-metadata")
 		w.WriteHeader(http.StatusNotFound)
-		fmt.Fprint(w, `{"code":"NotFound","message":"synthetic missing container"}`)
+		_, _ = fmt.Fprint(w, `{"code":"NotFound","message":"synthetic missing container"}`)
 	}))
 	server.Config.Protocols = new(http.Protocols)
 	server.Config.Protocols.SetHTTP1(true)
@@ -276,7 +276,7 @@ func TestNativeBinaryEncodingLayerPrecedence(t *testing.T) {
 				if strings.Contains(r.URL.Path, "/docs/") {
 					observed.Store(strings.Contains(r.Header.Get("x-ms-cosmos-supported-serialization-formats"), "CosmosBinary"))
 					requests.Add(1)
-					fmt.Fprint(w, `{"id":"one","pk":"one"}`)
+					_, _ = fmt.Fprint(w, `{"id":"one","pk":"one"}`)
 					return true
 				}
 				return false

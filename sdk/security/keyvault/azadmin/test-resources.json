@@ -123,6 +123,7 @@
         "managedIdentityName": "[concat(parameters('baseName'), '-managedIdentity')]",
         "managedIdentityId": "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', variables('managedIdentityName'))]",
         "blobDataContributorDefinitionId": "ba92f5b4-2d11-453d-a403-e96b0029c9fe",
+        "blobDataOwnerDefinitionId": "b7e6dc6d-f1e8-4753-8033-0f276bb0955b",
         "encryption": {
             "services": {
                 "blob": {
@@ -242,6 +243,19 @@
                 "roleDefinitionId": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', variables('blobDataContributorDefinitionId'))]",
                 "principalId": "[if(parameters('enableHsm'), reference(variables('managedIdentityId'), variables('managedIdentityApiVersion')).principalId, '')]",
                 "principalType": "ServicePrincipal"
+            }
+        },
+        {
+            "type": "Microsoft.Authorization/roleAssignments",
+            "apiVersion": "2022-04-01",
+            "name": "[guid(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('blobDataOwnerDefinitionId'), parameters('testApplicationOid'))]",
+            "scope": "[concat('Microsoft.Storage/storageAccounts/', variables('primaryAccountName'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName'))]"
+            ],
+            "properties": {
+                "roleDefinitionId": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', variables('blobDataOwnerDefinitionId'))]",
+                "principalId": "[parameters('testApplicationOid')]"
             }
         },
         {

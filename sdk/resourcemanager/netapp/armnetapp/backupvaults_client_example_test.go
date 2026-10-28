@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-08-01/BackupVaults_Create.json
+// Generated from example definition: 2026-08-15-preview/BackupVaults_Create.json
 func ExampleBackupVaultsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -49,7 +49,7 @@ func ExampleBackupVaultsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-08-01/BackupVaults_Delete.json
+// Generated from example definition: 2026-08-15-preview/BackupVaults_Delete.json
 func ExampleBackupVaultsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -70,7 +70,7 @@ func ExampleBackupVaultsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-08-01/BackupVaults_Update.json
+// Generated from example definition: 2026-08-15-preview/BackupVaults_Update.json
 func ExampleBackupVaultsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -112,7 +112,7 @@ func ExampleBackupVaultsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-08-01/BackupVaults_Get.json
+// Generated from example definition: 2026-08-15-preview/BackupVaults_Get.json
 func ExampleBackupVaultsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -146,7 +146,7 @@ func ExampleBackupVaultsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-08-01/BackupVaults_List.json
+// Generated from example definition: 2026-08-15-preview/BackupVaults_List.json
 func ExampleBackupVaultsClient_NewListByNetAppAccountPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

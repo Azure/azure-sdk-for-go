@@ -1,5 +1,249 @@
 # Release History
 
+## 11.1.0-beta.1 (2026-10-28)
+### Features Added
+
+- New enum type `AsyncDirectoryDeleteStatus` with values `AsyncDirectoryDeleteStatusDisabled`, `AsyncDirectoryDeleteStatusEnabled`
+- New enum type `CheckElasticResourceAvailabilityReason` with values `CheckElasticResourceAvailabilityReasonAlreadyExists`, `CheckElasticResourceAvailabilityReasonInvalid`
+- New enum type `CheckElasticResourceAvailabilityStatus` with values `CheckElasticResourceAvailabilityStatusFalse`, `CheckElasticResourceAvailabilityStatusTrue`
+- New enum type `ClusterPeerStatus` with values `ClusterPeerStatusActive`, `ClusterPeerStatusError`, `ClusterPeerStatusPending`
+- New enum type `DayOfWeek` with values `DayOfWeekFriday`, `DayOfWeekMonday`, `DayOfWeekSaturday`, `DayOfWeekSunday`, `DayOfWeekThursday`, `DayOfWeekTuesday`, `DayOfWeekWednesday`
+- New enum type `ElasticBackupPolicyState` with values `ElasticBackupPolicyStateDisabled`, `ElasticBackupPolicyStateEnabled`
+- New enum type `ElasticBackupType` with values `ElasticBackupTypeManual`, `ElasticBackupTypeScheduled`
+- New enum type `ElasticKeyVaultStatus` with values `ElasticKeyVaultStatusCreated`, `ElasticKeyVaultStatusDeleted`, `ElasticKeyVaultStatusError`, `ElasticKeyVaultStatusInUse`, `ElasticKeyVaultStatusUpdating`
+- New enum type `ElasticNfsv3Access` with values `ElasticNfsv3AccessDisabled`, `ElasticNfsv3AccessEnabled`
+- New enum type `ElasticNfsv4Access` with values `ElasticNfsv4AccessDisabled`, `ElasticNfsv4AccessEnabled`
+- New enum type `ElasticPoolEncryptionKeySource` with values `ElasticPoolEncryptionKeySourceKeyVault`, `ElasticPoolEncryptionKeySourceNetApp`
+- New enum type `ElasticProtocolType` with values `ElasticProtocolTypeNFSv3`, `ElasticProtocolTypeNFSv4`, `ElasticProtocolTypeSMB`
+- New enum type `ElasticResourceAvailabilityStatus` with values `ElasticResourceAvailabilityStatusOffline`, `ElasticResourceAvailabilityStatusOnline`
+- New enum type `ElasticRootAccess` with values `ElasticRootAccessDisabled`, `ElasticRootAccessEnabled`
+- New enum type `ElasticServiceLevel` with values `ElasticServiceLevelZoneRedundant`
+- New enum type `ElasticSmbEncryption` with values `ElasticSmbEncryptionDisabled`, `ElasticSmbEncryptionEnabled`
+- New enum type `ElasticUnixAccessRule` with values `ElasticUnixAccessRuleNoAccess`, `ElasticUnixAccessRuleReadOnly`, `ElasticUnixAccessRuleReadWrite`
+- New enum type `ElasticVolumePolicyEnforcement` with values `ElasticVolumePolicyEnforcementEnforced`, `ElasticVolumePolicyEnforcementNotEnforced`
+- New enum type `ElasticVolumeRestorationState` with values `ElasticVolumeRestorationStateFailed`, `ElasticVolumeRestorationStateRestored`, `ElasticVolumeRestorationStateRestoring`
+- New enum type `ExternalCacheConnectionStatus` with values `ExternalCacheConnectionStatusConnected`, `ExternalCacheConnectionStatusDisconnected`, `ExternalCacheConnectionStatusPending`, `ExternalCacheConnectionStatusUnknown`, `ExternalCacheConnectionStatusUnsupported`
+- New enum type `ExternalCacheState` with values `ExternalCacheStateError`, `ExternalCacheStateMixed`, `ExternalCacheStateOffline`, `ExternalCacheStateOnline`, `ExternalCacheStatePending`, `ExternalCacheStateUnsupported`
+- New enum type `ExternalConnectionSetupState` with values `ExternalConnectionSetupStateClusterPeerPending`, `ExternalConnectionSetupStateNoActionRequired`, `ExternalConnectionSetupStateVServerPeerRequired`
+- New enum type `LargeVolumeType` with values `LargeVolumeTypeExtraLargeVolume7Dot2PiB`, `LargeVolumeTypeLargeVolume`
+- New enum type `OriginVolume` with values `OriginVolumeDisabled`, `OriginVolumeEnabled`
+- New enum type `PolicyStatus` with values `PolicyStatusDisabled`, `PolicyStatusEnabled`
+- New enum type `SmbOplocks` with values `SmbOplocksDisabled`, `SmbOplocksEnabled`
+- New enum type `SnapshotDirectoryVisibility` with values `SnapshotDirectoryVisibilityHidden`, `SnapshotDirectoryVisibilityVisible`
+- New enum type `SnapshotUsage` with values `SnapshotUsageCreateNewSnapshot`, `SnapshotUsageUseExistingSnapshot`
+- New enum type `SvmPeerStatus` with values `SvmPeerStatusActive`, `SvmPeerStatusError`, `SvmPeerStatusPending`
+- New enum type `SvmPeerType` with values `SvmPeerTypeCache`, `SvmPeerTypeReplication`
+- New enum type `VolumeSize` with values `VolumeSizeLarge`, `VolumeSizeRegular`
+- New function `NewActiveDirectoryConfigsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ActiveDirectoryConfigsClient, error)`
+- New function `*ActiveDirectoryConfigsClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, activeDirectoryConfigName string, body ActiveDirectoryConfig, options *ActiveDirectoryConfigsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ActiveDirectoryConfigsClientCreateOrUpdateResponse], error)`
+- New function `*ActiveDirectoryConfigsClient.BeginDelete(ctx context.Context, resourceGroupName string, activeDirectoryConfigName string, options *ActiveDirectoryConfigsClientBeginDeleteOptions) (*runtime.Poller[ActiveDirectoryConfigsClientDeleteResponse], error)`
+- New function `*ActiveDirectoryConfigsClient.Get(ctx context.Context, resourceGroupName string, activeDirectoryConfigName string, options *ActiveDirectoryConfigsClientGetOptions) (ActiveDirectoryConfigsClientGetResponse, error)`
+- New function `*ActiveDirectoryConfigsClient.NewListByResourceGroupPager(resourceGroupName string, options *ActiveDirectoryConfigsClientListByResourceGroupOptions) *runtime.Pager[ActiveDirectoryConfigsClientListByResourceGroupResponse]`
+- New function `*ActiveDirectoryConfigsClient.NewListBySubscriptionPager(options *ActiveDirectoryConfigsClientListBySubscriptionOptions) *runtime.Pager[ActiveDirectoryConfigsClientListBySubscriptionResponse]`
+- New function `*ActiveDirectoryConfigsClient.BeginUpdate(ctx context.Context, resourceGroupName string, activeDirectoryConfigName string, body ActiveDirectoryConfigUpdate, options *ActiveDirectoryConfigsClientBeginUpdateOptions) (*runtime.Poller[ActiveDirectoryConfigsClientUpdateResponse], error)`
+- New function `*ClientFactory.NewActiveDirectoryConfigsClient() *ActiveDirectoryConfigsClient`
+- New function `*ClientFactory.NewClusterPeersClient() *ClusterPeersClient`
+- New function `*ClientFactory.NewElasticAccountsClient() *ElasticAccountsClient`
+- New function `*ClientFactory.NewElasticBackupPoliciesClient() *ElasticBackupPoliciesClient`
+- New function `*ClientFactory.NewElasticBackupVaultsClient() *ElasticBackupVaultsClient`
+- New function `*ClientFactory.NewElasticBackupsClient() *ElasticBackupsClient`
+- New function `*ClientFactory.NewElasticCapacityPoolsClient() *ElasticCapacityPoolsClient`
+- New function `*ClientFactory.NewElasticSnapshotPoliciesClient() *ElasticSnapshotPoliciesClient`
+- New function `*ClientFactory.NewElasticSnapshotsClient() *ElasticSnapshotsClient`
+- New function `*ClientFactory.NewElasticVolumesClient() *ElasticVolumesClient`
+- New function `*ClientFactory.NewExternalCacheConnectionsClient() *ExternalCacheConnectionsClient`
+- New function `*ClientFactory.NewExternalCachesClient() *ExternalCachesClient`
+- New function `*ClientFactory.NewExternalClustersClient() *ExternalClustersClient`
+- New function `*ClientFactory.NewExternalSvmsClient() *ExternalSvmsClient`
+- New function `*ClientFactory.NewSvmPeersClient() *SvmPeersClient`
+- New function `NewClusterPeersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClusterPeersClient, error)`
+- New function `*ClusterPeersClient.Get(ctx context.Context, resourceGroupName string, externalClusterName string, peerID string, options *ClusterPeersClientGetOptions) (ClusterPeersClientGetResponse, error)`
+- New function `*ClusterPeersClient.NewListByParentPager(resourceGroupName string, externalClusterName string, options *ClusterPeersClientListByParentOptions) *runtime.Pager[ClusterPeersClientListByParentResponse]`
+- New function `NewElasticAccountsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ElasticAccountsClient, error)`
+- New function `*ElasticAccountsClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, body ElasticAccount, options *ElasticAccountsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ElasticAccountsClientCreateOrUpdateResponse], error)`
+- New function `*ElasticAccountsClient.BeginDelete(ctx context.Context, resourceGroupName string, accountName string, options *ElasticAccountsClientBeginDeleteOptions) (*runtime.Poller[ElasticAccountsClientDeleteResponse], error)`
+- New function `*ElasticAccountsClient.Get(ctx context.Context, resourceGroupName string, accountName string, options *ElasticAccountsClientGetOptions) (ElasticAccountsClientGetResponse, error)`
+- New function `*ElasticAccountsClient.NewListByResourceGroupPager(resourceGroupName string, options *ElasticAccountsClientListByResourceGroupOptions) *runtime.Pager[ElasticAccountsClientListByResourceGroupResponse]`
+- New function `*ElasticAccountsClient.NewListBySubscriptionPager(options *ElasticAccountsClientListBySubscriptionOptions) *runtime.Pager[ElasticAccountsClientListBySubscriptionResponse]`
+- New function `*ElasticAccountsClient.BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, body ElasticAccountUpdate, options *ElasticAccountsClientBeginUpdateOptions) (*runtime.Poller[ElasticAccountsClientUpdateResponse], error)`
+- New function `NewElasticBackupPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ElasticBackupPoliciesClient, error)`
+- New function `*ElasticBackupPoliciesClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, backupPolicyName string, body ElasticBackupPolicy, options *ElasticBackupPoliciesClientBeginCreateOrUpdateOptions) (*runtime.Poller[ElasticBackupPoliciesClientCreateOrUpdateResponse], error)`
+- New function `*ElasticBackupPoliciesClient.BeginDelete(ctx context.Context, resourceGroupName string, accountName string, backupPolicyName string, options *ElasticBackupPoliciesClientBeginDeleteOptions) (*runtime.Poller[ElasticBackupPoliciesClientDeleteResponse], error)`
+- New function `*ElasticBackupPoliciesClient.Get(ctx context.Context, resourceGroupName string, accountName string, backupPolicyName string, options *ElasticBackupPoliciesClientGetOptions) (ElasticBackupPoliciesClientGetResponse, error)`
+- New function `*ElasticBackupPoliciesClient.NewListByElasticAccountPager(resourceGroupName string, accountName string, options *ElasticBackupPoliciesClientListByElasticAccountOptions) *runtime.Pager[ElasticBackupPoliciesClientListByElasticAccountResponse]`
+- New function `*ElasticBackupPoliciesClient.BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, backupPolicyName string, body ElasticBackupPolicyUpdate, options *ElasticBackupPoliciesClientBeginUpdateOptions) (*runtime.Poller[ElasticBackupPoliciesClientUpdateResponse], error)`
+- New function `NewElasticBackupVaultsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ElasticBackupVaultsClient, error)`
+- New function `*ElasticBackupVaultsClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, backupVaultName string, body ElasticBackupVault, options *ElasticBackupVaultsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ElasticBackupVaultsClientCreateOrUpdateResponse], error)`
+- New function `*ElasticBackupVaultsClient.BeginDelete(ctx context.Context, resourceGroupName string, accountName string, backupVaultName string, options *ElasticBackupVaultsClientBeginDeleteOptions) (*runtime.Poller[ElasticBackupVaultsClientDeleteResponse], error)`
+- New function `*ElasticBackupVaultsClient.Get(ctx context.Context, resourceGroupName string, accountName string, backupVaultName string, options *ElasticBackupVaultsClientGetOptions) (ElasticBackupVaultsClientGetResponse, error)`
+- New function `*ElasticBackupVaultsClient.NewListByElasticAccountPager(resourceGroupName string, accountName string, options *ElasticBackupVaultsClientListByElasticAccountOptions) *runtime.Pager[ElasticBackupVaultsClientListByElasticAccountResponse]`
+- New function `*ElasticBackupVaultsClient.BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, backupVaultName string, body ElasticBackupVaultUpdate, options *ElasticBackupVaultsClientBeginUpdateOptions) (*runtime.Poller[ElasticBackupVaultsClientUpdateResponse], error)`
+- New function `NewElasticBackupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ElasticBackupsClient, error)`
+- New function `*ElasticBackupsClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, backupVaultName string, backupName string, body ElasticBackup, options *ElasticBackupsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ElasticBackupsClientCreateOrUpdateResponse], error)`
+- New function `*ElasticBackupsClient.BeginDelete(ctx context.Context, resourceGroupName string, accountName string, backupVaultName string, backupName string, options *ElasticBackupsClientBeginDeleteOptions) (*runtime.Poller[ElasticBackupsClientDeleteResponse], error)`
+- New function `*ElasticBackupsClient.Get(ctx context.Context, resourceGroupName string, accountName string, backupVaultName string, backupName string, options *ElasticBackupsClientGetOptions) (ElasticBackupsClientGetResponse, error)`
+- New function `*ElasticBackupsClient.NewListByVaultPager(resourceGroupName string, accountName string, backupVaultName string, options *ElasticBackupsClientListByVaultOptions) *runtime.Pager[ElasticBackupsClientListByVaultResponse]`
+- New function `*ElasticBackupsClient.BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, backupVaultName string, backupName string, body ElasticBackup, options *ElasticBackupsClientBeginUpdateOptions) (*runtime.Poller[ElasticBackupsClientUpdateResponse], error)`
+- New function `NewElasticCapacityPoolsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ElasticCapacityPoolsClient, error)`
+- New function `*ElasticCapacityPoolsClient.BeginChangeZone(ctx context.Context, resourceGroupName string, accountName string, poolName string, body ChangeZoneRequest, options *ElasticCapacityPoolsClientBeginChangeZoneOptions) (*runtime.Poller[ElasticCapacityPoolsClientChangeZoneResponse], error)`
+- New function `*ElasticCapacityPoolsClient.CheckVolumeFilePathAvailability(ctx context.Context, resourceGroupName string, accountName string, poolName string, body CheckElasticVolumeFilePathAvailabilityRequest, options *ElasticCapacityPoolsClientCheckVolumeFilePathAvailabilityOptions) (ElasticCapacityPoolsClientCheckVolumeFilePathAvailabilityResponse, error)`
+- New function `*ElasticCapacityPoolsClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, poolName string, body ElasticCapacityPool, options *ElasticCapacityPoolsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ElasticCapacityPoolsClientCreateOrUpdateResponse], error)`
+- New function `*ElasticCapacityPoolsClient.BeginDelete(ctx context.Context, resourceGroupName string, accountName string, poolName string, options *ElasticCapacityPoolsClientBeginDeleteOptions) (*runtime.Poller[ElasticCapacityPoolsClientDeleteResponse], error)`
+- New function `*ElasticCapacityPoolsClient.Get(ctx context.Context, resourceGroupName string, accountName string, poolName string, options *ElasticCapacityPoolsClientGetOptions) (ElasticCapacityPoolsClientGetResponse, error)`
+- New function `*ElasticCapacityPoolsClient.NewListByElasticAccountPager(resourceGroupName string, accountName string, options *ElasticCapacityPoolsClientListByElasticAccountOptions) *runtime.Pager[ElasticCapacityPoolsClientListByElasticAccountResponse]`
+- New function `*ElasticCapacityPoolsClient.BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, poolName string, body ElasticCapacityPoolUpdate, options *ElasticCapacityPoolsClientBeginUpdateOptions) (*runtime.Poller[ElasticCapacityPoolsClientUpdateResponse], error)`
+- New function `NewElasticSnapshotPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ElasticSnapshotPoliciesClient, error)`
+- New function `*ElasticSnapshotPoliciesClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, snapshotPolicyName string, body ElasticSnapshotPolicy, options *ElasticSnapshotPoliciesClientBeginCreateOrUpdateOptions) (*runtime.Poller[ElasticSnapshotPoliciesClientCreateOrUpdateResponse], error)`
+- New function `*ElasticSnapshotPoliciesClient.BeginDelete(ctx context.Context, resourceGroupName string, accountName string, snapshotPolicyName string, options *ElasticSnapshotPoliciesClientBeginDeleteOptions) (*runtime.Poller[ElasticSnapshotPoliciesClientDeleteResponse], error)`
+- New function `*ElasticSnapshotPoliciesClient.Get(ctx context.Context, resourceGroupName string, accountName string, snapshotPolicyName string, options *ElasticSnapshotPoliciesClientGetOptions) (ElasticSnapshotPoliciesClientGetResponse, error)`
+- New function `*ElasticSnapshotPoliciesClient.NewListByElasticAccountPager(resourceGroupName string, accountName string, options *ElasticSnapshotPoliciesClientListByElasticAccountOptions) *runtime.Pager[ElasticSnapshotPoliciesClientListByElasticAccountResponse]`
+- New function `*ElasticSnapshotPoliciesClient.NewListElasticVolumesPager(resourceGroupName string, accountName string, snapshotPolicyName string, options *ElasticSnapshotPoliciesClientListElasticVolumesOptions) *runtime.Pager[ElasticSnapshotPoliciesClientListElasticVolumesResponse]`
+- New function `*ElasticSnapshotPoliciesClient.BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, snapshotPolicyName string, body ElasticSnapshotPolicyUpdate, options *ElasticSnapshotPoliciesClientBeginUpdateOptions) (*runtime.Poller[ElasticSnapshotPoliciesClientUpdateResponse], error)`
+- New function `NewElasticSnapshotsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ElasticSnapshotsClient, error)`
+- New function `*ElasticSnapshotsClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, snapshotName string, body ElasticSnapshot, options *ElasticSnapshotsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ElasticSnapshotsClientCreateOrUpdateResponse], error)`
+- New function `*ElasticSnapshotsClient.BeginDelete(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, snapshotName string, options *ElasticSnapshotsClientBeginDeleteOptions) (*runtime.Poller[ElasticSnapshotsClientDeleteResponse], error)`
+- New function `*ElasticSnapshotsClient.Get(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, snapshotName string, options *ElasticSnapshotsClientGetOptions) (ElasticSnapshotsClientGetResponse, error)`
+- New function `*ElasticSnapshotsClient.NewListByElasticVolumePager(resourceGroupName string, accountName string, poolName string, volumeName string, options *ElasticSnapshotsClientListByElasticVolumeOptions) *runtime.Pager[ElasticSnapshotsClientListByElasticVolumeResponse]`
+- New function `NewElasticVolumesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ElasticVolumesClient, error)`
+- New function `*ElasticVolumesClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body ElasticVolume, options *ElasticVolumesClientBeginCreateOrUpdateOptions) (*runtime.Poller[ElasticVolumesClientCreateOrUpdateResponse], error)`
+- New function `*ElasticVolumesClient.BeginDelete(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *ElasticVolumesClientBeginDeleteOptions) (*runtime.Poller[ElasticVolumesClientDeleteResponse], error)`
+- New function `*ElasticVolumesClient.Get(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *ElasticVolumesClientGetOptions) (ElasticVolumesClientGetResponse, error)`
+- New function `*ElasticVolumesClient.NewListByElasticPoolPager(resourceGroupName string, accountName string, poolName string, options *ElasticVolumesClientListByElasticPoolOptions) *runtime.Pager[ElasticVolumesClientListByElasticPoolResponse]`
+- New function `*ElasticVolumesClient.BeginRevert(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body ElasticVolumeRevert, options *ElasticVolumesClientBeginRevertOptions) (*runtime.Poller[ElasticVolumesClientRevertResponse], error)`
+- New function `*ElasticVolumesClient.BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body ElasticVolumeUpdate, options *ElasticVolumesClientBeginUpdateOptions) (*runtime.Poller[ElasticVolumesClientUpdateResponse], error)`
+- New function `NewExternalCacheConnectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ExternalCacheConnectionsClient, error)`
+- New function `*ExternalCacheConnectionsClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, externalCacheConnectionName string, resource ExternalCacheConnection, options *ExternalCacheConnectionsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ExternalCacheConnectionsClientCreateOrUpdateResponse], error)`
+- New function `*ExternalCacheConnectionsClient.BeginDelete(ctx context.Context, resourceGroupName string, externalCacheConnectionName string, options *ExternalCacheConnectionsClientBeginDeleteOptions) (*runtime.Poller[ExternalCacheConnectionsClientDeleteResponse], error)`
+- New function `*ExternalCacheConnectionsClient.Get(ctx context.Context, resourceGroupName string, externalCacheConnectionName string, options *ExternalCacheConnectionsClientGetOptions) (ExternalCacheConnectionsClientGetResponse, error)`
+- New function `*ExternalCacheConnectionsClient.NewListByResourceGroupPager(resourceGroupName string, options *ExternalCacheConnectionsClientListByResourceGroupOptions) *runtime.Pager[ExternalCacheConnectionsClientListByResourceGroupResponse]`
+- New function `*ExternalCacheConnectionsClient.NewListBySubscriptionPager(options *ExternalCacheConnectionsClientListBySubscriptionOptions) *runtime.Pager[ExternalCacheConnectionsClientListBySubscriptionResponse]`
+- New function `*ExternalCacheConnectionsClient.BeginUpdate(ctx context.Context, resourceGroupName string, externalCacheConnectionName string, properties ExternalCacheConnectionTagsUpdate, options *ExternalCacheConnectionsClientBeginUpdateOptions) (*runtime.Poller[ExternalCacheConnectionsClientUpdateResponse], error)`
+- New function `NewExternalCachesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ExternalCachesClient, error)`
+- New function `*ExternalCachesClient.Get(ctx context.Context, resourceGroupName string, externalClusterName string, externalSvmName string, externalCacheResourceName string, options *ExternalCachesClientGetOptions) (ExternalCachesClientGetResponse, error)`
+- New function `*ExternalCachesClient.NewListByParentPager(resourceGroupName string, externalClusterName string, externalSvmName string, options *ExternalCachesClientListByParentOptions) *runtime.Pager[ExternalCachesClientListByParentResponse]`
+- New function `NewExternalClustersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ExternalClustersClient, error)`
+- New function `*ExternalClustersClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, externalClusterName string, resource ExternalCluster, options *ExternalClustersClientBeginCreateOrUpdateOptions) (*runtime.Poller[ExternalClustersClientCreateOrUpdateResponse], error)`
+- New function `*ExternalClustersClient.BeginDelete(ctx context.Context, resourceGroupName string, externalClusterName string, options *ExternalClustersClientBeginDeleteOptions) (*runtime.Poller[ExternalClustersClientDeleteResponse], error)`
+- New function `*ExternalClustersClient.Get(ctx context.Context, resourceGroupName string, externalClusterName string, options *ExternalClustersClientGetOptions) (ExternalClustersClientGetResponse, error)`
+- New function `*ExternalClustersClient.NewListByResourceGroupPager(resourceGroupName string, options *ExternalClustersClientListByResourceGroupOptions) *runtime.Pager[ExternalClustersClientListByResourceGroupResponse]`
+- New function `*ExternalClustersClient.NewListBySubscriptionPager(options *ExternalClustersClientListBySubscriptionOptions) *runtime.Pager[ExternalClustersClientListBySubscriptionResponse]`
+- New function `*ExternalClustersClient.BeginUpdate(ctx context.Context, resourceGroupName string, externalClusterName string, properties ExternalClusterUpdate, options *ExternalClustersClientBeginUpdateOptions) (*runtime.Poller[ExternalClustersClientUpdateResponse], error)`
+- New function `NewExternalSvmsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ExternalSvmsClient, error)`
+- New function `*ExternalSvmsClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, externalClusterName string, externalSvmName string, resource ExternalSvm, options *ExternalSvmsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ExternalSvmsClientCreateOrUpdateResponse], error)`
+- New function `*ExternalSvmsClient.BeginDelete(ctx context.Context, resourceGroupName string, externalClusterName string, externalSvmName string, options *ExternalSvmsClientBeginDeleteOptions) (*runtime.Poller[ExternalSvmsClientDeleteResponse], error)`
+- New function `*ExternalSvmsClient.Get(ctx context.Context, resourceGroupName string, externalClusterName string, externalSvmName string, options *ExternalSvmsClientGetOptions) (ExternalSvmsClientGetResponse, error)`
+- New function `*ExternalSvmsClient.NewListByParentPager(resourceGroupName string, externalClusterName string, options *ExternalSvmsClientListByParentOptions) *runtime.Pager[ExternalSvmsClientListByParentResponse]`
+- New function `*ExternalSvmsClient.BeginUpdate(ctx context.Context, resourceGroupName string, externalClusterName string, externalSvmName string, properties ExternalSvmTagsUpdate, options *ExternalSvmsClientBeginUpdateOptions) (*runtime.Poller[ExternalSvmsClientUpdateResponse], error)`
+- New function `NewSvmPeersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SvmPeersClient, error)`
+- New function `*SvmPeersClient.Get(ctx context.Context, resourceGroupName string, externalClusterName string, peerID string, svmPeerID string, options *SvmPeersClientGetOptions) (SvmPeersClientGetResponse, error)`
+- New function `*SvmPeersClient.NewListByParentPager(resourceGroupName string, externalClusterName string, peerID string, options *SvmPeersClientListByParentOptions) *runtime.Pager[SvmPeersClientListByParentResponse]`
+- New struct `ActiveDirectoryConfig`
+- New struct `ActiveDirectoryConfigListResult`
+- New struct `ActiveDirectoryConfigProperties`
+- New struct `ActiveDirectoryConfigUpdate`
+- New struct `ActiveDirectoryConfigUpdateProperties`
+- New struct `AsyncDirectoryDelete`
+- New struct `ChangeZoneRequest`
+- New struct `CheckElasticResourceAvailabilityResponse`
+- New struct `CheckElasticVolumeFilePathAvailabilityRequest`
+- New struct `ClusterPeer`
+- New struct `ClusterPeerListResult`
+- New struct `ClusterPeerProperties`
+- New struct `ElasticAccount`
+- New struct `ElasticAccountListResult`
+- New struct `ElasticAccountProperties`
+- New struct `ElasticAccountUpdate`
+- New struct `ElasticAccountUpdateProperties`
+- New struct `ElasticBackup`
+- New struct `ElasticBackupListResult`
+- New struct `ElasticBackupPolicy`
+- New struct `ElasticBackupPolicyListResult`
+- New struct `ElasticBackupPolicyProperties`
+- New struct `ElasticBackupPolicyUpdate`
+- New struct `ElasticBackupPolicyUpdateProperties`
+- New struct `ElasticBackupProperties`
+- New struct `ElasticBackupVault`
+- New struct `ElasticBackupVaultListResult`
+- New struct `ElasticBackupVaultProperties`
+- New struct `ElasticBackupVaultUpdate`
+- New struct `ElasticCapacityPool`
+- New struct `ElasticCapacityPoolListResult`
+- New struct `ElasticCapacityPoolProperties`
+- New struct `ElasticCapacityPoolUpdate`
+- New struct `ElasticCapacityPoolUpdateProperties`
+- New struct `ElasticEncryption`
+- New struct `ElasticEncryptionConfiguration`
+- New struct `ElasticEncryptionIdentity`
+- New struct `ElasticExportPolicy`
+- New struct `ElasticExportPolicyRule`
+- New struct `ElasticKeyVaultProperties`
+- New struct `ElasticMountTargetProperties`
+- New struct `ElasticSmbPatchProperties`
+- New struct `ElasticSmbProperties`
+- New struct `ElasticSnapshot`
+- New struct `ElasticSnapshotListResult`
+- New struct `ElasticSnapshotPolicy`
+- New struct `ElasticSnapshotPolicyDailySchedule`
+- New struct `ElasticSnapshotPolicyHourlySchedule`
+- New struct `ElasticSnapshotPolicyListResult`
+- New struct `ElasticSnapshotPolicyMonthlySchedule`
+- New struct `ElasticSnapshotPolicyProperties`
+- New struct `ElasticSnapshotPolicyUpdate`
+- New struct `ElasticSnapshotPolicyUpdateProperties`
+- New struct `ElasticSnapshotPolicyVolumeList`
+- New struct `ElasticSnapshotPolicyWeeklySchedule`
+- New struct `ElasticSnapshotProperties`
+- New struct `ElasticVolume`
+- New struct `ElasticVolumeBackupProperties`
+- New struct `ElasticVolumeDataProtectionPatchProperties`
+- New struct `ElasticVolumeDataProtectionProperties`
+- New struct `ElasticVolumeListResult`
+- New struct `ElasticVolumeProperties`
+- New struct `ElasticVolumeRevert`
+- New struct `ElasticVolumeSnapshotProperties`
+- New struct `ElasticVolumeUpdate`
+- New struct `ElasticVolumeUpdateProperties`
+- New struct `EntraIDAkvConfig`
+- New struct `EntraIDAkvConfigPatch`
+- New struct `EntraIDConfig`
+- New struct `EntraIDConfigPatch`
+- New struct `ExternalCache`
+- New struct `ExternalCacheConnection`
+- New struct `ExternalCacheConnectionList`
+- New struct `ExternalCacheConnectionProperties`
+- New struct `ExternalCacheConnectionTagsUpdate`
+- New struct `ExternalCacheListResult`
+- New struct `ExternalCacheProperties`
+- New struct `ExternalCluster`
+- New struct `ExternalClusterList`
+- New struct `ExternalClusterProperties`
+- New struct `ExternalClusterUpdate`
+- New struct `ExternalClusterUpdateProperties`
+- New struct `ExternalResourceNetworkInterfaces`
+- New struct `ExternalSvm`
+- New struct `ExternalSvmListResult`
+- New struct `ExternalSvmProperties`
+- New struct `ExternalSvmTagsUpdate`
+- New struct `KeyVaultClusterPeerPassphrasePatchProperties`
+- New struct `KeyVaultClusterPeerPassphraseProperties`
+- New struct `SecretPassword`
+- New struct `SecretPasswordIdentity`
+- New struct `SecretPasswordKeyVaultProperties`
+- New struct `SetupInformation`
+- New struct `SvmPeer`
+- New struct `SvmPeerListResult`
+- New struct `SvmPeerProperties`
+- New struct `VolumeNamespaceProperties`
+- New struct `VolumePatchNamespaceProperties`
+- New field `EntraIDConfig` in struct `AccountProperties`
+- New field `EntraIDConfig` in struct `AccountPropertiesPatch`
+- New field `UserAssignedIdentity` in struct `CertificateAkvDetails`
+- New field `UserAssignedIdentity` in struct `CredentialsAkvDetails`
+- New field `SmbOplocks` in struct `SmbSettings`
+- New field `AsyncDirectoryDelete`, `GeoNamespaceProperties`, `SmbOplocks` in struct `VolumePatchProperties`
+- New field `AsyncDirectoryDelete`, `GeoNamespaceProperties`, `Language`, `LargeVolumeType`, `LdapServerType`, `SmbOplocks` in struct `VolumeProperties`
+
+
 ## 11.0.0 (2026-10-21)
 ### Breaking Changes
 

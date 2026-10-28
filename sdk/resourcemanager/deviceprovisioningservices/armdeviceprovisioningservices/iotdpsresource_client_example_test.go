@@ -12,36 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-08-31/DPSCheckNameAvailability.json
-func ExampleIotDpsResourceClient_CheckProvisioningServiceNameAvailability() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdeviceprovisioningservices.NewClientFactory("91d12660-3dec-467a-be2a-213b5544ddc0", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewIotDpsResourceClient().CheckProvisioningServiceNameAvailability(ctx, armdeviceprovisioningservices.OperationInputs{
-		Name: to.Ptr("test213123"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdeviceprovisioningservices.IotDpsResourceClientCheckProvisioningServiceNameAvailabilityResponse{
-	// 	NameAvailabilityInfo: armdeviceprovisioningservices.NameAvailabilityInfo{
-	// 		Message: to.Ptr("name is valid"),
-	// 		NameAvailable: to.Ptr(true),
-	// 		Reason: to.Ptr(armdeviceprovisioningservices.NameUnavailabilityReasonInvalid),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-08-31/DPSCreate.json
+// Generated from example definition: 2026-11-01/DPSCreate.json
 func ExampleIotDpsResourceClient_BeginCreateOrUpdate_dpsCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -104,7 +75,7 @@ func ExampleIotDpsResourceClient_BeginCreateOrUpdate_dpsCreate() {
 	// }
 }
 
-// Generated from example definition: 2026-08-31/DPSCreateWithIotHub.json
+// Generated from example definition: 2026-11-01/DPSCreateWithIotHub.json
 func ExampleIotDpsResourceClient_BeginCreateOrUpdate_dpsCreateWithIotHub() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -201,7 +172,7 @@ func ExampleIotDpsResourceClient_BeginCreateOrUpdate_dpsCreateWithIotHub() {
 	// }
 }
 
-// Generated from example definition: 2026-08-31/DPSCreateWithNamespace.json
+// Generated from example definition: 2026-11-01/DPSCreateWithNamespace.json
 func ExampleIotDpsResourceClient_BeginCreateOrUpdate_dpsCreateWithNamespace() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -273,7 +244,7 @@ func ExampleIotDpsResourceClient_BeginCreateOrUpdate_dpsCreateWithNamespace() {
 	// }
 }
 
-// Generated from example definition: 2026-08-31/DPSCreate_DisableLocalAuthFalse.json
+// Generated from example definition: 2026-11-01/DPSCreate_DisableLocalAuthFalse.json
 func ExampleIotDpsResourceClient_BeginCreateOrUpdate_dpsCreateDisableLocalAuthFalse() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -340,7 +311,7 @@ func ExampleIotDpsResourceClient_BeginCreateOrUpdate_dpsCreateDisableLocalAuthFa
 	// }
 }
 
-// Generated from example definition: 2026-08-31/DPSCreate_DisableLocalAuthTrue.json
+// Generated from example definition: 2026-11-01/DPSCreate_DisableLocalAuthTrue.json
 func ExampleIotDpsResourceClient_BeginCreateOrUpdate_dpsCreateDisableLocalAuthTrue() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -409,7 +380,7 @@ func ExampleIotDpsResourceClient_BeginCreateOrUpdate_dpsCreateDisableLocalAuthTr
 	// }
 }
 
-// Generated from example definition: 2026-08-31/DPSUpdate.json
+// Generated from example definition: 2026-11-01/DPSUpdate.json
 func ExampleIotDpsResourceClient_BeginCreateOrUpdate_dpsUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -489,7 +460,7 @@ func ExampleIotDpsResourceClient_BeginCreateOrUpdate_dpsUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-08-31/DPSUpdate_DisableLocalAuth.json
+// Generated from example definition: 2026-11-01/DPSUpdate_DisableLocalAuth.json
 func ExampleIotDpsResourceClient_BeginCreateOrUpdate_dpsUpdateDisableLocalAuth() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -552,7 +523,7 @@ func ExampleIotDpsResourceClient_BeginCreateOrUpdate_dpsUpdateDisableLocalAuth()
 	// }
 }
 
-// Generated from example definition: 2026-08-31/DPSCreateOrUpdatePrivateEndpointConnection.json
+// Generated from example definition: 2026-11-01/DPSCreateOrUpdatePrivateEndpointConnection.json
 func ExampleIotDpsResourceClient_BeginCreateOrUpdatePrivateEndpointConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -600,7 +571,7 @@ func ExampleIotDpsResourceClient_BeginCreateOrUpdatePrivateEndpointConnection() 
 	// }
 }
 
-// Generated from example definition: 2026-08-31/DPSDelete.json
+// Generated from example definition: 2026-11-01/DPSDelete.json
 func ExampleIotDpsResourceClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -626,7 +597,7 @@ func ExampleIotDpsResourceClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-08-31/DPSDeletePrivateEndpointConnection.json
+// Generated from example definition: 2026-11-01/DPSDeletePrivateEndpointConnection.json
 func ExampleIotDpsResourceClient_BeginDeletePrivateEndpointConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -667,7 +638,158 @@ func ExampleIotDpsResourceClient_BeginDeletePrivateEndpointConnection() {
 	// }
 }
 
-// Generated from example definition: 2026-08-31/DPSGet.json
+// Generated from example definition: 2026-11-01/DPSPatch.json
+func ExampleIotDpsResourceClient_BeginUpdate_dpsPatch() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdeviceprovisioningservices.NewClientFactory("91d12660-3dec-467a-be2a-213b5544ddc0", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewIotDpsResourceClient().BeginUpdate(ctx, "myResourceGroup", "myFirstProvisioningService", armdeviceprovisioningservices.TagsResource{
+		Tags: map[string]*string{
+			"foo": to.Ptr("bar"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdeviceprovisioningservices.IotDpsResourceClientUpdateResponse{
+	// 	ProvisioningServiceDescription: armdeviceprovisioningservices.ProvisioningServiceDescription{
+	// 		Name: to.Ptr("myFirstProvisioningService"),
+	// 		Type: to.Ptr("Microsoft.Devices/ProvisioningServices"),
+	// 		Etag: to.Ptr("AAAAAAAADGk="),
+	// 		ID: to.Ptr("/subscriptions/91d12660-3dec-467a-be2a-213b5544ddc0/resourceGroups/myResourceGroup/providers/Microsoft.Devices/ProvisioningServices/myFirstProvisioningService"),
+	// 		Identity: &armdeviceprovisioningservices.ManagedServiceIdentity{
+	// 			Type: to.Ptr(armdeviceprovisioningservices.ManagedServiceIdentityTypeSystemAssignedUserAssigned),
+	// 			PrincipalID: to.Ptr("aa80bd74-a3f0-4f14-b9da-99c5351cf9d5"),
+	// 			TenantID: to.Ptr("f686d426-8d16-42db-81b7-ab578e110ccd"),
+	// 			UserAssignedIdentities: map[string]*armdeviceprovisioningservices.UserAssignedIdentity{
+	// 				"/subscriptions/91d12660-3dec-467a-be2a-213b5544ddc0/resourcegroups/testrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testidentity": &armdeviceprovisioningservices.UserAssignedIdentity{
+	// 					ClientID: to.Ptr("c38f618d-47f6-4260-8b3d-1dd8c130f323"),
+	// 					PrincipalID: to.Ptr("f1b0b133-10dc-4985-966f-a98a04675fe9"),
+	// 				},
+	// 			},
+	// 		},
+	// 		Location: to.Ptr("eastus"),
+	// 		Properties: &armdeviceprovisioningservices.IotDpsPropertiesDescription{
+	// 			AllocationPolicy: to.Ptr(armdeviceprovisioningservices.AllocationPolicyHashed),
+	// 			DeviceProvisioningHostName: to.Ptr("global.azure-devices-provisioning.net"),
+	// 			IDScope: to.Ptr("0ne00000012"),
+	// 			PortalOperationsHostName: to.Ptr("myFirstProvisioningService.services.azure-devices-provisioning.net"),
+	// 			ServiceOperationsHostName: to.Ptr("myFirstProvisioningService.azure-devices-provisioning.net"),
+	// 			State: to.Ptr(armdeviceprovisioningservices.StateActive),
+	// 		},
+	// 		Resourcegroup: to.Ptr("myResourceGroup"),
+	// 		SKU: &armdeviceprovisioningservices.IotDpsSKUInfo{
+	// 			Name: to.Ptr(armdeviceprovisioningservices.IotDpsSKUS1),
+	// 			Capacity: to.Ptr[int64](1),
+	// 			Tier: to.Ptr("Standard"),
+	// 		},
+	// 		Subscriptionid: to.Ptr("91d12660-3dec-467a-be2a-213b5544ddc0"),
+	// 		Tags: map[string]*string{
+	// 			"foo": to.Ptr("bar"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-11-01/DPSPatch_DisableLocalAuth.json
+func ExampleIotDpsResourceClient_BeginUpdate_dpsPatchDisableLocalAuth() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdeviceprovisioningservices.NewClientFactory("91d12660-3dec-467a-be2a-213b5544ddc0", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewIotDpsResourceClient().BeginUpdate(ctx, "myResourceGroup", "myFirstProvisioningService", armdeviceprovisioningservices.TagsResource{
+		Tags: map[string]*string{
+			"foo": to.Ptr("bar"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdeviceprovisioningservices.IotDpsResourceClientUpdateResponse{
+	// 	ProvisioningServiceDescription: armdeviceprovisioningservices.ProvisioningServiceDescription{
+	// 		Name: to.Ptr("myFirstProvisioningService"),
+	// 		Type: to.Ptr("Microsoft.Devices/ProvisioningServices"),
+	// 		Etag: to.Ptr("AAAAAAAADGk="),
+	// 		ID: to.Ptr("/subscriptions/91d12660-3dec-467a-be2a-213b5544ddc0/resourceGroups/myResourceGroup/providers/Microsoft.Devices/ProvisioningServices/myFirstProvisioningService"),
+	// 		Location: to.Ptr("eastus"),
+	// 		Properties: &armdeviceprovisioningservices.IotDpsPropertiesDescription{
+	// 			AllocationPolicy: to.Ptr(armdeviceprovisioningservices.AllocationPolicyHashed),
+	// 			DeviceProvisioningHostName: to.Ptr("global.azure-devices-provisioning.net"),
+	// 			IDScope: to.Ptr("0ne00000012"),
+	// 			PortalOperationsHostName: to.Ptr("myFirstProvisioningService.services.azure-devices-provisioning.net"),
+	// 			ServiceOperationsHostName: to.Ptr("myFirstProvisioningService.azure-devices-provisioning.net"),
+	// 			State: to.Ptr(armdeviceprovisioningservices.StateActive),
+	// 			DisableLocalAuth: to.Ptr(true),
+	// 		},
+	// 		Resourcegroup: to.Ptr("myResourceGroup"),
+	// 		SKU: &armdeviceprovisioningservices.IotDpsSKUInfo{
+	// 			Name: to.Ptr(armdeviceprovisioningservices.IotDpsSKUS1),
+	// 			Capacity: to.Ptr[int64](1),
+	// 			Tier: to.Ptr("Standard"),
+	// 		},
+	// 		Subscriptionid: to.Ptr("91d12660-3dec-467a-be2a-213b5544ddc0"),
+	// 		Tags: map[string]*string{
+	// 			"foo": to.Ptr("bar"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-11-01/DPSCheckNameAvailability.json
+func ExampleIotDpsResourceClient_CheckProvisioningServiceNameAvailability() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdeviceprovisioningservices.NewClientFactory("91d12660-3dec-467a-be2a-213b5544ddc0", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewIotDpsResourceClient().CheckProvisioningServiceNameAvailability(ctx, armdeviceprovisioningservices.OperationInputs{
+		Name: to.Ptr("test213123"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdeviceprovisioningservices.IotDpsResourceClientCheckProvisioningServiceNameAvailabilityResponse{
+	// 	NameAvailabilityInfo: armdeviceprovisioningservices.NameAvailabilityInfo{
+	// 		Message: to.Ptr("name is valid"),
+	// 		NameAvailable: to.Ptr(true),
+	// 		Reason: to.Ptr(armdeviceprovisioningservices.NameUnavailabilityReasonInvalid),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-11-01/DPSGet.json
 func ExampleIotDpsResourceClient_Get_dpsGet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -712,6 +834,17 @@ func ExampleIotDpsResourceClient_Get_dpsGet() {
 	// 			PortalOperationsHostName: to.Ptr("myFirstProvisioningService.services.azure-devices-provisioning.net"),
 	// 			ServiceOperationsHostName: to.Ptr("myFirstProvisioningService.azure-devices-provisioning.net"),
 	// 			State: to.Ptr(armdeviceprovisioningservices.StateActive),
+	// 			DisableLocalAuth: to.Ptr(false),
+	// 			DeviceRegistryNamespaces: []*armdeviceprovisioningservices.DeviceRegistryNamespaceDescription{
+	// 				{
+	// 					ResourceID: to.Ptr("/subscriptions/91d12660-3dec-467a-be2a-213b5544ddc0/resourceGroups/myResourceGroup/providers/Microsoft.DeviceRegistry/namespaces/myNamespace"),
+	// 					AuthenticationType: to.Ptr(armdeviceprovisioningservices.DeviceRegistryNamespaceAuthenticationTypeSystemAssigned),
+	// 					NamespaceUUID: to.Ptr("1c0f6ad0-9b13-4f0f-9b98-7a3a64a8c5e1"),
+	// 					DataAddress: to.Ptr("eastus.api.deviceregistry.com"),
+	// 					Location: to.Ptr("eastus"),
+	// 					LinkingState: to.Ptr(armdeviceprovisioningservices.LinkingStateSucceeded),
+	// 				},
+	// 			},
 	// 		},
 	// 		Resourcegroup: to.Ptr("myResourceGroup"),
 	// 		SKU: &armdeviceprovisioningservices.IotDpsSKUInfo{
@@ -726,7 +859,7 @@ func ExampleIotDpsResourceClient_Get_dpsGet() {
 	// }
 }
 
-// Generated from example definition: 2026-08-31/DPSGet_DisableLocalAuth.json
+// Generated from example definition: 2026-11-01/DPSGet_DisableLocalAuth.json
 func ExampleIotDpsResourceClient_Get_dpsGetDisableLocalAuth() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -775,7 +908,78 @@ func ExampleIotDpsResourceClient_Get_dpsGetDisableLocalAuth() {
 	// }
 }
 
-// Generated from example definition: 2026-08-31/DPSGetOperationResult.json
+// Generated from example definition: 2026-11-01/DPSGet_UserAssignedNamespaceIdentity.json
+func ExampleIotDpsResourceClient_Get_dpsGetWithUserAssignedNamespaceIdentity() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdeviceprovisioningservices.NewClientFactory("91d12660-3dec-467a-be2a-213b5544ddc0", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewIotDpsResourceClient().Get(ctx, "myFirstProvisioningService", "myResourceGroup", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdeviceprovisioningservices.IotDpsResourceClientGetResponse{
+	// 	ProvisioningServiceDescription: armdeviceprovisioningservices.ProvisioningServiceDescription{
+	// 		Name: to.Ptr("myFirstProvisioningService"),
+	// 		Type: to.Ptr("Microsoft.Devices/ProvisioningServices"),
+	// 		Etag: to.Ptr("AAAAAAAADGk="),
+	// 		ID: to.Ptr("/subscriptions/91d12660-3dec-467a-be2a-213b5544ddc0/resourceGroups/myResourceGroup/providers/Microsoft.Devices/ProvisioningServices/myFirstProvisioningService"),
+	// 		Identity: &armdeviceprovisioningservices.ManagedServiceIdentity{
+	// 			Type: to.Ptr(armdeviceprovisioningservices.ManagedServiceIdentityTypeSystemAssignedUserAssigned),
+	// 			PrincipalID: to.Ptr("aa80bd74-a3f0-4f14-b9da-99c5351cf9d5"),
+	// 			TenantID: to.Ptr("f686d426-8d16-42db-81b7-ab578e110ccd"),
+	// 			UserAssignedIdentities: map[string]*armdeviceprovisioningservices.UserAssignedIdentity{
+	// 				"/subscriptions/91d12660-3dec-467a-be2a-213b5544ddc0/resourcegroups/testrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testidentity": &armdeviceprovisioningservices.UserAssignedIdentity{
+	// 					ClientID: to.Ptr("c38f618d-47f6-4260-8b3d-1dd8c130f323"),
+	// 					PrincipalID: to.Ptr("f1b0b133-10dc-4985-966f-a98a04675fe9"),
+	// 				},
+	// 			},
+	// 		},
+	// 		Location: to.Ptr("eastus"),
+	// 		Properties: &armdeviceprovisioningservices.IotDpsPropertiesDescription{
+	// 			AllocationPolicy: to.Ptr(armdeviceprovisioningservices.AllocationPolicyHashed),
+	// 			AuthorizationPolicies: []*armdeviceprovisioningservices.SharedAccessSignatureAuthorizationRuleAccessRightsDescription{
+	// 			},
+	// 			DeviceProvisioningHostName: to.Ptr("global.azure-devices-provisioning.net"),
+	// 			IDScope: to.Ptr("0ne00000012"),
+	// 			PortalOperationsHostName: to.Ptr("myFirstProvisioningService.services.azure-devices-provisioning.net"),
+	// 			ServiceOperationsHostName: to.Ptr("myFirstProvisioningService.azure-devices-provisioning.net"),
+	// 			State: to.Ptr(armdeviceprovisioningservices.StateActive),
+	// 			DisableLocalAuth: to.Ptr(true),
+	// 			DeviceRegistryNamespaces: []*armdeviceprovisioningservices.DeviceRegistryNamespaceDescription{
+	// 				{
+	// 					ResourceID: to.Ptr("/subscriptions/91d12660-3dec-467a-be2a-213b5544ddc0/resourceGroups/myResourceGroup/providers/Microsoft.DeviceRegistry/namespaces/myNamespace"),
+	// 					AuthenticationType: to.Ptr(armdeviceprovisioningservices.DeviceRegistryNamespaceAuthenticationTypeUserAssigned),
+	// 					SelectedUserAssignedIdentityResourceID: to.Ptr("/subscriptions/91d12660-3dec-467a-be2a-213b5544ddc0/resourcegroups/testrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testidentity"),
+	// 					NamespaceUUID: to.Ptr("1c0f6ad0-9b13-4f0f-9b98-7a3a64a8c5e1"),
+	// 					DataAddress: to.Ptr("eastus.api.deviceregistry.com"),
+	// 					Location: to.Ptr("eastus"),
+	// 					LinkingState: to.Ptr(armdeviceprovisioningservices.LinkingStateSucceeded),
+	// 				},
+	// 			},
+	// 		},
+	// 		Resourcegroup: to.Ptr("myResourceGroup"),
+	// 		SKU: &armdeviceprovisioningservices.IotDpsSKUInfo{
+	// 			Name: to.Ptr(armdeviceprovisioningservices.IotDpsSKUS1),
+	// 			Capacity: to.Ptr[int64](1),
+	// 			Tier: to.Ptr("Standard"),
+	// 		},
+	// 		Subscriptionid: to.Ptr("91d12660-3dec-467a-be2a-213b5544ddc0"),
+	// 		Tags: map[string]*string{
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-11-01/DPSGetOperationResult.json
 func ExampleIotDpsResourceClient_GetOperationResult() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -800,7 +1004,7 @@ func ExampleIotDpsResourceClient_GetOperationResult() {
 	// }
 }
 
-// Generated from example definition: 2026-08-31/DPSGetPrivateEndpointConnection.json
+// Generated from example definition: 2026-11-01/DPSGetPrivateEndpointConnection.json
 func ExampleIotDpsResourceClient_GetPrivateEndpointConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -837,7 +1041,7 @@ func ExampleIotDpsResourceClient_GetPrivateEndpointConnection() {
 	// }
 }
 
-// Generated from example definition: 2026-08-31/DPSGetPrivateLinkResources.json
+// Generated from example definition: 2026-11-01/DPSGetPrivateLinkResources.json
 func ExampleIotDpsResourceClient_GetPrivateLinkResources() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -873,7 +1077,114 @@ func ExampleIotDpsResourceClient_GetPrivateLinkResources() {
 	// }
 }
 
-// Generated from example definition: 2026-08-31/DPSListByResourceGroup.json
+// Generated from example definition: 2026-11-01/DPSGetKey.json
+func ExampleIotDpsResourceClient_ListKeysForKeyName() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdeviceprovisioningservices.NewClientFactory("91d12660-3dec-467a-be2a-213b5544ddc0", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewIotDpsResourceClient().ListKeysForKeyName(ctx, "myFirstProvisioningService", "testKey", "myResourceGroup", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdeviceprovisioningservices.IotDpsResourceClientListKeysForKeyNameResponse{
+	// 	SharedAccessSignatureAuthorizationRuleAccessRightsDescription: armdeviceprovisioningservices.SharedAccessSignatureAuthorizationRuleAccessRightsDescription{
+	// 		KeyName: to.Ptr("testKey"),
+	// 		PrimaryKey: to.Ptr("##################################"),
+	// 		Rights: to.Ptr(armdeviceprovisioningservices.AccessRightsDescriptionRegistrationStatusWrite),
+	// 		SecondaryKey: to.Ptr("################################"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-11-01/DPSListPrivateEndpointConnections.json
+func ExampleIotDpsResourceClient_ListPrivateEndpointConnections() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdeviceprovisioningservices.NewClientFactory("91d12660-3dec-467a-be2a-213b5544ddc0", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewIotDpsResourceClient().ListPrivateEndpointConnections(ctx, "myResourceGroup", "myFirstProvisioningService", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdeviceprovisioningservices.IotDpsResourceClientListPrivateEndpointConnectionsResponse{
+	// 	PrivateEndpointConnectionArray: []*armdeviceprovisioningservices.PrivateEndpointConnection{
+	// 		{
+	// 			Name: to.Ptr("myPrivateEndpointConnection"),
+	// 			Type: to.Ptr("Microsoft.Devices/ProvisioningServices/PrivateEndpointConnections"),
+	// 			ID: to.Ptr("/subscriptions/91d12660-3dec-467a-be2a-213b5544ddc0/resourceGroups/myResourceGroup/providers/Microsoft.Devices/ProvisioningServices/myFirstProvisioningService/PrivateEndpointConnections/myPrivateEndpointConnection"),
+	// 			Properties: &armdeviceprovisioningservices.PrivateEndpointConnectionProperties{
+	// 				PrivateEndpoint: &armdeviceprovisioningservices.PrivateEndpoint{
+	// 					ID: to.Ptr("/subscriptions/a9eba280-4734-4d49-878f-b5549d1d0453/resourceGroups/networkResourceGroup/providers/Microsoft.Network/privateEndpoints/myPrivateEndpoint"),
+	// 				},
+	// 				PrivateLinkServiceConnectionState: &armdeviceprovisioningservices.PrivateLinkServiceConnectionState{
+	// 					Description: to.Ptr("Please approve my request!"),
+	// 					ActionsRequired: to.Ptr("None"),
+	// 					Status: to.Ptr(armdeviceprovisioningservices.PrivateLinkServiceConnectionStatusPending),
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-11-01/DPSListPrivateLinkResources.json
+func ExampleIotDpsResourceClient_ListPrivateLinkResources() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdeviceprovisioningservices.NewClientFactory("91d12660-3dec-467a-be2a-213b5544ddc0", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewIotDpsResourceClient().ListPrivateLinkResources(ctx, "myResourceGroup", "myFirstProvisioningService", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdeviceprovisioningservices.IotDpsResourceClientListPrivateLinkResourcesResponse{
+	// 	PrivateLinkResources: armdeviceprovisioningservices.PrivateLinkResources{
+	// 		Value: []*armdeviceprovisioningservices.GroupIDInformation{
+	// 			{
+	// 				Name: to.Ptr("iotDps"),
+	// 				Type: to.Ptr("Microsoft.Devices/ProvisioningServices/PrivateLinkResources"),
+	// 				ID: to.Ptr("/subscriptions/91d12660-3dec-467a-be2a-213b5544ddc0/resourceGroups/myResourceGroup/providers/Microsoft.Devices/ProvisioningServices/myFirstProvisioningService/PrivateLinkResources/iotDps"),
+	// 				Properties: &armdeviceprovisioningservices.GroupIDInformationProperties{
+	// 					GroupID: to.Ptr("iotDps"),
+	// 					RequiredMembers: []*string{
+	// 						to.Ptr("iotDps"),
+	// 					},
+	// 					RequiredZoneNames: []*string{
+	// 						to.Ptr("privatelink.azure-devices-provisioning.net"),
+	// 					},
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-11-01/DPSListByResourceGroup.json
 func ExampleIotDpsResourceClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -974,7 +1285,7 @@ func ExampleIotDpsResourceClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-08-31/DPSListBySubscription.json
+// Generated from example definition: 2026-11-01/DPSListBySubscription.json
 func ExampleIotDpsResourceClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1075,7 +1386,7 @@ func ExampleIotDpsResourceClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-08-31/DPSListKeys.json
+// Generated from example definition: 2026-11-01/DPSListKeys.json
 func ExampleIotDpsResourceClient_NewListKeysPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1118,114 +1429,7 @@ func ExampleIotDpsResourceClient_NewListKeysPager() {
 	}
 }
 
-// Generated from example definition: 2026-08-31/DPSGetKey.json
-func ExampleIotDpsResourceClient_ListKeysForKeyName() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdeviceprovisioningservices.NewClientFactory("91d12660-3dec-467a-be2a-213b5544ddc0", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewIotDpsResourceClient().ListKeysForKeyName(ctx, "myFirstProvisioningService", "testKey", "myResourceGroup", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdeviceprovisioningservices.IotDpsResourceClientListKeysForKeyNameResponse{
-	// 	SharedAccessSignatureAuthorizationRuleAccessRightsDescription: armdeviceprovisioningservices.SharedAccessSignatureAuthorizationRuleAccessRightsDescription{
-	// 		KeyName: to.Ptr("testKey"),
-	// 		PrimaryKey: to.Ptr("##################################"),
-	// 		Rights: to.Ptr(armdeviceprovisioningservices.AccessRightsDescriptionRegistrationStatusWrite),
-	// 		SecondaryKey: to.Ptr("################################"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-08-31/DPSListPrivateEndpointConnections.json
-func ExampleIotDpsResourceClient_ListPrivateEndpointConnections() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdeviceprovisioningservices.NewClientFactory("91d12660-3dec-467a-be2a-213b5544ddc0", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewIotDpsResourceClient().ListPrivateEndpointConnections(ctx, "myResourceGroup", "myFirstProvisioningService", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdeviceprovisioningservices.IotDpsResourceClientListPrivateEndpointConnectionsResponse{
-	// 	PrivateEndpointConnectionArray: []*armdeviceprovisioningservices.PrivateEndpointConnection{
-	// 		{
-	// 			Name: to.Ptr("myPrivateEndpointConnection"),
-	// 			Type: to.Ptr("Microsoft.Devices/ProvisioningServices/PrivateEndpointConnections"),
-	// 			ID: to.Ptr("/subscriptions/91d12660-3dec-467a-be2a-213b5544ddc0/resourceGroups/myResourceGroup/providers/Microsoft.Devices/ProvisioningServices/myFirstProvisioningService/PrivateEndpointConnections/myPrivateEndpointConnection"),
-	// 			Properties: &armdeviceprovisioningservices.PrivateEndpointConnectionProperties{
-	// 				PrivateEndpoint: &armdeviceprovisioningservices.PrivateEndpoint{
-	// 					ID: to.Ptr("/subscriptions/a9eba280-4734-4d49-878f-b5549d1d0453/resourceGroups/networkResourceGroup/providers/Microsoft.Network/privateEndpoints/myPrivateEndpoint"),
-	// 				},
-	// 				PrivateLinkServiceConnectionState: &armdeviceprovisioningservices.PrivateLinkServiceConnectionState{
-	// 					Description: to.Ptr("Please approve my request!"),
-	// 					ActionsRequired: to.Ptr("None"),
-	// 					Status: to.Ptr(armdeviceprovisioningservices.PrivateLinkServiceConnectionStatusPending),
-	// 				},
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-08-31/DPSListPrivateLinkResources.json
-func ExampleIotDpsResourceClient_ListPrivateLinkResources() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdeviceprovisioningservices.NewClientFactory("91d12660-3dec-467a-be2a-213b5544ddc0", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewIotDpsResourceClient().ListPrivateLinkResources(ctx, "myResourceGroup", "myFirstProvisioningService", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdeviceprovisioningservices.IotDpsResourceClientListPrivateLinkResourcesResponse{
-	// 	PrivateLinkResources: armdeviceprovisioningservices.PrivateLinkResources{
-	// 		Value: []*armdeviceprovisioningservices.GroupIDInformation{
-	// 			{
-	// 				Name: to.Ptr("iotDps"),
-	// 				Type: to.Ptr("Microsoft.Devices/ProvisioningServices/PrivateLinkResources"),
-	// 				ID: to.Ptr("/subscriptions/91d12660-3dec-467a-be2a-213b5544ddc0/resourceGroups/myResourceGroup/providers/Microsoft.Devices/ProvisioningServices/myFirstProvisioningService/PrivateLinkResources/iotDps"),
-	// 				Properties: &armdeviceprovisioningservices.GroupIDInformationProperties{
-	// 					GroupID: to.Ptr("iotDps"),
-	// 					RequiredMembers: []*string{
-	// 						to.Ptr("iotDps"),
-	// 					},
-	// 					RequiredZoneNames: []*string{
-	// 						to.Ptr("privatelink.azure-devices-provisioning.net"),
-	// 					},
-	// 				},
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-08-31/DPSGetValidSku.json
+// Generated from example definition: 2026-11-01/DPSGetValidSku.json
 func ExampleIotDpsResourceClient_NewListValidSKUsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1257,126 +1461,4 @@ func ExampleIotDpsResourceClient_NewListValidSKUsPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-08-31/DPSPatch.json
-func ExampleIotDpsResourceClient_BeginUpdate_dpsPatch() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdeviceprovisioningservices.NewClientFactory("91d12660-3dec-467a-be2a-213b5544ddc0", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewIotDpsResourceClient().BeginUpdate(ctx, "myResourceGroup", "myFirstProvisioningService", armdeviceprovisioningservices.TagsResource{
-		Tags: map[string]*string{
-			"foo": to.Ptr("bar"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdeviceprovisioningservices.IotDpsResourceClientUpdateResponse{
-	// 	ProvisioningServiceDescription: armdeviceprovisioningservices.ProvisioningServiceDescription{
-	// 		Name: to.Ptr("myFirstProvisioningService"),
-	// 		Type: to.Ptr("Microsoft.Devices/ProvisioningServices"),
-	// 		Etag: to.Ptr("AAAAAAAADGk="),
-	// 		ID: to.Ptr("/subscriptions/91d12660-3dec-467a-be2a-213b5544ddc0/resourceGroups/myResourceGroup/providers/Microsoft.Devices/ProvisioningServices/myFirstProvisioningService"),
-	// 		Identity: &armdeviceprovisioningservices.ManagedServiceIdentity{
-	// 			Type: to.Ptr(armdeviceprovisioningservices.ManagedServiceIdentityTypeSystemAssignedUserAssigned),
-	// 			PrincipalID: to.Ptr("aa80bd74-a3f0-4f14-b9da-99c5351cf9d5"),
-	// 			TenantID: to.Ptr("f686d426-8d16-42db-81b7-ab578e110ccd"),
-	// 			UserAssignedIdentities: map[string]*armdeviceprovisioningservices.UserAssignedIdentity{
-	// 				"/subscriptions/91d12660-3dec-467a-be2a-213b5544ddc0/resourcegroups/testrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testidentity": &armdeviceprovisioningservices.UserAssignedIdentity{
-	// 					ClientID: to.Ptr("c38f618d-47f6-4260-8b3d-1dd8c130f323"),
-	// 					PrincipalID: to.Ptr("f1b0b133-10dc-4985-966f-a98a04675fe9"),
-	// 				},
-	// 			},
-	// 		},
-	// 		Location: to.Ptr("eastus"),
-	// 		Properties: &armdeviceprovisioningservices.IotDpsPropertiesDescription{
-	// 			AllocationPolicy: to.Ptr(armdeviceprovisioningservices.AllocationPolicyHashed),
-	// 			DeviceProvisioningHostName: to.Ptr("global.azure-devices-provisioning.net"),
-	// 			IDScope: to.Ptr("0ne00000012"),
-	// 			PortalOperationsHostName: to.Ptr("myFirstProvisioningService.services.azure-devices-provisioning.net"),
-	// 			ServiceOperationsHostName: to.Ptr("myFirstProvisioningService.azure-devices-provisioning.net"),
-	// 			State: to.Ptr(armdeviceprovisioningservices.StateActive),
-	// 		},
-	// 		Resourcegroup: to.Ptr("myResourceGroup"),
-	// 		SKU: &armdeviceprovisioningservices.IotDpsSKUInfo{
-	// 			Name: to.Ptr(armdeviceprovisioningservices.IotDpsSKUS1),
-	// 			Capacity: to.Ptr[int64](1),
-	// 			Tier: to.Ptr("Standard"),
-	// 		},
-	// 		Subscriptionid: to.Ptr("91d12660-3dec-467a-be2a-213b5544ddc0"),
-	// 		Tags: map[string]*string{
-	// 			"foo": to.Ptr("bar"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-08-31/DPSPatch_DisableLocalAuth.json
-func ExampleIotDpsResourceClient_BeginUpdate_dpsPatchDisableLocalAuth() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdeviceprovisioningservices.NewClientFactory("91d12660-3dec-467a-be2a-213b5544ddc0", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewIotDpsResourceClient().BeginUpdate(ctx, "myResourceGroup", "myFirstProvisioningService", armdeviceprovisioningservices.TagsResource{
-		Tags: map[string]*string{
-			"foo": to.Ptr("bar"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdeviceprovisioningservices.IotDpsResourceClientUpdateResponse{
-	// 	ProvisioningServiceDescription: armdeviceprovisioningservices.ProvisioningServiceDescription{
-	// 		Name: to.Ptr("myFirstProvisioningService"),
-	// 		Type: to.Ptr("Microsoft.Devices/ProvisioningServices"),
-	// 		Etag: to.Ptr("AAAAAAAADGk="),
-	// 		ID: to.Ptr("/subscriptions/91d12660-3dec-467a-be2a-213b5544ddc0/resourceGroups/myResourceGroup/providers/Microsoft.Devices/ProvisioningServices/myFirstProvisioningService"),
-	// 		Location: to.Ptr("eastus"),
-	// 		Properties: &armdeviceprovisioningservices.IotDpsPropertiesDescription{
-	// 			AllocationPolicy: to.Ptr(armdeviceprovisioningservices.AllocationPolicyHashed),
-	// 			DeviceProvisioningHostName: to.Ptr("global.azure-devices-provisioning.net"),
-	// 			IDScope: to.Ptr("0ne00000012"),
-	// 			PortalOperationsHostName: to.Ptr("myFirstProvisioningService.services.azure-devices-provisioning.net"),
-	// 			ServiceOperationsHostName: to.Ptr("myFirstProvisioningService.azure-devices-provisioning.net"),
-	// 			State: to.Ptr(armdeviceprovisioningservices.StateActive),
-	// 			DisableLocalAuth: to.Ptr(true),
-	// 		},
-	// 		Resourcegroup: to.Ptr("myResourceGroup"),
-	// 		SKU: &armdeviceprovisioningservices.IotDpsSKUInfo{
-	// 			Name: to.Ptr(armdeviceprovisioningservices.IotDpsSKUS1),
-	// 			Capacity: to.Ptr[int64](1),
-	// 			Tier: to.Ptr("Standard"),
-	// 		},
-	// 		Subscriptionid: to.Ptr("91d12660-3dec-467a-be2a-213b5544ddc0"),
-	// 		Tags: map[string]*string{
-	// 			"foo": to.Ptr("bar"),
-	// 		},
-	// 	},
-	// }
 }

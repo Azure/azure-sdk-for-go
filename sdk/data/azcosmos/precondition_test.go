@@ -5,6 +5,7 @@ package azcosmos
 
 import (
 	"context"
+	"encoding/json"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -74,10 +75,10 @@ func TestItemPreconditionsPreserveLifetimeOrdering(t *testing.T) {
 			return container.ReadItem(ctx, pk, "id", &ReadItemOptions{Precondition: p})
 		},
 		func(p Precondition) (ItemResponse, error) {
-			return container.ReplaceItem(ctx, pk, "id", []byte(`{"id":"id","pk":"pk"}`), &ReplaceItemOptions{Precondition: p})
+			return container.ReplaceItem(ctx, pk, "id", json.RawMessage(`{"id":"id","pk":"pk"}`), &ReplaceItemOptions{Precondition: p})
 		},
 		func(p Precondition) (ItemResponse, error) {
-			return container.UpsertItem(ctx, pk, "id", []byte(`{"id":"id","pk":"pk"}`), &UpsertItemOptions{Precondition: p})
+			return container.UpsertItem(ctx, pk, "id", json.RawMessage(`{"id":"id","pk":"pk"}`), &UpsertItemOptions{Precondition: p})
 		},
 		func(p Precondition) (ItemResponse, error) {
 			return container.DeleteItem(ctx, pk, "id", &DeleteItemOptions{Precondition: p})

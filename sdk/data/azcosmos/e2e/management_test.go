@@ -7,6 +7,7 @@ package e2e
 
 import (
 	"context"
+	"encoding/json"
 	"testing"
 
 	azcosmos "github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos/v2"
@@ -61,7 +62,7 @@ func TestDatabaseContainerManagementAvailableOperations(t *testing.T) {
 	// reads - the same contract item.* scenarios rely on against the pre-provisioned fixture.
 	id := uniqueID(t)
 	pk := azcosmos.NewPartitionKeyString(id)
-	_, err = container.CreateItem(ctx, pk, id, []byte(`{"id":"`+id+`","pk":"`+id+`"}`), nil)
+	_, err = container.CreateItem(ctx, pk, id, json.RawMessage(`{"id":"`+id+`","pk":"`+id+`"}`), nil)
 	require.NoError(t, err)
 
 	deleteContainerResp, err := container.Delete(ctx, nil)

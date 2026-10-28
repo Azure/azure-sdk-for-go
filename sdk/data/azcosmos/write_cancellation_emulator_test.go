@@ -25,7 +25,7 @@ func TestEmulatorSubmittedWritesStopWaitingAndDrain(t *testing.T) {
 			var once, startOnce sync.Once
 			id := uniqueItemID(t)
 			pk := NewPartitionKeyString(id)
-			body := []byte(fmt.Sprintf(`{"id":%q,"pk":%q,"value":1}`, id, id))
+			body := json.RawMessage(fmt.Sprintf(`{"id":%q,"pk":%q,"value":1}`, id, id))
 			seed := emulatorContainer(t)
 			if operation != "create" {
 				_, err := seed.CreateItem(t.Context(), pk, id, body, nil)
@@ -137,7 +137,7 @@ func TestEmulatorTransactionalBatchCancellationDrainsBeforeClose(t *testing.T) {
 			}, nil)
 			t.Cleanup(func() { unblockOnce.Do(func() { close(unblock) }) })
 			batch := NewTransactionalBatch(pk)
-			require.NoError(t, batch.CreateItem(body, nil))
+			require.NoError(t, batch.CreateItem(json.RawMessage(body), nil))
 			if rollback {
 				require.NoError(t, batch.ReadItem(id+"-missing", nil))
 			}

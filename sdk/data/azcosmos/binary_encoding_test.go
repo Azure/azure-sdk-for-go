@@ -4,6 +4,7 @@
 package azcosmos
 
 import (
+	"encoding/json"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -32,7 +33,7 @@ func TestQueryPagerResolvesBinaryPreference(t *testing.T) {
 			t.Cleanup(func() { require.NoError(t, client.Close()) })
 			container, err := client.NewContainer("db", "items")
 			require.NoError(t, err)
-			pager := container.NewQueryItemsPager(NewQuery("SELECT * FROM c"), NewFeedScopeForFullContainer(),
+			pager := container.NewQueryItemsPager[json.RawMessage](NewQuery("SELECT * FROM c"), NewFeedScopeForFullContainer(),
 				&QueryOptions{Operation: OperationOptions{BinaryEncoding: tt.request}})
 			defer func() { require.NoError(t, pager.Close()) }()
 			require.NoError(t, pager.validationErr)

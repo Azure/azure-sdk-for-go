@@ -39,7 +39,7 @@ func TestEmulatorPatchTrackingAcrossApplicationRetries(t *testing.T) {
 	container := emulatorContainer(t)
 	id := uniqueItemID(t)
 	pk := NewPartitionKeyString(id)
-	_, err := container.CreateItem(t.Context(), pk, id, []byte(fmt.Sprintf(`{"id":%q,"pk":%q,"count":0}`, id, id)), nil)
+	_, err := container.CreateItem(t.Context(), pk, id, json.RawMessage(fmt.Sprintf(`{"id":%q,"pk":%q,"count":0}`, id, id)), nil)
 	require.NoError(t, err)
 	trackEmulatorItem(t, container, pk, id)
 	var patch PatchOperations
@@ -90,7 +90,7 @@ func TestEmulatorBinaryClientDefaultAndRequestOverride(t *testing.T) {
 	require.NoError(t, err)
 	id := uniqueItemID(t)
 	pk := NewPartitionKeyString(id)
-	_, err = container.CreateItem(t.Context(), pk, id, []byte(fmt.Sprintf(`{"id":%q,"pk":%q,"count":1}`, id, id)), nil)
+	_, err = container.CreateItem(t.Context(), pk, id, json.RawMessage(fmt.Sprintf(`{"id":%q,"pk":%q,"count":1}`, id, id)), nil)
 	require.NoError(t, err)
 	trackEmulatorItem(t, container, pk, id)
 	response, err := container.ReadItem(t.Context(), pk, id, nil)

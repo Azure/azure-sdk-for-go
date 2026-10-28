@@ -5,6 +5,7 @@ package azcosmos_test
 
 import (
 	"context"
+	"encoding/json"
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -20,7 +21,7 @@ func ExampleIfMatch() {
 		log.Fatalf("ERROR: %s", err)
 	}
 	_, err = container.ReplaceItem(context.TODO(), azcosmos.NewPartitionKeyString("partition"), "item",
-		[]byte(`{"id":"item","pk":"partition","quantity":2}`),
+		json.RawMessage(`{"id":"item","pk":"partition","quantity":2}`),
 		&azcosmos.ReplaceItemOptions{Precondition: condition})
 	if err != nil {
 		// TODO: Update the following line with your application specific error handling logic

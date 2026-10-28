@@ -21,7 +21,7 @@ func TestEmulatorTransactionalBatchCommitsAllFiveOperations(t *testing.T) {
 	trackEmulatorItem(t, container, key, id)
 	other := id + "-other"
 	trackEmulatorItem(t, container, key, other)
-	item := func(itemID, value string) []byte {
+	item := func(itemID, value string) json.RawMessage {
 		body, err := json.Marshal(map[string]any{"id": itemID, "pk": id, "value": value})
 		require.NoError(t, err)
 		return body
@@ -77,7 +77,7 @@ func TestEmulatorTransactionalBatchReadIfNoneMatch(t *testing.T) {
 			trackEmulatorItem(t, container, key, id)
 			body, err := json.Marshal(map[string]any{"id": id, "pk": id, "value": "original"})
 			require.NoError(t, err)
-			original, err := container.CreateItem(t.Context(), key, id, body, nil)
+			original, err := container.CreateItem(t.Context(), key, id, json.RawMessage(body), nil)
 			require.NoError(t, err)
 			require.NotEmpty(t, original.ETag)
 			etag := original.ETag
@@ -118,12 +118,12 @@ func TestEmulatorTransactionalBatchRollbackPreservesPersistedState(t *testing.T)
 			key := NewPartitionKeyString(existing)
 			trackEmulatorItem(t, container, key, existing)
 			trackEmulatorItem(t, container, key, created)
-			item := func(id, value string) []byte {
+			item := func(id, value string) json.RawMessage {
 				body, err := json.Marshal(map[string]any{"id": id, "pk": existing, "value": value})
 				require.NoError(t, err)
 				return body
 			}
-			original, err := container.CreateItem(t.Context(), key, existing, item(existing, "original"), nil)
+			original, err := container.CreateItem(t.Context(), key, existing, json.RawMessage(item(existing, "original")), nil)
 			require.NoError(t, err)
 			batch := NewTransactionalBatch(key)
 			require.NoError(t, batch.CreateItem(item(created, "uncommitted"), nil))
@@ -190,7 +190,7 @@ func TestEmulatorTransactionalBatchCompleteHierarchicalKeysAndIsolation(t *testi
 			body, err := json.Marshal(document)
 			require.NoError(t, err)
 			batch := NewTransactionalBatch(key)
-			require.NoError(t, batch.CreateItem(body, nil))
+			require.NoError(t, batch.CreateItem(json.RawMessage(body), nil))
 			require.NoError(t, batch.ReadItem(id, nil))
 			response, err := container.ExecuteTransactionalBatch(t.Context(), batch, nil)
 			require.NoError(t, err)
@@ -210,7 +210,7 @@ func TestEmulatorTransactionalBatchCompleteHierarchicalKeysAndIsolation(t *testi
 			batch := NewTransactionalBatch(key)
 			body, err := json.Marshal(map[string]any{"id": missing, "pk": id, "child": nil, "leaf": false})
 			require.NoError(t, err)
-			require.NoError(t, batch.CreateItem(body, nil))
+			require.NoError(t, batch.CreateItem(json.RawMessage(body), nil))
 			response, err := container.ExecuteTransactionalBatch(t.Context(), batch, nil)
 			require.Zero(t, response)
 			var cosmosErr *Error
@@ -241,7 +241,7 @@ func TestEmulatorTransactionalBatchContentResponsesAndLifetime(t *testing.T) {
 		body, err := json.Marshal(map[string]any{"id": id, "pk": id, "value": "owned"})
 		require.NoError(t, err)
 		batch := NewTransactionalBatch(NewPartitionKeyString(id))
-		require.NoError(t, batch.CreateItem(body, nil))
+		require.NoError(t, batch.CreateItem(json.RawMessage(body), nil))
 		require.NoError(t, batch.ReadItem(id, nil))
 		require.NoError(t, batch.DeleteItem(id, nil))
 		for i := range body {
@@ -295,7 +295,7 @@ func TestEmulatorTransactionalBatchOperationDefaults(t *testing.T) {
 			body, err := json.Marshal(map[string]any{"id": id, "pk": id})
 			require.NoError(t, err)
 			batch := NewTransactionalBatch(NewPartitionKeyString(id))
-			require.NoError(t, batch.CreateItem(body, nil))
+			require.NoError(t, batch.CreateItem(json.RawMessage(body), nil))
 			require.NoError(t, batch.DeleteItem(id, nil))
 			response, err := container.ExecuteTransactionalBatch(t.Context(), batch, &TransactionalBatchOptions{
 				Operation: OperationOptions{EnableContentResponseOnWrite: test.request},

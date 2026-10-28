@@ -71,7 +71,7 @@ func (c *Client) openQuery(ctx context.Context, req *queryRequest) (queryCursor,
 	return cursor, setup, nil
 }
 
-func (result completionResult) queryPage(setup Response) (QueryItemsResponse, error) {
+func (result completionResult) queryPage(setup Response) (queryPage, error) {
 	response := result.response.Response
 	response.RequestCharge += setup.RequestCharge
 	if response.ActivityID == "" && setup.RequestCharge != 0 {
@@ -173,7 +173,7 @@ func inspectNativeFullQuery(req *queryRequest) (nativeQueryOptions, error) {
 }
 
 // syntheticQueryCompletion frees the native buffers before returning, testing copied ownership.
-func syntheticQueryCompletion(body []byte, continuation string, status int) (QueryItemsResponse, error) {
+func syntheticQueryCompletion(body []byte, continuation string, status int) (queryPage, error) {
 	nativeBody := C.CBytes(body)
 	defer C.free(nativeBody)
 	nativeToken := C.CString(continuation)

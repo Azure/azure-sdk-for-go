@@ -83,24 +83,24 @@ func (d *nativeDriver) openCursor(ctx context.Context, driver *C.cosmos_driver_t
 	return q, nil
 }
 
-func (q *nativeQueryCursor) next(ctx context.Context) (QueryItemsResponse, bool, error) {
+func (q *nativeQueryCursor) next(ctx context.Context) (queryPage, bool, error) {
 	q.mu.Lock()
 	defer q.mu.Unlock()
 	if err := ctx.Err(); err != nil {
-		return QueryItemsResponse{}, false, err
+		return queryPage{}, false, err
 	}
 	if q.handle == nil {
-		return QueryItemsResponse{}, false, invalidCursorCompletion("cursor is closed")
+		return queryPage{}, false, invalidCursorCompletion("cursor is closed")
 	}
 	completion, err := q.submit(ctx, func(cookie C.intptr_t, status *C.cosmos_status_code_t) *C.cosmos_operation_handle_t {
 		return C.cosmos_cursor_next_submit(q.handle, cookie, status)
 	})
 	if err != nil {
-		return QueryItemsResponse{}, false, err
+		return queryPage{}, false, err
 	}
 	defer C.cosmos_cursor_completion_free(completion)
 	if err := cursorCompletionError(completion, q.owner.reactor.verbosity); err != nil {
-		return QueryItemsResponse{}, false, err
+		return queryPage{}, false, err
 	}
 	return decodeCursorPage(completion, q.owner.reactor.verbosity)
 }
@@ -207,50 +207,50 @@ func cursorCompletionError(completion *C.cosmos_cursor_completion_t, verbosity D
 	return nil
 }
 
-func decodeCursorPage(completion *C.cosmos_cursor_completion_t, verbosity DiagnosticsVerbosity) (QueryItemsResponse, bool, error) {
+func decodeCursorPage(completion *C.cosmos_cursor_completion_t, verbosity DiagnosticsVerbosity) (queryPage, bool, error) {
 	common := translateCompletionOutcome(&completion.common, verbosity)
 	headers := readCompletionHeaders(&completion.common)
-	page := QueryItemsResponse{
+	page := queryPage{
 		Response: common.response.Response, SessionToken: common.response.SessionToken,
 		IndexMetrics: headers.indexMetrics, QueryMetrics: headers.queryMetrics,
 	}
 
 	if completion.result_kind == 4 {
 		if completion.body_kind != 0 || completion.items_len != 0 || len(common.body) != 0 {
-			return QueryItemsResponse{}, false, queryResponseError(page.Response, page.SessionToken, invalidCursorCompletion("end carried items"))
+			return queryPage{}, false, queryResponseError(page.Response, page.SessionToken, invalidCursorCompletion("end carried items"))
 		}
 		return page, true, nil
 	}
 	if completion.result_kind != 2 {
-		return QueryItemsResponse{}, false, invalidCursorCompletion("expected query page")
+		return queryPage{}, false, invalidCursorCompletion("expected query page")
 	}
 	switch completion.body_kind {
 	case 1:
 		decoded, err := decodeQueryPage(common.body, page.Response, page.SessionToken, "", false)
 		if err != nil {
-			return QueryItemsResponse{}, false, err
+			return queryPage{}, false, err
 		}
 		page.Items = decoded.Items
 	case 2:
 		if completion.items_len > C.uintptr_t(int(^uint(0)>>1)) || (completion.items_len != 0 && completion.items == nil) {
-			return QueryItemsResponse{}, false, queryResponseError(page.Response, page.SessionToken, invalidCursorCompletion("invalid item array"))
+			return queryPage{}, false, queryResponseError(page.Response, page.SessionToken, invalidCursorCompletion("invalid item array"))
 		}
 		items := unsafe.Slice(completion.items, int(completion.items_len))
 		page.Items = make([][]byte, len(items))
 		for i, item := range items {
 			if item.len > C.uintptr_t(int(^uint(0)>>1)) || (item.len != 0 && item.data == nil) {
-				return QueryItemsResponse{}, false, queryResponseError(page.Response, page.SessionToken, invalidCursorCompletion("invalid item buffer"))
+				return queryPage{}, false, queryResponseError(page.Response, page.SessionToken, invalidCursorCompletion("invalid item buffer"))
 			}
 			page.Items[i] = append([]byte{}, unsafe.Slice((*byte)(unsafe.Pointer(item.data)), int(item.len))...)
 		}
 	default:
-		return QueryItemsResponse{}, false, queryResponseError(page.Response, page.SessionToken, invalidCursorCompletion("unexpected query body kind"))
+		return queryPage{}, false, queryResponseError(page.Response, page.SessionToken, invalidCursorCompletion("unexpected query body kind"))
 	}
 	return page, false, nil
 }
 
 // syntheticCursorPage releases all C-owned input before returning the translated page.
-func syntheticCursorPage(body []byte, items [][]byte, kind, result uint32) (QueryItemsResponse, bool, error) {
+func syntheticCursorPage(body []byte, items [][]byte, kind, result uint32) (queryPage, bool, error) {
 	completion := C.cosmos_cursor_completion_t{
 		struct_size_bytes: C.uint32_t(unsafe.Sizeof(C.cosmos_cursor_completion_t{})),
 		abi_version:       1, result_kind: C.uint32_t(result), body_kind: C.uint32_t(kind),

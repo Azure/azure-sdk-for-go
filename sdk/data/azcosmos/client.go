@@ -18,10 +18,14 @@ import (
 // This does not embed [azcore.ClientOptions]. v2 executes operations through the Cosmos driver
 // rather than an azcore HTTP pipeline, so the transport, retry and per-call policy knobs on that
 // type have no effect here, and advertising options the client would silently ignore is worse than
-// not offering them. Every field below is one the driver honors.
+// not offering them. Serializer is a Go-side model conversion setting.
 //
 // A nil *ClientOptions selects the defaults for every field.
 type ClientOptions struct {
+	// Serializer converts application models. Nil uses encoding/json, including model JSON hooks.
+	// The client retains, but does not own or close, this concurrency-safe implementation.
+	// It is not used for query parameters, PATCH values, or protocol metadata.
+	Serializer Serializer
 	// Runtime shares execution resources and same-account caches, including credentials.
 	// Nil uses the process-wide runtime. Supply separate runtimes for identity isolation.
 	Runtime *Runtime
@@ -290,6 +294,9 @@ func (c *Client) NewContainer(databaseID string, containerID string) (*Container
 // validate reports option values that cannot be passed through the C ABI. Values the driver
 // understands are passed through and validated there, so this package does not duplicate its rules.
 func (o ClientOptions) validate() error {
+	if err := validateSerializer(o.Serializer); err != nil {
+		return err
+	}
 	switch o.DiagnosticsVerbosity {
 	case DiagnosticsVerbosityDefault, DiagnosticsVerbositySummary, DiagnosticsVerbosityDetailed:
 	default:

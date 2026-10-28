@@ -5,6 +5,7 @@ package azcosmos
 
 import (
 	"context"
+	"encoding/json"
 	"math"
 	"testing"
 	"time"
@@ -86,13 +87,13 @@ func TestCommonValidationAcrossAllItemOperations(t *testing.T) {
 			return container.ReadItem(ctx, pk, "id", &ReadItemOptions{Operation: options})
 		},
 		func() (ItemResponse, error) {
-			return container.CreateItem(ctx, pk, "id", []byte("{}"), &CreateItemOptions{Operation: options})
+			return container.CreateItem(ctx, pk, "id", json.RawMessage("{}"), &CreateItemOptions{Operation: options})
 		},
 		func() (ItemResponse, error) {
-			return container.ReplaceItem(ctx, pk, "id", []byte("{}"), &ReplaceItemOptions{Operation: options})
+			return container.ReplaceItem(ctx, pk, "id", json.RawMessage("{}"), &ReplaceItemOptions{Operation: options})
 		},
 		func() (ItemResponse, error) {
-			return container.UpsertItem(ctx, pk, "id", []byte("{}"), &UpsertItemOptions{Operation: options})
+			return container.UpsertItem(ctx, pk, "id", json.RawMessage("{}"), &UpsertItemOptions{Operation: options})
 		},
 		func() (ItemResponse, error) {
 			return container.DeleteItem(ctx, pk, "id", &DeleteItemOptions{Operation: options})

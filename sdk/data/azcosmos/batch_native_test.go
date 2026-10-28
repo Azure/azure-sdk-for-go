@@ -7,6 +7,7 @@ package azcosmos
 
 import (
 	"context"
+	"encoding/json"
 	"net/http"
 	"testing"
 	"time"
@@ -19,7 +20,7 @@ func TestTransactionalBatchNativeRequest(t *testing.T) {
 	disabled, enabled := false, true
 	for _, contentResponse := range []*bool{nil, &disabled, &enabled} {
 		batch := NewTransactionalBatch(NewPartitionKeyString("tenant").AppendNull().AppendNumber(3))
-		require.NoError(t, batch.CreateItem([]byte(`{"id":"item","pk":"tenant","child":null,"leaf":3}`), nil))
+		require.NoError(t, batch.CreateItem(json.RawMessage(`{"id":"item","pk":"tenant","child":null,"leaf":3}`), nil))
 		etag := azcore.ETag(`"unchanged"`)
 		require.NoError(t, batch.ReadItem("item", &TransactionalBatchReadItemOptions{IfNoneMatchETag: &etag}))
 		req, err := newTransactionalBatchRequest(batch, &TransactionalBatchOptions{

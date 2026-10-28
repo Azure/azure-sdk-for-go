@@ -7,6 +7,7 @@ package azcosmos
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"sync"
 	"testing"
@@ -46,8 +47,8 @@ func TestReadItemRejectsEmptyID(t *testing.T) {
 func TestCreateItemRejectsEmptyItem(t *testing.T) {
 	container := newTestContainer(t)
 
-	for _, item := range [][]byte{nil, {}} {
-		_, err := container.CreateItem(context.Background(), NewPartitionKeyString("pk"), "item-1", item, nil)
+	for _, item := range []json.RawMessage{{}, []byte("{")} {
+		_, err := container.CreateItem(context.Background(), NewPartitionKeyString("pk"), "item-1", json.RawMessage(item), nil)
 		require.Error(t, err)
 		requireNotDriverUnavailable(t, err)
 	}
@@ -58,7 +59,7 @@ func TestCreateItemRejectsEmptyItem(t *testing.T) {
 func TestCreateItemRejectsEmptyID(t *testing.T) {
 	container := newTestContainer(t)
 
-	_, err := container.CreateItem(context.Background(), NewPartitionKeyString("pk"), "", []byte(`{"id":"item-1"}`), nil)
+	_, err := container.CreateItem(context.Background(), NewPartitionKeyString("pk"), "", json.RawMessage(`{"id":"item-1"}`), nil)
 	require.Error(t, err)
 	requireNotDriverUnavailable(t, err)
 }
@@ -73,11 +74,11 @@ func TestItemWriteOperationsRejectEmptyID(t *testing.T) {
 		call func() error
 	}{
 		{"replace", func() error {
-			_, err := container.ReplaceItem(context.Background(), NewPartitionKeyString("pk"), "", item, nil)
+			_, err := container.ReplaceItem(context.Background(), NewPartitionKeyString("pk"), "", json.RawMessage(item), nil)
 			return err
 		}},
 		{"upsert", func() error {
-			_, err := container.UpsertItem(context.Background(), NewPartitionKeyString("pk"), "", item, nil)
+			_, err := container.UpsertItem(context.Background(), NewPartitionKeyString("pk"), "", json.RawMessage(item), nil)
 			return err
 		}},
 		{"delete", func() error {
@@ -100,13 +101,13 @@ func TestItemWriteOperationsRejectEmptyID(t *testing.T) {
 func TestReplaceAndUpsertRejectEmptyItem(t *testing.T) {
 	container := newTestContainer(t)
 
-	for _, item := range [][]byte{nil, {}} {
-		_, err := container.ReplaceItem(context.Background(), NewPartitionKeyString("pk"), "item-1", item, nil)
-		require.ErrorContains(t, err, "item must not be empty")
+	for _, item := range []json.RawMessage{{}, []byte("{")} {
+		_, err := container.ReplaceItem(context.Background(), NewPartitionKeyString("pk"), "item-1", json.RawMessage(item), nil)
+		require.ErrorContains(t, err, "encoding item")
 		requireNotDriverUnavailable(t, err)
 
-		_, err = container.UpsertItem(context.Background(), NewPartitionKeyString("pk"), "item-1", item, nil)
-		require.ErrorContains(t, err, "item must not be empty")
+		_, err = container.UpsertItem(context.Background(), NewPartitionKeyString("pk"), "item-1", json.RawMessage(item), nil)
+		require.ErrorContains(t, err, "encoding item")
 		requireNotDriverUnavailable(t, err)
 	}
 }
@@ -138,15 +139,15 @@ func TestItemOperationsValidateArgumentsBeforeContext(t *testing.T) {
 	require.Error(t, err)
 	require.NotErrorIs(t, err, context.Canceled)
 
-	_, err = container.CreateItem(ctx, NewPartitionKeyString("pk"), "item-1", nil, nil)
+	_, err = container.CreateItem(ctx, NewPartitionKeyString("pk"), "item-1", json.RawMessage{}, nil)
 	require.Error(t, err)
 	require.NotErrorIs(t, err, context.Canceled)
 
-	_, err = container.ReplaceItem(ctx, NewPartitionKeyString("pk"), "item-1", nil, nil)
+	_, err = container.ReplaceItem(ctx, NewPartitionKeyString("pk"), "item-1", json.RawMessage{}, nil)
 	require.Error(t, err)
 	require.NotErrorIs(t, err, context.Canceled)
 
-	_, err = container.UpsertItem(ctx, NewPartitionKeyString("pk"), "item-1", nil, nil)
+	_, err = container.UpsertItem(ctx, NewPartitionKeyString("pk"), "item-1", json.RawMessage{}, nil)
 	require.Error(t, err)
 	require.NotErrorIs(t, err, context.Canceled)
 
@@ -169,15 +170,15 @@ func TestItemOperationsRejectEmptyPartitionKey(t *testing.T) {
 	require.Error(t, err)
 	requireNotDriverUnavailable(t, err)
 
-	_, err = container.CreateItem(context.Background(), PartitionKey{}, "item-1", []byte(`{"id":"item-1"}`), nil)
+	_, err = container.CreateItem(context.Background(), PartitionKey{}, "item-1", json.RawMessage(`{"id":"item-1"}`), nil)
 	require.Error(t, err)
 	requireNotDriverUnavailable(t, err)
 
-	_, err = container.ReplaceItem(context.Background(), PartitionKey{}, "item-1", []byte(`{"id":"item-1"}`), nil)
+	_, err = container.ReplaceItem(context.Background(), PartitionKey{}, "item-1", json.RawMessage(`{"id":"item-1"}`), nil)
 	require.Error(t, err)
 	requireNotDriverUnavailable(t, err)
 
-	_, err = container.UpsertItem(context.Background(), PartitionKey{}, "item-1", []byte(`{"id":"item-1"}`), nil)
+	_, err = container.UpsertItem(context.Background(), PartitionKey{}, "item-1", json.RawMessage(`{"id":"item-1"}`), nil)
 	require.Error(t, err)
 	requireNotDriverUnavailable(t, err)
 
@@ -200,13 +201,13 @@ func TestItemOperationsHonorCancelledContext(t *testing.T) {
 	_, err := container.ReadItem(ctx, NewPartitionKeyString("pk"), "item-1", nil)
 	require.ErrorIs(t, err, context.Canceled)
 
-	_, err = container.CreateItem(ctx, NewPartitionKeyString("pk"), "item-1", []byte(`{"id":"item-1"}`), nil)
+	_, err = container.CreateItem(ctx, NewPartitionKeyString("pk"), "item-1", json.RawMessage(`{"id":"item-1"}`), nil)
 	require.ErrorIs(t, err, context.Canceled)
 
-	_, err = container.ReplaceItem(ctx, NewPartitionKeyString("pk"), "item-1", []byte(`{"id":"item-1"}`), nil)
+	_, err = container.ReplaceItem(ctx, NewPartitionKeyString("pk"), "item-1", json.RawMessage(`{"id":"item-1"}`), nil)
 	require.ErrorIs(t, err, context.Canceled)
 
-	_, err = container.UpsertItem(ctx, NewPartitionKeyString("pk"), "item-1", []byte(`{"id":"item-1"}`), nil)
+	_, err = container.UpsertItem(ctx, NewPartitionKeyString("pk"), "item-1", json.RawMessage(`{"id":"item-1"}`), nil)
 	require.ErrorIs(t, err, context.Canceled)
 
 	_, err = container.DeleteItem(ctx, NewPartitionKeyString("pk"), "item-1", nil)
@@ -229,9 +230,9 @@ func TestItemOperationsReportErrorsAsCosmosErrors(t *testing.T) {
 	pk := NewPartitionKeyString("pk")
 
 	_, readErr := container.ReadItem(context.Background(), pk, "item-1", nil)
-	_, createErr := container.CreateItem(context.Background(), pk, "item-1", []byte(`{"id":"item-1"}`), nil)
-	_, replaceErr := container.ReplaceItem(context.Background(), pk, "item-1", []byte(`{"id":"item-1"}`), nil)
-	_, upsertErr := container.UpsertItem(context.Background(), pk, "item-1", []byte(`{"id":"item-1"}`), nil)
+	_, createErr := container.CreateItem(context.Background(), pk, "item-1", json.RawMessage(`{"id":"item-1"}`), nil)
+	_, replaceErr := container.ReplaceItem(context.Background(), pk, "item-1", json.RawMessage(`{"id":"item-1"}`), nil)
+	_, upsertErr := container.UpsertItem(context.Background(), pk, "item-1", json.RawMessage(`{"id":"item-1"}`), nil)
 	_, deleteErr := container.DeleteItem(context.Background(), pk, "item-1", nil)
 	_, patchErr := container.PatchItem(context.Background(), pk, "item-1", validPatchOperations(t), nil)
 
@@ -285,15 +286,15 @@ func TestClosedClientReportedAheadOfCancelledContext(t *testing.T) {
 	require.Equal(t, CodeClientClosed, cosmosErr.Code)
 	require.NotErrorIs(t, err, context.Canceled)
 
-	_, err = container.CreateItem(ctx, NewPartitionKeyString("pk"), "x", []byte(`{"id":"x"}`), nil)
+	_, err = container.CreateItem(ctx, NewPartitionKeyString("pk"), "x", json.RawMessage(`{"id":"x"}`), nil)
 	require.True(t, errors.As(err, &cosmosErr))
 	require.Equal(t, CodeClientClosed, cosmosErr.Code)
 
-	_, err = container.ReplaceItem(ctx, NewPartitionKeyString("pk"), "x", []byte(`{"id":"x"}`), nil)
+	_, err = container.ReplaceItem(ctx, NewPartitionKeyString("pk"), "x", json.RawMessage(`{"id":"x"}`), nil)
 	require.True(t, errors.As(err, &cosmosErr))
 	require.Equal(t, CodeClientClosed, cosmosErr.Code)
 
-	_, err = container.UpsertItem(ctx, NewPartitionKeyString("pk"), "x", []byte(`{"id":"x"}`), nil)
+	_, err = container.UpsertItem(ctx, NewPartitionKeyString("pk"), "x", json.RawMessage(`{"id":"x"}`), nil)
 	require.True(t, errors.As(err, &cosmosErr))
 	require.Equal(t, CodeClientClosed, cosmosErr.Code)
 
@@ -413,27 +414,21 @@ func TestItemOperationsRejectNULSessionToken(t *testing.T) {
 	_, err = container.CreateItem(
 		context.Background(),
 		NewPartitionKeyString("pk"),
-		"item-1",
-		[]byte(`{"id":"item-1","pk":"pk"}`),
-		&CreateItemOptions{SessionToken: token},
+		"item-1", json.RawMessage(`{"id":"item-1","pk":"pk"}`), &CreateItemOptions{SessionToken: token},
 	)
 	require.ErrorContains(t, err, "session token must not contain a NUL byte")
 
 	_, err = container.ReplaceItem(
 		context.Background(),
 		NewPartitionKeyString("pk"),
-		"item-1",
-		[]byte(`{"id":"item-1","pk":"pk"}`),
-		&ReplaceItemOptions{SessionToken: token},
+		"item-1", json.RawMessage(`{"id":"item-1","pk":"pk"}`), &ReplaceItemOptions{SessionToken: token},
 	)
 	require.ErrorContains(t, err, "session token must not contain a NUL byte")
 
 	_, err = container.UpsertItem(
 		context.Background(),
 		NewPartitionKeyString("pk"),
-		"item-1",
-		[]byte(`{"id":"item-1","pk":"pk"}`),
-		&UpsertItemOptions{SessionToken: token},
+		"item-1", json.RawMessage(`{"id":"item-1","pk":"pk"}`), &UpsertItemOptions{SessionToken: token},
 	)
 	require.ErrorContains(t, err, "session token must not contain a NUL byte")
 

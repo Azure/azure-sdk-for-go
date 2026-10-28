@@ -10,6 +10,7 @@ import (
 	"errors"
 	"fmt"
 	"net"
+	"net/http"
 	"sync"
 	"sync/atomic"
 	"testing"
@@ -30,8 +31,9 @@ func TestVerifyDriverVersion(t *testing.T) {
 
 func TestNativeFaultInjectionOptionsBuild(t *testing.T) {
 	d := &nativeDriver{faultRules: []nativeFaultRule{{
-		id: "throttle-read", kind: 1, errorType: 2, hitLimit: 2,
-		delayMS: -1, retryAfter: 1,
+		id: "throttle-read", kind: nativeFaultOperationReadItem,
+		errorType: nativeFaultErrorTooManyRequests, hitLimit: to(int64(2)),
+		retryAfter: to(time.Millisecond),
 	}}}
 	require.NoError(t, d.buildRuntime())
 	require.NoError(t, d.buildAccount(driverConfig{
@@ -42,6 +44,64 @@ func TestNativeFaultInjectionOptionsBuild(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, options)
 	freeNativeDriverOptions(options)
+}
+
+// The emulator exposes only one gateway path, so transport selection is verified at the ABI
+// mapping boundary while region and container selection are covered behaviorally.
+func TestNativeFaultRuleMapsTransportResultAndLifecycle(t *testing.T) {
+	rule := nativeFaultRule{
+		id:               "availability-rule",
+		kind:             nativeFaultOperationReadItem,
+		region:           "East US",
+		containerID:      "items",
+		transportKind:    nativeFaultTransportGatewayV2,
+		customStatusCode: to(int32(http.StatusServiceUnavailable)),
+		customSubStatus:  to(int32(0)),
+		hitLimit:         to(int64(0)),
+		delay:            to(time.Duration(0)),
+		retryAfter:       to(time.Duration(0)),
+		startDelay:       to(time.Duration(0)),
+		expireAfter:      to(time.Duration(0)),
+	}
+
+	mapped := inspectNativeFaultRule(rule)
+	require.Equal(t, "availability-rule", mapped.id)
+	require.Equal(t, nativeFaultOperationReadItem, mapped.kind)
+	require.Equal(t, "East US", mapped.region)
+	require.Equal(t, "items", mapped.containerID)
+	require.Equal(t, nativeFaultTransportGatewayV2, mapped.transportKind)
+	require.Zero(t, mapped.errorType)
+	require.Zero(t, mapped.hitLimit)
+	require.Zero(t, mapped.delayMS)
+	require.Equal(t, float32(1), mapped.probability)
+	require.Equal(t, int32(http.StatusServiceUnavailable), mapped.customStatusCode)
+	require.Zero(t, mapped.customSubStatus)
+	require.Zero(t, mapped.retryAfterMS)
+	require.Zero(t, mapped.startDelayMS)
+	require.Zero(t, mapped.expireAfterMS)
+}
+
+func TestNativeFaultRulePreservesThrottleResponseDefaults(t *testing.T) {
+	mapped := inspectNativeFaultRule(nativeFaultRule{
+		errorType:  nativeFaultErrorTooManyRequests,
+		retryAfter: to(time.Millisecond),
+	})
+
+	require.Equal(t, int32(http.StatusTooManyRequests), mapped.customStatusCode)
+	require.Equal(t, nativeFaultThrottleSubStatus, mapped.customSubStatus)
+	require.Equal(t, int64(1), mapped.retryAfterMS)
+}
+
+func TestNativeFaultRulePreservesUnsetSentinels(t *testing.T) {
+	mapped := inspectNativeFaultRule(nativeFaultRule{})
+
+	require.Equal(t, int64(-1), mapped.hitLimit)
+	require.Equal(t, int64(-1), mapped.delayMS)
+	require.Zero(t, mapped.customStatusCode)
+	require.Equal(t, int32(-1), mapped.customSubStatus)
+	require.Equal(t, int64(-1), mapped.retryAfterMS)
+	require.Equal(t, int64(-1), mapped.startDelayMS)
+	require.Equal(t, int64(-1), mapped.expireAfterMS)
 }
 
 func TestValidateDriverVersions(t *testing.T) {

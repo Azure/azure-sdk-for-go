@@ -33,7 +33,7 @@ var (
 	fakeEkmProxyHost = fmt.Sprintf("%s.ekm.example.com:443", recording.SanitizedValue)
 	// fakeCACert is the byte sequence used in place of a real CA certificate when
 	// no EKM_SERVER_CA_CERTIFICATE is supplied. The Managed HSM accepts these
-	// bytes verbatim on create/update; only CheckEkmConnection / GetEkmCertificate
+	// bytes verbatim on create/update; only CheckConnection / GetCertificate
 	// parse them, and those tests skip gracefully when the proxy isn't reachable.
 	fakeCACert = []byte("azure-sdk-for-go-ekm-test-ca-certificate-bytes")
 )
@@ -123,7 +123,7 @@ func startRecording(t *testing.T) {
 	})
 }
 
-func startEKMTest(t *testing.T) *ekm.KeyVaultClient {
+func startEKMTest(t *testing.T) *ekm.Client {
 	// EKM tests require an external key manager proxy reachable from the
 	// Managed HSM. CI doesn't provision one, so live runs are skipped unless
 	// EKM_PROXY_HOST is supplied. Recording runs still execute (so recordings

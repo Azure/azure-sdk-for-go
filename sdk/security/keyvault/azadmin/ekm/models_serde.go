@@ -112,8 +112,8 @@ func (p *ProxyClientCertificateInfo) UnmarshalJSON(data []byte) error {
 func (p ProxyInfo) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "api_version", p.APIVersion)
-	populate(objectMap, "ekm_product", p.EkmProduct)
-	populate(objectMap, "ekm_vendor", p.EkmVendor)
+	populate(objectMap, "ekm_product", p.EKMProduct)
+	populate(objectMap, "ekm_vendor", p.EKMVendor)
 	populate(objectMap, "proxy_name", p.ProxyName)
 	populate(objectMap, "proxy_vendor", p.ProxyVendor)
 	return json.Marshal(objectMap)
@@ -132,10 +132,10 @@ func (p *ProxyInfo) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "APIVersion", &p.APIVersion)
 			delete(rawMsg, key)
 		case "ekm_product":
-			err = unpopulate(val, "EkmProduct", &p.EkmProduct)
+			err = unpopulate(val, "EKMProduct", &p.EKMProduct)
 			delete(rawMsg, key)
 		case "ekm_vendor":
-			err = unpopulate(val, "EkmVendor", &p.EkmVendor)
+			err = unpopulate(val, "EKMVendor", &p.EKMVendor)
 			delete(rawMsg, key)
 		case "proxy_name":
 			err = unpopulate(val, "ProxyName", &p.ProxyName)

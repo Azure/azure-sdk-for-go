@@ -13,7 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/internal"
 )
 
-// ClientOptions contains optional settings for KeyVaultClient.
+// ClientOptions contains optional settings for Client.
 type ClientOptions struct {
 	azcore.ClientOptions
 
@@ -25,7 +25,7 @@ type ClientOptions struct {
 
 // NewClient creates a client that manages External Key Manager (EKM) connections for a Managed HSM.
 // You should validate that vaultURL references a valid Managed HSM. See https://aka.ms/azsdk/blog/vault-uri for details.
-func NewClient(vaultURL string, credential azcore.TokenCredential, options *ClientOptions) (*KeyVaultClient, error) {
+func NewClient(vaultURL string, credential azcore.TokenCredential, options *ClientOptions) (*Client, error) {
 	if options == nil {
 		options = &ClientOptions{}
 	}
@@ -48,5 +48,5 @@ func NewClient(vaultURL string, credential azcore.TokenCredential, options *Clie
 	if err != nil {
 		return nil, err
 	}
-	return &KeyVaultClient{vaultBaseUrl: vaultURL, internal: azcoreClient}, nil
+	return &Client{vaultBaseUrl: vaultURL, internal: azcoreClient}, nil
 }

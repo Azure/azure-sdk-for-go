@@ -13,42 +13,40 @@ import (
 	"strings"
 )
 
-// KeyVaultClient - The Azure Key Vault Administration service client performs administrative operations
-// including RBAC, BackupRestore, and settings management
-// against the Azure Key Vault service.
+// Client manages the External Key Manager (EKM) connection of a Managed HSM.
 // Don't use this type directly, use a constructor function instead.
 //
 // Generated from API version 2026-04-01
-type KeyVaultClient struct {
+type Client struct {
 	internal     *azcore.Client
 	vaultBaseUrl string
 }
 
-// CheckEkmConnection - Checks the connectivity and authentication with the EKM proxy.
+// CheckConnection - Checks the connectivity and authentication with the EKM proxy.
 //
 // The External Key Manager (EKM) Check operation checks the connectivity and authentication with the EKM proxy. This operation
 // requires ekm/read permission.
 // If the operation fails it returns an *azcore.ResponseError type.
-//   - options - CheckEkmConnectionOptions contains the optional parameters for the KeyVaultClient.CheckEkmConnection method.
-func (client *KeyVaultClient) CheckEkmConnection(ctx context.Context, options *CheckEkmConnectionOptions) (CheckEkmConnectionResponse, error) {
+//   - options - CheckConnectionOptions contains the optional parameters for the Client.CheckConnection method.
+func (client *Client) CheckConnection(ctx context.Context, options *CheckConnectionOptions) (CheckConnectionResponse, error) {
 	var err error
-	const operationName = "KeyVaultClient.CheckEkmConnection"
+	const operationName = "Client.CheckConnection"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.checkEkmConnectionCreateRequest(ctx, options)
+	req, err := client.checkConnectionCreateRequest(ctx, options)
 	if err != nil {
-		return CheckEkmConnectionResponse{}, err
+		return CheckConnectionResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return CheckEkmConnectionResponse{}, err
+		return CheckConnectionResponse{}, err
 	}
-	return client.checkEkmConnectionHandleResponse(httpResp, http.StatusOK)
+	return client.checkConnectionHandleResponse(httpResp, http.StatusOK)
 }
 
-// checkEkmConnectionCreateRequest creates the CheckEkmConnection request.
-func (client *KeyVaultClient) checkEkmConnectionCreateRequest(ctx context.Context, _ *CheckEkmConnectionOptions) (*policy.Request, error) {
+// checkConnectionCreateRequest creates the CheckConnection request.
+func (client *Client) checkConnectionCreateRequest(ctx context.Context, _ *CheckConnectionOptions) (*policy.Request, error) {
 	urlPath := "/ekm/check"
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
@@ -61,44 +59,44 @@ func (client *KeyVaultClient) checkEkmConnectionCreateRequest(ctx context.Contex
 	return req, nil
 }
 
-// checkEkmConnectionHandleResponse handles the CheckEkmConnection response.
-func (client *KeyVaultClient) checkEkmConnectionHandleResponse(resp *http.Response, successCodes ...int) (CheckEkmConnectionResponse, error) {
-	result := CheckEkmConnectionResponse{}
+// checkConnectionHandleResponse handles the CheckConnection response.
+func (client *Client) checkConnectionHandleResponse(resp *http.Response, successCodes ...int) (CheckConnectionResponse, error) {
+	result := CheckConnectionResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProxyInfo); err != nil {
-		return CheckEkmConnectionResponse{}, err
+		return CheckConnectionResponse{}, err
 	}
 	return result, nil
 }
 
-// CreateEkmConnection - Creates the EKM connection.
+// CreateConnection - Creates the EKM connection.
 //
 // The External Key Manager (EKM) sets up the EKM connection. If the EKM connection already exists, this operation fails.
 // This operation requires ekm/write permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - ekmConnection - The ekmConnection to create.
-//   - options - CreateEkmConnectionOptions contains the optional parameters for the KeyVaultClient.CreateEkmConnection method.
-func (client *KeyVaultClient) CreateEkmConnection(ctx context.Context, ekmConnection Connection, options *CreateEkmConnectionOptions) (CreateEkmConnectionResponse, error) {
+//   - options - CreateConnectionOptions contains the optional parameters for the Client.CreateConnection method.
+func (client *Client) CreateConnection(ctx context.Context, ekmConnection Connection, options *CreateConnectionOptions) (CreateConnectionResponse, error) {
 	var err error
-	const operationName = "KeyVaultClient.CreateEkmConnection"
+	const operationName = "Client.CreateConnection"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.createEkmConnectionCreateRequest(ctx, ekmConnection, options)
+	req, err := client.createConnectionCreateRequest(ctx, ekmConnection, options)
 	if err != nil {
-		return CreateEkmConnectionResponse{}, err
+		return CreateConnectionResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return CreateEkmConnectionResponse{}, err
+		return CreateConnectionResponse{}, err
 	}
-	return client.createEkmConnectionHandleResponse(httpResp, http.StatusOK)
+	return client.createConnectionHandleResponse(httpResp, http.StatusOK)
 }
 
-// createEkmConnectionCreateRequest creates the CreateEkmConnection request.
-func (client *KeyVaultClient) createEkmConnectionCreateRequest(ctx context.Context, ekmConnection Connection, _ *CreateEkmConnectionOptions) (*policy.Request, error) {
+// createConnectionCreateRequest creates the CreateConnection request.
+func (client *Client) createConnectionCreateRequest(ctx context.Context, ekmConnection Connection, _ *CreateConnectionOptions) (*policy.Request, error) {
 	urlPath := "/ekm/create"
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
@@ -115,43 +113,43 @@ func (client *KeyVaultClient) createEkmConnectionCreateRequest(ctx context.Conte
 	return req, nil
 }
 
-// createEkmConnectionHandleResponse handles the CreateEkmConnection response.
-func (client *KeyVaultClient) createEkmConnectionHandleResponse(resp *http.Response, successCodes ...int) (CreateEkmConnectionResponse, error) {
-	result := CreateEkmConnectionResponse{}
+// createConnectionHandleResponse handles the CreateConnection response.
+func (client *Client) createConnectionHandleResponse(resp *http.Response, successCodes ...int) (CreateConnectionResponse, error) {
+	result := CreateConnectionResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Connection); err != nil {
-		return CreateEkmConnectionResponse{}, err
+		return CreateConnectionResponse{}, err
 	}
 	return result, nil
 }
 
-// DeleteEkmConnection - Deletes the EKM connection.
+// DeleteConnection - Deletes the EKM connection.
 //
 // The External Key Manager (EKM) deletes the existing EKM connection. If the EKM connection does not already exists, this
 // operation fails. This operation requires ekm/delete permission.
 // If the operation fails it returns an *azcore.ResponseError type.
-//   - options - DeleteEkmConnectionOptions contains the optional parameters for the KeyVaultClient.DeleteEkmConnection method.
-func (client *KeyVaultClient) DeleteEkmConnection(ctx context.Context, options *DeleteEkmConnectionOptions) (DeleteEkmConnectionResponse, error) {
+//   - options - DeleteConnectionOptions contains the optional parameters for the Client.DeleteConnection method.
+func (client *Client) DeleteConnection(ctx context.Context, options *DeleteConnectionOptions) (DeleteConnectionResponse, error) {
 	var err error
-	const operationName = "KeyVaultClient.DeleteEkmConnection"
+	const operationName = "Client.DeleteConnection"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.deleteEkmConnectionCreateRequest(ctx, options)
+	req, err := client.deleteConnectionCreateRequest(ctx, options)
 	if err != nil {
-		return DeleteEkmConnectionResponse{}, err
+		return DeleteConnectionResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return DeleteEkmConnectionResponse{}, err
+		return DeleteConnectionResponse{}, err
 	}
-	return client.deleteEkmConnectionHandleResponse(httpResp, http.StatusOK)
+	return client.deleteConnectionHandleResponse(httpResp, http.StatusOK)
 }
 
-// deleteEkmConnectionCreateRequest creates the DeleteEkmConnection request.
-func (client *KeyVaultClient) deleteEkmConnectionCreateRequest(ctx context.Context, _ *DeleteEkmConnectionOptions) (*policy.Request, error) {
+// deleteConnectionCreateRequest creates the DeleteConnection request.
+func (client *Client) deleteConnectionCreateRequest(ctx context.Context, _ *DeleteConnectionOptions) (*policy.Request, error) {
 	urlPath := "/ekm"
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
@@ -164,43 +162,43 @@ func (client *KeyVaultClient) deleteEkmConnectionCreateRequest(ctx context.Conte
 	return req, nil
 }
 
-// deleteEkmConnectionHandleResponse handles the DeleteEkmConnection response.
-func (client *KeyVaultClient) deleteEkmConnectionHandleResponse(resp *http.Response, successCodes ...int) (DeleteEkmConnectionResponse, error) {
-	result := DeleteEkmConnectionResponse{}
+// deleteConnectionHandleResponse handles the DeleteConnection response.
+func (client *Client) deleteConnectionHandleResponse(resp *http.Response, successCodes ...int) (DeleteConnectionResponse, error) {
+	result := DeleteConnectionResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Connection); err != nil {
-		return DeleteEkmConnectionResponse{}, err
+		return DeleteConnectionResponse{}, err
 	}
 	return result, nil
 }
 
-// GetEkmCertificate - Gets the EKM proxy client certificate.
+// GetCertificate - Gets the EKM proxy client certificate.
 //
 // The External Key Manager (EKM) Certificate Get operation returns Proxy client certificate. This operation requires ekm/read
 // permission.
 // If the operation fails it returns an *azcore.ResponseError type.
-//   - options - GetEkmCertificateOptions contains the optional parameters for the KeyVaultClient.GetEkmCertificate method.
-func (client *KeyVaultClient) GetEkmCertificate(ctx context.Context, options *GetEkmCertificateOptions) (GetEkmCertificateResponse, error) {
+//   - options - GetCertificateOptions contains the optional parameters for the Client.GetCertificate method.
+func (client *Client) GetCertificate(ctx context.Context, options *GetCertificateOptions) (GetCertificateResponse, error) {
 	var err error
-	const operationName = "KeyVaultClient.GetEkmCertificate"
+	const operationName = "Client.GetCertificate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getEkmCertificateCreateRequest(ctx, options)
+	req, err := client.getCertificateCreateRequest(ctx, options)
 	if err != nil {
-		return GetEkmCertificateResponse{}, err
+		return GetCertificateResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return GetEkmCertificateResponse{}, err
+		return GetCertificateResponse{}, err
 	}
-	return client.getEkmCertificateHandleResponse(httpResp, http.StatusOK)
+	return client.getCertificateHandleResponse(httpResp, http.StatusOK)
 }
 
-// getEkmCertificateCreateRequest creates the GetEkmCertificate request.
-func (client *KeyVaultClient) getEkmCertificateCreateRequest(ctx context.Context, _ *GetEkmCertificateOptions) (*policy.Request, error) {
+// getCertificateCreateRequest creates the GetCertificate request.
+func (client *Client) getCertificateCreateRequest(ctx context.Context, _ *GetCertificateOptions) (*policy.Request, error) {
 	urlPath := "/ekm/certificate"
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
@@ -213,42 +211,42 @@ func (client *KeyVaultClient) getEkmCertificateCreateRequest(ctx context.Context
 	return req, nil
 }
 
-// getEkmCertificateHandleResponse handles the GetEkmCertificate response.
-func (client *KeyVaultClient) getEkmCertificateHandleResponse(resp *http.Response, successCodes ...int) (GetEkmCertificateResponse, error) {
-	result := GetEkmCertificateResponse{}
+// getCertificateHandleResponse handles the GetCertificate response.
+func (client *Client) getCertificateHandleResponse(resp *http.Response, successCodes ...int) (GetCertificateResponse, error) {
+	result := GetCertificateResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProxyClientCertificateInfo); err != nil {
-		return GetEkmCertificateResponse{}, err
+		return GetCertificateResponse{}, err
 	}
 	return result, nil
 }
 
-// GetEkmConnection - Gets the EKM connection.
+// GetConnection - Gets the EKM connection.
 //
 // The External Key Manager (EKM) Get operation returns EKM connection. This operation requires ekm/read permission.
 // If the operation fails it returns an *azcore.ResponseError type.
-//   - options - GetEkmConnectionOptions contains the optional parameters for the KeyVaultClient.GetEkmConnection method.
-func (client *KeyVaultClient) GetEkmConnection(ctx context.Context, options *GetEkmConnectionOptions) (GetEkmConnectionResponse, error) {
+//   - options - GetConnectionOptions contains the optional parameters for the Client.GetConnection method.
+func (client *Client) GetConnection(ctx context.Context, options *GetConnectionOptions) (GetConnectionResponse, error) {
 	var err error
-	const operationName = "KeyVaultClient.GetEkmConnection"
+	const operationName = "Client.GetConnection"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getEkmConnectionCreateRequest(ctx, options)
+	req, err := client.getConnectionCreateRequest(ctx, options)
 	if err != nil {
-		return GetEkmConnectionResponse{}, err
+		return GetConnectionResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return GetEkmConnectionResponse{}, err
+		return GetConnectionResponse{}, err
 	}
-	return client.getEkmConnectionHandleResponse(httpResp, http.StatusOK)
+	return client.getConnectionHandleResponse(httpResp, http.StatusOK)
 }
 
-// getEkmConnectionCreateRequest creates the GetEkmConnection request.
-func (client *KeyVaultClient) getEkmConnectionCreateRequest(ctx context.Context, _ *GetEkmConnectionOptions) (*policy.Request, error) {
+// getConnectionCreateRequest creates the GetConnection request.
+func (client *Client) getConnectionCreateRequest(ctx context.Context, _ *GetConnectionOptions) (*policy.Request, error) {
 	urlPath := "/ekm"
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
@@ -261,44 +259,44 @@ func (client *KeyVaultClient) getEkmConnectionCreateRequest(ctx context.Context,
 	return req, nil
 }
 
-// getEkmConnectionHandleResponse handles the GetEkmConnection response.
-func (client *KeyVaultClient) getEkmConnectionHandleResponse(resp *http.Response, successCodes ...int) (GetEkmConnectionResponse, error) {
-	result := GetEkmConnectionResponse{}
+// getConnectionHandleResponse handles the GetConnection response.
+func (client *Client) getConnectionHandleResponse(resp *http.Response, successCodes ...int) (GetConnectionResponse, error) {
+	result := GetConnectionResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Connection); err != nil {
-		return GetEkmConnectionResponse{}, err
+		return GetConnectionResponse{}, err
 	}
 	return result, nil
 }
 
-// UpdateEkmConnection - Updates the EKM connection.
+// UpdateConnection - Updates the EKM connection.
 //
 // The External Key Manager (EKM) updates the existing EKM connection. If the EKM connection does not exist, this operation
 // fails. This operation requires ekm/write permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - ekmConnection - The ekmConnection to update.
-//   - options - UpdateEkmConnectionOptions contains the optional parameters for the KeyVaultClient.UpdateEkmConnection method.
-func (client *KeyVaultClient) UpdateEkmConnection(ctx context.Context, ekmConnection Connection, options *UpdateEkmConnectionOptions) (UpdateEkmConnectionResponse, error) {
+//   - options - UpdateConnectionOptions contains the optional parameters for the Client.UpdateConnection method.
+func (client *Client) UpdateConnection(ctx context.Context, ekmConnection Connection, options *UpdateConnectionOptions) (UpdateConnectionResponse, error) {
 	var err error
-	const operationName = "KeyVaultClient.UpdateEkmConnection"
+	const operationName = "Client.UpdateConnection"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.updateEkmConnectionCreateRequest(ctx, ekmConnection, options)
+	req, err := client.updateConnectionCreateRequest(ctx, ekmConnection, options)
 	if err != nil {
-		return UpdateEkmConnectionResponse{}, err
+		return UpdateConnectionResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return UpdateEkmConnectionResponse{}, err
+		return UpdateConnectionResponse{}, err
 	}
-	return client.updateEkmConnectionHandleResponse(httpResp, http.StatusOK)
+	return client.updateConnectionHandleResponse(httpResp, http.StatusOK)
 }
 
-// updateEkmConnectionCreateRequest creates the UpdateEkmConnection request.
-func (client *KeyVaultClient) updateEkmConnectionCreateRequest(ctx context.Context, ekmConnection Connection, _ *UpdateEkmConnectionOptions) (*policy.Request, error) {
+// updateConnectionCreateRequest creates the UpdateConnection request.
+func (client *Client) updateConnectionCreateRequest(ctx context.Context, ekmConnection Connection, _ *UpdateConnectionOptions) (*policy.Request, error) {
 	urlPath := "/ekm"
 	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
@@ -315,14 +313,14 @@ func (client *KeyVaultClient) updateEkmConnectionCreateRequest(ctx context.Conte
 	return req, nil
 }
 
-// updateEkmConnectionHandleResponse handles the UpdateEkmConnection response.
-func (client *KeyVaultClient) updateEkmConnectionHandleResponse(resp *http.Response, successCodes ...int) (UpdateEkmConnectionResponse, error) {
-	result := UpdateEkmConnectionResponse{}
+// updateConnectionHandleResponse handles the UpdateConnection response.
+func (client *Client) updateConnectionHandleResponse(resp *http.Response, successCodes ...int) (UpdateConnectionResponse, error) {
+	result := UpdateConnectionResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Connection); err != nil {
-		return UpdateEkmConnectionResponse{}, err
+		return UpdateConnectionResponse{}, err
 	}
 	return result, nil
 }

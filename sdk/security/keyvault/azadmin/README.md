@@ -71,9 +71,9 @@ A `backup.Client` performs full key backups, full key restores, and selective ke
 
 A `settings.Client` provides methods to update, get, and list settings for a Managed HSM.
 
-### ekm.KeyVaultClient
+### ekm.Client
 
-An `ekm.KeyVaultClient` manages the External Key Manager (EKM) connection on a Managed HSM. Use it to configure the proxy through which the HSM accesses externally-managed keys, to retrieve the client certificate the HSM presents to the proxy, and to verify connectivity to the proxy.
+An `ekm.Client` manages the External Key Manager (EKM) connection on a Managed HSM. Use it to configure the proxy through which the HSM accesses externally-managed keys, to retrieve the client certificate the HSM presents to the proxy, and to verify connectivity to the proxy.
 
 ## Examples
 

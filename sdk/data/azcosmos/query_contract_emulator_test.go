@@ -26,6 +26,32 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func TestQueryContractProxySupportsHTTP2(t *testing.T) {
+	const account = `{"readableLocations":[],"writableLocations":[]}`
+	backend := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		_, _ = io.WriteString(w, account)
+	}))
+	t.Cleanup(backend.Close)
+	t.Setenv("EMULATOR", "true")
+	t.Setenv("AZCOSMOS_ENDPOINT", backend.URL)
+	container := queryContractContainer(t, nil, nil)
+
+	// Match the native driver's cleartext HTTP/2 account capability probe, without fallback.
+	transport := &http.Transport{Protocols: new(http.Protocols)}
+	transport.Protocols.SetUnencryptedHTTP2(true)
+	t.Cleanup(transport.CloseIdleConnections)
+	client := &http.Client{Transport: transport, Timeout: 5 * time.Second}
+	response, err := client.Get(container.database.client.Endpoint())
+	require.NoError(t, err)
+	defer func() { require.NoError(t, response.Body.Close()) }()
+	body, err := io.ReadAll(response.Body)
+	require.NoError(t, err)
+	require.Equal(t, http.StatusOK, response.StatusCode)
+	require.Equal(t, 2, response.ProtoMajor)
+	require.JSONEq(t, account, string(body))
+}
+
 func TestEmulatorCursorCheckpointCancellation(t *testing.T) {
 	key, query, _ := seedQueryContractItems(t, emulatorContainer(t))
 	container := queryContractContainer(t, nil, nil)
@@ -186,6 +212,10 @@ func queryContractContainer(t *testing.T, intercept func(http.ResponseWriter, *h
 		}
 	}))
 	proxyURL = "http://" + server.Listener.Addr().String()
+	// Match the native capability probe instead of depending on HTTP/1 fallback.
+	server.Config.Protocols = new(http.Protocols)
+	server.Config.Protocols.SetHTTP1(true)
+	server.Config.Protocols.SetUnencryptedHTTP2(true)
 	server.Start()
 	t.Cleanup(server.Close)
 	credential, err := NewKeyCredential(emulatorKey)

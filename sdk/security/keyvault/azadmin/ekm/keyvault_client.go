@@ -18,7 +18,7 @@ import (
 // against the Azure Key Vault service.
 // Don't use this type directly, use a constructor function instead.
 //
-// Generated from API version 2026-01-01-preview
+// Generated from API version 2026-04-01
 type KeyVaultClient struct {
 	internal     *azcore.Client
 	vaultBaseUrl string
@@ -44,12 +44,7 @@ func (client *KeyVaultClient) CheckEkmConnection(ctx context.Context, options *C
 	if err != nil {
 		return CheckEkmConnectionResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return CheckEkmConnectionResponse{}, err
-	}
-	resp, err := client.checkEkmConnectionHandleResponse(httpResp)
-	return resp, err
+	return client.checkEkmConnectionHandleResponse(httpResp, http.StatusOK)
 }
 
 // checkEkmConnectionCreateRequest creates the CheckEkmConnection request.
@@ -60,15 +55,18 @@ func (client *KeyVaultClient) checkEkmConnectionCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260401)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // checkEkmConnectionHandleResponse handles the CheckEkmConnection response.
-func (client *KeyVaultClient) checkEkmConnectionHandleResponse(resp *http.Response) (CheckEkmConnectionResponse, error) {
+func (client *KeyVaultClient) checkEkmConnectionHandleResponse(resp *http.Response, successCodes ...int) (CheckEkmConnectionResponse, error) {
 	result := CheckEkmConnectionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProxyInfo); err != nil {
 		return CheckEkmConnectionResponse{}, err
 	}
@@ -96,12 +94,7 @@ func (client *KeyVaultClient) CreateEkmConnection(ctx context.Context, ekmConnec
 	if err != nil {
 		return CreateEkmConnectionResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return CreateEkmConnectionResponse{}, err
-	}
-	resp, err := client.createEkmConnectionHandleResponse(httpResp)
-	return resp, err
+	return client.createEkmConnectionHandleResponse(httpResp, http.StatusOK)
 }
 
 // createEkmConnectionCreateRequest creates the CreateEkmConnection request.
@@ -112,7 +105,7 @@ func (client *KeyVaultClient) createEkmConnectionCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260401)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -123,8 +116,11 @@ func (client *KeyVaultClient) createEkmConnectionCreateRequest(ctx context.Conte
 }
 
 // createEkmConnectionHandleResponse handles the CreateEkmConnection response.
-func (client *KeyVaultClient) createEkmConnectionHandleResponse(resp *http.Response) (CreateEkmConnectionResponse, error) {
+func (client *KeyVaultClient) createEkmConnectionHandleResponse(resp *http.Response, successCodes ...int) (CreateEkmConnectionResponse, error) {
 	result := CreateEkmConnectionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Connection); err != nil {
 		return CreateEkmConnectionResponse{}, err
 	}
@@ -151,12 +147,7 @@ func (client *KeyVaultClient) DeleteEkmConnection(ctx context.Context, options *
 	if err != nil {
 		return DeleteEkmConnectionResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DeleteEkmConnectionResponse{}, err
-	}
-	resp, err := client.deleteEkmConnectionHandleResponse(httpResp)
-	return resp, err
+	return client.deleteEkmConnectionHandleResponse(httpResp, http.StatusOK)
 }
 
 // deleteEkmConnectionCreateRequest creates the DeleteEkmConnection request.
@@ -167,15 +158,18 @@ func (client *KeyVaultClient) deleteEkmConnectionCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260401)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // deleteEkmConnectionHandleResponse handles the DeleteEkmConnection response.
-func (client *KeyVaultClient) deleteEkmConnectionHandleResponse(resp *http.Response) (DeleteEkmConnectionResponse, error) {
+func (client *KeyVaultClient) deleteEkmConnectionHandleResponse(resp *http.Response, successCodes ...int) (DeleteEkmConnectionResponse, error) {
 	result := DeleteEkmConnectionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Connection); err != nil {
 		return DeleteEkmConnectionResponse{}, err
 	}
@@ -202,12 +196,7 @@ func (client *KeyVaultClient) GetEkmCertificate(ctx context.Context, options *Ge
 	if err != nil {
 		return GetEkmCertificateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GetEkmCertificateResponse{}, err
-	}
-	resp, err := client.getEkmCertificateHandleResponse(httpResp)
-	return resp, err
+	return client.getEkmCertificateHandleResponse(httpResp, http.StatusOK)
 }
 
 // getEkmCertificateCreateRequest creates the GetEkmCertificate request.
@@ -218,15 +207,18 @@ func (client *KeyVaultClient) getEkmCertificateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260401)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getEkmCertificateHandleResponse handles the GetEkmCertificate response.
-func (client *KeyVaultClient) getEkmCertificateHandleResponse(resp *http.Response) (GetEkmCertificateResponse, error) {
+func (client *KeyVaultClient) getEkmCertificateHandleResponse(resp *http.Response, successCodes ...int) (GetEkmCertificateResponse, error) {
 	result := GetEkmCertificateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProxyClientCertificateInfo); err != nil {
 		return GetEkmCertificateResponse{}, err
 	}
@@ -252,12 +244,7 @@ func (client *KeyVaultClient) GetEkmConnection(ctx context.Context, options *Get
 	if err != nil {
 		return GetEkmConnectionResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GetEkmConnectionResponse{}, err
-	}
-	resp, err := client.getEkmConnectionHandleResponse(httpResp)
-	return resp, err
+	return client.getEkmConnectionHandleResponse(httpResp, http.StatusOK)
 }
 
 // getEkmConnectionCreateRequest creates the GetEkmConnection request.
@@ -268,15 +255,18 @@ func (client *KeyVaultClient) getEkmConnectionCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260401)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getEkmConnectionHandleResponse handles the GetEkmConnection response.
-func (client *KeyVaultClient) getEkmConnectionHandleResponse(resp *http.Response) (GetEkmConnectionResponse, error) {
+func (client *KeyVaultClient) getEkmConnectionHandleResponse(resp *http.Response, successCodes ...int) (GetEkmConnectionResponse, error) {
 	result := GetEkmConnectionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Connection); err != nil {
 		return GetEkmConnectionResponse{}, err
 	}
@@ -304,12 +294,7 @@ func (client *KeyVaultClient) UpdateEkmConnection(ctx context.Context, ekmConnec
 	if err != nil {
 		return UpdateEkmConnectionResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return UpdateEkmConnectionResponse{}, err
-	}
-	resp, err := client.updateEkmConnectionHandleResponse(httpResp)
-	return resp, err
+	return client.updateEkmConnectionHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateEkmConnectionCreateRequest creates the UpdateEkmConnection request.
@@ -320,7 +305,7 @@ func (client *KeyVaultClient) updateEkmConnectionCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260401)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -331,8 +316,11 @@ func (client *KeyVaultClient) updateEkmConnectionCreateRequest(ctx context.Conte
 }
 
 // updateEkmConnectionHandleResponse handles the UpdateEkmConnection response.
-func (client *KeyVaultClient) updateEkmConnectionHandleResponse(resp *http.Response) (UpdateEkmConnectionResponse, error) {
+func (client *KeyVaultClient) updateEkmConnectionHandleResponse(resp *http.Response, successCodes ...int) (UpdateEkmConnectionResponse, error) {
 	result := UpdateEkmConnectionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Connection); err != nil {
 		return UpdateEkmConnectionResponse{}, err
 	}

@@ -1,14 +1,12 @@
 ## Release History
 
-### 1.6.0-beta.2 (Unreleased)
+### 1.6.0 (Unreleased)
 
 #### Features Added
-
-#### Breaking Changes
-
-#### Bugs Fixed
+* Added the `ekm` package for external key management operations
 
 #### Other Changes
+* Upgraded to API service version `2026-04-01`
 
 ### 1.6.0-beta.1 (2026-06-09)
 

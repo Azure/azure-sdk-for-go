@@ -20,7 +20,7 @@ import (
 // GET "/providers/Microsoft.ContosoProviderHub/operations"
 // Don't use this type directly, use NewOperationsClient() instead.
 //
-// Generated from API version 2026-08-31
+// Generated from API version 2026-11-01
 type OperationsClient struct {
 	internal *arm.Client
 }
@@ -82,7 +82,7 @@ func (client *OperationsClient) listCreateRequest(ctx context.Context, nextLink 
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260831)
+		reqQP.Set("api-version", version20261101)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

@@ -19,7 +19,7 @@ import (
 // IotDpsResourceClient contains the methods for the IotDpsResource group.
 // Don't use this type directly, use NewIotDpsResourceClient() instead.
 //
-// Generated from API version 2026-08-31
+// Generated from API version 2026-11-01
 type IotDpsResourceClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,6 +42,390 @@ func NewIotDpsResourceClient(subscriptionID string, credential azcore.TokenCrede
 		internal:       cl,
 	}
 	return client, nil
+}
+
+// BeginCreateOrUpdate - Create or update the metadata of the provisioning service. The usual pattern to modify a property
+// is to retrieve the provisioning service metadata and security metadata, and then combine them with the modified values
+// in a new body to update the provisioning service.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - provisioningServiceName - Name of the provisioning service to retrieve.
+//   - iotDpsDescription - Description of the provisioning service to create or update.
+//   - options - IotDpsResourceClientBeginCreateOrUpdateOptions contains the optional parameters for the IotDpsResourceClient.BeginCreateOrUpdate
+//     method.
+func (client *IotDpsResourceClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, provisioningServiceName string, iotDpsDescription ProvisioningServiceDescription, options *IotDpsResourceClientBeginCreateOrUpdateOptions) (*runtime.Poller[IotDpsResourceClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, provisioningServiceName, iotDpsDescription, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[IotDpsResourceClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[IotDpsResourceClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// createOrUpdate - Create or update the metadata of the provisioning service. The usual pattern to modify a property is to
+// retrieve the provisioning service metadata and security metadata, and then combine them with the modified values in a new
+// body to update the provisioning service.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *IotDpsResourceClient) createOrUpdate(ctx context.Context, resourceGroupName string, provisioningServiceName string, iotDpsDescription ProvisioningServiceDescription, options *IotDpsResourceClientBeginCreateOrUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "IotDpsResourceClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, provisioningServiceName, iotDpsDescription, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// createOrUpdateCreateRequest creates the createOrUpdate request.
+func (client *IotDpsResourceClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, provisioningServiceName string, iotDpsDescription ProvisioningServiceDescription, _ *IotDpsResourceClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{provisioningServiceName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if provisioningServiceName == "" {
+		return nil, errors.New("parameter provisioningServiceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{provisioningServiceName}", url.PathEscape(provisioningServiceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, iotDpsDescription); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginCreateOrUpdatePrivateEndpointConnection - Create or update the status of a private endpoint connection with the specified
+// name
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - Name of the provisioning service to retrieve.
+//   - privateEndpointConnectionName - The name of the private endpoint connection
+//   - privateEndpointConnection - The private endpoint connection with updated properties
+//   - options - IotDpsResourceClientBeginCreateOrUpdatePrivateEndpointConnectionOptions contains the optional parameters for
+//     the IotDpsResourceClient.BeginCreateOrUpdatePrivateEndpointConnection method.
+func (client *IotDpsResourceClient) BeginCreateOrUpdatePrivateEndpointConnection(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, privateEndpointConnection PrivateEndpointConnection, options *IotDpsResourceClientBeginCreateOrUpdatePrivateEndpointConnectionOptions) (*runtime.Poller[IotDpsResourceClientCreateOrUpdatePrivateEndpointConnectionResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdatePrivateEndpointConnection(ctx, resourceGroupName, resourceName, privateEndpointConnectionName, privateEndpointConnection, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[IotDpsResourceClientCreateOrUpdatePrivateEndpointConnectionResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[IotDpsResourceClientCreateOrUpdatePrivateEndpointConnectionResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// createOrUpdatePrivateEndpointConnection - Create or update the status of a private endpoint connection with the specified
+// name
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *IotDpsResourceClient) createOrUpdatePrivateEndpointConnection(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, privateEndpointConnection PrivateEndpointConnection, options *IotDpsResourceClientBeginCreateOrUpdatePrivateEndpointConnectionOptions) (*http.Response, error) {
+	var err error
+	const operationName = "IotDpsResourceClient.BeginCreateOrUpdatePrivateEndpointConnection"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.createOrUpdatePrivateEndpointConnectionCreateRequest(ctx, resourceGroupName, resourceName, privateEndpointConnectionName, privateEndpointConnection, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// createOrUpdatePrivateEndpointConnectionCreateRequest creates the createOrUpdatePrivateEndpointConnection request.
+func (client *IotDpsResourceClient) createOrUpdatePrivateEndpointConnectionCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, privateEndpointConnection PrivateEndpointConnection, _ *IotDpsResourceClientBeginCreateOrUpdatePrivateEndpointConnectionOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{resourceName}/privateEndpointConnections/{privateEndpointConnectionName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	if privateEndpointConnectionName == "" {
+		return nil, errors.New("parameter privateEndpointConnectionName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{privateEndpointConnectionName}", url.PathEscape(privateEndpointConnectionName))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, privateEndpointConnection); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginDelete - Deletes the Provisioning Service.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - options - IotDpsResourceClientBeginDeleteOptions contains the optional parameters for the IotDpsResourceClient.BeginDelete
+//     method.
+func (client *IotDpsResourceClient) BeginDelete(ctx context.Context, provisioningServiceName string, resourceGroupName string, options *IotDpsResourceClientBeginDeleteOptions) (*runtime.Poller[IotDpsResourceClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.delete(ctx, provisioningServiceName, resourceGroupName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[IotDpsResourceClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[IotDpsResourceClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// delete - Deletes the Provisioning Service.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *IotDpsResourceClient) delete(ctx context.Context, provisioningServiceName string, resourceGroupName string, options *IotDpsResourceClientBeginDeleteOptions) (*http.Response, error) {
+	var err error
+	const operationName = "IotDpsResourceClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.deleteCreateRequest(ctx, provisioningServiceName, resourceGroupName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent, http.StatusNotFound) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// deleteCreateRequest creates the delete request.
+func (client *IotDpsResourceClient) deleteCreateRequest(ctx context.Context, provisioningServiceName string, resourceGroupName string, _ *IotDpsResourceClientBeginDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{provisioningServiceName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if provisioningServiceName == "" {
+		return nil, errors.New("parameter provisioningServiceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{provisioningServiceName}", url.PathEscape(provisioningServiceName))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginDeletePrivateEndpointConnection - Delete private endpoint connection with the specified name
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - Name of the provisioning service to retrieve.
+//   - privateEndpointConnectionName - The name of the private endpoint connection
+//   - options - IotDpsResourceClientBeginDeletePrivateEndpointConnectionOptions contains the optional parameters for the IotDpsResourceClient.BeginDeletePrivateEndpointConnection
+//     method.
+func (client *IotDpsResourceClient) BeginDeletePrivateEndpointConnection(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, options *IotDpsResourceClientBeginDeletePrivateEndpointConnectionOptions) (*runtime.Poller[IotDpsResourceClientDeletePrivateEndpointConnectionResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deletePrivateEndpointConnection(ctx, resourceGroupName, resourceName, privateEndpointConnectionName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[IotDpsResourceClientDeletePrivateEndpointConnectionResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[IotDpsResourceClientDeletePrivateEndpointConnectionResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// deletePrivateEndpointConnection - Delete private endpoint connection with the specified name
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *IotDpsResourceClient) deletePrivateEndpointConnection(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, options *IotDpsResourceClientBeginDeletePrivateEndpointConnectionOptions) (*http.Response, error) {
+	var err error
+	const operationName = "IotDpsResourceClient.BeginDeletePrivateEndpointConnection"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.deletePrivateEndpointConnectionCreateRequest(ctx, resourceGroupName, resourceName, privateEndpointConnectionName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// deletePrivateEndpointConnectionCreateRequest creates the deletePrivateEndpointConnection request.
+func (client *IotDpsResourceClient) deletePrivateEndpointConnectionCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, _ *IotDpsResourceClientBeginDeletePrivateEndpointConnectionOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{resourceName}/privateEndpointConnections/{privateEndpointConnectionName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	if privateEndpointConnectionName == "" {
+		return nil, errors.New("parameter privateEndpointConnectionName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{privateEndpointConnectionName}", url.PathEscape(privateEndpointConnectionName))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// BeginUpdate - Update an existing provisioning service's tags. to update other fields use the CreateOrUpdate method
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - provisioningServiceName - Name of the provisioning service to retrieve.
+//   - provisioningServiceTags - Updated tag information to set into the provisioning service instance.
+//   - options - IotDpsResourceClientBeginUpdateOptions contains the optional parameters for the IotDpsResourceClient.BeginUpdate
+//     method.
+func (client *IotDpsResourceClient) BeginUpdate(ctx context.Context, resourceGroupName string, provisioningServiceName string, provisioningServiceTags TagsResource, options *IotDpsResourceClientBeginUpdateOptions) (*runtime.Poller[IotDpsResourceClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, provisioningServiceName, provisioningServiceTags, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[IotDpsResourceClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[IotDpsResourceClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update an existing provisioning service's tags. to update other fields use the CreateOrUpdate method
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *IotDpsResourceClient) update(ctx context.Context, resourceGroupName string, provisioningServiceName string, provisioningServiceTags TagsResource, options *IotDpsResourceClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "IotDpsResourceClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, provisioningServiceName, provisioningServiceTags, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *IotDpsResourceClient) updateCreateRequest(ctx context.Context, resourceGroupName string, provisioningServiceName string, provisioningServiceTags TagsResource, _ *IotDpsResourceClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{provisioningServiceName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if provisioningServiceName == "" {
+		return nil, errors.New("parameter provisioningServiceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{provisioningServiceName}", url.PathEscape(provisioningServiceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, provisioningServiceTags); err != nil {
+		return nil, err
+	}
+	return req, nil
 }
 
 // CheckProvisioningServiceNameAvailability - Check if a provisioning service name is available.
@@ -81,7 +465,7 @@ func (client *IotDpsResourceClient) checkProvisioningServiceNameAvailabilityCrea
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260831)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -101,314 +485,6 @@ func (client *IotDpsResourceClient) checkProvisioningServiceNameAvailabilityHand
 		return IotDpsResourceClientCheckProvisioningServiceNameAvailabilityResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginCreateOrUpdate - Create or update the metadata of the provisioning service. The usual pattern to modify a property
-// is to retrieve the provisioning service metadata and security metadata, and then combine them with the modified values
-// in a new body to update the provisioning service.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - provisioningServiceName - Name of the provisioning service to retrieve.
-//   - iotDpsDescription - Description of the provisioning service to create or update.
-//   - options - IotDpsResourceClientBeginCreateOrUpdateOptions contains the optional parameters for the IotDpsResourceClient.BeginCreateOrUpdate
-//     method.
-func (client *IotDpsResourceClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, provisioningServiceName string, iotDpsDescription ProvisioningServiceDescription, options *IotDpsResourceClientBeginCreateOrUpdateOptions) (*runtime.Poller[IotDpsResourceClientCreateOrUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.createOrUpdate(ctx, resourceGroupName, provisioningServiceName, iotDpsDescription, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[IotDpsResourceClientCreateOrUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[IotDpsResourceClientCreateOrUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// CreateOrUpdate - Create or update the metadata of the provisioning service. The usual pattern to modify a property is to
-// retrieve the provisioning service metadata and security metadata, and then combine them with the modified values in a new
-// body to update the provisioning service.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *IotDpsResourceClient) createOrUpdate(ctx context.Context, resourceGroupName string, provisioningServiceName string, iotDpsDescription ProvisioningServiceDescription, options *IotDpsResourceClientBeginCreateOrUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "IotDpsResourceClient.BeginCreateOrUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, provisioningServiceName, iotDpsDescription, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *IotDpsResourceClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, provisioningServiceName string, iotDpsDescription ProvisioningServiceDescription, _ *IotDpsResourceClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{provisioningServiceName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if provisioningServiceName == "" {
-		return nil, errors.New("parameter provisioningServiceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{provisioningServiceName}", url.PathEscape(provisioningServiceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260831)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, iotDpsDescription); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginCreateOrUpdatePrivateEndpointConnection - Create or update the status of a private endpoint connection with the specified
-// name
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - resourceName - Name of the provisioning service to retrieve.
-//   - privateEndpointConnectionName - The name of the private endpoint connection
-//   - privateEndpointConnection - The private endpoint connection with updated properties
-//   - options - IotDpsResourceClientBeginCreateOrUpdatePrivateEndpointConnectionOptions contains the optional parameters for
-//     the IotDpsResourceClient.BeginCreateOrUpdatePrivateEndpointConnection method.
-func (client *IotDpsResourceClient) BeginCreateOrUpdatePrivateEndpointConnection(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, privateEndpointConnection PrivateEndpointConnection, options *IotDpsResourceClientBeginCreateOrUpdatePrivateEndpointConnectionOptions) (*runtime.Poller[IotDpsResourceClientCreateOrUpdatePrivateEndpointConnectionResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.createOrUpdatePrivateEndpointConnection(ctx, resourceGroupName, resourceName, privateEndpointConnectionName, privateEndpointConnection, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[IotDpsResourceClientCreateOrUpdatePrivateEndpointConnectionResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[IotDpsResourceClientCreateOrUpdatePrivateEndpointConnectionResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// CreateOrUpdatePrivateEndpointConnection - Create or update the status of a private endpoint connection with the specified
-// name
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *IotDpsResourceClient) createOrUpdatePrivateEndpointConnection(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, privateEndpointConnection PrivateEndpointConnection, options *IotDpsResourceClientBeginCreateOrUpdatePrivateEndpointConnectionOptions) (*http.Response, error) {
-	var err error
-	const operationName = "IotDpsResourceClient.BeginCreateOrUpdatePrivateEndpointConnection"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.createOrUpdatePrivateEndpointConnectionCreateRequest(ctx, resourceGroupName, resourceName, privateEndpointConnectionName, privateEndpointConnection, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// createOrUpdatePrivateEndpointConnectionCreateRequest creates the CreateOrUpdatePrivateEndpointConnection request.
-func (client *IotDpsResourceClient) createOrUpdatePrivateEndpointConnectionCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, privateEndpointConnection PrivateEndpointConnection, _ *IotDpsResourceClientBeginCreateOrUpdatePrivateEndpointConnectionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{resourceName}/privateEndpointConnections/{privateEndpointConnectionName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if resourceName == "" {
-		return nil, errors.New("parameter resourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	if privateEndpointConnectionName == "" {
-		return nil, errors.New("parameter privateEndpointConnectionName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{privateEndpointConnectionName}", url.PathEscape(privateEndpointConnectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260831)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, privateEndpointConnection); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginDelete - Deletes the Provisioning Service.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - options - IotDpsResourceClientBeginDeleteOptions contains the optional parameters for the IotDpsResourceClient.BeginDelete
-//     method.
-func (client *IotDpsResourceClient) BeginDelete(ctx context.Context, provisioningServiceName string, resourceGroupName string, options *IotDpsResourceClientBeginDeleteOptions) (*runtime.Poller[IotDpsResourceClientDeleteResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, provisioningServiceName, resourceGroupName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[IotDpsResourceClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[IotDpsResourceClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Delete - Deletes the Provisioning Service.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *IotDpsResourceClient) deleteOperation(ctx context.Context, provisioningServiceName string, resourceGroupName string, options *IotDpsResourceClientBeginDeleteOptions) (*http.Response, error) {
-	var err error
-	const operationName = "IotDpsResourceClient.BeginDelete"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.deleteCreateRequest(ctx, provisioningServiceName, resourceGroupName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent, http.StatusNotFound) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// deleteCreateRequest creates the Delete request.
-func (client *IotDpsResourceClient) deleteCreateRequest(ctx context.Context, provisioningServiceName string, resourceGroupName string, _ *IotDpsResourceClientBeginDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{provisioningServiceName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if provisioningServiceName == "" {
-		return nil, errors.New("parameter provisioningServiceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{provisioningServiceName}", url.PathEscape(provisioningServiceName))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260831)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
-}
-
-// BeginDeletePrivateEndpointConnection - Delete private endpoint connection with the specified name
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - resourceName - Name of the provisioning service to retrieve.
-//   - privateEndpointConnectionName - The name of the private endpoint connection
-//   - options - IotDpsResourceClientBeginDeletePrivateEndpointConnectionOptions contains the optional parameters for the IotDpsResourceClient.BeginDeletePrivateEndpointConnection
-//     method.
-func (client *IotDpsResourceClient) BeginDeletePrivateEndpointConnection(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, options *IotDpsResourceClientBeginDeletePrivateEndpointConnectionOptions) (*runtime.Poller[IotDpsResourceClientDeletePrivateEndpointConnectionResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deletePrivateEndpointConnection(ctx, resourceGroupName, resourceName, privateEndpointConnectionName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[IotDpsResourceClientDeletePrivateEndpointConnectionResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[IotDpsResourceClientDeletePrivateEndpointConnectionResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// DeletePrivateEndpointConnection - Delete private endpoint connection with the specified name
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *IotDpsResourceClient) deletePrivateEndpointConnection(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, options *IotDpsResourceClientBeginDeletePrivateEndpointConnectionOptions) (*http.Response, error) {
-	var err error
-	const operationName = "IotDpsResourceClient.BeginDeletePrivateEndpointConnection"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.deletePrivateEndpointConnectionCreateRequest(ctx, resourceGroupName, resourceName, privateEndpointConnectionName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// deletePrivateEndpointConnectionCreateRequest creates the DeletePrivateEndpointConnection request.
-func (client *IotDpsResourceClient) deletePrivateEndpointConnectionCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, _ *IotDpsResourceClientBeginDeletePrivateEndpointConnectionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{resourceName}/privateEndpointConnections/{privateEndpointConnectionName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if resourceName == "" {
-		return nil, errors.New("parameter resourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	if privateEndpointConnectionName == "" {
-		return nil, errors.New("parameter privateEndpointConnectionName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{privateEndpointConnectionName}", url.PathEscape(privateEndpointConnectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260831)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
 }
 
 // Get - Get the metadata of the provisioning service without SAS keys.
@@ -452,7 +528,7 @@ func (client *IotDpsResourceClient) getCreateRequest(ctx context.Context, provis
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260831)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -517,7 +593,7 @@ func (client *IotDpsResourceClient) getOperationResultCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260831)
+	reqQP.Set("api-version", version20261101)
 	reqQP.Set("asyncinfo", asyncinfo)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
@@ -584,7 +660,7 @@ func (client *IotDpsResourceClient) getPrivateEndpointConnectionCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260831)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -650,7 +726,7 @@ func (client *IotDpsResourceClient) getPrivateLinkResourcesCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260831)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -664,6 +740,192 @@ func (client *IotDpsResourceClient) getPrivateLinkResourcesHandleResponse(resp *
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GroupIDInformation); err != nil {
 		return IotDpsResourceClientGetPrivateLinkResourcesResponse{}, err
+	}
+	return result, nil
+}
+
+// ListKeysForKeyName - List primary and secondary keys for a specific key name
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - options - IotDpsResourceClientListKeysForKeyNameOptions contains the optional parameters for the IotDpsResourceClient.ListKeysForKeyName
+//     method.
+func (client *IotDpsResourceClient) ListKeysForKeyName(ctx context.Context, provisioningServiceName string, keyName string, resourceGroupName string, options *IotDpsResourceClientListKeysForKeyNameOptions) (IotDpsResourceClientListKeysForKeyNameResponse, error) {
+	var err error
+	const operationName = "IotDpsResourceClient.ListKeysForKeyName"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listKeysForKeyNameCreateRequest(ctx, provisioningServiceName, keyName, resourceGroupName, options)
+	if err != nil {
+		return IotDpsResourceClientListKeysForKeyNameResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return IotDpsResourceClientListKeysForKeyNameResponse{}, err
+	}
+	return client.listKeysForKeyNameHandleResponse(httpResp, http.StatusOK)
+}
+
+// listKeysForKeyNameCreateRequest creates the ListKeysForKeyName request.
+func (client *IotDpsResourceClient) listKeysForKeyNameCreateRequest(ctx context.Context, provisioningServiceName string, keyName string, resourceGroupName string, _ *IotDpsResourceClientListKeysForKeyNameOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{provisioningServiceName}/keys/{keyName}/listkeys"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if provisioningServiceName == "" {
+		return nil, errors.New("parameter provisioningServiceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{provisioningServiceName}", url.PathEscape(provisioningServiceName))
+	if keyName == "" {
+		return nil, errors.New("parameter keyName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{keyName}", url.PathEscape(keyName))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listKeysForKeyNameHandleResponse handles the ListKeysForKeyName response.
+func (client *IotDpsResourceClient) listKeysForKeyNameHandleResponse(resp *http.Response, successCodes ...int) (IotDpsResourceClientListKeysForKeyNameResponse, error) {
+	result := IotDpsResourceClientListKeysForKeyNameResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SharedAccessSignatureAuthorizationRuleAccessRightsDescription); err != nil {
+		return IotDpsResourceClientListKeysForKeyNameResponse{}, err
+	}
+	return result, nil
+}
+
+// ListPrivateEndpointConnections - List private endpoint connection properties
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - Name of the provisioning service to retrieve.
+//   - options - IotDpsResourceClientListPrivateEndpointConnectionsOptions contains the optional parameters for the IotDpsResourceClient.ListPrivateEndpointConnections
+//     method.
+func (client *IotDpsResourceClient) ListPrivateEndpointConnections(ctx context.Context, resourceGroupName string, resourceName string, options *IotDpsResourceClientListPrivateEndpointConnectionsOptions) (IotDpsResourceClientListPrivateEndpointConnectionsResponse, error) {
+	var err error
+	const operationName = "IotDpsResourceClient.ListPrivateEndpointConnections"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listPrivateEndpointConnectionsCreateRequest(ctx, resourceGroupName, resourceName, options)
+	if err != nil {
+		return IotDpsResourceClientListPrivateEndpointConnectionsResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return IotDpsResourceClientListPrivateEndpointConnectionsResponse{}, err
+	}
+	return client.listPrivateEndpointConnectionsHandleResponse(httpResp, http.StatusOK)
+}
+
+// listPrivateEndpointConnectionsCreateRequest creates the ListPrivateEndpointConnections request.
+func (client *IotDpsResourceClient) listPrivateEndpointConnectionsCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, _ *IotDpsResourceClientListPrivateEndpointConnectionsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{resourceName}/privateEndpointConnections"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listPrivateEndpointConnectionsHandleResponse handles the ListPrivateEndpointConnections response.
+func (client *IotDpsResourceClient) listPrivateEndpointConnectionsHandleResponse(resp *http.Response, successCodes ...int) (IotDpsResourceClientListPrivateEndpointConnectionsResponse, error) {
+	result := IotDpsResourceClientListPrivateEndpointConnectionsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnectionArray); err != nil {
+		return IotDpsResourceClientListPrivateEndpointConnectionsResponse{}, err
+	}
+	return result, nil
+}
+
+// ListPrivateLinkResources - List private link resources for the given provisioning service
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - Name of the provisioning service to retrieve.
+//   - options - IotDpsResourceClientListPrivateLinkResourcesOptions contains the optional parameters for the IotDpsResourceClient.ListPrivateLinkResources
+//     method.
+func (client *IotDpsResourceClient) ListPrivateLinkResources(ctx context.Context, resourceGroupName string, resourceName string, options *IotDpsResourceClientListPrivateLinkResourcesOptions) (IotDpsResourceClientListPrivateLinkResourcesResponse, error) {
+	var err error
+	const operationName = "IotDpsResourceClient.ListPrivateLinkResources"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listPrivateLinkResourcesCreateRequest(ctx, resourceGroupName, resourceName, options)
+	if err != nil {
+		return IotDpsResourceClientListPrivateLinkResourcesResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return IotDpsResourceClientListPrivateLinkResourcesResponse{}, err
+	}
+	return client.listPrivateLinkResourcesHandleResponse(httpResp, http.StatusOK)
+}
+
+// listPrivateLinkResourcesCreateRequest creates the ListPrivateLinkResources request.
+func (client *IotDpsResourceClient) listPrivateLinkResourcesCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, _ *IotDpsResourceClientListPrivateLinkResourcesOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{resourceName}/privateLinkResources"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listPrivateLinkResourcesHandleResponse handles the ListPrivateLinkResources response.
+func (client *IotDpsResourceClient) listPrivateLinkResourcesHandleResponse(resp *http.Response, successCodes ...int) (IotDpsResourceClientListPrivateLinkResourcesResponse, error) {
+	result := IotDpsResourceClientListPrivateLinkResourcesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkResources); err != nil {
+		return IotDpsResourceClientListPrivateLinkResourcesResponse{}, err
 	}
 	return result, nil
 }
@@ -721,7 +983,7 @@ func (client *IotDpsResourceClient) listByResourceGroupCreateRequest(ctx context
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260831)
+		reqQP.Set("api-version", version20261101)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -788,7 +1050,7 @@ func (client *IotDpsResourceClient) listBySubscriptionCreateRequest(ctx context.
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260831)
+		reqQP.Set("api-version", version20261101)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -864,7 +1126,7 @@ func (client *IotDpsResourceClient) listKeysCreateRequest(ctx context.Context, p
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260831)
+		reqQP.Set("api-version", version20261101)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -879,192 +1141,6 @@ func (client *IotDpsResourceClient) listKeysHandleResponse(resp *http.Response, 
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SharedAccessSignatureAuthorizationRuleListResult); err != nil {
 		return IotDpsResourceClientListKeysResponse{}, err
-	}
-	return result, nil
-}
-
-// ListKeysForKeyName - List primary and secondary keys for a specific key name
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - options - IotDpsResourceClientListKeysForKeyNameOptions contains the optional parameters for the IotDpsResourceClient.ListKeysForKeyName
-//     method.
-func (client *IotDpsResourceClient) ListKeysForKeyName(ctx context.Context, provisioningServiceName string, keyName string, resourceGroupName string, options *IotDpsResourceClientListKeysForKeyNameOptions) (IotDpsResourceClientListKeysForKeyNameResponse, error) {
-	var err error
-	const operationName = "IotDpsResourceClient.ListKeysForKeyName"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listKeysForKeyNameCreateRequest(ctx, provisioningServiceName, keyName, resourceGroupName, options)
-	if err != nil {
-		return IotDpsResourceClientListKeysForKeyNameResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return IotDpsResourceClientListKeysForKeyNameResponse{}, err
-	}
-	return client.listKeysForKeyNameHandleResponse(httpResp, http.StatusOK)
-}
-
-// listKeysForKeyNameCreateRequest creates the ListKeysForKeyName request.
-func (client *IotDpsResourceClient) listKeysForKeyNameCreateRequest(ctx context.Context, provisioningServiceName string, keyName string, resourceGroupName string, _ *IotDpsResourceClientListKeysForKeyNameOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{provisioningServiceName}/keys/{keyName}/listkeys"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if provisioningServiceName == "" {
-		return nil, errors.New("parameter provisioningServiceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{provisioningServiceName}", url.PathEscape(provisioningServiceName))
-	if keyName == "" {
-		return nil, errors.New("parameter keyName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{keyName}", url.PathEscape(keyName))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260831)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listKeysForKeyNameHandleResponse handles the ListKeysForKeyName response.
-func (client *IotDpsResourceClient) listKeysForKeyNameHandleResponse(resp *http.Response, successCodes ...int) (IotDpsResourceClientListKeysForKeyNameResponse, error) {
-	result := IotDpsResourceClientListKeysForKeyNameResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.SharedAccessSignatureAuthorizationRuleAccessRightsDescription); err != nil {
-		return IotDpsResourceClientListKeysForKeyNameResponse{}, err
-	}
-	return result, nil
-}
-
-// ListPrivateEndpointConnections - List private endpoint connection properties
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - resourceName - Name of the provisioning service to retrieve.
-//   - options - IotDpsResourceClientListPrivateEndpointConnectionsOptions contains the optional parameters for the IotDpsResourceClient.ListPrivateEndpointConnections
-//     method.
-func (client *IotDpsResourceClient) ListPrivateEndpointConnections(ctx context.Context, resourceGroupName string, resourceName string, options *IotDpsResourceClientListPrivateEndpointConnectionsOptions) (IotDpsResourceClientListPrivateEndpointConnectionsResponse, error) {
-	var err error
-	const operationName = "IotDpsResourceClient.ListPrivateEndpointConnections"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listPrivateEndpointConnectionsCreateRequest(ctx, resourceGroupName, resourceName, options)
-	if err != nil {
-		return IotDpsResourceClientListPrivateEndpointConnectionsResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return IotDpsResourceClientListPrivateEndpointConnectionsResponse{}, err
-	}
-	return client.listPrivateEndpointConnectionsHandleResponse(httpResp, http.StatusOK)
-}
-
-// listPrivateEndpointConnectionsCreateRequest creates the ListPrivateEndpointConnections request.
-func (client *IotDpsResourceClient) listPrivateEndpointConnectionsCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, _ *IotDpsResourceClientListPrivateEndpointConnectionsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{resourceName}/privateEndpointConnections"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if resourceName == "" {
-		return nil, errors.New("parameter resourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260831)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listPrivateEndpointConnectionsHandleResponse handles the ListPrivateEndpointConnections response.
-func (client *IotDpsResourceClient) listPrivateEndpointConnectionsHandleResponse(resp *http.Response, successCodes ...int) (IotDpsResourceClientListPrivateEndpointConnectionsResponse, error) {
-	result := IotDpsResourceClientListPrivateEndpointConnectionsResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnectionArray); err != nil {
-		return IotDpsResourceClientListPrivateEndpointConnectionsResponse{}, err
-	}
-	return result, nil
-}
-
-// ListPrivateLinkResources - List private link resources for the given provisioning service
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - resourceName - Name of the provisioning service to retrieve.
-//   - options - IotDpsResourceClientListPrivateLinkResourcesOptions contains the optional parameters for the IotDpsResourceClient.ListPrivateLinkResources
-//     method.
-func (client *IotDpsResourceClient) ListPrivateLinkResources(ctx context.Context, resourceGroupName string, resourceName string, options *IotDpsResourceClientListPrivateLinkResourcesOptions) (IotDpsResourceClientListPrivateLinkResourcesResponse, error) {
-	var err error
-	const operationName = "IotDpsResourceClient.ListPrivateLinkResources"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listPrivateLinkResourcesCreateRequest(ctx, resourceGroupName, resourceName, options)
-	if err != nil {
-		return IotDpsResourceClientListPrivateLinkResourcesResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return IotDpsResourceClientListPrivateLinkResourcesResponse{}, err
-	}
-	return client.listPrivateLinkResourcesHandleResponse(httpResp, http.StatusOK)
-}
-
-// listPrivateLinkResourcesCreateRequest creates the ListPrivateLinkResources request.
-func (client *IotDpsResourceClient) listPrivateLinkResourcesCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, _ *IotDpsResourceClientListPrivateLinkResourcesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{resourceName}/privateLinkResources"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if resourceName == "" {
-		return nil, errors.New("parameter resourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260831)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listPrivateLinkResourcesHandleResponse handles the ListPrivateLinkResources response.
-func (client *IotDpsResourceClient) listPrivateLinkResourcesHandleResponse(resp *http.Response, successCodes ...int) (IotDpsResourceClientListPrivateLinkResourcesResponse, error) {
-	result := IotDpsResourceClientListPrivateLinkResourcesResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkResources); err != nil {
-		return IotDpsResourceClientListPrivateLinkResourcesResponse{}, err
 	}
 	return result, nil
 }
@@ -1126,7 +1202,7 @@ func (client *IotDpsResourceClient) listValidSKUsCreateRequest(ctx context.Conte
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260831)
+		reqQP.Set("api-version", version20261101)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -1143,80 +1219,4 @@ func (client *IotDpsResourceClient) listValidSKUsHandleResponse(resp *http.Respo
 		return IotDpsResourceClientListValidSKUsResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Update an existing provisioning service's tags. to update other fields use the CreateOrUpdate method
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - provisioningServiceName - Name of the provisioning service to retrieve.
-//   - provisioningServiceTags - Updated tag information to set into the provisioning service instance.
-//   - options - IotDpsResourceClientBeginUpdateOptions contains the optional parameters for the IotDpsResourceClient.BeginUpdate
-//     method.
-func (client *IotDpsResourceClient) BeginUpdate(ctx context.Context, resourceGroupName string, provisioningServiceName string, provisioningServiceTags TagsResource, options *IotDpsResourceClientBeginUpdateOptions) (*runtime.Poller[IotDpsResourceClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, provisioningServiceName, provisioningServiceTags, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[IotDpsResourceClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[IotDpsResourceClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update an existing provisioning service's tags. to update other fields use the CreateOrUpdate method
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *IotDpsResourceClient) update(ctx context.Context, resourceGroupName string, provisioningServiceName string, provisioningServiceTags TagsResource, options *IotDpsResourceClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "IotDpsResourceClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, provisioningServiceName, provisioningServiceTags, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *IotDpsResourceClient) updateCreateRequest(ctx context.Context, resourceGroupName string, provisioningServiceName string, provisioningServiceTags TagsResource, _ *IotDpsResourceClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{provisioningServiceName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if provisioningServiceName == "" {
-		return nil, errors.New("parameter provisioningServiceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{provisioningServiceName}", url.PathEscape(provisioningServiceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260831)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, provisioningServiceTags); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

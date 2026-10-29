@@ -753,10 +753,9 @@ func TestSubjectAlternativeNames(t *testing.T) {
 }
 
 // TestPlatformManaged exercises the experimental PlatformManaged property on
-// CertificatePolicy. The feature is intended for internal Azure Key Vault usage
-// only and requires a valid OneCert-managed domain; this test issues a
-// PublicTLSServerAuth certificate for a OneCert-owned host and verifies the
-// PlatformManaged configuration round-trips through Create + Get.
+// CertificatePolicy for internal Azure Key Vault usage. It verifies request
+// acceptance and configuration round-tripping through Create + GetPolicy,
+// without waiting for or verifying certificate issuance.
 func TestPlatformManaged(t *testing.T) {
 	client := startTest(t)
 

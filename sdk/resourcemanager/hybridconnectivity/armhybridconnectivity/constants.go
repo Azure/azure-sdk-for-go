@@ -62,21 +62,21 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// GcpTemplateFormat - GCP template format.
-type GcpTemplateFormat string
+// GCPTemplateFormat - GCP template format.
+type GCPTemplateFormat string
 
 const (
-	// GcpTemplateFormatShellScript - Shell script template format
-	GcpTemplateFormatShellScript GcpTemplateFormat = "shellscript"
-	// GcpTemplateFormatTerraform - Terraform template format
-	GcpTemplateFormatTerraform GcpTemplateFormat = "terraform"
+	// GCPTemplateFormatShellScript - Shell script template format
+	GCPTemplateFormatShellScript GCPTemplateFormat = "shellscript"
+	// GCPTemplateFormatTerraform - Terraform template format
+	GCPTemplateFormatTerraform GCPTemplateFormat = "terraform"
 )
 
-// PossibleGcpTemplateFormatValues returns the possible values for the GcpTemplateFormat const type.
-func PossibleGcpTemplateFormatValues() []GcpTemplateFormat {
-	return []GcpTemplateFormat{
-		GcpTemplateFormatShellScript,
-		GcpTemplateFormatTerraform,
+// PossibleGCPTemplateFormatValues returns the possible values for the GCPTemplateFormat const type.
+func PossibleGCPTemplateFormatValues() []GCPTemplateFormat {
+	return []GCPTemplateFormat{
+		GCPTemplateFormatShellScript,
+		GCPTemplateFormatTerraform,
 	}
 }
 

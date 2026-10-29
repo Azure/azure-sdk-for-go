@@ -21,8 +21,8 @@ type ServerFactory struct {
 	// GenerateAwsTemplateServer contains the fakes for client GenerateAwsTemplateClient
 	GenerateAwsTemplateServer GenerateAwsTemplateServer
 
-	// GenerateGcpTemplateServer contains the fakes for client GenerateGcpTemplateClient
-	GenerateGcpTemplateServer GenerateGcpTemplateServer
+	// GenerateGCPTemplateServer contains the fakes for client GenerateGCPTemplateClient
+	GenerateGCPTemplateServer GenerateGCPTemplateServer
 
 	// InventoryServer contains the fakes for client InventoryClient
 	InventoryServer InventoryServer
@@ -59,7 +59,7 @@ type ServerFactoryTransport struct {
 	trMu                           sync.Mutex
 	trEndpointsServer              *EndpointsServerTransport
 	trGenerateAwsTemplateServer    *GenerateAwsTemplateServerTransport
-	trGenerateGcpTemplateServer    *GenerateGcpTemplateServerTransport
+	trGenerateGCPTemplateServer    *GenerateGCPTemplateServerTransport
 	trInventoryServer              *InventoryServerTransport
 	trOperationsServer             *OperationsServerTransport
 	trPublicCloudConnectorsServer  *PublicCloudConnectorsServerTransport
@@ -89,11 +89,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewGenerateAwsTemplateServerTransport(&s.srv.GenerateAwsTemplateServer)
 		})
 		resp, err = s.trGenerateAwsTemplateServer.Do(req)
-	case "GenerateGcpTemplateClient":
-		initServer(&s.trMu, &s.trGenerateGcpTemplateServer, func() *GenerateGcpTemplateServerTransport {
-			return NewGenerateGcpTemplateServerTransport(&s.srv.GenerateGcpTemplateServer)
+	case "GenerateGCPTemplateClient":
+		initServer(&s.trMu, &s.trGenerateGCPTemplateServer, func() *GenerateGCPTemplateServerTransport {
+			return NewGenerateGCPTemplateServerTransport(&s.srv.GenerateGCPTemplateServer)
 		})
-		resp, err = s.trGenerateGcpTemplateServer.Do(req)
+		resp, err = s.trGenerateGCPTemplateServer.Do(req)
 	case "InventoryClient":
 		initServer(&s.trMu, &s.trInventoryServer, func() *InventoryServerTransport { return NewInventoryServerTransport(&s.srv.InventoryServer) })
 		resp, err = s.trInventoryServer.Do(req)

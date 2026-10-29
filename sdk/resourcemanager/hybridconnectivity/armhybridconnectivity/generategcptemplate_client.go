@@ -16,20 +16,20 @@ import (
 	"strings"
 )
 
-// GenerateGcpTemplateClient contains the methods for the GenerateGcpTemplate group.
-// Don't use this type directly, use NewGenerateGcpTemplateClient() instead.
+// GenerateGCPTemplateClient contains the methods for the GenerateGCPTemplate group.
+// Don't use this type directly, use NewGenerateGCPTemplateClient() instead.
 //
 // Generated from API version 2027-01-01
-type GenerateGcpTemplateClient struct {
+type GenerateGCPTemplateClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewGenerateGcpTemplateClient creates a new instance of GenerateGcpTemplateClient with the specified values.
+// NewGenerateGCPTemplateClient creates a new instance of GenerateGCPTemplateClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
-func NewGenerateGcpTemplateClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GenerateGcpTemplateClient, error) {
+func NewGenerateGCPTemplateClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GenerateGCPTemplateClient, error) {
 	if subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
@@ -37,7 +37,7 @@ func NewGenerateGcpTemplateClient(subscriptionID string, credential azcore.Token
 	if err != nil {
 		return nil, err
 	}
-	client := &GenerateGcpTemplateClient{
+	client := &GenerateGCPTemplateClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
@@ -46,28 +46,28 @@ func NewGenerateGcpTemplateClient(subscriptionID string, credential azcore.Token
 
 // Post - Retrieve GCP Access Control template
 // If the operation fails it returns an *azcore.ResponseError type.
-//   - generateGcpTemplateRequest - ConnectorId and SolutionTypes and their properties to Generate GCP Access Control Template.
-//   - options - GenerateGcpTemplateClientPostOptions contains the optional parameters for the GenerateGcpTemplateClient.Post
+//   - generateGCPTemplateRequest - ConnectorId and SolutionTypes and their properties to Generate GCP Access Control Template.
+//   - options - GenerateGCPTemplateClientPostOptions contains the optional parameters for the GenerateGCPTemplateClient.Post
 //     method.
-func (client *GenerateGcpTemplateClient) Post(ctx context.Context, generateGcpTemplateRequest GenerateGcpTemplateRequest, options *GenerateGcpTemplateClientPostOptions) (GenerateGcpTemplateClientPostResponse, error) {
+func (client *GenerateGCPTemplateClient) Post(ctx context.Context, generateGCPTemplateRequest GenerateGCPTemplateRequest, options *GenerateGCPTemplateClientPostOptions) (GenerateGCPTemplateClientPostResponse, error) {
 	var err error
-	const operationName = "GenerateGcpTemplateClient.Post"
+	const operationName = "GenerateGCPTemplateClient.Post"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.postCreateRequest(ctx, generateGcpTemplateRequest, options)
+	req, err := client.postCreateRequest(ctx, generateGCPTemplateRequest, options)
 	if err != nil {
-		return GenerateGcpTemplateClientPostResponse{}, err
+		return GenerateGCPTemplateClientPostResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return GenerateGcpTemplateClientPostResponse{}, err
+		return GenerateGCPTemplateClientPostResponse{}, err
 	}
 	return client.postHandleResponse(httpResp, http.StatusOK)
 }
 
 // postCreateRequest creates the Post request.
-func (client *GenerateGcpTemplateClient) postCreateRequest(ctx context.Context, generateGcpTemplateRequest GenerateGcpTemplateRequest, _ *GenerateGcpTemplateClientPostOptions) (*policy.Request, error) {
+func (client *GenerateGCPTemplateClient) postCreateRequest(ctx context.Context, generateGCPTemplateRequest GenerateGCPTemplateRequest, _ *GenerateGCPTemplateClientPostOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.HybridConnectivity/generateGcpTemplate"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -82,20 +82,20 @@ func (client *GenerateGcpTemplateClient) postCreateRequest(ctx context.Context, 
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, generateGcpTemplateRequest); err != nil {
+	if err := runtime.MarshalAsJSON(req, generateGCPTemplateRequest); err != nil {
 		return nil, err
 	}
 	return req, nil
 }
 
 // postHandleResponse handles the Post response.
-func (client *GenerateGcpTemplateClient) postHandleResponse(resp *http.Response, successCodes ...int) (GenerateGcpTemplateClientPostResponse, error) {
-	result := GenerateGcpTemplateClientPostResponse{}
+func (client *GenerateGCPTemplateClient) postHandleResponse(resp *http.Response, successCodes ...int) (GenerateGCPTemplateClientPostResponse, error) {
+	result := GenerateGCPTemplateClientPostResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.GenerateGcpTemplateResponse); err != nil {
-		return GenerateGcpTemplateClientPostResponse{}, err
+	if err := runtime.UnmarshalAsJSON(resp, &result.GenerateGCPTemplateResponse); err != nil {
+		return GenerateGCPTemplateClientPostResponse{}, err
 	}
 	return result, nil
 }

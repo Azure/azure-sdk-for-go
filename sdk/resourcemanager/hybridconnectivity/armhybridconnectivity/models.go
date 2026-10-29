@@ -106,23 +106,23 @@ type ErrorDetail struct {
 	Target *string
 }
 
-// GcpCloudProfile - cloud profile for GCP.
-type GcpCloudProfile struct {
+// GCPCloudProfile - cloud profile for GCP.
+type GCPCloudProfile struct {
 	// The organization properties of the GCP organization.
-	OrganizationProperties *GcpOrganizationProperties
+	OrganizationProperties *GCPOrganizationProperties
 
 	// The project properties of the GCP project.
-	ProjectProperties *GcpProjectProperties
+	ProjectProperties *GCPProjectProperties
 }
 
-// GcpCloudProfileUpdate - cloud profile for GCP.
-type GcpCloudProfileUpdate struct {
+// GCPCloudProfileUpdate - cloud profile for GCP.
+type GCPCloudProfileUpdate struct {
 	// The organization properties of the GCP organization.
-	OrganizationProperties *GcpOrganizationPropertiesUpdate
+	OrganizationProperties *GCPOrganizationPropertiesUpdate
 }
 
-// GcpOrganizationProperties - GCP organization properties.
-type GcpOrganizationProperties struct {
+// GCPOrganizationProperties - GCP organization properties.
+type GCPOrganizationProperties struct {
 	// REQUIRED; The project Id of the management project under the GCP organization.
 	ManagementProjectID *string
 
@@ -139,8 +139,8 @@ type GcpOrganizationProperties struct {
 	ExcludedProjectNumbers []*string
 }
 
-// GcpOrganizationPropertiesUpdate - GCP organization properties for update.
-type GcpOrganizationPropertiesUpdate struct {
+// GCPOrganizationPropertiesUpdate - GCP organization properties for update.
+type GCPOrganizationPropertiesUpdate struct {
 	// List of GCP folders which need to be excluded.
 	ExcludedFolderIDs []*string
 
@@ -148,8 +148,8 @@ type GcpOrganizationPropertiesUpdate struct {
 	ExcludedProjectNumbers []*string
 }
 
-// GcpProjectProperties - GCP project properties.
-type GcpProjectProperties struct {
+// GCPProjectProperties - GCP project properties.
+type GCPProjectProperties struct {
 	// REQUIRED; The project id of the GCP project.
 	ProjectID *string
 
@@ -170,23 +170,23 @@ type GenerateAwsTemplateRequest struct {
 type GenerateAwsTemplateResponse struct {
 }
 
-// GenerateGcpTemplateRequest - ConnectorId and SolutionTypes and their properties to Generate GCP Access Control Template.
-type GenerateGcpTemplateRequest struct {
+// GenerateGCPTemplateRequest - ConnectorId and SolutionTypes and their properties to Generate GCP Access Control Template.
+type GenerateGCPTemplateRequest struct {
 	// REQUIRED; The name of public cloud connector
 	ConnectorID *string
 
 	// The GCP cloud profile.
-	GcpCloudProfile *GcpCloudProfile
+	GCPCloudProfile *GCPCloudProfile
 
 	// Optional template output format. Defaults to 'terraform' if not provided
-	GcpTemplateFormat *GcpTemplateFormat
+	GCPTemplateFormat *GCPTemplateFormat
 
 	// The list of solution types and their settings
 	SolutionTypes []*SolutionTypeSettings
 }
 
-// GenerateGcpTemplateResponse - The HybridConnectivity post operation response
-type GenerateGcpTemplateResponse struct {
+// GenerateGCPTemplateResponse - The HybridConnectivity post operation response
+type GenerateGCPTemplateResponse struct {
 }
 
 // IngressGatewayResource - The ingress gateway access credentials
@@ -415,7 +415,7 @@ type PublicCloudConnectorProperties struct {
 	AwsCloudProfile *AwsCloudProfile
 
 	// Cloud profile for GCP.
-	GcpCloudProfile *GcpCloudProfile
+	GCPCloudProfile *GCPCloudProfile
 
 	// READ-ONLY; Connector primary identifier.
 	ConnectorPrimaryIdentifier *string
@@ -430,7 +430,7 @@ type PublicCloudConnectorPropertiesUpdate struct {
 	AwsCloudProfile *AwsCloudProfileUpdate
 
 	// Cloud profile for GCP.
-	GcpCloudProfile *GcpCloudProfileUpdate
+	GCPCloudProfile *GCPCloudProfileUpdate
 }
 
 // PublicCloudConnectorUpdate - Public Cloud Connector

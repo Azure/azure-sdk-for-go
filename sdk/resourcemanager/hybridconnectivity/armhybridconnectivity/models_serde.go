@@ -316,16 +316,16 @@ func (e *ErrorDetail) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type GcpCloudProfile.
-func (g GcpCloudProfile) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type GCPCloudProfile.
+func (g GCPCloudProfile) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "organizationProperties", g.OrganizationProperties)
 	populate(objectMap, "projectProperties", g.ProjectProperties)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type GcpCloudProfile.
-func (g *GcpCloudProfile) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type GCPCloudProfile.
+func (g *GCPCloudProfile) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %s", g, err.Error())
@@ -347,15 +347,15 @@ func (g *GcpCloudProfile) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type GcpCloudProfileUpdate.
-func (g GcpCloudProfileUpdate) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type GCPCloudProfileUpdate.
+func (g GCPCloudProfileUpdate) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "organizationProperties", g.OrganizationProperties)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type GcpCloudProfileUpdate.
-func (g *GcpCloudProfileUpdate) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type GCPCloudProfileUpdate.
+func (g *GCPCloudProfileUpdate) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %s", g, err.Error())
@@ -374,8 +374,8 @@ func (g *GcpCloudProfileUpdate) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type GcpOrganizationProperties.
-func (g GcpOrganizationProperties) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type GCPOrganizationProperties.
+func (g GCPOrganizationProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "excludedFolderIds", g.ExcludedFolderIDs)
 	populate(objectMap, "excludedProjectNumbers", g.ExcludedProjectNumbers)
@@ -385,8 +385,8 @@ func (g GcpOrganizationProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type GcpOrganizationProperties.
-func (g *GcpOrganizationProperties) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type GCPOrganizationProperties.
+func (g *GCPOrganizationProperties) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %s", g, err.Error())
@@ -417,16 +417,16 @@ func (g *GcpOrganizationProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type GcpOrganizationPropertiesUpdate.
-func (g GcpOrganizationPropertiesUpdate) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type GCPOrganizationPropertiesUpdate.
+func (g GCPOrganizationPropertiesUpdate) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "excludedFolderIds", g.ExcludedFolderIDs)
 	populate(objectMap, "excludedProjectNumbers", g.ExcludedProjectNumbers)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type GcpOrganizationPropertiesUpdate.
-func (g *GcpOrganizationPropertiesUpdate) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type GCPOrganizationPropertiesUpdate.
+func (g *GCPOrganizationPropertiesUpdate) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %s", g, err.Error())
@@ -448,16 +448,16 @@ func (g *GcpOrganizationPropertiesUpdate) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type GcpProjectProperties.
-func (g GcpProjectProperties) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type GCPProjectProperties.
+func (g GCPProjectProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "projectId", g.ProjectID)
 	populate(objectMap, "projectNumber", g.ProjectNumber)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type GcpProjectProperties.
-func (g *GcpProjectProperties) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type GCPProjectProperties.
+func (g *GCPProjectProperties) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %s", g, err.Error())
@@ -510,18 +510,18 @@ func (g *GenerateAwsTemplateRequest) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type GenerateGcpTemplateRequest.
-func (g GenerateGcpTemplateRequest) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type GenerateGCPTemplateRequest.
+func (g GenerateGCPTemplateRequest) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "connectorId", g.ConnectorID)
-	populate(objectMap, "gcpCloudProfile", g.GcpCloudProfile)
-	populate(objectMap, "gcpTemplateFormat", g.GcpTemplateFormat)
+	populate(objectMap, "gcpCloudProfile", g.GCPCloudProfile)
+	populate(objectMap, "gcpTemplateFormat", g.GCPTemplateFormat)
 	populate(objectMap, "solutionTypes", g.SolutionTypes)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type GenerateGcpTemplateRequest.
-func (g *GenerateGcpTemplateRequest) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type GenerateGCPTemplateRequest.
+func (g *GenerateGCPTemplateRequest) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %s", g, err.Error())
@@ -533,10 +533,10 @@ func (g *GenerateGcpTemplateRequest) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "ConnectorID", &g.ConnectorID)
 			delete(rawMsg, key)
 		case "gcpCloudProfile":
-			err = unpopulate(val, "GcpCloudProfile", &g.GcpCloudProfile)
+			err = unpopulate(val, "GCPCloudProfile", &g.GCPCloudProfile)
 			delete(rawMsg, key)
 		case "gcpTemplateFormat":
-			err = unpopulate(val, "GcpTemplateFormat", &g.GcpTemplateFormat)
+			err = unpopulate(val, "GCPTemplateFormat", &g.GCPTemplateFormat)
 			delete(rawMsg, key)
 		case "solutionTypes":
 			err = unpopulate(val, "SolutionTypes", &g.SolutionTypes)
@@ -1115,7 +1115,7 @@ func (p PublicCloudConnectorProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "awsCloudProfile", p.AwsCloudProfile)
 	populate(objectMap, "connectorPrimaryIdentifier", p.ConnectorPrimaryIdentifier)
-	populate(objectMap, "gcpCloudProfile", p.GcpCloudProfile)
+	populate(objectMap, "gcpCloudProfile", p.GCPCloudProfile)
 	populate(objectMap, "hostType", p.HostType)
 	populate(objectMap, "provisioningState", p.ProvisioningState)
 	return json.Marshal(objectMap)
@@ -1137,7 +1137,7 @@ func (p *PublicCloudConnectorProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "ConnectorPrimaryIdentifier", &p.ConnectorPrimaryIdentifier)
 			delete(rawMsg, key)
 		case "gcpCloudProfile":
-			err = unpopulate(val, "GcpCloudProfile", &p.GcpCloudProfile)
+			err = unpopulate(val, "GCPCloudProfile", &p.GCPCloudProfile)
 			delete(rawMsg, key)
 		case "hostType":
 			err = unpopulate(val, "HostType", &p.HostType)
@@ -1157,7 +1157,7 @@ func (p *PublicCloudConnectorProperties) UnmarshalJSON(data []byte) error {
 func (p PublicCloudConnectorPropertiesUpdate) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "awsCloudProfile", p.AwsCloudProfile)
-	populate(objectMap, "gcpCloudProfile", p.GcpCloudProfile)
+	populate(objectMap, "gcpCloudProfile", p.GCPCloudProfile)
 	return json.Marshal(objectMap)
 }
 
@@ -1174,7 +1174,7 @@ func (p *PublicCloudConnectorPropertiesUpdate) UnmarshalJSON(data []byte) error 
 			err = unpopulate(val, "AwsCloudProfile", &p.AwsCloudProfile)
 			delete(rawMsg, key)
 		case "gcpCloudProfile":
-			err = unpopulate(val, "GcpCloudProfile", &p.GcpCloudProfile)
+			err = unpopulate(val, "GCPCloudProfile", &p.GCPCloudProfile)
 			delete(rawMsg, key)
 		}
 		if err != nil {

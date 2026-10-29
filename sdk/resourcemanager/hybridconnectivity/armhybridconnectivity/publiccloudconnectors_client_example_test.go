@@ -33,12 +33,12 @@ func ExamplePublicCloudConnectorsClient_BeginCreateOrUpdate() {
 				IsOrganizationalAccount: to.Ptr(true),
 			},
 			HostType: to.Ptr(armhybridconnectivity.HostTypeAWS),
-			GcpCloudProfile: &armhybridconnectivity.GcpCloudProfile{
-				ProjectProperties: &armhybridconnectivity.GcpProjectProperties{
+			GCPCloudProfile: &armhybridconnectivity.GCPCloudProfile{
+				ProjectProperties: &armhybridconnectivity.GCPProjectProperties{
 					ProjectNumber: to.Ptr("mjubieitixhpm"),
 					ProjectID:     to.Ptr("mjubieitixhpmid"),
 				},
-				OrganizationProperties: &armhybridconnectivity.GcpOrganizationProperties{
+				OrganizationProperties: &armhybridconnectivity.GCPOrganizationProperties{
 					OrganizationID:          to.Ptr("vqlzghfdinlamurmg"),
 					ManagementProjectNumber: to.Ptr("mjubieitixhpm"),
 					ManagementProjectID:     to.Ptr("mjubieitixhpmid"),
@@ -76,12 +76,12 @@ func ExamplePublicCloudConnectorsClient_BeginCreateOrUpdate() {
 	// 				IsOrganizationalAccount: to.Ptr(true),
 	// 			},
 	// 			HostType: to.Ptr(armhybridconnectivity.HostTypeAWS),
-	// 			GcpCloudProfile: &armhybridconnectivity.GcpCloudProfile{
-	// 				ProjectProperties: &armhybridconnectivity.GcpProjectProperties{
+	// 			GCPCloudProfile: &armhybridconnectivity.GCPCloudProfile{
+	// 				ProjectProperties: &armhybridconnectivity.GCPProjectProperties{
 	// 					ProjectNumber: to.Ptr("mjubieitixhpm"),
 	// 					ProjectID: to.Ptr("mjubieitixhpmid"),
 	// 				},
-	// 				OrganizationProperties: &armhybridconnectivity.GcpOrganizationProperties{
+	// 				OrganizationProperties: &armhybridconnectivity.GCPOrganizationProperties{
 	// 					OrganizationID: to.Ptr("vqlzghfdinlamurmg"),
 	// 					ManagementProjectNumber: to.Ptr("mjubieitixhpm"),
 	// 					ManagementProjectID: to.Ptr("mjubieitixhpmid"),
@@ -217,12 +217,12 @@ func ExamplePublicCloudConnectorsClient_Get() {
 	// 				IsOrganizationalAccount: to.Ptr(true),
 	// 			},
 	// 			HostType: to.Ptr(armhybridconnectivity.HostTypeAWS),
-	// 			GcpCloudProfile: &armhybridconnectivity.GcpCloudProfile{
-	// 				ProjectProperties: &armhybridconnectivity.GcpProjectProperties{
+	// 			GCPCloudProfile: &armhybridconnectivity.GCPCloudProfile{
+	// 				ProjectProperties: &armhybridconnectivity.GCPProjectProperties{
 	// 					ProjectNumber: to.Ptr("mjubieitixhpm"),
 	// 					ProjectID: to.Ptr("sample-project-id"),
 	// 				},
-	// 				OrganizationProperties: &armhybridconnectivity.GcpOrganizationProperties{
+	// 				OrganizationProperties: &armhybridconnectivity.GCPOrganizationProperties{
 	// 					OrganizationID: to.Ptr("vqlzghfdinlamurmg"),
 	// 					ManagementProjectNumber: to.Ptr("mjubieitixhpm"),
 	// 					ManagementProjectID: to.Ptr("sample-management-project-id"),
@@ -293,12 +293,12 @@ func ExamplePublicCloudConnectorsClient_NewListByResourceGroupPager_publicCloudC
 		// 					HostType: to.Ptr(armhybridconnectivity.HostTypeAWS),
 		// 					ProvisioningState: to.Ptr(armhybridconnectivity.ResourceProvisioningStateSucceeded),
 		// 					ConnectorPrimaryIdentifier: to.Ptr("20a4e2be-8158-4b9e-b512-7a1af6f827de"),
-		// 					GcpCloudProfile: &armhybridconnectivity.GcpCloudProfile{
-		// 						ProjectProperties: &armhybridconnectivity.GcpProjectProperties{
+		// 					GCPCloudProfile: &armhybridconnectivity.GCPCloudProfile{
+		// 						ProjectProperties: &armhybridconnectivity.GCPProjectProperties{
 		// 							ProjectNumber: to.Ptr("mjubieitixhpm"),
 		// 							ProjectID: to.Ptr("sample-project-id"),
 		// 						},
-		// 						OrganizationProperties: &armhybridconnectivity.GcpOrganizationProperties{
+		// 						OrganizationProperties: &armhybridconnectivity.GCPOrganizationProperties{
 		// 							OrganizationID: to.Ptr("vqlzghfdinlamurmg"),
 		// 							ManagementProjectNumber: to.Ptr("mjubieitixhpm"),
 		// 							ManagementProjectID: to.Ptr("sample-management-project-id"),
@@ -407,12 +407,12 @@ func ExamplePublicCloudConnectorsClient_NewListBySubscriptionPager_publicCloudCo
 		// 					HostType: to.Ptr(armhybridconnectivity.HostTypeAWS),
 		// 					ProvisioningState: to.Ptr(armhybridconnectivity.ResourceProvisioningStateSucceeded),
 		// 					ConnectorPrimaryIdentifier: to.Ptr("20a4e2be-8158-4b9e-b512-7a1af6f827de"),
-		// 					GcpCloudProfile: &armhybridconnectivity.GcpCloudProfile{
-		// 						ProjectProperties: &armhybridconnectivity.GcpProjectProperties{
+		// 					GCPCloudProfile: &armhybridconnectivity.GCPCloudProfile{
+		// 						ProjectProperties: &armhybridconnectivity.GCPProjectProperties{
 		// 							ProjectNumber: to.Ptr("mjubieitixhpm"),
 		// 							ProjectID: to.Ptr("sample-project-id"),
 		// 						},
-		// 						OrganizationProperties: &armhybridconnectivity.GcpOrganizationProperties{
+		// 						OrganizationProperties: &armhybridconnectivity.GCPOrganizationProperties{
 		// 							OrganizationID: to.Ptr("vqlzghfdinlamurmg"),
 		// 							ManagementProjectNumber: to.Ptr("mjubieitixhpm"),
 		// 							ManagementProjectID: to.Ptr("sample-management-project-id"),
@@ -522,12 +522,12 @@ func ExamplePublicCloudConnectorsClient_Update() {
 	// 				IsOrganizationalAccount: to.Ptr(true),
 	// 			},
 	// 			HostType: to.Ptr(armhybridconnectivity.HostTypeAWS),
-	// 			GcpCloudProfile: &armhybridconnectivity.GcpCloudProfile{
-	// 				ProjectProperties: &armhybridconnectivity.GcpProjectProperties{
+	// 			GCPCloudProfile: &armhybridconnectivity.GCPCloudProfile{
+	// 				ProjectProperties: &armhybridconnectivity.GCPProjectProperties{
 	// 					ProjectNumber: to.Ptr("mjubieitixhpm"),
 	// 					ProjectID: to.Ptr("sample-project-id"),
 	// 				},
-	// 				OrganizationProperties: &armhybridconnectivity.GcpOrganizationProperties{
+	// 				OrganizationProperties: &armhybridconnectivity.GCPOrganizationProperties{
 	// 					OrganizationID: to.Ptr("vqlzghfdinlamurmg"),
 	// 					ManagementProjectNumber: to.Ptr("mjubieitixhpm"),
 	// 					ManagementProjectID: to.Ptr("sample-management-project-id"),

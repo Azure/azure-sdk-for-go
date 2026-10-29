@@ -57,10 +57,10 @@ type GenerateAwsTemplateClientPostResponse struct {
 	GenerateAwsTemplateResponse
 }
 
-// GenerateGcpTemplateClientPostResponse contains the response from method GenerateGcpTemplateClient.Post.
-type GenerateGcpTemplateClientPostResponse struct {
+// GenerateGCPTemplateClientPostResponse contains the response from method GenerateGCPTemplateClient.Post.
+type GenerateGCPTemplateClientPostResponse struct {
 	// The HybridConnectivity post operation response
-	GenerateGcpTemplateResponse
+	GenerateGCPTemplateResponse
 }
 
 // InventoryClientGetResponse contains the response from method InventoryClient.Get.

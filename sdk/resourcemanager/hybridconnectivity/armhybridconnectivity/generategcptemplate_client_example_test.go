@@ -13,7 +13,7 @@ import (
 )
 
 // Generated from example definition: 2027-01-01/GenerateGcpTemplate_Post_MaximumSet_Gen.json
-func ExampleGenerateGcpTemplateClient_Post_generateGcpTemplatePostMaximumSet() {
+func ExampleGenerateGCPTemplateClient_Post_generateGcpTemplatePostMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -23,21 +23,21 @@ func ExampleGenerateGcpTemplateClient_Post_generateGcpTemplatePostMaximumSet() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewGenerateGcpTemplateClient("5ACC4579-DB34-4C2F-8F8C-25061168F342").Post(ctx, armhybridconnectivity.GenerateGcpTemplateRequest{
+	res, err := clientFactory.NewGenerateGCPTemplateClient("5ACC4579-DB34-4C2F-8F8C-25061168F342").Post(ctx, armhybridconnectivity.GenerateGCPTemplateRequest{
 		ConnectorID:       to.Ptr("lvrdneuerxztxiixlzswcbm"),
-		GcpTemplateFormat: to.Ptr(armhybridconnectivity.GcpTemplateFormatTerraform),
+		GCPTemplateFormat: to.Ptr(armhybridconnectivity.GCPTemplateFormatTerraform),
 		SolutionTypes: []*armhybridconnectivity.SolutionTypeSettings{
 			{
 				SolutionType:     to.Ptr("hjyownzpfxwiufmd"),
 				SolutionSettings: &armhybridconnectivity.SolutionSettings{},
 			},
 		},
-		GcpCloudProfile: &armhybridconnectivity.GcpCloudProfile{
-			ProjectProperties: &armhybridconnectivity.GcpProjectProperties{
+		GCPCloudProfile: &armhybridconnectivity.GCPCloudProfile{
+			ProjectProperties: &armhybridconnectivity.GCPProjectProperties{
 				ProjectNumber: to.Ptr("mjubieitixhpm"),
 				ProjectID:     to.Ptr("mjubieitixhpmid"),
 			},
-			OrganizationProperties: &armhybridconnectivity.GcpOrganizationProperties{
+			OrganizationProperties: &armhybridconnectivity.GCPOrganizationProperties{
 				OrganizationID:          to.Ptr("vqlzghfdinlamurmg"),
 				ManagementProjectNumber: to.Ptr("mjubieitixhpm"),
 				ManagementProjectID:     to.Ptr("mjubieitixhpmid"),
@@ -56,14 +56,14 @@ func ExampleGenerateGcpTemplateClient_Post_generateGcpTemplatePostMaximumSet() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armhybridconnectivity.GenerateGcpTemplateClientPostResponse{
-	// 	GenerateGcpTemplateResponse: armhybridconnectivity.GenerateGcpTemplateResponse{
+	// res = armhybridconnectivity.GenerateGCPTemplateClientPostResponse{
+	// 	GenerateGCPTemplateResponse: armhybridconnectivity.GenerateGCPTemplateResponse{
 	// 	},
 	// }
 }
 
 // Generated from example definition: 2027-01-01/GenerateGcpTemplate_Post_MinimumSet_Gen.json
-func ExampleGenerateGcpTemplateClient_Post_generateGcpTemplatePostMaximumSetGeneratedByMinimumSetRule() {
+func ExampleGenerateGCPTemplateClient_Post_generateGcpTemplatePostMaximumSetGeneratedByMinimumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -73,7 +73,7 @@ func ExampleGenerateGcpTemplateClient_Post_generateGcpTemplatePostMaximumSetGene
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewGenerateGcpTemplateClient("5ACC4579-DB34-4C2F-8F8C-25061168F342").Post(ctx, armhybridconnectivity.GenerateGcpTemplateRequest{
+	res, err := clientFactory.NewGenerateGCPTemplateClient("5ACC4579-DB34-4C2F-8F8C-25061168F342").Post(ctx, armhybridconnectivity.GenerateGCPTemplateRequest{
 		ConnectorID: to.Ptr("lvrdneuerxztxiixlzswcbm"),
 	}, nil)
 	if err != nil {
@@ -82,8 +82,8 @@ func ExampleGenerateGcpTemplateClient_Post_generateGcpTemplatePostMaximumSetGene
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armhybridconnectivity.GenerateGcpTemplateClientPostResponse{
-	// 	GenerateGcpTemplateResponse: armhybridconnectivity.GenerateGcpTemplateResponse{
+	// res = armhybridconnectivity.GenerateGCPTemplateClientPostResponse{
+	// 	GenerateGCPTemplateResponse: armhybridconnectivity.GenerateGCPTemplateResponse{
 	// 	},
 	// }
 }

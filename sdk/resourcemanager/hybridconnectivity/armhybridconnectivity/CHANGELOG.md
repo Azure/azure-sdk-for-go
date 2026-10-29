@@ -1,6 +1,6 @@
 # Release History
 
-## 2.0.0 (2026-10-23)
+## 2.0.0 (2026-10-29)
 ### Breaking Changes
 
 - Struct `ErrorResponse` has been removed
@@ -10,20 +10,20 @@
 ### Features Added
 
 - New enum type `CloudNativeType` with values `CloudNativeTypeEc2`
-- New enum type `GcpTemplateFormat` with values `GcpTemplateFormatShellScript`, `GcpTemplateFormatTerraform`
+- New enum type `GCPTemplateFormat` with values `GCPTemplateFormatShellScript`, `GCPTemplateFormatTerraform`
 - New enum type `HostType` with values `HostTypeAWS`, `HostTypeGCP`
 - New enum type `ResourceProvisioningState` with values `ResourceProvisioningStateCanceled`, `ResourceProvisioningStateFailed`, `ResourceProvisioningStateSucceeded`
 - New enum type `SolutionConfigurationStatus` with values `SolutionConfigurationStatusCompleted`, `SolutionConfigurationStatusFailed`, `SolutionConfigurationStatusInProgress`, `SolutionConfigurationStatusNew`
 - New function `*ClientFactory.NewGenerateAwsTemplateClient(subscriptionID string) *GenerateAwsTemplateClient`
-- New function `*ClientFactory.NewGenerateGcpTemplateClient(subscriptionID string) *GenerateGcpTemplateClient`
+- New function `*ClientFactory.NewGenerateGCPTemplateClient(subscriptionID string) *GenerateGCPTemplateClient`
 - New function `*ClientFactory.NewInventoryClient() *InventoryClient`
 - New function `*ClientFactory.NewPublicCloudConnectorsClient(subscriptionID string) *PublicCloudConnectorsClient`
 - New function `*ClientFactory.NewSolutionConfigurationsClient() *SolutionConfigurationsClient`
 - New function `*ClientFactory.NewSolutionTypesClient(subscriptionID string) *SolutionTypesClient`
 - New function `NewGenerateAwsTemplateClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GenerateAwsTemplateClient, error)`
 - New function `*GenerateAwsTemplateClient.Post(ctx context.Context, generateAwsTemplateRequest GenerateAwsTemplateRequest, options *GenerateAwsTemplateClientPostOptions) (GenerateAwsTemplateClientPostResponse, error)`
-- New function `NewGenerateGcpTemplateClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GenerateGcpTemplateClient, error)`
-- New function `*GenerateGcpTemplateClient.Post(ctx context.Context, generateGcpTemplateRequest GenerateGcpTemplateRequest, options *GenerateGcpTemplateClientPostOptions) (GenerateGcpTemplateClientPostResponse, error)`
+- New function `NewGenerateGCPTemplateClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GenerateGCPTemplateClient, error)`
+- New function `*GenerateGCPTemplateClient.Post(ctx context.Context, generateGCPTemplateRequest GenerateGCPTemplateRequest, options *GenerateGCPTemplateClientPostOptions) (GenerateGCPTemplateClientPostResponse, error)`
 - New function `NewInventoryClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*InventoryClient, error)`
 - New function `*InventoryClient.Get(ctx context.Context, resourceURI string, solutionConfiguration string, inventoryID string, options *InventoryClientGetOptions) (InventoryClientGetResponse, error)`
 - New function `*InventoryClient.NewListBySolutionConfigurationPager(resourceURI string, solutionConfiguration string, options *InventoryClientListBySolutionConfigurationOptions) *runtime.Pager[InventoryClientListBySolutionConfigurationResponse]`
@@ -48,15 +48,15 @@
 - New function `*SolutionTypesClient.NewListBySubscriptionPager(options *SolutionTypesClientListBySubscriptionOptions) *runtime.Pager[SolutionTypesClientListBySubscriptionResponse]`
 - New struct `AwsCloudProfile`
 - New struct `AwsCloudProfileUpdate`
-- New struct `GcpCloudProfile`
-- New struct `GcpCloudProfileUpdate`
-- New struct `GcpOrganizationProperties`
-- New struct `GcpOrganizationPropertiesUpdate`
-- New struct `GcpProjectProperties`
+- New struct `GCPCloudProfile`
+- New struct `GCPCloudProfileUpdate`
+- New struct `GCPOrganizationProperties`
+- New struct `GCPOrganizationPropertiesUpdate`
+- New struct `GCPProjectProperties`
 - New struct `GenerateAwsTemplateRequest`
 - New struct `GenerateAwsTemplateResponse`
-- New struct `GenerateGcpTemplateRequest`
-- New struct `GenerateGcpTemplateResponse`
+- New struct `GenerateGCPTemplateRequest`
+- New struct `GenerateGCPTemplateResponse`
 - New struct `InventoryProperties`
 - New struct `InventoryResource`
 - New struct `InventoryResourceListResult`

@@ -17,28 +17,28 @@ import (
 	"slices"
 )
 
-// GenerateGcpTemplateServer is a fake server for instances of the armhybridconnectivity.GenerateGcpTemplateClient type.
-type GenerateGcpTemplateServer struct {
-	// Post is the fake for method GenerateGcpTemplateClient.Post
+// GenerateGCPTemplateServer is a fake server for instances of the armhybridconnectivity.GenerateGCPTemplateClient type.
+type GenerateGCPTemplateServer struct {
+	// Post is the fake for method GenerateGCPTemplateClient.Post
 	// HTTP status codes to indicate success: http.StatusOK
-	Post func(ctx context.Context, generateGcpTemplateRequest armhybridconnectivity.GenerateGcpTemplateRequest, options *armhybridconnectivity.GenerateGcpTemplateClientPostOptions) (resp azfake.Responder[armhybridconnectivity.GenerateGcpTemplateClientPostResponse], errResp azfake.ErrorResponder)
+	Post func(ctx context.Context, generateGCPTemplateRequest armhybridconnectivity.GenerateGCPTemplateRequest, options *armhybridconnectivity.GenerateGCPTemplateClientPostOptions) (resp azfake.Responder[armhybridconnectivity.GenerateGCPTemplateClientPostResponse], errResp azfake.ErrorResponder)
 }
 
-// NewGenerateGcpTemplateServerTransport creates a new instance of GenerateGcpTemplateServerTransport with the provided implementation.
-// The returned GenerateGcpTemplateServerTransport instance is connected to an instance of armhybridconnectivity.GenerateGcpTemplateClient via the
+// NewGenerateGCPTemplateServerTransport creates a new instance of GenerateGCPTemplateServerTransport with the provided implementation.
+// The returned GenerateGCPTemplateServerTransport instance is connected to an instance of armhybridconnectivity.GenerateGCPTemplateClient via the
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
-func NewGenerateGcpTemplateServerTransport(srv *GenerateGcpTemplateServer) *GenerateGcpTemplateServerTransport {
-	return &GenerateGcpTemplateServerTransport{srv: srv}
+func NewGenerateGCPTemplateServerTransport(srv *GenerateGCPTemplateServer) *GenerateGCPTemplateServerTransport {
+	return &GenerateGCPTemplateServerTransport{srv: srv}
 }
 
-// GenerateGcpTemplateServerTransport connects instances of armhybridconnectivity.GenerateGcpTemplateClient to instances of GenerateGcpTemplateServer.
-// Don't use this type directly, use NewGenerateGcpTemplateServerTransport instead.
-type GenerateGcpTemplateServerTransport struct {
-	srv *GenerateGcpTemplateServer
+// GenerateGCPTemplateServerTransport connects instances of armhybridconnectivity.GenerateGCPTemplateClient to instances of GenerateGCPTemplateServer.
+// Don't use this type directly, use NewGenerateGCPTemplateServerTransport instead.
+type GenerateGCPTemplateServerTransport struct {
+	srv *GenerateGCPTemplateServer
 }
 
-// Do implements the policy.Transporter interface for GenerateGcpTemplateServerTransport.
-func (g *GenerateGcpTemplateServerTransport) Do(req *http.Request) (*http.Response, error) {
+// Do implements the policy.Transporter interface for GenerateGCPTemplateServerTransport.
+func (g *GenerateGCPTemplateServerTransport) Do(req *http.Request) (*http.Response, error) {
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
@@ -48,7 +48,7 @@ func (g *GenerateGcpTemplateServerTransport) Do(req *http.Request) (*http.Respon
 	return g.dispatchToMethodFake(req, method)
 }
 
-func (g *GenerateGcpTemplateServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+func (g *GenerateGCPTemplateServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
 	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
@@ -58,7 +58,7 @@ func (g *GenerateGcpTemplateServerTransport) dispatchToMethodFake(req *http.Requ
 		}
 		if !intercepted {
 			switch method {
-			case "GenerateGcpTemplateClient.Post":
+			case "GenerateGCPTemplateClient.Post":
 				res.resp, res.err = g.dispatchPost(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
@@ -76,7 +76,7 @@ func (g *GenerateGcpTemplateServerTransport) dispatchToMethodFake(req *http.Requ
 	}
 }
 
-func (g *GenerateGcpTemplateServerTransport) dispatchPost(req *http.Request) (*http.Response, error) {
+func (g *GenerateGCPTemplateServerTransport) dispatchPost(req *http.Request) (*http.Response, error) {
 	if g.srv.Post == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Post not implemented")}
 	}
@@ -86,7 +86,7 @@ func (g *GenerateGcpTemplateServerTransport) dispatchPost(req *http.Request) (*h
 	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	body, err := server.UnmarshalRequestAsJSON[armhybridconnectivity.GenerateGcpTemplateRequest](req)
+	body, err := server.UnmarshalRequestAsJSON[armhybridconnectivity.GenerateGCPTemplateRequest](req)
 	if err != nil {
 		return nil, err
 	}
@@ -98,14 +98,14 @@ func (g *GenerateGcpTemplateServerTransport) dispatchPost(req *http.Request) (*h
 	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).GenerateGcpTemplateResponse, req)
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).GenerateGCPTemplateResponse, req)
 	if err != nil {
 		return nil, err
 	}
 	return resp, nil
 }
 
-// set this to conditionally intercept incoming requests to GenerateGcpTemplateServerTransport
+// set this to conditionally intercept incoming requests to GenerateGCPTemplateServerTransport
 var generateGcpTemplateServerTransportInterceptor interface {
 	// Do returns true if the server transport should use the returned response/error
 	Do(*http.Request) (*http.Response, error, bool)

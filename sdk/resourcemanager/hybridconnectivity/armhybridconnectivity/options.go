@@ -59,8 +59,8 @@ type GenerateAwsTemplateClientPostOptions struct {
 	// placeholder for future optional parameters
 }
 
-// GenerateGcpTemplateClientPostOptions contains the optional parameters for the GenerateGcpTemplateClient.Post method.
-type GenerateGcpTemplateClientPostOptions struct {
+// GenerateGCPTemplateClientPostOptions contains the optional parameters for the GenerateGCPTemplateClient.Post method.
+type GenerateGCPTemplateClientPostOptions struct {
 	// placeholder for future optional parameters
 }
 

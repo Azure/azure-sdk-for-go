@@ -1,6 +1,6 @@
 # Release History
 
-## 1.9.0 (Unreleased)
+## 1.9.0-beta.1 (Unreleased)
 
 ### Features Added
 * Added support for session authentication. Set `Session` on `ClientOptions` to configure it. Sessions apply only to

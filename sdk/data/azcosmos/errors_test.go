@@ -159,18 +159,24 @@ func TestCloneErrorOwnsDiagnostics(t *testing.T) {
 		Diagnostics: &Diagnostics{
 			RegionsContacted: []string{"East US"},
 			Attempts:         []DiagnosticAttempt{{StatusCode: 429}},
-			JSON:             `{"requestCount":1}`,
 		},
 	}
+	original.Diagnostics.initializeJSON(DiagnosticsVerbosityDetailed)
 	cloned, ok := cloneError(original).(*Error)
 	require.True(t, ok)
 	require.NotSame(t, original.Diagnostics, cloned.Diagnostics)
+	require.NotSame(t, original.Diagnostics.json, cloned.Diagnostics.json)
 	cloned.Body[0] = 'B'
 	cloned.Diagnostics.RegionsContacted[0] = "West US"
 	cloned.Diagnostics.Attempts[0].StatusCode = 200
 	require.Equal(t, []byte("body"), original.Body)
 	require.Equal(t, "East US", original.Diagnostics.RegionsContacted[0])
 	require.Equal(t, 429, original.Diagnostics.Attempts[0].StatusCode)
+	originalJSON, err := original.Diagnostics.JSON()
+	require.NoError(t, err)
+	clonedJSON, err := cloned.Diagnostics.JSON()
+	require.NoError(t, err)
+	require.Equal(t, originalJSON, clonedJSON)
 }
 
 // The driver pairs a failure it produced itself with a synthetic 408 or 503, so classifying one on

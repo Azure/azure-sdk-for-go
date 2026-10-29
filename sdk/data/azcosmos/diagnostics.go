@@ -4,7 +4,9 @@
 package azcosmos
 
 import (
+	"encoding/json"
 	"fmt"
+	"sync"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
@@ -20,12 +22,12 @@ import (
 // file is excluded from the build. [EventRouting] in routing_strategy.go follows the same pattern.
 const EventDiagnostics log.Event = "CosmosDiagnostics"
 
-// DiagnosticsVerbosity controls how much detail the native driver renders into
-// [Diagnostics.JSON]. Set it on [ClientOptions.DiagnosticsVerbosity].
+// DiagnosticsVerbosity controls how much detail [Diagnostics.JSON] renders.
+// Set it on [ClientOptions.DiagnosticsVerbosity].
 //
 // It does not affect [Diagnostics.Attempts], [Diagnostics.RegionsContacted] or any scalar field:
-// those are always copied losslessly regardless of verbosity. It only governs the native driver's
-// own JSON rendering, which is diagnostic text rather than a stable schema.
+// those are always copied from the native completion regardless of verbosity. It only governs the
+// lazy Go JSON rendering, which is diagnostic text rather than a stable schema.
 //
 // The zero value, DiagnosticsVerbosityDefault, resolves to DiagnosticsVerbositySummary.
 type DiagnosticsVerbosity int32
@@ -36,18 +38,13 @@ const (
 	// being considered a breaking change.
 	DiagnosticsVerbosityDefault DiagnosticsVerbosity = iota
 
-	// DiagnosticsVerbositySummary renders the native driver's compact, deduplicated diagnostics:
-	// requests are grouped by region, with the first and last request per region kept in full
-	// detail and the rest summarized by count and duration statistics. This is cheap enough that
-	// every completion can afford to pay for it.
+	// DiagnosticsVerbositySummary renders totals, final status, completion flags, and contacted
+	// regions. It omits retained per-attempt records.
 	DiagnosticsVerbositySummary
 
-	// DiagnosticsVerbosityDetailed renders every individual request the native driver recorded,
-	// with no deduplication or truncation. This duplicates data already available losslessly and
-	// more cheaply through [Diagnostics.Attempts]: prefer that field unless something specifically
-	// needs the driver's own JSON rendering of the same data. Every completion pays the
-	// serialization and allocation cost of this rendering whether or not it is ever read, since
-	// the native diagnostics handle cannot be retained past the completion to defer that work.
+	// DiagnosticsVerbosityDetailed renders the summary fields plus every retained record in
+	// [Diagnostics.Attempts]. When [Diagnostics.Compacted] is true, these attempts are only the
+	// native driver's retained subset, not the full timeline.
 	DiagnosticsVerbosityDetailed
 )
 
@@ -99,11 +96,144 @@ type Diagnostics struct {
 	// Attempts contains the retained per-attempt records in execution order.
 	Attempts []DiagnosticAttempt
 
-	// JSON is the native driver's diagnostics rendering, copied into Go memory at the verbosity
-	// configured by [ClientOptions.DiagnosticsVerbosity] (DiagnosticsVerbositySummary by
-	// default). Use [Diagnostics.Attempts] for the full per-attempt detail instead of parsing
-	// JSON, which is diagnostic data, not a stable schema.
-	JSON string
+	json *diagnosticsJSON
+}
+
+// JSON renders and caches this Go-owned diagnostics snapshot. The rendering uses the
+// [DiagnosticsVerbosity] configured when the client was created and is safe for concurrent calls.
+//
+// The current native ABI exposes totals, elapsed time, request counts, completion flags, contacted
+// regions, and retained attempts. JSON contains only those copied fields; it is not the native
+// driver's full diagnostics schema and callers should not treat its shape as a stable contract.
+// Use the typed fields on Diagnostics when programmatic access is required.
+func (d *Diagnostics) JSON() (string, error) {
+	if d == nil {
+		return "", nil
+	}
+	cache := d.json
+	if cache == nil {
+		cache = newDiagnosticsJSON(d, DiagnosticsVerbosityDefault)
+	}
+	cache.once.Do(func() {
+		data, err := marshalDiagnosticsJSON(cache.renderValue())
+		if err != nil {
+			cache.err = fmt.Errorf("azcosmos: rendering diagnostics JSON: %w", err)
+			return
+		}
+		cache.value = string(data)
+	})
+	return cache.value, cache.err
+}
+
+type diagnosticsJSON struct {
+	once      sync.Once
+	verbosity DiagnosticsVerbosity
+	snapshot  diagnosticsJSONSnapshot
+	value     string
+	err       error
+}
+
+type diagnosticsJSONSnapshot struct {
+	StatusCode         int
+	SubStatus          int
+	AttemptCount       uint32
+	TotalRequestCharge float64
+	Elapsed            time.Duration
+	Completed          bool
+	Failed             bool
+	Compacted          bool
+	RegionsContacted   []string
+	Attempts           []DiagnosticAttempt
+}
+
+type diagnosticsJSONSummary struct {
+	StatusCode           int      `json:"statusCode"`
+	SubStatus            int      `json:"subStatus"`
+	AttemptCount         uint32   `json:"attemptCount"`
+	RetainedAttemptCount int      `json:"retainedAttemptCount"`
+	TotalRequestCharge   float64  `json:"totalRequestCharge"`
+	ElapsedTimeMicros    int64    `json:"elapsedTimeMicros"`
+	Completed            bool     `json:"completed"`
+	Failed               bool     `json:"failed"`
+	Compacted            bool     `json:"compacted"`
+	RegionsContacted     []string `json:"regionsContacted"`
+}
+
+type diagnosticsJSONDetailed struct {
+	diagnosticsJSONSummary
+	Attempts []diagnosticAttemptJSON `json:"attempts"`
+}
+
+type diagnosticAttemptJSON struct {
+	Endpoint         string  `json:"endpoint"`
+	Region           string  `json:"region"`
+	StatusCode       int     `json:"statusCode"`
+	SubStatus        int     `json:"subStatus"`
+	LatencyMS        int64   `json:"latencyMS"`
+	RequestCharge    float64 `json:"requestCharge"`
+	ServerDurationMS float64 `json:"serverDurationMS"`
+}
+
+var marshalDiagnosticsJSON = json.Marshal
+
+func (d *Diagnostics) initializeJSON(verbosity DiagnosticsVerbosity) {
+	d.json = newDiagnosticsJSON(d, verbosity)
+}
+
+func (d *Diagnostics) jsonVerbosity() DiagnosticsVerbosity {
+	if d.json == nil {
+		return DiagnosticsVerbosityDefault
+	}
+	return d.json.verbosity
+}
+
+func newDiagnosticsJSON(d *Diagnostics, verbosity DiagnosticsVerbosity) *diagnosticsJSON {
+	return &diagnosticsJSON{
+		verbosity: verbosity,
+		snapshot: diagnosticsJSONSnapshot{
+			StatusCode:         d.StatusCode,
+			SubStatus:          d.SubStatus,
+			AttemptCount:       d.AttemptCount,
+			TotalRequestCharge: d.TotalRequestCharge,
+			Elapsed:            d.Elapsed,
+			Completed:          d.Completed,
+			Failed:             d.Failed,
+			Compacted:          d.Compacted,
+			RegionsContacted:   append([]string(nil), d.RegionsContacted...),
+			Attempts:           append([]DiagnosticAttempt(nil), d.Attempts...),
+		},
+	}
+}
+
+func (d *diagnosticsJSON) renderValue() any {
+	summary := diagnosticsJSONSummary{
+		StatusCode:           d.snapshot.StatusCode,
+		SubStatus:            d.snapshot.SubStatus,
+		AttemptCount:         d.snapshot.AttemptCount,
+		RetainedAttemptCount: len(d.snapshot.Attempts),
+		TotalRequestCharge:   d.snapshot.TotalRequestCharge,
+		ElapsedTimeMicros:    d.snapshot.Elapsed.Microseconds(),
+		Completed:            d.snapshot.Completed,
+		Failed:               d.snapshot.Failed,
+		Compacted:            d.snapshot.Compacted,
+		RegionsContacted:     d.snapshot.RegionsContacted,
+	}
+	if d.verbosity != DiagnosticsVerbosityDetailed {
+		return summary
+	}
+	attempts := make([]diagnosticAttemptJSON, len(d.snapshot.Attempts))
+	for i, attempt := range d.snapshot.Attempts {
+		attempts[i] = diagnosticAttemptJSON{
+			Endpoint:         attempt.Endpoint,
+			Region:           attempt.Region,
+			StatusCode:       attempt.StatusCode,
+			SubStatus:        attempt.SubStatus,
+			LatencyMS:        attempt.Latency.Milliseconds(),
+			RequestCharge:    attempt.RequestCharge,
+			ServerDurationMS: attempt.ServerDurationMS,
+		}
+	}
+	return diagnosticsJSONDetailed{diagnosticsJSONSummary: summary, Attempts: attempts}
 }
 
 // DiagnosticAttempt describes one native request retained in the timeline.

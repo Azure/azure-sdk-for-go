@@ -23,17 +23,17 @@ const (
 	// specified. The client library decides whether layout aware routing is used, and that
 	// decision may change in a future release. Currently, LayoutAwareRoutingAuto resolves to
 	// LayoutAwareRoutingDisabled; use LayoutAwareRoutingEnabled to opt in.
-	LayoutAwareRoutingAuto = blob.LayoutAwareRoutingAuto
+	LayoutAwareRoutingAuto LayoutAwareRouting = blob.LayoutAwareRoutingAuto
 
 	// LayoutAwareRoutingEnabled opts in to layout aware routing. When the initial read of a download
 	// carries the layout download hint and data remains, the layout of the remaining range is fetched
 	// and cached (with automatic background refresh), and each remaining range is read from the
 	// endpoint that serves it.
-	LayoutAwareRoutingEnabled = blob.LayoutAwareRoutingEnabled
+	LayoutAwareRoutingEnabled LayoutAwareRouting = blob.LayoutAwareRoutingEnabled
 
 	// LayoutAwareRoutingDisabled never routes by layout; every read goes to the client's configured
 	// endpoint.
-	LayoutAwareRoutingDisabled = blob.LayoutAwareRoutingDisabled
+	LayoutAwareRoutingDisabled LayoutAwareRouting = blob.LayoutAwareRoutingDisabled
 )
 
 // PossibleLayoutAwareRoutingValues returns the possible values for the LayoutAwareRouting const type.

@@ -42,7 +42,7 @@ type ClientOptions struct {
 func WithSessionProvider(clOpts *ClientOptions, blobURL string, cred azcore.TokenCredential) *ClientOptions {
 	opts := *clOpts
 	if opts.Session.Provider == nil {
-		if p, err := azblob.NewContainerSessionProvider(blobURL, cred, &azblob.ClientOptions{ClientOptions: opts.ClientOptions}); err == nil {
+		if p, err := container.NewSessionProvider(blobURL, cred, &container.ClientOptions{ClientOptions: opts.ClientOptions}); err == nil {
 			opts.Session.Provider = p
 		}
 	}

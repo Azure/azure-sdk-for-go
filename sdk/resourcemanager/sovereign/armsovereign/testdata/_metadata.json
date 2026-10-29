@@ -1,0 +1,6 @@
+{
+  "apiVersions": {
+    "Microsoft.Sovereign": "2026-10-31-preview"
+  },
+  "emitterVersion": "0.17.6"
+}

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-06-01-preview/VirtualMachineInstances_CreateOrUpdate_Put_Virtual_Machine_Instance_With_Gallery_Image.json
+// Generated from example definition: 2026-07-01-preview/VirtualMachineInstances_CreateOrUpdate_Put_Virtual_Machine_Instance_With_Gallery_Image.json
 func ExampleVirtualMachineInstancesClient_BeginCreateOrUpdate_putVirtualMachineInstanceWithGalleryImage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -108,7 +108,7 @@ func ExampleVirtualMachineInstancesClient_BeginCreateOrUpdate_putVirtualMachineI
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/VirtualMachineInstances_CreateOrUpdate_Put_Virtual_Machine_Instance_With_Gpu.json
+// Generated from example definition: 2026-07-01-preview/VirtualMachineInstances_CreateOrUpdate_Put_Virtual_Machine_Instance_With_Gpu.json
 func ExampleVirtualMachineInstancesClient_BeginCreateOrUpdate_putVirtualMachineInstanceWithGpu() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -216,7 +216,7 @@ func ExampleVirtualMachineInstancesClient_BeginCreateOrUpdate_putVirtualMachineI
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/VirtualMachineInstances_CreateOrUpdate_Put_Virtual_Machine_Instance_With_Marketplace_Gallery_Image.json
+// Generated from example definition: 2026-07-01-preview/VirtualMachineInstances_CreateOrUpdate_Put_Virtual_Machine_Instance_With_Marketplace_Gallery_Image.json
 func ExampleVirtualMachineInstancesClient_BeginCreateOrUpdate_putVirtualMachineInstanceWithMarketplaceGalleryImage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -312,7 +312,7 @@ func ExampleVirtualMachineInstancesClient_BeginCreateOrUpdate_putVirtualMachineI
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/VirtualMachineInstances_CreateOrUpdate_Put_Virtual_Machine_Instance_With_Os_Disk.json
+// Generated from example definition: 2026-07-01-preview/VirtualMachineInstances_CreateOrUpdate_Put_Virtual_Machine_Instance_With_Os_Disk.json
 func ExampleVirtualMachineInstancesClient_BeginCreateOrUpdate_putVirtualMachineInstanceWithOSDisk() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -399,7 +399,7 @@ func ExampleVirtualMachineInstancesClient_BeginCreateOrUpdate_putVirtualMachineI
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/VirtualMachineInstances_CreateOrUpdate_Put_Virtual_Machine_Instance_With_Vm_Config_Agent.json
+// Generated from example definition: 2026-07-01-preview/VirtualMachineInstances_CreateOrUpdate_Put_Virtual_Machine_Instance_With_Vm_Config_Agent.json
 func ExampleVirtualMachineInstancesClient_BeginCreateOrUpdate_putVirtualMachineInstanceWithVMConfigAgent() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -477,7 +477,7 @@ func ExampleVirtualMachineInstancesClient_BeginCreateOrUpdate_putVirtualMachineI
 	// 							DisplayStatus: to.Ptr("Ok"),
 	// 							Level: to.Ptr(armazurestackhcivm.StatusLevelTypesInfo),
 	// 							Message: to.Ptr("The agent is healthy"),
-	// 							Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2009-06-15T13:45:30"); return t}()),
+	// 							Time: to.Ptr(time.Time{}),
 	// 						},
 	// 					},
 	// 					VMConfigAgentVersion: to.Ptr("1.0.0"),
@@ -512,7 +512,7 @@ func ExampleVirtualMachineInstancesClient_BeginCreateOrUpdate_putVirtualMachineI
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/VirtualMachineInstances__CreateOrUpdate_CreateFromLocal.json
+// Generated from example definition: 2026-07-01-preview/VirtualMachineInstances__CreateOrUpdate_CreateFromLocal.json
 func ExampleVirtualMachineInstancesClient_BeginCreateOrUpdate_createVirtualMachineInstanceFromLocal() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -544,6 +544,7 @@ func ExampleVirtualMachineInstancesClient_BeginCreateOrUpdate_createVirtualMachi
 				},
 			},
 			CreateFromLocal: to.Ptr(true),
+			LocalVMName:     to.Ptr("DemoVM_restored"),
 		},
 	}, nil)
 	if err != nil {
@@ -592,12 +593,13 @@ func ExampleVirtualMachineInstancesClient_BeginCreateOrUpdate_createVirtualMachi
 	// 				VMConfigStoragePathID: to.Ptr("/subscriptions/a95612cb-f1fa-4daa-a4fd-272844fa512c/resourceGroups/dogfoodarc/providers/Microsoft.AzureStackHCI/storageContainers/test-container"),
 	// 			},
 	// 			CreateFromLocal: to.Ptr(true),
+	// 			LocalVMName: to.Ptr("DemoVM_restored"),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/VirtualMachineInstances_Delete.json
+// Generated from example definition: 2026-07-01-preview/VirtualMachineInstances_Delete.json
 func ExampleVirtualMachineInstancesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -618,124 +620,7 @@ func ExampleVirtualMachineInstancesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-06-01-preview/VirtualMachineInstances_Get.json
-func ExampleVirtualMachineInstancesClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armazurestackhcivm.NewClientFactory("<subscriptionID>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewVirtualMachineInstancesClient().Get(ctx, "subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.HybridCompute/machines/DemoVM", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armazurestackhcivm.VirtualMachineInstancesClientGetResponse{
-	// 	VirtualMachineInstance: armazurestackhcivm.VirtualMachineInstance{
-	// 		Name: to.Ptr("default"),
-	// 		Type: to.Ptr("Microsoft.AzureStackHCI/virtualMachineInstances"),
-	// 		ExtendedLocation: &armazurestackhcivm.ExtendedLocation{
-	// 			Name: to.Ptr("/subscriptions/a95612cb-f1fa-4daa-a4fd-272844fa512c/resourceGroups/dogfoodarc/providers/Microsoft.ExtendedLocation/customLocations/dogfood-location"),
-	// 			Type: to.Ptr(armazurestackhcivm.ExtendedLocationTypesCustomLocation),
-	// 		},
-	// 		ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.HybridCompute/machines/DemoVM/providers/Microsoft.AzureStackHCI/virtualMachineInstances/default"),
-	// 		Properties: &armazurestackhcivm.VirtualMachineInstanceProperties{
-	// 			HardwareProfile: &armazurestackhcivm.VirtualMachineInstancePropertiesHardwareProfile{
-	// 				VMSize: to.Ptr(armazurestackhcivm.VMSizeEnumDefault),
-	// 			},
-	// 			NetworkProfile: &armazurestackhcivm.VirtualMachineInstancePropertiesNetworkProfile{
-	// 				NetworkInterfaces: []*armazurestackhcivm.NetworkInterfaceArmReference{
-	// 					{
-	// 						ID: to.Ptr("/subscriptions/a95612cb-f1fa-4daa-a4fd-272844fa512c/resourceGroups/dogfoodarc/providers/Microsoft.AzureStackHCI/networkInterfaces/test-nic"),
-	// 					},
-	// 				},
-	// 			},
-	// 			OSProfile: &armazurestackhcivm.VirtualMachineInstancePropertiesOsProfile{
-	// 				AdminUsername: to.Ptr("localadmin"),
-	// 				ComputerName: to.Ptr("luamaster"),
-	// 			},
-	// 			ProvisioningState: to.Ptr(armazurestackhcivm.ProvisioningStateEnumAccepted),
-	// 			StorageProfile: &armazurestackhcivm.VirtualMachineInstancePropertiesStorageProfile{
-	// 				ImageReference: &armazurestackhcivm.ImageArmReference{
-	// 					ID: to.Ptr("/subscriptions/a95612cb-f1fa-4daa-a4fd-272844fa512c/resourceGroups/dogfoodarc/providers/Microsoft.AzureStackHCI/galleryImages/test-gallery-image"),
-	// 				},
-	// 				VMConfigStoragePathID: to.Ptr("/subscriptions/a95612cb-f1fa-4daa-a4fd-272844fa512c/resourceGroups/dogfoodarc/providers/Microsoft.AzureStackHCI/storageContainers/test-container"),
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-06-01-preview/VirtualMachineInstances_List.json
-func ExampleVirtualMachineInstancesClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armazurestackhcivm.NewClientFactory("<subscriptionID>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewVirtualMachineInstancesClient().NewListPager("subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.HybridCompute/machines/DemoVM", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armazurestackhcivm.VirtualMachineInstancesClientListResponse{
-		// 	VirtualMachineInstanceListResult: armazurestackhcivm.VirtualMachineInstanceListResult{
-		// 		Value: []*armazurestackhcivm.VirtualMachineInstance{
-		// 			{
-		// 				Name: to.Ptr("default"),
-		// 				Type: to.Ptr("Microsoft.AzureStackHCI/virtualMachineInstances"),
-		// 				ExtendedLocation: &armazurestackhcivm.ExtendedLocation{
-		// 					Name: to.Ptr("/subscriptions/a95612cb-f1fa-4daa-a4fd-272844fa512c/resourceGroups/dogfoodarc/providers/Microsoft.ExtendedLocation/customLocations/dogfood-location"),
-		// 					Type: to.Ptr(armazurestackhcivm.ExtendedLocationTypesCustomLocation),
-		// 				},
-		// 				ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.HybridCompute/machines/DemoVM/providers/Microsoft.AzureStackHCI/virtualMachineInstances/default"),
-		// 				Properties: &armazurestackhcivm.VirtualMachineInstanceProperties{
-		// 					HardwareProfile: &armazurestackhcivm.VirtualMachineInstancePropertiesHardwareProfile{
-		// 						VMSize: to.Ptr(armazurestackhcivm.VMSizeEnumDefault),
-		// 					},
-		// 					NetworkProfile: &armazurestackhcivm.VirtualMachineInstancePropertiesNetworkProfile{
-		// 						NetworkInterfaces: []*armazurestackhcivm.NetworkInterfaceArmReference{
-		// 							{
-		// 								ID: to.Ptr("/subscriptions/a95612cb-f1fa-4daa-a4fd-272844fa512c/resourceGroups/dogfoodarc/providers/Microsoft.AzureStackHCI/networkInterfaces/test-nic"),
-		// 							},
-		// 						},
-		// 					},
-		// 					OSProfile: &armazurestackhcivm.VirtualMachineInstancePropertiesOsProfile{
-		// 						AdminUsername: to.Ptr("localadmin"),
-		// 						ComputerName: to.Ptr("luamaster"),
-		// 					},
-		// 					ProvisioningState: to.Ptr(armazurestackhcivm.ProvisioningStateEnumAccepted),
-		// 					StorageProfile: &armazurestackhcivm.VirtualMachineInstancePropertiesStorageProfile{
-		// 						ImageReference: &armazurestackhcivm.ImageArmReference{
-		// 							ID: to.Ptr("/subscriptions/a95612cb-f1fa-4daa-a4fd-272844fa512c/resourceGroups/dogfoodarc/providers/Microsoft.AzureStackHCI/galleryImages/test-gallery-image"),
-		// 						},
-		// 						VMConfigStoragePathID: to.Ptr("/subscriptions/a95612cb-f1fa-4daa-a4fd-272844fa512c/resourceGroups/dogfoodarc/providers/Microsoft.AzureStackHCI/storageContainers/test-container"),
-		// 					},
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2025-06-01-preview/VirtualMachineInstances_Pause.json
+// Generated from example definition: 2026-07-01-preview/VirtualMachineInstances_Pause.json
 func ExampleVirtualMachineInstancesClient_BeginPause() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -756,7 +641,42 @@ func ExampleVirtualMachineInstancesClient_BeginPause() {
 	}
 }
 
-// Generated from example definition: 2025-06-01-preview/VirtualMachineInstances_Restart.json
+// Generated from example definition: 2026-07-01-preview/VirtualMachineInstances_PowerOff.json
+func ExampleVirtualMachineInstancesClient_BeginPowerOff() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armazurestackhcivm.NewClientFactory("<subscriptionID>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVirtualMachineInstancesClient().BeginPowerOff(ctx, "subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.HybridCompute/machines/DemoVM/providers/Microsoft.AzureStackHCI/virtualMachineInstances/default", armazurestackhcivm.PowerOffVirtualMachineOptions{
+		SkipShutdown: to.Ptr(false),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armazurestackhcivm.VirtualMachineInstancesClientPowerOffResponse{
+	// 	OperationStatusResult: armazurestackhcivm.OperationStatusResult{
+	// 		ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.HybridCompute/machines/DemoVM/providers/Microsoft.AzureStackHCI/virtualMachineInstances/default/operations/poweroff"),
+	// 		Name: to.Ptr("poweroff"),
+	// 		Status: to.Ptr("Succeeded"),
+	// 		StartTime: to.Ptr(time.Date(2026, time.January, 20, 0, 0, 0, 0, time.UTC)),
+	// 		EndTime: to.Ptr(time.Date(2026, time.January, 20, 0, 1, 0, 0, time.UTC)),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-07-01-preview/VirtualMachineInstances_Restart.json
 func ExampleVirtualMachineInstancesClient_BeginRestart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -777,7 +697,7 @@ func ExampleVirtualMachineInstancesClient_BeginRestart() {
 	}
 }
 
-// Generated from example definition: 2025-06-01-preview/VirtualMachineInstances_Save.json
+// Generated from example definition: 2026-07-01-preview/VirtualMachineInstances_Save.json
 func ExampleVirtualMachineInstancesClient_BeginSave() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -798,7 +718,7 @@ func ExampleVirtualMachineInstancesClient_BeginSave() {
 	}
 }
 
-// Generated from example definition: 2025-06-01-preview/VirtualMachineInstances_Start.json
+// Generated from example definition: 2026-07-01-preview/VirtualMachineInstances_Start.json
 func ExampleVirtualMachineInstancesClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -819,7 +739,7 @@ func ExampleVirtualMachineInstancesClient_BeginStart() {
 	}
 }
 
-// Generated from example definition: 2025-06-01-preview/VirtualMachineInstances_Stop.json
+// Generated from example definition: 2026-07-01-preview/VirtualMachineInstances_Stop.json
 func ExampleVirtualMachineInstancesClient_BeginStop() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -840,8 +760,8 @@ func ExampleVirtualMachineInstancesClient_BeginStop() {
 	}
 }
 
-// Generated from example definition: 2025-06-01-preview/VirtualMachineInstances_Update.json
-func ExampleVirtualMachineInstancesClient_BeginUpdate() {
+// Generated from example definition: 2026-07-01-preview/VirtualMachineInstances_Update.json
+func ExampleVirtualMachineInstancesClient_BeginUpdate_updateVirtualMachine() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -910,4 +830,262 @@ func ExampleVirtualMachineInstancesClient_BeginUpdate() {
 	// 		},
 	// 	},
 	// }
+}
+
+// Generated from example definition: 2026-07-01-preview/VirtualMachineInstances_Update_DynamicMemory.json
+func ExampleVirtualMachineInstancesClient_BeginUpdate_updateVirtualMachineDynamicMemory() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armazurestackhcivm.NewClientFactory("<subscriptionID>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVirtualMachineInstancesClient().BeginUpdate(ctx, "subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.HybridCompute/machines/DemoVM", armazurestackhcivm.VirtualMachineInstanceUpdateRequest{
+		Properties: &armazurestackhcivm.VirtualMachineInstanceUpdateProperties{
+			HardwareProfile: &armazurestackhcivm.HardwareProfileUpdate{
+				DynamicMemoryConfig: &armazurestackhcivm.VirtualMachineInstancePropertiesHardwareProfileDynamicMemoryConfig{
+					Enabled:            to.Ptr(true),
+					MinimumMemoryMB:    to.Ptr[int64](2048),
+					MaximumMemoryMB:    to.Ptr[int64](8192),
+					TargetMemoryBuffer: to.Ptr[int32](20),
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armazurestackhcivm.VirtualMachineInstancesClientUpdateResponse{
+	// 	VirtualMachineInstance: armazurestackhcivm.VirtualMachineInstance{
+	// 		Name: to.Ptr("default"),
+	// 		Type: to.Ptr("Microsoft.AzureStackHCI/virtualMachineInstances"),
+	// 		ExtendedLocation: &armazurestackhcivm.ExtendedLocation{
+	// 			Name: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.ExtendedLocation/customLocations/dogfood-location"),
+	// 			Type: to.Ptr(armazurestackhcivm.ExtendedLocationTypesCustomLocation),
+	// 		},
+	// 		ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.HybridCompute/machines/DemoVM/providers/Microsoft.AzureStackHCI/virtualMachineInstances/default"),
+	// 		Properties: &armazurestackhcivm.VirtualMachineInstanceProperties{
+	// 			HardwareProfile: &armazurestackhcivm.VirtualMachineInstancePropertiesHardwareProfile{
+	// 				VMSize: to.Ptr(armazurestackhcivm.VMSizeEnumDefault),
+	// 				DynamicMemoryConfig: &armazurestackhcivm.VirtualMachineInstancePropertiesHardwareProfileDynamicMemoryConfig{
+	// 					Enabled: to.Ptr(true),
+	// 					MinimumMemoryMB: to.Ptr[int64](2048),
+	// 					MaximumMemoryMB: to.Ptr[int64](8192),
+	// 					TargetMemoryBuffer: to.Ptr[int32](20),
+	// 				},
+	// 			},
+	// 			NetworkProfile: &armazurestackhcivm.VirtualMachineInstancePropertiesNetworkProfile{
+	// 				NetworkInterfaces: []*armazurestackhcivm.NetworkInterfaceArmReference{
+	// 					{
+	// 						ID: to.Ptr("/subscriptions/a95612cb-f1fa-4daa-a4fd-272844fa512c/resourceGroups/dogfoodarc/providers/Microsoft.AzureStackHCI/networkInterfaces/test-nic"),
+	// 					},
+	// 				},
+	// 			},
+	// 			OSProfile: &armazurestackhcivm.VirtualMachineInstancePropertiesOsProfile{
+	// 				AdminUsername: to.Ptr("localadmin"),
+	// 				ComputerName: to.Ptr("luamaster"),
+	// 			},
+	// 			ProvisioningState: to.Ptr(armazurestackhcivm.ProvisioningStateEnumAccepted),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-07-01-preview/VirtualMachineInstances_Get.json
+func ExampleVirtualMachineInstancesClient_Get_getVirtualMachineInstance() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armazurestackhcivm.NewClientFactory("<subscriptionID>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewVirtualMachineInstancesClient().Get(ctx, "subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.HybridCompute/machines/DemoVM", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armazurestackhcivm.VirtualMachineInstancesClientGetResponse{
+	// 	VirtualMachineInstance: armazurestackhcivm.VirtualMachineInstance{
+	// 		Name: to.Ptr("default"),
+	// 		Type: to.Ptr("Microsoft.AzureStackHCI/virtualMachineInstances"),
+	// 		ExtendedLocation: &armazurestackhcivm.ExtendedLocation{
+	// 			Name: to.Ptr("/subscriptions/a95612cb-f1fa-4daa-a4fd-272844fa512c/resourceGroups/dogfoodarc/providers/Microsoft.ExtendedLocation/customLocations/dogfood-location"),
+	// 			Type: to.Ptr(armazurestackhcivm.ExtendedLocationTypesCustomLocation),
+	// 		},
+	// 		ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.HybridCompute/machines/DemoVM/providers/Microsoft.AzureStackHCI/virtualMachineInstances/default"),
+	// 		Properties: &armazurestackhcivm.VirtualMachineInstanceProperties{
+	// 			HardwareProfile: &armazurestackhcivm.VirtualMachineInstancePropertiesHardwareProfile{
+	// 				VMSize: to.Ptr(armazurestackhcivm.VMSizeEnumDefault),
+	// 			},
+	// 			NetworkProfile: &armazurestackhcivm.VirtualMachineInstancePropertiesNetworkProfile{
+	// 				NetworkInterfaces: []*armazurestackhcivm.NetworkInterfaceArmReference{
+	// 					{
+	// 						ID: to.Ptr("/subscriptions/a95612cb-f1fa-4daa-a4fd-272844fa512c/resourceGroups/dogfoodarc/providers/Microsoft.AzureStackHCI/networkInterfaces/test-nic"),
+	// 					},
+	// 				},
+	// 			},
+	// 			OSProfile: &armazurestackhcivm.VirtualMachineInstancePropertiesOsProfile{
+	// 				AdminUsername: to.Ptr("localadmin"),
+	// 				ComputerName: to.Ptr("luamaster"),
+	// 			},
+	// 			ProvisioningState: to.Ptr(armazurestackhcivm.ProvisioningStateEnumAccepted),
+	// 			Status: &armazurestackhcivm.VirtualMachineInstanceStatus{
+	// 				ProvisioningStatus: &armazurestackhcivm.VirtualMachineInstanceStatusProvisioningStatus{
+	// 					OperationID: to.Ptr("0c802886-a0ed-41e9-8e6c-b7610a6dfc55"),
+	// 					Status: to.Ptr(armazurestackhcivm.StatusInProgress),
+	// 				},
+	// 				OperationDetails: []*armazurestackhcivm.OperationStepResult{
+	// 					{
+	// 						Name: to.Ptr("CreateVirtualMachine"),
+	// 						Status: to.Ptr(armazurestackhcivm.StatusSucceeded),
+	// 						CompletedTime: to.Ptr(time.Date(2026, time.July, 1, 12, 0, 0, 0, time.UTC)),
+	// 					},
+	// 					{
+	// 						Name: to.Ptr("LaunchVirtualMachine"),
+	// 						Status: to.Ptr(armazurestackhcivm.StatusInProgress),
+	// 					},
+	// 				},
+	// 			},
+	// 			StorageProfile: &armazurestackhcivm.VirtualMachineInstancePropertiesStorageProfile{
+	// 				ImageReference: &armazurestackhcivm.ImageArmReference{
+	// 					ID: to.Ptr("/subscriptions/a95612cb-f1fa-4daa-a4fd-272844fa512c/resourceGroups/dogfoodarc/providers/Microsoft.AzureStackHCI/galleryImages/test-gallery-image"),
+	// 				},
+	// 				VMConfigStoragePathID: to.Ptr("/subscriptions/a95612cb-f1fa-4daa-a4fd-272844fa512c/resourceGroups/dogfoodarc/providers/Microsoft.AzureStackHCI/storageContainers/test-container"),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-07-01-preview/VirtualMachineInstances_Get_OperationFailed.json
+func ExampleVirtualMachineInstancesClient_Get_getVirtualMachineInstanceWithFailedOperation() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armazurestackhcivm.NewClientFactory("<subscriptionID>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewVirtualMachineInstancesClient().Get(ctx, "subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.HybridCompute/machines/DemoVM", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armazurestackhcivm.VirtualMachineInstancesClientGetResponse{
+	// 	VirtualMachineInstance: armazurestackhcivm.VirtualMachineInstance{
+	// 		Name: to.Ptr("default"),
+	// 		Type: to.Ptr("Microsoft.AzureStackHCI/virtualMachineInstances"),
+	// 		ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.HybridCompute/machines/DemoVM/providers/Microsoft.AzureStackHCI/virtualMachineInstances/default"),
+	// 		ExtendedLocation: &armazurestackhcivm.ExtendedLocation{
+	// 			Name: to.Ptr("/subscriptions/a95612cb-f1fa-4daa-a4fd-272844fa512c/resourceGroups/dogfoodarc/providers/Microsoft.ExtendedLocation/customLocations/dogfood-location"),
+	// 			Type: to.Ptr(armazurestackhcivm.ExtendedLocationTypesCustomLocation),
+	// 		},
+	// 		Properties: &armazurestackhcivm.VirtualMachineInstanceProperties{
+	// 			ProvisioningState: to.Ptr(armazurestackhcivm.ProvisioningStateEnumFailed),
+	// 			Status: &armazurestackhcivm.VirtualMachineInstanceStatus{
+	// 				ErrorCode: to.Ptr("InsufficientMemory"),
+	// 				ErrorMessage: to.Ptr("There is not enough available memory to start the virtual machine."),
+	// 				ProvisioningStatus: &armazurestackhcivm.VirtualMachineInstanceStatusProvisioningStatus{
+	// 					OperationID: to.Ptr("0c802886-a0ed-41e9-8e6c-b7610a6dfc55"),
+	// 					Status: to.Ptr(armazurestackhcivm.StatusFailed),
+	// 				},
+	// 				OperationDetails: []*armazurestackhcivm.OperationStepResult{
+	// 					{
+	// 						Name: to.Ptr("CreateVirtualMachine"),
+	// 						Status: to.Ptr(armazurestackhcivm.StatusSucceeded),
+	// 						CompletedTime: to.Ptr(time.Date(2026, time.July, 1, 12, 0, 0, 0, time.UTC)),
+	// 					},
+	// 					{
+	// 						Name: to.Ptr("LaunchVirtualMachine"),
+	// 						Status: to.Ptr(armazurestackhcivm.StatusFailed),
+	// 						Message: to.Ptr("There is not enough available memory to start the virtual machine."),
+	// 						CompletedTime: to.Ptr(time.Date(2026, time.July, 1, 12, 1, 0, 0, time.UTC)),
+	// 					},
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-07-01-preview/VirtualMachineInstances_List.json
+func ExampleVirtualMachineInstancesClient_NewListPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armazurestackhcivm.NewClientFactory("<subscriptionID>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewVirtualMachineInstancesClient().NewListPager("subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.HybridCompute/machines/DemoVM", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armazurestackhcivm.VirtualMachineInstancesClientListResponse{
+		// 	VirtualMachineInstanceListResult: armazurestackhcivm.VirtualMachineInstanceListResult{
+		// 		Value: []*armazurestackhcivm.VirtualMachineInstance{
+		// 			{
+		// 				Name: to.Ptr("default"),
+		// 				Type: to.Ptr("Microsoft.AzureStackHCI/virtualMachineInstances"),
+		// 				ExtendedLocation: &armazurestackhcivm.ExtendedLocation{
+		// 					Name: to.Ptr("/subscriptions/a95612cb-f1fa-4daa-a4fd-272844fa512c/resourceGroups/dogfoodarc/providers/Microsoft.ExtendedLocation/customLocations/dogfood-location"),
+		// 					Type: to.Ptr(armazurestackhcivm.ExtendedLocationTypesCustomLocation),
+		// 				},
+		// 				ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.HybridCompute/machines/DemoVM/providers/Microsoft.AzureStackHCI/virtualMachineInstances/default"),
+		// 				Properties: &armazurestackhcivm.VirtualMachineInstanceProperties{
+		// 					HardwareProfile: &armazurestackhcivm.VirtualMachineInstancePropertiesHardwareProfile{
+		// 						VMSize: to.Ptr(armazurestackhcivm.VMSizeEnumDefault),
+		// 					},
+		// 					NetworkProfile: &armazurestackhcivm.VirtualMachineInstancePropertiesNetworkProfile{
+		// 						NetworkInterfaces: []*armazurestackhcivm.NetworkInterfaceArmReference{
+		// 							{
+		// 								ID: to.Ptr("/subscriptions/a95612cb-f1fa-4daa-a4fd-272844fa512c/resourceGroups/dogfoodarc/providers/Microsoft.AzureStackHCI/networkInterfaces/test-nic"),
+		// 							},
+		// 						},
+		// 					},
+		// 					OSProfile: &armazurestackhcivm.VirtualMachineInstancePropertiesOsProfile{
+		// 						AdminUsername: to.Ptr("localadmin"),
+		// 						ComputerName: to.Ptr("luamaster"),
+		// 					},
+		// 					ProvisioningState: to.Ptr(armazurestackhcivm.ProvisioningStateEnumAccepted),
+		// 					StorageProfile: &armazurestackhcivm.VirtualMachineInstancePropertiesStorageProfile{
+		// 						ImageReference: &armazurestackhcivm.ImageArmReference{
+		// 							ID: to.Ptr("/subscriptions/a95612cb-f1fa-4daa-a4fd-272844fa512c/resourceGroups/dogfoodarc/providers/Microsoft.AzureStackHCI/galleryImages/test-gallery-image"),
+		// 						},
+		// 						VMConfigStoragePathID: to.Ptr("/subscriptions/a95612cb-f1fa-4daa-a4fd-272844fa512c/resourceGroups/dogfoodarc/providers/Microsoft.AzureStackHCI/storageContainers/test-container"),
+		// 					},
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
 }

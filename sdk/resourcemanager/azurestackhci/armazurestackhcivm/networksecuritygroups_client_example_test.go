@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-06-01-preview/NetworkSecurityGroups_CreateOrUpdate.json
+// Generated from example definition: 2026-07-01-preview/NetworkSecurityGroups_CreateOrUpdate.json
 func ExampleNetworkSecurityGroupsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -49,7 +49,7 @@ func ExampleNetworkSecurityGroupsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/NetworkSecurityGroups_Delete.json
+// Generated from example definition: 2026-07-01-preview/NetworkSecurityGroups_Delete.json
 func ExampleNetworkSecurityGroupsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -70,7 +70,51 @@ func ExampleNetworkSecurityGroupsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-06-01-preview/NetworkSecurityGroups_Get.json
+// Generated from example definition: 2026-07-01-preview/NetworkSecurityGroups_UpdateTags.json
+func ExampleNetworkSecurityGroupsClient_BeginUpdateTags() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armazurestackhcivm.NewClientFactory("fd3c3665-1729-4b7b-9a38-238e83b0f98b", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewNetworkSecurityGroupsClient().BeginUpdateTags(ctx, "testrg", "testnsg", armazurestackhcivm.NetworkSecurityGroupTagsUpdate{
+		Tags: map[string]*string{
+			"tag1": to.Ptr("value1"),
+			"tag2": to.Ptr("value2"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armazurestackhcivm.NetworkSecurityGroupsClientUpdateTagsResponse{
+	// 	NetworkSecurityGroup: armazurestackhcivm.NetworkSecurityGroup{
+	// 		Name: to.Ptr("testnsg"),
+	// 		Type: to.Ptr("Microsoft.AzureStackHCI/networkSecurityGroups"),
+	// 		ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.AzureStackHCI/networkSecurityGroups/testnsg"),
+	// 		Location: to.Ptr("westus"),
+	// 		Properties: &armazurestackhcivm.NetworkSecurityGroupProperties{
+	// 			ProvisioningState: to.Ptr(armazurestackhcivm.ProvisioningStateEnumSucceeded),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"tag1": to.Ptr("value1"),
+	// 			"tag2": to.Ptr("value2"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-07-01-preview/NetworkSecurityGroups_Get.json
 func ExampleNetworkSecurityGroupsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -101,7 +145,7 @@ func ExampleNetworkSecurityGroupsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/NetworkSecurityGroups_ListAll.json
+// Generated from example definition: 2026-07-01-preview/NetworkSecurityGroups_ListAll.json
 func ExampleNetworkSecurityGroupsClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -150,7 +194,7 @@ func ExampleNetworkSecurityGroupsClient_NewListAllPager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01-preview/NetworkSecurityGroups_ListByResourceGroup.json
+// Generated from example definition: 2026-07-01-preview/NetworkSecurityGroups_ListByResourceGroup.json
 func ExampleNetworkSecurityGroupsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -197,48 +241,4 @@ func ExampleNetworkSecurityGroupsClient_NewListByResourceGroupPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2025-06-01-preview/NetworkSecurityGroups_UpdateTags.json
-func ExampleNetworkSecurityGroupsClient_BeginUpdateTags() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armazurestackhcivm.NewClientFactory("fd3c3665-1729-4b7b-9a38-238e83b0f98b", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewNetworkSecurityGroupsClient().BeginUpdateTags(ctx, "testrg", "testnsg", armazurestackhcivm.NetworkSecurityGroupTagsUpdate{
-		Tags: map[string]*string{
-			"tag1": to.Ptr("value1"),
-			"tag2": to.Ptr("value2"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armazurestackhcivm.NetworkSecurityGroupsClientUpdateTagsResponse{
-	// 	NetworkSecurityGroup: armazurestackhcivm.NetworkSecurityGroup{
-	// 		Name: to.Ptr("testnsg"),
-	// 		Type: to.Ptr("Microsoft.AzureStackHCI/networkSecurityGroups"),
-	// 		ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.AzureStackHCI/networkSecurityGroups/testnsg"),
-	// 		Location: to.Ptr("westus"),
-	// 		Properties: &armazurestackhcivm.NetworkSecurityGroupProperties{
-	// 			ProvisioningState: to.Ptr(armazurestackhcivm.ProvisioningStateEnumSucceeded),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"tag1": to.Ptr("value1"),
-	// 			"tag2": to.Ptr("value2"),
-	// 		},
-	// 	},
-	// }
 }

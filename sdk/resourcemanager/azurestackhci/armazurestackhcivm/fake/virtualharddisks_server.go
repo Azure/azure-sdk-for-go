@@ -29,6 +29,14 @@ type VirtualHardDisksServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, virtualHardDiskName string, options *armazurestackhcivm.VirtualHardDisksClientBeginDeleteOptions) (resp azfake.PollerResponder[armazurestackhcivm.VirtualHardDisksClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method VirtualHardDisksClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, virtualHardDiskName string, properties armazurestackhcivm.VirtualHardDisksUpdateRequest, options *armazurestackhcivm.VirtualHardDisksClientBeginUpdateOptions) (resp azfake.PollerResponder[armazurestackhcivm.VirtualHardDisksClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// BeginUpload is the fake for method VirtualHardDisksClient.BeginUpload
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpload func(ctx context.Context, resourceGroupName string, virtualHardDiskName string, body armazurestackhcivm.VirtualHardDiskUploadRequest, options *armazurestackhcivm.VirtualHardDisksClientBeginUploadOptions) (resp azfake.PollerResponder[armazurestackhcivm.VirtualHardDisksClientUploadResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method VirtualHardDisksClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, virtualHardDiskName string, options *armazurestackhcivm.VirtualHardDisksClientGetOptions) (resp azfake.Responder[armazurestackhcivm.VirtualHardDisksClientGetResponse], errResp azfake.ErrorResponder)
@@ -40,14 +48,6 @@ type VirtualHardDisksServer struct {
 	// NewListByResourceGroupPager is the fake for method VirtualHardDisksClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, options *armazurestackhcivm.VirtualHardDisksClientListByResourceGroupOptions) (resp azfake.PagerResponder[armazurestackhcivm.VirtualHardDisksClientListByResourceGroupResponse])
-
-	// BeginUpdate is the fake for method VirtualHardDisksClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, virtualHardDiskName string, properties armazurestackhcivm.VirtualHardDisksUpdateRequest, options *armazurestackhcivm.VirtualHardDisksClientBeginUpdateOptions) (resp azfake.PollerResponder[armazurestackhcivm.VirtualHardDisksClientUpdateResponse], errResp azfake.ErrorResponder)
-
-	// BeginUpload is the fake for method VirtualHardDisksClient.BeginUpload
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpload func(ctx context.Context, resourceGroupName string, virtualHardDiskName string, body armazurestackhcivm.VirtualHardDiskUploadRequest, options *armazurestackhcivm.VirtualHardDisksClientBeginUploadOptions) (resp azfake.PollerResponder[armazurestackhcivm.VirtualHardDisksClientUploadResponse], errResp azfake.ErrorResponder)
 }
 
 // NewVirtualHardDisksServerTransport creates a new instance of VirtualHardDisksServerTransport with the provided implementation.
@@ -58,10 +58,10 @@ func NewVirtualHardDisksServerTransport(srv *VirtualHardDisksServer) *VirtualHar
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armazurestackhcivm.VirtualHardDisksClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armazurestackhcivm.VirtualHardDisksClientDeleteResponse]](),
-		newListAllPager:             newTracker[azfake.PagerResponder[armazurestackhcivm.VirtualHardDisksClientListAllResponse]](),
-		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armazurestackhcivm.VirtualHardDisksClientListByResourceGroupResponse]](),
 		beginUpdate:                 newTracker[azfake.PollerResponder[armazurestackhcivm.VirtualHardDisksClientUpdateResponse]](),
 		beginUpload:                 newTracker[azfake.PollerResponder[armazurestackhcivm.VirtualHardDisksClientUploadResponse]](),
+		newListAllPager:             newTracker[azfake.PagerResponder[armazurestackhcivm.VirtualHardDisksClientListAllResponse]](),
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armazurestackhcivm.VirtualHardDisksClientListByResourceGroupResponse]](),
 	}
 }
 
@@ -71,10 +71,10 @@ type VirtualHardDisksServerTransport struct {
 	srv                         *VirtualHardDisksServer
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armazurestackhcivm.VirtualHardDisksClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armazurestackhcivm.VirtualHardDisksClientDeleteResponse]]
-	newListAllPager             *tracker[azfake.PagerResponder[armazurestackhcivm.VirtualHardDisksClientListAllResponse]]
-	newListByResourceGroupPager *tracker[azfake.PagerResponder[armazurestackhcivm.VirtualHardDisksClientListByResourceGroupResponse]]
 	beginUpdate                 *tracker[azfake.PollerResponder[armazurestackhcivm.VirtualHardDisksClientUpdateResponse]]
 	beginUpload                 *tracker[azfake.PollerResponder[armazurestackhcivm.VirtualHardDisksClientUploadResponse]]
+	newListAllPager             *tracker[azfake.PagerResponder[armazurestackhcivm.VirtualHardDisksClientListAllResponse]]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armazurestackhcivm.VirtualHardDisksClientListByResourceGroupResponse]]
 }
 
 // Do implements the policy.Transporter interface for VirtualHardDisksServerTransport.
@@ -102,16 +102,16 @@ func (v *VirtualHardDisksServerTransport) dispatchToMethodFake(req *http.Request
 				res.resp, res.err = v.dispatchBeginCreateOrUpdate(req)
 			case "VirtualHardDisksClient.BeginDelete":
 				res.resp, res.err = v.dispatchBeginDelete(req)
+			case "VirtualHardDisksClient.BeginUpdate":
+				res.resp, res.err = v.dispatchBeginUpdate(req)
+			case "VirtualHardDisksClient.BeginUpload":
+				res.resp, res.err = v.dispatchBeginUpload(req)
 			case "VirtualHardDisksClient.Get":
 				res.resp, res.err = v.dispatchGet(req)
 			case "VirtualHardDisksClient.NewListAllPager":
 				res.resp, res.err = v.dispatchNewListAllPager(req)
 			case "VirtualHardDisksClient.NewListByResourceGroupPager":
 				res.resp, res.err = v.dispatchNewListByResourceGroupPager(req)
-			case "VirtualHardDisksClient.BeginUpdate":
-				res.resp, res.err = v.dispatchBeginUpdate(req)
-			case "VirtualHardDisksClient.BeginUpload":
-				res.resp, res.err = v.dispatchBeginUpload(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -134,7 +134,7 @@ func (v *VirtualHardDisksServerTransport) dispatchBeginCreateOrUpdate(req *http.
 	}
 	beginCreateOrUpdate := v.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureStackHCI/virtualHardDisks/(?P<virtualHardDiskName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureStackHCI/virtualHardDisks/(?P<virtualHardDiskName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -182,7 +182,7 @@ func (v *VirtualHardDisksServerTransport) dispatchBeginDelete(req *http.Request)
 	}
 	beginDelete := v.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureStackHCI/virtualHardDisks/(?P<virtualHardDiskName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureStackHCI/virtualHardDisks/(?P<virtualHardDiskName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -220,116 +220,13 @@ func (v *VirtualHardDisksServerTransport) dispatchBeginDelete(req *http.Request)
 	return resp, nil
 }
 
-func (v *VirtualHardDisksServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if v.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureStackHCI/virtualHardDisks/(?P<virtualHardDiskName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	virtualHardDiskNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("virtualHardDiskName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := v.srv.Get(req.Context(), resourceGroupNameParam, virtualHardDiskNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).VirtualHardDisk, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (v *VirtualHardDisksServerTransport) dispatchNewListAllPager(req *http.Request) (*http.Response, error) {
-	if v.srv.NewListAllPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListAllPager not implemented")}
-	}
-	newListAllPager := v.newListAllPager.get(req)
-	if newListAllPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureStackHCI/virtualHardDisks`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := v.srv.NewListAllPager(nil)
-		newListAllPager = &resp
-		v.newListAllPager.add(req, newListAllPager)
-		server.PagerResponderInjectNextLinks(newListAllPager, req, func(page *armazurestackhcivm.VirtualHardDisksClientListAllResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListAllPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		v.newListAllPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListAllPager) {
-		v.newListAllPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (v *VirtualHardDisksServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
-	if v.srv.NewListByResourceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
-	}
-	newListByResourceGroupPager := v.newListByResourceGroupPager.get(req)
-	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureStackHCI/virtualHardDisks`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := v.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
-		newListByResourceGroupPager = &resp
-		v.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armazurestackhcivm.VirtualHardDisksClientListByResourceGroupResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		v.newListByResourceGroupPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByResourceGroupPager) {
-		v.newListByResourceGroupPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (v *VirtualHardDisksServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
 	if v.srv.BeginUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
 	}
 	beginUpdate := v.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureStackHCI/virtualHardDisks/(?P<virtualHardDiskName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureStackHCI/virtualHardDisks/(?P<virtualHardDiskName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -377,7 +274,7 @@ func (v *VirtualHardDisksServerTransport) dispatchBeginUpload(req *http.Request)
 	}
 	beginUpload := v.beginUpload.get(req)
 	if beginUpload == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureStackHCI/virtualHardDisks/(?P<virtualHardDiskName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/upload`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureStackHCI/virtualHardDisks/(?P<virtualHardDiskName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/upload`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -416,6 +313,109 @@ func (v *VirtualHardDisksServerTransport) dispatchBeginUpload(req *http.Request)
 		v.beginUpload.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (v *VirtualHardDisksServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if v.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureStackHCI/virtualHardDisks/(?P<virtualHardDiskName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	virtualHardDiskNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("virtualHardDiskName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := v.srv.Get(req.Context(), resourceGroupNameParam, virtualHardDiskNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).VirtualHardDisk, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (v *VirtualHardDisksServerTransport) dispatchNewListAllPager(req *http.Request) (*http.Response, error) {
+	if v.srv.NewListAllPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListAllPager not implemented")}
+	}
+	newListAllPager := v.newListAllPager.get(req)
+	if newListAllPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureStackHCI/virtualHardDisks`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := v.srv.NewListAllPager(nil)
+		newListAllPager = &resp
+		v.newListAllPager.add(req, newListAllPager)
+		server.PagerResponderInjectNextLinks(newListAllPager, req, func(page *armazurestackhcivm.VirtualHardDisksClientListAllResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListAllPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		v.newListAllPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListAllPager) {
+		v.newListAllPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (v *VirtualHardDisksServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
+	if v.srv.NewListByResourceGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
+	}
+	newListByResourceGroupPager := v.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureStackHCI/virtualHardDisks`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := v.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
+		newListByResourceGroupPager = &resp
+		v.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armazurestackhcivm.VirtualHardDisksClientListByResourceGroupResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		v.newListByResourceGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		v.newListByResourceGroupPager.remove(req)
+	}
 	return resp, nil
 }
 

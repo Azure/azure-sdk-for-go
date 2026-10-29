@@ -247,6 +247,7 @@ func cloneError(err error) error {
 		diagnostics := *cosmosErr.Diagnostics
 		diagnostics.RegionsContacted = append([]string(nil), diagnostics.RegionsContacted...)
 		diagnostics.Attempts = append([]DiagnosticAttempt(nil), diagnostics.Attempts...)
+		diagnostics.initializeJSON(cosmosErr.Diagnostics.jsonVerbosity())
 		clone.Diagnostics = &diagnostics
 	}
 	return &clone

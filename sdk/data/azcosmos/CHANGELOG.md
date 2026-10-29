@@ -54,10 +54,11 @@
   See [PR 27676](https://github.com/Azure/azure-sdk-for-go/pull/27676).
 * Exposed native retry diagnostics and final status on v2 responses and errors, including Go-owned
   per-attempt details and session-token recovery. See [PR 27662](https://github.com/Azure/azure-sdk-for-go/pull/27662).
-* Added `ClientOptions.DiagnosticsVerbosity` to control how much detail every completion's
-  `Diagnostics.JSON` renders. The zero value, `DiagnosticsVerbosityDefault`, resolves to
-  `DiagnosticsVerbositySummary`; `DiagnosticsVerbosityDetailed` renders the full per-attempt
-  timeline already available losslessly through `Diagnostics.Attempts`.
+* Added `ClientOptions.DiagnosticsVerbosity` to control how much detail `Diagnostics.JSON()`
+  renders on first use. The zero value, `DiagnosticsVerbosityDefault`, resolves to
+  `DiagnosticsVerbositySummary`; `DiagnosticsVerbosityDetailed` additionally renders the retained
+  per-attempt records already available through `Diagnostics.Attempts`. JSON is rendered and
+  cached from the Go-owned snapshot instead of eagerly serialized by the native driver.
   See [PR 27662](https://github.com/Azure/azure-sdk-for-go/pull/27662).
 * Added the Go SDK identity to the User-Agent header alongside the native driver identity,
   with an optional runtime application suffix. See [PR 27627](https://github.com/Azure/azure-sdk-for-go/pull/27627).
@@ -115,6 +116,9 @@
   Item serialization and copying occur when appended.
 * `NewQueryItemsPager[T]`, `QueryItemsPager[T]`, and `QueryItemsResponse[T]` require an
   explicit query result type. There are no separate raw operation variants.
+* Replaced the eager `Diagnostics.JSON` string field with the lazy `Diagnostics.JSON() (string,
+  error)` method. The method renders only fields exposed by the current native ABI and copied into
+  the Go-owned snapshot; it does not reproduce the native driver's full diagnostics JSON schema.
 * This is the first release of `github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos/v2`. The v2
   module replaces the v1 pure-Go implementation with a binding to the shared Rust Cosmos driver,
   so it is a full rewrite of the public surface rather than an incremental change. The complete

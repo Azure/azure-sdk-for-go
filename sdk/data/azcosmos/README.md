@@ -53,9 +53,14 @@ The v0.2.0 driver owns throttle and session retries; Go submits once and exposes
 attempt count and final status on responses and errors. When attached by the driver,
 `Response.Diagnostics` and `Error.Diagnostics` contain a Go-owned snapshot of total charge,
 elapsed time, regions contacted, retained per-attempt status/substatus and latency, and the
-driver's JSON rendering at `ClientOptions.DiagnosticsVerbosity` (a compact per-region summary by
-default; the full per-attempt rendering only when set to `DiagnosticsVerbosityDetailed`). The
-native driver can compact old attempts; `AttemptCount`
+completion flags exposed by the native ABI. `Diagnostics.JSON()` lazily renders and caches those
+Go-owned fields only when requested: the default summary omits per-attempt records, while
+`DiagnosticsVerbosityDetailed` includes the retained records from `Diagnostics.Attempts`. This
+avoids native JSON serialization on operations that never inspect it and keeps the snapshot valid
+after the completion and client are released. The current ABI does not expose the native driver's
+full JSON diagnostics schema, so this Go rendering cannot reproduce fields outside the typed
+snapshot and its JSON shape is not a stable contract. The native driver can compact old attempts;
+`AttemptCount`
 remains the total even when `len(Diagnostics.Attempts)` is smaller. Diagnostics are not available
 when cancellation returns before a native completion.
 
@@ -184,6 +189,8 @@ requires restarting the process.
 Successful responses and Cosmos errors can include `Diagnostics`. Use
 `Diagnostics.RegionsContacted` for the distinct regions in first-contact order and
 `Diagnostics.Attempts` for retained per-attempt region, endpoint, status/substatus, and latency.
+Call `Diagnostics.JSON()` only when text output is needed; it renders once from the Go-owned
+snapshot and is safe for concurrent calls.
 These fields show the request's observable regional path, but diagnostics do not expose the
 driver's full internal circuit-breaker state.
 

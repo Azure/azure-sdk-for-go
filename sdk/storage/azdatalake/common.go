@@ -6,6 +6,7 @@ package azdatalake
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/lease"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/shared"
@@ -89,15 +90,15 @@ const (
 	// SessionModeAuto is the zero value, and therefore the default when no value is specified.
 	// The client library decides whether sessions are used, and that decision may change in a
 	// future release. Currently, SessionModeAuto resolves to SessionModeDisabled.
-	SessionModeAuto = azblob.SessionModeAuto
+	SessionModeAuto SessionMode = azblob.SessionModeAuto
 
 	// SessionModeDisabled authenticates every request with a bearer token.
-	SessionModeDisabled = azblob.SessionModeDisabled
+	SessionModeDisabled SessionMode = azblob.SessionModeDisabled
 
 	// SessionModeEnabled authenticates file reads with a session, created and cached per file
 	// system. It requires the storage account name: when it can be determined from neither
 	// SessionOptions.AccountName nor the client's URL, client construction fails.
-	SessionModeEnabled = azblob.SessionModeEnabled
+	SessionModeEnabled SessionMode = azblob.SessionModeEnabled
 )
 
 // PossibleSessionModeValues returns the possible values for the SessionMode const type.
@@ -115,7 +116,7 @@ type SessionProvider = azblob.SessionProvider
 
 // ContainerSessionProvider is a SessionProvider that creates sessions with an
 // azcore.TokenCredential and caches one per file system.
-type ContainerSessionProvider = azblob.ContainerSessionProvider
+type ContainerSessionProvider = container.SessionProvider
 
 // NewContainerSessionProvider creates a ContainerSessionProvider. Pass it as
 // SessionOptions.Provider to clients that should share its cached sessions, including clients
@@ -127,9 +128,9 @@ type ContainerSessionProvider = azblob.ContainerSessionProvider
 //   - options - options for the pipeline that creates sessions; pass nil to accept the default values
 func NewContainerSessionProvider(serviceURL string, cred azcore.TokenCredential, options *azcore.ClientOptions) (*ContainerSessionProvider, error) {
 	blobURL, _ := shared.GetURLs(serviceURL)
-	var blobOpts azblob.ClientOptions
+	var blobOpts container.ClientOptions
 	if options != nil {
 		blobOpts.ClientOptions = *options
 	}
-	return azblob.NewContainerSessionProvider(blobURL, cred, &blobOpts)
+	return container.NewSessionProvider(blobURL, cred, &blobOpts)
 }

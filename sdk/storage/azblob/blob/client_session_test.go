@@ -19,6 +19,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/testcommon"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
 	"github.com/stretchr/testify/require"
@@ -752,11 +753,11 @@ func (s *BlobUnrecordedTestsSuite) TestBlobSharedSessionProviderReusedAcrossClie
 	tracker := &authRequestTracker{}
 
 	// the tracker is installed on the provider's pipeline too so CreateSession calls are counted
-	providerOptions := &azblob.ClientOptions{}
+	providerOptions := &container.ClientOptions{}
 	testcommon.SetClientOptions(s.T(), &providerOptions.ClientOptions)
 	providerOptions.PerRetryPolicies = append(providerOptions.PerRetryPolicies, tracker)
 
-	provider, err := azblob.NewContainerSessionProvider(serviceURL, cred, providerOptions)
+	provider, err := container.NewSessionProvider(serviceURL, cred, providerOptions)
 	_require.NoError(err)
 
 	// every blob gets its own client, but they all share the injected provider

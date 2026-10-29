@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-09-01-preview/GetQuotaUsagesList.json
+// Generated from example definition: 2026-11-01/GetQuotaUsagesList.json
 func ExampleUsagesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -37,84 +37,84 @@ func ExampleUsagesClient_NewListBySubscriptionPager() {
 		// 	QuotaUsagesListResult: armsearch.QuotaUsagesListResult{
 		// 		Value: []*armsearch.QuotaUsageResult{
 		// 			{
-		// 				ID: to.Ptr("/subscriptions/{subscriptionId}/providers/Microsoft.Search/locations/{location}/usages/free"),
-		// 				Unit: to.Ptr("Count"),
-		// 				CurrentValue: to.Ptr[int32](8),
-		// 				Limit: to.Ptr[int32](16),
 		// 				Name: &armsearch.QuotaUsageResultName{
-		// 					Value: to.Ptr("free"),
 		// 					LocalizedValue: to.Ptr("F - Free"),
+		// 					Value: to.Ptr("free"),
 		// 				},
+		// 				CurrentValue: to.Ptr[int32](8),
+		// 				ID: to.Ptr("/subscriptions/{subscriptionId}/providers/Microsoft.Search/locations/{location}/usages/free"),
+		// 				Limit: to.Ptr[int32](16),
+		// 				Unit: to.Ptr("Count"),
 		// 			},
 		// 			{
-		// 				ID: to.Ptr("/subscriptions/{subscriptionId}/providers/Microsoft.Search/locations/{location}/usages/basic"),
-		// 				Unit: to.Ptr("Count"),
-		// 				CurrentValue: to.Ptr[int32](8),
-		// 				Limit: to.Ptr[int32](16),
 		// 				Name: &armsearch.QuotaUsageResultName{
-		// 					Value: to.Ptr("basic"),
 		// 					LocalizedValue: to.Ptr("B - Basic"),
+		// 					Value: to.Ptr("basic"),
 		// 				},
+		// 				CurrentValue: to.Ptr[int32](8),
+		// 				ID: to.Ptr("/subscriptions/{subscriptionId}/providers/Microsoft.Search/locations/{location}/usages/basic"),
+		// 				Limit: to.Ptr[int32](16),
+		// 				Unit: to.Ptr("Count"),
 		// 			},
 		// 			{
-		// 				ID: to.Ptr("/subscriptions/{subscriptionId}/providers/Microsoft.Search/locations/{location}/usages/standard"),
-		// 				Unit: to.Ptr("Count"),
-		// 				CurrentValue: to.Ptr[int32](8),
-		// 				Limit: to.Ptr[int32](16),
 		// 				Name: &armsearch.QuotaUsageResultName{
-		// 					Value: to.Ptr("standard"),
 		// 					LocalizedValue: to.Ptr("S - Standard"),
+		// 					Value: to.Ptr("standard"),
 		// 				},
+		// 				CurrentValue: to.Ptr[int32](8),
+		// 				ID: to.Ptr("/subscriptions/{subscriptionId}/providers/Microsoft.Search/locations/{location}/usages/standard"),
+		// 				Limit: to.Ptr[int32](16),
+		// 				Unit: to.Ptr("Count"),
 		// 			},
 		// 			{
-		// 				ID: to.Ptr("/subscriptions/{subscriptionId}/providers/Microsoft.Search/locations/{location}/usages/standard2"),
-		// 				Unit: to.Ptr("Count"),
-		// 				CurrentValue: to.Ptr[int32](8),
-		// 				Limit: to.Ptr[int32](16),
 		// 				Name: &armsearch.QuotaUsageResultName{
-		// 					Value: to.Ptr("standard2"),
 		// 					LocalizedValue: to.Ptr("S2 - Standard2"),
+		// 					Value: to.Ptr("standard2"),
 		// 				},
+		// 				CurrentValue: to.Ptr[int32](8),
+		// 				ID: to.Ptr("/subscriptions/{subscriptionId}/providers/Microsoft.Search/locations/{location}/usages/standard2"),
+		// 				Limit: to.Ptr[int32](16),
+		// 				Unit: to.Ptr("Count"),
 		// 			},
 		// 			{
-		// 				ID: to.Ptr("/subscriptions/{subscriptionId}/providers/Microsoft.Search/locations/{location}/usages/standard3"),
-		// 				Unit: to.Ptr("Count"),
-		// 				CurrentValue: to.Ptr[int32](8),
-		// 				Limit: to.Ptr[int32](16),
 		// 				Name: &armsearch.QuotaUsageResultName{
-		// 					Value: to.Ptr("standard3"),
 		// 					LocalizedValue: to.Ptr("S3 - Standard3"),
+		// 					Value: to.Ptr("standard3"),
 		// 				},
+		// 				CurrentValue: to.Ptr[int32](8),
+		// 				ID: to.Ptr("/subscriptions/{subscriptionId}/providers/Microsoft.Search/locations/{location}/usages/standard3"),
+		// 				Limit: to.Ptr[int32](16),
+		// 				Unit: to.Ptr("Count"),
 		// 			},
 		// 			{
-		// 				ID: to.Ptr("/subscriptions/{subscriptionId}/providers/Microsoft.Search/locations/{location}/usages/storage_optimized_l1"),
-		// 				Unit: to.Ptr("Count"),
-		// 				CurrentValue: to.Ptr[int32](8),
-		// 				Limit: to.Ptr[int32](16),
 		// 				Name: &armsearch.QuotaUsageResultName{
-		// 					Value: to.Ptr("storage_optimized_l1"),
 		// 					LocalizedValue: to.Ptr("L1 - Storage Optimized"),
+		// 					Value: to.Ptr("storageOptimizedL1"),
 		// 				},
+		// 				CurrentValue: to.Ptr[int32](8),
+		// 				ID: to.Ptr("/subscriptions/{subscriptionId}/providers/Microsoft.Search/locations/{location}/usages/storageOptimizedL1"),
+		// 				Limit: to.Ptr[int32](16),
+		// 				Unit: to.Ptr("Count"),
 		// 			},
 		// 			{
-		// 				ID: to.Ptr("/subscriptions/{subscriptionId}/providers/Microsoft.Search/locations/{location}/usages/storage_optimized_l2"),
-		// 				Unit: to.Ptr("Count"),
-		// 				CurrentValue: to.Ptr[int32](8),
-		// 				Limit: to.Ptr[int32](16),
 		// 				Name: &armsearch.QuotaUsageResultName{
-		// 					Value: to.Ptr("storage_optimized_l2"),
 		// 					LocalizedValue: to.Ptr("L2 - Storage Optimized"),
+		// 					Value: to.Ptr("storageOptimizedL2"),
 		// 				},
+		// 				CurrentValue: to.Ptr[int32](8),
+		// 				ID: to.Ptr("/subscriptions/{subscriptionId}/providers/Microsoft.Search/locations/{location}/usages/storageOptimizedL2"),
+		// 				Limit: to.Ptr[int32](16),
+		// 				Unit: to.Ptr("Count"),
 		// 			},
 		// 			{
-		// 				ID: to.Ptr("/subscriptions/{subscriptionId}/providers/Microsoft.Search/locations/{location}/usages/serverless"),
-		// 				Unit: to.Ptr("Count"),
-		// 				CurrentValue: to.Ptr[int32](8),
-		// 				Limit: to.Ptr[int32](16),
 		// 				Name: &armsearch.QuotaUsageResultName{
-		// 					Value: to.Ptr("serverless"),
 		// 					LocalizedValue: to.Ptr("SL - Serverless"),
+		// 					Value: to.Ptr("serverless"),
 		// 				},
+		// 				CurrentValue: to.Ptr[int32](8),
+		// 				ID: to.Ptr("/subscriptions/{subscriptionId}/providers/Microsoft.Search/locations/{location}/usages/serverless"),
+		// 				Limit: to.Ptr[int32](16),
+		// 				Unit: to.Ptr("Count"),
 		// 			},
 		// 		},
 		// 	},

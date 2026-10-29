@@ -1,6 +1,6 @@
 # Release History
 
-## 1.7.1-beta.2 (Unreleased)
+## 1.8.0-beta.1 (Unreleased)
 
 ### Features Added
 * Exported `ShareNFSSettings` and `ShareNFSSettingsEncryptionInTransit` types.

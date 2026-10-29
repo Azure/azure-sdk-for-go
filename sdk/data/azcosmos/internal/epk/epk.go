@@ -242,20 +242,96 @@ func writeForHashingCore(value interface{}, stringSuffix byte, buf *[]byte) {
 
 // --- EPK computation ---
 
-// ComputeV1 computes the V1 EPK.
-// For each component: murmurhash3_32 of the full value,
-// formatted as 12 zero bytes + 4-byte big-endian hash.
+// ComputeV1 computes the V1 routing EPK: the binary-encoded Murmur32 hash
+// followed by the binary-encoded, truncated partition key components.
 func ComputeV1(values []interface{}) string {
-	var sb strings.Builder
-	for _, v := range values {
-		var hashBuf []byte
-		writeForHashing(v, &hashBuf)
-		hash := murmurhash3_32(hashBuf, 0)
-
-		sb.WriteString("000000000000000000000000")
-		fmt.Fprintf(&sb, "%08X", hash)
+	if len(values) == 0 {
+		return ""
 	}
-	return sb.String()
+	components := make([]interface{}, len(values))
+	var hashBuf []byte
+	for i, v := range values {
+		if text, ok := v.(string); ok {
+			v = truncateV1String(text)
+		}
+		components[i] = v
+		writeForHashing(v, &hashBuf)
+	}
+
+	var encoded []byte
+	writeNumberForBinaryEncodingV1(float64(murmurhash3_32(hashBuf, 0)), &encoded)
+	for _, v := range components {
+		writeForBinaryEncodingV1(v, &encoded)
+	}
+	return toHexUpper(encoded)
+}
+
+func truncateV1String(value string) string {
+	const maxCodeUnits = 100
+	if len(value) <= maxCodeUnits {
+		return value
+	}
+	units := 0
+	for offset, r := range value {
+		if units == maxCodeUnits {
+			return value[:offset]
+		}
+		units++
+		if r > 0xFFFF {
+			units++
+			if units > maxCodeUnits {
+				// The service replaces a surrogate pair split at UTF-16 unit 100.
+				return value[:offset] + "\uFFFD"
+			}
+		}
+	}
+	return value
+}
+
+func writeNumberForBinaryEncodingV1(value float64, buf *[]byte) {
+	payload := math.Float64bits(value)
+	const signBit = uint64(1) << 63
+	if payload < signBit {
+		payload ^= signBit
+	} else {
+		payload = ^payload + 1
+	}
+	*buf = append(*buf, componentNumber, byte(payload>>56))
+	payload <<= 8
+	// After the first byte, each chunk carries seven payload bits and a continuation bit.
+	for {
+		next := byte(payload>>56) | 1
+		payload <<= 7
+		if payload == 0 {
+			*buf = append(*buf, next&0xFE)
+			return
+		}
+		*buf = append(*buf, next)
+	}
+}
+
+func writeForBinaryEncodingV1(value interface{}, buf *[]byte) {
+	switch v := value.(type) {
+	case float64:
+		writeNumberForBinaryEncodingV1(v, buf)
+	case string:
+		const maxStringBytes = 100
+		*buf = append(*buf, componentString)
+		length := len(v)
+		if length > maxStringBytes {
+			// Long binary strings include one extra byte and no terminator.
+			length = maxStringBytes + 1
+		}
+		for i := 0; i < length; i++ {
+			*buf = append(*buf, v[i]+1)
+		}
+		if len(v) <= maxStringBytes {
+			*buf = append(*buf, 0)
+		}
+	default:
+		// Null, undefined, and booleans use the same type markers as hashing.
+		writeForHashing(value, buf)
+	}
 }
 
 // computeV2Hash computes the raw V2 EPK for Hash partitioning (without top-bit masking).

@@ -1,0 +1,6 @@
+{
+  "AssetsRepo": "Azure/azure-sdk-assets",
+  "AssetsRepoPrefixPath": "go",
+  "TagPrefix": "go/resourcemanager/platformvalidation/armplatformvalidation",
+  "Tag": "go/resourcemanager/platformvalidation/armplatformvalidation_472f35f993"
+}

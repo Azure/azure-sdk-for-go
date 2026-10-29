@@ -121,7 +121,7 @@ func TestTransactionalBatchWriteSerializationMatchesPointWrites(t *testing.T) {
 		[]byte(`{"id":"item","value":42}`),
 		(*struct{})(nil), "text", []int{1},
 	} {
-		expected, expectedErr := marshalItem(nil, value)
+		expected, expectedErr := marshalItem(value)
 		for _, appendItem := range []func(*TransactionalBatch) error{
 			func(b *TransactionalBatch) error { return b.CreateItem(value, nil) },
 			func(b *TransactionalBatch) error { return b.UpsertItem(value, nil) },
@@ -143,27 +143,24 @@ func TestTransactionalBatchWriteSerializationMatchesPointWrites(t *testing.T) {
 	}
 }
 
-func TestTransactionalBatchCapturesSerializerAndOwnsSerializedModels(t *testing.T) {
+func TestTransactionalBatchOwnsSerializedModels(t *testing.T) {
 	container := newTestContainer(t)
 	var calls int
 	var buffer []byte
-	codec := &serializerFuncs{marshal: func(value any) ([]byte, error) {
-		calls++
-		encoded, err := json.Marshal(map[string]any{"id": "item", "custom": value})
-		buffer = append(buffer[:0], encoded...)
-		return buffer, err
-	}}
-	container.database.client.options.Serializer = codec
+	wrap := func(value any) marshalModelFunc {
+		return func() ([]byte, error) {
+			calls++
+			encoded, err := json.Marshal(map[string]any{"id": "item", "custom": value})
+			buffer = append(buffer[:0], encoded...)
+			return buffer, err
+		}
+	}
 	batch := container.NewTransactionalBatch(NewPartitionKeyString("pk"))
-	container.database.client.options.Serializer = &serializerFuncs{marshal: func(any) ([]byte, error) {
-		t.Fatal("batch must retain its construction-time serializer")
-		return nil, nil
-	}}
 	model := map[string]string{"name": "original"}
-	require.NoError(t, batch.CreateItem(model, nil))
+	require.NoError(t, batch.CreateItem(wrap(model), nil))
 	model["name"] = "changed"
-	require.NoError(t, batch.UpsertItem("second", nil))
-	require.NoError(t, batch.ReplaceItem("item", []byte("third"), nil))
+	require.NoError(t, batch.UpsertItem(wrap("second"), nil))
+	require.NoError(t, batch.ReplaceItem("item", wrap([]byte("third")), nil))
 	clear(buffer)
 	require.Equal(t, 3, calls)
 	require.JSONEq(t, `{"id":"item","custom":{"name":"original"}}`, string(batch.operations[0].ResourceBody))
@@ -174,21 +171,21 @@ func TestTransactionalBatchCapturesSerializerAndOwnsSerializedModels(t *testing.
 	second, err := batch.marshal()
 	require.NoError(t, err)
 	require.Equal(t, first, second)
-	require.Equal(t, 3, calls, "encoding the envelope must not invoke the application serializer")
+	require.Equal(t, 3, calls, "encoding the envelope must not invoke model hooks")
 }
 
 func TestTransactionalBatchSerializerFailurePoisonsBuilder(t *testing.T) {
 	container := newTestContainer(t)
 	sentinel := errors.New("custom serialization failed")
 	calls := 0
-	container.database.client.options.Serializer = &serializerFuncs{marshal: func(any) ([]byte, error) {
+	model := marshalModelFunc(func() ([]byte, error) {
 		calls++
 		return nil, sentinel
-	}}
+	})
 	for _, appendItem := range []func(*TransactionalBatch) error{
-		func(b *TransactionalBatch) error { return b.CreateItem(struct{}{}, nil) },
-		func(b *TransactionalBatch) error { return b.UpsertItem(struct{}{}, nil) },
-		func(b *TransactionalBatch) error { return b.ReplaceItem("item", struct{}{}, nil) },
+		func(b *TransactionalBatch) error { return b.CreateItem(model, nil) },
+		func(b *TransactionalBatch) error { return b.UpsertItem(model, nil) },
+		func(b *TransactionalBatch) error { return b.ReplaceItem("item", model, nil) },
 	} {
 		batch := container.NewTransactionalBatch(NewPartitionKeyString("pk"))
 		err := appendItem(&batch)
@@ -361,7 +358,7 @@ func TestTransactionalBatchRequestOwnsOptions(t *testing.T) {
 			ExcludedRegions:              []Region{RegionEastUS},
 			EndToEndTimeout:              to(time.Second),
 			CustomHeaders:                map[string]string{"x-test": "original"},
-			BinaryEncoding:               &BinaryEncodingOptions{Enabled: to(false)},
+			BinaryEncoding:               &BinaryEncodingOptions{Disabled: true},
 			ThrottlingRetry:              ThrottlingRetryOptions{MaxRetryCount: to(uint32(2))},
 		},
 		SessionToken: "0:1",
@@ -372,7 +369,7 @@ func TestTransactionalBatchRequestOwnsOptions(t *testing.T) {
 	options.Operation.ExcludedRegions[0] = RegionWestUS
 	*options.Operation.EndToEndTimeout = 2 * time.Second
 	options.Operation.CustomHeaders["x-test"] = "changed"
-	*options.Operation.BinaryEncoding.Enabled = true
+	options.Operation.BinaryEncoding.Disabled = false
 	*options.Operation.ThrottlingRetry.MaxRetryCount = 3
 	options.SessionToken = "different"
 	require.True(t, *req.options.EnableContentResponseOnWrite)
@@ -380,7 +377,7 @@ func TestTransactionalBatchRequestOwnsOptions(t *testing.T) {
 	require.Equal(t, SessionToken("0:1"), req.sessionToken)
 	require.Equal(t, time.Second, *req.options.EndToEndTimeout)
 	require.Equal(t, map[string]string{"x-test": "original"}, req.options.CustomHeaders)
-	require.False(t, *req.options.BinaryEncoding.Enabled)
+	require.True(t, req.options.BinaryEncoding.Disabled)
 	require.Equal(t, uint32(2), *req.options.ThrottlingRetry.MaxRetryCount)
 	require.Empty(t, req.itemID)
 	require.Equal(t, operationKindBatch, req.kind)

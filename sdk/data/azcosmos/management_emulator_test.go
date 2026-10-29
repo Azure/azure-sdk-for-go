@@ -63,7 +63,7 @@ func TestEmulatorDatabaseAndContainerLifecycle(t *testing.T) {
 		"a single path has to infer Hash on the wire, not leave the kind unset")
 	require.Equal(t, 2, containerResp.ContainerProperties.PartitionKeyDefinition.Version)
 
-	container, err := database.NewContainer(containerID)
+	container, err := database.NewContainer(t.Context(), containerID)
 	require.NoError(t, err)
 
 	readContainerResp, err := container.Read(ctx, nil)
@@ -88,7 +88,7 @@ func TestEmulatorDatabaseAndContainerLifecycle(t *testing.T) {
 	recreatedResp, err := database.CreateContainer(ctx, containerProps, nil)
 	require.NoError(t, err)
 	require.Equal(t, 201, recreatedResp.StatusCode)
-	recreatedContainer, err := database.NewContainer(containerID)
+	recreatedContainer, err := database.NewContainer(t.Context(), containerID)
 	require.NoError(t, err)
 	_, err = recreatedContainer.CreateItem(ctx, pk, id, item, nil)
 	require.NoError(t, err, "the recreated container has to accept writes under its own, fresh resource id")
@@ -130,7 +130,7 @@ func TestEmulatorDatabaseRecreationResolvesReplacementContainers(t *testing.T) {
 		}
 		_, err = database.CreateContainer(ctx, props, nil)
 		require.NoError(t, err)
-		container, err := database.NewContainer(containerID)
+		container, err := database.NewContainer(t.Context(), containerID)
 		require.NoError(t, err)
 		itemID := uniqueItemID(t)
 		_, err = container.CreateItem(ctx, NewPartitionKeyString(itemID), itemID,
@@ -152,7 +152,7 @@ func TestEmulatorDatabaseRecreationResolvesReplacementContainers(t *testing.T) {
 		}
 		_, err = database.CreateContainer(ctx, props, nil)
 		require.NoError(t, err)
-		container, err := database.NewContainer(containerID)
+		container, err := database.NewContainer(t.Context(), containerID)
 		require.NoError(t, err)
 		itemID := uniqueItemID(t)
 		_, err = container.CreateItem(ctx, NewPartitionKeyString(itemID), itemID,
@@ -187,9 +187,9 @@ func TestEmulatorOutOfBandContainerRecreationResolvesFreshIdentity(t *testing.T)
 
 	_, err = databaseA.CreateContainer(ctx, props, nil)
 	require.NoError(t, err)
-	containerA, err := databaseA.NewContainer(containerID)
+	containerA, err := databaseA.NewContainer(t.Context(), containerID)
 	require.NoError(t, err)
-	containerB, err := databaseB.NewContainer(containerID)
+	containerB, err := databaseB.NewContainer(t.Context(), containerID)
 	require.NoError(t, err)
 
 	createItem := func(container *ContainerClient) {

@@ -63,7 +63,7 @@ func TestQueryRequestOwnsOptions(t *testing.T) {
 			EnableContentResponseOnWrite: &enabled,
 			ExcludedRegions:              []Region{RegionEastUS},
 			CustomHeaders:                map[string]string{"x-test": "original"},
-			BinaryEncoding:               &BinaryEncodingOptions{Enabled: to(true)},
+			BinaryEncoding:               &BinaryEncodingOptions{Disabled: false},
 			MaxFailoverRetryCount:        to(uint32(3)),
 			ThrottlingRetry:              ThrottlingRetryOptions{MaxRetryCount: to(uint32(1))},
 			ThroughputControl:            ThroughputControlOptions{ThroughputBucket: to(uint32(2))},
@@ -78,7 +78,7 @@ func TestQueryRequestOwnsOptions(t *testing.T) {
 	enabled = false
 	options.Operation.ExcludedRegions[0] = RegionWestUS
 	options.Operation.CustomHeaders["x-test"] = "changed"
-	options.Operation.BinaryEncoding.Enabled = to(false)
+	options.Operation.BinaryEncoding.Disabled = true
 	*options.Operation.MaxFailoverRetryCount = 9
 	*options.Operation.ThrottlingRetry.MaxRetryCount = 9
 	*options.Operation.ThroughputControl.ThroughputBucket = 9
@@ -89,7 +89,7 @@ func TestQueryRequestOwnsOptions(t *testing.T) {
 	require.True(t, *req.options.PopulateQueryMetrics)
 	require.Equal(t, []Region{RegionEastUS}, req.options.Operation.ExcludedRegions)
 	require.Equal(t, "original", req.options.Operation.CustomHeaders["x-test"])
-	require.True(t, req.options.Operation.BinaryEncoding.enabled())
+	require.False(t, req.options.Operation.BinaryEncoding.Disabled)
 	require.Equal(t, uint32(3), *req.options.Operation.MaxFailoverRetryCount)
 	require.Equal(t, uint32(1), *req.options.Operation.ThrottlingRetry.MaxRetryCount)
 	require.Equal(t, uint32(2), *req.options.Operation.ThroughputControl.ThroughputBucket)

@@ -69,17 +69,13 @@ func exampleContainer() (*azcosmos.ContainerClient, func()) {
 		log.Fatalf("ERROR: %s", err)
 	}
 
-	client, err := azcosmos.NewClient("https://myaccount.documents.azure.com", cred, nil)
+	client, err := azcosmos.NewClient(context.TODO(), "https://myaccount.documents.azure.com", cred, nil)
 	if err != nil {
 		// TODO: Update the following line with your application specific error handling logic
 		log.Fatalf("ERROR: %s", err)
 	}
-	if err := client.Initialize(context.TODO()); err != nil {
-		// TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
-	}
 
-	container, err := client.NewContainer("myDatabase", "myContainer")
+	container, err := client.NewContainer(context.TODO(), "myDatabase", "myContainer")
 	if err != nil {
 		// TODO: Update the following line with your application specific error handling logic
 		log.Fatalf("ERROR: %s", err)
@@ -105,17 +101,13 @@ func ExampleNewClient() {
 		log.Fatalf("ERROR: %s", err)
 	}
 
-	client, err := azcosmos.NewClient("https://myaccount.documents.azure.com", cred, nil)
+	client, err := azcosmos.NewClient(context.TODO(), "https://myaccount.documents.azure.com", cred, nil)
 	if err != nil {
 		// TODO: Update the following line with your application specific error handling logic
 		log.Fatalf("ERROR: %s", err)
 	}
-	if err := client.Initialize(context.TODO()); err != nil {
-		// TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
-	}
 
-	container, err := client.NewContainer("myDatabase", "myContainer")
+	container, err := client.NewContainer(context.TODO(), "myDatabase", "myContainer")
 	if err != nil {
 		// TODO: Update the following line with your application specific error handling logic
 		log.Fatalf("ERROR: %s", err)
@@ -138,15 +130,11 @@ func ExampleNewClientWithKey() {
 		log.Fatalf("ERROR: %s", err)
 	}
 
-	client, err := azcosmos.NewClientWithKey("https://myaccount.documents.azure.com", cred, &azcosmos.ClientOptions{
+	client, err := azcosmos.NewClientWithKey(context.TODO(), "https://myaccount.documents.azure.com", cred, &azcosmos.ClientOptions{
 		Routing: azcosmos.PreferredRegions(azcosmos.RegionEastUS),
 	})
 
 	if err != nil {
-		// TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
-	}
-	if err := client.Initialize(context.TODO()); err != nil {
 		// TODO: Update the following line with your application specific error handling logic
 		log.Fatalf("ERROR: %s", err)
 	}
@@ -163,7 +151,7 @@ func ExampleClient_CreateDatabase() {
 		// TODO: Update the following line with your application specific error handling logic
 		log.Fatalf("ERROR: %s", err)
 	}
-	client, err := azcosmos.NewClientWithKey("https://myaccount.documents.azure.com", cred, nil)
+	client, err := azcosmos.NewClientWithKey(context.TODO(), "https://myaccount.documents.azure.com", cred, nil)
 	if err != nil {
 		// TODO: Update the following line with your application specific error handling logic
 		log.Fatalf("ERROR: %s", err)
@@ -192,7 +180,7 @@ func ExampleClient_CreateDatabase() {
 		// TODO: Update the following line with your application specific error handling logic
 		log.Fatalf("ERROR: %s", err)
 	}
-	container, err := database.NewContainer(containerResponse.ContainerProperties.ID)
+	container, err := database.NewContainer(context.TODO(), containerResponse.ContainerProperties.ID)
 	if err != nil {
 		// TODO: Update the following line with your application specific error handling logic
 		log.Fatalf("ERROR: %s", err)
@@ -278,15 +266,15 @@ func ExampleNewRuntime() {
 		// TODO: Update the following line with your application specific error handling logic
 		log.Fatalf("ERROR: %s", err)
 	}
-	client, err := azcosmos.NewClient("https://myaccount.documents.azure.com", credential, &azcosmos.ClientOptions{
-		Runtime:        runtime,
-		BinaryEncoding: &azcosmos.BinaryEncodingOptions{},
+	client, err := azcosmos.NewClient(context.TODO(), "https://myaccount.documents.azure.com", credential, &azcosmos.ClientOptions{
+		Runtime:   runtime,
+		Operation: azcosmos.OperationOptions{BinaryEncoding: &azcosmos.BinaryEncodingOptions{}},
 	})
 	if err != nil {
 		// TODO: Update the following line with your application specific error handling logic
 		log.Fatalf("ERROR: %s", err)
 	}
-	container, err := client.NewContainer("database", "container")
+	container, err := client.NewContainer(context.TODO(), "database", "container")
 	if err != nil {
 		// TODO: Update the following line with your application specific error handling logic
 		log.Fatalf("ERROR: %s", err)
@@ -386,16 +374,12 @@ func ExampleContainerClient_PatchItem() {
 	closeClient()
 }
 
-type numberPreservingSerializer struct{}
+type numberPreservingModel map[string]any
 
-func (numberPreservingSerializer) Marshal(value any) ([]byte, error) {
-	return json.Marshal(value)
-}
-
-func (numberPreservingSerializer) Unmarshal(data []byte, value any) error {
+func (m *numberPreservingModel) UnmarshalJSON(data []byte) error {
 	decoder := json.NewDecoder(bytes.NewReader(data))
 	decoder.UseNumber()
-	if err := decoder.Decode(value); err != nil {
+	if err := decoder.Decode((*map[string]any)(m)); err != nil {
 		return err
 	}
 	var trailing any
@@ -408,25 +392,23 @@ func (numberPreservingSerializer) Unmarshal(data []byte, value any) error {
 	return nil
 }
 
-func ExampleClientOptions_serializer() {
+func ExampleContainerClient_NewQueryItemsPager_modelHook() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		// TODO: Update the following line with your application specific error handling logic
 		log.Fatalf("ERROR: %s", err)
 	}
-	client, err := azcosmos.NewClient("https://myaccount.documents.azure.com", cred, &azcosmos.ClientOptions{
-		Serializer: numberPreservingSerializer{},
-	})
+	client, err := azcosmos.NewClient(context.TODO(), "https://myaccount.documents.azure.com", cred, nil)
 	if err != nil {
 		// TODO: Update the following line with your application specific error handling logic
 		log.Fatalf("ERROR: %s", err)
 	}
-	container, err := client.NewContainer("myDatabase", "myContainer")
+	container, err := client.NewContainer(context.TODO(), "myDatabase", "myContainer")
 	if err != nil {
 		// TODO: Update the following line with your application specific error handling logic
 		log.Fatalf("ERROR: %s", err)
 	}
-	pager := container.NewQueryItemsPager[map[string]any](
+	pager := container.NewQueryItemsPager[numberPreservingModel](
 		azcosmos.NewQuery("SELECT c.quantity FROM c"),
 		azcosmos.NewFeedScopeForPartitionKey(azcosmos.NewPartitionKeyString("catalog")), nil)
 	for pager.More() {

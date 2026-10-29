@@ -10,7 +10,7 @@
 // and response model, partition keys, client construction, and creating, reading, replacing,
 // upserting, deleting, and patching single items, plus retained item-query paging.
 //
-// Go 1.27 or later is required. Item writes accept models using encoding/json or ClientOptions.Serializer.
+// Go 1.27 or later is required. Item writes accept models using encoding/json and model JSON hooks.
 // ItemResponse.IntoModel decodes response bodies; generic query pagers decode each result as T.
 // Use json.RawMessage for pre-encoded write payloads instead of plain []byte.
 //
@@ -30,6 +30,8 @@
 // Client.Close closes only that client; Runtime.Close releases ownership without closing attached clients.
 // Context cancellation stops waiting, not submitted native work; writes may still commit.
 // Close waits for native work to finish, including operations whose callers stopped waiting.
+// Both account constructors and both NewContainer factories take context first and resolve
+// account or container metadata before returning success. NewDatabase remains local.
 //
 // # Advanced availability
 //
@@ -40,6 +42,6 @@
 // # Response encoding
 //
 // Binary wire encoding is enabled by default; native code converts responses to text JSON.
-// Set BinaryEncodingOptions.Enabled to false to disable binary wire encoding.
-// ItemResponse.Value and QueryItemsResponse.Items contain text JSON, not decoded application models.
+// Set BinaryEncodingOptions.Disabled to true to disable binary wire encoding.
+// ItemResponse.Value contains text JSON; QueryItemsResponse.Items contains decoded models.
 package azcosmos

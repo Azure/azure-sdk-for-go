@@ -210,7 +210,7 @@ func TestNativeAccountRejectsMalformedEndpoint(t *testing.T) {
 }
 
 func TestNativeTokenCredentialAccepted(t *testing.T) {
-	client, err := NewClient("https://myaccount.documents.azure.com", fakeTokenCredential{}, nil)
+	client, err := newTestTokenClient("https://myaccount.documents.azure.com", fakeTokenCredential{}, nil)
 	require.NoError(t, err)
 	require.NoError(t, client.Close())
 }
@@ -266,11 +266,11 @@ func TestCloseWaitsForTokenAcquisition(t *testing.T) {
 	credential := &gatedFailingTokenCredential{
 		started: make(chan struct{}), release: make(chan struct{}),
 	}
-	client, err := NewClient("https://myaccount.documents.azure.com", credential, nil)
+	client, err := newTestTokenClient("https://myaccount.documents.azure.com", credential, nil)
 	require.NoError(t, err)
 
 	initialized := make(chan error, 1)
-	go func() { initialized <- client.Initialize(context.Background()) }()
+	go func() { initialized <- client.initialize(context.Background()) }()
 	<-credential.started
 
 	closed := make(chan error, 1)
@@ -304,12 +304,12 @@ func TestNativeCancellationAfterSubmission(t *testing.T) {
 		started: make(chan struct{}),
 		stopped: make(chan struct{}),
 	}
-	client, err := NewClient("https://myaccount.documents.azure.com", credential, nil)
+	client, err := newTestTokenClient("https://myaccount.documents.azure.com", credential, nil)
 	require.NoError(t, err)
 
 	ctx, cancel := context.WithCancel(context.Background())
 	initialized := make(chan error, 1)
-	go func() { initialized <- client.Initialize(ctx) }()
+	go func() { initialized <- client.initialize(ctx) }()
 	<-credential.started
 	cancel()
 
@@ -345,13 +345,13 @@ func TestCloseDrainsNativeWorkAfterCallerCancellation(t *testing.T) {
 	}
 	var releaseOnce sync.Once
 	unblock := func() { releaseOnce.Do(func() { close(credential.release) }) }
-	client, err := NewClient("https://myaccount.documents.azure.com", credential, nil)
+	client, err := newTestTokenClient("https://myaccount.documents.azure.com", credential, nil)
 	require.NoError(t, err)
 	t.Cleanup(func() { unblock(); require.NoError(t, client.Close()) })
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 	result := make(chan error, 1)
-	go func() { result <- client.Initialize(ctx) }()
+	go func() { result <- client.initialize(ctx) }()
 	<-credential.started
 	cancel()
 	select {
@@ -383,7 +383,7 @@ func TestConcurrentCallersShareFailedInitialization(t *testing.T) {
 		started: make(chan struct{}),
 		release: make(chan struct{}),
 	}
-	client, err := NewClient("https://myaccount.documents.azure.com", credential, nil)
+	client, err := newTestTokenClient("https://myaccount.documents.azure.com", credential, nil)
 	require.NoError(t, err)
 	t.Cleanup(func() { require.NoError(t, client.Close()) })
 
@@ -394,11 +394,11 @@ func TestConcurrentCallersShareFailedInitialization(t *testing.T) {
 
 	// Start the leader first and wait until its token request proves native initialization is in
 	// flight before releasing the remaining callers.
-	go func() { results <- client.Initialize(context.Background()) }()
+	go func() { results <- client.initialize(context.Background()) }()
 	<-credential.started
 	for range callers - 1 {
 		go func() {
-			results <- client.Initialize(context.Background())
+			results <- client.initialize(context.Background())
 		}()
 	}
 	for range callers - 1 {
@@ -454,11 +454,11 @@ func TestNativeInitializeCreatesTheDriver(t *testing.T) {
 	cred, err := NewKeyCredential(emulatorKey)
 	require.NoError(t, err)
 
-	client, err := NewClientWithKey(endpoint, cred, nil)
+	client, err := newTestClientWithKey(endpoint, cred, nil)
 	require.NoError(t, err)
 	t.Cleanup(func() { _ = client.Close() })
 
-	require.NoError(t, client.Initialize(t.Context()))
+	require.NoError(t, client.initialize(t.Context()))
 	driver, err := client.driver.ensureDriver(context.Background())
 	require.NoError(t, err)
 	require.NotNil(t, driver)
@@ -475,7 +475,7 @@ func TestNativeConstructionDoesNotContactTheAccount(t *testing.T) {
 	require.NoError(t, err)
 
 	// Port 1 is reserved and never listening, so reaching it would fail rather than hang.
-	client, err := NewClientWithKey("https://127.0.0.1:1", cred, nil)
+	client, err := newTestClientWithKey("https://127.0.0.1:1", cred, nil)
 	require.NoError(t, err)
 	require.NoError(t, client.Close())
 }
@@ -581,12 +581,12 @@ func TestNativeDriverCreationHonorsContext(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 200*time.Millisecond)
 	defer cancel()
 
-	client, err := NewClientWithKey(localBlackholeEndpoint(t), cred, nil)
+	client, err := newTestClientWithKey(localBlackholeEndpoint(t), cred, nil)
 	require.NoError(t, err)
 	t.Cleanup(func() { _ = client.Close() })
 
 	start := time.Now()
-	err = client.Initialize(ctx)
+	err = client.initialize(ctx)
 	elapsed := time.Since(start)
 
 	require.ErrorIs(t, err, context.DeadlineExceeded)
@@ -601,11 +601,10 @@ func TestNativeDriverCreationHonorsContext(t *testing.T) {
 func TestNativeEndToEndTimeoutBoundsLazyInitialization(t *testing.T) {
 	cred, err := NewKeyCredential(emulatorKey)
 	require.NoError(t, err)
-	client, err := NewClientWithKey(localBlackholeEndpoint(t), cred, nil)
+	client, err := newTestClientWithKey(localBlackholeEndpoint(t), cred, nil)
 	require.NoError(t, err)
 	t.Cleanup(func() { _ = client.Close() })
-	container, err := client.NewContainer("db", "items")
-	require.NoError(t, err)
+	container := localTestContainer(client, "db", "items")
 
 	start := time.Now()
 	_, err = container.ReadItem(
@@ -647,13 +646,13 @@ func TestPreCancelledInitializeDoesNotSubmit(t *testing.T) {
 		started: make(chan struct{}),
 		stopped: make(chan struct{}),
 	}
-	client, err := NewClient("https://myaccount.documents.azure.com", credential, nil)
+	client, err := newTestTokenClient("https://myaccount.documents.azure.com", credential, nil)
 	require.NoError(t, err)
 	t.Cleanup(func() { require.NoError(t, client.Close()) })
 
 	ctx, cancel := context.WithCancel(context.Background())
 	cancel()
-	require.ErrorIs(t, client.Initialize(ctx), context.Canceled)
+	require.ErrorIs(t, client.initialize(ctx), context.Canceled)
 
 	select {
 	case <-credential.started:

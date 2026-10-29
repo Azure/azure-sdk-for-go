@@ -20,11 +20,25 @@ func (d *DatabaseClient) ID() string {
 	return d.id
 }
 
-// NewContainer returns a client for a container in the database. It does not contact the service,
-// so it succeeds whether or not the container exists.
-func (d *DatabaseClient) NewContainer(id string) (*ContainerClient, error) {
+// NewContainer resolves existing container metadata through the native cache before returning.
+// Cache misses contact the service; this method does not create a container.
+func (d *DatabaseClient) NewContainer(ctx context.Context, id string) (*ContainerClient, error) {
 	if id == "" {
 		return nil, errors.New("azcosmos: container id must not be empty")
+	}
+	if ctx == nil {
+		return nil, errors.New("azcosmos: context must not be nil")
+	}
+	release, err := d.client.acquire()
+	if err != nil {
+		return nil, err
+	}
+	defer release()
+	if err := ctx.Err(); err != nil {
+		return nil, err
+	}
+	if err := d.client.driver.resolveContainer(ctx, d.id, id); err != nil {
+		return nil, err
 	}
 	return &ContainerClient{id: id, database: d}, nil
 }

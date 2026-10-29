@@ -19,7 +19,7 @@ func TestEmulatorDiagnosticsSnapshotSurvivesClientClose(t *testing.T) {
 	require.NoError(t, err)
 	t.Cleanup(func() { require.NoError(t, runtime.Close()) })
 	observed := make(chan OperationDiagnostic, 2)
-	client, err := NewClientWithKey(endpoint, KeyCredential{accountKey: emulatorKey}, &ClientOptions{
+	client, err := NewClientWithKey(t.Context(), endpoint, KeyCredential{accountKey: emulatorKey}, &ClientOptions{
 		Runtime: runtime,
 		Operation: OperationOptions{
 			ThrottlingRetry: ThrottlingRetryOptions{MaxRetryCount: to(uint32(0))},
@@ -29,7 +29,7 @@ func TestEmulatorDiagnosticsSnapshotSurvivesClientClose(t *testing.T) {
 	})
 	require.NoError(t, err)
 	t.Cleanup(func() { require.NoError(t, client.Close()) })
-	container, err := client.NewContainer(database, containerID)
+	container, err := client.NewContainer(t.Context(), database, containerID)
 	require.NoError(t, err)
 	_, err = container.ReadItem(t.Context(), NewPartitionKeyString("missing"), uniqueItemID(t), nil)
 	var cosmosErr *Error
@@ -54,14 +54,14 @@ func TestEmulatorDiagnosticsHandlerCanCloseClient(t *testing.T) {
 	endpoint, database, containerID := emulatorConfiguration(t)
 	var client *Client
 	var err error
-	client, err = NewClientWithKey(endpoint, KeyCredential{accountKey: emulatorKey}, &ClientOptions{
+	client, err = NewClientWithKey(t.Context(), endpoint, KeyCredential{accountKey: emulatorKey}, &ClientOptions{
 		DiagnosticsHandler: func(_ context.Context, _ OperationDiagnostic) {
 			require.NoError(t, client.Close())
 		},
 	})
 	require.NoError(t, err)
 	t.Cleanup(func() { require.NoError(t, client.Close()) })
-	container, err := client.NewContainer(database, containerID)
+	container, err := client.NewContainer(t.Context(), database, containerID)
 	require.NoError(t, err)
 	_, err = container.ReadItem(t.Context(), NewPartitionKeyString("missing"), uniqueItemID(t), nil)
 	require.Error(t, err)

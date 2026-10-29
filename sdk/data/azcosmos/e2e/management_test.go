@@ -51,7 +51,7 @@ func TestDatabaseContainerManagementAvailableOperations(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, 201, containerResp.StatusCode)
 
-	container, err := database.NewContainer(containerID)
+	container, err := database.NewContainer(t.Context(), containerID)
 	require.NoError(t, err)
 
 	readContainerResp, err := container.Read(ctx, nil)

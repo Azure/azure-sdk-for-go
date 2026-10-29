@@ -27,14 +27,10 @@ import (
 )
 
 func TestQueryContractProxySupportsHTTP2(t *testing.T) {
-	const account = `{"readableLocations":[],"writableLocations":[]}`
-	backend := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
-		w.Header().Set("Content-Type", "application/json")
-		_, _ = io.WriteString(w, account)
-	}))
-	t.Cleanup(backend.Close)
+	backend := newMetadataServer(t, nil)
 	t.Setenv("EMULATOR", "true")
 	t.Setenv("AZCOSMOS_ENDPOINT", backend.URL)
+	t.Setenv("AZCOSMOS_CONTAINER", "items")
 	container := queryContractContainer(t, nil, nil)
 
 	// Match the native driver's cleartext HTTP/2 account capability probe, without fallback.
@@ -49,7 +45,11 @@ func TestQueryContractProxySupportsHTTP2(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, http.StatusOK, response.StatusCode)
 	require.Equal(t, 2, response.ProtoMajor)
-	require.JSONEq(t, account, string(body))
+	var account struct {
+		ID string `json:"id"`
+	}
+	require.NoError(t, json.Unmarshal(body, &account))
+	require.Equal(t, "synthetic", account.ID)
 }
 
 func TestEmulatorCursorCheckpointCancellation(t *testing.T) {
@@ -224,10 +224,10 @@ func queryContractContainer(t *testing.T, intercept func(http.ResponseWriter, *h
 	t.Cleanup(func() { require.NoError(t, runtime.Close()) })
 	credential, err := NewKeyCredential(emulatorKey)
 	require.NoError(t, err)
-	client, err := NewClientWithKey(server.URL, credential, &ClientOptions{Runtime: runtime})
+	client, err := NewClientWithKey(t.Context(), server.URL, credential, &ClientOptions{Runtime: runtime})
 	require.NoError(t, err)
 	t.Cleanup(func() { require.NoError(t, client.Close()) })
-	container, err := client.NewContainer(databaseID, containerID)
+	container, err := client.NewContainer(t.Context(), databaseID, containerID)
 	require.NoError(t, err)
 	return container
 }
@@ -242,7 +242,7 @@ func TestEmulatorQueryContractRuntimeIsolation(t *testing.T) {
 			current = container.database.client.runtime
 			require.NotNil(t, current)
 			require.NotSame(t, previous, current)
-			require.NoError(t, container.database.client.Initialize(t.Context()))
+			require.NotNil(t, container.database.client.driver.driver)
 		})
 		require.NotNil(t, current)
 		require.True(t, current.closed)
@@ -280,10 +280,10 @@ func TestEmulatorCursorTimeoutDoesNotExpireBetweenPages(t *testing.T) {
 	shared, err := NewRuntime(&RuntimeOptions{Operation: OperationOptions{EndToEndTimeout: to(time.Second)}})
 	require.NoError(t, err)
 	t.Cleanup(func() { require.NoError(t, shared.Close()) })
-	client, err := NewClientWithKey(endpoint, KeyCredential{accountKey: emulatorKey}, &ClientOptions{Runtime: shared})
+	client, err := NewClientWithKey(t.Context(), endpoint, KeyCredential{accountKey: emulatorKey}, &ClientOptions{Runtime: shared})
 	require.NoError(t, err)
 	t.Cleanup(func() { require.NoError(t, client.Close()) })
-	container, err := client.NewContainer(database, containerID)
+	container, err := client.NewContainer(t.Context(), database, containerID)
 	require.NoError(t, err)
 	key, query, _ := seedQueryContractItems(t, container)
 	pager := container.NewQueryItemsPager[json.RawMessage](query, NewFeedScopeForPartitionKey(key), &QueryOptions{Feed: FeedOptions{PageSizeHint: 1}})

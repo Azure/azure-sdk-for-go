@@ -184,7 +184,7 @@ func TestEmulatorDiagnosticsVerbosityOption(t *testing.T) {
 
 func TestEmulatorDiagnosticsSurviveClientClose(t *testing.T) {
 	client, databaseID, containerID := emulatorClient(t)
-	container, err := client.NewContainer(databaseID, containerID)
+	container, err := client.NewContainer(t.Context(), databaseID, containerID)
 	require.NoError(t, err)
 	id := uniqueItemID(t)
 	pk := NewPartitionKeyString(id)

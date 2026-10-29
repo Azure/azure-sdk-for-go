@@ -8,12 +8,11 @@ import (
 	"errors"
 )
 
-// NewTransactionalBatch constructs a batch using this client's configured serializer.
+// NewTransactionalBatch constructs a batch using encoding/json and model JSON hooks.
 // Items are serialized and copied when appended; execution never serializes them again.
-// The batch retains the serializer even if executed by a different client.
 // Partition key requirements are the same as [NewTransactionalBatch].
 func (c *ContainerClient) NewTransactionalBatch(partitionKey PartitionKey) TransactionalBatch {
-	return TransactionalBatch{partitionKey: partitionKey, serializer: c.database.client.options.Serializer}
+	return NewTransactionalBatch(partitionKey)
 }
 
 // TransactionalBatchOptions configures [ContainerClient.ExecuteTransactionalBatch].

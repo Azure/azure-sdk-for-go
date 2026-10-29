@@ -27,10 +27,10 @@ import (
 func runtimeEmulatorContainer(t *testing.T, runtime *Runtime, defaults OperationOptions) *ContainerClient {
 	t.Helper()
 	endpoint, database, container := emulatorConfiguration(t)
-	client, err := NewClientWithKey(endpoint, KeyCredential{accountKey: emulatorKey}, &ClientOptions{Runtime: runtime, Operation: defaults})
+	client, err := NewClientWithKey(t.Context(), endpoint, KeyCredential{accountKey: emulatorKey}, &ClientOptions{Runtime: runtime, Operation: defaults})
 	require.NoError(t, err)
 	t.Cleanup(func() { require.NoError(t, client.Close()) })
-	result, err := client.NewContainer(database, container)
+	result, err := client.NewContainer(t.Context(), database, container)
 	require.NoError(t, err)
 	return result
 }
@@ -79,14 +79,14 @@ func (c *shortLivedIdentityCredential) GetToken(context.Context, policy.TokenReq
 func TestEmulatorBinaryClientDefaultAndRequestOverride(t *testing.T) {
 	endpoint, database, containerID := emulatorConfiguration(t)
 	shared, err := NewRuntime(&RuntimeOptions{Operation: OperationOptions{
-		BinaryEncoding: &BinaryEncodingOptions{Enabled: to(false)},
+		BinaryEncoding: &BinaryEncodingOptions{Disabled: true},
 	}})
 	require.NoError(t, err)
 	t.Cleanup(func() { require.NoError(t, shared.Close()) })
-	client, err := NewClientWithKey(endpoint, KeyCredential{accountKey: emulatorKey}, &ClientOptions{Runtime: shared})
+	client, err := NewClientWithKey(t.Context(), endpoint, KeyCredential{accountKey: emulatorKey}, &ClientOptions{Runtime: shared})
 	require.NoError(t, err)
 	t.Cleanup(func() { require.NoError(t, client.Close()) })
-	container, err := client.NewContainer(database, containerID)
+	container, err := client.NewContainer(t.Context(), database, containerID)
 	require.NoError(t, err)
 	id := uniqueItemID(t)
 	pk := NewPartitionKeyString(id)
@@ -97,17 +97,17 @@ func TestEmulatorBinaryClientDefaultAndRequestOverride(t *testing.T) {
 	require.NoError(t, err)
 	require.True(t, json.Valid(response.Value), "default binary responses are converted to text")
 	for _, encoding := range []*BinaryEncodingOptions{
-		{}, {Enabled: to(false)},
+		{}, {Disabled: true},
 	} {
 		response, err = container.ReadItem(t.Context(), pk, id, &ReadItemOptions{Operation: OperationOptions{BinaryEncoding: encoding}})
 		require.NoError(t, err)
 		require.True(t, json.Valid(response.Value))
 	}
-	textClient, err := NewClientWithKey(endpoint, KeyCredential{accountKey: emulatorKey},
-		&ClientOptions{Runtime: shared, BinaryEncoding: &BinaryEncodingOptions{Enabled: to(false)}})
+	textClient, err := NewClientWithKey(t.Context(), endpoint, KeyCredential{accountKey: emulatorKey},
+		&ClientOptions{Runtime: shared, Operation: OperationOptions{BinaryEncoding: &BinaryEncodingOptions{Disabled: true}}})
 	require.NoError(t, err)
 	t.Cleanup(func() { require.NoError(t, textClient.Close()) })
-	textContainer, err := textClient.NewContainer(database, containerID)
+	textContainer, err := textClient.NewContainer(t.Context(), database, containerID)
 	require.NoError(t, err)
 	response, err = textContainer.ReadItem(t.Context(), pk, id, nil)
 	require.NoError(t, err)
@@ -124,16 +124,16 @@ func TestEmulatorSameAccountClientsShareCachedCredentials(t *testing.T) {
 	t.Cleanup(func() { require.NoError(t, shared.Close()) })
 	firstCredential := &shortLivedIdentityCredential{identity: "emulator-client-a"}
 	secondCredential := &shortLivedIdentityCredential{identity: "emulator-client-b"}
-	first, err := NewClient(endpoint, firstCredential, &ClientOptions{Runtime: shared})
+	first, err := NewClient(t.Context(), endpoint, firstCredential, &ClientOptions{Runtime: shared})
 	require.NoError(t, err)
 	t.Cleanup(func() { require.NoError(t, first.Close()) })
-	second, err := NewClient(endpoint, secondCredential, &ClientOptions{Runtime: shared})
+	second, err := NewClient(t.Context(), endpoint, secondCredential, &ClientOptions{Runtime: shared})
 	require.NoError(t, err)
 	t.Cleanup(func() { require.NoError(t, second.Close()) })
-	require.NoError(t, first.Initialize(t.Context()))
-	require.NoError(t, second.Initialize(t.Context()))
+	require.NoError(t, first.initialize(t.Context()))
+	require.NoError(t, second.initialize(t.Context()))
 	readMissing := func(client *Client) {
-		container, err := client.NewContainer(database, containerID)
+		container, err := client.NewContainer(t.Context(), database, containerID)
 		require.NoError(t, err)
 		_, err = container.ReadItem(t.Context(), NewPartitionKeyString("missing"), uniqueItemID(t), nil)
 		var serviceErr *Error
@@ -166,10 +166,10 @@ func TestEmulatorDefaultRuntimeSharesSameAccountCredentials(t *testing.T) {
 
 	firstCredential := &shortLivedIdentityCredential{identity: "default-runtime-client-a"}
 	secondCredential := &shortLivedIdentityCredential{identity: "default-runtime-client-b"}
-	first, err := NewClient(server.URL, firstCredential, nil)
+	first, err := NewClient(t.Context(), server.URL, firstCredential, nil)
 	require.NoError(t, err)
 	t.Cleanup(func() { require.NoError(t, first.Close()) })
-	second, err := NewClient(server.URL, secondCredential, nil)
+	second, err := NewClient(t.Context(), server.URL, secondCredential, nil)
 	require.NoError(t, err)
 	t.Cleanup(func() { require.NoError(t, second.Close()) })
 	require.Same(t, first.runtime, second.runtime)
@@ -179,10 +179,10 @@ func TestEmulatorDefaultRuntimeSharesSameAccountCredentials(t *testing.T) {
 
 	ctx, cancel := context.WithTimeout(t.Context(), 15*time.Second)
 	defer cancel()
-	require.NoError(t, first.Initialize(ctx))
-	require.NoError(t, second.Initialize(ctx))
+	require.NoError(t, first.initialize(ctx))
+	require.NoError(t, second.initialize(ctx))
 	readMissing := func(client *Client) {
-		container, err := client.NewContainer(database, containerID)
+		container, err := client.NewContainer(t.Context(), database, containerID)
 		require.NoError(t, err)
 		_, err = container.ReadItem(ctx, NewPartitionKeyString("missing"), uniqueItemID(t), nil)
 		var serviceErr *Error

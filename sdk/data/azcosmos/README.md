@@ -74,18 +74,18 @@ or execution error is not proof that writes did not reach the service.
 
 ### Client initialization
 
-`NewClient` and `NewClientWithKey` perform no network I/O. Call `Client.Initialize` with a context
-to initialize eagerly: it probes the account's HTTP capabilities, fetches and caches account
-properties, seeds the routing state, and creates the account transport. An unreachable or
-unauthorized account is then reported before the first operation, and the context bounds the work.
-
-Calling `Initialize` is optional. The first operation performs the same initialization lazily when
-it has not already run. The diagnostic build has no driver to initialize and reports that through
-`Initialize`.
+`NewClient(ctx, ...)` and `NewClientWithKey(ctx, ...)` initialize eagerly: they probe the account's
+HTTP capabilities, fetch account properties, seed routing state, and create the account transport.
+Failure returns a nil client. The context bounds the wait; cancelled native work drains in the
+background before its handles and runtime attachment are released. Builds without native support
+return a driver-unavailable error rather than a client.
 
 Container metadata is not fetched during client construction because the client does not know which
-containers the application will use. Each operation resolves its container through the native
-driver, which owns metadata caching and stale-resource refresh.
+containers the application will use. Both `Client.NewContainer(ctx, ...)` and
+`DatabaseClient.NewContainer(ctx, ...)` resolve metadata and topology through the native cache
+before returning. Cache misses contact the service and can consume RUs; neither factory creates
+a resource. Temporary native references are released, and operations continue resolving through
+the driver so container recreation is not pinned to a stale reference. `NewDatabase` remains local.
 
 One limit applies to the driver-backed build today: v1's WebAssembly support does not carry over.
 
@@ -133,10 +133,11 @@ preferred order. For example, this client uses a 500 ms threshold:
 
 ```go
 func newHedgedClient(
+	ctx context.Context,
 	endpoint string,
 	credential azcore.TokenCredential,
 ) (*azcosmos.Client, error) {
-	return azcosmos.NewClient(endpoint, credential, &azcosmos.ClientOptions{
+	return azcosmos.NewClient(ctx, endpoint, credential, &azcosmos.ClientOptions{
 		Routing: azcosmos.PreferredRegions(
 			azcosmos.RegionWestUS,
 			azcosmos.RegionEastUS,
@@ -148,7 +149,7 @@ func newHedgedClient(
 }
 ```
 
-This example requires imports for `time`,
+This example requires imports for `context`, `time`,
 `github.com/Azure/azure-sdk-for-go/sdk/azcore`, and
 `github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos/v2`.
 
@@ -156,7 +157,7 @@ This example requires imports for `time`,
 
 Go currently supports environment-driven PPCB configuration. It does not expose the Rust driver's
 `PartitionFailoverOptions` programmatically. The native driver captures these values when it is
-constructed by `Client.Initialize` or the first operation. Changing the process environment
+constructed by either account constructor. Changing the process environment
 afterward does not reconfigure an existing driver or client.
 
 The pinned native driver v0.2.0 uses these defaults:
@@ -234,23 +235,14 @@ Model conversion is local and leaves response metadata and bytes intact, includi
 `Client.Close`. Delete and body-disabled writes have no model body; calling `IntoModel`
 on an absent body returns an error. Check for a body before decoding an optional write response.
 
-By default, serialization uses `encoding/json`, honoring struct tags and
-`json.Marshaler` / `json.Unmarshaler`. For application-wide conventions, set
-`ClientOptions.Serializer` to an implementation of `Marshal(any) ([]byte, error)` and
-`Unmarshal([]byte, any) error`. Nil selects the default. The serializer boundary uses
-UTF-8 JSON, independently of native transport representation.
-The SDK retains the serializer without cloning or closing it; implementations must support
-concurrent calls and remain valid for responses and pagers that retain them. They must not
-reuse returned write buffers until the operation returns, or mutate/retain borrowed decode
-buffers without copying. Callbacks are synchronous and cannot be interrupted by context
-cancellation. Query callbacks run without holding pager or client lifetime locks.
+Serialization uses `encoding/json`, honoring struct tags and model-level
+`json.Marshaler` / `json.Unmarshaler` hooks. Clients and responses retain no serializer state.
+Model hooks are synchronous and cannot be interrupted by context cancellation.
+Query hooks run without holding pager or client lifetime locks.
 They may call `More`, pager `Close`, or `Client.Close`; reentrant fetches and checkpoints
-during conversion return an error instead of advancing the query. There is no per-operation override.
-
-Custom serializers apply only to item models and query result values, not query parameters,
-PATCH values, partition keys, diagnostics, or internal metadata. See the compiling
+during conversion return an error instead of advancing the query. See the compiling
 [examples](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos/v2#pkg-examples)
-for model-based operations and a serializer that preserves numbers in untyped projections.
+for model-based operations and a model hook that preserves numbers in untyped projections.
 
 Conversion failures return `*Error` with `CodeSerializationFailed` and unwrap their cause.
 Response decoding errors retain available RU charge, ETag, session token, status, and
@@ -264,10 +256,25 @@ There are no separate `Typed` or `Raw` operation variants. Pass models directly 
 calling `json.Marshal` before each write. For intentionally pre-encoded JSON, pass
 `json.RawMessage(payload)`; plain `[]byte` now follows encoding/json's base64 encoding
 behavior rather than acting as a passthrough and is rejected locally as a non-object item.
-Item writes require the configured serializer to produce a valid JSON object; null, scalar,
+Item writes require `encoding/json` to produce a valid JSON object; null, scalar,
 array, and malformed output returns `CodeSerializationFailed` before submission.
-`json.RawMessage` does not bypass a custom serializer. With the default serializer, select
+Select
 `NewQueryItemsPager[json.RawMessage]` to obtain encoded query values.
+
+Pass context first to both account constructors and both container factories, and remove calls
+to `Client.Initialize`. Account and container factory errors now occur during construction;
+`NewDatabase` remains local. `Client.Endpoint`, `DatabaseClient.ID`, and `ContainerClient.ID` remain.
+Account construction uses the supplied context to bound the startup wait, not client/runtime
+`EndToEndTimeout` defaults. Native transport and retry limits still apply.
+Replace serializer injection with model JSON hooks or `json.RawMessage`.
+
+Move `ClientOptions.BinaryEncoding` to `ClientOptions.Operation.BinaryEncoding`, replacing
+`Enabled: &value` with `Disabled: !value`. A nil outer pointer inherits; a non-nil zero group
+explicitly enables binary encoding. Precedence is request, client, runtime, environment, then
+enabled. The Go binding reads `AZURE_COSMOS_BINARY_ENCODING_ENABLED` at runtime creation because
+native 0.2.0 does not read it: `1`, `true`, `yes`, and `on` (case-insensitive, trimmed) enable it;
+other set values disable it. The implicit runtime captures this once on first use. This does not
+add binary support to PATCH, delete, or transactional batches. Responses remain text JSON.
 
 ### Patching items
 
@@ -294,9 +301,8 @@ Build a `TransactionalBatch` with `container.NewTransactionalBatch(partitionKey)
 `ContainerClient.ExecuteTransactionalBatch(ctx, batch, options)`. A nil options pointer selects
 defaults. Transactional PATCH is not exposed.
 
-Batch writes accept models or `json.RawMessage`, just like point writes. The container-scoped
-constructor captures the client's serializer; the package-level `NewTransactionalBatch` uses
-the default `encoding/json` serializer. Plain `[]byte` with the default serializer is rejected
+Batch writes accept models or `json.RawMessage`, just like point writes. Both the container-scoped
+and package-level constructors use `encoding/json` and model JSON hooks. Plain `[]byte` is rejected
 as a non-object item, not treated as pre-encoded JSON.
 
 The key must be complete: include every component of a hierarchical partition key. Unlike query
@@ -308,9 +314,9 @@ establish that any writes were admitted.
 The driver/service checks application-defined item IDs and partition key fields; Go does not
 parse these fields or implement a separate transaction transport.
 
-Append methods serialize and copy item JSON and conditional options. The batch retains its
-construction-time serializer even when executed by a different client. Execution never invokes
-the application serializer again, and the SDK encodes the batch envelope independently.
+Append methods serialize and copy item JSON and conditional options. The batch retains no
+serializer state. Execution never invokes model hooks again, and the SDK encodes the batch
+envelope independently.
 Extending a copied builder does not modify
 the original. Any append error makes that builder unusable, preventing an ignored error from
 silently submitting only part of a transaction. A batch must contain 1-100 operations; the encoded
@@ -382,7 +388,7 @@ differs from `runtime.Pager[T]` and requires Go SDK API review before stabilizat
 `QueryOptions.Feed.PageSizeHint` is a positive per-partition page-size hint; zero leaves
 sizing to the driver, and negative hints are rejected. Results are decoded values in
 `QueryItemsResponse[T].Items`. Select a document or projection type, or a scalar for
-`SELECT VALUE`. Pointer types preserve JSON null as nil with the default serializer;
+`SELECT VALUE`. Pointer types preserve JSON null as nil with encoding/json;
 other null conversions follow encoding/json semantics. An empty page does not
 necessarily end the query: use `More`, not the number of items.
 
@@ -401,8 +407,8 @@ A model-decoding failure stops iteration and delivers no partial results, but re
 Where supported, call `ContinuationToken` after that failure, then `Close`, and resume with a new
 pager to skip the entire failed page, including any valid items in it. This does not retry decoding.
 To replay the failed page instead, use a checkpoint saved before the failure and a compatible
-model/serializer (or `json.RawMessage` with the default serializer). Reusing the same model and
-serializer will repeat a deterministic decoding failure. Without a usable checkpoint, restart
+model (or `json.RawMessage`). Reusing the same model and JSON hooks will repeat a deterministic
+decoding failure. Without a usable checkpoint, restart
 the query. An unsupported checkpoint does not close the cursor; callers must still call `Close`.
 
 Pager construction performs no network I/O and snapshots its inputs. Each pager's first fetch

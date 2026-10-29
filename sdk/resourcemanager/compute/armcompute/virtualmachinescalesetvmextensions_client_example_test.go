@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v8"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v9"
 	"log"
 )
 
@@ -86,6 +86,57 @@ func ExampleVirtualMachineScaleSetVMExtensionsClient_BeginDelete() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetVMExtensionsClientDeleteResponse{
+	// }
+}
+
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVMExtension_Update.json
+func ExampleVirtualMachineScaleSetVMExtensionsClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVirtualMachineScaleSetVMExtensionsClient().BeginUpdate(ctx, "myResourceGroup", "myvmScaleSet", "0", "myVMExtension", armcompute.VirtualMachineScaleSetVMExtensionUpdate{
+		Properties: &armcompute.VirtualMachineExtensionUpdateProperties{
+			AutoUpgradeMinorVersion: to.Ptr(true),
+			Publisher:               to.Ptr("extPublisher"),
+			Type:                    to.Ptr("extType"),
+			TypeHandlerVersion:      to.Ptr("1.2"),
+			Settings: map[string]any{
+				"UserName": "xyz@microsoft.com",
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcompute.VirtualMachineScaleSetVMExtensionsClientUpdateResponse{
+	// 	VirtualMachineScaleSetVMExtension: armcompute.VirtualMachineScaleSetVMExtension{
+	// 		Name: to.Ptr("myVMExtension"),
+	// 		Type: to.Ptr("Microsoft.Compute/virtualMachineScaleSets/virtualMachines/extensions"),
+	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachineScaleSets/myvmScaleSet/virtualMachines/0/extensions/myVMExtension"),
+	// 		Properties: &armcompute.VirtualMachineExtensionProperties{
+	// 			AutoUpgradeMinorVersion: to.Ptr(true),
+	// 			ProvisioningState: to.Ptr("Creating"),
+	// 			Publisher: to.Ptr("extPublisher"),
+	// 			Type: to.Ptr("extType"),
+	// 			TypeHandlerVersion: to.Ptr("1.2"),
+	// 			Settings: map[string]any{
+	// 				"UserName": "xyz@microsoft.com",
+	// 			},
+	// 		},
+	// 	},
 	// }
 }
 
@@ -176,57 +227,6 @@ func ExampleVirtualMachineScaleSetVMExtensionsClient_List() {
 	// 				Name: to.Ptr("myVMExtension1"),
 	// 				Type: to.Ptr("Microsoft.Compute/virtualMachineScaleSets/virtualMachines/extensions"),
 	// 				ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachineScaleSets/myvmScaleSet/virtualMachines/0/extensions/myVMExtension1"),
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVMExtension_Update.json
-func ExampleVirtualMachineScaleSetVMExtensionsClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewVirtualMachineScaleSetVMExtensionsClient().BeginUpdate(ctx, "myResourceGroup", "myvmScaleSet", "0", "myVMExtension", armcompute.VirtualMachineScaleSetVMExtensionUpdate{
-		Properties: &armcompute.VirtualMachineExtensionUpdateProperties{
-			AutoUpgradeMinorVersion: to.Ptr(true),
-			Publisher:               to.Ptr("extPublisher"),
-			Type:                    to.Ptr("extType"),
-			TypeHandlerVersion:      to.Ptr("1.2"),
-			Settings: map[string]any{
-				"UserName": "xyz@microsoft.com",
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcompute.VirtualMachineScaleSetVMExtensionsClientUpdateResponse{
-	// 	VirtualMachineScaleSetVMExtension: armcompute.VirtualMachineScaleSetVMExtension{
-	// 		Name: to.Ptr("myVMExtension"),
-	// 		Type: to.Ptr("Microsoft.Compute/virtualMachineScaleSets/virtualMachines/extensions"),
-	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachineScaleSets/myvmScaleSet/virtualMachines/0/extensions/myVMExtension"),
-	// 		Properties: &armcompute.VirtualMachineExtensionProperties{
-	// 			AutoUpgradeMinorVersion: to.Ptr(true),
-	// 			ProvisioningState: to.Ptr("Creating"),
-	// 			Publisher: to.Ptr("extPublisher"),
-	// 			Type: to.Ptr("extType"),
-	// 			TypeHandlerVersion: to.Ptr("1.2"),
-	// 			Settings: map[string]any{
-	// 				"UserName": "xyz@microsoft.com",
 	// 			},
 	// 		},
 	// 	},

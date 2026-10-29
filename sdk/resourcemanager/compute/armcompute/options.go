@@ -71,15 +71,16 @@ type AvailabilitySetsClientValidateMigrationToVirtualMachineScaleSetOptions stru
 	// placeholder for future optional parameters
 }
 
+// CapacityReservationGroupsClientBeginDeleteOptions contains the optional parameters for the CapacityReservationGroupsClient.BeginDelete
+// method.
+type CapacityReservationGroupsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
 // CapacityReservationGroupsClientCreateOrUpdateOptions contains the optional parameters for the CapacityReservationGroupsClient.CreateOrUpdate
 // method.
 type CapacityReservationGroupsClientCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// CapacityReservationGroupsClientDeleteOptions contains the optional parameters for the CapacityReservationGroupsClient.Delete
-// method.
-type CapacityReservationGroupsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -565,6 +566,11 @@ type GalleryImageVersionsClientBeginCreateOrUpdateOptions struct {
 // GalleryImageVersionsClientBeginDeleteOptions contains the optional parameters for the GalleryImageVersionsClient.BeginDelete
 // method.
 type GalleryImageVersionsClientBeginDeleteOptions struct {
+	// Specifies whether to bypass the gallery's soft-delete policy and permanently delete the gallery image version. If true,
+	// the version is not retained in the recycle bin and cannot be restored. If false or omitted, the version is soft-deleted
+	// when the gallery's soft-delete policy is enabled and permanently deleted when the policy is disabled.
+	BypassSoftDelete *bool
+
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-08-01/ReservationDetailsByBillingAccountId.json
+// Generated from example definition: 2026-06-01/ReservationDetailsByBillingAccountId.json
 func ExampleReservationsDetailsClient_NewListPager_reservationDetailsByBillingAccountId() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -61,7 +61,7 @@ func ExampleReservationsDetailsClient_NewListPager_reservationDetailsByBillingAc
 	}
 }
 
-// Generated from example definition: 2024-08-01/ReservationDetailsByBillingProfileId.json
+// Generated from example definition: 2026-06-01/ReservationDetailsByBillingProfileId.json
 func ExampleReservationsDetailsClient_NewListPager_reservationDetailsByBillingProfileId() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -111,7 +111,7 @@ func ExampleReservationsDetailsClient_NewListPager_reservationDetailsByBillingPr
 	}
 }
 
-// Generated from example definition: 2024-08-01/ReservationDetailsByBillingProfileIdReservationId.json
+// Generated from example definition: 2026-06-01/ReservationDetailsByBillingProfileIdReservationId.json
 func ExampleReservationsDetailsClient_NewListPager_reservationDetailsByBillingProfileIdReservationId() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -163,7 +163,7 @@ func ExampleReservationsDetailsClient_NewListPager_reservationDetailsByBillingPr
 	}
 }
 
-// Generated from example definition: 2024-08-01/ReservationDetails.json
+// Generated from example definition: 2026-06-01/ReservationDetails.json
 func ExampleReservationsDetailsClient_NewListByReservationOrderPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -215,7 +215,7 @@ func ExampleReservationsDetailsClient_NewListByReservationOrderPager() {
 	}
 }
 
-// Generated from example definition: 2024-08-01/ReservationDetailsWithReservationId.json
+// Generated from example definition: 2026-06-01/ReservationDetailsWithReservationId.json
 func ExampleReservationsDetailsClient_NewListByReservationOrderAndReservationPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

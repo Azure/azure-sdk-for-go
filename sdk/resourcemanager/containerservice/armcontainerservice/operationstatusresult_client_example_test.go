@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-06-02-preview/OperationStatusResultGet.json
+// Generated from example definition: 2026-08-02-preview/OperationStatusResultGet.json
 func ExampleOperationStatusResultClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -43,7 +43,7 @@ func ExampleOperationStatusResultClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-06-02-preview/OperationStatusResultGetByAgentPool.json
+// Generated from example definition: 2026-08-02-preview/OperationStatusResultGetByAgentPool.json
 func ExampleOperationStatusResultClient_GetByAgentPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -74,60 +74,7 @@ func ExampleOperationStatusResultClient_GetByAgentPool() {
 	// }
 }
 
-// Generated from example definition: 2026-06-02-preview/OperationStatusResultList.json
-func ExampleOperationStatusResultClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcontainerservice.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewOperationStatusResultClient().NewListPager("rg1", "clustername1", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcontainerservice.OperationStatusResultClientListResponse{
-		// 	OperationStatusResultList: armcontainerservice.OperationStatusResultList{
-		// 		Value: []*armcontainerservice.OperationStatusResult{
-		// 			{
-		// 				Name: to.Ptr("d11edb09-6e27-429f-9fe5-17baf773bc4a"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/operations/d11edb09-6e27-429f-9fe5-17baf773bc4a"),
-		// 				PercentComplete: to.Ptr[float64](40),
-		// 				StartTime: to.Ptr(time.Date(2023, time.July, 26, 12, 14, 26, 317942800, time.UTC)),
-		// 				Status: to.Ptr("InProgress"),
-		// 				OperationType: to.Ptr("PutManagedCluster"),
-		// 				SubOperationType: to.Ptr("Upgrading"),
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("d11edb09-6e27-429f-9fe5-17baf773bc4b"),
-		// 				EndTime: to.Ptr(time.Date(2023, time.July, 26, 12, 14, 50, 317942800, time.UTC)),
-		// 				Error: &armcontainerservice.ErrorDetail{
-		// 					Code: to.Ptr("ReconcileAgentPoolIdentityError"),
-		// 					Message: to.Ptr("Reconcile agent pool nodepool1 identity failed"),
-		// 				},
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/operations/d11edb09-6e27-429f-9fe5-17baf773bc4b"),
-		// 				StartTime: to.Ptr(time.Date(2023, time.July, 26, 12, 14, 26, 317942800, time.UTC)),
-		// 				Status: to.Ptr("Failed"),
-		// 				OperationType: to.Ptr("PutManagedCluster"),
-		// 				SubOperationType: to.Ptr("Updating"),
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-06-02-preview/OperationStatusResultListByAgentPool.json
+// Generated from example definition: 2026-08-02-preview/OperationStatusResultListByAgentPool.json
 func ExampleOperationStatusResultClient_NewListByAgentPoolPager_listOperationsOnAgentPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -199,7 +146,7 @@ func ExampleOperationStatusResultClient_NewListByAgentPoolPager_listOperationsOn
 	}
 }
 
-// Generated from example definition: 2026-06-02-preview/OperationStatusResultListByAgentPool_Active.json
+// Generated from example definition: 2026-08-02-preview/OperationStatusResultListByAgentPool_Active.json
 func ExampleOperationStatusResultClient_NewListByAgentPoolPager_listActiveOperationsOnAgentPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -242,6 +189,59 @@ func ExampleOperationStatusResultClient_NewListByAgentPoolPager_listActiveOperat
 		// 				StartTime: to.Ptr(time.Date(2026, time.May, 6, 10, 0, 0, 0, time.UTC)),
 		// 				OperationType: to.Ptr("PutAgentPool"),
 		// 				SubOperationType: to.Ptr("Upgrading"),
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-08-02-preview/OperationStatusResultList.json
+func ExampleOperationStatusResultClient_NewListPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcontainerservice.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewOperationStatusResultClient().NewListPager("rg1", "clustername1", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armcontainerservice.OperationStatusResultClientListResponse{
+		// 	OperationStatusResultList: armcontainerservice.OperationStatusResultList{
+		// 		Value: []*armcontainerservice.OperationStatusResult{
+		// 			{
+		// 				Name: to.Ptr("d11edb09-6e27-429f-9fe5-17baf773bc4a"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/operations/d11edb09-6e27-429f-9fe5-17baf773bc4a"),
+		// 				PercentComplete: to.Ptr[float64](40),
+		// 				StartTime: to.Ptr(time.Date(2023, time.July, 26, 12, 14, 26, 317942800, time.UTC)),
+		// 				Status: to.Ptr("InProgress"),
+		// 				OperationType: to.Ptr("PutManagedCluster"),
+		// 				SubOperationType: to.Ptr("Upgrading"),
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("d11edb09-6e27-429f-9fe5-17baf773bc4b"),
+		// 				EndTime: to.Ptr(time.Date(2023, time.July, 26, 12, 14, 50, 317942800, time.UTC)),
+		// 				Error: &armcontainerservice.ErrorDetail{
+		// 					Code: to.Ptr("ReconcileAgentPoolIdentityError"),
+		// 					Message: to.Ptr("Reconcile agent pool nodepool1 identity failed"),
+		// 				},
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/operations/d11edb09-6e27-429f-9fe5-17baf773bc4b"),
+		// 				StartTime: to.Ptr(time.Date(2023, time.July, 26, 12, 14, 26, 317942800, time.UTC)),
+		// 				Status: to.Ptr("Failed"),
+		// 				OperationType: to.Ptr("PutManagedCluster"),
+		// 				SubOperationType: to.Ptr("Updating"),
 		// 			},
 		// 		},
 		// 	},

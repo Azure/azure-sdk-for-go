@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01-preview/automationRules/AutomationRules_CreateOrUpdate.json
+// Generated from example definition: 2025-10-01-preview/automationRules/AutomationRules_CreateOrUpdate.json
 func ExampleAutomationRulesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -93,7 +93,7 @@ func ExampleAutomationRulesClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/automationRules/AutomationRules_Delete.json
+// Generated from example definition: 2025-10-01-preview/automationRules/AutomationRules_Delete.json
 func ExampleAutomationRulesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -117,7 +117,7 @@ func ExampleAutomationRulesClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/automationRules/AutomationRules_Get.json
+// Generated from example definition: 2025-10-01-preview/automationRules/AutomationRules_Get.json
 func ExampleAutomationRulesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -199,7 +199,7 @@ func ExampleAutomationRulesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/automationRules/AutomationRules_List.json
+// Generated from example definition: 2025-10-01-preview/automationRules/AutomationRules_List.json
 func ExampleAutomationRulesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

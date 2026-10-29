@@ -5,7 +5,7 @@
 package armoracledatabase
 
 const (
-	version20250901 string = "2025-09-01"
+	version20260601 string = "2026-06-01"
 )
 
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -230,10 +230,30 @@ func PossibleAzureResourceProvisioningStateValues() []AzureResourceProvisioningS
 	}
 }
 
+// BackupDestinationType - Backup destination type enum.
+type BackupDestinationType string
+
+const (
+	// BackupDestinationTypeAzure - Store backups in Azure Blob Storage.
+	BackupDestinationTypeAzure BackupDestinationType = "AZURE"
+	// BackupDestinationTypeOci - Store backups in OCI object storage.
+	BackupDestinationTypeOci BackupDestinationType = "OCI"
+)
+
+// PossibleBackupDestinationTypeValues returns the possible values for the BackupDestinationType const type.
+func PossibleBackupDestinationTypeValues() []BackupDestinationType {
+	return []BackupDestinationType{
+		BackupDestinationTypeAzure,
+		BackupDestinationTypeOci,
+	}
+}
+
 // BaseDbSystemShapes - Allowed values for BaseDb System Shapes
 type BaseDbSystemShapes string
 
 const (
+	// BaseDbSystemShapesVMBaseDBX86 - Vm Standard X86
+	BaseDbSystemShapesVMBaseDBX86 BaseDbSystemShapes = "VM.BaseDB.x86"
 	// BaseDbSystemShapesVMStandardX86 - Vm Standard X86
 	BaseDbSystemShapesVMStandardX86 BaseDbSystemShapes = "VM.Standard.x86"
 )
@@ -241,7 +261,29 @@ const (
 // PossibleBaseDbSystemShapesValues returns the possible values for the BaseDbSystemShapes const type.
 func PossibleBaseDbSystemShapesValues() []BaseDbSystemShapes {
 	return []BaseDbSystemShapes{
+		BaseDbSystemShapesVMBaseDBX86,
 		BaseDbSystemShapesVMStandardX86,
+	}
+}
+
+// CategoryType - Category.
+type CategoryType string
+
+const (
+	// CategoryTypeDataReplication - Data replication.
+	CategoryTypeDataReplication CategoryType = "DataReplication"
+	// CategoryTypeDataTransforms - Data transforms.
+	CategoryTypeDataTransforms CategoryType = "DataTransforms"
+	// CategoryTypeStreamAnalytics - Stream analytics.
+	CategoryTypeStreamAnalytics CategoryType = "StreamAnalytics"
+)
+
+// PossibleCategoryTypeValues returns the possible values for the CategoryType const type.
+func PossibleCategoryTypeValues() []CategoryType {
+	return []CategoryType{
+		CategoryTypeDataReplication,
+		CategoryTypeDataTransforms,
+		CategoryTypeStreamAnalytics,
 	}
 }
 
@@ -369,6 +411,132 @@ func PossibleComputeModelValues() []ComputeModel {
 	}
 }
 
+// ConnectionLifecycleState - Possible lifecycle states for connection.
+type ConnectionLifecycleState string
+
+const (
+	// ConnectionLifecycleStateActive - Indicates that the resource is in active state.
+	ConnectionLifecycleStateActive ConnectionLifecycleState = "ACTIVE"
+	// ConnectionLifecycleStateCreating - Indicates that the resource is in creating state.
+	ConnectionLifecycleStateCreating ConnectionLifecycleState = "CREATING"
+	// ConnectionLifecycleStateDeleted - Indicates that the resource is in deleted state.
+	ConnectionLifecycleStateDeleted ConnectionLifecycleState = "DELETED"
+	// ConnectionLifecycleStateDeleting - Indicates that the resource is in deleting state.
+	ConnectionLifecycleStateDeleting ConnectionLifecycleState = "DELETING"
+	// ConnectionLifecycleStateFailed - Indicates that the resource is in failed state.
+	ConnectionLifecycleStateFailed ConnectionLifecycleState = "FAILED"
+	// ConnectionLifecycleStateUpdating - Indicates that the resource is in updating state.
+	ConnectionLifecycleStateUpdating ConnectionLifecycleState = "UPDATING"
+)
+
+// PossibleConnectionLifecycleStateValues returns the possible values for the ConnectionLifecycleState const type.
+func PossibleConnectionLifecycleStateValues() []ConnectionLifecycleState {
+	return []ConnectionLifecycleState{
+		ConnectionLifecycleStateActive,
+		ConnectionLifecycleStateCreating,
+		ConnectionLifecycleStateDeleted,
+		ConnectionLifecycleStateDeleting,
+		ConnectionLifecycleStateFailed,
+		ConnectionLifecycleStateUpdating,
+	}
+}
+
+// ConnectionType - Known values for connection type.
+type ConnectionType string
+
+const (
+	// ConnectionTypeAmazonKinesis - An Amazon Kinesis Connection
+	ConnectionTypeAmazonKinesis ConnectionType = "AMAZON_KINESIS"
+	// ConnectionTypeAmazonRedshift - An Amazon Redshift Connection
+	ConnectionTypeAmazonRedshift ConnectionType = "AMAZON_REDSHIFT"
+	// ConnectionTypeAmazonS3 - An Amazon S3 Connection
+	ConnectionTypeAmazonS3 ConnectionType = "AMAZON_S3"
+	// ConnectionTypeAzureDataLakeStorage - An Azure Data Lake Storage Connection
+	ConnectionTypeAzureDataLakeStorage ConnectionType = "AZURE_DATA_LAKE_STORAGE"
+	// ConnectionTypeAzureSynapseAnalytics - An Azure Synapse Analytics Connection
+	ConnectionTypeAzureSynapseAnalytics ConnectionType = "AZURE_SYNAPSE_ANALYTICS"
+	// ConnectionTypeDatabricks - A Databricks Connection
+	ConnectionTypeDatabricks ConnectionType = "DATABRICKS"
+	// ConnectionTypeDb2Connection - A DB2 Connection
+	ConnectionTypeDb2Connection ConnectionType = "DB2"
+	// ConnectionTypeElasticsearch - An Elasticsearch Connection
+	ConnectionTypeElasticsearch ConnectionType = "ELASTICSEARCH"
+	// ConnectionTypeGeneric - A Generic Connection
+	ConnectionTypeGeneric ConnectionType = "GENERIC"
+	// ConnectionTypeGoldenGate - A GoldenGate Connection
+	ConnectionTypeGoldenGate ConnectionType = "GOLDENGATE"
+	// ConnectionTypeGoogleBigQuery - A Google BigQuery Connection
+	ConnectionTypeGoogleBigQuery ConnectionType = "GOOGLE_BIGQUERY"
+	// ConnectionTypeGoogleCloudStorage - A Google Cloud Storage Connection
+	ConnectionTypeGoogleCloudStorage ConnectionType = "GOOGLE_CLOUD_STORAGE"
+	// ConnectionTypeGooglePubSub - A Google PubSub Connection
+	ConnectionTypeGooglePubSub ConnectionType = "GOOGLE_PUBSUB"
+	// ConnectionTypeHdfs - A Hadoop Distributed File System Connection
+	ConnectionTypeHdfs ConnectionType = "HDFS"
+	// ConnectionTypeIceberg - An Iceberg Connection
+	ConnectionTypeIceberg ConnectionType = "ICEBERG"
+	// ConnectionTypeJavaMessageService - A Java Message Service Connection
+	ConnectionTypeJavaMessageService ConnectionType = "JAVA_MESSAGE_SERVICE"
+	// ConnectionTypeKafka - A Kafka Connection
+	ConnectionTypeKafka ConnectionType = "KAFKA"
+	// ConnectionTypeKafkaSchemaRegistry - A Kafka (e.g. Confluent) Schema Registry Connection
+	ConnectionTypeKafkaSchemaRegistry ConnectionType = "KAFKA_SCHEMA_REGISTRY"
+	// ConnectionTypeMicrosoftFabric - A Microsoft Fabric Connection
+	ConnectionTypeMicrosoftFabric ConnectionType = "MICROSOFT_FABRIC"
+	// ConnectionTypeMicrosoftSQLServer - A Microsoft SQL Server Connection
+	ConnectionTypeMicrosoftSQLServer ConnectionType = "MICROSOFT_SQLSERVER"
+	// ConnectionTypeMongoDbConnection - A MongoDB Connection
+	ConnectionTypeMongoDbConnection ConnectionType = "MONGODB"
+	// ConnectionTypeMySQL - A MySQL Connection
+	ConnectionTypeMySQL ConnectionType = "MYSQL"
+	// ConnectionTypeOciObjectStorage - An OCI Object Storage Connection
+	ConnectionTypeOciObjectStorage ConnectionType = "OCI_OBJECT_STORAGE"
+	// ConnectionTypeOracle - An Oracle Database Connection
+	ConnectionTypeOracle ConnectionType = "ORACLE"
+	// ConnectionTypeOracleNoSQL - An Oracle NoSQL Connection
+	ConnectionTypeOracleNoSQL ConnectionType = "ORACLE_NOSQL"
+	// ConnectionTypePostgreSQL - A PostgreSQL Database Connection
+	ConnectionTypePostgreSQL ConnectionType = "POSTGRESQL"
+	// ConnectionTypeRedis - A Redis Database Connection
+	ConnectionTypeRedis ConnectionType = "REDIS"
+	// ConnectionTypeSnowflake - A Snowflake Connection
+	ConnectionTypeSnowflake ConnectionType = "SNOWFLAKE"
+)
+
+// PossibleConnectionTypeValues returns the possible values for the ConnectionType const type.
+func PossibleConnectionTypeValues() []ConnectionType {
+	return []ConnectionType{
+		ConnectionTypeAmazonKinesis,
+		ConnectionTypeAmazonRedshift,
+		ConnectionTypeAmazonS3,
+		ConnectionTypeAzureDataLakeStorage,
+		ConnectionTypeAzureSynapseAnalytics,
+		ConnectionTypeDatabricks,
+		ConnectionTypeDb2Connection,
+		ConnectionTypeElasticsearch,
+		ConnectionTypeGeneric,
+		ConnectionTypeGoldenGate,
+		ConnectionTypeGoogleBigQuery,
+		ConnectionTypeGoogleCloudStorage,
+		ConnectionTypeGooglePubSub,
+		ConnectionTypeHdfs,
+		ConnectionTypeIceberg,
+		ConnectionTypeJavaMessageService,
+		ConnectionTypeKafka,
+		ConnectionTypeKafkaSchemaRegistry,
+		ConnectionTypeMicrosoftFabric,
+		ConnectionTypeMicrosoftSQLServer,
+		ConnectionTypeMongoDbConnection,
+		ConnectionTypeMySQL,
+		ConnectionTypeOciObjectStorage,
+		ConnectionTypeOracle,
+		ConnectionTypeOracleNoSQL,
+		ConnectionTypePostgreSQL,
+		ConnectionTypeRedis,
+		ConnectionTypeSnowflake,
+	}
+}
+
 // ConsumerGroup - Consumer group enum.
 type ConsumerGroup string
 
@@ -417,6 +585,24 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 		CreatedByTypeKey,
 		CreatedByTypeManagedIdentity,
 		CreatedByTypeUser,
+	}
+}
+
+// CredentialType - Credential type.
+type CredentialType string
+
+const (
+	// CredentialTypeGoldenGate - The GoldenGate credential.
+	CredentialTypeGoldenGate CredentialType = "GoldenGate"
+	// CredentialTypeIam - The IAM credential.
+	CredentialTypeIam CredentialType = "IAM"
+)
+
+// PossibleCredentialTypeValues returns the possible values for the CredentialType const type.
+func PossibleCredentialTypeValues() []CredentialType {
+	return []CredentialType{
+		CredentialTypeGoldenGate,
+		CredentialTypeIam,
 	}
 }
 
@@ -789,6 +975,99 @@ func PossibleDbSystemSourceTypeValues() []DbSystemSourceType {
 	}
 }
 
+// DeploymentLifecycleState - Deployment lifecycle state enum.
+type DeploymentLifecycleState string
+
+const (
+	// DeploymentLifecycleStateActive - Indicates that the resource is in active state.
+	DeploymentLifecycleStateActive DeploymentLifecycleState = "Active"
+	// DeploymentLifecycleStateCanceled - Indicates that the resource is in canceled state.
+	DeploymentLifecycleStateCanceled DeploymentLifecycleState = "Canceled"
+	// DeploymentLifecycleStateCanceling - Indicates that the resource is in canceling state.
+	DeploymentLifecycleStateCanceling DeploymentLifecycleState = "Canceling"
+	// DeploymentLifecycleStateCreating - Indicates that the resource is in creating state.
+	DeploymentLifecycleStateCreating DeploymentLifecycleState = "Creating"
+	// DeploymentLifecycleStateDeleted - Indicates that the resource is in deleted state.
+	DeploymentLifecycleStateDeleted DeploymentLifecycleState = "Deleted"
+	// DeploymentLifecycleStateDeleting - Indicates that the resource is in deleting state.
+	DeploymentLifecycleStateDeleting DeploymentLifecycleState = "Deleting"
+	// DeploymentLifecycleStateFailed - Indicates that the resource is in failed state.
+	DeploymentLifecycleStateFailed DeploymentLifecycleState = "Failed"
+	// DeploymentLifecycleStateInActive - Indicates that the resource is in inactive state.
+	DeploymentLifecycleStateInActive DeploymentLifecycleState = "InActive"
+	// DeploymentLifecycleStateInProgress - Indicates that the resource is in in-progress state.
+	DeploymentLifecycleStateInProgress DeploymentLifecycleState = "In Progress"
+	// DeploymentLifecycleStateNeedsAttention - Indicates that the resource is in needs-attention state.
+	DeploymentLifecycleStateNeedsAttention DeploymentLifecycleState = "Needs Attention"
+	// DeploymentLifecycleStateSucceeded - Indicates that the resource is in succeeded state.
+	DeploymentLifecycleStateSucceeded DeploymentLifecycleState = "Succeeded"
+	// DeploymentLifecycleStateUpdating - Indicates that the resource is in updating state.
+	DeploymentLifecycleStateUpdating DeploymentLifecycleState = "Updating"
+	// DeploymentLifecycleStateWaiting - Indicates that the resource is in waiting state.
+	DeploymentLifecycleStateWaiting DeploymentLifecycleState = "Waiting"
+)
+
+// PossibleDeploymentLifecycleStateValues returns the possible values for the DeploymentLifecycleState const type.
+func PossibleDeploymentLifecycleStateValues() []DeploymentLifecycleState {
+	return []DeploymentLifecycleState{
+		DeploymentLifecycleStateActive,
+		DeploymentLifecycleStateCanceled,
+		DeploymentLifecycleStateCanceling,
+		DeploymentLifecycleStateCreating,
+		DeploymentLifecycleStateDeleted,
+		DeploymentLifecycleStateDeleting,
+		DeploymentLifecycleStateFailed,
+		DeploymentLifecycleStateInActive,
+		DeploymentLifecycleStateInProgress,
+		DeploymentLifecycleStateNeedsAttention,
+		DeploymentLifecycleStateSucceeded,
+		DeploymentLifecycleStateUpdating,
+		DeploymentLifecycleStateWaiting,
+	}
+}
+
+// DeploymentType - Deployment type enum.
+type DeploymentType string
+
+const (
+	// DeploymentTypeBigData - The big data deployment.
+	DeploymentTypeBigData DeploymentType = "BigData"
+	// DeploymentTypeDataTransforms - The data transforms deployment.
+	DeploymentTypeDataTransforms DeploymentType = "DataTransforms"
+	// DeploymentTypeDatabaseDB2I - The DB2 i database deployment.
+	DeploymentTypeDatabaseDB2I DeploymentType = "DATABASE_DB2I"
+	// DeploymentTypeDatabaseDB2ZOS - The DB2 z/OS database deployment.
+	DeploymentTypeDatabaseDB2ZOS DeploymentType = "DatabaseDB2ZOS"
+	// DeploymentTypeDatabaseMicrosoftSQLServer - The Microsoft SQL Server database deployment.
+	DeploymentTypeDatabaseMicrosoftSQLServer DeploymentType = "DatabaseMicrosoftSQLServer"
+	// DeploymentTypeDatabaseMySQL - The MySQL database deployment.
+	DeploymentTypeDatabaseMySQL DeploymentType = "DatabaseMySQL"
+	// DeploymentTypeDatabaseOracle - The Oracle database deployment.
+	DeploymentTypeDatabaseOracle DeploymentType = "DatabaseOracle"
+	// DeploymentTypeDatabasePostGreSQL - The PostgreSQL database deployment.
+	DeploymentTypeDatabasePostGreSQL DeploymentType = "DatabasePostGreSQL"
+	// DeploymentTypeGgsa - The GGSA deployment.
+	DeploymentTypeGgsa DeploymentType = "GGSA"
+	// DeploymentTypeOgg - The OGG deployment.
+	DeploymentTypeOgg DeploymentType = "Ogg"
+)
+
+// PossibleDeploymentTypeValues returns the possible values for the DeploymentType const type.
+func PossibleDeploymentTypeValues() []DeploymentType {
+	return []DeploymentType{
+		DeploymentTypeBigData,
+		DeploymentTypeDataTransforms,
+		DeploymentTypeDatabaseDB2I,
+		DeploymentTypeDatabaseDB2ZOS,
+		DeploymentTypeDatabaseMicrosoftSQLServer,
+		DeploymentTypeDatabaseMySQL,
+		DeploymentTypeDatabaseOracle,
+		DeploymentTypeDatabasePostGreSQL,
+		DeploymentTypeGgsa,
+		DeploymentTypeOgg,
+	}
+}
+
 // DisasterRecoveryType - Disaster recovery type enum.
 type DisasterRecoveryType string
 
@@ -925,6 +1204,27 @@ func PossibleExascaleDbStorageVaultLifecycleStateValues() []ExascaleDbStorageVau
 	}
 }
 
+// FrequencyType - Frequency type enum.
+type FrequencyType string
+
+const (
+	// FrequencyTypeDaily - The daily frequency.
+	FrequencyTypeDaily FrequencyType = "Daily"
+	// FrequencyTypeMonthly - The monthly frequency.
+	FrequencyTypeMonthly FrequencyType = "Monthly"
+	// FrequencyTypeWeekly - The weekly frequency.
+	FrequencyTypeWeekly FrequencyType = "Weekly"
+)
+
+// PossibleFrequencyTypeValues returns the possible values for the FrequencyType const type.
+func PossibleFrequencyTypeValues() []FrequencyType {
+	return []FrequencyType{
+		FrequencyTypeDaily,
+		FrequencyTypeMonthly,
+		FrequencyTypeWeekly,
+	}
+}
+
 // GenerateType - Generate type enum
 type GenerateType string
 
@@ -940,6 +1240,54 @@ func PossibleGenerateTypeValues() []GenerateType {
 	return []GenerateType{
 		GenerateTypeAll,
 		GenerateTypeSingle,
+	}
+}
+
+// GiMinorVersionSortOrder - Allowed values for GI minor version sort order.
+type GiMinorVersionSortOrder string
+
+const (
+	// GiMinorVersionSortOrderAsc - Ascending sort order.
+	GiMinorVersionSortOrderAsc GiMinorVersionSortOrder = "ASC"
+	// GiMinorVersionSortOrderDesc - Descending sort order.
+	GiMinorVersionSortOrderDesc GiMinorVersionSortOrder = "DESC"
+)
+
+// PossibleGiMinorVersionSortOrderValues returns the possible values for the GiMinorVersionSortOrder const type.
+func PossibleGiMinorVersionSortOrderValues() []GiMinorVersionSortOrder {
+	return []GiMinorVersionSortOrder{
+		GiMinorVersionSortOrderAsc,
+		GiMinorVersionSortOrderDesc,
+	}
+}
+
+// GoldenGateConnectionAssignmentLifecycleState - Possible lifecycle states for connection assignments
+type GoldenGateConnectionAssignmentLifecycleState string
+
+const (
+	// GoldenGateConnectionAssignmentLifecycleStateActive - Indicates that the resource is in active state
+	GoldenGateConnectionAssignmentLifecycleStateActive GoldenGateConnectionAssignmentLifecycleState = "ACTIVE"
+	// GoldenGateConnectionAssignmentLifecycleStateCreating - Indicates that the resource is in creating state
+	GoldenGateConnectionAssignmentLifecycleStateCreating GoldenGateConnectionAssignmentLifecycleState = "CREATING"
+	// GoldenGateConnectionAssignmentLifecycleStateDeleted - Indicates that the resource is in deleted state
+	GoldenGateConnectionAssignmentLifecycleStateDeleted GoldenGateConnectionAssignmentLifecycleState = "DELETED"
+	// GoldenGateConnectionAssignmentLifecycleStateDeleting - Indicates that the resource is in deleting state
+	GoldenGateConnectionAssignmentLifecycleStateDeleting GoldenGateConnectionAssignmentLifecycleState = "DELETING"
+	// GoldenGateConnectionAssignmentLifecycleStateFailed - Indicates that the resource is in failed state
+	GoldenGateConnectionAssignmentLifecycleStateFailed GoldenGateConnectionAssignmentLifecycleState = "FAILED"
+	// GoldenGateConnectionAssignmentLifecycleStateUpdating - Indicates that the resource is in updating state
+	GoldenGateConnectionAssignmentLifecycleStateUpdating GoldenGateConnectionAssignmentLifecycleState = "UPDATING"
+)
+
+// PossibleGoldenGateConnectionAssignmentLifecycleStateValues returns the possible values for the GoldenGateConnectionAssignmentLifecycleState const type.
+func PossibleGoldenGateConnectionAssignmentLifecycleStateValues() []GoldenGateConnectionAssignmentLifecycleState {
+	return []GoldenGateConnectionAssignmentLifecycleState{
+		GoldenGateConnectionAssignmentLifecycleStateActive,
+		GoldenGateConnectionAssignmentLifecycleStateCreating,
+		GoldenGateConnectionAssignmentLifecycleStateDeleted,
+		GoldenGateConnectionAssignmentLifecycleStateDeleting,
+		GoldenGateConnectionAssignmentLifecycleStateFailed,
+		GoldenGateConnectionAssignmentLifecycleStateUpdating,
 	}
 }
 
@@ -1042,6 +1390,30 @@ func PossibleIormLifecycleStateValues() []IormLifecycleState {
 	}
 }
 
+// KafkaConnectionTechnologyType - Allowed values for Kafka technology type.
+type KafkaConnectionTechnologyType string
+
+const (
+	// KafkaConnectionTechnologyTypeApacheKafka - The Apache Kafka type.
+	KafkaConnectionTechnologyTypeApacheKafka KafkaConnectionTechnologyType = "APACHE_KAFKA"
+	// KafkaConnectionTechnologyTypeAzureEventHubs - The Azure Event Hubs type.
+	KafkaConnectionTechnologyTypeAzureEventHubs KafkaConnectionTechnologyType = "AZURE_EVENT_HUBS"
+	// KafkaConnectionTechnologyTypeConfluentKafka - The Confluent Kafka type.
+	KafkaConnectionTechnologyTypeConfluentKafka KafkaConnectionTechnologyType = "CONFLUENT_KAFKA"
+	// KafkaConnectionTechnologyTypeOciStreaming - The OCI Streaming type.
+	KafkaConnectionTechnologyTypeOciStreaming KafkaConnectionTechnologyType = "OCI_STREAMING"
+)
+
+// PossibleKafkaConnectionTechnologyTypeValues returns the possible values for the KafkaConnectionTechnologyType const type.
+func PossibleKafkaConnectionTechnologyTypeValues() []KafkaConnectionTechnologyType {
+	return []KafkaConnectionTechnologyType{
+		KafkaConnectionTechnologyTypeApacheKafka,
+		KafkaConnectionTechnologyTypeAzureEventHubs,
+		KafkaConnectionTechnologyTypeConfluentKafka,
+		KafkaConnectionTechnologyTypeOciStreaming,
+	}
+}
+
 // LicenseModel - LicenseModel enum
 type LicenseModel string
 
@@ -1057,6 +1429,24 @@ func PossibleLicenseModelValues() []LicenseModel {
 	return []LicenseModel{
 		LicenseModelBringYourOwnLicense,
 		LicenseModelLicenseIncluded,
+	}
+}
+
+// MicrosoftFabricConnectionTechnologyType - Allowed values for Microsoft Fabric technology type.
+type MicrosoftFabricConnectionTechnologyType string
+
+const (
+	// MicrosoftFabricConnectionTechnologyTypeMicrosoftFabricLakehouse - The Microsoft Fabric Lakehouse type.
+	MicrosoftFabricConnectionTechnologyTypeMicrosoftFabricLakehouse MicrosoftFabricConnectionTechnologyType = "MICROSOFT_FABRIC_LAKEHOUSE"
+	// MicrosoftFabricConnectionTechnologyTypeMicrosoftFabricMirror - The Microsoft Fabric Mirror type.
+	MicrosoftFabricConnectionTechnologyTypeMicrosoftFabricMirror MicrosoftFabricConnectionTechnologyType = "MICROSOFT_FABRIC_MIRROR"
+)
+
+// PossibleMicrosoftFabricConnectionTechnologyTypeValues returns the possible values for the MicrosoftFabricConnectionTechnologyType const type.
+func PossibleMicrosoftFabricConnectionTechnologyTypeValues() []MicrosoftFabricConnectionTechnologyType {
+	return []MicrosoftFabricConnectionTechnologyType{
+		MicrosoftFabricConnectionTechnologyTypeMicrosoftFabricLakehouse,
+		MicrosoftFabricConnectionTechnologyTypeMicrosoftFabricMirror,
 	}
 }
 
@@ -1183,6 +1573,48 @@ func PossibleOperationsInsightsStatusTypeValues() []OperationsInsightsStatusType
 	}
 }
 
+// OracleConnectionTechnologyType - Allowed values for Oracle technology type.
+type OracleConnectionTechnologyType string
+
+const (
+	// OracleConnectionTechnologyTypeAmazonRdsOracle - Oracle databases hosted on Amazon RDS.
+	OracleConnectionTechnologyTypeAmazonRdsOracle OracleConnectionTechnologyType = "AMAZON_RDS_ORACLE"
+	// OracleConnectionTechnologyTypeOciAutonomousDatabase - OCI Autonomous Database.
+	OracleConnectionTechnologyTypeOciAutonomousDatabase OracleConnectionTechnologyType = "OCI_AUTONOMOUS_DATABASE"
+	// OracleConnectionTechnologyTypeOracleAutonomousDatabaseAtAws - Autonomous database on AWS.
+	OracleConnectionTechnologyTypeOracleAutonomousDatabaseAtAws OracleConnectionTechnologyType = "ORACLE_AUTONOMOUS_DATABASE_AT_AWS"
+	// OracleConnectionTechnologyTypeOracleAutonomousDatabaseAtAzure - Autonomous database on Azure.
+	OracleConnectionTechnologyTypeOracleAutonomousDatabaseAtAzure OracleConnectionTechnologyType = "ORACLE_AUTONOMOUS_DATABASE_AT_AZURE"
+	// OracleConnectionTechnologyTypeOracleAutonomousDatabaseAtGoogleCloud - Autonomous database on GCP.
+	OracleConnectionTechnologyTypeOracleAutonomousDatabaseAtGoogleCloud OracleConnectionTechnologyType = "ORACLE_AUTONOMOUS_DATABASE_AT_GOOGLE_CLOUD"
+	// OracleConnectionTechnologyTypeOracleDatabase - On-premise Oracle database.
+	OracleConnectionTechnologyTypeOracleDatabase OracleConnectionTechnologyType = "ORACLE_DATABASE"
+	// OracleConnectionTechnologyTypeOracleExadata - On-premise Exadata database.
+	OracleConnectionTechnologyTypeOracleExadata OracleConnectionTechnologyType = "ORACLE_EXADATA"
+	// OracleConnectionTechnologyTypeOracleExadataDatabaseAtAws - Exadata database on AWS.
+	OracleConnectionTechnologyTypeOracleExadataDatabaseAtAws OracleConnectionTechnologyType = "ORACLE_EXADATA_DATABASE_AT_AWS"
+	// OracleConnectionTechnologyTypeOracleExadataDatabaseAtAzure - Exadata database on Azure.
+	OracleConnectionTechnologyTypeOracleExadataDatabaseAtAzure OracleConnectionTechnologyType = "ORACLE_EXADATA_DATABASE_AT_AZURE"
+	// OracleConnectionTechnologyTypeOracleExadataDatabaseAtGoogleCloud - Exadata database on GCP.
+	OracleConnectionTechnologyTypeOracleExadataDatabaseAtGoogleCloud OracleConnectionTechnologyType = "ORACLE_EXADATA_DATABASE_AT_GOOGLE_CLOUD"
+)
+
+// PossibleOracleConnectionTechnologyTypeValues returns the possible values for the OracleConnectionTechnologyType const type.
+func PossibleOracleConnectionTechnologyTypeValues() []OracleConnectionTechnologyType {
+	return []OracleConnectionTechnologyType{
+		OracleConnectionTechnologyTypeAmazonRdsOracle,
+		OracleConnectionTechnologyTypeOciAutonomousDatabase,
+		OracleConnectionTechnologyTypeOracleAutonomousDatabaseAtAws,
+		OracleConnectionTechnologyTypeOracleAutonomousDatabaseAtAzure,
+		OracleConnectionTechnologyTypeOracleAutonomousDatabaseAtGoogleCloud,
+		OracleConnectionTechnologyTypeOracleDatabase,
+		OracleConnectionTechnologyTypeOracleExadata,
+		OracleConnectionTechnologyTypeOracleExadataDatabaseAtAws,
+		OracleConnectionTechnologyTypeOracleExadataDatabaseAtAzure,
+		OracleConnectionTechnologyTypeOracleExadataDatabaseAtGoogleCloud,
+	}
+}
+
 // OracleSubscriptionProvisioningState - OracleSubscriptionProvisioningState enum
 type OracleSubscriptionProvisioningState string
 
@@ -1298,6 +1730,24 @@ func PossibleProtocolTypeValues() []ProtocolType {
 	}
 }
 
+// ProximityPlacementGroupEntityType - Entity types for proximity placement group usage
+type ProximityPlacementGroupEntityType string
+
+const (
+	// ProximityPlacementGroupEntityTypeCloudExadataInfrastructure - Cloud Exadata Infrastructure
+	ProximityPlacementGroupEntityTypeCloudExadataInfrastructure ProximityPlacementGroupEntityType = "CloudExadataInfrastructure"
+	// ProximityPlacementGroupEntityTypeOtherProducts - Other products
+	ProximityPlacementGroupEntityTypeOtherProducts ProximityPlacementGroupEntityType = "OtherProducts"
+)
+
+// PossibleProximityPlacementGroupEntityTypeValues returns the possible values for the ProximityPlacementGroupEntityType const type.
+func PossibleProximityPlacementGroupEntityTypeValues() []ProximityPlacementGroupEntityType {
+	return []ProximityPlacementGroupEntityType{
+		ProximityPlacementGroupEntityTypeCloudExadataInfrastructure,
+		ProximityPlacementGroupEntityTypeOtherProducts,
+	}
+}
+
 // RefreshableModelType - Refreshable model type enum
 type RefreshableModelType string
 
@@ -1406,6 +1856,47 @@ func PossibleRoleTypeValues() []RoleType {
 	}
 }
 
+// RoutingMethod - Allowed network traffic routing method.
+type RoutingMethod string
+
+const (
+	// RoutingMethodDedicatedEndpoint - Indicates that a dedicated private endpoint is created in the target VCN subnet for the
+	// connection.
+	RoutingMethodDedicatedEndpoint RoutingMethod = "DEDICATED_ENDPOINT"
+	// RoutingMethodSharedDeploymentEndpoint - Indicates that traffic flows from the assigned deployment's private endpoint through
+	// the deployment's subnet.
+	RoutingMethodSharedDeploymentEndpoint RoutingMethod = "SHARED_DEPLOYMENT_ENDPOINT"
+	// RoutingMethodSharedServiceEndpoint - Indicates that traffic flows through the GoldenGate service network to public hosts.
+	RoutingMethodSharedServiceEndpoint RoutingMethod = "SHARED_SERVICE_ENDPOINT"
+)
+
+// PossibleRoutingMethodValues returns the possible values for the RoutingMethod const type.
+func PossibleRoutingMethodValues() []RoutingMethod {
+	return []RoutingMethod{
+		RoutingMethodDedicatedEndpoint,
+		RoutingMethodSharedDeploymentEndpoint,
+		RoutingMethodSharedServiceEndpoint,
+	}
+}
+
+// SessionMode - Allowed modes for database connection session.
+type SessionMode string
+
+const (
+	// SessionModeDirect - For a non-RAC database.
+	SessionModeDirect SessionMode = "DIRECT"
+	// SessionModeRedirect - For a RAC database.
+	SessionModeRedirect SessionMode = "REDIRECT"
+)
+
+// PossibleSessionModeValues returns the possible values for the SessionMode const type.
+func PossibleSessionModeValues() []SessionMode {
+	return []SessionMode{
+		SessionModeDirect,
+		SessionModeRedirect,
+	}
+}
+
 // SessionModeType - Session mode type enum.
 type SessionModeType string
 
@@ -1421,6 +1912,24 @@ func PossibleSessionModeTypeValues() []SessionModeType {
 	return []SessionModeType{
 		SessionModeTypeDirect,
 		SessionModeTypeRedirect,
+	}
+}
+
+// SetupType - Setup type enum.
+type SetupType string
+
+const (
+	// SetupTypeDevelopmentOrTesting - Development or testing setup.
+	SetupTypeDevelopmentOrTesting SetupType = "DevelopmentOrTesting"
+	// SetupTypeProduction - Production setup.
+	SetupTypeProduction SetupType = "Production"
+)
+
+// PossibleSetupTypeValues returns the possible values for the SetupType const type.
+func PossibleSetupTypeValues() []SetupType {
+	return []SetupType{
+		SetupTypeDevelopmentOrTesting,
+		SetupTypeProduction,
 	}
 }
 
@@ -1582,6 +2091,8 @@ const (
 	SystemShapesExaDbXs SystemShapes = "ExaDbXS"
 	// SystemShapesExadataX11M - Exadata X11M shape
 	SystemShapesExadataX11M SystemShapes = "Exadata.X11M"
+	// SystemShapesExadataX11MV - Exadata X11M shape
+	SystemShapesExadataX11MV SystemShapes = "Exadata.X11MV"
 	// SystemShapesExadataX9M - Exadata X9M shape
 	SystemShapesExadataX9M SystemShapes = "Exadata.X9M"
 )
@@ -1591,6 +2102,7 @@ func PossibleSystemShapesValues() []SystemShapes {
 	return []SystemShapes{
 		SystemShapesExaDbXs,
 		SystemShapesExadataX11M,
+		SystemShapesExadataX11MV,
 		SystemShapesExadataX9M,
 	}
 }
@@ -1650,6 +2162,8 @@ const (
 	WorkloadTypeAPEX WorkloadType = "APEX"
 	// WorkloadTypeDW - DW - indicates an Autonomous Data Warehouse database
 	WorkloadTypeDW WorkloadType = "DW"
+	// WorkloadTypeLH - LH - indicates an Oracle Autonomous AI Lakehouse database
+	WorkloadTypeLH WorkloadType = "LH"
 	// WorkloadTypeOLTP - OLTP - indicates an Autonomous Transaction Processing database
 	WorkloadTypeOLTP WorkloadType = "OLTP"
 )
@@ -1660,6 +2174,7 @@ func PossibleWorkloadTypeValues() []WorkloadType {
 		WorkloadTypeAJD,
 		WorkloadTypeAPEX,
 		WorkloadTypeDW,
+		WorkloadTypeLH,
 		WorkloadTypeOLTP,
 	}
 }

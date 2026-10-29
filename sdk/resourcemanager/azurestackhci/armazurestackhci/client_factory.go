@@ -40,6 +40,14 @@ func (c *ClientFactory) NewArcSettingsClient() *ArcSettingsClient {
 	}
 }
 
+// NewClusterJobsClient creates a new instance of ClusterJobsClient.
+func (c *ClientFactory) NewClusterJobsClient() *ClusterJobsClient {
+	return &ClusterJobsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewClustersClient creates a new instance of ClustersClient.
 func (c *ClientFactory) NewClustersClient() *ClustersClient {
 	return &ClustersClient{
@@ -70,6 +78,86 @@ func (c *ClientFactory) NewEdgeDevicesClient() *EdgeDevicesClient {
 	}
 }
 
+// NewEdgeMachineDeploymentSettingsClient creates a new instance of EdgeMachineDeploymentSettingsClient.
+func (c *ClientFactory) NewEdgeMachineDeploymentSettingsClient() *EdgeMachineDeploymentSettingsClient {
+	return &EdgeMachineDeploymentSettingsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewEdgeMachineDiskJobsClient creates a new instance of EdgeMachineDiskJobsClient.
+func (c *ClientFactory) NewEdgeMachineDiskJobsClient() *EdgeMachineDiskJobsClient {
+	return &EdgeMachineDiskJobsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewEdgeMachineDiskPrivilegedJobsClient creates a new instance of EdgeMachineDiskPrivilegedJobsClient.
+func (c *ClientFactory) NewEdgeMachineDiskPrivilegedJobsClient() *EdgeMachineDiskPrivilegedJobsClient {
+	return &EdgeMachineDiskPrivilegedJobsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewEdgeMachineDisksClient creates a new instance of EdgeMachineDisksClient.
+func (c *ClientFactory) NewEdgeMachineDisksClient() *EdgeMachineDisksClient {
+	return &EdgeMachineDisksClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewEdgeMachineJobsClient creates a new instance of EdgeMachineJobsClient.
+func (c *ClientFactory) NewEdgeMachineJobsClient() *EdgeMachineJobsClient {
+	return &EdgeMachineJobsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewEdgeMachineNetworkAdapterJobsClient creates a new instance of EdgeMachineNetworkAdapterJobsClient.
+func (c *ClientFactory) NewEdgeMachineNetworkAdapterJobsClient() *EdgeMachineNetworkAdapterJobsClient {
+	return &EdgeMachineNetworkAdapterJobsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewEdgeMachineNetworkAdaptersClient creates a new instance of EdgeMachineNetworkAdaptersClient.
+func (c *ClientFactory) NewEdgeMachineNetworkAdaptersClient() *EdgeMachineNetworkAdaptersClient {
+	return &EdgeMachineNetworkAdaptersClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewEdgeMachineSecuritySettingsOperationsClient creates a new instance of EdgeMachineSecuritySettingsOperationsClient.
+func (c *ClientFactory) NewEdgeMachineSecuritySettingsOperationsClient() *EdgeMachineSecuritySettingsOperationsClient {
+	return &EdgeMachineSecuritySettingsOperationsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewEdgeMachineVolumesClient creates a new instance of EdgeMachineVolumesClient.
+func (c *ClientFactory) NewEdgeMachineVolumesClient() *EdgeMachineVolumesClient {
+	return &EdgeMachineVolumesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewEdgeMachinesClient creates a new instance of EdgeMachinesClient.
+func (c *ClientFactory) NewEdgeMachinesClient() *EdgeMachinesClient {
+	return &EdgeMachinesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewExtensionsClient creates a new instance of ExtensionsClient.
 func (c *ClientFactory) NewExtensionsClient() *ExtensionsClient {
 	return &ExtensionsClient{
@@ -90,6 +178,22 @@ func (c *ClientFactory) NewOffersClient() *OffersClient {
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	return &OperationsClient{
 		internal: c.internal,
+	}
+}
+
+// NewOsImagesClient creates a new instance of OsImagesClient.
+func (c *ClientFactory) NewOsImagesClient() *OsImagesClient {
+	return &OsImagesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewOwnershipVouchersClient creates a new instance of OwnershipVouchersClient.
+func (c *ClientFactory) NewOwnershipVouchersClient() *OwnershipVouchersClient {
+	return &OwnershipVouchersClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
 	}
 }
 

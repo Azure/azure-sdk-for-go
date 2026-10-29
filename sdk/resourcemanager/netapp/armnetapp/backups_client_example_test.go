@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-06-15-preview/BackupsUnderBackupVault_Create.json
+// Generated from example definition: 2026-08-01/BackupsUnderBackupVault_Create.json
 func ExampleBackupsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -57,7 +57,7 @@ func ExampleBackupsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2026-06-15-preview/BackupsUnderBackupVault_Delete.json
+// Generated from example definition: 2026-08-01/BackupsUnderBackupVault_Delete.json
 func ExampleBackupsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -78,7 +78,47 @@ func ExampleBackupsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-06-15-preview/BackupsUnderBackupVault_Get.json
+// Generated from example definition: 2026-08-01/BackupsUnderBackupVault_Update.json
+func ExampleBackupsClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetapp.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewBackupsClient().BeginUpdate(ctx, "myRG", "account1", "backupVault1", "backup1", armnetapp.BackupPatch{}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetapp.BackupsClientUpdateResponse{
+	// 	Backup: armnetapp.Backup{
+	// 		Name: to.Ptr("account1/backupVault1/backup1"),
+	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts/backupVaults/backups"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/backupVaults/backupVault1/backups/backup1"),
+	// 		Properties: &armnetapp.BackupProperties{
+	// 			BackupType: to.Ptr(armnetapp.BackupTypeManual),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.August, 15, 13, 23, 33, 0, time.UTC)),
+	// 			Label: to.Ptr("myLabel"),
+	// 			ProvisioningState: to.Ptr("Succeeded"),
+	// 			Size: to.Ptr[int64](10011),
+	// 			SnapshotName: to.Ptr("backup1"),
+	// 			VolumeResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/volume1"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-08-01/BackupsUnderBackupVault_Get.json
 func ExampleBackupsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -115,7 +155,7 @@ func ExampleBackupsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-06-15-preview/Volumes_LatestBackupStatus.json
+// Generated from example definition: 2026-08-01/Volumes_LatestBackupStatus.json
 func ExampleBackupsClient_GetLatestStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -147,7 +187,7 @@ func ExampleBackupsClient_GetLatestStatus() {
 	// }
 }
 
-// Generated from example definition: 2026-06-15-preview/Volumes_LatestRestoreStatus.json
+// Generated from example definition: 2026-08-01/Volumes_LatestRestoreStatus.json
 func ExampleBackupsClient_GetVolumeLatestRestoreStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -177,7 +217,7 @@ func ExampleBackupsClient_GetVolumeLatestRestoreStatus() {
 	// }
 }
 
-// Generated from example definition: 2026-06-15-preview/Backups_ListByVault.json
+// Generated from example definition: 2026-08-01/Backups_ListByVault.json
 func ExampleBackupsClient_NewListByVaultPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -221,44 +261,4 @@ func ExampleBackupsClient_NewListByVaultPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-06-15-preview/BackupsUnderBackupVault_Update.json
-func ExampleBackupsClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetapp.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewBackupsClient().BeginUpdate(ctx, "myRG", "account1", "backupVault1", "backup1", armnetapp.BackupPatch{}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetapp.BackupsClientUpdateResponse{
-	// 	Backup: armnetapp.Backup{
-	// 		Name: to.Ptr("account1/backupVault1/backup1"),
-	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts/backupVaults/backups"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/backupVaults/backupVault1/backups/backup1"),
-	// 		Properties: &armnetapp.BackupProperties{
-	// 			BackupType: to.Ptr(armnetapp.BackupTypeManual),
-	// 			CreationDate: to.Ptr(time.Date(2017, time.August, 15, 13, 23, 33, 0, time.UTC)),
-	// 			Label: to.Ptr("myLabel"),
-	// 			ProvisioningState: to.Ptr("Succeeded"),
-	// 			Size: to.Ptr[int64](10011),
-	// 			SnapshotName: to.Ptr("backup1"),
-	// 			VolumeResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/volume1"),
-	// 		},
-	// 	},
-	// }
 }

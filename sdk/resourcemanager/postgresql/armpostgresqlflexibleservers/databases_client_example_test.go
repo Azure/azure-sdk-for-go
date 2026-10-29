@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-04-01-preview/DatabasesCreate.json
+// Generated from example definition: 2026-07-01-preview/DatabasesCreate.json
 func ExampleDatabasesClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -38,7 +38,7 @@ func ExampleDatabasesClient_BeginCreate() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/DatabasesDelete.json
+// Generated from example definition: 2026-07-01-preview/DatabasesDelete.json
 func ExampleDatabasesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -59,7 +59,7 @@ func ExampleDatabasesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/DatabasesGet.json
+// Generated from example definition: 2026-07-01-preview/DatabasesGet.json
 func ExampleDatabasesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -90,7 +90,7 @@ func ExampleDatabasesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/DatabasesListByServer.json
+// Generated from example definition: 2026-07-01-preview/DatabasesListByServer.json
 func ExampleDatabasesClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

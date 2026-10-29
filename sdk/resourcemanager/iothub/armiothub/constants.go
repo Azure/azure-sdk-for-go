@@ -5,7 +5,7 @@
 package armiothub
 
 const (
-	version20260501Preview string = "2026-05-01-preview"
+	version20261001Preview string = "2026-10-01-preview"
 )
 
 // AccessRights - The permissions assigned to the shared access policy.
@@ -101,6 +101,24 @@ func PossibleCapabilitiesValues() []Capabilities {
 	}
 }
 
+// ConnectionProfile - The connection profile that the IoT hub uses for device connections.
+type ConnectionProfile string
+
+const (
+	// ConnectionProfileClassic - Classic connection profile.
+	ConnectionProfileClassic ConnectionProfile = "Classic"
+	// ConnectionProfileMqttV5 - MQTT v5 connection profile.
+	ConnectionProfileMqttV5 ConnectionProfile = "MqttV5"
+)
+
+// PossibleConnectionProfileValues returns the possible values for the ConnectionProfile const type.
+func PossibleConnectionProfileValues() []ConnectionProfile {
+	return []ConnectionProfile{
+		ConnectionProfileClassic,
+		ConnectionProfileMqttV5,
+	}
+}
+
 // CreatedByType - The kind of entity that created the resource.
 type CreatedByType string
 
@@ -140,6 +158,48 @@ func PossibleDefaultActionValues() []DefaultAction {
 	return []DefaultAction{
 		DefaultActionAllow,
 		DefaultActionDeny,
+	}
+}
+
+// DeviceRegistryIdentityType - The type of the identity.
+type DeviceRegistryIdentityType string
+
+const (
+	// DeviceRegistryIdentityTypeSystemAssigned - Use a system-assigned managed identity to manage the ADR namespace.
+	DeviceRegistryIdentityTypeSystemAssigned DeviceRegistryIdentityType = "SystemAssigned"
+	// DeviceRegistryIdentityTypeUserAssigned - Use a user-assigned managed identity to manage the ADR namespace.
+	DeviceRegistryIdentityTypeUserAssigned DeviceRegistryIdentityType = "UserAssigned"
+)
+
+// PossibleDeviceRegistryIdentityTypeValues returns the possible values for the DeviceRegistryIdentityType const type.
+func PossibleDeviceRegistryIdentityTypeValues() []DeviceRegistryIdentityType {
+	return []DeviceRegistryIdentityType{
+		DeviceRegistryIdentityTypeSystemAssigned,
+		DeviceRegistryIdentityTypeUserAssigned,
+	}
+}
+
+// DeviceRegistryLinkingState - Indicates whether the IoT Hub is linked with an Azure Device Registry.
+type DeviceRegistryLinkingState string
+
+const (
+	// DeviceRegistryLinkingStateFailed - The IoT Hub failed to link with an Azure Device Registry.
+	DeviceRegistryLinkingStateFailed DeviceRegistryLinkingState = "Failed"
+	// DeviceRegistryLinkingStateInProgress - The IoT Hub linking with an Azure Device Registry is in progress.
+	DeviceRegistryLinkingStateInProgress DeviceRegistryLinkingState = "InProgress"
+	// DeviceRegistryLinkingStateOrphaned - The linked Azure Device Registry is no longer associated with the IoT Hub.
+	DeviceRegistryLinkingStateOrphaned DeviceRegistryLinkingState = "Orphaned"
+	// DeviceRegistryLinkingStateSuccess - The IoT Hub is successfully linked with an Azure Device Registry.
+	DeviceRegistryLinkingStateSuccess DeviceRegistryLinkingState = "Success"
+)
+
+// PossibleDeviceRegistryLinkingStateValues returns the possible values for the DeviceRegistryLinkingState const type.
+func PossibleDeviceRegistryLinkingStateValues() []DeviceRegistryLinkingState {
+	return []DeviceRegistryLinkingState{
+		DeviceRegistryLinkingStateFailed,
+		DeviceRegistryLinkingStateInProgress,
+		DeviceRegistryLinkingStateOrphaned,
+		DeviceRegistryLinkingStateSuccess,
 	}
 }
 
@@ -430,6 +490,24 @@ func PossibleJobTypeValues() []JobType {
 		JobTypeUnknown,
 		JobTypeUpdateDeviceConfiguration,
 		JobTypeWriteDeviceProperties,
+	}
+}
+
+// MessagePayloadFormat - The supported formats for message payloads delivered to routing endpoints.
+type MessagePayloadFormat string
+
+const (
+	// MessagePayloadFormatDOObservationV1 - Formats the message as a com.do.telemetry.observation.v1 payload.
+	MessagePayloadFormatDOObservationV1 MessagePayloadFormat = "DOObservationV1"
+	// MessagePayloadFormatNone - Preserves the original message payload.
+	MessagePayloadFormatNone MessagePayloadFormat = "None"
+)
+
+// PossibleMessagePayloadFormatValues returns the possible values for the MessagePayloadFormat const type.
+func PossibleMessagePayloadFormatValues() []MessagePayloadFormat {
+	return []MessagePayloadFormat{
+		MessagePayloadFormatDOObservationV1,
+		MessagePayloadFormatNone,
 	}
 }
 

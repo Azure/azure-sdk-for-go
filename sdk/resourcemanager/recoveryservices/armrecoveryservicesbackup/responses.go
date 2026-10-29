@@ -193,6 +193,12 @@ type GetTieringCostOperationResultClientGetResponse struct {
 	TieringCostInfoClassification
 }
 
+// ItemLevelRecoveryConnectionsClientListInstantItemRecoveryOperationResultResponse contains the response from method ItemLevelRecoveryConnectionsClient.ListInstantItemRecoveryOperationResult.
+type ItemLevelRecoveryConnectionsClientListInstantItemRecoveryOperationResultResponse struct {
+	// Target details for file / folder restore.
+	InstantItemRecoveryTarget
+}
+
 // ItemLevelRecoveryConnectionsClientProvisionResponse contains the response from method ItemLevelRecoveryConnectionsClient.Provision.
 type ItemLevelRecoveryConnectionsClientProvisionResponse struct {
 	// placeholder for future response values
@@ -304,6 +310,12 @@ type ProtectionContainerRefreshOperationResultsClientGetResponse struct {
 	// placeholder for future response values
 }
 
+// ProtectionContainerRefreshOperationStatusesClientGetResponse contains the response from method ProtectionContainerRefreshOperationStatusesClient.Get.
+type ProtectionContainerRefreshOperationStatusesClientGetResponse struct {
+	// Operation status.
+	OperationStatus
+}
+
 // ProtectionContainersClientGetResponse contains the response from method ProtectionContainersClient.Get.
 type ProtectionContainersClientGetResponse struct {
 	// Base class for container with backup items. Containers with specific workloads are derived from this class.
@@ -381,6 +393,29 @@ type ProtectionPolicyOperationResultsClientGetResponse struct {
 type ProtectionPolicyOperationStatusesClientGetResponse struct {
 	// Operation status.
 	OperationStatus
+}
+
+// RecoveryPointsClientGetRPExtendedInfoOperationResultResponse contains the response from method RecoveryPointsClient.GetRPExtendedInfoOperationResult.
+type RecoveryPointsClientGetRPExtendedInfoOperationResultResponse struct {
+	// List of the additional details of recovery points.
+	RPExtendedInfoResourceList
+
+	// A link to the shared fabric level operation status endpoint, which reports the status of the long
+	// running operation whose result this endpoint returns.
+	AzureAsyncOperation *string
+
+	// A link to this endpoint, which a caller polling for the result of the prior getRPExtendedInfo
+	// operation can keep using while that operation is still running.
+	Location *string
+
+	// The Retry-After header can indicate how long the client should wait before polling the operation status.
+	RetryAfter *int32
+}
+
+// RecoveryPointsClientGetRPExtendedInfoResponse contains the response from method RecoveryPointsClient.BeginGetRPExtendedInfo.
+type RecoveryPointsClientGetRPExtendedInfoResponse struct {
+	// List of the additional details of recovery points.
+	RPExtendedInfoResourceList
 }
 
 // RecoveryPointsClientGetResponse contains the response from method RecoveryPointsClient.Get.

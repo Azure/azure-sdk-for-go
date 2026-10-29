@@ -200,6 +200,12 @@ func SMDecode(smData []byte) (SMDecodeResult, error) {
 
 	flags := binary.LittleEndian.Uint16(smData[9:11])
 	numSegments := binary.LittleEndian.Uint16(smData[11:13])
+	// The structured message body is negotiated with properties=crc64, so the CRC64 flag
+	// must be present. Rejecting its absence prevents silently skipping validation. Only the
+	// CRC64 bit is required; other flag bits are ignored to preserve forward compatibility.
+	if flags&SMFlagCRC64 == 0 {
+		return SMDecodeResult{}, fmt.Errorf("structured message is missing the required CRC64 flag (flags=0x%04x)", flags)
+	}
 	hasCRC := flags&SMFlagCRC64 != 0
 
 	offset := SMHeaderSize
@@ -240,6 +246,14 @@ func SMDecode(smData []byte) (SMDecodeResult, error) {
 		if expectedMsgCRC != actualMsgCRC {
 			return SMDecodeResult{}, fmt.Errorf("message trailer CRC64 mismatch (expected 0x%016x, got 0x%016x)", expectedMsgCRC, actualMsgCRC)
 		}
+		offset += SMMessageTrailerSize
+	}
+
+	// The parsed message must consume the entire input. Declaring fewer segments and appending
+	// arbitrary trailing bytes would otherwise pass the header length check yet leave those bytes
+	// unvalidated, so reject any leftover data.
+	if offset != len(smData) {
+		return SMDecodeResult{}, fmt.Errorf("structured message has %d unexpected trailing bytes after offset %d", len(smData)-offset, offset)
 	}
 
 	return SMDecodeResult{
@@ -701,6 +715,12 @@ func (d *SMDecoder) parseHeader() error {
 	d.msgLen = binary.LittleEndian.Uint64(buf[1:9])
 	d.flags = binary.LittleEndian.Uint16(buf[9:11])
 	d.numSegments = binary.LittleEndian.Uint16(buf[11:13])
+	// The structured message body is negotiated with properties=crc64, so the CRC64 flag
+	// must be present. Rejecting its absence prevents silently skipping validation. Only the
+	// CRC64 bit is required; other flag bits are ignored to preserve forward compatibility.
+	if d.flags&SMFlagCRC64 == 0 {
+		return fmt.Errorf("structured message is missing the required CRC64 flag (flags=0x%04x)", d.flags)
+	}
 	d.hasCRC = d.flags&SMFlagCRC64 != 0
 
 	if d.hasCRC {

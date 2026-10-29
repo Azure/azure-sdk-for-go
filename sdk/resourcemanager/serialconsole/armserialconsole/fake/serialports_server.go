@@ -119,10 +119,7 @@ func (s *SerialPortsServerTransport) dispatchConnect(req *http.Request) (*http.R
 	if err != nil {
 		return nil, err
 	}
-	parentResourceTypeParam, err := url.PathUnescape(matches[regex.SubexpIndex("parentResourceType")])
-	if err != nil {
-		return nil, err
-	}
+	parentResourceTypeParam := matches[regex.SubexpIndex("parentResourceType")]
 	parentResourceParam, err := url.PathUnescape(matches[regex.SubexpIndex("parentResource")])
 	if err != nil {
 		return nil, err
@@ -168,10 +165,7 @@ func (s *SerialPortsServerTransport) dispatchCreate(req *http.Request) (*http.Re
 	if err != nil {
 		return nil, err
 	}
-	parentResourceTypeParam, err := url.PathUnescape(matches[regex.SubexpIndex("parentResourceType")])
-	if err != nil {
-		return nil, err
-	}
+	parentResourceTypeParam := matches[regex.SubexpIndex("parentResourceType")]
 	parentResourceParam, err := url.PathUnescape(matches[regex.SubexpIndex("parentResource")])
 	if err != nil {
 		return nil, err
@@ -213,10 +207,7 @@ func (s *SerialPortsServerTransport) dispatchGet(req *http.Request) (*http.Respo
 	if err != nil {
 		return nil, err
 	}
-	parentResourceTypeParam, err := url.PathUnescape(matches[regex.SubexpIndex("parentResourceType")])
-	if err != nil {
-		return nil, err
-	}
+	parentResourceTypeParam := matches[regex.SubexpIndex("parentResourceType")]
 	parentResourceParam, err := url.PathUnescape(matches[regex.SubexpIndex("parentResource")])
 	if err != nil {
 		return nil, err
@@ -258,10 +249,7 @@ func (s *SerialPortsServerTransport) dispatchList(req *http.Request) (*http.Resp
 	if err != nil {
 		return nil, err
 	}
-	parentResourceTypeParam, err := url.PathUnescape(matches[regex.SubexpIndex("parentResourceType")])
-	if err != nil {
-		return nil, err
-	}
+	parentResourceTypeParam := matches[regex.SubexpIndex("parentResourceType")]
 	parentResourceParam, err := url.PathUnescape(matches[regex.SubexpIndex("parentResource")])
 	if err != nil {
 		return nil, err

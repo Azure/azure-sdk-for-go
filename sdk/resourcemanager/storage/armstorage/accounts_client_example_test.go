@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2026-04-01/StorageAccountAbortHierarchicalNamespaceMigration.json
+// Generated from example definition: 2026-09-01/StorageAccountAbortHierarchicalNamespaceMigration.json
 func ExampleAccountsClient_BeginAbortHierarchicalNamespaceMigration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -39,35 +39,7 @@ func ExampleAccountsClient_BeginAbortHierarchicalNamespaceMigration() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/StorageAccountCheckNameAvailability.json
-func ExampleAccountsClient_CheckNameAvailability() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armstorage.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewAccountsClient().CheckNameAvailability(ctx, armstorage.AccountCheckNameAvailabilityParameters{
-		Name: to.Ptr("sto3363"),
-		Type: to.Ptr("Microsoft.Storage/storageAccounts"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armstorage.AccountsClientCheckNameAvailabilityResponse{
-	// 	CheckNameAvailabilityResult: armstorage.CheckNameAvailabilityResult{
-	// 		NameAvailable: to.Ptr(true),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-04-01/NfsV3AccountCreate.json
+// Generated from example definition: 2026-09-01/NfsV3AccountCreate.json
 func ExampleAccountsClient_BeginCreate_nfsV3AccountCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -143,7 +115,7 @@ func ExampleAccountsClient_BeginCreate_nfsV3AccountCreate() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/StorageAccountCreate.json
+// Generated from example definition: 2026-09-01/StorageAccountCreate.json
 func ExampleAccountsClient_BeginCreate_storageAccountCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -191,8 +163,10 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreate() {
 				RoutingChoice:             to.Ptr(armstorage.RoutingChoiceMicrosoftRouting),
 			},
 			SasPolicy: &armstorage.SasPolicy{
-				ExpirationAction:    to.Ptr(armstorage.ExpirationActionLog),
-				SasExpirationPeriod: to.Ptr("1.15:59:59"),
+				ExpirationAction:                        to.Ptr(armstorage.ExpirationActionLog),
+				SasExpirationPeriod:                     to.Ptr("1.15:59:59"),
+				RequireUserBoundUserDelegationSas:       to.Ptr(true),
+				RequireUserBoundUserDelegationSasAction: to.Ptr(armstorage.PolicyViolationActionBlock),
 			},
 			GeoPriorityReplicationStatus: &armstorage.GeoPriorityReplicationStatus{
 				IsBlobEnabled: to.Ptr(true),
@@ -211,6 +185,7 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreate() {
 					Enabled: to.Ptr(false),
 				},
 			},
+			AllowCrossTenantDelegationSas: to.Ptr(false),
 		},
 		SKU: &armstorage.SKU{
 			Name: to.Ptr(armstorage.SKUNameStandardGRS),
@@ -244,7 +219,7 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreate() {
 	// 		Properties: &armstorage.AccountProperties{
 	// 			AllowBlobPublicAccess: to.Ptr(false),
 	// 			AllowSharedKeyAccess: to.Ptr(true),
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-24T13:25:33.4863236Z"); return t}()),
+	// 			CreationTime: to.Ptr(time.Date(2017, time.May, 24, 13, 25, 33, 486323600, time.UTC)),
 	// 			Encryption: &armstorage.Encryption{
 	// 				KeySource: to.Ptr(armstorage.KeySourceMicrosoftStorage),
 	// 				RequireInfrastructureEncryption: to.Ptr(false),
@@ -252,20 +227,20 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreate() {
 	// 					Blob: &armstorage.EncryptionService{
 	// 						Enabled: to.Ptr(true),
 	// 						KeyType: to.Ptr(armstorage.KeyTypeAccount),
-	// 						LastEnabledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-11T20:49:31.7036140Z"); return t}()),
+	// 						LastEnabledTime: to.Ptr(time.Date(2019, time.December, 11, 20, 49, 31, 703614000, time.UTC)),
 	// 					},
 	// 					File: &armstorage.EncryptionService{
 	// 						Enabled: to.Ptr(true),
 	// 						KeyType: to.Ptr(armstorage.KeyTypeAccount),
-	// 						LastEnabledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-11T20:49:31.7036140Z"); return t}()),
+	// 						LastEnabledTime: to.Ptr(time.Date(2019, time.December, 11, 20, 49, 31, 703614000, time.UTC)),
 	// 					},
 	// 				},
 	// 			},
 	// 			IsHnsEnabled: to.Ptr(true),
 	// 			IsSftpEnabled: to.Ptr(true),
 	// 			KeyCreationTime: &armstorage.KeyCreationTime{
-	// 				Key1: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-18T04:42:22.4322836Z"); return t}()),
-	// 				Key2: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-18T04:42:22.4322836Z"); return t}()),
+	// 				Key1: to.Ptr(time.Date(2021, time.March, 18, 4, 42, 22, 432283600, time.UTC)),
+	// 				Key2: to.Ptr(time.Date(2021, time.March, 18, 4, 42, 22, 432283600, time.UTC)),
 	// 			},
 	// 			KeyPolicy: &armstorage.KeyPolicy{
 	// 				KeyExpirationPeriodInDays: to.Ptr[int32](20),
@@ -303,6 +278,8 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreate() {
 	// 			SasPolicy: &armstorage.SasPolicy{
 	// 				ExpirationAction: to.Ptr(armstorage.ExpirationActionLog),
 	// 				SasExpirationPeriod: to.Ptr("1.15:59:59"),
+	// 				RequireUserBoundUserDelegationSas: to.Ptr(true),
+	// 				RequireUserBoundUserDelegationSasAction: to.Ptr(armstorage.PolicyViolationActionBlock),
 	// 			},
 	// 			SecondaryLocation: to.Ptr("centraluseuap"),
 	// 			StatusOfPrimary: to.Ptr(armstorage.AccountStatusAvailable),
@@ -325,6 +302,7 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreate() {
 	// 					Enabled: to.Ptr(false),
 	// 				},
 	// 			},
+	// 			AllowCrossTenantDelegationSas: to.Ptr(false),
 	// 		},
 	// 		SKU: &armstorage.SKU{
 	// 			Name: to.Ptr(armstorage.SKUNameStandardGRS),
@@ -338,7 +316,7 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreate() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/StorageAccountCreateAllowedCopyScopeToAAD.json
+// Generated from example definition: 2026-09-01/StorageAccountCreateAllowedCopyScopeToAAD.json
 func ExampleAccountsClient_BeginCreate_storageAccountCreateAllowedCopyScopeToAad() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -418,7 +396,7 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreateAllowedCopyScopeToAad
 	// 			AllowBlobPublicAccess: to.Ptr(false),
 	// 			AllowSharedKeyAccess: to.Ptr(true),
 	// 			AllowedCopyScope: to.Ptr(armstorage.AllowedCopyScopeAAD),
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-24T13:25:33.4863236Z"); return t}()),
+	// 			CreationTime: to.Ptr(time.Date(2017, time.May, 24, 13, 25, 33, 486323600, time.UTC)),
 	// 			Encryption: &armstorage.Encryption{
 	// 				KeySource: to.Ptr(armstorage.KeySourceMicrosoftStorage),
 	// 				RequireInfrastructureEncryption: to.Ptr(false),
@@ -426,19 +404,19 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreateAllowedCopyScopeToAad
 	// 					Blob: &armstorage.EncryptionService{
 	// 						Enabled: to.Ptr(true),
 	// 						KeyType: to.Ptr(armstorage.KeyTypeAccount),
-	// 						LastEnabledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-11T20:49:31.7036140Z"); return t}()),
+	// 						LastEnabledTime: to.Ptr(time.Date(2019, time.December, 11, 20, 49, 31, 703614000, time.UTC)),
 	// 					},
 	// 					File: &armstorage.EncryptionService{
 	// 						Enabled: to.Ptr(true),
 	// 						KeyType: to.Ptr(armstorage.KeyTypeAccount),
-	// 						LastEnabledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-11T20:49:31.7036140Z"); return t}()),
+	// 						LastEnabledTime: to.Ptr(time.Date(2019, time.December, 11, 20, 49, 31, 703614000, time.UTC)),
 	// 					},
 	// 				},
 	// 			},
 	// 			IsHnsEnabled: to.Ptr(true),
 	// 			KeyCreationTime: &armstorage.KeyCreationTime{
-	// 				Key1: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-18T04:42:22.4322836Z"); return t}()),
-	// 				Key2: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-18T04:42:22.4322836Z"); return t}()),
+	// 				Key1: to.Ptr(time.Date(2021, time.March, 18, 4, 42, 22, 432283600, time.UTC)),
+	// 				Key2: to.Ptr(time.Date(2021, time.March, 18, 4, 42, 22, 432283600, time.UTC)),
 	// 			},
 	// 			KeyPolicy: &armstorage.KeyPolicy{
 	// 				KeyExpirationPeriodInDays: to.Ptr[int32](20),
@@ -494,7 +472,7 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreateAllowedCopyScopeToAad
 	// }
 }
 
-// Generated from example definition: 2026-04-01/StorageAccountCreateAllowedCopyScopeToPrivateLink.json
+// Generated from example definition: 2026-09-01/StorageAccountCreateAllowedCopyScopeToPrivateLink.json
 func ExampleAccountsClient_BeginCreate_storageAccountCreateAllowedCopyScopeToPrivateLink() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -574,7 +552,7 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreateAllowedCopyScopeToPri
 	// 			AllowBlobPublicAccess: to.Ptr(false),
 	// 			AllowSharedKeyAccess: to.Ptr(true),
 	// 			AllowedCopyScope: to.Ptr(armstorage.AllowedCopyScopePrivateLink),
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-24T13:25:33.4863236Z"); return t}()),
+	// 			CreationTime: to.Ptr(time.Date(2017, time.May, 24, 13, 25, 33, 486323600, time.UTC)),
 	// 			Encryption: &armstorage.Encryption{
 	// 				KeySource: to.Ptr(armstorage.KeySourceMicrosoftStorage),
 	// 				RequireInfrastructureEncryption: to.Ptr(false),
@@ -582,19 +560,19 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreateAllowedCopyScopeToPri
 	// 					Blob: &armstorage.EncryptionService{
 	// 						Enabled: to.Ptr(true),
 	// 						KeyType: to.Ptr(armstorage.KeyTypeAccount),
-	// 						LastEnabledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-11T20:49:31.7036140Z"); return t}()),
+	// 						LastEnabledTime: to.Ptr(time.Date(2019, time.December, 11, 20, 49, 31, 703614000, time.UTC)),
 	// 					},
 	// 					File: &armstorage.EncryptionService{
 	// 						Enabled: to.Ptr(true),
 	// 						KeyType: to.Ptr(armstorage.KeyTypeAccount),
-	// 						LastEnabledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-11T20:49:31.7036140Z"); return t}()),
+	// 						LastEnabledTime: to.Ptr(time.Date(2019, time.December, 11, 20, 49, 31, 703614000, time.UTC)),
 	// 					},
 	// 				},
 	// 			},
 	// 			IsHnsEnabled: to.Ptr(true),
 	// 			KeyCreationTime: &armstorage.KeyCreationTime{
-	// 				Key1: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-18T04:42:22.4322836Z"); return t}()),
-	// 				Key2: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-18T04:42:22.4322836Z"); return t}()),
+	// 				Key1: to.Ptr(time.Date(2021, time.March, 18, 4, 42, 22, 432283600, time.UTC)),
+	// 				Key2: to.Ptr(time.Date(2021, time.March, 18, 4, 42, 22, 432283600, time.UTC)),
 	// 			},
 	// 			KeyPolicy: &armstorage.KeyPolicy{
 	// 				KeyExpirationPeriodInDays: to.Ptr[int32](20),
@@ -650,7 +628,7 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreateAllowedCopyScopeToPri
 	// }
 }
 
-// Generated from example definition: 2026-04-01/StorageAccountCreateDisallowPublicNetworkAccess.json
+// Generated from example definition: 2026-09-01/StorageAccountCreateDisallowPublicNetworkAccess.json
 func ExampleAccountsClient_BeginCreate_storageAccountCreateDisallowPublicNetworkAccess() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -733,7 +711,7 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreateDisallowPublicNetwork
 	// 		Properties: &armstorage.AccountProperties{
 	// 			AllowBlobPublicAccess: to.Ptr(false),
 	// 			AllowSharedKeyAccess: to.Ptr(true),
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-24T13:25:33.4863236Z"); return t}()),
+	// 			CreationTime: to.Ptr(time.Date(2017, time.May, 24, 13, 25, 33, 486323600, time.UTC)),
 	// 			Encryption: &armstorage.Encryption{
 	// 				KeySource: to.Ptr(armstorage.KeySourceMicrosoftStorage),
 	// 				RequireInfrastructureEncryption: to.Ptr(false),
@@ -741,19 +719,19 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreateDisallowPublicNetwork
 	// 					Blob: &armstorage.EncryptionService{
 	// 						Enabled: to.Ptr(true),
 	// 						KeyType: to.Ptr(armstorage.KeyTypeAccount),
-	// 						LastEnabledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-11T20:49:31.7036140Z"); return t}()),
+	// 						LastEnabledTime: to.Ptr(time.Date(2019, time.December, 11, 20, 49, 31, 703614000, time.UTC)),
 	// 					},
 	// 					File: &armstorage.EncryptionService{
 	// 						Enabled: to.Ptr(true),
 	// 						KeyType: to.Ptr(armstorage.KeyTypeAccount),
-	// 						LastEnabledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-11T20:49:31.7036140Z"); return t}()),
+	// 						LastEnabledTime: to.Ptr(time.Date(2019, time.December, 11, 20, 49, 31, 703614000, time.UTC)),
 	// 					},
 	// 				},
 	// 			},
 	// 			IsHnsEnabled: to.Ptr(true),
 	// 			KeyCreationTime: &armstorage.KeyCreationTime{
-	// 				Key1: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-18T04:42:22.4322836Z"); return t}()),
-	// 				Key2: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-18T04:42:22.4322836Z"); return t}()),
+	// 				Key1: to.Ptr(time.Date(2021, time.March, 18, 4, 42, 22, 432283600, time.UTC)),
+	// 				Key2: to.Ptr(time.Date(2021, time.March, 18, 4, 42, 22, 432283600, time.UTC)),
 	// 			},
 	// 			KeyPolicy: &armstorage.KeyPolicy{
 	// 				KeyExpirationPeriodInDays: to.Ptr[int32](20),
@@ -810,7 +788,7 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreateDisallowPublicNetwork
 	// }
 }
 
-// Generated from example definition: 2026-04-01/StorageAccountCreateDnsEndpointTypeToAzureDnsZone.json
+// Generated from example definition: 2026-09-01/StorageAccountCreateDnsEndpointTypeToAzureDnsZone.json
 func ExampleAccountsClient_BeginCreate_storageAccountCreateDnsEndpointTypeToAzureDnsZone() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -895,7 +873,7 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreateDnsEndpointTypeToAzur
 	// 		Properties: &armstorage.AccountProperties{
 	// 			AllowBlobPublicAccess: to.Ptr(false),
 	// 			AllowSharedKeyAccess: to.Ptr(true),
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-24T13:25:33.4863236Z"); return t}()),
+	// 			CreationTime: to.Ptr(time.Date(2017, time.May, 24, 13, 25, 33, 486323600, time.UTC)),
 	// 			DNSEndpointType: to.Ptr(armstorage.DNSEndpointTypeAzureDNSZone),
 	// 			Encryption: &armstorage.Encryption{
 	// 				KeySource: to.Ptr(armstorage.KeySourceMicrosoftStorage),
@@ -904,20 +882,20 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreateDnsEndpointTypeToAzur
 	// 					Blob: &armstorage.EncryptionService{
 	// 						Enabled: to.Ptr(true),
 	// 						KeyType: to.Ptr(armstorage.KeyTypeAccount),
-	// 						LastEnabledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-11T20:49:31.7036140Z"); return t}()),
+	// 						LastEnabledTime: to.Ptr(time.Date(2019, time.December, 11, 20, 49, 31, 703614000, time.UTC)),
 	// 					},
 	// 					File: &armstorage.EncryptionService{
 	// 						Enabled: to.Ptr(true),
 	// 						KeyType: to.Ptr(armstorage.KeyTypeAccount),
-	// 						LastEnabledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-11T20:49:31.7036140Z"); return t}()),
+	// 						LastEnabledTime: to.Ptr(time.Date(2019, time.December, 11, 20, 49, 31, 703614000, time.UTC)),
 	// 					},
 	// 				},
 	// 			},
 	// 			IsHnsEnabled: to.Ptr(true),
 	// 			IsSftpEnabled: to.Ptr(true),
 	// 			KeyCreationTime: &armstorage.KeyCreationTime{
-	// 				Key1: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-18T04:42:22.4322836Z"); return t}()),
-	// 				Key2: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-18T04:42:22.4322836Z"); return t}()),
+	// 				Key1: to.Ptr(time.Date(2021, time.March, 18, 4, 42, 22, 432283600, time.UTC)),
+	// 				Key2: to.Ptr(time.Date(2021, time.March, 18, 4, 42, 22, 432283600, time.UTC)),
 	// 			},
 	// 			KeyPolicy: &armstorage.KeyPolicy{
 	// 				KeyExpirationPeriodInDays: to.Ptr[int32](20),
@@ -973,7 +951,7 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreateDnsEndpointTypeToAzur
 	// }
 }
 
-// Generated from example definition: 2026-04-01/StorageAccountCreateDnsEndpointTypeToStandard.json
+// Generated from example definition: 2026-09-01/StorageAccountCreateDnsEndpointTypeToStandard.json
 func ExampleAccountsClient_BeginCreate_storageAccountCreateDnsEndpointTypeToStandard() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1058,7 +1036,7 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreateDnsEndpointTypeToStan
 	// 		Properties: &armstorage.AccountProperties{
 	// 			AllowBlobPublicAccess: to.Ptr(false),
 	// 			AllowSharedKeyAccess: to.Ptr(true),
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-24T13:25:33.4863236Z"); return t}()),
+	// 			CreationTime: to.Ptr(time.Date(2017, time.May, 24, 13, 25, 33, 486323600, time.UTC)),
 	// 			DNSEndpointType: to.Ptr(armstorage.DNSEndpointTypeStandard),
 	// 			Encryption: &armstorage.Encryption{
 	// 				KeySource: to.Ptr(armstorage.KeySourceMicrosoftStorage),
@@ -1067,20 +1045,20 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreateDnsEndpointTypeToStan
 	// 					Blob: &armstorage.EncryptionService{
 	// 						Enabled: to.Ptr(true),
 	// 						KeyType: to.Ptr(armstorage.KeyTypeAccount),
-	// 						LastEnabledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-11T20:49:31.7036140Z"); return t}()),
+	// 						LastEnabledTime: to.Ptr(time.Date(2019, time.December, 11, 20, 49, 31, 703614000, time.UTC)),
 	// 					},
 	// 					File: &armstorage.EncryptionService{
 	// 						Enabled: to.Ptr(true),
 	// 						KeyType: to.Ptr(armstorage.KeyTypeAccount),
-	// 						LastEnabledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-11T20:49:31.7036140Z"); return t}()),
+	// 						LastEnabledTime: to.Ptr(time.Date(2019, time.December, 11, 20, 49, 31, 703614000, time.UTC)),
 	// 					},
 	// 				},
 	// 			},
 	// 			IsHnsEnabled: to.Ptr(true),
 	// 			IsSftpEnabled: to.Ptr(true),
 	// 			KeyCreationTime: &armstorage.KeyCreationTime{
-	// 				Key1: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-18T04:42:22.4322836Z"); return t}()),
-	// 				Key2: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-18T04:42:22.4322836Z"); return t}()),
+	// 				Key1: to.Ptr(time.Date(2021, time.March, 18, 4, 42, 22, 432283600, time.UTC)),
+	// 				Key2: to.Ptr(time.Date(2021, time.March, 18, 4, 42, 22, 432283600, time.UTC)),
 	// 			},
 	// 			KeyPolicy: &armstorage.KeyPolicy{
 	// 				KeyExpirationPeriodInDays: to.Ptr[int32](20),
@@ -1136,7 +1114,7 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreateDnsEndpointTypeToStan
 	// }
 }
 
-// Generated from example definition: 2026-04-01/StorageAccountCreateEnablePublicNetworkAccess.json
+// Generated from example definition: 2026-09-01/StorageAccountCreateEnablePublicNetworkAccess.json
 func ExampleAccountsClient_BeginCreate_storageAccountCreateEnablePublicNetworkAccess() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1219,7 +1197,7 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreateEnablePublicNetworkAc
 	// 		Properties: &armstorage.AccountProperties{
 	// 			AllowBlobPublicAccess: to.Ptr(false),
 	// 			AllowSharedKeyAccess: to.Ptr(true),
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-24T13:25:33.4863236Z"); return t}()),
+	// 			CreationTime: to.Ptr(time.Date(2017, time.May, 24, 13, 25, 33, 486323600, time.UTC)),
 	// 			Encryption: &armstorage.Encryption{
 	// 				KeySource: to.Ptr(armstorage.KeySourceMicrosoftStorage),
 	// 				RequireInfrastructureEncryption: to.Ptr(false),
@@ -1227,19 +1205,19 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreateEnablePublicNetworkAc
 	// 					Blob: &armstorage.EncryptionService{
 	// 						Enabled: to.Ptr(true),
 	// 						KeyType: to.Ptr(armstorage.KeyTypeAccount),
-	// 						LastEnabledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-11T20:49:31.7036140Z"); return t}()),
+	// 						LastEnabledTime: to.Ptr(time.Date(2019, time.December, 11, 20, 49, 31, 703614000, time.UTC)),
 	// 					},
 	// 					File: &armstorage.EncryptionService{
 	// 						Enabled: to.Ptr(true),
 	// 						KeyType: to.Ptr(armstorage.KeyTypeAccount),
-	// 						LastEnabledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-11T20:49:31.7036140Z"); return t}()),
+	// 						LastEnabledTime: to.Ptr(time.Date(2019, time.December, 11, 20, 49, 31, 703614000, time.UTC)),
 	// 					},
 	// 				},
 	// 			},
 	// 			IsHnsEnabled: to.Ptr(true),
 	// 			KeyCreationTime: &armstorage.KeyCreationTime{
-	// 				Key1: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-18T04:42:22.4322836Z"); return t}()),
-	// 				Key2: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-18T04:42:22.4322836Z"); return t}()),
+	// 				Key1: to.Ptr(time.Date(2021, time.March, 18, 4, 42, 22, 432283600, time.UTC)),
+	// 				Key2: to.Ptr(time.Date(2021, time.March, 18, 4, 42, 22, 432283600, time.UTC)),
 	// 			},
 	// 			KeyPolicy: &armstorage.KeyPolicy{
 	// 				KeyExpirationPeriodInDays: to.Ptr[int32](20),
@@ -1296,7 +1274,7 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreateEnablePublicNetworkAc
 	// }
 }
 
-// Generated from example definition: 2026-04-01/StorageAccountCreatePremiumBlockBlobStorage.json
+// Generated from example definition: 2026-09-01/StorageAccountCreatePremiumBlockBlobStorage.json
 func ExampleAccountsClient_BeginCreate_storageAccountCreatePremiumBlockBlobStorage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1356,7 +1334,7 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreatePremiumBlockBlobStora
 	// 		Properties: &armstorage.AccountProperties{
 	// 			AccessTier: to.Ptr(armstorage.AccessTierPremium),
 	// 			AllowBlobPublicAccess: to.Ptr(false),
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-24T13:25:33.4863236Z"); return t}()),
+	// 			CreationTime: to.Ptr(time.Date(2017, time.May, 24, 13, 25, 33, 486323600, time.UTC)),
 	// 			Encryption: &armstorage.Encryption{
 	// 				KeySource: to.Ptr(armstorage.KeySourceMicrosoftStorage),
 	// 				RequireInfrastructureEncryption: to.Ptr(false),
@@ -1364,12 +1342,12 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreatePremiumBlockBlobStora
 	// 					Blob: &armstorage.EncryptionService{
 	// 						Enabled: to.Ptr(true),
 	// 						KeyType: to.Ptr(armstorage.KeyTypeAccount),
-	// 						LastEnabledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-11T20:49:31.7036140Z"); return t}()),
+	// 						LastEnabledTime: to.Ptr(time.Date(2019, time.December, 11, 20, 49, 31, 703614000, time.UTC)),
 	// 					},
 	// 					File: &armstorage.EncryptionService{
 	// 						Enabled: to.Ptr(true),
 	// 						KeyType: to.Ptr(armstorage.KeyTypeAccount),
-	// 						LastEnabledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-11T20:49:31.7036140Z"); return t}()),
+	// 						LastEnabledTime: to.Ptr(time.Date(2019, time.December, 11, 20, 49, 31, 703614000, time.UTC)),
 	// 					},
 	// 				},
 	// 			},
@@ -1397,7 +1375,7 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreatePremiumBlockBlobStora
 	// }
 }
 
-// Generated from example definition: 2026-04-01/StorageAccountCreateUserAssignedEncryptionIdentityWithCMK.json
+// Generated from example definition: 2026-09-01/StorageAccountCreateUserAssignedEncryptionIdentityWithCMK.json
 func ExampleAccountsClient_BeginCreate_storageAccountCreateUserAssignedEncryptionIdentityWithCmk() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1472,7 +1450,7 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreateUserAssignedEncryptio
 	// 		Location: to.Ptr("eastus"),
 	// 		Properties: &armstorage.AccountProperties{
 	// 			AccessTier: to.Ptr(armstorage.AccessTierHot),
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-15T00:43:14.0839093Z"); return t}()),
+	// 			CreationTime: to.Ptr(time.Date(2020, time.December, 15, 0, 43, 14, 83909300, time.UTC)),
 	// 			Encryption: &armstorage.Encryption{
 	// 				EncryptionIdentity: &armstorage.EncryptionIdentity{
 	// 					EncryptionUserAssignedIdentity: to.Ptr("/subscriptions/{subscription-id}/resourcegroups/res9101/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{managed-identity-name}"),
@@ -1483,18 +1461,18 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreateUserAssignedEncryptio
 	// 					KeyName: to.Ptr("wrappingKey"),
 	// 					KeyVaultURI: to.Ptr("https://myvault8569.vault.azure.net"),
 	// 					KeyVersion: to.Ptr(""),
-	// 					LastKeyRotationTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-13T20:36:23.7023290Z"); return t}()),
+	// 					LastKeyRotationTimestamp: to.Ptr(time.Date(2019, time.December, 13, 20, 36, 23, 702329000, time.UTC)),
 	// 				},
 	// 				Services: &armstorage.EncryptionServices{
 	// 					Blob: &armstorage.EncryptionService{
 	// 						Enabled: to.Ptr(true),
 	// 						KeyType: to.Ptr(armstorage.KeyTypeAccount),
-	// 						LastEnabledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-15T00:43:14.1739587Z"); return t}()),
+	// 						LastEnabledTime: to.Ptr(time.Date(2020, time.December, 15, 0, 43, 14, 173958700, time.UTC)),
 	// 					},
 	// 					File: &armstorage.EncryptionService{
 	// 						Enabled: to.Ptr(true),
 	// 						KeyType: to.Ptr(armstorage.KeyTypeAccount),
-	// 						LastEnabledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-15T00:43:14.1739587Z"); return t}()),
+	// 						LastEnabledTime: to.Ptr(time.Date(2020, time.December, 15, 0, 43, 14, 173958700, time.UTC)),
 	// 					},
 	// 				},
 	// 			},
@@ -1531,7 +1509,7 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreateUserAssignedEncryptio
 	// }
 }
 
-// Generated from example definition: 2026-04-01/StorageAccountCreateUserAssignedIdentityWithFederatedIdentityClientId.json
+// Generated from example definition: 2026-09-01/StorageAccountCreateUserAssignedIdentityWithFederatedIdentityClientId.json
 func ExampleAccountsClient_BeginCreate_storageAccountCreateUserAssignedIdentityWithFederatedIdentityClientId() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1607,7 +1585,7 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreateUserAssignedIdentityW
 	// 		Location: to.Ptr("eastus"),
 	// 		Properties: &armstorage.AccountProperties{
 	// 			AccessTier: to.Ptr(armstorage.AccessTierHot),
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-15T00:43:14.0839093Z"); return t}()),
+	// 			CreationTime: to.Ptr(time.Date(2020, time.December, 15, 0, 43, 14, 83909300, time.UTC)),
 	// 			Encryption: &armstorage.Encryption{
 	// 				EncryptionIdentity: &armstorage.EncryptionIdentity{
 	// 					EncryptionFederatedIdentityClientID: to.Ptr("f83c6b1b-4d34-47e4-bb34-9d83df58b540"),
@@ -1619,18 +1597,18 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreateUserAssignedIdentityW
 	// 					KeyName: to.Ptr("wrappingKey"),
 	// 					KeyVaultURI: to.Ptr("https://myvault8569.vault.azure.net"),
 	// 					KeyVersion: to.Ptr(""),
-	// 					LastKeyRotationTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-13T20:36:23.7023290Z"); return t}()),
+	// 					LastKeyRotationTimestamp: to.Ptr(time.Date(2019, time.December, 13, 20, 36, 23, 702329000, time.UTC)),
 	// 				},
 	// 				Services: &armstorage.EncryptionServices{
 	// 					Blob: &armstorage.EncryptionService{
 	// 						Enabled: to.Ptr(true),
 	// 						KeyType: to.Ptr(armstorage.KeyTypeAccount),
-	// 						LastEnabledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-15T00:43:14.1739587Z"); return t}()),
+	// 						LastEnabledTime: to.Ptr(time.Date(2020, time.December, 15, 0, 43, 14, 173958700, time.UTC)),
 	// 					},
 	// 					File: &armstorage.EncryptionService{
 	// 						Enabled: to.Ptr(true),
 	// 						KeyType: to.Ptr(armstorage.KeyTypeAccount),
-	// 						LastEnabledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-15T00:43:14.1739587Z"); return t}()),
+	// 						LastEnabledTime: to.Ptr(time.Date(2020, time.December, 15, 0, 43, 14, 173958700, time.UTC)),
 	// 					},
 	// 				},
 	// 			},
@@ -1667,7 +1645,7 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreateUserAssignedIdentityW
 	// }
 }
 
-// Generated from example definition: 2026-04-01/StorageAccountCreateWithDataCollaborationPolicy.json
+// Generated from example definition: 2026-09-01/StorageAccountCreateWithDataCollaborationPolicy.json
 func ExampleAccountsClient_BeginCreate_storageAccountCreateWithDataCollaborationPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1710,7 +1688,7 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreateWithDataCollaboration
 	// 		Kind: to.Ptr(armstorage.KindStorage),
 	// 		Location: to.Ptr("eastus"),
 	// 		Properties: &armstorage.AccountProperties{
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-24T13:25:33.4863236Z"); return t}()),
+	// 			CreationTime: to.Ptr(time.Date(2017, time.May, 24, 13, 25, 33, 486323600, time.UTC)),
 	// 			PrimaryEndpoints: &armstorage.Endpoints{
 	// 				Blob: to.Ptr("https://sto4445.blob.core.windows.net/"),
 	// 				Dfs: to.Ptr("https://sto4445.dfs.core.windows.net/"),
@@ -1735,7 +1713,7 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreateWithDataCollaboration
 	// }
 }
 
-// Generated from example definition: 2026-04-01/StorageAccountCreateWithImmutabilityPolicy.json
+// Generated from example definition: 2026-09-01/StorageAccountCreateWithImmutabilityPolicy.json
 func ExampleAccountsClient_BeginCreate_storageAccountCreateWithImmutabilityPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1789,7 +1767,7 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreateWithImmutabilityPolic
 	// 		Kind: to.Ptr(armstorage.KindStorage),
 	// 		Location: to.Ptr("eastus"),
 	// 		Properties: &armstorage.AccountProperties{
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-24T13:25:33.4863236Z"); return t}()),
+	// 			CreationTime: to.Ptr(time.Date(2017, time.May, 24, 13, 25, 33, 486323600, time.UTC)),
 	// 			ImmutableStorageWithVersioning: &armstorage.ImmutableStorageAccount{
 	// 				Enabled: to.Ptr(true),
 	// 				ImmutabilityPolicy: &armstorage.AccountImmutabilityPolicyProperties{
@@ -1817,7 +1795,7 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreateWithImmutabilityPolic
 	// }
 }
 
-// Generated from example definition: 2026-04-01/StorageAccountCreateWithSmartAccessTier.json
+// Generated from example definition: 2026-09-01/StorageAccountCreateWithSmartAccessTier.json
 func ExampleAccountsClient_BeginCreate_storageAccountCreateWithSmartAccessTier() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1905,7 +1883,7 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreateWithSmartAccessTier()
 	// 		Properties: &armstorage.AccountProperties{
 	// 			AllowBlobPublicAccess: to.Ptr(false),
 	// 			AllowSharedKeyAccess: to.Ptr(true),
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-24T13:25:33.4863236Z"); return t}()),
+	// 			CreationTime: to.Ptr(time.Date(2017, time.May, 24, 13, 25, 33, 486323600, time.UTC)),
 	// 			Encryption: &armstorage.Encryption{
 	// 				KeySource: to.Ptr(armstorage.KeySourceMicrosoftStorage),
 	// 				RequireInfrastructureEncryption: to.Ptr(false),
@@ -1913,20 +1891,20 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreateWithSmartAccessTier()
 	// 					Blob: &armstorage.EncryptionService{
 	// 						Enabled: to.Ptr(true),
 	// 						KeyType: to.Ptr(armstorage.KeyTypeAccount),
-	// 						LastEnabledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-11T20:49:31.7036140Z"); return t}()),
+	// 						LastEnabledTime: to.Ptr(time.Date(2019, time.December, 11, 20, 49, 31, 703614000, time.UTC)),
 	// 					},
 	// 					File: &armstorage.EncryptionService{
 	// 						Enabled: to.Ptr(true),
 	// 						KeyType: to.Ptr(armstorage.KeyTypeAccount),
-	// 						LastEnabledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-11T20:49:31.7036140Z"); return t}()),
+	// 						LastEnabledTime: to.Ptr(time.Date(2019, time.December, 11, 20, 49, 31, 703614000, time.UTC)),
 	// 					},
 	// 				},
 	// 			},
 	// 			IsHnsEnabled: to.Ptr(true),
 	// 			IsSftpEnabled: to.Ptr(true),
 	// 			KeyCreationTime: &armstorage.KeyCreationTime{
-	// 				Key1: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-18T04:42:22.4322836Z"); return t}()),
-	// 				Key2: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-18T04:42:22.4322836Z"); return t}()),
+	// 				Key1: to.Ptr(time.Date(2021, time.March, 18, 4, 42, 22, 432283600, time.UTC)),
+	// 				Key2: to.Ptr(time.Date(2021, time.March, 18, 4, 42, 22, 432283600, time.UTC)),
 	// 			},
 	// 			KeyPolicy: &armstorage.KeyPolicy{
 	// 				KeyExpirationPeriodInDays: to.Ptr[int32](20),
@@ -1985,7 +1963,65 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreateWithSmartAccessTier()
 	// }
 }
 
-// Generated from example definition: 2026-04-01/StorageAccountCreate_placement.json
+// Generated from example definition: 2026-09-01/StorageAccountCreateWithTurboTier.json
+func ExampleAccountsClient_BeginCreate_storageAccountCreateWithTurboTier() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armstorage.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewAccountsClient().BeginCreate(ctx, "res9101", "staturbocontoso01", armstorage.AccountCreateParameters{
+		Kind:     to.Ptr(armstorage.KindStorageV2),
+		Location: to.Ptr("eastus2"),
+		Properties: &armstorage.AccountPropertiesCreateParameters{
+			AccessTier: to.Ptr(armstorage.AccessTierHot),
+			TurboTier: &armstorage.TurboTier{
+				Status:        to.Ptr(armstorage.TurboTierStatusEnabled),
+				TargetPercent: to.Ptr[int32](10),
+			},
+		},
+		SKU: &armstorage.SKU{
+			Name: to.Ptr(armstorage.SKUNameStandardLRS),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armstorage.AccountsClientCreateResponse{
+	// 	Account: armstorage.Account{
+	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res9101/providers/Microsoft.Storage/storageAccounts/staturbocontoso01"),
+	// 		Kind: to.Ptr(armstorage.KindStorageV2),
+	// 		Location: to.Ptr("eastus2"),
+	// 		Name: to.Ptr("staturbocontoso01"),
+	// 		Properties: &armstorage.AccountProperties{
+	// 			AccessTier: to.Ptr(armstorage.AccessTierHot),
+	// 			ProvisioningState: to.Ptr(armstorage.ProvisioningStateSucceeded),
+	// 			TurboTier: &armstorage.TurboTier{
+	// 				Status: to.Ptr(armstorage.TurboTierStatusEnabled),
+	// 				TargetPercent: to.Ptr[int32](10),
+	// 			},
+	// 		},
+	// 		SKU: &armstorage.SKU{
+	// 			Name: to.Ptr(armstorage.SKUNameStandardLRS),
+	// 			Tier: to.Ptr(armstorage.SKUTierStandard),
+	// 		},
+	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-09-01/StorageAccountCreate_placement.json
 func ExampleAccountsClient_BeginCreate_storageAccountCreatePlacement() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2075,7 +2111,7 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreatePlacement() {
 	// 		Properties: &armstorage.AccountProperties{
 	// 			AllowBlobPublicAccess: to.Ptr(false),
 	// 			AllowSharedKeyAccess: to.Ptr(true),
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-24T13:25:33.4863236Z"); return t}()),
+	// 			CreationTime: to.Ptr(time.Date(2017, time.May, 24, 13, 25, 33, 486323600, time.UTC)),
 	// 			Encryption: &armstorage.Encryption{
 	// 				KeySource: to.Ptr(armstorage.KeySourceMicrosoftStorage),
 	// 				RequireInfrastructureEncryption: to.Ptr(false),
@@ -2083,20 +2119,20 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreatePlacement() {
 	// 					Blob: &armstorage.EncryptionService{
 	// 						Enabled: to.Ptr(true),
 	// 						KeyType: to.Ptr(armstorage.KeyTypeAccount),
-	// 						LastEnabledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-11T20:49:31.7036140Z"); return t}()),
+	// 						LastEnabledTime: to.Ptr(time.Date(2019, time.December, 11, 20, 49, 31, 703614000, time.UTC)),
 	// 					},
 	// 					File: &armstorage.EncryptionService{
 	// 						Enabled: to.Ptr(true),
 	// 						KeyType: to.Ptr(armstorage.KeyTypeAccount),
-	// 						LastEnabledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-11T20:49:31.7036140Z"); return t}()),
+	// 						LastEnabledTime: to.Ptr(time.Date(2019, time.December, 11, 20, 49, 31, 703614000, time.UTC)),
 	// 					},
 	// 				},
 	// 			},
 	// 			IsHnsEnabled: to.Ptr(true),
 	// 			IsSftpEnabled: to.Ptr(true),
 	// 			KeyCreationTime: &armstorage.KeyCreationTime{
-	// 				Key1: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-18T04:42:22.4322836Z"); return t}()),
-	// 				Key2: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-18T04:42:22.4322836Z"); return t}()),
+	// 				Key1: to.Ptr(time.Date(2021, time.March, 18, 4, 42, 22, 432283600, time.UTC)),
+	// 				Key2: to.Ptr(time.Date(2021, time.March, 18, 4, 42, 22, 432283600, time.UTC)),
 	// 			},
 	// 			KeyPolicy: &armstorage.KeyPolicy{
 	// 				KeyExpirationPeriodInDays: to.Ptr[int32](20),
@@ -2155,7 +2191,7 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreatePlacement() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/StorageAccountCreate_zones.json
+// Generated from example definition: 2026-09-01/StorageAccountCreate_zones.json
 func ExampleAccountsClient_BeginCreate_storageAccountCreateZones() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2242,7 +2278,7 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreateZones() {
 	// 		Properties: &armstorage.AccountProperties{
 	// 			AllowBlobPublicAccess: to.Ptr(false),
 	// 			AllowSharedKeyAccess: to.Ptr(true),
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-24T13:25:33.4863236Z"); return t}()),
+	// 			CreationTime: to.Ptr(time.Date(2017, time.May, 24, 13, 25, 33, 486323600, time.UTC)),
 	// 			Encryption: &armstorage.Encryption{
 	// 				KeySource: to.Ptr(armstorage.KeySourceMicrosoftStorage),
 	// 				RequireInfrastructureEncryption: to.Ptr(false),
@@ -2250,20 +2286,20 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreateZones() {
 	// 					Blob: &armstorage.EncryptionService{
 	// 						Enabled: to.Ptr(true),
 	// 						KeyType: to.Ptr(armstorage.KeyTypeAccount),
-	// 						LastEnabledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-11T20:49:31.7036140Z"); return t}()),
+	// 						LastEnabledTime: to.Ptr(time.Date(2019, time.December, 11, 20, 49, 31, 703614000, time.UTC)),
 	// 					},
 	// 					File: &armstorage.EncryptionService{
 	// 						Enabled: to.Ptr(true),
 	// 						KeyType: to.Ptr(armstorage.KeyTypeAccount),
-	// 						LastEnabledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-11T20:49:31.7036140Z"); return t}()),
+	// 						LastEnabledTime: to.Ptr(time.Date(2019, time.December, 11, 20, 49, 31, 703614000, time.UTC)),
 	// 					},
 	// 				},
 	// 			},
 	// 			IsHnsEnabled: to.Ptr(true),
 	// 			IsSftpEnabled: to.Ptr(true),
 	// 			KeyCreationTime: &armstorage.KeyCreationTime{
-	// 				Key1: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-18T04:42:22.4322836Z"); return t}()),
-	// 				Key2: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-18T04:42:22.4322836Z"); return t}()),
+	// 				Key1: to.Ptr(time.Date(2021, time.March, 18, 4, 42, 22, 432283600, time.UTC)),
+	// 				Key2: to.Ptr(time.Date(2021, time.March, 18, 4, 42, 22, 432283600, time.UTC)),
 	// 			},
 	// 			KeyPolicy: &armstorage.KeyPolicy{
 	// 				KeyExpirationPeriodInDays: to.Ptr[int32](20),
@@ -2322,7 +2358,7 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreateZones() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/StorageAccountPostMigration.json
+// Generated from example definition: 2026-09-01/StorageAccountPostMigration.json
 func ExampleAccountsClient_BeginCustomerInitiatedMigration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2352,29 +2388,7 @@ func ExampleAccountsClient_BeginCustomerInitiatedMigration() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/StorageAccountDelete.json
-func ExampleAccountsClient_Delete() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armstorage.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewAccountsClient().Delete(ctx, "res4228", "sto2434", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armstorage.AccountsClientDeleteResponse{
-	// }
-}
-
-// Generated from example definition: 2026-04-01/StorageAccountFailover.json
+// Generated from example definition: 2026-09-01/StorageAccountFailover.json
 func ExampleAccountsClient_BeginFailover_storageAccountFailover() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2400,7 +2414,7 @@ func ExampleAccountsClient_BeginFailover_storageAccountFailover() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/StorageAccountFailoverPlanned.json
+// Generated from example definition: 2026-09-01/StorageAccountFailoverPlanned.json
 func ExampleAccountsClient_BeginFailover_storageAccountFailoverPlanned() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2426,7 +2440,138 @@ func ExampleAccountsClient_BeginFailover_storageAccountFailoverPlanned() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/StorageAccountGetMigrationFailed.json
+// Generated from example definition: 2026-09-01/StorageAccountHierarchicalNamespaceMigration.json
+func ExampleAccountsClient_BeginHierarchicalNamespaceMigration() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armstorage.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewAccountsClient().BeginHierarchicalNamespaceMigration(ctx, "res4228", "sto2434", "HnsOnValidationRequest", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armstorage.AccountsClientHierarchicalNamespaceMigrationResponse{
+	// }
+}
+
+// Generated from example definition: 2026-09-01/BlobRangesRestore.json
+func ExampleAccountsClient_BeginRestoreBlobRanges() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armstorage.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewAccountsClient().BeginRestoreBlobRanges(ctx, "res9101", "sto4445", armstorage.BlobRestoreParameters{
+		BlobRanges: []*armstorage.BlobRestoreRange{
+			{
+				EndRange:   to.Ptr("container/blobpath2"),
+				StartRange: to.Ptr("container/blobpath1"),
+			},
+			{
+				EndRange:   to.Ptr(""),
+				StartRange: to.Ptr("container2/blobpath3"),
+			},
+		},
+		TimeToRestore: to.Ptr(time.Date(2019, time.April, 20, 15, 30, 0, 0, time.UTC)),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armstorage.AccountsClientRestoreBlobRangesResponse{
+	// 	BlobRestoreStatus: armstorage.BlobRestoreStatus{
+	// 		Parameters: &armstorage.BlobRestoreParameters{
+	// 			BlobRanges: []*armstorage.BlobRestoreRange{
+	// 				{
+	// 					EndRange: to.Ptr("container/blobpath2"),
+	// 					StartRange: to.Ptr("container/blobpath1"),
+	// 				},
+	// 				{
+	// 					EndRange: to.Ptr(""),
+	// 					StartRange: to.Ptr("container2/blobpath3"),
+	// 				},
+	// 			},
+	// 			TimeToRestore: to.Ptr(time.Date(2019, time.April, 20, 15, 30, 0, 0, time.UTC)),
+	// 		},
+	// 		RestoreID: to.Ptr("{restore_id}"),
+	// 		Status: to.Ptr(armstorage.BlobRestoreProgressStatus("Succeeded")),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-09-01/StorageAccountCheckNameAvailability.json
+func ExampleAccountsClient_CheckNameAvailability() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armstorage.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewAccountsClient().CheckNameAvailability(ctx, armstorage.AccountCheckNameAvailabilityParameters{
+		Name: to.Ptr("sto3363"),
+		Type: to.Ptr("Microsoft.Storage/storageAccounts"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armstorage.AccountsClientCheckNameAvailabilityResponse{
+	// 	CheckNameAvailabilityResult: armstorage.CheckNameAvailabilityResult{
+	// 		NameAvailable: to.Ptr(true),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-09-01/StorageAccountDelete.json
+func ExampleAccountsClient_Delete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armstorage.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewAccountsClient().Delete(ctx, "res4228", "sto2434", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armstorage.AccountsClientDeleteResponse{
+	// }
+}
+
+// Generated from example definition: 2026-09-01/StorageAccountGetMigrationFailed.json
 func ExampleAccountsClient_GetCustomerInitiatedMigration_storageAccountGetMigrationFailed() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2459,7 +2604,7 @@ func ExampleAccountsClient_GetCustomerInitiatedMigration_storageAccountGetMigrat
 	// }
 }
 
-// Generated from example definition: 2026-04-01/StorageAccountGetMigrationInProgress.json
+// Generated from example definition: 2026-09-01/StorageAccountGetMigrationInProgress.json
 func ExampleAccountsClient_GetCustomerInitiatedMigration_storageAccountGetMigrationInProgress() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2490,7 +2635,7 @@ func ExampleAccountsClient_GetCustomerInitiatedMigration_storageAccountGetMigrat
 	// }
 }
 
-// Generated from example definition: 2026-04-01/StorageAccountGetAsyncSkuConversionStatus.json
+// Generated from example definition: 2026-09-01/StorageAccountGetAsyncSkuConversionStatus.json
 func ExampleAccountsClient_GetProperties_storageAccountGetAsyncSkuConversionStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2533,7 +2678,7 @@ func ExampleAccountsClient_GetProperties_storageAccountGetAsyncSkuConversionStat
 	// }
 }
 
-// Generated from example definition: 2026-04-01/StorageAccountGetProperties.json
+// Generated from example definition: 2026-09-01/StorageAccountGetProperties.json
 func ExampleAccountsClient_GetProperties_storageAccountGetProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2560,32 +2705,32 @@ func ExampleAccountsClient_GetProperties_storageAccountGetProperties() {
 	// 		Location: to.Ptr("eastus2(stage)"),
 	// 		Properties: &armstorage.AccountProperties{
 	// 			AccountMigrationInProgress: to.Ptr(false),
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-01T02:42:41.7633306Z"); return t}()),
+	// 			CreationTime: to.Ptr(time.Date(2017, time.June, 1, 2, 42, 41, 763330600, time.UTC)),
 	// 			Encryption: &armstorage.Encryption{
 	// 				KeySource: to.Ptr(armstorage.KeySourceMicrosoftStorage),
 	// 				Services: &armstorage.EncryptionServices{
 	// 					Blob: &armstorage.EncryptionService{
 	// 						Enabled: to.Ptr(true),
 	// 						KeyType: to.Ptr(armstorage.KeyTypeAccount),
-	// 						LastEnabledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-11T20:49:31.7036140Z"); return t}()),
+	// 						LastEnabledTime: to.Ptr(time.Date(2019, time.December, 11, 20, 49, 31, 703614000, time.UTC)),
 	// 					},
 	// 					File: &armstorage.EncryptionService{
 	// 						Enabled: to.Ptr(true),
 	// 						KeyType: to.Ptr(armstorage.KeyTypeAccount),
-	// 						LastEnabledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-11T20:49:31.7036140Z"); return t}()),
+	// 						LastEnabledTime: to.Ptr(time.Date(2019, time.December, 11, 20, 49, 31, 703614000, time.UTC)),
 	// 					},
 	// 				},
 	// 			},
 	// 			GeoReplicationStats: &armstorage.GeoReplicationStats{
 	// 				CanFailover: to.Ptr(true),
-	// 				LastSyncTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-30T00:25:34Z"); return t}()),
+	// 				LastSyncTime: to.Ptr(time.Date(2018, time.October, 30, 0, 25, 34, 0, time.UTC)),
 	// 				Status: to.Ptr(armstorage.GeoReplicationStatusLive),
 	// 			},
 	// 			IsHnsEnabled: to.Ptr(true),
 	// 			IsSKUConversionBlocked: to.Ptr(false),
 	// 			KeyCreationTime: &armstorage.KeyCreationTime{
-	// 				Key1: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-18T04:42:22.4322836Z"); return t}()),
-	// 				Key2: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-18T04:42:22.4322836Z"); return t}()),
+	// 				Key1: to.Ptr(time.Date(2021, time.March, 18, 4, 42, 22, 432283600, time.UTC)),
+	// 				Key2: to.Ptr(time.Date(2021, time.March, 18, 4, 42, 22, 432283600, time.UTC)),
 	// 			},
 	// 			NetworkRuleSet: &armstorage.NetworkRuleSet{
 	// 				Bypass: to.Ptr(armstorage.BypassAzureServices),
@@ -2637,6 +2782,13 @@ func ExampleAccountsClient_GetProperties_storageAccountGetProperties() {
 	// 			GeoPriorityReplicationStatus: &armstorage.GeoPriorityReplicationStatus{
 	// 				IsBlobEnabled: to.Ptr(true),
 	// 			},
+	// 			SasPolicy: &armstorage.SasPolicy{
+	// 				ExpirationAction: to.Ptr(armstorage.ExpirationActionLog),
+	// 				SasExpirationPeriod: to.Ptr("1.15:59:59"),
+	// 				RequireUserBoundUserDelegationSas: to.Ptr(true),
+	// 				RequireUserBoundUserDelegationSasAction: to.Ptr(armstorage.PolicyViolationActionBlock),
+	// 			},
+	// 			AllowCrossTenantDelegationSas: to.Ptr(false),
 	// 		},
 	// 		SKU: &armstorage.SKU{
 	// 			Name: to.Ptr(armstorage.SKUNameStandardGRS),
@@ -2650,7 +2802,7 @@ func ExampleAccountsClient_GetProperties_storageAccountGetProperties() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/StorageAccountGetPropertiesCMKEnabled.json
+// Generated from example definition: 2026-09-01/StorageAccountGetPropertiesCMKEnabled.json
 func ExampleAccountsClient_GetProperties_storageAccountGetPropertiesCmkEnabled() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2681,7 +2833,7 @@ func ExampleAccountsClient_GetProperties_storageAccountGetPropertiesCmkEnabled()
 	// 		Kind: to.Ptr(armstorage.KindStorage),
 	// 		Location: to.Ptr("eastus2(stage)"),
 	// 		Properties: &armstorage.AccountProperties{
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-01T02:42:41.7633306Z"); return t}()),
+	// 			CreationTime: to.Ptr(time.Date(2017, time.June, 1, 2, 42, 41, 763330600, time.UTC)),
 	// 			Encryption: &armstorage.Encryption{
 	// 				KeySource: to.Ptr(armstorage.KeySourceMicrosoftKeyvault),
 	// 				KeyVaultProperties: &armstorage.KeyVaultProperties{
@@ -2689,24 +2841,24 @@ func ExampleAccountsClient_GetProperties_storageAccountGetPropertiesCmkEnabled()
 	// 					KeyName: to.Ptr("wrappingKey"),
 	// 					KeyVaultURI: to.Ptr("https://myvault8569.vault.azure.net"),
 	// 					KeyVersion: to.Ptr(""),
-	// 					LastKeyRotationTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-13T20:36:23.7023290Z"); return t}()),
+	// 					LastKeyRotationTimestamp: to.Ptr(time.Date(2019, time.December, 13, 20, 36, 23, 702329000, time.UTC)),
 	// 				},
 	// 				Services: &armstorage.EncryptionServices{
 	// 					Blob: &armstorage.EncryptionService{
 	// 						Enabled: to.Ptr(true),
 	// 						KeyType: to.Ptr(armstorage.KeyTypeAccount),
-	// 						LastEnabledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-11T20:49:31.7036140Z"); return t}()),
+	// 						LastEnabledTime: to.Ptr(time.Date(2019, time.December, 11, 20, 49, 31, 703614000, time.UTC)),
 	// 					},
 	// 					File: &armstorage.EncryptionService{
 	// 						Enabled: to.Ptr(true),
 	// 						KeyType: to.Ptr(armstorage.KeyTypeAccount),
-	// 						LastEnabledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-11T20:49:31.7036140Z"); return t}()),
+	// 						LastEnabledTime: to.Ptr(time.Date(2019, time.December, 11, 20, 49, 31, 703614000, time.UTC)),
 	// 					},
 	// 				},
 	// 			},
 	// 			GeoReplicationStats: &armstorage.GeoReplicationStats{
 	// 				CanFailover: to.Ptr(true),
-	// 				LastSyncTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-30T00:25:34Z"); return t}()),
+	// 				LastSyncTime: to.Ptr(time.Date(2018, time.October, 30, 0, 25, 34, 0, time.UTC)),
 	// 				Status: to.Ptr(armstorage.GeoReplicationStatusLive),
 	// 			},
 	// 			IsHnsEnabled: to.Ptr(true),
@@ -2766,7 +2918,7 @@ func ExampleAccountsClient_GetProperties_storageAccountGetPropertiesCmkEnabled()
 	// }
 }
 
-// Generated from example definition: 2026-04-01/StorageAccountGetPropertiesCMKVersionExpirationTime.json
+// Generated from example definition: 2026-09-01/StorageAccountGetPropertiesCMKVersionExpirationTime.json
 func ExampleAccountsClient_GetProperties_storageAccountGetPropertiesCmkVersionExpirationTime() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2797,33 +2949,33 @@ func ExampleAccountsClient_GetProperties_storageAccountGetPropertiesCmkVersionEx
 	// 		Kind: to.Ptr(armstorage.KindStorage),
 	// 		Location: to.Ptr("eastus2(stage)"),
 	// 		Properties: &armstorage.AccountProperties{
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-01T02:42:41.7633306Z"); return t}()),
+	// 			CreationTime: to.Ptr(time.Date(2017, time.June, 1, 2, 42, 41, 763330600, time.UTC)),
 	// 			Encryption: &armstorage.Encryption{
 	// 				KeySource: to.Ptr(armstorage.KeySourceMicrosoftKeyvault),
 	// 				KeyVaultProperties: &armstorage.KeyVaultProperties{
-	// 					CurrentVersionedKeyExpirationTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-13T20:36:23.7023290Z"); return t}()),
+	// 					CurrentVersionedKeyExpirationTimestamp: to.Ptr(time.Date(2019, time.December, 13, 20, 36, 23, 702329000, time.UTC)),
 	// 					CurrentVersionedKeyIdentifier: to.Ptr("https://myvault8569.vault.azure.net/keys/wrappingKey/0682afdd9c104f4285df20107e956cad"),
 	// 					KeyName: to.Ptr("wrappingKey"),
 	// 					KeyVaultURI: to.Ptr("https://myvault8569.vault.azure.net"),
 	// 					KeyVersion: to.Ptr(""),
-	// 					LastKeyRotationTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-13T20:36:23.7023290Z"); return t}()),
+	// 					LastKeyRotationTimestamp: to.Ptr(time.Date(2019, time.December, 13, 20, 36, 23, 702329000, time.UTC)),
 	// 				},
 	// 				Services: &armstorage.EncryptionServices{
 	// 					Blob: &armstorage.EncryptionService{
 	// 						Enabled: to.Ptr(true),
 	// 						KeyType: to.Ptr(armstorage.KeyTypeAccount),
-	// 						LastEnabledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-11T20:49:31.7036140Z"); return t}()),
+	// 						LastEnabledTime: to.Ptr(time.Date(2019, time.December, 11, 20, 49, 31, 703614000, time.UTC)),
 	// 					},
 	// 					File: &armstorage.EncryptionService{
 	// 						Enabled: to.Ptr(true),
 	// 						KeyType: to.Ptr(armstorage.KeyTypeAccount),
-	// 						LastEnabledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-11T20:49:31.7036140Z"); return t}()),
+	// 						LastEnabledTime: to.Ptr(time.Date(2019, time.December, 11, 20, 49, 31, 703614000, time.UTC)),
 	// 					},
 	// 				},
 	// 			},
 	// 			GeoReplicationStats: &armstorage.GeoReplicationStats{
 	// 				CanFailover: to.Ptr(true),
-	// 				LastSyncTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-30T00:25:34Z"); return t}()),
+	// 				LastSyncTime: to.Ptr(time.Date(2018, time.October, 30, 0, 25, 34, 0, time.UTC)),
 	// 				Status: to.Ptr(armstorage.GeoReplicationStatusLive),
 	// 			},
 	// 			IsHnsEnabled: to.Ptr(true),
@@ -2883,7 +3035,7 @@ func ExampleAccountsClient_GetProperties_storageAccountGetPropertiesCmkVersionEx
 	// }
 }
 
-// Generated from example definition: 2026-04-01/StorageAccountGetPropertiesGeoReplicationStatscanFailoverFalse.json
+// Generated from example definition: 2026-09-01/StorageAccountGetPropertiesGeoReplicationStatscanFailoverFalse.json
 func ExampleAccountsClient_GetProperties_storageAccountGetPropertiesGeoReplicationStatscanFailoverFalse() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2911,26 +3063,26 @@ func ExampleAccountsClient_GetProperties_storageAccountGetPropertiesGeoReplicati
 	// 		Location: to.Ptr("eastus2(stage)"),
 	// 		Properties: &armstorage.AccountProperties{
 	// 			AccountMigrationInProgress: to.Ptr(false),
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-01T02:42:41.7633306Z"); return t}()),
+	// 			CreationTime: to.Ptr(time.Date(2017, time.June, 1, 2, 42, 41, 763330600, time.UTC)),
 	// 			Encryption: &armstorage.Encryption{
 	// 				KeySource: to.Ptr(armstorage.KeySourceMicrosoftStorage),
 	// 				Services: &armstorage.EncryptionServices{
 	// 					Blob: &armstorage.EncryptionService{
 	// 						Enabled: to.Ptr(true),
 	// 						KeyType: to.Ptr(armstorage.KeyTypeAccount),
-	// 						LastEnabledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-11T20:49:31.7036140Z"); return t}()),
+	// 						LastEnabledTime: to.Ptr(time.Date(2019, time.December, 11, 20, 49, 31, 703614000, time.UTC)),
 	// 					},
 	// 					File: &armstorage.EncryptionService{
 	// 						Enabled: to.Ptr(true),
 	// 						KeyType: to.Ptr(armstorage.KeyTypeAccount),
-	// 						LastEnabledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-11T20:49:31.7036140Z"); return t}()),
+	// 						LastEnabledTime: to.Ptr(time.Date(2019, time.December, 11, 20, 49, 31, 703614000, time.UTC)),
 	// 					},
 	// 				},
 	// 			},
 	// 			GeoReplicationStats: &armstorage.GeoReplicationStats{
 	// 				CanFailover: to.Ptr(false),
 	// 				CanPlannedFailover: to.Ptr(false),
-	// 				LastSyncTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-30T00:25:34Z"); return t}()),
+	// 				LastSyncTime: to.Ptr(time.Date(2018, time.October, 30, 0, 25, 34, 0, time.UTC)),
 	// 				PostFailoverRedundancy: to.Ptr(armstorage.PostFailoverRedundancyStandardLRS),
 	// 				PostPlannedFailoverRedundancy: to.Ptr(armstorage.PostPlannedFailoverRedundancyStandardGRS),
 	// 				Status: to.Ptr(armstorage.GeoReplicationStatusLive),
@@ -2938,8 +3090,8 @@ func ExampleAccountsClient_GetProperties_storageAccountGetPropertiesGeoReplicati
 	// 			IsHnsEnabled: to.Ptr(true),
 	// 			IsSKUConversionBlocked: to.Ptr(false),
 	// 			KeyCreationTime: &armstorage.KeyCreationTime{
-	// 				Key1: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-18T04:42:22.4322836Z"); return t}()),
-	// 				Key2: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-18T04:42:22.4322836Z"); return t}()),
+	// 				Key1: to.Ptr(time.Date(2021, time.March, 18, 4, 42, 22, 432283600, time.UTC)),
+	// 				Key2: to.Ptr(time.Date(2021, time.March, 18, 4, 42, 22, 432283600, time.UTC)),
 	// 			},
 	// 			NetworkRuleSet: &armstorage.NetworkRuleSet{
 	// 				Bypass: to.Ptr(armstorage.BypassAzureServices),
@@ -3001,7 +3153,7 @@ func ExampleAccountsClient_GetProperties_storageAccountGetPropertiesGeoReplicati
 	// }
 }
 
-// Generated from example definition: 2026-04-01/StorageAccountGetPropertiesGeoReplicationStatscanFailoverTrue.json
+// Generated from example definition: 2026-09-01/StorageAccountGetPropertiesGeoReplicationStatscanFailoverTrue.json
 func ExampleAccountsClient_GetProperties_storageAccountGetPropertiesGeoReplicationStatscanFailoverTrue() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3029,26 +3181,26 @@ func ExampleAccountsClient_GetProperties_storageAccountGetPropertiesGeoReplicati
 	// 		Location: to.Ptr("eastus2(stage)"),
 	// 		Properties: &armstorage.AccountProperties{
 	// 			AccountMigrationInProgress: to.Ptr(false),
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-01T02:42:41.7633306Z"); return t}()),
+	// 			CreationTime: to.Ptr(time.Date(2017, time.June, 1, 2, 42, 41, 763330600, time.UTC)),
 	// 			Encryption: &armstorage.Encryption{
 	// 				KeySource: to.Ptr(armstorage.KeySourceMicrosoftStorage),
 	// 				Services: &armstorage.EncryptionServices{
 	// 					Blob: &armstorage.EncryptionService{
 	// 						Enabled: to.Ptr(true),
 	// 						KeyType: to.Ptr(armstorage.KeyTypeAccount),
-	// 						LastEnabledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-11T20:49:31.7036140Z"); return t}()),
+	// 						LastEnabledTime: to.Ptr(time.Date(2019, time.December, 11, 20, 49, 31, 703614000, time.UTC)),
 	// 					},
 	// 					File: &armstorage.EncryptionService{
 	// 						Enabled: to.Ptr(true),
 	// 						KeyType: to.Ptr(armstorage.KeyTypeAccount),
-	// 						LastEnabledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-11T20:49:31.7036140Z"); return t}()),
+	// 						LastEnabledTime: to.Ptr(time.Date(2019, time.December, 11, 20, 49, 31, 703614000, time.UTC)),
 	// 					},
 	// 				},
 	// 			},
 	// 			GeoReplicationStats: &armstorage.GeoReplicationStats{
 	// 				CanFailover: to.Ptr(true),
 	// 				CanPlannedFailover: to.Ptr(true),
-	// 				LastSyncTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-30T00:25:34Z"); return t}()),
+	// 				LastSyncTime: to.Ptr(time.Date(2018, time.October, 30, 0, 25, 34, 0, time.UTC)),
 	// 				PostFailoverRedundancy: to.Ptr(armstorage.PostFailoverRedundancyStandardLRS),
 	// 				PostPlannedFailoverRedundancy: to.Ptr(armstorage.PostPlannedFailoverRedundancyStandardGRS),
 	// 				Status: to.Ptr(armstorage.GeoReplicationStatusLive),
@@ -3056,8 +3208,8 @@ func ExampleAccountsClient_GetProperties_storageAccountGetPropertiesGeoReplicati
 	// 			IsHnsEnabled: to.Ptr(true),
 	// 			IsSKUConversionBlocked: to.Ptr(false),
 	// 			KeyCreationTime: &armstorage.KeyCreationTime{
-	// 				Key1: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-18T04:42:22.4322836Z"); return t}()),
-	// 				Key2: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-18T04:42:22.4322836Z"); return t}()),
+	// 				Key1: to.Ptr(time.Date(2021, time.March, 18, 4, 42, 22, 432283600, time.UTC)),
+	// 				Key2: to.Ptr(time.Date(2021, time.March, 18, 4, 42, 22, 432283600, time.UTC)),
 	// 			},
 	// 			NetworkRuleSet: &armstorage.NetworkRuleSet{
 	// 				Bypass: to.Ptr(armstorage.BypassAzureServices),
@@ -3119,8 +3271,8 @@ func ExampleAccountsClient_GetProperties_storageAccountGetPropertiesGeoReplicati
 	// }
 }
 
-// Generated from example definition: 2026-04-01/StorageAccountHierarchicalNamespaceMigration.json
-func ExampleAccountsClient_BeginHierarchicalNamespaceMigration() {
+// Generated from example definition: 2026-09-01/StorageAccountListAccountSAS.json
+func ExampleAccountsClient_ListAccountSAS() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -3130,22 +3282,189 @@ func ExampleAccountsClient_BeginHierarchicalNamespaceMigration() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewAccountsClient().BeginHierarchicalNamespaceMigration(ctx, "res4228", "sto2434", "HnsOnValidationRequest", nil)
+	res, err := clientFactory.NewAccountsClient().ListAccountSAS(ctx, "res7985", "sto8588", armstorage.AccountSasParameters{
+		KeyToSign:              to.Ptr("key1"),
+		SharedAccessExpiryTime: to.Ptr(time.Date(2017, time.May, 24, 11, 42, 3, 156737300, time.UTC)),
+		Permissions:            to.Ptr(armstorage.PermissionsR),
+		Protocols:              to.Ptr(armstorage.HTTPProtocolHTTPSHTTP),
+		ResourceTypes:          to.Ptr(armstorage.SignedResourceTypesS),
+		Services:               to.Ptr(armstorage.ServicesB),
+		SharedAccessStartTime:  to.Ptr(time.Date(2017, time.May, 24, 10, 42, 3, 156737300, time.UTC)),
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armstorage.AccountsClientHierarchicalNamespaceMigrationResponse{
+	// res = armstorage.AccountsClientListAccountSASResponse{
+	// 	ListAccountSasResponse: armstorage.ListAccountSasResponse{
+	// 		AccountSasToken: to.Ptr("sv=2015-04-05&ss=b&srt=s&sp=r&st=2017-05-24T10%3A42%3A03Z&se=2017-05-24T11%3A42%3A03Z&spr=https,http&sig=Z0I%2BEpM%2BPPlTC8ApfUf%2BcffO2aahMgZim3U0iArqsS0%3D"),
+	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-04-01/StorageAccountList.json
+// Generated from example definition: 2026-09-01/StorageAccountListKeys.json
+func ExampleAccountsClient_ListKeys() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armstorage.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewAccountsClient().ListKeys(ctx, "res418", "sto2220", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armstorage.AccountsClientListKeysResponse{
+	// 	AccountListKeysResult: armstorage.AccountListKeysResult{
+	// 		Keys: []*armstorage.AccountKey{
+	// 			{
+	// 				KeyName: to.Ptr("key1"),
+	// 				Permissions: to.Ptr(armstorage.KeyPermissionFull),
+	// 				Value: to.Ptr("<value>"),
+	// 			},
+	// 			{
+	// 				KeyName: to.Ptr("key2"),
+	// 				Permissions: to.Ptr(armstorage.KeyPermissionFull),
+	// 				Value: to.Ptr("<value>"),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-09-01/StorageAccountListServiceSAS.json
+func ExampleAccountsClient_ListServiceSAS() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armstorage.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewAccountsClient().ListServiceSAS(ctx, "res7439", "sto1299", armstorage.ServiceSasParameters{
+		CanonicalizedResource:  to.Ptr("/blob/sto1299/music"),
+		SharedAccessExpiryTime: to.Ptr(time.Date(2017, time.May, 24, 11, 32, 48, 845719700, time.UTC)),
+		Permissions:            to.Ptr(armstorage.PermissionsL),
+		Resource:               to.Ptr(armstorage.SignedResourceC),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armstorage.AccountsClientListServiceSASResponse{
+	// 	ListServiceSasResponse: armstorage.ListServiceSasResponse{
+	// 		ServiceSasToken: to.Ptr("sv=2015-04-05&sr=c&se=2017-05-24T11%3A32%3A48Z&sp=l&sig=PoF8yBUGixsjzwroLmw7vG3VbGz4KB2woZC2D4C2oio%3D"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-09-01/StorageAccountListByResourceGroup.json
+func ExampleAccountsClient_NewListByResourceGroupPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armstorage.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewAccountsClient().NewListByResourceGroupPager("res6117", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armstorage.AccountsClientListByResourceGroupResponse{
+		// 	AccountListResult: armstorage.AccountListResult{
+		// 		Value: []*armstorage.Account{
+		// 			{
+		// 				Name: to.Ptr("sto4036"),
+		// 				Type: to.Ptr("Microsoft.Storage/storageAccounts"),
+		// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res6117/providers/Microsoft.Storage/storageAccounts/sto4036"),
+		// 				Kind: to.Ptr(armstorage.KindStorage),
+		// 				Location: to.Ptr("eastus"),
+		// 				Properties: &armstorage.AccountProperties{
+		// 					CreationTime: to.Ptr(time.Date(2017, time.May, 24, 13, 24, 47, 818801000, time.UTC)),
+		// 					IsHnsEnabled: to.Ptr(true),
+		// 					PrimaryEndpoints: &armstorage.Endpoints{
+		// 						Blob: to.Ptr("https://sto4036.blob.core.windows.net/"),
+		// 						Dfs: to.Ptr("https://sto4036.dfs.core.windows.net/"),
+		// 						File: to.Ptr("https://sto4036.file.core.windows.net/"),
+		// 						Queue: to.Ptr("https://sto4036.queue.core.windows.net/"),
+		// 						Table: to.Ptr("https://sto4036.table.core.windows.net/"),
+		// 						Web: to.Ptr("https://sto4036.web.core.windows.net/"),
+		// 					},
+		// 					PrimaryLocation: to.Ptr("eastus"),
+		// 					ProvisioningState: to.Ptr(armstorage.ProvisioningStateSucceeded),
+		// 					SecondaryLocation: to.Ptr("centraluseuap"),
+		// 					StatusOfPrimary: to.Ptr(armstorage.AccountStatusAvailable),
+		// 					StatusOfSecondary: to.Ptr(armstorage.AccountStatusAvailable),
+		// 					EnableHTTPSTrafficOnly: to.Ptr(false),
+		// 				},
+		// 				SKU: &armstorage.SKU{
+		// 					Name: to.Ptr(armstorage.SKUNameStandardGRS),
+		// 					Tier: to.Ptr(armstorage.SKUTierStandard),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"key1": to.Ptr("value1"),
+		// 					"key2": to.Ptr("value2"),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("sto4452"),
+		// 				Type: to.Ptr("Microsoft.Storage/storageAccounts"),
+		// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res6117/providers/Microsoft.Storage/storageAccounts/sto4452"),
+		// 				Kind: to.Ptr(armstorage.KindStorage),
+		// 				Location: to.Ptr("eastus"),
+		// 				Properties: &armstorage.AccountProperties{
+		// 					CreationTime: to.Ptr(time.Date(2017, time.May, 24, 13, 24, 15, 706836600, time.UTC)),
+		// 					PrimaryEndpoints: &armstorage.Endpoints{
+		// 						Blob: to.Ptr("https://sto4452.blob.core.windows.net/"),
+		// 						File: to.Ptr("https://sto4452.file.core.windows.net/"),
+		// 						Queue: to.Ptr("https://sto4452.queue.core.windows.net/"),
+		// 						Table: to.Ptr("https://sto4452.table.core.windows.net/"),
+		// 					},
+		// 					PrimaryLocation: to.Ptr("eastus"),
+		// 					ProvisioningState: to.Ptr(armstorage.ProvisioningStateSucceeded),
+		// 					SecondaryLocation: to.Ptr("centraluseuap"),
+		// 					StatusOfPrimary: to.Ptr(armstorage.AccountStatusAvailable),
+		// 					StatusOfSecondary: to.Ptr(armstorage.AccountStatusAvailable),
+		// 					EnableHTTPSTrafficOnly: to.Ptr(false),
+		// 				},
+		// 				SKU: &armstorage.SKU{
+		// 					Name: to.Ptr(armstorage.SKUNameStandardGRS),
+		// 					Tier: to.Ptr(armstorage.SKUTierStandard),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"key1": to.Ptr("value1"),
+		// 					"key2": to.Ptr("value2"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-09-01/StorageAccountList.json
 func ExampleAccountsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3177,19 +3496,19 @@ func ExampleAccountsClient_NewListPager() {
 		// 				Kind: to.Ptr(armstorage.KindStorage),
 		// 				Location: to.Ptr("eastus"),
 		// 				Properties: &armstorage.AccountProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-24T13:28:53.4540398Z"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.May, 24, 13, 28, 53, 454039800, time.UTC)),
 		// 					Encryption: &armstorage.Encryption{
 		// 						KeySource: to.Ptr(armstorage.KeySourceMicrosoftStorage),
 		// 						Services: &armstorage.EncryptionServices{
 		// 							Blob: &armstorage.EncryptionService{
 		// 								Enabled: to.Ptr(true),
 		// 								KeyType: to.Ptr(armstorage.KeyTypeAccount),
-		// 								LastEnabledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-11T20:49:31.7036140Z"); return t}()),
+		// 								LastEnabledTime: to.Ptr(time.Date(2019, time.December, 11, 20, 49, 31, 703614000, time.UTC)),
 		// 							},
 		// 							File: &armstorage.EncryptionService{
 		// 								Enabled: to.Ptr(true),
 		// 								KeyType: to.Ptr(armstorage.KeyTypeAccount),
-		// 								LastEnabledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-11T20:49:31.7036140Z"); return t}()),
+		// 								LastEnabledTime: to.Ptr(time.Date(2019, time.December, 11, 20, 49, 31, 703614000, time.UTC)),
 		// 							},
 		// 						},
 		// 					},
@@ -3249,7 +3568,7 @@ func ExampleAccountsClient_NewListPager() {
 		// 				Kind: to.Ptr(armstorage.KindStorage),
 		// 				Location: to.Ptr("eastus"),
 		// 				Properties: &armstorage.AccountProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-24T10:06:30.6093014Z"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.May, 24, 10, 6, 30, 609301400, time.UTC)),
 		// 					PrimaryEndpoints: &armstorage.Endpoints{
 		// 						Blob: to.Ptr("https://sto3699.blob.core.windows.net/"),
 		// 						File: to.Ptr("https://sto3699.file.core.windows.net/"),
@@ -3284,7 +3603,7 @@ func ExampleAccountsClient_NewListPager() {
 		// 				Kind: to.Ptr(armstorage.KindStorage),
 		// 				Location: to.Ptr("eastus2(stage)"),
 		// 				Properties: &armstorage.AccountProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-01T02:42:41.7633306Z"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.June, 1, 2, 42, 41, 763330600, time.UTC)),
 		// 					Encryption: &armstorage.Encryption{
 		// 						KeySource: to.Ptr(armstorage.KeySourceMicrosoftKeyvault),
 		// 						KeyVaultProperties: &armstorage.KeyVaultProperties{
@@ -3292,24 +3611,24 @@ func ExampleAccountsClient_NewListPager() {
 		// 							KeyName: to.Ptr("wrappingKey"),
 		// 							KeyVaultURI: to.Ptr("https://myvault8569.vault.azure.net"),
 		// 							KeyVersion: to.Ptr(""),
-		// 							LastKeyRotationTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-13T20:36:23.7023290Z"); return t}()),
+		// 							LastKeyRotationTimestamp: to.Ptr(time.Date(2019, time.December, 13, 20, 36, 23, 702329000, time.UTC)),
 		// 						},
 		// 						Services: &armstorage.EncryptionServices{
 		// 							Blob: &armstorage.EncryptionService{
 		// 								Enabled: to.Ptr(true),
 		// 								KeyType: to.Ptr(armstorage.KeyTypeAccount),
-		// 								LastEnabledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-11T20:49:31.7036140Z"); return t}()),
+		// 								LastEnabledTime: to.Ptr(time.Date(2019, time.December, 11, 20, 49, 31, 703614000, time.UTC)),
 		// 							},
 		// 							File: &armstorage.EncryptionService{
 		// 								Enabled: to.Ptr(true),
 		// 								KeyType: to.Ptr(armstorage.KeyTypeAccount),
-		// 								LastEnabledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-11T20:49:31.7036140Z"); return t}()),
+		// 								LastEnabledTime: to.Ptr(time.Date(2019, time.December, 11, 20, 49, 31, 703614000, time.UTC)),
 		// 							},
 		// 						},
 		// 					},
 		// 					GeoReplicationStats: &armstorage.GeoReplicationStats{
 		// 						CanFailover: to.Ptr(true),
-		// 						LastSyncTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-30T00:25:34Z"); return t}()),
+		// 						LastSyncTime: to.Ptr(time.Date(2018, time.October, 30, 0, 25, 34, 0, time.UTC)),
 		// 						Status: to.Ptr(armstorage.GeoReplicationStatusLive),
 		// 					},
 		// 					IsHnsEnabled: to.Ptr(true),
@@ -3382,7 +3701,7 @@ func ExampleAccountsClient_NewListPager() {
 		// 				Kind: to.Ptr(armstorage.KindStorage),
 		// 				Location: to.Ptr("eastus"),
 		// 				Properties: &armstorage.AccountProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-24T10:09:39.5625175Z"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.May, 24, 10, 9, 39, 562517500, time.UTC)),
 		// 					PrimaryEndpoints: &armstorage.Endpoints{
 		// 						Blob: to.Ptr("https://sto6637.blob.core.windows.net/"),
 		// 						File: to.Ptr("https://sto6637.file.core.windows.net/"),
@@ -3412,7 +3731,7 @@ func ExampleAccountsClient_NewListPager() {
 		// 				Kind: to.Ptr(armstorage.KindStorage),
 		// 				Location: to.Ptr("eastus"),
 		// 				Properties: &armstorage.AccountProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-24T13:28:20.8686541Z"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.May, 24, 13, 28, 20, 868654100, time.UTC)),
 		// 					PrimaryEndpoints: &armstorage.Endpoints{
 		// 						Blob: to.Ptr("https://sto834.blob.core.windows.net/"),
 		// 						File: to.Ptr("https://sto834.file.core.windows.net/"),
@@ -3447,7 +3766,7 @@ func ExampleAccountsClient_NewListPager() {
 		// 				Kind: to.Ptr(armstorage.KindStorage),
 		// 				Location: to.Ptr("eastus"),
 		// 				Properties: &armstorage.AccountProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-24T09:46:19.6556989Z"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.May, 24, 9, 46, 19, 655698900, time.UTC)),
 		// 					PrimaryEndpoints: &armstorage.Endpoints{
 		// 						Blob: to.Ptr("https://sto9174.blob.core.windows.net/"),
 		// 						File: to.Ptr("https://sto9174.file.core.windows.net/"),
@@ -3476,200 +3795,7 @@ func ExampleAccountsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-04-01/StorageAccountListAccountSAS.json
-func ExampleAccountsClient_ListAccountSAS() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armstorage.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewAccountsClient().ListAccountSAS(ctx, "res7985", "sto8588", armstorage.AccountSasParameters{
-		KeyToSign:              to.Ptr("key1"),
-		SharedAccessExpiryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-24T11:42:03.1567373Z"); return t }()),
-		Permissions:            to.Ptr(armstorage.PermissionsR),
-		Protocols:              to.Ptr(armstorage.HTTPProtocolHTTPSHTTP),
-		ResourceTypes:          to.Ptr(armstorage.SignedResourceTypesS),
-		Services:               to.Ptr(armstorage.ServicesB),
-		SharedAccessStartTime:  to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-24T10:42:03.1567373Z"); return t }()),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armstorage.AccountsClientListAccountSASResponse{
-	// 	ListAccountSasResponse: armstorage.ListAccountSasResponse{
-	// 		AccountSasToken: to.Ptr("sv=2015-04-05&ss=b&srt=s&sp=r&st=2017-05-24T10%3A42%3A03Z&se=2017-05-24T11%3A42%3A03Z&spr=https,http&sig=Z0I%2BEpM%2BPPlTC8ApfUf%2BcffO2aahMgZim3U0iArqsS0%3D"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-04-01/StorageAccountListByResourceGroup.json
-func ExampleAccountsClient_NewListByResourceGroupPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armstorage.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewAccountsClient().NewListByResourceGroupPager("res6117", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armstorage.AccountsClientListByResourceGroupResponse{
-		// 	AccountListResult: armstorage.AccountListResult{
-		// 		Value: []*armstorage.Account{
-		// 			{
-		// 				Name: to.Ptr("sto4036"),
-		// 				Type: to.Ptr("Microsoft.Storage/storageAccounts"),
-		// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res6117/providers/Microsoft.Storage/storageAccounts/sto4036"),
-		// 				Kind: to.Ptr(armstorage.KindStorage),
-		// 				Location: to.Ptr("eastus"),
-		// 				Properties: &armstorage.AccountProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-24T13:24:47.818801Z"); return t}()),
-		// 					IsHnsEnabled: to.Ptr(true),
-		// 					PrimaryEndpoints: &armstorage.Endpoints{
-		// 						Blob: to.Ptr("https://sto4036.blob.core.windows.net/"),
-		// 						Dfs: to.Ptr("https://sto4036.dfs.core.windows.net/"),
-		// 						File: to.Ptr("https://sto4036.file.core.windows.net/"),
-		// 						Queue: to.Ptr("https://sto4036.queue.core.windows.net/"),
-		// 						Table: to.Ptr("https://sto4036.table.core.windows.net/"),
-		// 						Web: to.Ptr("https://sto4036.web.core.windows.net/"),
-		// 					},
-		// 					PrimaryLocation: to.Ptr("eastus"),
-		// 					ProvisioningState: to.Ptr(armstorage.ProvisioningStateSucceeded),
-		// 					SecondaryLocation: to.Ptr("centraluseuap"),
-		// 					StatusOfPrimary: to.Ptr(armstorage.AccountStatusAvailable),
-		// 					StatusOfSecondary: to.Ptr(armstorage.AccountStatusAvailable),
-		// 					EnableHTTPSTrafficOnly: to.Ptr(false),
-		// 				},
-		// 				SKU: &armstorage.SKU{
-		// 					Name: to.Ptr(armstorage.SKUNameStandardGRS),
-		// 					Tier: to.Ptr(armstorage.SKUTierStandard),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 					"key1": to.Ptr("value1"),
-		// 					"key2": to.Ptr("value2"),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("sto4452"),
-		// 				Type: to.Ptr("Microsoft.Storage/storageAccounts"),
-		// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res6117/providers/Microsoft.Storage/storageAccounts/sto4452"),
-		// 				Kind: to.Ptr(armstorage.KindStorage),
-		// 				Location: to.Ptr("eastus"),
-		// 				Properties: &armstorage.AccountProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-24T13:24:15.7068366Z"); return t}()),
-		// 					PrimaryEndpoints: &armstorage.Endpoints{
-		// 						Blob: to.Ptr("https://sto4452.blob.core.windows.net/"),
-		// 						File: to.Ptr("https://sto4452.file.core.windows.net/"),
-		// 						Queue: to.Ptr("https://sto4452.queue.core.windows.net/"),
-		// 						Table: to.Ptr("https://sto4452.table.core.windows.net/"),
-		// 					},
-		// 					PrimaryLocation: to.Ptr("eastus"),
-		// 					ProvisioningState: to.Ptr(armstorage.ProvisioningStateSucceeded),
-		// 					SecondaryLocation: to.Ptr("centraluseuap"),
-		// 					StatusOfPrimary: to.Ptr(armstorage.AccountStatusAvailable),
-		// 					StatusOfSecondary: to.Ptr(armstorage.AccountStatusAvailable),
-		// 					EnableHTTPSTrafficOnly: to.Ptr(false),
-		// 				},
-		// 				SKU: &armstorage.SKU{
-		// 					Name: to.Ptr(armstorage.SKUNameStandardGRS),
-		// 					Tier: to.Ptr(armstorage.SKUTierStandard),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 					"key1": to.Ptr("value1"),
-		// 					"key2": to.Ptr("value2"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-04-01/StorageAccountListKeys.json
-func ExampleAccountsClient_ListKeys() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armstorage.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewAccountsClient().ListKeys(ctx, "res418", "sto2220", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armstorage.AccountsClientListKeysResponse{
-	// 	AccountListKeysResult: armstorage.AccountListKeysResult{
-	// 		Keys: []*armstorage.AccountKey{
-	// 			{
-	// 				KeyName: to.Ptr("key1"),
-	// 				Permissions: to.Ptr(armstorage.KeyPermissionFull),
-	// 				Value: to.Ptr("<value>"),
-	// 			},
-	// 			{
-	// 				KeyName: to.Ptr("key2"),
-	// 				Permissions: to.Ptr(armstorage.KeyPermissionFull),
-	// 				Value: to.Ptr("<value>"),
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-04-01/StorageAccountListServiceSAS.json
-func ExampleAccountsClient_ListServiceSAS() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armstorage.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewAccountsClient().ListServiceSAS(ctx, "res7439", "sto1299", armstorage.ServiceSasParameters{
-		CanonicalizedResource:  to.Ptr("/blob/sto1299/music"),
-		SharedAccessExpiryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-24T11:32:48.8457197Z"); return t }()),
-		Permissions:            to.Ptr(armstorage.PermissionsL),
-		Resource:               to.Ptr(armstorage.SignedResourceC),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armstorage.AccountsClientListServiceSASResponse{
-	// 	ListServiceSasResponse: armstorage.ListServiceSasResponse{
-	// 		ServiceSasToken: to.Ptr("sv=2015-04-05&sr=c&se=2017-05-24T11%3A32%3A48Z&sp=l&sig=PoF8yBUGixsjzwroLmw7vG3VbGz4KB2woZC2D4C2oio%3D"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-04-01/StorageAccountRegenerateKerbKey.json
+// Generated from example definition: 2026-09-01/StorageAccountRegenerateKerbKey.json
 func ExampleAccountsClient_RegenerateKey_storageAccountRegenerateKerbKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3712,7 +3838,7 @@ func ExampleAccountsClient_RegenerateKey_storageAccountRegenerateKerbKey() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/StorageAccountRegenerateKey.json
+// Generated from example definition: 2026-09-01/StorageAccountRegenerateKey.json
 func ExampleAccountsClient_RegenerateKey_storageAccountRegenerateKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3750,62 +3876,7 @@ func ExampleAccountsClient_RegenerateKey_storageAccountRegenerateKey() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/BlobRangesRestore.json
-func ExampleAccountsClient_BeginRestoreBlobRanges() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armstorage.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewAccountsClient().BeginRestoreBlobRanges(ctx, "res9101", "sto4445", armstorage.BlobRestoreParameters{
-		BlobRanges: []*armstorage.BlobRestoreRange{
-			{
-				EndRange:   to.Ptr("container/blobpath2"),
-				StartRange: to.Ptr("container/blobpath1"),
-			},
-			{
-				EndRange:   to.Ptr(""),
-				StartRange: to.Ptr("container2/blobpath3"),
-			},
-		},
-		TimeToRestore: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-20T15:30:00.0000000Z"); return t }()),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armstorage.AccountsClientRestoreBlobRangesResponse{
-	// 	BlobRestoreStatus: armstorage.BlobRestoreStatus{
-	// 		Parameters: &armstorage.BlobRestoreParameters{
-	// 			BlobRanges: []*armstorage.BlobRestoreRange{
-	// 				{
-	// 					EndRange: to.Ptr("container/blobpath2"),
-	// 					StartRange: to.Ptr("container/blobpath1"),
-	// 				},
-	// 				{
-	// 					EndRange: to.Ptr(""),
-	// 					StartRange: to.Ptr("container2/blobpath3"),
-	// 				},
-	// 			},
-	// 			TimeToRestore: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-20T15:30:00.0000000Z"); return t}()),
-	// 		},
-	// 		RestoreID: to.Ptr("{restore_id}"),
-	// 		Status: to.Ptr(armstorage.BlobRestoreProgressStatus("Succeeded")),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-04-01/StorageAccountRevokeUserDelegationKeys.json
+// Generated from example definition: 2026-09-01/StorageAccountRevokeUserDelegationKeys.json
 func ExampleAccountsClient_RevokeUserDelegationKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3827,7 +3898,7 @@ func ExampleAccountsClient_RevokeUserDelegationKeys() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/StorageAccountEnableAD.json
+// Generated from example definition: 2026-09-01/StorageAccountEnableAD.json
 func ExampleAccountsClient_Update_storageAccountEnableAd() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3882,7 +3953,7 @@ func ExampleAccountsClient_Update_storageAccountEnableAd() {
 	// 				},
 	// 				DirectoryServiceOptions: to.Ptr(armstorage.DirectoryServiceOptionsAD),
 	// 			},
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-01T02:42:41.7633306Z"); return t}()),
+	// 			CreationTime: to.Ptr(time.Date(2017, time.June, 1, 2, 42, 41, 763330600, time.UTC)),
 	// 			PrimaryEndpoints: &armstorage.Endpoints{
 	// 				Blob: to.Ptr("https://sto8596.blob.core.windows.net/"),
 	// 				Dfs: to.Ptr("https://sto8596.dfs.core.windows.net/"),
@@ -3910,7 +3981,7 @@ func ExampleAccountsClient_Update_storageAccountEnableAd() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/StorageAccountEnableCMK.json
+// Generated from example definition: 2026-09-01/StorageAccountEnableCMK.json
 func ExampleAccountsClient_Update_storageAccountEnableCmk() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3962,7 +4033,7 @@ func ExampleAccountsClient_Update_storageAccountEnableCmk() {
 	// 		Kind: to.Ptr(armstorage.KindStorage),
 	// 		Location: to.Ptr("eastus2(stage)"),
 	// 		Properties: &armstorage.AccountProperties{
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-01T02:42:41.7633306Z"); return t}()),
+	// 			CreationTime: to.Ptr(time.Date(2017, time.June, 1, 2, 42, 41, 763330600, time.UTC)),
 	// 			Encryption: &armstorage.Encryption{
 	// 				KeySource: to.Ptr(armstorage.KeySourceMicrosoftKeyvault),
 	// 				KeyVaultProperties: &armstorage.KeyVaultProperties{
@@ -3970,18 +4041,18 @@ func ExampleAccountsClient_Update_storageAccountEnableCmk() {
 	// 					KeyName: to.Ptr("wrappingKey"),
 	// 					KeyVaultURI: to.Ptr("https://myvault8569.vault.azure.net"),
 	// 					KeyVersion: to.Ptr(""),
-	// 					LastKeyRotationTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-13T20:36:23.7023290Z"); return t}()),
+	// 					LastKeyRotationTimestamp: to.Ptr(time.Date(2019, time.December, 13, 20, 36, 23, 702329000, time.UTC)),
 	// 				},
 	// 				Services: &armstorage.EncryptionServices{
 	// 					Blob: &armstorage.EncryptionService{
 	// 						Enabled: to.Ptr(true),
 	// 						KeyType: to.Ptr(armstorage.KeyTypeAccount),
-	// 						LastEnabledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-11T20:49:31.7036140Z"); return t}()),
+	// 						LastEnabledTime: to.Ptr(time.Date(2019, time.December, 11, 20, 49, 31, 703614000, time.UTC)),
 	// 					},
 	// 					File: &armstorage.EncryptionService{
 	// 						Enabled: to.Ptr(true),
 	// 						KeyType: to.Ptr(armstorage.KeyTypeAccount),
-	// 						LastEnabledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-11T20:49:31.7036140Z"); return t}()),
+	// 						LastEnabledTime: to.Ptr(time.Date(2019, time.December, 11, 20, 49, 31, 703614000, time.UTC)),
 	// 					},
 	// 				},
 	// 			},
@@ -4012,7 +4083,7 @@ func ExampleAccountsClient_Update_storageAccountEnableCmk() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/StorageAccountEnableSmbOAuth.json
+// Generated from example definition: 2026-09-01/StorageAccountEnableSmbOAuth.json
 func ExampleAccountsClient_Update_storageAccountEnableSmbOAuth() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -4053,7 +4124,7 @@ func ExampleAccountsClient_Update_storageAccountEnableSmbOAuth() {
 	// 					IsSmbOAuthEnabled: to.Ptr(true),
 	// 				},
 	// 			},
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-01T02:42:41.7633306Z"); return t}()),
+	// 			CreationTime: to.Ptr(time.Date(2017, time.June, 1, 2, 42, 41, 763330600, time.UTC)),
 	// 			PrimaryEndpoints: &armstorage.Endpoints{
 	// 				Blob: to.Ptr("https://sto8596.blob.core.windows.net/"),
 	// 				Dfs: to.Ptr("https://sto8596.dfs.core.windows.net/"),
@@ -4081,7 +4152,7 @@ func ExampleAccountsClient_Update_storageAccountEnableSmbOAuth() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/StorageAccountLeverageIPv6Ability.json
+// Generated from example definition: 2026-09-01/StorageAccountLeverageIPv6Ability.json
 func ExampleAccountsClient_Update_storageAccountUpdateEnableIpv6Features() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -4122,13 +4193,13 @@ func ExampleAccountsClient_Update_storageAccountUpdateEnableIpv6Features() {
 	// 		Kind: to.Ptr(armstorage.KindStorage),
 	// 		Location: to.Ptr("eastus2(stage)"),
 	// 		Properties: &armstorage.AccountProperties{
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-01T02:42:41.7633306Z"); return t}()),
+	// 			CreationTime: to.Ptr(time.Date(2017, time.June, 1, 2, 42, 41, 763330600, time.UTC)),
 	// 			DualStackEndpointPreference: &armstorage.DualStackEndpointPreference{
 	// 				PublishIPv6Endpoint: to.Ptr(true),
 	// 			},
 	// 			KeyCreationTime: &armstorage.KeyCreationTime{
-	// 				Key1: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-18T04:42:22.4322836Z"); return t}()),
-	// 				Key2: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-18T04:42:22.4322836Z"); return t}()),
+	// 				Key1: to.Ptr(time.Date(2021, time.March, 18, 4, 42, 22, 432283600, time.UTC)),
+	// 				Key2: to.Ptr(time.Date(2021, time.March, 18, 4, 42, 22, 432283600, time.UTC)),
 	// 			},
 	// 			NetworkRuleSet: &armstorage.NetworkRuleSet{
 	// 				Bypass: to.Ptr(armstorage.BypassAzureServices),
@@ -4176,7 +4247,7 @@ func ExampleAccountsClient_Update_storageAccountUpdateEnableIpv6Features() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/StorageAccountUpdate.json
+// Generated from example definition: 2026-09-01/StorageAccountUpdate.json
 func ExampleAccountsClient_Update_storageAccountUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -4227,8 +4298,10 @@ func ExampleAccountsClient_Update_storageAccountUpdate() {
 				RoutingChoice:             to.Ptr(armstorage.RoutingChoiceMicrosoftRouting),
 			},
 			SasPolicy: &armstorage.SasPolicy{
-				ExpirationAction:    to.Ptr(armstorage.ExpirationActionLog),
-				SasExpirationPeriod: to.Ptr("1.15:59:59"),
+				ExpirationAction:                        to.Ptr(armstorage.ExpirationActionLog),
+				SasExpirationPeriod:                     to.Ptr("1.15:59:59"),
+				RequireUserBoundUserDelegationSas:       to.Ptr(true),
+				RequireUserBoundUserDelegationSasAction: to.Ptr(armstorage.PolicyViolationActionBlock),
 			},
 			GeoPriorityReplicationStatus: &armstorage.GeoPriorityReplicationStatus{
 				IsBlobEnabled: to.Ptr(true),
@@ -4247,6 +4320,7 @@ func ExampleAccountsClient_Update_storageAccountUpdate() {
 					Enabled: to.Ptr(false),
 				},
 			},
+			AllowCrossTenantDelegationSas: to.Ptr(false),
 		},
 	}, nil)
 	if err != nil {
@@ -4265,7 +4339,7 @@ func ExampleAccountsClient_Update_storageAccountUpdate() {
 	// 		Properties: &armstorage.AccountProperties{
 	// 			AllowBlobPublicAccess: to.Ptr(false),
 	// 			AllowSharedKeyAccess: to.Ptr(true),
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-01T02:42:41.7633306Z"); return t}()),
+	// 			CreationTime: to.Ptr(time.Date(2017, time.June, 1, 2, 42, 41, 763330600, time.UTC)),
 	// 			EnableExtendedGroups: to.Ptr(true),
 	// 			Encryption: &armstorage.Encryption{
 	// 				KeySource: to.Ptr(armstorage.KeySourceMicrosoftStorage),
@@ -4273,12 +4347,12 @@ func ExampleAccountsClient_Update_storageAccountUpdate() {
 	// 					Blob: &armstorage.EncryptionService{
 	// 						Enabled: to.Ptr(true),
 	// 						KeyType: to.Ptr(armstorage.KeyTypeAccount),
-	// 						LastEnabledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-11T20:49:31.7036140Z"); return t}()),
+	// 						LastEnabledTime: to.Ptr(time.Date(2019, time.December, 11, 20, 49, 31, 703614000, time.UTC)),
 	// 					},
 	// 					File: &armstorage.EncryptionService{
 	// 						Enabled: to.Ptr(true),
 	// 						KeyType: to.Ptr(armstorage.KeyTypeAccount),
-	// 						LastEnabledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-11T20:49:31.7036140Z"); return t}()),
+	// 						LastEnabledTime: to.Ptr(time.Date(2019, time.December, 11, 20, 49, 31, 703614000, time.UTC)),
 	// 					},
 	// 				},
 	// 			},
@@ -4286,8 +4360,8 @@ func ExampleAccountsClient_Update_storageAccountUpdate() {
 	// 			IsLocalUserEnabled: to.Ptr(true),
 	// 			IsSftpEnabled: to.Ptr(true),
 	// 			KeyCreationTime: &armstorage.KeyCreationTime{
-	// 				Key1: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-18T04:42:22.4322836Z"); return t}()),
-	// 				Key2: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-18T04:42:22.4322836Z"); return t}()),
+	// 				Key1: to.Ptr(time.Date(2021, time.March, 18, 4, 42, 22, 432283600, time.UTC)),
+	// 				Key2: to.Ptr(time.Date(2021, time.March, 18, 4, 42, 22, 432283600, time.UTC)),
 	// 			},
 	// 			KeyPolicy: &armstorage.KeyPolicy{
 	// 				KeyExpirationPeriodInDays: to.Ptr[int32](20),
@@ -4339,6 +4413,8 @@ func ExampleAccountsClient_Update_storageAccountUpdate() {
 	// 			SasPolicy: &armstorage.SasPolicy{
 	// 				ExpirationAction: to.Ptr(armstorage.ExpirationActionLog),
 	// 				SasExpirationPeriod: to.Ptr("1.15:59:59"),
+	// 				RequireUserBoundUserDelegationSas: to.Ptr(true),
+	// 				RequireUserBoundUserDelegationSasAction: to.Ptr(armstorage.PolicyViolationActionBlock),
 	// 			},
 	// 			SecondaryLocation: to.Ptr("northcentralus(stage)"),
 	// 			StatusOfPrimary: to.Ptr(armstorage.AccountStatusAvailable),
@@ -4361,6 +4437,7 @@ func ExampleAccountsClient_Update_storageAccountUpdate() {
 	// 					Enabled: to.Ptr(false),
 	// 				},
 	// 			},
+	// 			AllowCrossTenantDelegationSas: to.Ptr(false),
 	// 		},
 	// 		SKU: &armstorage.SKU{
 	// 			Name: to.Ptr(armstorage.SKUNameStandardGRS),
@@ -4374,7 +4451,7 @@ func ExampleAccountsClient_Update_storageAccountUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/StorageAccountUpdateAccessTierToSmart.json
+// Generated from example definition: 2026-09-01/StorageAccountUpdateAccessTierToSmart.json
 func ExampleAccountsClient_Update_storageAccountUpdateAccessTierToSmart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -4450,7 +4527,7 @@ func ExampleAccountsClient_Update_storageAccountUpdateAccessTierToSmart() {
 	// 		Properties: &armstorage.AccountProperties{
 	// 			AllowBlobPublicAccess: to.Ptr(false),
 	// 			AllowSharedKeyAccess: to.Ptr(true),
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-01T02:42:41.7633306Z"); return t}()),
+	// 			CreationTime: to.Ptr(time.Date(2017, time.June, 1, 2, 42, 41, 763330600, time.UTC)),
 	// 			EnableExtendedGroups: to.Ptr(true),
 	// 			Encryption: &armstorage.Encryption{
 	// 				KeySource: to.Ptr(armstorage.KeySourceMicrosoftStorage),
@@ -4458,12 +4535,12 @@ func ExampleAccountsClient_Update_storageAccountUpdateAccessTierToSmart() {
 	// 					Blob: &armstorage.EncryptionService{
 	// 						Enabled: to.Ptr(true),
 	// 						KeyType: to.Ptr(armstorage.KeyTypeAccount),
-	// 						LastEnabledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-11T20:49:31.7036140Z"); return t}()),
+	// 						LastEnabledTime: to.Ptr(time.Date(2019, time.December, 11, 20, 49, 31, 703614000, time.UTC)),
 	// 					},
 	// 					File: &armstorage.EncryptionService{
 	// 						Enabled: to.Ptr(true),
 	// 						KeyType: to.Ptr(armstorage.KeyTypeAccount),
-	// 						LastEnabledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-11T20:49:31.7036140Z"); return t}()),
+	// 						LastEnabledTime: to.Ptr(time.Date(2019, time.December, 11, 20, 49, 31, 703614000, time.UTC)),
 	// 					},
 	// 				},
 	// 			},
@@ -4471,8 +4548,8 @@ func ExampleAccountsClient_Update_storageAccountUpdateAccessTierToSmart() {
 	// 			IsLocalUserEnabled: to.Ptr(true),
 	// 			IsSftpEnabled: to.Ptr(true),
 	// 			KeyCreationTime: &armstorage.KeyCreationTime{
-	// 				Key1: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-18T04:42:22.4322836Z"); return t}()),
-	// 				Key2: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-18T04:42:22.4322836Z"); return t}()),
+	// 				Key1: to.Ptr(time.Date(2021, time.March, 18, 4, 42, 22, 432283600, time.UTC)),
+	// 				Key2: to.Ptr(time.Date(2021, time.March, 18, 4, 42, 22, 432283600, time.UTC)),
 	// 			},
 	// 			KeyPolicy: &armstorage.KeyPolicy{
 	// 				KeyExpirationPeriodInDays: to.Ptr[int32](20),
@@ -4545,7 +4622,7 @@ func ExampleAccountsClient_Update_storageAccountUpdateAccessTierToSmart() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/StorageAccountUpdateAllowedCopyScopeToAAD.json
+// Generated from example definition: 2026-09-01/StorageAccountUpdateAllowedCopyScopeToAAD.json
 func ExampleAccountsClient_Update_storageAccountUpdateAllowedCopyScopeToAad() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -4615,26 +4692,26 @@ func ExampleAccountsClient_Update_storageAccountUpdateAllowedCopyScopeToAad() {
 	// 			AllowBlobPublicAccess: to.Ptr(false),
 	// 			AllowSharedKeyAccess: to.Ptr(true),
 	// 			AllowedCopyScope: to.Ptr(armstorage.AllowedCopyScopeAAD),
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-01T02:42:41.7633306Z"); return t}()),
+	// 			CreationTime: to.Ptr(time.Date(2017, time.June, 1, 2, 42, 41, 763330600, time.UTC)),
 	// 			Encryption: &armstorage.Encryption{
 	// 				KeySource: to.Ptr(armstorage.KeySourceMicrosoftStorage),
 	// 				Services: &armstorage.EncryptionServices{
 	// 					Blob: &armstorage.EncryptionService{
 	// 						Enabled: to.Ptr(true),
 	// 						KeyType: to.Ptr(armstorage.KeyTypeAccount),
-	// 						LastEnabledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-11T20:49:31.7036140Z"); return t}()),
+	// 						LastEnabledTime: to.Ptr(time.Date(2019, time.December, 11, 20, 49, 31, 703614000, time.UTC)),
 	// 					},
 	// 					File: &armstorage.EncryptionService{
 	// 						Enabled: to.Ptr(true),
 	// 						KeyType: to.Ptr(armstorage.KeyTypeAccount),
-	// 						LastEnabledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-11T20:49:31.7036140Z"); return t}()),
+	// 						LastEnabledTime: to.Ptr(time.Date(2019, time.December, 11, 20, 49, 31, 703614000, time.UTC)),
 	// 					},
 	// 				},
 	// 			},
 	// 			IsHnsEnabled: to.Ptr(true),
 	// 			KeyCreationTime: &armstorage.KeyCreationTime{
-	// 				Key1: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-18T04:42:22.4322836Z"); return t}()),
-	// 				Key2: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-18T04:42:22.4322836Z"); return t}()),
+	// 				Key1: to.Ptr(time.Date(2021, time.March, 18, 4, 42, 22, 432283600, time.UTC)),
+	// 				Key2: to.Ptr(time.Date(2021, time.March, 18, 4, 42, 22, 432283600, time.UTC)),
 	// 			},
 	// 			KeyPolicy: &armstorage.KeyPolicy{
 	// 				KeyExpirationPeriodInDays: to.Ptr[int32](20),
@@ -4704,7 +4781,7 @@ func ExampleAccountsClient_Update_storageAccountUpdateAllowedCopyScopeToAad() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/StorageAccountUpdateDisablePublicNetworkAccess.json
+// Generated from example definition: 2026-09-01/StorageAccountUpdateDisablePublicNetworkAccess.json
 func ExampleAccountsClient_Update_storageAccountUpdateDisablePublicNetworkAccess() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -4773,26 +4850,26 @@ func ExampleAccountsClient_Update_storageAccountUpdateDisablePublicNetworkAccess
 	// 		Properties: &armstorage.AccountProperties{
 	// 			AllowBlobPublicAccess: to.Ptr(false),
 	// 			AllowSharedKeyAccess: to.Ptr(true),
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-01T02:42:41.7633306Z"); return t}()),
+	// 			CreationTime: to.Ptr(time.Date(2017, time.June, 1, 2, 42, 41, 763330600, time.UTC)),
 	// 			Encryption: &armstorage.Encryption{
 	// 				KeySource: to.Ptr(armstorage.KeySourceMicrosoftStorage),
 	// 				Services: &armstorage.EncryptionServices{
 	// 					Blob: &armstorage.EncryptionService{
 	// 						Enabled: to.Ptr(true),
 	// 						KeyType: to.Ptr(armstorage.KeyTypeAccount),
-	// 						LastEnabledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-11T20:49:31.7036140Z"); return t}()),
+	// 						LastEnabledTime: to.Ptr(time.Date(2019, time.December, 11, 20, 49, 31, 703614000, time.UTC)),
 	// 					},
 	// 					File: &armstorage.EncryptionService{
 	// 						Enabled: to.Ptr(true),
 	// 						KeyType: to.Ptr(armstorage.KeyTypeAccount),
-	// 						LastEnabledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-11T20:49:31.7036140Z"); return t}()),
+	// 						LastEnabledTime: to.Ptr(time.Date(2019, time.December, 11, 20, 49, 31, 703614000, time.UTC)),
 	// 					},
 	// 				},
 	// 			},
 	// 			IsHnsEnabled: to.Ptr(true),
 	// 			KeyCreationTime: &armstorage.KeyCreationTime{
-	// 				Key1: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-18T04:42:22.4322836Z"); return t}()),
-	// 				Key2: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-18T04:42:22.4322836Z"); return t}()),
+	// 				Key1: to.Ptr(time.Date(2021, time.March, 18, 4, 42, 22, 432283600, time.UTC)),
+	// 				Key2: to.Ptr(time.Date(2021, time.March, 18, 4, 42, 22, 432283600, time.UTC)),
 	// 			},
 	// 			KeyPolicy: &armstorage.KeyPolicy{
 	// 				KeyExpirationPeriodInDays: to.Ptr[int32](20),
@@ -4863,7 +4940,53 @@ func ExampleAccountsClient_Update_storageAccountUpdateDisablePublicNetworkAccess
 	// }
 }
 
-// Generated from example definition: 2026-04-01/StorageAccountUpdateUserAssignedEncryptionIdentityWithCMK.json
+// Generated from example definition: 2026-09-01/StorageAccountUpdateDisableTurboTier.json
+func ExampleAccountsClient_Update_storageAccountUpdateDisableTurboTier() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armstorage.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewAccountsClient().Update(ctx, "res9407", "staturbocontoso01", armstorage.AccountUpdateParameters{
+		Properties: &armstorage.AccountPropertiesUpdateParameters{
+			TurboTier: &armstorage.TurboTier{
+				Status: to.Ptr(armstorage.TurboTierStatusDisabled),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armstorage.AccountsClientUpdateResponse{
+	// 	Account: armstorage.Account{
+	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res9407/providers/Microsoft.Storage/storageAccounts/staturbocontoso01"),
+	// 		Kind: to.Ptr(armstorage.KindStorageV2),
+	// 		Location: to.Ptr("eastus2"),
+	// 		Name: to.Ptr("staturbocontoso01"),
+	// 		Properties: &armstorage.AccountProperties{
+	// 			AccessTier: to.Ptr(armstorage.AccessTierHot),
+	// 			ProvisioningState: to.Ptr(armstorage.ProvisioningStateSucceeded),
+	// 			TurboTier: &armstorage.TurboTier{
+	// 				Status: to.Ptr(armstorage.TurboTierStatusDisabled),
+	// 			},
+	// 		},
+	// 		SKU: &armstorage.SKU{
+	// 			Name: to.Ptr(armstorage.SKUNameStandardLRS),
+	// 			Tier: to.Ptr(armstorage.SKUTierStandard),
+	// 		},
+	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-09-01/StorageAccountUpdateUserAssignedEncryptionIdentityWithCMK.json
 func ExampleAccountsClient_Update_storageAccountUpdateUserAssignedEncryptionIdentityWithCmk() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -4933,7 +5056,7 @@ func ExampleAccountsClient_Update_storageAccountUpdateUserAssignedEncryptionIden
 	// 		Location: to.Ptr("eastus"),
 	// 		Properties: &armstorage.AccountProperties{
 	// 			AccessTier: to.Ptr(armstorage.AccessTierHot),
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-15T00:43:14.0839093Z"); return t}()),
+	// 			CreationTime: to.Ptr(time.Date(2020, time.December, 15, 0, 43, 14, 83909300, time.UTC)),
 	// 			Encryption: &armstorage.Encryption{
 	// 				EncryptionIdentity: &armstorage.EncryptionIdentity{
 	// 					EncryptionUserAssignedIdentity: to.Ptr("/subscriptions/{subscription-id}/resourcegroups/res9101/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{managed-identity-name}"),
@@ -4944,18 +5067,18 @@ func ExampleAccountsClient_Update_storageAccountUpdateUserAssignedEncryptionIden
 	// 					KeyName: to.Ptr("wrappingKey"),
 	// 					KeyVaultURI: to.Ptr("https://myvault8569.vault.azure.net"),
 	// 					KeyVersion: to.Ptr(""),
-	// 					LastKeyRotationTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-13T20:36:23.7023290Z"); return t}()),
+	// 					LastKeyRotationTimestamp: to.Ptr(time.Date(2019, time.December, 13, 20, 36, 23, 702329000, time.UTC)),
 	// 				},
 	// 				Services: &armstorage.EncryptionServices{
 	// 					Blob: &armstorage.EncryptionService{
 	// 						Enabled: to.Ptr(true),
 	// 						KeyType: to.Ptr(armstorage.KeyTypeAccount),
-	// 						LastEnabledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-15T00:43:14.1739587Z"); return t}()),
+	// 						LastEnabledTime: to.Ptr(time.Date(2020, time.December, 15, 0, 43, 14, 173958700, time.UTC)),
 	// 					},
 	// 					File: &armstorage.EncryptionService{
 	// 						Enabled: to.Ptr(true),
 	// 						KeyType: to.Ptr(armstorage.KeyTypeAccount),
-	// 						LastEnabledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-15T00:43:14.1739587Z"); return t}()),
+	// 						LastEnabledTime: to.Ptr(time.Date(2020, time.December, 15, 0, 43, 14, 173958700, time.UTC)),
 	// 					},
 	// 				},
 	// 			},
@@ -4992,7 +5115,7 @@ func ExampleAccountsClient_Update_storageAccountUpdateUserAssignedEncryptionIden
 	// }
 }
 
-// Generated from example definition: 2026-04-01/StorageAccountUpdateUserAssignedIdentityWithFederatedIdentityClientId.json
+// Generated from example definition: 2026-09-01/StorageAccountUpdateUserAssignedIdentityWithFederatedIdentityClientId.json
 func ExampleAccountsClient_Update_storageAccountUpdateUserAssignedIdentityWithFederatedIdentityClientId() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -5063,7 +5186,7 @@ func ExampleAccountsClient_Update_storageAccountUpdateUserAssignedIdentityWithFe
 	// 		Location: to.Ptr("eastus"),
 	// 		Properties: &armstorage.AccountProperties{
 	// 			AccessTier: to.Ptr(armstorage.AccessTierHot),
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-15T00:43:14.0839093Z"); return t}()),
+	// 			CreationTime: to.Ptr(time.Date(2020, time.December, 15, 0, 43, 14, 83909300, time.UTC)),
 	// 			Encryption: &armstorage.Encryption{
 	// 				EncryptionIdentity: &armstorage.EncryptionIdentity{
 	// 					EncryptionFederatedIdentityClientID: to.Ptr("3109d1c4-a5de-4d84-8832-feabb916a4b6"),
@@ -5075,18 +5198,18 @@ func ExampleAccountsClient_Update_storageAccountUpdateUserAssignedIdentityWithFe
 	// 					KeyName: to.Ptr("wrappingKey"),
 	// 					KeyVaultURI: to.Ptr("https://myvault8569.vault.azure.net"),
 	// 					KeyVersion: to.Ptr(""),
-	// 					LastKeyRotationTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-13T20:36:23.7023290Z"); return t}()),
+	// 					LastKeyRotationTimestamp: to.Ptr(time.Date(2019, time.December, 13, 20, 36, 23, 702329000, time.UTC)),
 	// 				},
 	// 				Services: &armstorage.EncryptionServices{
 	// 					Blob: &armstorage.EncryptionService{
 	// 						Enabled: to.Ptr(true),
 	// 						KeyType: to.Ptr(armstorage.KeyTypeAccount),
-	// 						LastEnabledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-15T00:43:14.1739587Z"); return t}()),
+	// 						LastEnabledTime: to.Ptr(time.Date(2020, time.December, 15, 0, 43, 14, 173958700, time.UTC)),
 	// 					},
 	// 					File: &armstorage.EncryptionService{
 	// 						Enabled: to.Ptr(true),
 	// 						KeyType: to.Ptr(armstorage.KeyTypeAccount),
-	// 						LastEnabledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-15T00:43:14.1739587Z"); return t}()),
+	// 						LastEnabledTime: to.Ptr(time.Date(2020, time.December, 15, 0, 43, 14, 173958700, time.UTC)),
 	// 					},
 	// 				},
 	// 			},
@@ -5123,7 +5246,7 @@ func ExampleAccountsClient_Update_storageAccountUpdateUserAssignedIdentityWithFe
 	// }
 }
 
-// Generated from example definition: 2026-04-01/StorageAccountUpdateWithDataCollaborationPolicy.json
+// Generated from example definition: 2026-09-01/StorageAccountUpdateWithDataCollaborationPolicy.json
 func ExampleAccountsClient_Update_storageAccountUpdateWithDataCollaborationPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -5175,7 +5298,7 @@ func ExampleAccountsClient_Update_storageAccountUpdateWithDataCollaborationPolic
 	// }
 }
 
-// Generated from example definition: 2026-04-01/StorageAccountUpdateWithImmutabilityPolicy.json
+// Generated from example definition: 2026-09-01/StorageAccountUpdateWithImmutabilityPolicy.json
 func ExampleAccountsClient_Update_storageAccountUpdateWithImmutabilityPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -5233,7 +5356,7 @@ func ExampleAccountsClient_Update_storageAccountUpdateWithImmutabilityPolicy() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/StorageAccountUpdate_placement.json
+// Generated from example definition: 2026-09-01/StorageAccountUpdate_placement.json
 func ExampleAccountsClient_Update_storageAccountUpdatePlacement() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -5311,7 +5434,7 @@ func ExampleAccountsClient_Update_storageAccountUpdatePlacement() {
 	// 		Properties: &armstorage.AccountProperties{
 	// 			AllowBlobPublicAccess: to.Ptr(false),
 	// 			AllowSharedKeyAccess: to.Ptr(true),
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-01T02:42:41.7633306Z"); return t}()),
+	// 			CreationTime: to.Ptr(time.Date(2017, time.June, 1, 2, 42, 41, 763330600, time.UTC)),
 	// 			EnableExtendedGroups: to.Ptr(true),
 	// 			Encryption: &armstorage.Encryption{
 	// 				KeySource: to.Ptr(armstorage.KeySourceMicrosoftStorage),
@@ -5319,12 +5442,12 @@ func ExampleAccountsClient_Update_storageAccountUpdatePlacement() {
 	// 					Blob: &armstorage.EncryptionService{
 	// 						Enabled: to.Ptr(true),
 	// 						KeyType: to.Ptr(armstorage.KeyTypeAccount),
-	// 						LastEnabledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-11T20:49:31.7036140Z"); return t}()),
+	// 						LastEnabledTime: to.Ptr(time.Date(2019, time.December, 11, 20, 49, 31, 703614000, time.UTC)),
 	// 					},
 	// 					File: &armstorage.EncryptionService{
 	// 						Enabled: to.Ptr(true),
 	// 						KeyType: to.Ptr(armstorage.KeyTypeAccount),
-	// 						LastEnabledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-11T20:49:31.7036140Z"); return t}()),
+	// 						LastEnabledTime: to.Ptr(time.Date(2019, time.December, 11, 20, 49, 31, 703614000, time.UTC)),
 	// 					},
 	// 				},
 	// 			},
@@ -5332,8 +5455,8 @@ func ExampleAccountsClient_Update_storageAccountUpdatePlacement() {
 	// 			IsLocalUserEnabled: to.Ptr(true),
 	// 			IsSftpEnabled: to.Ptr(true),
 	// 			KeyCreationTime: &armstorage.KeyCreationTime{
-	// 				Key1: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-18T04:42:22.4322836Z"); return t}()),
-	// 				Key2: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-18T04:42:22.4322836Z"); return t}()),
+	// 				Key1: to.Ptr(time.Date(2021, time.March, 18, 4, 42, 22, 432283600, time.UTC)),
+	// 				Key2: to.Ptr(time.Date(2021, time.March, 18, 4, 42, 22, 432283600, time.UTC)),
 	// 			},
 	// 			KeyPolicy: &armstorage.KeyPolicy{
 	// 				KeyExpirationPeriodInDays: to.Ptr[int32](20),
@@ -5406,7 +5529,7 @@ func ExampleAccountsClient_Update_storageAccountUpdatePlacement() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/StorageAccountUpdate_zones.json
+// Generated from example definition: 2026-09-01/StorageAccountUpdate_zones.json
 func ExampleAccountsClient_Update_storageAccountUpdateZones() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -5481,7 +5604,7 @@ func ExampleAccountsClient_Update_storageAccountUpdateZones() {
 	// 		Properties: &armstorage.AccountProperties{
 	// 			AllowBlobPublicAccess: to.Ptr(false),
 	// 			AllowSharedKeyAccess: to.Ptr(true),
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-01T02:42:41.7633306Z"); return t}()),
+	// 			CreationTime: to.Ptr(time.Date(2017, time.June, 1, 2, 42, 41, 763330600, time.UTC)),
 	// 			EnableExtendedGroups: to.Ptr(true),
 	// 			Encryption: &armstorage.Encryption{
 	// 				KeySource: to.Ptr(armstorage.KeySourceMicrosoftStorage),
@@ -5489,12 +5612,12 @@ func ExampleAccountsClient_Update_storageAccountUpdateZones() {
 	// 					Blob: &armstorage.EncryptionService{
 	// 						Enabled: to.Ptr(true),
 	// 						KeyType: to.Ptr(armstorage.KeyTypeAccount),
-	// 						LastEnabledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-11T20:49:31.7036140Z"); return t}()),
+	// 						LastEnabledTime: to.Ptr(time.Date(2019, time.December, 11, 20, 49, 31, 703614000, time.UTC)),
 	// 					},
 	// 					File: &armstorage.EncryptionService{
 	// 						Enabled: to.Ptr(true),
 	// 						KeyType: to.Ptr(armstorage.KeyTypeAccount),
-	// 						LastEnabledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-11T20:49:31.7036140Z"); return t}()),
+	// 						LastEnabledTime: to.Ptr(time.Date(2019, time.December, 11, 20, 49, 31, 703614000, time.UTC)),
 	// 					},
 	// 				},
 	// 			},
@@ -5502,8 +5625,8 @@ func ExampleAccountsClient_Update_storageAccountUpdateZones() {
 	// 			IsLocalUserEnabled: to.Ptr(true),
 	// 			IsSftpEnabled: to.Ptr(true),
 	// 			KeyCreationTime: &armstorage.KeyCreationTime{
-	// 				Key1: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-18T04:42:22.4322836Z"); return t}()),
-	// 				Key2: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-18T04:42:22.4322836Z"); return t}()),
+	// 				Key1: to.Ptr(time.Date(2021, time.March, 18, 4, 42, 22, 432283600, time.UTC)),
+	// 				Key2: to.Ptr(time.Date(2021, time.March, 18, 4, 42, 22, 432283600, time.UTC)),
 	// 			},
 	// 			KeyPolicy: &armstorage.KeyPolicy{
 	// 				KeyExpirationPeriodInDays: to.Ptr[int32](20),

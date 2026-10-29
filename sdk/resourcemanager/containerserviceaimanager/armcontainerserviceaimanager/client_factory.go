@@ -56,6 +56,14 @@ func (c *ClientFactory) NewAIModelsClient() *AIModelsClient {
 	}
 }
 
+// NewCustomAIModelsClient creates a new instance of CustomAIModelsClient.
+func (c *ClientFactory) NewCustomAIModelsClient() *CustomAIModelsClient {
+	return &CustomAIModelsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewModelDeploymentsClient creates a new instance of ModelDeploymentsClient.
 func (c *ClientFactory) NewModelDeploymentsClient() *ModelDeploymentsClient {
 	return &ModelDeploymentsClient{

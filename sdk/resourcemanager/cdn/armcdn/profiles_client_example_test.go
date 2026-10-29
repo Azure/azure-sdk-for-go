@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v4"
 	"log"
 )
 
-// Generated from example definition: 2025-06-01/Profiles_CanMigrate.json
+// Generated from example definition: 2026-10-01/Profiles_CanMigrate.json
 func ExampleProfilesClient_BeginCanMigrate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -50,7 +50,7 @@ func ExampleProfilesClient_BeginCanMigrate() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/CdnProfiles_CanMigrate.json
+// Generated from example definition: 2026-10-01/CdnProfiles_CanMigrate.json
 func ExampleProfilesClient_BeginCdnCanMigrateToAfd() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -84,7 +84,7 @@ func ExampleProfilesClient_BeginCdnCanMigrateToAfd() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/CdnProfiles_Migrate.json
+// Generated from example definition: 2026-10-01/CdnProfiles_Migrate.json
 func ExampleProfilesClient_BeginCdnMigrateToAfd() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -123,7 +123,7 @@ func ExampleProfilesClient_BeginCdnMigrateToAfd() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/Profiles_Create.json
+// Generated from example definition: 2026-10-01/Profiles_Create.json
 func ExampleProfilesClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -172,7 +172,7 @@ func ExampleProfilesClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/Profiles_Delete.json
+// Generated from example definition: 2026-10-01/Profiles_Delete.json
 func ExampleProfilesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -198,7 +198,151 @@ func ExampleProfilesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/Profiles_GenerateSsoUri.json
+// Generated from example definition: 2026-10-01/Profiles_Migrate.json
+func ExampleProfilesClient_BeginMigrate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcdn.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewProfilesClient().BeginMigrate(ctx, "RG", armcdn.MigrationParameters{
+		ClassicResourceReference: &armcdn.ResourceReference{
+			ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Network/frontdoors/frontdoorname"),
+		},
+		ProfileName: to.Ptr("profile1"),
+		SKU: &armcdn.SKU{
+			Name: to.Ptr(armcdn.SKUNameStandardAzureFrontDoor),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcdn.ProfilesClientMigrateResponse{
+	// 	MigrateResult: armcdn.MigrateResult{
+	// 		Type: to.Ptr("Microsoft.Cdn/migrate"),
+	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/operationresults/operationid/profileresults/profile1/migrateresults/profile1"),
+	// 		Properties: &armcdn.MigrateResultProperties{
+	// 			MigratedProfileResourceID: &armcdn.ResourceReference{
+	// 				ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1"),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-01/Profiles_MigrationAbort.json
+func ExampleProfilesClient_BeginMigrationAbort() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcdn.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewProfilesClient().BeginMigrationAbort(ctx, "RG", "profile1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-10-01/Profiles_MigrationCommit.json
+func ExampleProfilesClient_BeginMigrationCommit() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcdn.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewProfilesClient().BeginMigrationCommit(ctx, "RG", "profile1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcdn.ProfilesClientMigrationCommitResponse{
+	// }
+}
+
+// Generated from example definition: 2026-10-01/Profiles_Update.json
+func ExampleProfilesClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcdn.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewProfilesClient().BeginUpdate(ctx, "RG", "profile1", armcdn.ProfileUpdateParameters{
+		Tags: map[string]*string{
+			"additionalProperties": to.Ptr("Tag1"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcdn.ProfilesClientUpdateResponse{
+	// 	Profile: armcdn.Profile{
+	// 		Name: to.Ptr("profile1"),
+	// 		Type: to.Ptr("Microsoft.Cdn/profiles"),
+	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1"),
+	// 		Kind: to.Ptr("frontdoor"),
+	// 		Location: to.Ptr("global"),
+	// 		Properties: &armcdn.ProfileProperties{
+	// 			FrontDoorID: to.Ptr("3b4682da-b3e2-47a1-96ca-08ab3cb7294e"),
+	// 			LogScrubbing: &armcdn.ProfileLogScrubbing{
+	// 				ScrubbingRules: []*armcdn.ProfileScrubbingRules{
+	// 				},
+	// 				State: to.Ptr(armcdn.ProfileScrubbingStateEnabled),
+	// 			},
+	// 			OriginResponseTimeoutSeconds: to.Ptr[int32](30),
+	// 			ProvisioningState: to.Ptr(armcdn.ProfileProvisioningStateSucceeded),
+	// 			ResourceState: to.Ptr(armcdn.ProfileResourceStateActive),
+	// 		},
+	// 		SKU: &armcdn.SKU{
+	// 			Name: to.Ptr(armcdn.SKUNamePremiumAzureFrontDoor),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"additionalProperties": to.Ptr("Tag1"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-01/Profiles_GenerateSsoUri.json
 func ExampleProfilesClient_GenerateSsoURI() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -223,7 +367,7 @@ func ExampleProfilesClient_GenerateSsoURI() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/Profiles_Get.json
+// Generated from example definition: 2026-10-01/Profiles_Get.json
 func ExampleProfilesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -268,8 +412,8 @@ func ExampleProfilesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/Profiles_List.json
-func ExampleProfilesClient_NewListPager() {
+// Generated from example definition: 2026-10-01/Profiles_ListSupportedOptimizationTypes.json
+func ExampleProfilesClient_ListSupportedOptimizationTypes() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -279,73 +423,24 @@ func ExampleProfilesClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewProfilesClient().NewListPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcdn.ProfilesClientListResponse{
-		// 	ProfileListResult: armcdn.ProfileListResult{
-		// 		Value: []*armcdn.Profile{
-		// 			{
-		// 				Name: to.Ptr("profile1"),
-		// 				Type: to.Ptr("Microsoft.Cdn/profiles"),
-		// 				ID: to.Ptr("/subscriptions/subid/resourcegroups/RG1/providers/Microsoft.Cdn/profiles/profile1"),
-		// 				Kind: to.Ptr("frontdoor"),
-		// 				Location: to.Ptr("global"),
-		// 				Properties: &armcdn.ProfileProperties{
-		// 					FrontDoorID: to.Ptr("3b4682da-b3e2-47a1-96ca-08ab3cb7294e"),
-		// 					LogScrubbing: &armcdn.ProfileLogScrubbing{
-		// 						ScrubbingRules: []*armcdn.ProfileScrubbingRules{
-		// 						},
-		// 						State: to.Ptr(armcdn.ProfileScrubbingStateEnabled),
-		// 					},
-		// 					OriginResponseTimeoutSeconds: to.Ptr[int32](30),
-		// 					ProvisioningState: to.Ptr(armcdn.ProfileProvisioningStateSucceeded),
-		// 					ResourceState: to.Ptr(armcdn.ProfileResourceStateActive),
-		// 				},
-		// 				SKU: &armcdn.SKU{
-		// 					Name: to.Ptr(armcdn.SKUNamePremiumAzureFrontDoor),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("profile2"),
-		// 				Type: to.Ptr("Microsoft.Cdn/profiles"),
-		// 				ID: to.Ptr("/subscriptions/subid/resourcegroups/RG1/providers/Microsoft.Cdn/profiles/profile2"),
-		// 				Kind: to.Ptr("frontdoor"),
-		// 				Location: to.Ptr("global"),
-		// 				Properties: &armcdn.ProfileProperties{
-		// 					FrontDoorID: to.Ptr("3b4682da-b3e2-47a1-96ca-08ab3cb7294e"),
-		// 					LogScrubbing: &armcdn.ProfileLogScrubbing{
-		// 						ScrubbingRules: []*armcdn.ProfileScrubbingRules{
-		// 						},
-		// 						State: to.Ptr(armcdn.ProfileScrubbingStateEnabled),
-		// 					},
-		// 					OriginResponseTimeoutSeconds: to.Ptr[int32](30),
-		// 					ProvisioningState: to.Ptr(armcdn.ProfileProvisioningStateSucceeded),
-		// 					ResourceState: to.Ptr(armcdn.ProfileResourceStateActive),
-		// 				},
-		// 				SKU: &armcdn.SKU{
-		// 					Name: to.Ptr(armcdn.SKUNamePremiumAzureFrontDoor),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
+	res, err := clientFactory.NewProfilesClient().ListSupportedOptimizationTypes(ctx, "RG", "profile1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
 	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcdn.ProfilesClientListSupportedOptimizationTypesResponse{
+	// 	SupportedOptimizationTypesListResult: armcdn.SupportedOptimizationTypesListResult{
+	// 		SupportedOptimizationTypes: []*armcdn.OptimizationType{
+	// 			to.Ptr(armcdn.OptimizationTypeGeneralWebDelivery),
+	// 			to.Ptr(armcdn.OptimizationTypeDynamicSiteAcceleration),
+	// 		},
+	// 	},
+	// }
 }
 
-// Generated from example definition: 2025-06-01/Profiles_ListByResourceGroup.json
+// Generated from example definition: 2026-10-01/Profiles_ListByResourceGroup.json
 func ExampleProfilesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -422,7 +517,84 @@ func ExampleProfilesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/Profiles_ListResourceUsage.json
+// Generated from example definition: 2026-10-01/Profiles_List.json
+func ExampleProfilesClient_NewListPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcdn.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewProfilesClient().NewListPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armcdn.ProfilesClientListResponse{
+		// 	ProfileListResult: armcdn.ProfileListResult{
+		// 		Value: []*armcdn.Profile{
+		// 			{
+		// 				Name: to.Ptr("profile1"),
+		// 				Type: to.Ptr("Microsoft.Cdn/profiles"),
+		// 				ID: to.Ptr("/subscriptions/subid/resourcegroups/RG1/providers/Microsoft.Cdn/profiles/profile1"),
+		// 				Kind: to.Ptr("frontdoor"),
+		// 				Location: to.Ptr("global"),
+		// 				Properties: &armcdn.ProfileProperties{
+		// 					FrontDoorID: to.Ptr("3b4682da-b3e2-47a1-96ca-08ab3cb7294e"),
+		// 					LogScrubbing: &armcdn.ProfileLogScrubbing{
+		// 						ScrubbingRules: []*armcdn.ProfileScrubbingRules{
+		// 						},
+		// 						State: to.Ptr(armcdn.ProfileScrubbingStateEnabled),
+		// 					},
+		// 					OriginResponseTimeoutSeconds: to.Ptr[int32](30),
+		// 					ProvisioningState: to.Ptr(armcdn.ProfileProvisioningStateSucceeded),
+		// 					ResourceState: to.Ptr(armcdn.ProfileResourceStateActive),
+		// 				},
+		// 				SKU: &armcdn.SKU{
+		// 					Name: to.Ptr(armcdn.SKUNamePremiumAzureFrontDoor),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("profile2"),
+		// 				Type: to.Ptr("Microsoft.Cdn/profiles"),
+		// 				ID: to.Ptr("/subscriptions/subid/resourcegroups/RG1/providers/Microsoft.Cdn/profiles/profile2"),
+		// 				Kind: to.Ptr("frontdoor"),
+		// 				Location: to.Ptr("global"),
+		// 				Properties: &armcdn.ProfileProperties{
+		// 					FrontDoorID: to.Ptr("3b4682da-b3e2-47a1-96ca-08ab3cb7294e"),
+		// 					LogScrubbing: &armcdn.ProfileLogScrubbing{
+		// 						ScrubbingRules: []*armcdn.ProfileScrubbingRules{
+		// 						},
+		// 						State: to.Ptr(armcdn.ProfileScrubbingStateEnabled),
+		// 					},
+		// 					OriginResponseTimeoutSeconds: to.Ptr[int32](30),
+		// 					ProvisioningState: to.Ptr(armcdn.ProfileProvisioningStateSucceeded),
+		// 					ResourceState: to.Ptr(armcdn.ProfileResourceStateActive),
+		// 				},
+		// 				SKU: &armcdn.SKU{
+		// 					Name: to.Ptr(armcdn.SKUNamePremiumAzureFrontDoor),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-10-01/Profiles_ListResourceUsage.json
 func ExampleProfilesClient_NewListResourceUsagePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -457,176 +629,4 @@ func ExampleProfilesClient_NewListResourceUsagePager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2025-06-01/Profiles_ListSupportedOptimizationTypes.json
-func ExampleProfilesClient_ListSupportedOptimizationTypes() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcdn.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewProfilesClient().ListSupportedOptimizationTypes(ctx, "RG", "profile1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcdn.ProfilesClientListSupportedOptimizationTypesResponse{
-	// 	SupportedOptimizationTypesListResult: armcdn.SupportedOptimizationTypesListResult{
-	// 		SupportedOptimizationTypes: []*armcdn.OptimizationType{
-	// 			to.Ptr(armcdn.OptimizationTypeGeneralWebDelivery),
-	// 			to.Ptr(armcdn.OptimizationTypeDynamicSiteAcceleration),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-06-01/Profiles_Migrate.json
-func ExampleProfilesClient_BeginMigrate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcdn.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewProfilesClient().BeginMigrate(ctx, "RG", armcdn.MigrationParameters{
-		ClassicResourceReference: &armcdn.ResourceReference{
-			ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Network/frontdoors/frontdoorname"),
-		},
-		ProfileName: to.Ptr("profile1"),
-		SKU: &armcdn.SKU{
-			Name: to.Ptr(armcdn.SKUNameStandardAzureFrontDoor),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcdn.ProfilesClientMigrateResponse{
-	// 	MigrateResult: armcdn.MigrateResult{
-	// 		Type: to.Ptr("Microsoft.Cdn/migrate"),
-	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/operationresults/operationid/profileresults/profile1/migrateresults/profile1"),
-	// 		Properties: &armcdn.MigrateResultProperties{
-	// 			MigratedProfileResourceID: &armcdn.ResourceReference{
-	// 				ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1"),
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-06-01/Profiles_MigrationAbort.json
-func ExampleProfilesClient_BeginMigrationAbort() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcdn.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewProfilesClient().BeginMigrationAbort(ctx, "RG", "profile1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2025-06-01/Profiles_MigrationCommit.json
-func ExampleProfilesClient_BeginMigrationCommit() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcdn.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewProfilesClient().BeginMigrationCommit(ctx, "RG", "profile1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcdn.ProfilesClientMigrationCommitResponse{
-	// }
-}
-
-// Generated from example definition: 2025-06-01/Profiles_Update.json
-func ExampleProfilesClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcdn.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewProfilesClient().BeginUpdate(ctx, "RG", "profile1", armcdn.ProfileUpdateParameters{
-		Tags: map[string]*string{
-			"additionalProperties": to.Ptr("Tag1"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcdn.ProfilesClientUpdateResponse{
-	// 	Profile: armcdn.Profile{
-	// 		Name: to.Ptr("profile1"),
-	// 		Type: to.Ptr("Microsoft.Cdn/profiles"),
-	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1"),
-	// 		Kind: to.Ptr("frontdoor"),
-	// 		Location: to.Ptr("global"),
-	// 		Properties: &armcdn.ProfileProperties{
-	// 			FrontDoorID: to.Ptr("3b4682da-b3e2-47a1-96ca-08ab3cb7294e"),
-	// 			LogScrubbing: &armcdn.ProfileLogScrubbing{
-	// 				ScrubbingRules: []*armcdn.ProfileScrubbingRules{
-	// 				},
-	// 				State: to.Ptr(armcdn.ProfileScrubbingStateEnabled),
-	// 			},
-	// 			OriginResponseTimeoutSeconds: to.Ptr[int32](30),
-	// 			ProvisioningState: to.Ptr(armcdn.ProfileProvisioningStateSucceeded),
-	// 			ResourceState: to.Ptr(armcdn.ProfileResourceStateActive),
-	// 		},
-	// 		SKU: &armcdn.SKU{
-	// 			Name: to.Ptr(armcdn.SKUNamePremiumAzureFrontDoor),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"additionalProperties": to.Ptr("Tag1"),
-	// 		},
-	// 	},
-	// }
 }

@@ -8,7 +8,7 @@ import (
 )
 
 func (client *PathClient) Endpoint() string {
-	return client.endpoint
+	return client.url
 }
 
 func (client *PathClient) InternalClient() *azcore.Client {
@@ -21,8 +21,7 @@ func (client *PathClient) InternalClient() *azcore.Client {
 func NewPathClient(endpoint string, azClient *azcore.Client) *PathClient {
 	client := &PathClient{
 		internal: azClient,
-		endpoint: endpoint,
-		version:  ServiceVersion,
+		url:      endpoint,
 	}
 	return client
 }

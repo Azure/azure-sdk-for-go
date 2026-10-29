@@ -6,6 +6,48 @@ package armstoragediscovery
 
 import "time"
 
+// AzureBlobStorageCapability - The Azure Blob Storage capability configuration.
+type AzureBlobStorageCapability struct {
+	// REQUIRED; The capacity details configuration for Azure Blob Storage.
+	CapacityDetails *CapacityDetails
+
+	// The prefix configurations that scope the capacity details to specific storage accounts, containers, and prefixes.
+	PrefixConfigurations []*PrefixConfiguration
+}
+
+// AzureBlobStorageCapabilityUpdate - The Azure Blob Storage capability configuration that can be updated.
+type AzureBlobStorageCapabilityUpdate struct {
+	// The capacity details configuration to update for Azure Blob Storage.
+	CapacityDetails *CapacityDetailsUpdate
+
+	// The prefix configurations to update for Azure Blob Storage.
+	PrefixConfigurations []*PrefixConfigurationUpdate
+}
+
+// Capabilities - The capabilities configured for a storage discovery workspace.
+type Capabilities struct {
+	// REQUIRED; The Azure Blob Storage capability configuration for the storage discovery workspace.
+	AzureBlobStorage *AzureBlobStorageCapability
+}
+
+// CapabilitiesUpdate - The capabilities that can be updated for a storage discovery workspace.
+type CapabilitiesUpdate struct {
+	// The Azure Blob Storage capability configuration to update.
+	AzureBlobStorage *AzureBlobStorageCapabilityUpdate
+}
+
+// CapacityDetails - The capacity details configuration.
+type CapacityDetails struct {
+	// REQUIRED; The enablement status of the capacity details capability.
+	Status *CapabilityStatus
+}
+
+// CapacityDetailsUpdate - The capacity details configuration that can be updated.
+type CapacityDetailsUpdate struct {
+	// The enablement status to update for the capacity details capability.
+	Status *CapabilityStatus
+}
+
 // Operation - REST API Operation
 //
 // Details of a REST API operation, returned from the Resource Provider Operations API
@@ -55,6 +97,33 @@ type OperationListResult struct {
 
 	// The link to the next page of items
 	NextLink *string
+}
+
+// PrefixConfiguration - A prefix configuration that scopes capacity details to a specific storage account, container, and
+// prefix.
+type PrefixConfiguration struct {
+	// REQUIRED; The name of the blob container within the storage account.
+	ContainerName *string
+
+	// REQUIRED; The name of the storage account.
+	StorageAccountName *string
+
+	// The blob prefix within the container to scope capacity details to. An empty value scopes to the entire container. Must
+	// not start with a '/'.
+	Prefix *string
+}
+
+// PrefixConfigurationUpdate - A prefix configuration that can be updated.
+type PrefixConfigurationUpdate struct {
+	// The name of the blob container within the storage account.
+	ContainerName *string
+
+	// The blob prefix within the container to scope capacity details to. An empty value scopes to the entire container. Must
+	// not start with a '/'.
+	Prefix *string
+
+	// The name of the storage account.
+	StorageAccountName *string
 }
 
 // Scope - Storage Discovery Scope. This had added validations
@@ -134,6 +203,9 @@ type WorkspaceProperties struct {
 	// REQUIRED; The view level storage discovery data estate
 	WorkspaceRoots []*string
 
+	// The capabilities configured for the storage discovery workspace.
+	Capabilities *Capabilities
+
 	// The description of the storage discovery workspace
 	Description *string
 
@@ -146,6 +218,9 @@ type WorkspaceProperties struct {
 
 // WorkspacePropertiesUpdate - The template for adding updateable properties.
 type WorkspacePropertiesUpdate struct {
+	// The capabilities configured for the storage discovery workspace.
+	Capabilities *CapabilitiesUpdate
+
 	// The description of the storage discovery workspace
 	Description *string
 

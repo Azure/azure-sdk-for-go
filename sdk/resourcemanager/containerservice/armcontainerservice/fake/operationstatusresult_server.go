@@ -30,13 +30,13 @@ type OperationStatusResultServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetByAgentPool func(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, operationID string, options *armcontainerservice.OperationStatusResultClientGetByAgentPoolOptions) (resp azfake.Responder[armcontainerservice.OperationStatusResultClientGetByAgentPoolResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method OperationStatusResultClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, resourceName string, options *armcontainerservice.OperationStatusResultClientListOptions) (resp azfake.PagerResponder[armcontainerservice.OperationStatusResultClientListResponse])
-
 	// NewListByAgentPoolPager is the fake for method OperationStatusResultClient.NewListByAgentPoolPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByAgentPoolPager func(resourceGroupName string, resourceName string, agentPoolName string, options *armcontainerservice.OperationStatusResultClientListByAgentPoolOptions) (resp azfake.PagerResponder[armcontainerservice.OperationStatusResultClientListByAgentPoolResponse])
+
+	// NewListPager is the fake for method OperationStatusResultClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(resourceGroupName string, resourceName string, options *armcontainerservice.OperationStatusResultClientListOptions) (resp azfake.PagerResponder[armcontainerservice.OperationStatusResultClientListResponse])
 }
 
 // NewOperationStatusResultServerTransport creates a new instance of OperationStatusResultServerTransport with the provided implementation.
@@ -45,8 +45,8 @@ type OperationStatusResultServer struct {
 func NewOperationStatusResultServerTransport(srv *OperationStatusResultServer) *OperationStatusResultServerTransport {
 	return &OperationStatusResultServerTransport{
 		srv:                     srv,
-		newListPager:            newTracker[azfake.PagerResponder[armcontainerservice.OperationStatusResultClientListResponse]](),
 		newListByAgentPoolPager: newTracker[azfake.PagerResponder[armcontainerservice.OperationStatusResultClientListByAgentPoolResponse]](),
+		newListPager:            newTracker[azfake.PagerResponder[armcontainerservice.OperationStatusResultClientListResponse]](),
 	}
 }
 
@@ -54,8 +54,8 @@ func NewOperationStatusResultServerTransport(srv *OperationStatusResultServer) *
 // Don't use this type directly, use NewOperationStatusResultServerTransport instead.
 type OperationStatusResultServerTransport struct {
 	srv                     *OperationStatusResultServer
-	newListPager            *tracker[azfake.PagerResponder[armcontainerservice.OperationStatusResultClientListResponse]]
 	newListByAgentPoolPager *tracker[azfake.PagerResponder[armcontainerservice.OperationStatusResultClientListByAgentPoolResponse]]
+	newListPager            *tracker[azfake.PagerResponder[armcontainerservice.OperationStatusResultClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for OperationStatusResultServerTransport.
@@ -83,10 +83,10 @@ func (o *OperationStatusResultServerTransport) dispatchToMethodFake(req *http.Re
 				res.resp, res.err = o.dispatchGet(req)
 			case "OperationStatusResultClient.GetByAgentPool":
 				res.resp, res.err = o.dispatchGetByAgentPool(req)
-			case "OperationStatusResultClient.NewListPager":
-				res.resp, res.err = o.dispatchNewListPager(req)
 			case "OperationStatusResultClient.NewListByAgentPoolPager":
 				res.resp, res.err = o.dispatchNewListByAgentPoolPager(req)
+			case "OperationStatusResultClient.NewListPager":
+				res.resp, res.err = o.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -181,47 +181,6 @@ func (o *OperationStatusResultServerTransport) dispatchGetByAgentPool(req *http.
 	return resp, nil
 }
 
-func (o *OperationStatusResultServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if o.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := o.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/operations`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := o.srv.NewListPager(resourceGroupNameParam, resourceNameParam, nil)
-		newListPager = &resp
-		o.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcontainerservice.OperationStatusResultClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		o.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		o.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (o *OperationStatusResultServerTransport) dispatchNewListByAgentPoolPager(req *http.Request) (*http.Response, error) {
 	if o.srv.NewListByAgentPoolPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByAgentPoolPager not implemented")}
@@ -274,6 +233,47 @@ func (o *OperationStatusResultServerTransport) dispatchNewListByAgentPoolPager(r
 	}
 	if !server.PagerResponderMore(newListByAgentPoolPager) {
 		o.newListByAgentPoolPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (o *OperationStatusResultServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if o.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := o.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/operations`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := o.srv.NewListPager(resourceGroupNameParam, resourceNameParam, nil)
+		newListPager = &resp
+		o.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcontainerservice.OperationStatusResultClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		o.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		o.newListPager.remove(req)
 	}
 	return resp, nil
 }

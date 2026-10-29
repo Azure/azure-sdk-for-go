@@ -5,7 +5,7 @@
 package armcontainerservice
 
 const (
-	version20260602Preview string = "2026-06-02-preview"
+	version20260802Preview string = "2026-08-02-preview"
 )
 
 // AccelerationMode - Enable advanced network acceleration options. This allows users to configure acceleration using BPF
@@ -90,6 +90,55 @@ func PossibleAdvancedNetworkPoliciesValues() []AdvancedNetworkPolicies {
 		AdvancedNetworkPoliciesFQDN,
 		AdvancedNetworkPoliciesL7,
 		AdvancedNetworkPoliciesNone,
+	}
+}
+
+// AgentFabricMembershipProvisioningState - The current provisioning state of the AgentFabric membership.
+type AgentFabricMembershipProvisioningState string
+
+const (
+	// AgentFabricMembershipProvisioningStateCanceled - The provisioning of the AgentFabric membership was canceled.
+	AgentFabricMembershipProvisioningStateCanceled AgentFabricMembershipProvisioningState = "Canceled"
+	// AgentFabricMembershipProvisioningStateCreating - The AgentFabric membership is being created.
+	AgentFabricMembershipProvisioningStateCreating AgentFabricMembershipProvisioningState = "Creating"
+	// AgentFabricMembershipProvisioningStateDeleting - The AgentFabric membership is being deleted.
+	AgentFabricMembershipProvisioningStateDeleting AgentFabricMembershipProvisioningState = "Deleting"
+	// AgentFabricMembershipProvisioningStateFailed - The provisioning of the AgentFabric membership failed.
+	AgentFabricMembershipProvisioningStateFailed AgentFabricMembershipProvisioningState = "Failed"
+	// AgentFabricMembershipProvisioningStateSucceeded - The AgentFabric membership was provisioned successfully.
+	AgentFabricMembershipProvisioningStateSucceeded AgentFabricMembershipProvisioningState = "Succeeded"
+	// AgentFabricMembershipProvisioningStateUpdating - The AgentFabric membership is being updated.
+	AgentFabricMembershipProvisioningStateUpdating AgentFabricMembershipProvisioningState = "Updating"
+)
+
+// PossibleAgentFabricMembershipProvisioningStateValues returns the possible values for the AgentFabricMembershipProvisioningState const type.
+func PossibleAgentFabricMembershipProvisioningStateValues() []AgentFabricMembershipProvisioningState {
+	return []AgentFabricMembershipProvisioningState{
+		AgentFabricMembershipProvisioningStateCanceled,
+		AgentFabricMembershipProvisioningStateCreating,
+		AgentFabricMembershipProvisioningStateDeleting,
+		AgentFabricMembershipProvisioningStateFailed,
+		AgentFabricMembershipProvisioningStateSucceeded,
+		AgentFabricMembershipProvisioningStateUpdating,
+	}
+}
+
+// AgentFabricMembershipSKUName - The SKU of the AgentFabric membership. The SKU determines which AgentFabric components are
+// deployed to the cluster.
+type AgentFabricMembershipSKUName string
+
+const (
+	// AgentFabricMembershipSKUNamePremium - The Premium SKU.
+	AgentFabricMembershipSKUNamePremium AgentFabricMembershipSKUName = "Premium"
+	// AgentFabricMembershipSKUNameStandard - The Standard SKU.
+	AgentFabricMembershipSKUNameStandard AgentFabricMembershipSKUName = "Standard"
+)
+
+// PossibleAgentFabricMembershipSKUNameValues returns the possible values for the AgentFabricMembershipSKUName const type.
+func PossibleAgentFabricMembershipSKUNameValues() []AgentFabricMembershipSKUName {
+	return []AgentFabricMembershipSKUName{
+		AgentFabricMembershipSKUNamePremium,
+		AgentFabricMembershipSKUNameStandard,
 	}
 }
 
@@ -315,6 +364,48 @@ func PossibleBastionSKUValues() []BastionSKU {
 	return []BastionSKU{
 		BastionSKUPremium,
 		BastionSKUStandard,
+	}
+}
+
+// CloudShellProfileMode - Cloud Shell connectivity mode.
+type CloudShellProfileMode string
+
+const (
+	// CloudShellProfileModeCustom - Cloud Shell connectivity uses network resources provided by the user.
+	CloudShellProfileModeCustom CloudShellProfileMode = "Custom"
+	// CloudShellProfileModeDisabled - Cloud Shell connectivity is disabled.
+	CloudShellProfileModeDisabled CloudShellProfileMode = "Disabled"
+	// CloudShellProfileModeManaged - Cloud Shell connectivity uses network resources managed by AKS.
+	CloudShellProfileModeManaged CloudShellProfileMode = "Managed"
+)
+
+// PossibleCloudShellProfileModeValues returns the possible values for the CloudShellProfileMode const type.
+func PossibleCloudShellProfileModeValues() []CloudShellProfileMode {
+	return []CloudShellProfileMode{
+		CloudShellProfileModeCustom,
+		CloudShellProfileModeDisabled,
+		CloudShellProfileModeManaged,
+	}
+}
+
+// CloudShellStorageProfileMode - How Cloud Shell storage resources are managed.
+type CloudShellStorageProfileMode string
+
+const (
+	// CloudShellStorageProfileModeCustom - The user provides the storage resources.
+	CloudShellStorageProfileModeCustom CloudShellStorageProfileMode = "Custom"
+	// CloudShellStorageProfileModeDisabled - Persistent storage is disabled.
+	CloudShellStorageProfileModeDisabled CloudShellStorageProfileMode = "Disabled"
+	// CloudShellStorageProfileModeManaged - AKS manages the storage resources.
+	CloudShellStorageProfileModeManaged CloudShellStorageProfileMode = "Managed"
+)
+
+// PossibleCloudShellStorageProfileModeValues returns the possible values for the CloudShellStorageProfileMode const type.
+func PossibleCloudShellStorageProfileModeValues() []CloudShellStorageProfileMode {
+	return []CloudShellStorageProfileMode{
+		CloudShellStorageProfileModeCustom,
+		CloudShellStorageProfileModeDisabled,
+		CloudShellStorageProfileModeManaged,
 	}
 }
 
@@ -718,14 +809,29 @@ func PossibleIdentityBindingProvisioningStateValues() []IdentityBindingProvision
 	}
 }
 
+// ImpactedResourceKind - The category of a resource impacted by a detected upgrade issue.
+type ImpactedResourceKind string
+
+const (
+	// ImpactedResourceKindArm - An Azure Resource Manager (ARM) resource.
+	ImpactedResourceKindArm ImpactedResourceKind = "Arm"
+	// ImpactedResourceKindKubernetes - A Kubernetes resource.
+	ImpactedResourceKindKubernetes ImpactedResourceKind = "Kubernetes"
+)
+
+// PossibleImpactedResourceKindValues returns the possible values for the ImpactedResourceKind const type.
+func PossibleImpactedResourceKindValues() []ImpactedResourceKind {
+	return []ImpactedResourceKind{
+		ImpactedResourceKindArm,
+		ImpactedResourceKindKubernetes,
+	}
+}
+
 // InfrastructureEncryption - Whether to enable encryption at rest of Kubernetes resource objects using service-managed keys.
 // More information on this can be found under https://aka.ms/aks/kubernetesResourceObjectEncryption.
 type InfrastructureEncryption string
 
 const (
-	// InfrastructureEncryptionDisabled - Encryption at rest of Kubernetes resource objects using service-managed keys is disabled.
-	// More information on this can be found under https://aka.ms/aks/kubernetesResourceObjectEncryption.
-	InfrastructureEncryptionDisabled InfrastructureEncryption = "Disabled"
 	// InfrastructureEncryptionEnabled - Encryption at rest of Kubernetes resource objects using service-managed keys is enabled.
 	// More information on this can be found under https://aka.ms/aks/kubernetesResourceObjectEncryption.
 	InfrastructureEncryptionEnabled InfrastructureEncryption = "Enabled"
@@ -734,7 +840,6 @@ const (
 // PossibleInfrastructureEncryptionValues returns the possible values for the InfrastructureEncryption const type.
 func PossibleInfrastructureEncryptionValues() []InfrastructureEncryption {
 	return []InfrastructureEncryption{
-		InfrastructureEncryptionDisabled,
 		InfrastructureEncryptionEnabled,
 	}
 }
@@ -860,6 +965,28 @@ func PossibleKubernetesSupportPlanValues() []KubernetesSupportPlan {
 	return []KubernetesSupportPlan{
 		KubernetesSupportPlanAKSLongTermSupport,
 		KubernetesSupportPlanKubernetesOfficial,
+	}
+}
+
+// KubernetesVersionSupportStatus - The support status of the Kubernetes version the cluster is currently running. This is
+// intentionally binary — there is no discrete `ApproachingEOL` value. Proximity to end of
+// support is derived by clients from `kubernetesVersionEndOfSupportDate` (comparing it
+// against the current time), so no server-computed "approaching EOS" flag or message is
+// returned that could go stale in a cached record.
+type KubernetesVersionSupportStatus string
+
+const (
+	// KubernetesVersionSupportStatusInSupport - The scope is running a Kubernetes version that is still within its support window.
+	KubernetesVersionSupportStatusInSupport KubernetesVersionSupportStatus = "InSupport"
+	// KubernetesVersionSupportStatusOutOfSupport - The scope is running a Kubernetes version that is past its end of support.
+	KubernetesVersionSupportStatusOutOfSupport KubernetesVersionSupportStatus = "OutOfSupport"
+)
+
+// PossibleKubernetesVersionSupportStatusValues returns the possible values for the KubernetesVersionSupportStatus const type.
+func PossibleKubernetesVersionSupportStatusValues() []KubernetesVersionSupportStatus {
+	return []KubernetesVersionSupportStatus{
+		KubernetesVersionSupportStatusInSupport,
+		KubernetesVersionSupportStatusOutOfSupport,
 	}
 }
 
@@ -1052,6 +1179,26 @@ func PossibleLocalDNSStateValues() []LocalDNSState {
 	}
 }
 
+// MaintenanceWindowSource - The auto-upgrade schedule that a maintenance window is derived from.
+type MaintenanceWindowSource string
+
+const (
+	// MaintenanceWindowSourceClusterAutoUpgradeSchedule - The window is derived from the cluster auto-upgrade schedule (aksManagedAutoUpgradeSchedule),
+	// which governs Kubernetes version upgrades.
+	MaintenanceWindowSourceClusterAutoUpgradeSchedule MaintenanceWindowSource = "ClusterAutoUpgradeSchedule"
+	// MaintenanceWindowSourceNodeOSUpgradeSchedule - The window is derived from the node OS auto-upgrade schedule (aksManagedNodeOSUpgradeSchedule),
+	// which governs node OS image upgrades.
+	MaintenanceWindowSourceNodeOSUpgradeSchedule MaintenanceWindowSource = "NodeOSUpgradeSchedule"
+)
+
+// PossibleMaintenanceWindowSourceValues returns the possible values for the MaintenanceWindowSource const type.
+func PossibleMaintenanceWindowSourceValues() []MaintenanceWindowSource {
+	return []MaintenanceWindowSource{
+		MaintenanceWindowSourceClusterAutoUpgradeSchedule,
+		MaintenanceWindowSourceNodeOSUpgradeSchedule,
+	}
+}
+
 // ManagedClusterNATGatewaySKU - The SKU of a managed cluster NAT Gateway.
 type ManagedClusterNATGatewaySKU string
 
@@ -1222,12 +1369,14 @@ func PossibleMeshMembershipProvisioningStateValues() []MeshMembershipProvisionin
 type MigStrategy string
 
 const (
-	// MigStrategyMixed - Set the MIG strategy for managed MIG as mixed.
+	// MigStrategyMixed - Each GPU in the pool can host heterogeneous partitions of different sizes simultaneously (`nvidia.com/mig.strategy:
+	// mixed`). The exact partition mix per GPU is declared via `nvidia.migProfiles`.
 	MigStrategyMixed MigStrategy = "Mixed"
-	// MigStrategyNone - Don't set a MIG strategy. If you previously had one set, this will override it and set remove the set
-	// MIG strategy.
+	// MigStrategyNone - No MIG partitioning is applied; the GPU is exposed as a single unified whole-device instance. Specifying
+	// this value removes any previously active MIG strategy.
 	MigStrategyNone MigStrategy = "None"
-	// MigStrategySingle - Set the MIG strategy for managed MIG as single.
+	// MigStrategySingle - All MIG partitions on every GPU in the pool are the same size (`nvidia.com/mig.strategy: single`).
+	// The uniform partition size is controlled by `nvidia.migProfiles` (exactly one element required).
 	MigStrategySingle MigStrategy = "Single"
 )
 
@@ -2281,6 +2430,113 @@ func PossibleUpgradeChannelValues() []UpgradeChannel {
 	}
 }
 
+// UpgradeInsightStatus - The overall status of an upgrade insight readiness evaluation. This is an aggregation of the
+// per-issue `severity` values in `detectedIssues`: any `Blocking` issue ⇒ `Failed`;
+// otherwise any `Warning` issue ⇒ `Warning`; otherwise (no issues) ⇒ `Passed`. The
+// scope-level vocabulary here (Passed/Warning/Failed) intentionally differs from the
+// issue-level `UpgradeIssueSeverity` (Blocking/Warning): a `Blocking` issue maps to
+// a `Failed` status, while `Warning` maps through unchanged.
+type UpgradeInsightStatus string
+
+const (
+	// UpgradeInsightStatusFailed - The evaluation found one or more blocking issues that will prevent the upgrade from completing
+	// until they are resolved. This reflects the readiness result, not a failure of the compute operation itself (that is conveyed
+	// by provisioningState).
+	UpgradeInsightStatusFailed UpgradeInsightStatus = "Failed"
+	// UpgradeInsightStatusPassed - The evaluation completed and no upgrade issues were found for the target version; the scope
+	// appears ready to upgrade.
+	UpgradeInsightStatusPassed UpgradeInsightStatus = "Passed"
+	// UpgradeInsightStatusWarning - The evaluation found one or more non-blocking warnings; the upgrade is expected to succeed
+	// but the warnings should be reviewed.
+	UpgradeInsightStatusWarning UpgradeInsightStatus = "Warning"
+)
+
+// PossibleUpgradeInsightStatusValues returns the possible values for the UpgradeInsightStatus const type.
+func PossibleUpgradeInsightStatusValues() []UpgradeInsightStatus {
+	return []UpgradeInsightStatus{
+		UpgradeInsightStatusFailed,
+		UpgradeInsightStatusPassed,
+		UpgradeInsightStatusWarning,
+	}
+}
+
+// UpgradeInsightStrategy - The strategy currently used to perform an upgrade (manual or automatic).
+type UpgradeInsightStrategy string
+
+const (
+	// UpgradeInsightStrategyAuto - Upgrades are performed automatically by AKS auto-upgrade.
+	UpgradeInsightStrategyAuto UpgradeInsightStrategy = "Auto"
+	// UpgradeInsightStrategyManual - Upgrades are initiated manually by the customer.
+	UpgradeInsightStrategyManual UpgradeInsightStrategy = "Manual"
+)
+
+// PossibleUpgradeInsightStrategyValues returns the possible values for the UpgradeInsightStrategy const type.
+func PossibleUpgradeInsightStrategyValues() []UpgradeInsightStrategy {
+	return []UpgradeInsightStrategy{
+		UpgradeInsightStrategyAuto,
+		UpgradeInsightStrategyManual,
+	}
+}
+
+// UpgradeIssueSeverity - The severity of a detected upgrade issue.
+type UpgradeIssueSeverity string
+
+const (
+	// UpgradeIssueSeverityBlocking - The issue will block the upgrade from completing successfully.
+	UpgradeIssueSeverityBlocking UpgradeIssueSeverity = "Blocking"
+	// UpgradeIssueSeverityWarning - The issue may cause problems with client applications or services on the cluster but will
+	// not necessarily prevent the upgrade from completing.
+	UpgradeIssueSeverityWarning UpgradeIssueSeverity = "Warning"
+)
+
+// PossibleUpgradeIssueSeverityValues returns the possible values for the UpgradeIssueSeverity const type.
+func PossibleUpgradeIssueSeverityValues() []UpgradeIssueSeverity {
+	return []UpgradeIssueSeverity{
+		UpgradeIssueSeverityBlocking,
+		UpgradeIssueSeverityWarning,
+	}
+}
+
+// UpgradeIssueType - The type of a detected upgrade issue.
+type UpgradeIssueType string
+
+const (
+	// UpgradeIssueTypeAPIBreakingChange - The cluster is using deprecated Kubernetes APIs that are removed in the target version.
+	// See https://aka.ms/aks/upgrade-insights/api-breaking-change for remediation guidance.
+	UpgradeIssueTypeAPIBreakingChange UpgradeIssueType = "APIBreakingChange"
+	// UpgradeIssueTypeComponentVersionMismatch - An add-on or system component is not compatible with the target Kubernetes version.
+	// See https://aka.ms/aks/upgrade-insights/component-version-mismatch for remediation guidance.
+	UpgradeIssueTypeComponentVersionMismatch UpgradeIssueType = "ComponentVersionMismatch"
+	// UpgradeIssueTypeNodeImageOutOfSLA - The cluster node image has not been upgraded within the required compliance interval.
+	// See https://aka.ms/aks/upgrade-insights/node-image-out-of-sla for remediation guidance.
+	UpgradeIssueTypeNodeImageOutOfSLA UpgradeIssueType = "NodeImageOutOfSLA"
+	// UpgradeIssueTypePDBConstraint - A restrictive PodDisruptionBudget prevents node drain during upgrade. See https://aka.ms/aks/upgrade-insights/pdb-constraint
+	// for remediation guidance.
+	UpgradeIssueTypePDBConstraint UpgradeIssueType = "PDBConstraint"
+	// UpgradeIssueTypeQuotaExceeded - Compute quota for the node pool VM SKU is insufficient to accommodate surge nodes during
+	// upgrade. See https://aka.ms/aks/upgrade-insights/quota-exceeded for remediation guidance.
+	UpgradeIssueTypeQuotaExceeded UpgradeIssueType = "QuotaExceeded"
+	// UpgradeIssueTypeSubnetIPExhausted - The cluster subnet does not have sufficient available IP addresses for surge nodes
+	// during upgrade. See https://aka.ms/aks/upgrade-insights/subnet-ip-exhaustion for remediation guidance.
+	UpgradeIssueTypeSubnetIPExhausted UpgradeIssueType = "SubnetIPExhausted"
+	// UpgradeIssueTypeUnsupportedKubernetesVersion - The cluster is running a Kubernetes version that is no longer supported.
+	// See https://aka.ms/aks/upgrade-insights/unsupported-kubernetes-version for remediation guidance.
+	UpgradeIssueTypeUnsupportedKubernetesVersion UpgradeIssueType = "UnsupportedKubernetesVersion"
+)
+
+// PossibleUpgradeIssueTypeValues returns the possible values for the UpgradeIssueType const type.
+func PossibleUpgradeIssueTypeValues() []UpgradeIssueType {
+	return []UpgradeIssueType{
+		UpgradeIssueTypeAPIBreakingChange,
+		UpgradeIssueTypeComponentVersionMismatch,
+		UpgradeIssueTypeNodeImageOutOfSLA,
+		UpgradeIssueTypePDBConstraint,
+		UpgradeIssueTypeQuotaExceeded,
+		UpgradeIssueTypeSubnetIPExhausted,
+		UpgradeIssueTypeUnsupportedKubernetesVersion,
+	}
+}
+
 // UpgradeStrategy - Defines the upgrade strategy for the agent pool. The default is Rolling.
 type UpgradeStrategy string
 
@@ -2296,6 +2552,35 @@ func PossibleUpgradeStrategyValues() []UpgradeStrategy {
 	return []UpgradeStrategy{
 		UpgradeStrategyBlueGreen,
 		UpgradeStrategyRolling,
+	}
+}
+
+// UpgradeType - The type of upgrade an upgrade insight evaluates. Each upgrade insight resource
+// represents exactly one of these scopes; the scope is encoded in the resource name.
+type UpgradeType string
+
+const (
+	// UpgradeTypeAgentPool - An agent pool (node pool) Kubernetes version upgrade.
+	UpgradeTypeAgentPool UpgradeType = "AgentPool"
+	// UpgradeTypeControlPlane - The control plane (managed cluster) Kubernetes version upgrade.
+	UpgradeTypeControlPlane UpgradeType = "ControlPlane"
+	// UpgradeTypeControlPlaneAndAgentPools - A combined evaluation of the control plane plus every agent pool for a single target
+	// Kubernetes version. This scope covers Kubernetes version upgrades only; node OS image upgrades are not included and must
+	// be evaluated separately using the NodeImage scope.
+	UpgradeTypeControlPlaneAndAgentPools UpgradeType = "ControlPlaneAndAgentPools"
+	// UpgradeTypeNodeImage - An agent pool node OS image upgrade. NodeImage upgrade insights are evaluated per agent pool, mirroring
+	// the per-pool node-image upgrade API (.../agentPools/{name}), and cover the node OS image only; agent-pool Kubernetes version
+	// readiness is evaluated separately via the AgentPool or ControlPlaneAndAgentPools scopes.
+	UpgradeTypeNodeImage UpgradeType = "NodeImage"
+)
+
+// PossibleUpgradeTypeValues returns the possible values for the UpgradeType const type.
+func PossibleUpgradeTypeValues() []UpgradeType {
+	return []UpgradeType{
+		UpgradeTypeAgentPool,
+		UpgradeTypeControlPlane,
+		UpgradeTypeControlPlaneAndAgentPools,
+		UpgradeTypeNodeImage,
 	}
 }
 

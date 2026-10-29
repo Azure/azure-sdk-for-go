@@ -1,5 +1,12 @@
 # Release History
 
+<!-- cspell:ignore azcertificates francescomari -->
+
+## 1.6.0 (2026-10-27)
+### Features Added
+
+* Added support for service API version `2026-04-01`, which is now the default, and for explicitly selecting it via `serviceVersion`.
+
 ## 1.5.1-beta.1 (2026-06-04)
 
 ### Features Added
@@ -190,13 +197,13 @@
 
 ### Breaking Changes
 * Requires Go 1.18
-* Fixed a misspelling of `CerificateKeyUsage`, changed to `CertificateKeyUsage`
+* Fixed a misspelling of `CertificateKeyUsage`
 * Removed all `ToPtr` methods from constants
 * Renamed `CertificateOperation` to `Operation`
 * Renamed `Operation.Csr` to `Operation.CSR`
 * Renamed `KeyVaultCertificateWithPolicy` to `CertificateWithPolicy`
 * Abbreviated `EmailAddress` to `Email`
-* Changed `Upns` to `UserPrincipalNames`
+* Changed `UPNs` to `UserPrincipalNames`
 * Removed the `Trigger` struct and elevated it to the `LifetimeAction`
 * Renamed `DeletedDate` to `DeletedOn` and `Expires` to `ExpiresOn`
 

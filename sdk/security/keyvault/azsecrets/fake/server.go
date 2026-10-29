@@ -16,6 +16,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 )
 
 // Server is a fake server for instances of the azsecrets.Client type.
@@ -102,9 +103,7 @@ func (s *ServerTransport) Do(req *http.Request) (*http.Response, error) {
 }
 
 func (s *ServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -142,10 +141,7 @@ func (s *ServerTransport) dispatchToMethodFake(req *http.Request, method string)
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -160,7 +156,7 @@ func (s *ServerTransport) dispatchBackupSecret(req *http.Request) (*http.Respons
 	if s.srv.BackupSecret == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BackupSecret not implemented")}
 	}
-	const regexStr = `/secrets/(?P<secret_name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/backup`
+	const regexStr = `/secrets/(?P<secret_name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/backup`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -175,7 +171,7 @@ func (s *ServerTransport) dispatchBackupSecret(req *http.Request) (*http.Respons
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).BackupSecretResult, req)
@@ -189,7 +185,7 @@ func (s *ServerTransport) dispatchDeleteSecret(req *http.Request) (*http.Respons
 	if s.srv.DeleteSecret == nil {
 		return nil, &nonRetriableError{errors.New("fake for method DeleteSecret not implemented")}
 	}
-	const regexStr = `/secrets/(?P<secret_name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/secrets/(?P<secret_name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -204,7 +200,7 @@ func (s *ServerTransport) dispatchDeleteSecret(req *http.Request) (*http.Respons
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DeletedSecret, req)
@@ -218,7 +214,7 @@ func (s *ServerTransport) dispatchGetDeletedSecret(req *http.Request) (*http.Res
 	if s.srv.GetDeletedSecret == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetDeletedSecret not implemented")}
 	}
-	const regexStr = `/deletedsecrets/(?P<secret_name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/deletedsecrets/(?P<secret_name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -233,7 +229,7 @@ func (s *ServerTransport) dispatchGetDeletedSecret(req *http.Request) (*http.Res
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DeletedSecret, req)
@@ -247,7 +243,7 @@ func (s *ServerTransport) dispatchGetSecret(req *http.Request) (*http.Response, 
 	if s.srv.GetSecret == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetSecret not implemented")}
 	}
-	const regexStr = `/secrets/(?P<secret_name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/?(?P<secret_version>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)?`
+	const regexStr = `/secrets/(?P<secret_name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)(?:/(?P<secret_version>[a-zA-Z0-9._~%!$&'()?*+,;=:@-]+))?`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -262,11 +258,7 @@ func (s *ServerTransport) dispatchGetSecret(req *http.Request) (*http.Response, 
 	if err != nil {
 		return nil, err
 	}
-	outContentTypeUnescaped, err := url.QueryUnescape(qp.Get("outContentType"))
-	if err != nil {
-		return nil, err
-	}
-	outContentTypeParam := getOptional(azsecrets.ContentType(outContentTypeUnescaped))
+	outContentTypeParam := getOptional(azsecrets.ContentType(qp.Get("outContentType")))
 	var options *azsecrets.GetSecretOptions
 	if outContentTypeParam != nil {
 		options = &azsecrets.GetSecretOptions{
@@ -278,7 +270,7 @@ func (s *ServerTransport) dispatchGetSecret(req *http.Request) (*http.Response, 
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Secret, req)
@@ -305,7 +297,7 @@ func (s *ServerTransport) dispatchNewListDeletedSecretPropertiesPager(req *http.
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		s.newListDeletedSecretPropertiesPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -332,7 +324,7 @@ func (s *ServerTransport) dispatchNewListSecretPropertiesPager(req *http.Request
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		s.newListSecretPropertiesPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -348,7 +340,7 @@ func (s *ServerTransport) dispatchNewListSecretPropertiesVersionsPager(req *http
 	}
 	newListSecretPropertiesVersionsPager := s.newListSecretPropertiesVersionsPager.get(req)
 	if newListSecretPropertiesVersionsPager == nil {
-		const regexStr = `/secrets/(?P<secret_name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions`
+		const regexStr = `/secrets/(?P<secret_name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/versions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -369,7 +361,7 @@ func (s *ServerTransport) dispatchNewListSecretPropertiesVersionsPager(req *http
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		s.newListSecretPropertiesVersionsPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -383,7 +375,7 @@ func (s *ServerTransport) dispatchPurgeDeletedSecret(req *http.Request) (*http.R
 	if s.srv.PurgeDeletedSecret == nil {
 		return nil, &nonRetriableError{errors.New("fake for method PurgeDeletedSecret not implemented")}
 	}
-	const regexStr = `/deletedsecrets/(?P<secret_name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/deletedsecrets/(?P<secret_name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -398,7 +390,7 @@ func (s *ServerTransport) dispatchPurgeDeletedSecret(req *http.Request) (*http.R
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusNoContent}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusNoContent}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusNoContent", respContent.HTTPStatus)}
 	}
 	resp, err := server.NewResponse(respContent, req, nil)
@@ -412,7 +404,7 @@ func (s *ServerTransport) dispatchRecoverDeletedSecret(req *http.Request) (*http
 	if s.srv.RecoverDeletedSecret == nil {
 		return nil, &nonRetriableError{errors.New("fake for method RecoverDeletedSecret not implemented")}
 	}
-	const regexStr = `/deletedsecrets/(?P<secret_name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/recover`
+	const regexStr = `/deletedsecrets/(?P<secret_name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/recover`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -427,7 +419,7 @@ func (s *ServerTransport) dispatchRecoverDeletedSecret(req *http.Request) (*http
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Secret, req)
@@ -450,7 +442,7 @@ func (s *ServerTransport) dispatchRestoreSecret(req *http.Request) (*http.Respon
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Secret, req)
@@ -464,7 +456,7 @@ func (s *ServerTransport) dispatchSetSecret(req *http.Request) (*http.Response, 
 	if s.srv.SetSecret == nil {
 		return nil, &nonRetriableError{errors.New("fake for method SetSecret not implemented")}
 	}
-	const regexStr = `/secrets/(?P<secret_name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/secrets/(?P<secret_name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -483,7 +475,7 @@ func (s *ServerTransport) dispatchSetSecret(req *http.Request) (*http.Response, 
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Secret, req)
@@ -497,7 +489,7 @@ func (s *ServerTransport) dispatchUpdateSecretProperties(req *http.Request) (*ht
 	if s.srv.UpdateSecretProperties == nil {
 		return nil, &nonRetriableError{errors.New("fake for method UpdateSecretProperties not implemented")}
 	}
-	const regexStr = `/secrets/(?P<secret_name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/?(?P<secret_version>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)?`
+	const regexStr = `/secrets/(?P<secret_name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)(?:/(?P<secret_version>[a-zA-Z0-9._~%!$&'()?*+,;=:@-]+))?`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -520,7 +512,7 @@ func (s *ServerTransport) dispatchUpdateSecretProperties(req *http.Request) (*ht
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Secret, req)

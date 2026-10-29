@@ -33,6 +33,46 @@ func unmarshalAddonPropertiesClassification(rawMsg json.RawMessage) (AddonProper
 	return b, nil
 }
 
+func unmarshalHostLicenseClassification(rawMsg json.RawMessage) (HostLicenseClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b HostLicenseClassification
+	switch m["kind"] {
+	case string(HostLicenseKindWindowsServer):
+		b = &WindowsServerLicense{}
+	default:
+		b = &HostLicense{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
+func unmarshalHostLicenseClassificationArray(rawMsg json.RawMessage) ([]HostLicenseClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var rawMessages []json.RawMessage
+	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
+		return nil, err
+	}
+	fArray := make([]HostLicenseClassification, len(rawMessages))
+	for index, rawMessage := range rawMessages {
+		f, err := unmarshalHostLicenseClassification(rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		fArray[index] = f
+	}
+	return fArray, nil
+}
+
 func unmarshalHostPropertiesClassification(rawMsg json.RawMessage) (HostPropertiesClassification, error) {
 	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
@@ -158,6 +198,10 @@ func unmarshalRescheduleOperationConstraintClassification(rawMsg json.RawMessage
 		b = &AvailableWindowForMaintenanceWhileRescheduleOperation{}
 	case string(RescheduleOperationConstraintKindBlockedWhileRescheduleOperation):
 		b = &BlockedWhileRescheduleOperation{}
+	case string(RescheduleOperationConstraintKindReschedulingWindow):
+		b = &ReschedulingWindowConstraint{}
+	case string(RescheduleOperationConstraintKindWeekendRescheduling):
+		b = &WeekendReschedulingConstraint{}
 	default:
 		b = &RescheduleOperationConstraint{}
 	}
@@ -202,6 +246,8 @@ func unmarshalScheduleOperationConstraintClassification(rawMsg json.RawMessage) 
 		b = &BlockedWhileScheduleOperation{}
 	case string(ScheduleOperationConstraintKindSchedulingWindow):
 		b = &SchedulingWindow{}
+	case string(ScheduleOperationConstraintKindWeekendScheduling):
+		b = &WeekendSchedulingConstraint{}
 	default:
 		b = &ScheduleOperationConstraint{}
 	}

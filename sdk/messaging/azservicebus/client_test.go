@@ -260,12 +260,11 @@ func TestClientNewSessionReceiverCancel(t *testing.T) {
 
 	client := newServiceBusClientForTest(t, nil)
 
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-	defer cancel()
+	ctx, cancel := context.WithCancel(context.Background())
+	cancel()
 
-	// non-cancelled version
 	receiver, err := client.AcceptNextSessionForQueue(ctx, queue, nil)
-	require.ErrorIs(t, err, context.DeadlineExceeded)
+	require.ErrorIs(t, err, context.Canceled)
 	require.Nil(t, receiver)
 }
 

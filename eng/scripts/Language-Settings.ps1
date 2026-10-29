@@ -5,8 +5,10 @@ $LanguageDisplayName = "go"
 # get version from specific files (*constants.go, *version.go)
 function Get-GoModuleVersionInfo($modPath)
 {
-  $NO_PREFIX_VERSION_LINE_REGEX = ".+\s*=\s*`"(?<bad_version>$([AzureEngSemanticVersion]::SEMVER_REGEX))`""
-  $VERSION_LINE_REGEX = ".+\s*=\s*`".*v(?<version>$([AzureEngSemanticVersion]::SEMVER_REGEX))`""
+  # Only SDK version declarations qualify; service enums can also contain semantic versions.
+  $VERSION_CONSTANT_REGEX = "(?m)^\s*(?:const\s+)?(?:moduleVersion|serviceLibVersion|version)\s*(?:string\s*)?=\s*"
+  $NO_PREFIX_VERSION_LINE_REGEX = "$VERSION_CONSTANT_REGEX`"(?<bad_version>$([AzureEngSemanticVersion]::SEMVER_REGEX))`""
+  $VERSION_LINE_REGEX = "$VERSION_CONSTANT_REGEX`"v(?<version>$([AzureEngSemanticVersion]::SEMVER_REGEX))`""
 
   $versionFiles = Get-ChildItem -Recurse -Path $modPath -Filter *.go
 
@@ -241,7 +243,12 @@ function SetPackageVersion ($PackageName, $Version, $ReleaseDate, $PackageProper
 
 function Find-Go-Artifacts-For-Apireview($ArtifactPath, $PackageName)
 {
-  $artifact = @(Get-ChildItem -Path (Join-Path $ArtifactPath $PackageName) -Filter "*.gosource")
+  $packageArtifactPath = Join-Path $ArtifactPath $PackageName
+  if (!(Test-Path $packageArtifactPath)) {
+    return $null
+  }
+
+  $artifact = @(Get-ChildItem -Path $packageArtifactPath -Filter "*.gosource")
   if ($artifact)
   {
     $packages = @{

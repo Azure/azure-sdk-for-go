@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01-preview/incidents/IncidentComments/IncidentComments_CreateOrUpdate.json
+// Generated from example definition: 2025-10-01-preview/incidents/IncidentComments/IncidentComments_CreateOrUpdate.json
 func ExampleIncidentCommentsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -55,7 +55,7 @@ func ExampleIncidentCommentsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/incidents/IncidentComments/IncidentComments_Delete.json
+// Generated from example definition: 2025-10-01-preview/incidents/IncidentComments/IncidentComments_Delete.json
 func ExampleIncidentCommentsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -77,7 +77,7 @@ func ExampleIncidentCommentsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/incidents/IncidentComments/IncidentComments_Get.json
+// Generated from example definition: 2025-10-01-preview/incidents/IncidentComments/IncidentComments_Get.json
 func ExampleIncidentCommentsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -116,7 +116,7 @@ func ExampleIncidentCommentsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/incidents/IncidentComments/IncidentComments_List.json
+// Generated from example definition: 2025-10-01-preview/incidents/IncidentComments/IncidentComments_List.json
 func ExampleIncidentCommentsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

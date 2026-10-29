@@ -19,7 +19,7 @@ import (
 // DatabaseAccountRegionClient contains the methods for the DatabaseAccountRegion group.
 // Don't use this type directly, use NewDatabaseAccountRegionClient() instead.
 //
-// Generated from API version 2026-03-15
+// Generated from API version 2026-04-01-preview
 type DatabaseAccountRegionClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -111,7 +111,7 @@ func (client *DatabaseAccountRegionClient) listMetricsCreateRequest(ctx context.
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
 		reqQP.Set("$filter", filter)
-		reqQP.Set("api-version", version20260315)
+		reqQP.Set("api-version", version20260401Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

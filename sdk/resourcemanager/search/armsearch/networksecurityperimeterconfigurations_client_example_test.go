@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01-preview/NetworkSecurityPerimeterConfigurationsGet.json
+// Generated from example definition: 2026-09-01-preview/NetworkSecurityPerimeterConfigurationsGet.json
 func ExampleNetworkSecurityPerimeterConfigurationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -65,7 +65,7 @@ func ExampleNetworkSecurityPerimeterConfigurationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/NetworkSecurityPerimeterConfigurationsListByService.json
+// Generated from example definition: 2026-09-01-preview/NetworkSecurityPerimeterConfigurationsListByService.json
 func ExampleNetworkSecurityPerimeterConfigurationsClient_NewListByServicePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -128,7 +128,7 @@ func ExampleNetworkSecurityPerimeterConfigurationsClient_NewListByServicePager()
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/NetworkSecurityPerimeterConfigurationsReconcile.json
+// Generated from example definition: 2026-09-01-preview/NetworkSecurityPerimeterConfigurationsReconcile.json
 func ExampleNetworkSecurityPerimeterConfigurationsClient_BeginReconcile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

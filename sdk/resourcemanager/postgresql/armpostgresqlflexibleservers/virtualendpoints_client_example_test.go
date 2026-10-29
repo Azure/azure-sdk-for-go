@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-04-01-preview/VirtualEndpointCreate.json
+// Generated from example definition: 2026-07-01-preview/VirtualEndpointCreate.json
 func ExampleVirtualEndpointsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -40,7 +40,7 @@ func ExampleVirtualEndpointsClient_BeginCreate() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/VirtualEndpointDelete.json
+// Generated from example definition: 2026-07-01-preview/VirtualEndpointDelete.json
 func ExampleVirtualEndpointsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -61,7 +61,7 @@ func ExampleVirtualEndpointsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/VirtualEndpointsGet.json
+// Generated from example definition: 2026-07-01-preview/VirtualEndpointsGet.json
 func ExampleVirtualEndpointsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -98,7 +98,7 @@ func ExampleVirtualEndpointsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/VirtualEndpointsListByServer.json
+// Generated from example definition: 2026-07-01-preview/VirtualEndpointsListByServer.json
 func ExampleVirtualEndpointsClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -144,7 +144,7 @@ func ExampleVirtualEndpointsClient_NewListByServerPager() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/VirtualEndpointUpdate.json
+// Generated from example definition: 2026-07-01-preview/VirtualEndpointUpdate.json
 func ExampleVirtualEndpointsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

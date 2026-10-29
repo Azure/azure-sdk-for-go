@@ -20,6 +20,9 @@ type ServerFactory struct {
 
 	// ManagementServer contains the fakes for client ManagementClient
 	ManagementServer ManagementServer
+
+	// OperationsServer contains the fakes for client OperationsClient
+	OperationsServer OperationsServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -38,6 +41,7 @@ type ServerFactoryTransport struct {
 	trMu               sync.Mutex
 	trServer           *ServerTransport
 	trManagementServer *ManagementServerTransport
+	trOperationsServer *OperationsServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -59,6 +63,9 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "ManagementClient":
 		initServer(&s.trMu, &s.trManagementServer, func() *ManagementServerTransport { return NewManagementServerTransport(&s.srv.ManagementServer) })
 		resp, err = s.trManagementServer.Do(req)
+	case "OperationsClient":
+		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
+		resp, err = s.trOperationsServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
 	}

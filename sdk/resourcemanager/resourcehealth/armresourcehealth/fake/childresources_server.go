@@ -13,7 +13,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resourcehealth/armresourcehealth"
 	"net/http"
-	"net/url"
 	"regexp"
 	"slices"
 )
@@ -94,10 +93,7 @@ func (c *ChildResourcesServerTransport) dispatchNewListPager(req *http.Request) 
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-		if err != nil {
-			return nil, err
-		}
+		resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 		filterParam := getOptional(qp.Get("$filter"))
 		expandParam := getOptional(qp.Get("$expand"))
 		var options *armresourcehealth.ChildResourcesClientListOptions

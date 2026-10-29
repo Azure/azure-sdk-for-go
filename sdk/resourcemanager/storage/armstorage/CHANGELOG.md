@@ -1,5 +1,141 @@
 # Release History
 
+## 4.3.0 (2026-10-15)
+### Features Added
+
+- New enum type `BlobAccessPointConfigurationState` with values `BlobAccessPointConfigurationStateActive`, `BlobAccessPointConfigurationStateInactive`
+- New enum type `BlobAccessPointConnectionTestStatus` with values `BlobAccessPointConnectionTestStatusFailed`, `BlobAccessPointConnectionTestStatusSucceeded`
+- New enum type `BlobAccessPointConnectionType` with values `BlobAccessPointConnectionTypeEndpoint`, `BlobAccessPointConnectionTypePrivateLink`
+- New enum type `BlobAccessPointPrivateLinkIDType` with values `BlobAccessPointPrivateLinkIDTypeResourceID`
+- New enum type `BlobAccessPointRemoteAuthType` with values `BlobAccessPointRemoteAuthTypeAccessKey`
+- New enum type `BlobAccessPointSourceType` with values `BlobAccessPointSourceTypeAzureNetAppFiles`, `BlobAccessPointSourceTypeCommvault`, `BlobAccessPointSourceTypeDellOneFS`, `BlobAccessPointSourceTypeNasuni`, `BlobAccessPointSourceTypeNetAppONTAP`, `BlobAccessPointSourceTypeQumulo`, `BlobAccessPointSourceTypeS3Compatible`
+- New enum type `BlobAccessPointTLSVerification` with values `BlobAccessPointTLSVerificationPerform`, `BlobAccessPointTLSVerificationSkip`
+- New enum type `ContextCacheCheckNameAvailabilityFailureReason` with values `ContextCacheCheckNameAvailabilityFailureReasonAlreadyExists`, `ContextCacheCheckNameAvailabilityFailureReasonContextCacheNameInvalid`
+- New enum type `ResourceProvisioningState` with values `ResourceProvisioningStateCanceled`, `ResourceProvisioningStateFailed`, `ResourceProvisioningStateSucceeded`
+- New enum type `TurboTierStatus` with values `TurboTierStatusDisabled`, `TurboTierStatusEnabled`
+- New function `*BlobAccessPointAccessKeyAuthProperties.GetBlobAccessPointRemoteAuthProperties() *BlobAccessPointRemoteAuthProperties`
+- New function `*BlobAccessPointAccessKeyAuthPropertiesUpdate.GetBlobAccessPointRemoteAuthPropertiesUpdate() *BlobAccessPointRemoteAuthPropertiesUpdate`
+- New function `*BlobAccessPointAzureNetAppFilesSourceProperties.GetBlobAccessPointSourceProperties() *BlobAccessPointSourceProperties`
+- New function `*BlobAccessPointAzureNetAppFilesSourcePropertiesUpdate.GetBlobAccessPointSourcePropertiesUpdate() *BlobAccessPointSourcePropertiesUpdate`
+- New function `*BlobAccessPointCommvaultSourceProperties.GetBlobAccessPointSourceProperties() *BlobAccessPointSourceProperties`
+- New function `*BlobAccessPointCommvaultSourcePropertiesUpdate.GetBlobAccessPointSourcePropertiesUpdate() *BlobAccessPointSourcePropertiesUpdate`
+- New function `NewBlobAccessPointConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BlobAccessPointConfigurationsClient, error)`
+- New function `*BlobAccessPointConfigurationsClient.BeginCreate(ctx context.Context, resourceGroupName string, accountName string, blobAccessPointConfigurationName string, resource BlobAccessPointConfiguration, options *BlobAccessPointConfigurationsClientBeginCreateOptions) (*runtime.Poller[BlobAccessPointConfigurationsClientCreateResponse], error)`
+- New function `*BlobAccessPointConfigurationsClient.BeginDelete(ctx context.Context, resourceGroupName string, accountName string, blobAccessPointConfigurationName string, options *BlobAccessPointConfigurationsClientBeginDeleteOptions) (*runtime.Poller[BlobAccessPointConfigurationsClientDeleteResponse], error)`
+- New function `*BlobAccessPointConfigurationsClient.Get(ctx context.Context, resourceGroupName string, accountName string, blobAccessPointConfigurationName string, options *BlobAccessPointConfigurationsClientGetOptions) (BlobAccessPointConfigurationsClientGetResponse, error)`
+- New function `*BlobAccessPointConfigurationsClient.NewListByStorageAccountPager(resourceGroupName string, accountName string, options *BlobAccessPointConfigurationsClientListByStorageAccountOptions) *runtime.Pager[BlobAccessPointConfigurationsClientListByStorageAccountResponse]`
+- New function `*BlobAccessPointConfigurationsClient.BeginTestExistingConnection(ctx context.Context, resourceGroupName string, accountName string, blobAccessPointConfigurationName string, body BlobAccessPointConnectionTestRequest, options *BlobAccessPointConfigurationsClientBeginTestExistingConnectionOptions) (*runtime.Poller[BlobAccessPointConfigurationsClientTestExistingConnectionResponse], error)`
+- New function `*BlobAccessPointConfigurationsClient.BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, blobAccessPointConfigurationName string, properties BlobAccessPointConfigurationUpdate, options *BlobAccessPointConfigurationsClientBeginUpdateOptions) (*runtime.Poller[BlobAccessPointConfigurationsClientUpdateResponse], error)`
+- New function `*BlobAccessPointConnectionProperties.GetBlobAccessPointConnectionProperties() *BlobAccessPointConnectionProperties`
+- New function `*BlobAccessPointConnectionPropertiesUpdate.GetBlobAccessPointConnectionPropertiesUpdate() *BlobAccessPointConnectionPropertiesUpdate`
+- New function `NewBlobAccessPointConnectionTestsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BlobAccessPointConnectionTestsClient, error)`
+- New function `*BlobAccessPointConnectionTestsClient.BeginTestProposedConnection(ctx context.Context, resourceGroupName string, accountName string, body BlobAccessPointProposedConnectionTestRequest, options *BlobAccessPointConnectionTestsClientBeginTestProposedConnectionOptions) (*runtime.Poller[BlobAccessPointConnectionTestsClientTestProposedConnectionResponse], error)`
+- New function `*BlobAccessPointDellOneFSSourceProperties.GetBlobAccessPointSourceProperties() *BlobAccessPointSourceProperties`
+- New function `*BlobAccessPointDellOneFSSourcePropertiesUpdate.GetBlobAccessPointSourcePropertiesUpdate() *BlobAccessPointSourcePropertiesUpdate`
+- New function `*BlobAccessPointEndpointConnectionProperties.GetBlobAccessPointConnectionProperties() *BlobAccessPointConnectionProperties`
+- New function `*BlobAccessPointEndpointConnectionPropertiesUpdate.GetBlobAccessPointConnectionPropertiesUpdate() *BlobAccessPointConnectionPropertiesUpdate`
+- New function `*BlobAccessPointGenericS3SourceProperties.GetBlobAccessPointSourceProperties() *BlobAccessPointSourceProperties`
+- New function `*BlobAccessPointGenericS3SourcePropertiesUpdate.GetBlobAccessPointSourcePropertiesUpdate() *BlobAccessPointSourcePropertiesUpdate`
+- New function `*BlobAccessPointNasuniSourceProperties.GetBlobAccessPointSourceProperties() *BlobAccessPointSourceProperties`
+- New function `*BlobAccessPointNasuniSourcePropertiesUpdate.GetBlobAccessPointSourcePropertiesUpdate() *BlobAccessPointSourcePropertiesUpdate`
+- New function `*BlobAccessPointNetAppONTAPSourceProperties.GetBlobAccessPointSourceProperties() *BlobAccessPointSourceProperties`
+- New function `*BlobAccessPointNetAppONTAPSourcePropertiesUpdate.GetBlobAccessPointSourcePropertiesUpdate() *BlobAccessPointSourcePropertiesUpdate`
+- New function `*BlobAccessPointPrivateLinkConnectionProperties.GetBlobAccessPointConnectionProperties() *BlobAccessPointConnectionProperties`
+- New function `*BlobAccessPointPrivateLinkConnectionPropertiesUpdate.GetBlobAccessPointConnectionPropertiesUpdate() *BlobAccessPointConnectionPropertiesUpdate`
+- New function `*BlobAccessPointQumuloSourceProperties.GetBlobAccessPointSourceProperties() *BlobAccessPointSourceProperties`
+- New function `*BlobAccessPointQumuloSourcePropertiesUpdate.GetBlobAccessPointSourcePropertiesUpdate() *BlobAccessPointSourcePropertiesUpdate`
+- New function `*BlobAccessPointRemoteAuthProperties.GetBlobAccessPointRemoteAuthProperties() *BlobAccessPointRemoteAuthProperties`
+- New function `*BlobAccessPointRemoteAuthPropertiesUpdate.GetBlobAccessPointRemoteAuthPropertiesUpdate() *BlobAccessPointRemoteAuthPropertiesUpdate`
+- New function `*BlobAccessPointSourceProperties.GetBlobAccessPointSourceProperties() *BlobAccessPointSourceProperties`
+- New function `*BlobAccessPointSourcePropertiesUpdate.GetBlobAccessPointSourcePropertiesUpdate() *BlobAccessPointSourcePropertiesUpdate`
+- New function `*ClientFactory.NewBlobAccessPointConfigurationsClient() *BlobAccessPointConfigurationsClient`
+- New function `*ClientFactory.NewBlobAccessPointConnectionTestsClient() *BlobAccessPointConnectionTestsClient`
+- New function `*ContextCachesClient.CheckNameAvailability(ctx context.Context, body ContextCacheCheckNameAvailabilityParameters, options *ContextCachesClientCheckNameAvailabilityOptions) (ContextCachesClientCheckNameAvailabilityResponse, error)`
+- New struct `BlobAccessPointAccessKeyAuthProperties`
+- New struct `BlobAccessPointAccessKeyAuthPropertiesUpdate`
+- New struct `BlobAccessPointAzureNetAppFilesSourceProperties`
+- New struct `BlobAccessPointAzureNetAppFilesSourcePropertiesUpdate`
+- New struct `BlobAccessPointCommvaultSourceProperties`
+- New struct `BlobAccessPointCommvaultSourcePropertiesUpdate`
+- New struct `BlobAccessPointConfiguration`
+- New struct `BlobAccessPointConfigurationConnection`
+- New struct `BlobAccessPointConfigurationListResult`
+- New struct `BlobAccessPointConfigurationProperties`
+- New struct `BlobAccessPointConfigurationPropertiesUpdate`
+- New struct `BlobAccessPointConfigurationUpdate`
+- New struct `BlobAccessPointConnectionTestRequest`
+- New struct `BlobAccessPointConnectionTestResponse`
+- New struct `BlobAccessPointDellOneFSSourceProperties`
+- New struct `BlobAccessPointDellOneFSSourcePropertiesUpdate`
+- New struct `BlobAccessPointEndpointConnectionProperties`
+- New struct `BlobAccessPointEndpointConnectionPropertiesUpdate`
+- New struct `BlobAccessPointGenericS3SourceProperties`
+- New struct `BlobAccessPointGenericS3SourcePropertiesUpdate`
+- New struct `BlobAccessPointNasuniSourceProperties`
+- New struct `BlobAccessPointNasuniSourcePropertiesUpdate`
+- New struct `BlobAccessPointNetAppONTAPSourceProperties`
+- New struct `BlobAccessPointNetAppONTAPSourcePropertiesUpdate`
+- New struct `BlobAccessPointPrivateLinkConnectionProperties`
+- New struct `BlobAccessPointPrivateLinkConnectionPropertiesUpdate`
+- New struct `BlobAccessPointProposedConnectionTestRequest`
+- New struct `BlobAccessPointQumuloSourceProperties`
+- New struct `BlobAccessPointQumuloSourcePropertiesUpdate`
+- New struct `ContextCacheCheckNameAvailabilityParameters`
+- New struct `ContextCacheCheckNameAvailabilityResult`
+- New struct `TurboTier`
+- New field `TurboTier` in struct `AccountProperties`
+- New field `TurboTier` in struct `AccountPropertiesCreateParameters`
+- New field `TurboTier` in struct `AccountPropertiesUpdateParameters`
+- New field `BlobAccessPointConfiguration` in struct `ContainerProperties`
+- New field `AllowBlobAccessPoints` in struct `DataCollaborationPolicyProperties`
+- New field `ServiceTags` in struct `NspAccessRuleProperties`
+
+
+## 4.2.0 (2026-09-22)
+### Features Added
+
+- New enum type `AiProvider` with values `AiProviderOpenAI`
+- New enum type `ContextCacheAccountKind` with values `ContextCacheAccountKindDataZone`, `ContextCacheAccountKindGlobal`, `ContextCacheAccountKindRegional`
+- New enum type `ContextCacheProvisioningState` with values `ContextCacheProvisioningStateAccepted`, `ContextCacheProvisioningStateCanceled`, `ContextCacheProvisioningStateCreating`, `ContextCacheProvisioningStateDeleting`, `ContextCacheProvisioningStateFailed`, `ContextCacheProvisioningStateSucceeded`, `ContextCacheProvisioningStateUpdating`
+- New enum type `InfrastructureEncryption` with values `InfrastructureEncryptionDisabled`, `InfrastructureEncryptionEnabled`
+- New enum type `KeyEncryptionKeyIdentityType` with values `KeyEncryptionKeyIdentityTypeDelegatedResourceIdentity`, `KeyEncryptionKeyIdentityTypeSystemAssignedIdentity`, `KeyEncryptionKeyIdentityTypeUserAssignedIdentity`
+- New enum type `ManagedServiceIdentityType` with values `ManagedServiceIdentityTypeNone`, `ManagedServiceIdentityTypeSystemAssigned`, `ManagedServiceIdentityTypeSystemAssignedUserAssigned`, `ManagedServiceIdentityTypeUserAssigned`
+- New enum type `PolicyViolationAction` with values `PolicyViolationActionBlock`, `PolicyViolationActionLog`, `PolicyViolationActionNone`
+- New function `*ClientFactory.NewContextCacheContainersClient() *ContextCacheContainersClient`
+- New function `*ClientFactory.NewContextCachesClient() *ContextCachesClient`
+- New function `NewContextCacheContainersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ContextCacheContainersClient, error)`
+- New function `*ContextCacheContainersClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, contextCacheName string, contextCacheContainerName string, resource ContextCacheContainer, options *ContextCacheContainersClientBeginCreateOrUpdateOptions) (*runtime.Poller[ContextCacheContainersClientCreateOrUpdateResponse], error)`
+- New function `*ContextCacheContainersClient.BeginDelete(ctx context.Context, resourceGroupName string, contextCacheName string, contextCacheContainerName string, options *ContextCacheContainersClientBeginDeleteOptions) (*runtime.Poller[ContextCacheContainersClientDeleteResponse], error)`
+- New function `*ContextCacheContainersClient.Get(ctx context.Context, resourceGroupName string, contextCacheName string, contextCacheContainerName string, options *ContextCacheContainersClientGetOptions) (ContextCacheContainersClientGetResponse, error)`
+- New function `*ContextCacheContainersClient.NewListByContextCachePager(resourceGroupName string, contextCacheName string, options *ContextCacheContainersClientListByContextCacheOptions) *runtime.Pager[ContextCacheContainersClientListByContextCacheResponse]`
+- New function `*ContextCacheContainersClient.BeginUpdate(ctx context.Context, resourceGroupName string, contextCacheName string, contextCacheContainerName string, properties ContextCacheContainerUpdate, options *ContextCacheContainersClientBeginUpdateOptions) (*runtime.Poller[ContextCacheContainersClientUpdateResponse], error)`
+- New function `NewContextCachesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ContextCachesClient, error)`
+- New function `*ContextCachesClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, contextCacheName string, resource ContextCache, options *ContextCachesClientBeginCreateOrUpdateOptions) (*runtime.Poller[ContextCachesClientCreateOrUpdateResponse], error)`
+- New function `*ContextCachesClient.BeginDelete(ctx context.Context, resourceGroupName string, contextCacheName string, options *ContextCachesClientBeginDeleteOptions) (*runtime.Poller[ContextCachesClientDeleteResponse], error)`
+- New function `*ContextCachesClient.Get(ctx context.Context, resourceGroupName string, contextCacheName string, options *ContextCachesClientGetOptions) (ContextCachesClientGetResponse, error)`
+- New function `*ContextCachesClient.NewListByResourceGroupPager(resourceGroupName string, options *ContextCachesClientListByResourceGroupOptions) *runtime.Pager[ContextCachesClientListByResourceGroupResponse]`
+- New function `*ContextCachesClient.NewListBySubscriptionPager(options *ContextCachesClientListBySubscriptionOptions) *runtime.Pager[ContextCachesClientListBySubscriptionResponse]`
+- New function `*ContextCachesClient.BeginUpdate(ctx context.Context, resourceGroupName string, contextCacheName string, properties ContextCacheUpdate, options *ContextCachesClientBeginUpdateOptions) (*runtime.Poller[ContextCachesClientUpdateResponse], error)`
+- New struct `ArmEncryption`
+- New struct `ContextCache`
+- New struct `ContextCacheContainer`
+- New struct `ContextCacheContainerListResult`
+- New struct `ContextCacheContainerProperties`
+- New struct `ContextCacheContainerPropertiesUpdate`
+- New struct `ContextCacheContainerUpdate`
+- New struct `ContextCacheListResult`
+- New struct `ContextCacheProperties`
+- New struct `ContextCachePropertiesUpdate`
+- New struct `ContextCacheUpdate`
+- New struct `CustomerManagedKeyEncryption`
+- New struct `KeyEncryptionKeyIdentity`
+- New struct `ManagedServiceIdentity`
+- New field `AllowCrossTenantDelegationSas` in struct `AccountProperties`
+- New field `AllowCrossTenantDelegationSas` in struct `AccountPropertiesCreateParameters`
+- New field `AllowCrossTenantDelegationSas` in struct `AccountPropertiesUpdateParameters`
+- New field `RequireUserBoundUserDelegationSas`, `RequireUserBoundUserDelegationSasAction` in struct `SasPolicy`
+
+
 ## 4.1.0 (2026-06-01)
 ### Features Added
 

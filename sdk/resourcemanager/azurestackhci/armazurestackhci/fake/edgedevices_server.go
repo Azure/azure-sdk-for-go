@@ -29,6 +29,10 @@ type EdgeDevicesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceURI string, edgeDeviceName string, options *armazurestackhci.EdgeDevicesClientBeginDeleteOptions) (resp azfake.PollerResponder[armazurestackhci.EdgeDevicesClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginValidate is the fake for method EdgeDevicesClient.BeginValidate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginValidate func(ctx context.Context, resourceURI string, edgeDeviceName string, validateRequest armazurestackhci.ValidateRequest, options *armazurestackhci.EdgeDevicesClientBeginValidateOptions) (resp azfake.PollerResponder[armazurestackhci.EdgeDevicesClientValidateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method EdgeDevicesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceURI string, edgeDeviceName string, options *armazurestackhci.EdgeDevicesClientGetOptions) (resp azfake.Responder[armazurestackhci.EdgeDevicesClientGetResponse], errResp azfake.ErrorResponder)
@@ -36,10 +40,6 @@ type EdgeDevicesServer struct {
 	// NewListPager is the fake for method EdgeDevicesClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(resourceURI string, options *armazurestackhci.EdgeDevicesClientListOptions) (resp azfake.PagerResponder[armazurestackhci.EdgeDevicesClientListResponse])
-
-	// BeginValidate is the fake for method EdgeDevicesClient.BeginValidate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginValidate func(ctx context.Context, resourceURI string, edgeDeviceName string, validateRequest armazurestackhci.ValidateRequest, options *armazurestackhci.EdgeDevicesClientBeginValidateOptions) (resp azfake.PollerResponder[armazurestackhci.EdgeDevicesClientValidateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewEdgeDevicesServerTransport creates a new instance of EdgeDevicesServerTransport with the provided implementation.
@@ -50,8 +50,8 @@ func NewEdgeDevicesServerTransport(srv *EdgeDevicesServer) *EdgeDevicesServerTra
 		srv:                 srv,
 		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armazurestackhci.EdgeDevicesClientCreateOrUpdateResponse]](),
 		beginDelete:         newTracker[azfake.PollerResponder[armazurestackhci.EdgeDevicesClientDeleteResponse]](),
-		newListPager:        newTracker[azfake.PagerResponder[armazurestackhci.EdgeDevicesClientListResponse]](),
 		beginValidate:       newTracker[azfake.PollerResponder[armazurestackhci.EdgeDevicesClientValidateResponse]](),
+		newListPager:        newTracker[azfake.PagerResponder[armazurestackhci.EdgeDevicesClientListResponse]](),
 	}
 }
 
@@ -61,8 +61,8 @@ type EdgeDevicesServerTransport struct {
 	srv                 *EdgeDevicesServer
 	beginCreateOrUpdate *tracker[azfake.PollerResponder[armazurestackhci.EdgeDevicesClientCreateOrUpdateResponse]]
 	beginDelete         *tracker[azfake.PollerResponder[armazurestackhci.EdgeDevicesClientDeleteResponse]]
-	newListPager        *tracker[azfake.PagerResponder[armazurestackhci.EdgeDevicesClientListResponse]]
 	beginValidate       *tracker[azfake.PollerResponder[armazurestackhci.EdgeDevicesClientValidateResponse]]
+	newListPager        *tracker[azfake.PagerResponder[armazurestackhci.EdgeDevicesClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for EdgeDevicesServerTransport.
@@ -90,12 +90,12 @@ func (e *EdgeDevicesServerTransport) dispatchToMethodFake(req *http.Request, met
 				res.resp, res.err = e.dispatchBeginCreateOrUpdate(req)
 			case "EdgeDevicesClient.BeginDelete":
 				res.resp, res.err = e.dispatchBeginDelete(req)
+			case "EdgeDevicesClient.BeginValidate":
+				res.resp, res.err = e.dispatchBeginValidate(req)
 			case "EdgeDevicesClient.Get":
 				res.resp, res.err = e.dispatchGet(req)
 			case "EdgeDevicesClient.NewListPager":
 				res.resp, res.err = e.dispatchNewListPager(req)
-			case "EdgeDevicesClient.BeginValidate":
-				res.resp, res.err = e.dispatchBeginValidate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -132,10 +132,7 @@ func (e *EdgeDevicesServerTransport) dispatchBeginCreateOrUpdate(req *http.Reque
 		if err != nil {
 			return nil, err
 		}
-		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-		if err != nil {
-			return nil, err
-		}
+		resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 		edgeDeviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("edgeDeviceName")])
 		if err != nil {
 			return nil, err
@@ -176,10 +173,7 @@ func (e *EdgeDevicesServerTransport) dispatchBeginDelete(req *http.Request) (*ht
 		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-		if err != nil {
-			return nil, err
-		}
+		resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 		edgeDeviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("edgeDeviceName")])
 		if err != nil {
 			return nil, err
@@ -208,6 +202,51 @@ func (e *EdgeDevicesServerTransport) dispatchBeginDelete(req *http.Request) (*ht
 	return resp, nil
 }
 
+func (e *EdgeDevicesServerTransport) dispatchBeginValidate(req *http.Request) (*http.Response, error) {
+	if e.srv.BeginValidate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginValidate not implemented")}
+	}
+	beginValidate := e.beginValidate.get(req)
+	if beginValidate == nil {
+		const regexStr = `/(?P<resourceUri>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.AzureStackHCI/edgeDevices/(?P<edgeDeviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/validate`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armazurestackhci.ValidateRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
+		edgeDeviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("edgeDeviceName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := e.srv.BeginValidate(req.Context(), resourceURIParam, edgeDeviceNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginValidate = &respr
+		e.beginValidate.add(req, beginValidate)
+	}
+
+	resp, err := server.PollerResponderNext(beginValidate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		e.beginValidate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginValidate) {
+		e.beginValidate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (e *EdgeDevicesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if e.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -218,10 +257,7 @@ func (e *EdgeDevicesServerTransport) dispatchGet(req *http.Request) (*http.Respo
 	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-	if err != nil {
-		return nil, err
-	}
+	resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 	edgeDeviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("edgeDeviceName")])
 	if err != nil {
 		return nil, err
@@ -253,10 +289,7 @@ func (e *EdgeDevicesServerTransport) dispatchNewListPager(req *http.Request) (*h
 		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-		if err != nil {
-			return nil, err
-		}
+		resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 		resp := e.srv.NewListPager(resourceURIParam, nil)
 		newListPager = &resp
 		e.newListPager.add(req, newListPager)
@@ -275,54 +308,6 @@ func (e *EdgeDevicesServerTransport) dispatchNewListPager(req *http.Request) (*h
 	if !server.PagerResponderMore(newListPager) {
 		e.newListPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (e *EdgeDevicesServerTransport) dispatchBeginValidate(req *http.Request) (*http.Response, error) {
-	if e.srv.BeginValidate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginValidate not implemented")}
-	}
-	beginValidate := e.beginValidate.get(req)
-	if beginValidate == nil {
-		const regexStr = `/(?P<resourceUri>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.AzureStackHCI/edgeDevices/(?P<edgeDeviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/validate`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armazurestackhci.ValidateRequest](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-		if err != nil {
-			return nil, err
-		}
-		edgeDeviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("edgeDeviceName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := e.srv.BeginValidate(req.Context(), resourceURIParam, edgeDeviceNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginValidate = &respr
-		e.beginValidate.add(req, beginValidate)
-	}
-
-	resp, err := server.PollerResponderNext(beginValidate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		e.beginValidate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginValidate) {
-		e.beginValidate.remove(req)
-	}
-
 	return resp, nil
 }
 

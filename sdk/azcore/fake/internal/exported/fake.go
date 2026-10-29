@@ -12,10 +12,12 @@ import (
 	"net/http"
 	"regexp"
 	"strconv"
+	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/errorinfo"
 )
 
@@ -320,6 +322,84 @@ func (p *PollerResponder[T]) Next(req *http.Request) (*http.Response, error) {
 	} else {
 		return nil, errorinfo.NonRetriableError(errors.New("fake poller response is emtpy"))
 	}
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// SSEResponder represents a stream of Server-Sent Events.
+// Events are replayed in the order in which they were added.
+type SSEResponder[T any] struct {
+	entries []sseEntry[T]
+}
+
+// AddEvent adds a typed event to the stream. It is encoded to an SSE frame by
+// the generated encoder when the fake server serializes the response.
+func (s *SSEResponder[T]) AddEvent(event T) {
+	s.entries = append(s.entries, sseEntry[T]{value: event, hasValue: true})
+}
+
+// AddFrame adds a raw SSE frame to the stream, giving full control over the SSE
+// envelope (id, event type, retry, data). Use this to exercise envelope metadata.
+// Nil ID and Retry omit their fields. An empty ID resets the cursor; zero Retry
+// requests immediate reconnection.
+// Nil Data omits data fields; a non-nil empty slice emits an empty data event.
+// CRLF and lone CR line endings in Data are normalized to LF.
+func (s *SSEResponder[T]) AddFrame(frame streaming.SSEFrame) {
+	s.entries = append(s.entries, sseEntry[T]{frame: frame})
+}
+
+// MarshalEvents renders the added events to the SSE wire format. Typed events
+// are encoded with encode; raw frames are serialized directly.
+// This function is called by the fake server internals.
+func (s *SSEResponder[T]) MarshalEvents(encode func(T) (streaming.SSEFrame, error)) (io.ReadCloser, error) {
+	var buf bytes.Buffer
+	for _, e := range s.entries {
+		frame := e.frame
+		if e.hasValue {
+			f, err := encode(e.value)
+			if err != nil {
+				return nil, errorinfo.NonRetriableError(err)
+			}
+			frame = f
+		}
+		writeSSEFrame(&buf, frame)
+	}
+	return io.NopCloser(&buf), nil
+}
+
+type sseEntry[T any] struct {
+	value    T
+	frame    streaming.SSEFrame
+	hasValue bool
+}
+
+func writeSSEFrame(buf *bytes.Buffer, f streaming.SSEFrame) {
+	if f.ID != nil {
+		buf.WriteString("id: ")
+		buf.WriteString(*f.ID)
+		buf.WriteByte('\n')
+	}
+	if f.Type != "" {
+		buf.WriteString("event: ")
+		buf.WriteString(f.Type)
+		buf.WriteByte('\n')
+	}
+	if f.Retry != nil {
+		buf.WriteString("retry: ")
+		buf.WriteString(strconv.Itoa(*f.Retry))
+		buf.WriteByte('\n')
+	}
+	// each line of data is emitted as its own "data:" field
+	if f.Data != nil {
+		data := strings.ReplaceAll(string(f.Data), "\r\n", "\n")
+		data = strings.ReplaceAll(data, "\r", "\n")
+		for line := range strings.SplitSeq(data, "\n") {
+			buf.WriteString("data: ")
+			buf.WriteString(line)
+			buf.WriteByte('\n')
+		}
+	}
+	buf.WriteByte('\n')
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////

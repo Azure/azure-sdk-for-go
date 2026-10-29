@@ -15,6 +15,9 @@ import (
 
 // ServerFactory is a fake server for instances of the armcontainerservice.ClientFactory type.
 type ServerFactory struct {
+	// AgentFabricMembershipsServer contains the fakes for client AgentFabricMembershipsClient
+	AgentFabricMembershipsServer AgentFabricMembershipsServer
+
 	// AgentPoolsServer contains the fakes for client AgentPoolsClient
 	AgentPoolsServer AgentPoolsServer
 
@@ -78,6 +81,9 @@ type ServerFactory struct {
 	// TrustedAccessRolesServer contains the fakes for client TrustedAccessRolesClient
 	TrustedAccessRolesServer TrustedAccessRolesServer
 
+	// UpgradeInsightsServer contains the fakes for client UpgradeInsightsClient
+	UpgradeInsightsServer UpgradeInsightsServer
+
 	// VMSKUsServer contains the fakes for client VMSKUsClient
 	VMSKUsServer VMSKUsServer
 }
@@ -96,6 +102,7 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 type ServerFactoryTransport struct {
 	srv                                 *ServerFactory
 	trMu                                sync.Mutex
+	trAgentFabricMembershipsServer      *AgentFabricMembershipsServerTransport
 	trAgentPoolsServer                  *AgentPoolsServerTransport
 	trAlertConfigurationsServer         *AlertConfigurationsServerTransport
 	trServer                            *ServerTransport
@@ -117,6 +124,7 @@ type ServerFactoryTransport struct {
 	trSnapshotsServer                   *SnapshotsServerTransport
 	trTrustedAccessRoleBindingsServer   *TrustedAccessRoleBindingsServerTransport
 	trTrustedAccessRolesServer          *TrustedAccessRolesServerTransport
+	trUpgradeInsightsServer             *UpgradeInsightsServerTransport
 	trVMSKUsServer                      *VMSKUsServerTransport
 }
 
@@ -133,6 +141,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	var err error
 
 	switch client {
+	case "AgentFabricMembershipsClient":
+		initServer(&s.trMu, &s.trAgentFabricMembershipsServer, func() *AgentFabricMembershipsServerTransport {
+			return NewAgentFabricMembershipsServerTransport(&s.srv.AgentFabricMembershipsServer)
+		})
+		resp, err = s.trAgentFabricMembershipsServer.Do(req)
 	case "AgentPoolsClient":
 		initServer(&s.trMu, &s.trAgentPoolsServer, func() *AgentPoolsServerTransport { return NewAgentPoolsServerTransport(&s.srv.AgentPoolsServer) })
 		resp, err = s.trAgentPoolsServer.Do(req)
@@ -228,6 +241,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewTrustedAccessRolesServerTransport(&s.srv.TrustedAccessRolesServer)
 		})
 		resp, err = s.trTrustedAccessRolesServer.Do(req)
+	case "UpgradeInsightsClient":
+		initServer(&s.trMu, &s.trUpgradeInsightsServer, func() *UpgradeInsightsServerTransport {
+			return NewUpgradeInsightsServerTransport(&s.srv.UpgradeInsightsServer)
+		})
+		resp, err = s.trUpgradeInsightsServer.Do(req)
 	case "VMSKUsClient":
 		initServer(&s.trMu, &s.trVMSKUsServer, func() *VMSKUsServerTransport { return NewVMSKUsServerTransport(&s.srv.VMSKUsServer) })
 		resp, err = s.trVMSKUsServer.Do(req)

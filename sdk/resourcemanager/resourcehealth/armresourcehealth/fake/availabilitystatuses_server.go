@@ -115,10 +115,7 @@ func (a *AvailabilityStatusesServerTransport) dispatchGetByResource(req *http.Re
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	qp := req.URL.Query()
-	resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-	if err != nil {
-		return nil, err
-	}
+	resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 	filterParam := getOptional(qp.Get("$filter"))
 	expandParam := getOptional(qp.Get("$expand"))
 	var options *armresourcehealth.AvailabilityStatusesClientGetByResourceOptions
@@ -156,10 +153,7 @@ func (a *AvailabilityStatusesServerTransport) dispatchNewListPager(req *http.Req
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-		if err != nil {
-			return nil, err
-		}
+		resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 		filterParam := getOptional(qp.Get("$filter"))
 		expandParam := getOptional(qp.Get("$expand"))
 		var options *armresourcehealth.AvailabilityStatusesClientListOptions

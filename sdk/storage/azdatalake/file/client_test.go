@@ -32,6 +32,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/datalakeerror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/file"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/shared"
@@ -6631,6 +6632,30 @@ func (s *UnrecordedTestSuite) TestAppendDataWithStructuredMessageCRC64() {
 	downloadedData, err := io.ReadAll(resp.Body)
 	_require.NoError(err)
 	_require.EqualValues(contentD, downloadedData)
+}
+
+// TestFileGetSASURLPreservesCustomQueryParams is a regression test for GetSASURL()
+// appending a duplicated "?" to the resulting URL when the client's underlying blob URL
+// already contained a query string (e.g. a customer-provided endpoint with pre-existing
+// custom query parameters), which previously produced a malformed SAS URL.
+func TestFileGetSASURLPreservesCustomQueryParams(t *testing.T) {
+	_require := require.New(t)
+	const accountName = "fakestorageaccount"
+	// base64-encoded fake key; not a real secret.
+	const accountKey = "PSA7dl59RwZBFEBhBEtdrsq/g7VpjMFeSPzdC4SoBiQI3xVLg2y8HRoAF3PidfB8/i9v67QCNSAdVdJdKrmqSw=="
+	cred, err := azdatalake.NewSharedKeyCredential(accountName, accountKey)
+	_require.NoError(err)
+
+	fileURL := fmt.Sprintf("https://%s.dfs.core.windows.net/filesystem/file?customparam=value", accountName)
+	fClient, err := file.NewClientWithSharedKeyCredential(fileURL, cred, nil)
+	_require.NoError(err)
+
+	sasURL, err := fClient.GetSASURL(sas.FilePermissions{Read: true}, time.Now().Add(time.Hour), nil)
+	_require.NoError(err)
+
+	_require.Equal(1, strings.Count(sasURL, "?"), "SAS URL must not contain a duplicated '?': %s", sasURL)
+	_require.Contains(sasURL, "customparam=value")
+	_require.Contains(sasURL, "sig=")
 }
 
 func (s *UnrecordedTestSuite) TestAppendDataWithSMThenDownloadWithSMRoundTrip() {

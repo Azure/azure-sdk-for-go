@@ -10,9 +10,10 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v4"
 	"log"
+	"time"
 )
 
-// Generated from example definition: 2026-03-15/CosmosDBSqlClientEncryptionKeyCreateUpdate.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlClientEncryptionKeyCreateUpdate.json
 func ExampleSQLResourcesClient_BeginCreateUpdateClientEncryptionKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -26,15 +27,15 @@ func ExampleSQLResourcesClient_BeginCreateUpdateClientEncryptionKey() {
 	poller, err := clientFactory.NewSQLResourcesClient().BeginCreateUpdateClientEncryptionKey(ctx, "rgName", "accountName", "databaseName", "cekName", armcosmos.ClientEncryptionKeyCreateUpdateParameters{
 		Properties: &armcosmos.ClientEncryptionKeyCreateUpdateProperties{
 			Resource: &armcosmos.ClientEncryptionKeyResource{
-				ID:                       to.Ptr("cekName"),
-				EncryptionAlgorithm:      to.Ptr("AEAD_AES_256_CBC_HMAC_SHA256"),
-				WrappedDataEncryptionKey: []byte("U3dhZ2dlciByb2Nrcw=="),
+				EncryptionAlgorithm: to.Ptr("AEAD_AES_256_CBC_HMAC_SHA256"),
+				ID:                  to.Ptr("cekName"),
 				KeyWrapMetadata: &armcosmos.KeyWrapMetadata{
 					Name:      to.Ptr("customerManagedKey"),
 					Type:      to.Ptr("AzureKeyVault"),
-					Value:     to.Ptr("AzureKeyVault Key URL"),
 					Algorithm: to.Ptr("RSA-OAEP"),
+					Value:     to.Ptr("AzureKeyVault Key URL"),
 				},
+				WrappedDataEncryptionKey: []byte("VGhpcyBpcyBhY3R1YWxseSBhbiBhcnJheSBvZiBieXRlcy4gVGhpcyByZXF1ZXN0L3Jlc3BvbnNlIGlzIGJlaW5nIHByZXNlbnRlZCBhcyBhIHN0cmluZyBmb3IgcmVhZGFiaWxpdHkgaW4gdGhlIGV4YW1wbGU="),
 			},
 		},
 	}, nil)
@@ -50,37 +51,37 @@ func ExampleSQLResourcesClient_BeginCreateUpdateClientEncryptionKey() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientCreateUpdateClientEncryptionKeyResponse{
 	// 	ClientEncryptionKeyGetResults: armcosmos.ClientEncryptionKeyGetResults{
-	// 		ID: to.Ptr("/subscriptions/subId/resourceGroups/rgName/providers/Microsoft.DocumentDB/databaseAccounts/accountName/sqlDatabases/databaseName/clientEncryptionKeys/cekName"),
 	// 		Name: to.Ptr("cekName"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases/clientEncryptionKey"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rgName/providers/Microsoft.DocumentDB/databaseAccounts/accountName/sqlDatabases/databaseName/clientEncryptionKeys/cekName"),
 	// 		Properties: &armcosmos.ClientEncryptionKeyGetProperties{
 	// 			Resource: &armcosmos.ClientEncryptionKeyGetPropertiesResource{
-	// 				ID: to.Ptr("cekName"),
+	// 				Etag: to.Ptr("00000000-0000-0000-7a1f-bc0828e801d7"),
+	// 				Rid: to.Ptr("tNc4AAAAAAAQkjzWAgAAAA=="),
+	// 				Ts: to.Ptr[float32](1626425552),
 	// 				EncryptionAlgorithm: to.Ptr("AEAD_AES_256_CBC_HMAC_SHA256"),
-	// 				WrappedDataEncryptionKey: []byte("U3dhZ2dlciByb2Nrcw=="),
+	// 				ID: to.Ptr("cekName"),
 	// 				KeyWrapMetadata: &armcosmos.KeyWrapMetadata{
 	// 					Name: to.Ptr("customerManagedKey"),
 	// 					Type: to.Ptr("AzureKeyVault"),
-	// 					Value: to.Ptr("AzureKeyVault Key URL"),
 	// 					Algorithm: to.Ptr("RSA-OAEP"),
+	// 					Value: to.Ptr("AzureKeyVault Key URL"),
 	// 				},
-	// 				Rid: to.Ptr("tNc4AAAAAAAQkjzWAgAAAA=="),
-	// 				Ts: to.Ptr[float32](1626425552),
-	// 				Etag: to.Ptr("00000000-0000-0000-7a1f-bc0828e801d7"),
+	// 				WrappedDataEncryptionKey: []byte("VGhpcyBpcyBhY3R1YWxseSBhbiBhcnJheSBvZiBieXRlcy4gVGhpcyByZXF1ZXN0L3Jlc3BvbnNlIGlzIGJlaW5nIHByZXNlbnRlZCBhcyBhIHN0cmluZyBmb3IgcmVhZGFiaWxpdHkgaW4gdGhlIGV4YW1wbGU="),
 	// 			},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-03-15/CosmosDBSqlContainerCreateUpdate.json
-func ExampleSQLResourcesClient_BeginCreateUpdateSQLContainer() {
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlContainerCreateUpdate.json
+func ExampleSQLResourcesClient_BeginCreateUpdateSQLContainer_cosmosDbSqlContainerCreateUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -206,6 +207,25 @@ func ExampleSQLResourcesClient_BeginCreateUpdateSQLContainer() {
 						},
 					},
 					PolicyFormatVersion: to.Ptr[int32](2),
+				},
+				DataMaskingPolicy: &armcosmos.DataMaskingPolicy{
+					IncludedPaths: []*armcosmos.DataMaskingPolicyIncludedPathsItem{
+						{
+							Path: to.Ptr("/"),
+						},
+						{
+							Path:          to.Ptr("/contact/phones"),
+							Strategy:      to.Ptr("MaskSubstring"),
+							StartPosition: to.Ptr[int32](3),
+							Length:        to.Ptr[int32](10),
+						},
+					},
+					ExcludedPaths: []*armcosmos.DataMaskingPolicyExcludedPathsItem{
+						{
+							Path: to.Ptr("/id"),
+						},
+					},
+					IsPolicyEnabled: to.Ptr(true),
 				},
 				ComputedProperties: []*armcosmos.ComputedProperty{
 					{
@@ -366,6 +386,26 @@ func ExampleSQLResourcesClient_BeginCreateUpdateSQLContainer() {
 	// 					},
 	// 					PolicyFormatVersion: to.Ptr[int32](1),
 	// 				},
+	// 				DataMaskingPolicy: &armcosmos.DataMaskingPolicy{
+	// 					IncludedPaths: []*armcosmos.DataMaskingPolicyIncludedPathsItem{
+	// 						{
+	// 							Path: to.Ptr("/"),
+	// 							Strategy: to.Ptr("Default"),
+	// 						},
+	// 						{
+	// 							Path: to.Ptr("/contact/phones"),
+	// 							Strategy: to.Ptr("MaskSubstring"),
+	// 							StartPosition: to.Ptr[int32](3),
+	// 							Length: to.Ptr[int32](10),
+	// 						},
+	// 					},
+	// 					ExcludedPaths: []*armcosmos.DataMaskingPolicyExcludedPathsItem{
+	// 						{
+	// 							Path: to.Ptr("/id"),
+	// 						},
+	// 					},
+	// 					IsPolicyEnabled: to.Ptr(true),
+	// 				},
 	// 				ComputedProperties: []*armcosmos.ComputedProperty{
 	// 					{
 	// 						Name: to.Ptr("cp_lowerName"),
@@ -381,8 +421,8 @@ func ExampleSQLResourcesClient_BeginCreateUpdateSQLContainer() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15/CosmosDBSqlDatabaseCreateUpdate.json
-func ExampleSQLResourcesClient_BeginCreateUpdateSQLDatabase() {
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlContainerRestore.json
+func ExampleSQLResourcesClient_BeginCreateUpdateSQLContainer_cosmosDbSqlContainerRestore() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -392,12 +432,156 @@ func ExampleSQLResourcesClient_BeginCreateUpdateSQLDatabase() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSQLResourcesClient().BeginCreateUpdateSQLDatabase(ctx, "rg1", "ddb1", "databaseName", armcosmos.SQLDatabaseCreateUpdateParameters{
+	poller, err := clientFactory.NewSQLResourcesClient().BeginCreateUpdateSQLContainer(ctx, "rg1", "ddb1", "databaseName", "containerName", armcosmos.SQLContainerCreateUpdateParameters{
+		Location: to.Ptr("West US"),
+		Properties: &armcosmos.SQLContainerCreateUpdateProperties{
+			Options: &armcosmos.CreateUpdateOptions{},
+			Resource: &armcosmos.SQLContainerResource{
+				CreateMode: to.Ptr(armcosmos.CreateModeRestore),
+				ID:         to.Ptr("containerName"),
+				RestoreParameters: &armcosmos.ResourceRestoreParameters{
+					RestoreSource:          to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.DocumentDB/locations/WestUS/restorableDatabaseAccounts/restorableDatabaseAccountId"),
+					RestoreTimestampInUTC:  to.Ptr(time.Date(2022, time.July, 20, 18, 28, 0, 0, time.UTC)),
+					RestoreWithTTLDisabled: to.Ptr(true),
+				},
+			},
+		},
+		Tags: map[string]*string{},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcosmos.SQLResourcesClientCreateUpdateSQLContainerResponse{
+	// 	SQLContainerGetResults: armcosmos.SQLContainerGetResults{
+	// 		Name: to.Ptr("containerName"),
+	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases/sqlContainers"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName/containers/containerName"),
+	// 		Location: to.Ptr("West US"),
+	// 		Properties: &armcosmos.SQLContainerGetProperties{
+	// 			Resource: &armcosmos.SQLContainerGetPropertiesResource{
+	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
+	// 				Rid: to.Ptr("PD5DALigDgw="),
+	// 				Ts: to.Ptr[float32](1459200611),
+	// 				ClientEncryptionPolicy: &armcosmos.ClientEncryptionPolicy{
+	// 					IncludedPaths: []*armcosmos.ClientEncryptionIncludedPath{
+	// 						{
+	// 							Path: to.Ptr("/path"),
+	// 							ClientEncryptionKeyID: to.Ptr("keyId"),
+	// 							EncryptionAlgorithm: to.Ptr("AEAD_AES_256_CBC_HMAC_SHA256"),
+	// 							EncryptionType: to.Ptr("Deterministic"),
+	// 						},
+	// 					},
+	// 					PolicyFormatVersion: to.Ptr[int32](1),
+	// 				},
+	// 				ConflictResolutionPolicy: &armcosmos.ConflictResolutionPolicy{
+	// 					ConflictResolutionPath: to.Ptr("/path"),
+	// 					Mode: to.Ptr(armcosmos.ConflictResolutionModeLastWriterWins),
+	// 				},
+	// 				DefaultTTL: to.Ptr[int32](100),
+	// 				ID: to.Ptr("containerName"),
+	// 				IndexingPolicy: &armcosmos.IndexingPolicy{
+	// 					Automatic: to.Ptr(true),
+	// 					ExcludedPaths: []*armcosmos.ExcludedPath{
+	// 					},
+	// 					IncludedPaths: []*armcosmos.IncludedPath{
+	// 						{
+	// 							Path: to.Ptr("/*"),
+	// 							Indexes: []*armcosmos.Indexes{
+	// 								{
+	// 									DataType: to.Ptr(armcosmos.DataTypeString),
+	// 									Kind: to.Ptr(armcosmos.IndexKindRange),
+	// 									Precision: to.Ptr[int32](-1),
+	// 								},
+	// 								{
+	// 									DataType: to.Ptr(armcosmos.DataTypeNumber),
+	// 									Kind: to.Ptr(armcosmos.IndexKindRange),
+	// 									Precision: to.Ptr[int32](-1),
+	// 								},
+	// 							},
+	// 						},
+	// 					},
+	// 					IndexingMode: to.Ptr(armcosmos.IndexingModeConsistent),
+	// 				},
+	// 				PartitionKey: &armcosmos.ContainerPartitionKey{
+	// 					Kind: to.Ptr(armcosmos.PartitionKindHash),
+	// 					Paths: []*string{
+	// 						to.Ptr("/AccountNumber"),
+	// 					},
+	// 				},
+	// 				UniqueKeyPolicy: &armcosmos.UniqueKeyPolicy{
+	// 					UniqueKeys: []*armcosmos.UniqueKey{
+	// 						{
+	// 							Paths: []*string{
+	// 								to.Ptr("/testPath"),
+	// 							},
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 		},
+	// 		Tags: map[string]*string{
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlMaterializedViewCreateUpdate.json
+func ExampleSQLResourcesClient_BeginCreateUpdateSQLContainer_cosmosDbSqlMaterializedViewCreateUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcosmos.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewSQLResourcesClient().BeginCreateUpdateSQLContainer(ctx, "rg1", "ddb1", "databaseName", "mvContainerName", armcosmos.SQLContainerCreateUpdateParameters{
 		Location: to.Ptr("West US"),
 		Tags:     map[string]*string{},
-		Properties: &armcosmos.SQLDatabaseCreateUpdateProperties{
-			Resource: &armcosmos.SQLDatabaseResource{
-				ID: to.Ptr("databaseName"),
+		Properties: &armcosmos.SQLContainerCreateUpdateProperties{
+			Resource: &armcosmos.SQLContainerResource{
+				ID: to.Ptr("mvContainerName"),
+				IndexingPolicy: &armcosmos.IndexingPolicy{
+					IndexingMode: to.Ptr(armcosmos.IndexingModeConsistent),
+					Automatic:    to.Ptr(true),
+					IncludedPaths: []*armcosmos.IncludedPath{
+						{
+							Path: to.Ptr("/*"),
+							Indexes: []*armcosmos.Indexes{
+								{
+									Kind:      to.Ptr(armcosmos.IndexKindRange),
+									DataType:  to.Ptr(armcosmos.DataTypeString),
+									Precision: to.Ptr[int32](-1),
+								},
+								{
+									Kind:      to.Ptr(armcosmos.IndexKindRange),
+									DataType:  to.Ptr(armcosmos.DataTypeNumber),
+									Precision: to.Ptr[int32](-1),
+								},
+							},
+						},
+					},
+					ExcludedPaths: []*armcosmos.ExcludedPath{},
+				},
+				PartitionKey: &armcosmos.ContainerPartitionKey{
+					Paths: []*string{
+						to.Ptr("/mvpk"),
+					},
+					Kind: to.Ptr(armcosmos.PartitionKindHash),
+				},
+				MaterializedViewDefinition: &armcosmos.MaterializedViewDefinition{
+					SourceCollectionID:       to.Ptr("sourceContainerName"),
+					Definition:               to.Ptr("select * from ROOT"),
+					ThroughputBucketForBuild: to.Ptr[int32](1),
+				},
 			},
 			Options: &armcosmos.CreateUpdateOptions{},
 		},
@@ -412,27 +596,171 @@ func ExampleSQLResourcesClient_BeginCreateUpdateSQLDatabase() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcosmos.SQLResourcesClientCreateUpdateSQLDatabaseResponse{
-	// 	SQLDatabaseGetResults: armcosmos.SQLDatabaseGetResults{
-	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName"),
-	// 		Name: to.Ptr("databaseName"),
-	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases"),
+	// res = armcosmos.SQLResourcesClientCreateUpdateSQLContainerResponse{
+	// 	SQLContainerGetResults: armcosmos.SQLContainerGetResults{
+	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName/containers/mvContainerName"),
+	// 		Name: to.Ptr("mvContainerName"),
+	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases/sqlContainers"),
 	// 		Location: to.Ptr("West US"),
 	// 		Tags: map[string]*string{
 	// 		},
-	// 		Properties: &armcosmos.SQLDatabaseGetProperties{
-	// 			Resource: &armcosmos.SQLDatabaseGetPropertiesResource{
-	// 				ID: to.Ptr("databaseName"),
-	// 				Rid: to.Ptr("CqNBAA=="),
-	// 				Ts: to.Ptr[float32](1449602962),
-	// 				Etag: to.Ptr("\"00000a00-0000-0000-0000-56672f920000\""),
+	// 		Properties: &armcosmos.SQLContainerGetProperties{
+	// 			Resource: &armcosmos.SQLContainerGetPropertiesResource{
+	// 				ID: to.Ptr("mvContainerName"),
+	// 				IndexingPolicy: &armcosmos.IndexingPolicy{
+	// 					IndexingMode: to.Ptr(armcosmos.IndexingModeConsistent),
+	// 					Automatic: to.Ptr(true),
+	// 					IncludedPaths: []*armcosmos.IncludedPath{
+	// 						{
+	// 							Path: to.Ptr("/*"),
+	// 						},
+	// 					},
+	// 					ExcludedPaths: []*armcosmos.ExcludedPath{
+	// 						{
+	// 							Path: to.Ptr("/\"_etag\"/?"),
+	// 						},
+	// 					},
+	// 				},
+	// 				PartitionKey: &armcosmos.ContainerPartitionKey{
+	// 					Paths: []*string{
+	// 						to.Ptr("/mvpk"),
+	// 					},
+	// 					Kind: to.Ptr(armcosmos.PartitionKindHash),
+	// 				},
+	// 				DefaultTTL: to.Ptr[int32](-1),
+	// 				UniqueKeyPolicy: &armcosmos.UniqueKeyPolicy{
+	// 					UniqueKeys: []*armcosmos.UniqueKey{
+	// 					},
+	// 				},
+	// 				ConflictResolutionPolicy: &armcosmos.ConflictResolutionPolicy{
+	// 					Mode: to.Ptr(armcosmos.ConflictResolutionModeLastWriterWins),
+	// 					ConflictResolutionPath: to.Ptr("/_ts"),
+	// 					ConflictResolutionProcedure: to.Ptr(""),
+	// 				},
+	// 				MaterializedViewDefinition: &armcosmos.MaterializedViewDefinition{
+	// 					SourceCollectionRid: to.Ptr("vb0sn6nEu9A="),
+	// 					SourceCollectionID: to.Ptr("sourceContainerName"),
+	// 					Definition: to.Ptr("select * from ROOT"),
+	// 					ThroughputBucketForBuild: to.Ptr[int32](1),
+	// 				},
+	// 				Rid: to.Ptr("vb0sn8MDxLw="),
+	// 				Ts: to.Ptr[float32](1671427656),
+	// 				Etag: to.Ptr("\"00000800-0000-0200-0000-639ff6480000\""),
 	// 			},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-03-15/CosmosDBSqlRoleAssignmentCreateUpdate.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlDatabaseCreateUpdate.json
+func ExampleSQLResourcesClient_BeginCreateUpdateSQLDatabase_cosmosDbSqlDatabaseCreateUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewSQLResourcesClient().BeginCreateUpdateSQLDatabase(ctx, "rg1", "ddb1", "databaseName", armcosmos.SQLDatabaseCreateUpdateParameters{
+		Location: to.Ptr("West US"),
+		Properties: &armcosmos.SQLDatabaseCreateUpdateProperties{
+			Options: &armcosmos.CreateUpdateOptions{},
+			Resource: &armcosmos.SQLDatabaseResource{
+				ID: to.Ptr("databaseName"),
+			},
+		},
+		Tags: map[string]*string{},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcosmos.SQLResourcesClientCreateUpdateSQLDatabaseResponse{
+	// 	SQLDatabaseGetResults: armcosmos.SQLDatabaseGetResults{
+	// 		Name: to.Ptr("databaseName"),
+	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName"),
+	// 		Location: to.Ptr("West US"),
+	// 		Properties: &armcosmos.SQLDatabaseGetProperties{
+	// 			Resource: &armcosmos.SQLDatabaseGetPropertiesResource{
+	// 				Etag: to.Ptr("\"00000a00-0000-0000-0000-56672f920000\""),
+	// 				Rid: to.Ptr("CqNBAA=="),
+	// 				Ts: to.Ptr[float32](1449602962),
+	// 				ID: to.Ptr("databaseName"),
+	// 			},
+	// 		},
+	// 		Tags: map[string]*string{
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlDatabaseRestore.json
+func ExampleSQLResourcesClient_BeginCreateUpdateSQLDatabase_cosmosDbSqlDatabaseRestore() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewSQLResourcesClient().BeginCreateUpdateSQLDatabase(ctx, "rg1", "ddb1", "databaseName", armcosmos.SQLDatabaseCreateUpdateParameters{
+		Location: to.Ptr("West US"),
+		Properties: &armcosmos.SQLDatabaseCreateUpdateProperties{
+			Options: &armcosmos.CreateUpdateOptions{},
+			Resource: &armcosmos.SQLDatabaseResource{
+				CreateMode: to.Ptr(armcosmos.CreateModeRestore),
+				ID:         to.Ptr("databaseName"),
+				RestoreParameters: &armcosmos.ResourceRestoreParameters{
+					RestoreSource:          to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.DocumentDB/locations/WestUS/restorableDatabaseAccounts/restorableDatabaseAccountId"),
+					RestoreTimestampInUTC:  to.Ptr(time.Date(2022, time.July, 20, 18, 28, 0, 0, time.UTC)),
+					RestoreWithTTLDisabled: to.Ptr(true),
+				},
+			},
+		},
+		Tags: map[string]*string{},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcosmos.SQLResourcesClientCreateUpdateSQLDatabaseResponse{
+	// 	SQLDatabaseGetResults: armcosmos.SQLDatabaseGetResults{
+	// 		Name: to.Ptr("databaseName"),
+	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName"),
+	// 		Location: to.Ptr("West US"),
+	// 		Properties: &armcosmos.SQLDatabaseGetProperties{
+	// 			Resource: &armcosmos.SQLDatabaseGetPropertiesResource{
+	// 				Etag: to.Ptr("\"00000a00-0000-0000-0000-56672f920000\""),
+	// 				Rid: to.Ptr("CqNBAA=="),
+	// 				Ts: to.Ptr[float32](1449602962),
+	// 				ID: to.Ptr("databaseName"),
+	// 			},
+	// 		},
+	// 		Tags: map[string]*string{
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlRoleAssignmentCreateUpdate.json
 func ExampleSQLResourcesClient_BeginCreateUpdateSQLRoleAssignment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -445,9 +773,9 @@ func ExampleSQLResourcesClient_BeginCreateUpdateSQLRoleAssignment() {
 	}
 	poller, err := clientFactory.NewSQLResourcesClient().BeginCreateUpdateSQLRoleAssignment(ctx, "myRoleAssignmentId", "myResourceGroupName", "myAccountName", armcosmos.SQLRoleAssignmentCreateUpdateParameters{
 		Properties: &armcosmos.SQLRoleAssignmentResource{
-			RoleDefinitionID: to.Ptr("/subscriptions/mySubscriptionId/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/sqlRoleDefinitions/myRoleDefinitionId"),
-			Scope:            to.Ptr("/subscriptions/mySubscriptionId/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/dbs/purchases/colls/redmond-purchases"),
 			PrincipalID:      to.Ptr("myPrincipalId"),
+			RoleDefinitionID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/sqlRoleDefinitions/myRoleDefinitionId"),
+			Scope:            to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/dbs/purchases/colls/redmond-purchases"),
 		},
 	}, nil)
 	if err != nil {
@@ -462,19 +790,19 @@ func ExampleSQLResourcesClient_BeginCreateUpdateSQLRoleAssignment() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientCreateUpdateSQLRoleAssignmentResponse{
 	// 	SQLRoleAssignmentGetResults: armcosmos.SQLRoleAssignmentGetResults{
-	// 		ID: to.Ptr("/subscriptions/mySubscriptionId/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/sqlRoleAssignments/myRoleAssignmentId"),
 	// 		Name: to.Ptr("myRoleAssignmentId"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlRoleAssignments"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/sqlRoleAssignments/myRoleAssignmentId"),
 	// 		Properties: &armcosmos.SQLRoleAssignmentResource{
-	// 			RoleDefinitionID: to.Ptr("/subscriptions/mySubscriptionId/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/sqlRoleDefinitions/myRoleDefinitionId"),
-	// 			Scope: to.Ptr("/subscriptions/mySubscriptionId/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/dbs/purchases/colls/redmond-purchases"),
 	// 			PrincipalID: to.Ptr("myPrincipalId"),
+	// 			RoleDefinitionID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/sqlRoleDefinitions/myRoleDefinitionId"),
+	// 			Scope: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/dbs/purchases/colls/redmond-purchases"),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-03-15/CosmosDBSqlRoleDefinitionCreateUpdate.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlRoleDefinitionCreateUpdate.json
 func ExampleSQLResourcesClient_BeginCreateUpdateSQLRoleDefinition() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -487,11 +815,10 @@ func ExampleSQLResourcesClient_BeginCreateUpdateSQLRoleDefinition() {
 	}
 	poller, err := clientFactory.NewSQLResourcesClient().BeginCreateUpdateSQLRoleDefinition(ctx, "myRoleDefinitionId", "myResourceGroupName", "myAccountName", armcosmos.SQLRoleDefinitionCreateUpdateParameters{
 		Properties: &armcosmos.SQLRoleDefinitionResource{
-			RoleName: to.Ptr("myRoleName"),
-			Type:     to.Ptr(armcosmos.RoleDefinitionTypeCustomRole),
+			Type: to.Ptr(armcosmos.RoleDefinitionTypeCustomRole),
 			AssignableScopes: []*string{
-				to.Ptr("/subscriptions/mySubscriptionId/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/dbs/sales"),
-				to.Ptr("/subscriptions/mySubscriptionId/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/dbs/purchases"),
+				to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/dbs/sales"),
+				to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/dbs/purchases"),
 			},
 			Permissions: []*armcosmos.Permission{
 				{
@@ -502,6 +829,7 @@ func ExampleSQLResourcesClient_BeginCreateUpdateSQLRoleDefinition() {
 					NotDataActions: []*string{},
 				},
 			},
+			RoleName: to.Ptr("myRoleName"),
 		},
 	}, nil)
 	if err != nil {
@@ -516,15 +844,14 @@ func ExampleSQLResourcesClient_BeginCreateUpdateSQLRoleDefinition() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientCreateUpdateSQLRoleDefinitionResponse{
 	// 	SQLRoleDefinitionGetResults: armcosmos.SQLRoleDefinitionGetResults{
-	// 		ID: to.Ptr("/subscriptions/mySubscriptionId/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/sqlRoleDefinitions/myRoleDefinitionId"),
 	// 		Name: to.Ptr("myRoleDefinitionId"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlRoleDefinitions"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/sqlRoleDefinitions/myRoleDefinitionId"),
 	// 		Properties: &armcosmos.SQLRoleDefinitionResource{
-	// 			RoleName: to.Ptr("myRoleName"),
 	// 			Type: to.Ptr(armcosmos.RoleDefinitionTypeCustomRole),
 	// 			AssignableScopes: []*string{
-	// 				to.Ptr("/subscriptions/mySubscriptionId/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/dbs/sales"),
-	// 				to.Ptr("/subscriptions/mySubscriptionId/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/dbs/purchases"),
+	// 				to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/dbs/sales"),
+	// 				to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/dbs/purchases"),
 	// 			},
 	// 			Permissions: []*armcosmos.Permission{
 	// 				{
@@ -534,12 +861,13 @@ func ExampleSQLResourcesClient_BeginCreateUpdateSQLRoleDefinition() {
 	// 					},
 	// 				},
 	// 			},
+	// 			RoleName: to.Ptr("myRoleName"),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-03-15/CosmosDBSqlStoredProcedureCreateUpdate.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlStoredProcedureCreateUpdate.json
 func ExampleSQLResourcesClient_BeginCreateUpdateSQLStoredProcedure() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -552,11 +880,11 @@ func ExampleSQLResourcesClient_BeginCreateUpdateSQLStoredProcedure() {
 	}
 	poller, err := clientFactory.NewSQLResourcesClient().BeginCreateUpdateSQLStoredProcedure(ctx, "rg1", "ddb1", "databaseName", "containerName", "storedProcedureName", armcosmos.SQLStoredProcedureCreateUpdateParameters{
 		Properties: &armcosmos.SQLStoredProcedureCreateUpdateProperties{
-			Resource: &armcosmos.SQLStoredProcedureResource{
-				ID:   to.Ptr("storedProcedureName"),
-				Body: to.Ptr("body"),
-			},
 			Options: &armcosmos.CreateUpdateOptions{},
+			Resource: &armcosmos.SQLStoredProcedureResource{
+				Body: to.Ptr("body"),
+				ID:   to.Ptr("storedProcedureName"),
+			},
 		},
 	}, nil)
 	if err != nil {
@@ -571,23 +899,23 @@ func ExampleSQLResourcesClient_BeginCreateUpdateSQLStoredProcedure() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientCreateUpdateSQLStoredProcedureResponse{
 	// 	SQLStoredProcedureGetResults: armcosmos.SQLStoredProcedureGetResults{
-	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName/sqlContainers/containerName/sqlStoredProcedures/storedProcedureName"),
 	// 		Name: to.Ptr("storedProcedureName"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases/sqlContainers/sqlStoredProcedures"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName/sqlContainers/containerName/sqlStoredProcedures/storedProcedureName"),
 	// 		Properties: &armcosmos.SQLStoredProcedureGetProperties{
 	// 			Resource: &armcosmos.SQLStoredProcedureGetPropertiesResource{
-	// 				ID: to.Ptr("storedProcedureName"),
-	// 				Body: to.Ptr("body"),
+	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
 	// 				Rid: to.Ptr("PD5DALigDgw="),
 	// 				Ts: to.Ptr[float32](1459200611),
-	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
+	// 				Body: to.Ptr("body"),
+	// 				ID: to.Ptr("storedProcedureName"),
 	// 			},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-03-15/CosmosDBSqlTriggerCreateUpdate.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlTriggerCreateUpdate.json
 func ExampleSQLResourcesClient_BeginCreateUpdateSQLTrigger() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -600,13 +928,13 @@ func ExampleSQLResourcesClient_BeginCreateUpdateSQLTrigger() {
 	}
 	poller, err := clientFactory.NewSQLResourcesClient().BeginCreateUpdateSQLTrigger(ctx, "rg1", "ddb1", "databaseName", "containerName", "triggerName", armcosmos.SQLTriggerCreateUpdateParameters{
 		Properties: &armcosmos.SQLTriggerCreateUpdateProperties{
-			Resource: &armcosmos.SQLTriggerResource{
-				ID:               to.Ptr("triggerName"),
-				Body:             to.Ptr("body"),
-				TriggerType:      to.Ptr(armcosmos.TriggerType("triggerType")),
-				TriggerOperation: to.Ptr(armcosmos.TriggerOperation("triggerOperation")),
-			},
 			Options: &armcosmos.CreateUpdateOptions{},
+			Resource: &armcosmos.SQLTriggerResource{
+				Body:             to.Ptr("body"),
+				ID:               to.Ptr("triggerName"),
+				TriggerOperation: to.Ptr(armcosmos.TriggerOperation("triggerOperation")),
+				TriggerType:      to.Ptr(armcosmos.TriggerType("triggerType")),
+			},
 		},
 	}, nil)
 	if err != nil {
@@ -621,25 +949,25 @@ func ExampleSQLResourcesClient_BeginCreateUpdateSQLTrigger() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientCreateUpdateSQLTriggerResponse{
 	// 	SQLTriggerGetResults: armcosmos.SQLTriggerGetResults{
-	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName/sqlContainers/containerName/sqlTriggers/triggerName"),
 	// 		Name: to.Ptr("triggerName"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases/sqlContainers/sqlTriggers"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName/sqlContainers/containerName/sqlTriggers/triggerName"),
 	// 		Properties: &armcosmos.SQLTriggerGetProperties{
 	// 			Resource: &armcosmos.SQLTriggerGetPropertiesResource{
-	// 				ID: to.Ptr("triggerName"),
-	// 				Body: to.Ptr("body"),
-	// 				TriggerType: to.Ptr(armcosmos.TriggerType("triggerType")),
-	// 				TriggerOperation: to.Ptr(armcosmos.TriggerOperation("triggerOperation")),
+	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
 	// 				Rid: to.Ptr("PD5DALigDgw="),
 	// 				Ts: to.Ptr[float32](1459200611),
-	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
+	// 				Body: to.Ptr("body"),
+	// 				ID: to.Ptr("triggerName"),
+	// 				TriggerOperation: to.Ptr(armcosmos.TriggerOperation("triggerOperation")),
+	// 				TriggerType: to.Ptr(armcosmos.TriggerType("triggerType")),
 	// 			},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-03-15/CosmosDBSqlUserDefinedFunctionCreateUpdate.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlUserDefinedFunctionCreateUpdate.json
 func ExampleSQLResourcesClient_BeginCreateUpdateSQLUserDefinedFunction() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -652,11 +980,11 @@ func ExampleSQLResourcesClient_BeginCreateUpdateSQLUserDefinedFunction() {
 	}
 	poller, err := clientFactory.NewSQLResourcesClient().BeginCreateUpdateSQLUserDefinedFunction(ctx, "rg1", "ddb1", "databaseName", "containerName", "userDefinedFunctionName", armcosmos.SQLUserDefinedFunctionCreateUpdateParameters{
 		Properties: &armcosmos.SQLUserDefinedFunctionCreateUpdateProperties{
-			Resource: &armcosmos.SQLUserDefinedFunctionResource{
-				ID:   to.Ptr("userDefinedFunctionName"),
-				Body: to.Ptr("body"),
-			},
 			Options: &armcosmos.CreateUpdateOptions{},
+			Resource: &armcosmos.SQLUserDefinedFunctionResource{
+				Body: to.Ptr("body"),
+				ID:   to.Ptr("userDefinedFunctionName"),
+			},
 		},
 	}, nil)
 	if err != nil {
@@ -671,23 +999,23 @@ func ExampleSQLResourcesClient_BeginCreateUpdateSQLUserDefinedFunction() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientCreateUpdateSQLUserDefinedFunctionResponse{
 	// 	SQLUserDefinedFunctionGetResults: armcosmos.SQLUserDefinedFunctionGetResults{
-	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName/sqlContainers/containerName/sqlUserDefinedFunctions/userDefinedFunctionName"),
 	// 		Name: to.Ptr("userDefinedFunctionName"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases/sqlContainers/sqlUserDefinedFunctions"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName/sqlContainers/containerName/sqlUserDefinedFunctions/userDefinedFunctionName"),
 	// 		Properties: &armcosmos.SQLUserDefinedFunctionGetProperties{
 	// 			Resource: &armcosmos.SQLUserDefinedFunctionGetPropertiesResource{
-	// 				ID: to.Ptr("userDefinedFunctionName"),
-	// 				Body: to.Ptr("body"),
+	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
 	// 				Rid: to.Ptr("PD5DALigDgw="),
 	// 				Ts: to.Ptr[float32](1459200611),
-	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
+	// 				Body: to.Ptr("body"),
+	// 				ID: to.Ptr("userDefinedFunctionName"),
 	// 			},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-03-15/CosmosDBSqlContainerDelete.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlContainerDelete.json
 func ExampleSQLResourcesClient_BeginDeleteSQLContainer() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -708,7 +1036,7 @@ func ExampleSQLResourcesClient_BeginDeleteSQLContainer() {
 	}
 }
 
-// Generated from example definition: 2026-03-15/CosmosDBSqlDatabaseDelete.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlDatabaseDelete.json
 func ExampleSQLResourcesClient_BeginDeleteSQLDatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -729,7 +1057,7 @@ func ExampleSQLResourcesClient_BeginDeleteSQLDatabase() {
 	}
 }
 
-// Generated from example definition: 2026-03-15/CosmosDBSqlRoleAssignmentDelete.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlRoleAssignmentDelete.json
 func ExampleSQLResourcesClient_BeginDeleteSQLRoleAssignment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -755,7 +1083,7 @@ func ExampleSQLResourcesClient_BeginDeleteSQLRoleAssignment() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15/CosmosDBSqlRoleDefinitionDelete.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlRoleDefinitionDelete.json
 func ExampleSQLResourcesClient_BeginDeleteSQLRoleDefinition() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -781,7 +1109,7 @@ func ExampleSQLResourcesClient_BeginDeleteSQLRoleDefinition() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15/CosmosDBSqlStoredProcedureDelete.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlStoredProcedureDelete.json
 func ExampleSQLResourcesClient_BeginDeleteSQLStoredProcedure() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -802,7 +1130,7 @@ func ExampleSQLResourcesClient_BeginDeleteSQLStoredProcedure() {
 	}
 }
 
-// Generated from example definition: 2026-03-15/CosmosDBSqlTriggerDelete.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlTriggerDelete.json
 func ExampleSQLResourcesClient_BeginDeleteSQLTrigger() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -823,7 +1151,7 @@ func ExampleSQLResourcesClient_BeginDeleteSQLTrigger() {
 	}
 }
 
-// Generated from example definition: 2026-03-15/CosmosDBSqlUserDefinedFunctionDelete.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlUserDefinedFunctionDelete.json
 func ExampleSQLResourcesClient_BeginDeleteSQLUserDefinedFunction() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -844,7 +1172,7 @@ func ExampleSQLResourcesClient_BeginDeleteSQLUserDefinedFunction() {
 	}
 }
 
-// Generated from example definition: 2026-03-15/CosmosDBSqlClientEncryptionKeyGet.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlClientEncryptionKeyGet.json
 func ExampleSQLResourcesClient_GetClientEncryptionKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -864,37 +1192,37 @@ func ExampleSQLResourcesClient_GetClientEncryptionKey() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientGetClientEncryptionKeyResponse{
 	// 	ClientEncryptionKeyGetResults: armcosmos.ClientEncryptionKeyGetResults{
-	// 		ID: to.Ptr("/subscriptions/subId/resourceGroups/rgName/providers/Microsoft.DocumentDB/databaseAccounts/accountName/sqlDatabases/databaseName/clientEncryptionKeys/cekName"),
 	// 		Name: to.Ptr("cekName"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases/clientEncryptionKey"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rgName/providers/Microsoft.DocumentDB/databaseAccounts/accountName/sqlDatabases/databaseName/clientEncryptionKeys/cekName"),
 	// 		Properties: &armcosmos.ClientEncryptionKeyGetProperties{
 	// 			Resource: &armcosmos.ClientEncryptionKeyGetPropertiesResource{
-	// 				ID: to.Ptr("cekName"),
+	// 				Etag: to.Ptr("00000000-0000-0000-7a1f-bc0828e801d7"),
+	// 				Rid: to.Ptr("tNc4AAAAAAAQkjzWAgAAAA=="),
+	// 				Ts: to.Ptr[float32](1626425552),
 	// 				EncryptionAlgorithm: to.Ptr("AEAD_AES_256_CBC_HMAC_SHA256"),
-	// 				WrappedDataEncryptionKey: []byte("U3dhZ2dlciByb2Nrcw=="),
+	// 				ID: to.Ptr("cekName"),
 	// 				KeyWrapMetadata: &armcosmos.KeyWrapMetadata{
 	// 					Name: to.Ptr("customerManagedKey"),
 	// 					Type: to.Ptr("AzureKeyVault"),
-	// 					Value: to.Ptr("AzureKeyVault Key URL"),
 	// 					Algorithm: to.Ptr("RSA-OAEP"),
+	// 					Value: to.Ptr("AzureKeyVault Key URL"),
 	// 				},
-	// 				Rid: to.Ptr("tNc4AAAAAAAQkjzWAgAAAA=="),
-	// 				Ts: to.Ptr[float32](1626425552),
-	// 				Etag: to.Ptr("00000000-0000-0000-7a1f-bc0828e801d7"),
+	// 				WrappedDataEncryptionKey: []byte("VGhpcyBpcyBhY3R1YWxseSBhbiBhcnJheSBvZiBieXRlcy4gVGhpcyByZXF1ZXN0L3Jlc3BvbnNlIGlzIGJlaW5nIHByZXNlbnRlZCBhcyBhIHN0cmluZyBmb3IgcmVhZGFiaWxpdHkgaW4gdGhlIGV4YW1wbGU="),
 	// 			},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-03-15/CosmosDBSqlContainerGet.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlContainerGet.json
 func ExampleSQLResourcesClient_GetSQLContainer() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -1044,11 +1372,44 @@ func ExampleSQLResourcesClient_GetSQLContainer() {
 	// 					},
 	// 					PolicyFormatVersion: to.Ptr[int32](1),
 	// 				},
+	// 				DataMaskingPolicy: &armcosmos.DataMaskingPolicy{
+	// 					IncludedPaths: []*armcosmos.DataMaskingPolicyIncludedPathsItem{
+	// 						{
+	// 							Path: to.Ptr("/"),
+	// 							Strategy: to.Ptr("Default"),
+	// 						},
+	// 						{
+	// 							Path: to.Ptr("/contact/phones"),
+	// 							Strategy: to.Ptr("MaskSubstring"),
+	// 							StartPosition: to.Ptr[int32](3),
+	// 							Length: to.Ptr[int32](10),
+	// 						},
+	// 					},
+	// 					ExcludedPaths: []*armcosmos.DataMaskingPolicyExcludedPathsItem{
+	// 						{
+	// 							Path: to.Ptr("/id"),
+	// 						},
+	// 					},
+	// 					IsPolicyEnabled: to.Ptr(true),
+	// 				},
+	// 				MaterializedViews: []*armcosmos.MaterializedViewDetails{
+	// 					{
+	// 						ID: to.Ptr("materializedview1"),
+	// 						Rid: to.Ptr("PD5DALigDbw="),
+	// 					},
+	// 					{
+	// 						ID: to.Ptr("materializedview2"),
+	// 						Rid: to.Ptr("PD5DALigDmw="),
+	// 					},
+	// 				},
 	// 				ComputedProperties: []*armcosmos.ComputedProperty{
 	// 					{
 	// 						Name: to.Ptr("cp_lowerName"),
 	// 						Query: to.Ptr("SELECT VALUE LOWER(c.name) FROM c"),
 	// 					},
+	// 				},
+	// 				MaterializedViewsProperties: &armcosmos.MaterializedViewsProperties{
+	// 					ThroughputBucketForBuild: to.Ptr[int32](1),
 	// 				},
 	// 				Rid: to.Ptr("PD5DALigDgw="),
 	// 				Ts: to.Ptr[float32](1459200611),
@@ -1062,14 +1423,14 @@ func ExampleSQLResourcesClient_GetSQLContainer() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15/CosmosDBSqlContainerThroughputGet.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlContainerThroughputGet.json
 func ExampleSQLResourcesClient_GetSQLContainerThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -1095,6 +1456,29 @@ func ExampleSQLResourcesClient_GetSQLContainerThroughput() {
 	// 				OfferReplacePending: to.Ptr("true"),
 	// 				InstantMaximumThroughput: to.Ptr("10000"),
 	// 				SoftAllowedMaximumThroughput: to.Ptr("1000000"),
+	// 				ThroughputBuckets: []*armcosmos.ThroughputBucketResource{
+	// 					{
+	// 						ID: to.Ptr[int32](1),
+	// 						MaxThroughputPercentage: to.Ptr[int32](10),
+	// 					},
+	// 					{
+	// 						ID: to.Ptr[int32](2),
+	// 						MaxThroughputPercentage: to.Ptr[int32](5),
+	// 						IsDefaultBucket: to.Ptr(true),
+	// 					},
+	// 					{
+	// 						ID: to.Ptr[int32](3),
+	// 						MaxThroughputPercentage: to.Ptr[int32](15),
+	// 					},
+	// 					{
+	// 						ID: to.Ptr[int32](4),
+	// 						MaxThroughputPercentage: to.Ptr[int32](10),
+	// 					},
+	// 					{
+	// 						ID: to.Ptr[int32](5),
+	// 						MaxThroughputPercentage: to.Ptr[int32](20),
+	// 					},
+	// 				},
 	// 				Rid: to.Ptr("PD5DALigDgw="),
 	// 				Ts: to.Ptr[float32](1459200611),
 	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
@@ -1104,7 +1488,7 @@ func ExampleSQLResourcesClient_GetSQLContainerThroughput() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15/CosmosDBSqlDatabaseGet.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlDatabaseGet.json
 func ExampleSQLResourcesClient_GetSQLDatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1124,27 +1508,27 @@ func ExampleSQLResourcesClient_GetSQLDatabase() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientGetSQLDatabaseResponse{
 	// 	SQLDatabaseGetResults: armcosmos.SQLDatabaseGetResults{
-	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName"),
 	// 		Name: to.Ptr("databaseName"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName"),
 	// 		Location: to.Ptr("West US"),
-	// 		Tags: map[string]*string{
-	// 		},
 	// 		Properties: &armcosmos.SQLDatabaseGetProperties{
 	// 			Resource: &armcosmos.SQLDatabaseGetPropertiesResource{
-	// 				ID: to.Ptr("databaseName"),
+	// 				Colls: to.Ptr("colls/"),
+	// 				Etag: to.Ptr("\"00000a00-0000-0000-0000-56672f920000\""),
 	// 				Rid: to.Ptr("CqNBAA=="),
 	// 				Ts: to.Ptr[float32](1449602962),
-	// 				Etag: to.Ptr("\"00000a00-0000-0000-0000-56672f920000\""),
-	// 				Colls: to.Ptr("colls/"),
 	// 				Users: to.Ptr("users/"),
+	// 				ID: to.Ptr("databaseName"),
 	// 			},
+	// 		},
+	// 		Tags: map[string]*string{
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-03-15/CosmosDBSqlDatabaseThroughputGet.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlDatabaseThroughputGet.json
 func ExampleSQLResourcesClient_GetSQLDatabaseThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1164,29 +1548,29 @@ func ExampleSQLResourcesClient_GetSQLDatabaseThroughput() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientGetSQLDatabaseThroughputResponse{
 	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
-	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName/throughputSettings/default"),
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases/throughputSettings"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName/throughputSettings/default"),
 	// 		Location: to.Ptr("West US"),
-	// 		Tags: map[string]*string{
-	// 		},
 	// 		Properties: &armcosmos.ThroughputSettingsGetProperties{
 	// 			Resource: &armcosmos.ThroughputSettingsGetPropertiesResource{
-	// 				Throughput: to.Ptr[int32](400),
-	// 				MinimumThroughput: to.Ptr("400"),
-	// 				OfferReplacePending: to.Ptr("true"),
-	// 				InstantMaximumThroughput: to.Ptr("10000"),
-	// 				SoftAllowedMaximumThroughput: to.Ptr("1000000"),
+	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
 	// 				Rid: to.Ptr("PD5DALigDgw="),
 	// 				Ts: to.Ptr[float32](1459200611),
-	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
+	// 				InstantMaximumThroughput: to.Ptr("10000"),
+	// 				MinimumThroughput: to.Ptr("400"),
+	// 				OfferReplacePending: to.Ptr("true"),
+	// 				SoftAllowedMaximumThroughput: to.Ptr("1000000"),
+	// 				Throughput: to.Ptr[int32](400),
 	// 			},
+	// 		},
+	// 		Tags: map[string]*string{
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-03-15/CosmosDBSqlRoleAssignmentGet.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlRoleAssignmentGet.json
 func ExampleSQLResourcesClient_GetSQLRoleAssignment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1206,19 +1590,19 @@ func ExampleSQLResourcesClient_GetSQLRoleAssignment() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientGetSQLRoleAssignmentResponse{
 	// 	SQLRoleAssignmentGetResults: armcosmos.SQLRoleAssignmentGetResults{
-	// 		ID: to.Ptr("/subscriptions/mySubscriptionId/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/sqlRoleAssignments/myRoleAssignmentId"),
 	// 		Name: to.Ptr("myRoleAssignmentId"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlRoleAssignments"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/sqlRoleAssignments/myRoleAssignmentId"),
 	// 		Properties: &armcosmos.SQLRoleAssignmentResource{
-	// 			RoleDefinitionID: to.Ptr("/subscriptions/mySubscriptionId/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/sqlRoleDefinitions/myRoleDefinitionId"),
-	// 			Scope: to.Ptr("/subscriptions/mySubscriptionId/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/dbs/purchases/colls/redmond-purchases"),
 	// 			PrincipalID: to.Ptr("myPrincipalId"),
+	// 			RoleDefinitionID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/sqlRoleDefinitions/myRoleDefinitionId"),
+	// 			Scope: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/dbs/purchases/colls/redmond-purchases"),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-03-15/CosmosDBSqlRoleDefinitionGet.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlRoleDefinitionGet.json
 func ExampleSQLResourcesClient_GetSQLRoleDefinition() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1238,15 +1622,14 @@ func ExampleSQLResourcesClient_GetSQLRoleDefinition() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientGetSQLRoleDefinitionResponse{
 	// 	SQLRoleDefinitionGetResults: armcosmos.SQLRoleDefinitionGetResults{
-	// 		ID: to.Ptr("/subscriptions/mySubscriptionId/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/sqlRoleDefinitions/myRoleDefinitionId"),
 	// 		Name: to.Ptr("myRoleDefinitionId"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlRoleDefinitions"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/sqlRoleDefinitions/myRoleDefinitionId"),
 	// 		Properties: &armcosmos.SQLRoleDefinitionResource{
-	// 			RoleName: to.Ptr("myRoleName"),
 	// 			Type: to.Ptr(armcosmos.RoleDefinitionTypeCustomRole),
 	// 			AssignableScopes: []*string{
-	// 				to.Ptr("/subscriptions/mySubscriptionId/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/dbs/sales"),
-	// 				to.Ptr("/subscriptions/mySubscriptionId/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/dbs/purchases"),
+	// 				to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/dbs/sales"),
+	// 				to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/dbs/purchases"),
 	// 			},
 	// 			Permissions: []*armcosmos.Permission{
 	// 				{
@@ -1258,12 +1641,13 @@ func ExampleSQLResourcesClient_GetSQLRoleDefinition() {
 	// 					},
 	// 				},
 	// 			},
+	// 			RoleName: to.Ptr("myRoleName"),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-03-15/CosmosDBSqlStoredProcedureGet.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlStoredProcedureGet.json
 func ExampleSQLResourcesClient_GetSQLStoredProcedure() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1283,23 +1667,23 @@ func ExampleSQLResourcesClient_GetSQLStoredProcedure() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientGetSQLStoredProcedureResponse{
 	// 	SQLStoredProcedureGetResults: armcosmos.SQLStoredProcedureGetResults{
-	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName/sqlContainers/containerName/sqlStoredProcedures/storedProcedureName"),
 	// 		Name: to.Ptr("storedProcedureName"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases/sqlContainers/sqlStoredProcedures"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName/sqlContainers/containerName/sqlStoredProcedures/storedProcedureName"),
 	// 		Properties: &armcosmos.SQLStoredProcedureGetProperties{
 	// 			Resource: &armcosmos.SQLStoredProcedureGetPropertiesResource{
-	// 				ID: to.Ptr("storedProcedureName"),
-	// 				Body: to.Ptr("body"),
+	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
 	// 				Rid: to.Ptr("PD5DALigDgw="),
 	// 				Ts: to.Ptr[float32](1459200611),
-	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
+	// 				Body: to.Ptr("body"),
+	// 				ID: to.Ptr("storedProcedureName"),
 	// 			},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-03-15/CosmosDBSqlTriggerGet.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlTriggerGet.json
 func ExampleSQLResourcesClient_GetSQLTrigger() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1319,25 +1703,25 @@ func ExampleSQLResourcesClient_GetSQLTrigger() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientGetSQLTriggerResponse{
 	// 	SQLTriggerGetResults: armcosmos.SQLTriggerGetResults{
-	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName/sqlContainers/containerName/sqlTriggers/triggerName"),
 	// 		Name: to.Ptr("triggerName"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases/sqlContainers/sqlTriggers"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName/sqlContainers/containerName/sqlTriggers/triggerName"),
 	// 		Properties: &armcosmos.SQLTriggerGetProperties{
 	// 			Resource: &armcosmos.SQLTriggerGetPropertiesResource{
-	// 				ID: to.Ptr("triggerName"),
-	// 				Body: to.Ptr("body"),
-	// 				TriggerType: to.Ptr(armcosmos.TriggerType("triggerType")),
-	// 				TriggerOperation: to.Ptr(armcosmos.TriggerOperation("triggerOperation")),
+	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
 	// 				Rid: to.Ptr("PD5DALigDgw="),
 	// 				Ts: to.Ptr[float32](1459200611),
-	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
+	// 				Body: to.Ptr("body"),
+	// 				ID: to.Ptr("triggerName"),
+	// 				TriggerOperation: to.Ptr(armcosmos.TriggerOperation("triggerOperation")),
+	// 				TriggerType: to.Ptr(armcosmos.TriggerType("triggerType")),
 	// 			},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-03-15/CosmosDBSqlUserDefinedFunctionGet.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlUserDefinedFunctionGet.json
 func ExampleSQLResourcesClient_GetSQLUserDefinedFunction() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1357,23 +1741,23 @@ func ExampleSQLResourcesClient_GetSQLUserDefinedFunction() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientGetSQLUserDefinedFunctionResponse{
 	// 	SQLUserDefinedFunctionGetResults: armcosmos.SQLUserDefinedFunctionGetResults{
-	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName/sqlContainers/containerName/sqlUserDefinedFunctions/userDefinedFunctionName"),
 	// 		Name: to.Ptr("userDefinedFunctionName"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases/sqlContainers/sqlUserDefinedFunctions"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName/sqlContainers/containerName/sqlUserDefinedFunctions/userDefinedFunctionName"),
 	// 		Properties: &armcosmos.SQLUserDefinedFunctionGetProperties{
 	// 			Resource: &armcosmos.SQLUserDefinedFunctionGetPropertiesResource{
-	// 				ID: to.Ptr("userDefinedFunctionName"),
-	// 				Body: to.Ptr("body"),
+	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
 	// 				Rid: to.Ptr("PD5DALigDgw="),
 	// 				Ts: to.Ptr[float32](1459200611),
-	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
+	// 				Body: to.Ptr("body"),
+	// 				ID: to.Ptr("userDefinedFunctionName"),
 	// 			},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-03-15/CosmosDBSqlClientEncryptionKeysList.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlClientEncryptionKeysList.json
 func ExampleSQLResourcesClient_NewListClientEncryptionKeysPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1399,44 +1783,44 @@ func ExampleSQLResourcesClient_NewListClientEncryptionKeysPager() {
 		// 	ClientEncryptionKeysListResult: armcosmos.ClientEncryptionKeysListResult{
 		// 		Value: []*armcosmos.ClientEncryptionKeyGetResults{
 		// 			{
-		// 				ID: to.Ptr("/subscriptions/subId/resourceGroups/rgName/providers/Microsoft.DocumentDB/databaseAccounts/accountName/sqlDatabases/databaseName/clientEncryptionKeys/cekName1"),
 		// 				Name: to.Ptr("cekName1"),
 		// 				Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases/clientEncryptionKey"),
+		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rgName/providers/Microsoft.DocumentDB/databaseAccounts/accountName/sqlDatabases/databaseName/clientEncryptionKeys/cekName1"),
 		// 				Properties: &armcosmos.ClientEncryptionKeyGetProperties{
 		// 					Resource: &armcosmos.ClientEncryptionKeyGetPropertiesResource{
-		// 						ID: to.Ptr("cekName1"),
+		// 						Etag: to.Ptr("00000000-0000-0000-7a1f-bc0828e801d7"),
+		// 						Rid: to.Ptr("nAMyAAAAAADPw1kKAgAAAA=="),
+		// 						Ts: to.Ptr[float32](1626425552),
 		// 						EncryptionAlgorithm: to.Ptr("AEAD_AES_256_CBC_HMAC_SHA256"),
-		// 						WrappedDataEncryptionKey: []byte("U3dhZ2dlciByb2Nrcw=="),
+		// 						ID: to.Ptr("cekName1"),
 		// 						KeyWrapMetadata: &armcosmos.KeyWrapMetadata{
 		// 							Name: to.Ptr("customerManagedKey1"),
 		// 							Type: to.Ptr("AzureKeyVault"),
-		// 							Value: to.Ptr("AzureKeyVault Key URL for customerManagedKey1"),
 		// 							Algorithm: to.Ptr("RSA-OAEP"),
+		// 							Value: to.Ptr("AzureKeyVault Key URL for customerManagedKey1"),
 		// 						},
-		// 						Rid: to.Ptr("nAMyAAAAAADPw1kKAgAAAA=="),
-		// 						Ts: to.Ptr[float32](1626425552),
-		// 						Etag: to.Ptr("00000000-0000-0000-7a1f-bc0828e801d7"),
+		// 						WrappedDataEncryptionKey: []byte("VGhpcyBpcyBhY3R1YWxseSBhbiBhcnJheSBvZiBieXRlcy4gVGhpcyByZXF1ZXN0L3Jlc3BvbnNlIGlzIGJlaW5nIHByZXNlbnRlZCBhcyBhIHN0cmluZyBmb3IgcmVhZGFiaWxpdHkgaW4gdGhlIGV4YW1wbGU="),
 		// 					},
 		// 				},
 		// 			},
 		// 			{
-		// 				ID: to.Ptr("/subscriptions/subId/resourceGroups/rgName/providers/Microsoft.DocumentDB/databaseAccounts/accountName/sqlDatabases/databaseName/clientEncryptionKeys/cekName2"),
 		// 				Name: to.Ptr("cekName2"),
 		// 				Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases/clientEncryptionKey"),
+		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rgName/providers/Microsoft.DocumentDB/databaseAccounts/accountName/sqlDatabases/databaseName/clientEncryptionKeys/cekName2"),
 		// 				Properties: &armcosmos.ClientEncryptionKeyGetProperties{
 		// 					Resource: &armcosmos.ClientEncryptionKeyGetPropertiesResource{
-		// 						ID: to.Ptr("cekName2"),
+		// 						Etag: to.Ptr("00000000-0000-0000-7a21-7788a38c01d7"),
+		// 						Rid: to.Ptr("nAMyAAAAAAAWWfxHAgAAAA=="),
+		// 						Ts: to.Ptr[float32](1626425631),
 		// 						EncryptionAlgorithm: to.Ptr("AEAD_AES_256_CBC_HMAC_SHA256"),
-		// 						WrappedDataEncryptionKey: []byte("U3dhZ2dlciByb2Nrcw=="),
+		// 						ID: to.Ptr("cekName2"),
 		// 						KeyWrapMetadata: &armcosmos.KeyWrapMetadata{
 		// 							Name: to.Ptr("customerManagedKey2"),
 		// 							Type: to.Ptr("AzureKeyVault"),
-		// 							Value: to.Ptr("AzureKeyVault Key URL for customerManagedKey2"),
 		// 							Algorithm: to.Ptr("RSA-OAEP"),
+		// 							Value: to.Ptr("AzureKeyVault Key URL for customerManagedKey2"),
 		// 						},
-		// 						Rid: to.Ptr("nAMyAAAAAAAWWfxHAgAAAA=="),
-		// 						Ts: to.Ptr[float32](1626425631),
-		// 						Etag: to.Ptr("00000000-0000-0000-7a21-7788a38c01d7"),
+		// 						WrappedDataEncryptionKey: []byte("VGhpcyBpcyBhY3R1YWxseSBhbiBhcnJheSBvZiBieXRlcy4gVGhpcyByZXF1ZXN0L3Jlc3BvbnNlIGlzIGJlaW5nIHByZXNlbnRlZCBhcyBhIHN0cmluZyBmb3IgcmVhZGFiaWxpdHkgaW4gdGhlIGV4YW1wbGU="),
 		// 					},
 		// 				},
 		// 			},
@@ -1446,7 +1830,63 @@ func ExampleSQLResourcesClient_NewListClientEncryptionKeysPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-15/CosmosDBSqlContainerList.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlContainerPartitionMerge.json
+func ExampleSQLResourcesClient_BeginListSQLContainerPartitionMerge() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewSQLResourcesClient().BeginListSQLContainerPartitionMerge(ctx, "rgName", "ddb1", "databaseName", "containerName", armcosmos.MergeParameters{
+		IsDryRun: to.Ptr(false),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcosmos.SQLResourcesClientListSQLContainerPartitionMergeResponse{
+	// 	PhysicalPartitionStorageInfoCollection: armcosmos.PhysicalPartitionStorageInfoCollection{
+	// 		PhysicalPartitionStorageInfoCollection: []*armcosmos.PhysicalPartitionStorageInfo{
+	// 			{
+	// 				ID: to.Ptr("0"),
+	// 				StorageInKB: to.Ptr[float64](333),
+	// 			},
+	// 			{
+	// 				ID: to.Ptr("1"),
+	// 				StorageInKB: to.Ptr[float64](305),
+	// 			},
+	// 			{
+	// 				ID: to.Ptr("177"),
+	// 				StorageInKB: to.Ptr[float64](368),
+	// 			},
+	// 			{
+	// 				ID: to.Ptr("178"),
+	// 				StorageInKB: to.Ptr[float64](96313),
+	// 			},
+	// 			{
+	// 				ID: to.Ptr("5"),
+	// 				StorageInKB: to.Ptr[float64](194),
+	// 			},
+	// 			{
+	// 				ID: to.Ptr("6"),
+	// 				StorageInKB: to.Ptr[float64](331),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlContainerList.json
 func ExampleSQLResourcesClient_NewListSQLContainersPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1472,58 +1912,15 @@ func ExampleSQLResourcesClient_NewListSQLContainersPager() {
 		// 	SQLContainerListResult: armcosmos.SQLContainerListResult{
 		// 		Value: []*armcosmos.SQLContainerGetResults{
 		// 			{
-		// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName/containers/containerName"),
 		// 				Name: to.Ptr("containerName"),
 		// 				Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases/sqlContainers"),
+		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName/containers/containerName"),
 		// 				Location: to.Ptr("West US"),
-		// 				Tags: map[string]*string{
-		// 				},
 		// 				Properties: &armcosmos.SQLContainerGetProperties{
 		// 					Resource: &armcosmos.SQLContainerGetPropertiesResource{
-		// 						ID: to.Ptr("testctn"),
-		// 						IndexingPolicy: &armcosmos.IndexingPolicy{
-		// 							IndexingMode: to.Ptr(armcosmos.IndexingModeConsistent),
-		// 							Automatic: to.Ptr(true),
-		// 							IncludedPaths: []*armcosmos.IncludedPath{
-		// 								{
-		// 									Path: to.Ptr("/*"),
-		// 									Indexes: []*armcosmos.Indexes{
-		// 										{
-		// 											Kind: to.Ptr(armcosmos.IndexKindRange),
-		// 											DataType: to.Ptr(armcosmos.DataTypeString),
-		// 											Precision: to.Ptr[int32](-1),
-		// 										},
-		// 										{
-		// 											Kind: to.Ptr(armcosmos.IndexKindRange),
-		// 											DataType: to.Ptr(armcosmos.DataTypeNumber),
-		// 											Precision: to.Ptr[int32](-1),
-		// 										},
-		// 									},
-		// 								},
-		// 							},
-		// 							ExcludedPaths: []*armcosmos.ExcludedPath{
-		// 							},
-		// 						},
-		// 						PartitionKey: &armcosmos.ContainerPartitionKey{
-		// 							Paths: []*string{
-		// 								to.Ptr("/AccountNumber"),
-		// 							},
-		// 							Kind: to.Ptr(armcosmos.PartitionKindHash),
-		// 						},
-		// 						DefaultTTL: to.Ptr[int32](100),
-		// 						UniqueKeyPolicy: &armcosmos.UniqueKeyPolicy{
-		// 							UniqueKeys: []*armcosmos.UniqueKey{
-		// 								{
-		// 									Paths: []*string{
-		// 										to.Ptr("/testPath"),
-		// 									},
-		// 								},
-		// 							},
-		// 						},
-		// 						ConflictResolutionPolicy: &armcosmos.ConflictResolutionPolicy{
-		// 							Mode: to.Ptr(armcosmos.ConflictResolutionModeLastWriterWins),
-		// 							ConflictResolutionPath: to.Ptr("/path"),
-		// 						},
+		// 						Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
+		// 						Rid: to.Ptr("PD5DALigDgw="),
+		// 						Ts: to.Ptr[float32](1459200611),
 		// 						ClientEncryptionPolicy: &armcosmos.ClientEncryptionPolicy{
 		// 							IncludedPaths: []*armcosmos.ClientEncryptionIncludedPath{
 		// 								{
@@ -1541,72 +1938,83 @@ func ExampleSQLResourcesClient_NewListSQLContainersPager() {
 		// 								Query: to.Ptr("SELECT VALUE LOWER(c.name) FROM c"),
 		// 							},
 		// 						},
-		// 						Rid: to.Ptr("PD5DALigDgw="),
-		// 						Ts: to.Ptr[float32](1459200611),
-		// 						Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
-		// 					},
-		// 				},
-		// 			},
-		// 			{
-		// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName/sqlContainers/containerName1"),
-		// 				Name: to.Ptr("containerName1"),
-		// 				Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases/sqlContainers"),
-		// 				Location: to.Ptr("West US"),
-		// 				Tags: map[string]*string{
-		// 				},
-		// 				Properties: &armcosmos.SQLContainerGetProperties{
-		// 					Resource: &armcosmos.SQLContainerGetPropertiesResource{
-		// 						ID: to.Ptr("testctn1"),
+		// 						ConflictResolutionPolicy: &armcosmos.ConflictResolutionPolicy{
+		// 							ConflictResolutionPath: to.Ptr("/path"),
+		// 							Mode: to.Ptr(armcosmos.ConflictResolutionModeLastWriterWins),
+		// 						},
+		// 						DefaultTTL: to.Ptr[int32](100),
+		// 						ID: to.Ptr("testctn"),
 		// 						IndexingPolicy: &armcosmos.IndexingPolicy{
-		// 							IndexingMode: to.Ptr(armcosmos.IndexingModeConsistent),
 		// 							Automatic: to.Ptr(true),
+		// 							ExcludedPaths: []*armcosmos.ExcludedPath{
+		// 							},
 		// 							IncludedPaths: []*armcosmos.IncludedPath{
 		// 								{
 		// 									Path: to.Ptr("/*"),
 		// 									Indexes: []*armcosmos.Indexes{
 		// 										{
-		// 											Kind: to.Ptr(armcosmos.IndexKindRange),
 		// 											DataType: to.Ptr(armcosmos.DataTypeString),
+		// 											Kind: to.Ptr(armcosmos.IndexKindRange),
 		// 											Precision: to.Ptr[int32](-1),
 		// 										},
 		// 										{
-		// 											Kind: to.Ptr(armcosmos.IndexKindRange),
 		// 											DataType: to.Ptr(armcosmos.DataTypeNumber),
+		// 											Kind: to.Ptr(armcosmos.IndexKindRange),
 		// 											Precision: to.Ptr[int32](-1),
 		// 										},
 		// 									},
 		// 								},
 		// 							},
-		// 							ExcludedPaths: []*armcosmos.ExcludedPath{
+		// 							IndexingMode: to.Ptr(armcosmos.IndexingModeConsistent),
+		// 						},
+		// 						PartitionKey: &armcosmos.ContainerPartitionKey{
+		// 							Kind: to.Ptr(armcosmos.PartitionKindHash),
+		// 							Paths: []*string{
+		// 								to.Ptr("/AccountNumber"),
 		// 							},
-		// 							VectorIndexes: []*armcosmos.VectorIndex{
+		// 						},
+		// 						UniqueKeyPolicy: &armcosmos.UniqueKeyPolicy{
+		// 							UniqueKeys: []*armcosmos.UniqueKey{
 		// 								{
-		// 									Path: to.Ptr("/vectorPath1"),
-		// 									Type: to.Ptr(armcosmos.VectorIndexTypeFlat),
-		// 								},
-		// 							},
-		// 							FullTextIndexes: []*armcosmos.FullTextIndexPath{
-		// 								{
-		// 									Path: to.Ptr("/ftPath1"),
-		// 								},
-		// 								{
-		// 									Path: to.Ptr("/ftPath2"),
-		// 								},
-		// 								{
-		// 									Path: to.Ptr("/ftPath3"),
+		// 									Paths: []*string{
+		// 										to.Ptr("/testPath"),
+		// 									},
 		// 								},
 		// 							},
 		// 						},
-		// 						VectorEmbeddingPolicy: &armcosmos.VectorEmbeddingPolicy{
-		// 							VectorEmbeddings: []*armcosmos.VectorEmbedding{
+		// 					},
+		// 				},
+		// 				Tags: map[string]*string{
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("containerName1"),
+		// 				Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases/sqlContainers"),
+		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName/sqlContainers/containerName1"),
+		// 				Location: to.Ptr("West US"),
+		// 				Properties: &armcosmos.SQLContainerGetProperties{
+		// 					Resource: &armcosmos.SQLContainerGetPropertiesResource{
+		// 						Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
+		// 						Rid: to.Ptr("PD5DALigDiw="),
+		// 						Ts: to.Ptr[float32](1459200611),
+		// 						ClientEncryptionPolicy: &armcosmos.ClientEncryptionPolicy{
+		// 							IncludedPaths: []*armcosmos.ClientEncryptionIncludedPath{
 		// 								{
-		// 									Path: to.Ptr("/vectorPath1"),
-		// 									DataType: to.Ptr(armcosmos.VectorDataTypeFloat32),
-		// 									Dimensions: to.Ptr[int32](400),
-		// 									DistanceFunction: to.Ptr(armcosmos.DistanceFunctionEuclidean),
+		// 									Path: to.Ptr("/path"),
+		// 									ClientEncryptionKeyID: to.Ptr("keyId"),
+		// 									EncryptionAlgorithm: to.Ptr("AEAD_AES_256_CBC_HMAC_SHA256"),
+		// 									EncryptionType: to.Ptr("Deterministic"),
 		// 								},
 		// 							},
+		// 							PolicyFormatVersion: to.Ptr[int32](1),
 		// 						},
+		// 						ComputedProperties: []*armcosmos.ComputedProperty{
+		// 						},
+		// 						ConflictResolutionPolicy: &armcosmos.ConflictResolutionPolicy{
+		// 							ConflictResolutionPath: to.Ptr("/path"),
+		// 							Mode: to.Ptr(armcosmos.ConflictResolutionModeLastWriterWins),
+		// 						},
+		// 						DefaultTTL: to.Ptr[int32](100),
 		// 						FullTextPolicy: &armcosmos.FullTextPolicy{
 		// 							DefaultLanguage: to.Ptr("1033"),
 		// 							FullTextPaths: []*armcosmos.FullTextPath{
@@ -1624,15 +2032,44 @@ func ExampleSQLResourcesClient_NewListSQLContainersPager() {
 		// 								},
 		// 							},
 		// 						},
+		// 						ID: to.Ptr("testctn1"),
+		// 						IndexingPolicy: &armcosmos.IndexingPolicy{
+		// 							Automatic: to.Ptr(true),
+		// 							ExcludedPaths: []*armcosmos.ExcludedPath{
+		// 							},
+		// 							IncludedPaths: []*armcosmos.IncludedPath{
+		// 								{
+		// 									Path: to.Ptr("/*"),
+		// 									Indexes: []*armcosmos.Indexes{
+		// 										{
+		// 											DataType: to.Ptr(armcosmos.DataTypeString),
+		// 											Kind: to.Ptr(armcosmos.IndexKindRange),
+		// 											Precision: to.Ptr[int32](-1),
+		// 										},
+		// 										{
+		// 											DataType: to.Ptr(armcosmos.DataTypeNumber),
+		// 											Kind: to.Ptr(armcosmos.IndexKindRange),
+		// 											Precision: to.Ptr[int32](-1),
+		// 										},
+		// 									},
+		// 								},
+		// 							},
+		// 							IndexingMode: to.Ptr(armcosmos.IndexingModeConsistent),
+		// 							VectorIndexes: []*armcosmos.VectorIndex{
+		// 								{
+		// 									Type: to.Ptr(armcosmos.VectorIndexTypeFlat),
+		// 									Path: to.Ptr("/vectorPath1"),
+		// 								},
+		// 							},
+		// 						},
 		// 						PartitionKey: &armcosmos.ContainerPartitionKey{
+		// 							Kind: to.Ptr(armcosmos.PartitionKindMultiHash),
 		// 							Paths: []*string{
 		// 								to.Ptr("/AccountNumber"),
 		// 								to.Ptr("/AccountLocation"),
 		// 							},
-		// 							Kind: to.Ptr(armcosmos.PartitionKindMultiHash),
 		// 							Version: to.Ptr[int32](2),
 		// 						},
-		// 						DefaultTTL: to.Ptr[int32](100),
 		// 						UniqueKeyPolicy: &armcosmos.UniqueKeyPolicy{
 		// 							UniqueKeys: []*armcosmos.UniqueKey{
 		// 								{
@@ -1642,10 +2079,31 @@ func ExampleSQLResourcesClient_NewListSQLContainersPager() {
 		// 								},
 		// 							},
 		// 						},
-		// 						ConflictResolutionPolicy: &armcosmos.ConflictResolutionPolicy{
-		// 							Mode: to.Ptr(armcosmos.ConflictResolutionModeLastWriterWins),
-		// 							ConflictResolutionPath: to.Ptr("/path"),
+		// 						VectorEmbeddingPolicy: &armcosmos.VectorEmbeddingPolicy{
+		// 							VectorEmbeddings: []*armcosmos.VectorEmbedding{
+		// 								{
+		// 									Path: to.Ptr("/vectorPath1"),
+		// 									DataType: to.Ptr(armcosmos.VectorDataTypeFloat32),
+		// 									Dimensions: to.Ptr[int32](400),
+		// 									DistanceFunction: to.Ptr(armcosmos.DistanceFunctionEuclidean),
+		// 								},
+		// 							},
 		// 						},
+		// 					},
+		// 				},
+		// 				Tags: map[string]*string{
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("containerName2"),
+		// 				Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases/sqlContainers"),
+		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName/sqlContainers/containerName2"),
+		// 				Location: to.Ptr("West US"),
+		// 				Properties: &armcosmos.SQLContainerGetProperties{
+		// 					Resource: &armcosmos.SQLContainerGetPropertiesResource{
+		// 						Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
+		// 						Rid: to.Ptr("PD5DALigDhw="),
+		// 						Ts: to.Ptr[float32](1459200611),
 		// 						ClientEncryptionPolicy: &armcosmos.ClientEncryptionPolicy{
 		// 							IncludedPaths: []*armcosmos.ClientEncryptionIncludedPath{
 		// 								{
@@ -1657,79 +2115,80 @@ func ExampleSQLResourcesClient_NewListSQLContainersPager() {
 		// 							},
 		// 							PolicyFormatVersion: to.Ptr[int32](1),
 		// 						},
-		// 						ComputedProperties: []*armcosmos.ComputedProperty{
+		// 						ConflictResolutionPolicy: &armcosmos.ConflictResolutionPolicy{
+		// 							ConflictResolutionPath: to.Ptr("/path"),
+		// 							Mode: to.Ptr(armcosmos.ConflictResolutionModeLastWriterWins),
 		// 						},
-		// 						Rid: to.Ptr("PD5DALigDiw="),
-		// 						Ts: to.Ptr[float32](1459200611),
-		// 						Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
-		// 					},
-		// 				},
-		// 			},
-		// 			{
-		// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName/sqlContainers/containerName2"),
-		// 				Name: to.Ptr("containerName2"),
-		// 				Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases/sqlContainers"),
-		// 				Location: to.Ptr("West US"),
-		// 				Tags: map[string]*string{
-		// 				},
-		// 				Properties: &armcosmos.SQLContainerGetProperties{
-		// 					Resource: &armcosmos.SQLContainerGetPropertiesResource{
+		// 						DefaultTTL: to.Ptr[int32](100),
+		// 						FullTextPolicy: &armcosmos.FullTextPolicy{
+		// 							DefaultLanguage: to.Ptr("1033"),
+		// 							FullTextPaths: []*armcosmos.FullTextPath{
+		// 								{
+		// 									Path: to.Ptr("/ftPath1"),
+		// 									Language: to.Ptr("en-US"),
+		// 								},
+		// 								{
+		// 									Path: to.Ptr("/ftPath2"),
+		// 									Language: to.Ptr("fr-FR"),
+		// 								},
+		// 								{
+		// 									Path: to.Ptr("/ftPath3"),
+		// 									Language: to.Ptr("de-DE"),
+		// 								},
+		// 							},
+		// 						},
 		// 						ID: to.Ptr("testctn2"),
 		// 						IndexingPolicy: &armcosmos.IndexingPolicy{
-		// 							IndexingMode: to.Ptr(armcosmos.IndexingModeConsistent),
 		// 							Automatic: to.Ptr(true),
+		// 							ExcludedPaths: []*armcosmos.ExcludedPath{
+		// 							},
 		// 							IncludedPaths: []*armcosmos.IncludedPath{
 		// 								{
 		// 									Path: to.Ptr("/*"),
 		// 									Indexes: []*armcosmos.Indexes{
 		// 										{
-		// 											Kind: to.Ptr(armcosmos.IndexKindRange),
 		// 											DataType: to.Ptr(armcosmos.DataTypeString),
+		// 											Kind: to.Ptr(armcosmos.IndexKindRange),
 		// 											Precision: to.Ptr[int32](-1),
 		// 										},
 		// 										{
-		// 											Kind: to.Ptr(armcosmos.IndexKindRange),
 		// 											DataType: to.Ptr(armcosmos.DataTypeNumber),
+		// 											Kind: to.Ptr(armcosmos.IndexKindRange),
 		// 											Precision: to.Ptr[int32](-1),
 		// 										},
 		// 									},
 		// 								},
 		// 							},
-		// 							ExcludedPaths: []*armcosmos.ExcludedPath{
-		// 							},
+		// 							IndexingMode: to.Ptr(armcosmos.IndexingModeConsistent),
 		// 							VectorIndexes: []*armcosmos.VectorIndex{
 		// 								{
-		// 									Path: to.Ptr("/vectorPath1"),
 		// 									Type: to.Ptr(armcosmos.VectorIndexTypeFlat),
+		// 									Path: to.Ptr("/vectorPath1"),
 		// 								},
 		// 								{
-		// 									Path: to.Ptr("/vectorPath2"),
 		// 									Type: to.Ptr(armcosmos.VectorIndexTypeQuantizedFlat),
-		// 									QuantizationByteSize: to.Ptr[int64](100),
-		// 									VectorIndexShardKey: []*string{
-		// 										to.Ptr("/vectorShardKey1"),
-		// 									},
+		// 									Path: to.Ptr("/vectorPath2"),
 		// 								},
 		// 								{
-		// 									Path: to.Ptr("/vectorPath3"),
 		// 									Type: to.Ptr(armcosmos.VectorIndexTypeDiskANN),
-		// 									QuantizationByteSize: to.Ptr[int64](100),
-		// 									IndexingSearchListSize: to.Ptr[int64](25),
-		// 									VectorIndexShardKey: []*string{
-		// 										to.Ptr("/vectorShardKey1"),
-		// 										to.Ptr("/vectorShardKey2"),
-		// 									},
+		// 									Path: to.Ptr("/vectorPath3"),
 		// 								},
 		// 							},
-		// 							FullTextIndexes: []*armcosmos.FullTextIndexPath{
+		// 						},
+		// 						PartitionKey: &armcosmos.ContainerPartitionKey{
+		// 							Kind: to.Ptr(armcosmos.PartitionKindHash),
+		// 							Paths: []*string{
+		// 								to.Ptr("/_partitionKey"),
+		// 							},
+		// 							SystemKey: to.Ptr(true),
+		// 							Version: to.Ptr[int32](2),
+		// 						},
+		// 						UniqueKeyPolicy: &armcosmos.UniqueKeyPolicy{
+		// 							UniqueKeys: []*armcosmos.UniqueKey{
 		// 								{
-		// 									Path: to.Ptr("/ftPath1"),
-		// 								},
-		// 								{
-		// 									Path: to.Ptr("/ftPath2"),
-		// 								},
-		// 								{
-		// 									Path: to.Ptr("/ftPath3"),
+		// 									Paths: []*string{
+		// 										to.Ptr("/testPath"),
+		// 									},
 		// 								},
 		// 							},
 		// 						},
@@ -1755,60 +2214,9 @@ func ExampleSQLResourcesClient_NewListSQLContainersPager() {
 		// 								},
 		// 							},
 		// 						},
-		// 						FullTextPolicy: &armcosmos.FullTextPolicy{
-		// 							DefaultLanguage: to.Ptr("1033"),
-		// 							FullTextPaths: []*armcosmos.FullTextPath{
-		// 								{
-		// 									Path: to.Ptr("/ftPath1"),
-		// 									Language: to.Ptr("en-US"),
-		// 								},
-		// 								{
-		// 									Path: to.Ptr("/ftPath2"),
-		// 									Language: to.Ptr("fr-FR"),
-		// 								},
-		// 								{
-		// 									Path: to.Ptr("/ftPath3"),
-		// 									Language: to.Ptr("de-DE"),
-		// 								},
-		// 							},
-		// 						},
-		// 						PartitionKey: &armcosmos.ContainerPartitionKey{
-		// 							Paths: []*string{
-		// 								to.Ptr("/_partitionKey"),
-		// 							},
-		// 							Kind: to.Ptr(armcosmos.PartitionKindHash),
-		// 							Version: to.Ptr[int32](2),
-		// 							SystemKey: to.Ptr(true),
-		// 						},
-		// 						DefaultTTL: to.Ptr[int32](100),
-		// 						UniqueKeyPolicy: &armcosmos.UniqueKeyPolicy{
-		// 							UniqueKeys: []*armcosmos.UniqueKey{
-		// 								{
-		// 									Paths: []*string{
-		// 										to.Ptr("/testPath"),
-		// 									},
-		// 								},
-		// 							},
-		// 						},
-		// 						ConflictResolutionPolicy: &armcosmos.ConflictResolutionPolicy{
-		// 							Mode: to.Ptr(armcosmos.ConflictResolutionModeLastWriterWins),
-		// 							ConflictResolutionPath: to.Ptr("/path"),
-		// 						},
-		// 						ClientEncryptionPolicy: &armcosmos.ClientEncryptionPolicy{
-		// 							IncludedPaths: []*armcosmos.ClientEncryptionIncludedPath{
-		// 								{
-		// 									Path: to.Ptr("/path"),
-		// 									ClientEncryptionKeyID: to.Ptr("keyId"),
-		// 									EncryptionAlgorithm: to.Ptr("AEAD_AES_256_CBC_HMAC_SHA256"),
-		// 									EncryptionType: to.Ptr("Deterministic"),
-		// 								},
-		// 							},
-		// 							PolicyFormatVersion: to.Ptr[int32](1),
-		// 						},
-		// 						Rid: to.Ptr("PD5DALigDhw="),
-		// 						Ts: to.Ptr[float32](1459200611),
-		// 						Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
 		// 					},
+		// 				},
+		// 				Tags: map[string]*string{
 		// 				},
 		// 			},
 		// 		},
@@ -1817,7 +2225,7 @@ func ExampleSQLResourcesClient_NewListSQLContainersPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-15/CosmosDBSqlDatabaseList.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlDatabaseList.json
 func ExampleSQLResourcesClient_NewListSQLDatabasesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1843,21 +2251,21 @@ func ExampleSQLResourcesClient_NewListSQLDatabasesPager() {
 		// 	SQLDatabaseListResult: armcosmos.SQLDatabaseListResult{
 		// 		Value: []*armcosmos.SQLDatabaseGetResults{
 		// 			{
-		// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName"),
 		// 				Name: to.Ptr("databaseName"),
 		// 				Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases"),
+		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName"),
 		// 				Location: to.Ptr("West US"),
-		// 				Tags: map[string]*string{
-		// 				},
 		// 				Properties: &armcosmos.SQLDatabaseGetProperties{
 		// 					Resource: &armcosmos.SQLDatabaseGetPropertiesResource{
-		// 						ID: to.Ptr("databaseName"),
+		// 						Colls: to.Ptr("colls/"),
+		// 						Etag: to.Ptr("\"00000a00-0000-0000-0000-56672f920000\""),
 		// 						Rid: to.Ptr("CqNBAA=="),
 		// 						Ts: to.Ptr[float32](1449602962),
-		// 						Etag: to.Ptr("\"00000a00-0000-0000-0000-56672f920000\""),
-		// 						Colls: to.Ptr("colls/"),
 		// 						Users: to.Ptr("users/"),
+		// 						ID: to.Ptr("databaseName"),
 		// 					},
+		// 				},
+		// 				Tags: map[string]*string{
 		// 				},
 		// 			},
 		// 		},
@@ -1866,7 +2274,7 @@ func ExampleSQLResourcesClient_NewListSQLDatabasesPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-15/CosmosDBSqlRoleAssignmentList.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlRoleAssignmentList.json
 func ExampleSQLResourcesClient_NewListSQLRoleAssignmentsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1892,13 +2300,13 @@ func ExampleSQLResourcesClient_NewListSQLRoleAssignmentsPager() {
 		// 	SQLRoleAssignmentListResult: armcosmos.SQLRoleAssignmentListResult{
 		// 		Value: []*armcosmos.SQLRoleAssignmentGetResults{
 		// 			{
-		// 				ID: to.Ptr("/subscriptions/mySubscriptionId/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/sqlRoleAssignments/myRoleAssignmentId"),
 		// 				Name: to.Ptr("myRoleAssignmentId"),
 		// 				Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlRoleAssignments"),
+		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/sqlRoleAssignments/myRoleAssignmentId"),
 		// 				Properties: &armcosmos.SQLRoleAssignmentResource{
-		// 					RoleDefinitionID: to.Ptr("/subscriptions/mySubscriptionId/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/sqlRoleDefinitions/myRoleDefinitionId"),
-		// 					Scope: to.Ptr("/subscriptions/mySubscriptionId/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/dbs/purchases/colls/redmond-purchases"),
 		// 					PrincipalID: to.Ptr("myPrincipalId"),
+		// 					RoleDefinitionID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/sqlRoleDefinitions/myRoleDefinitionId"),
+		// 					Scope: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/dbs/purchases/colls/redmond-purchases"),
 		// 				},
 		// 			},
 		// 		},
@@ -1907,7 +2315,7 @@ func ExampleSQLResourcesClient_NewListSQLRoleAssignmentsPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-15/CosmosDBSqlRoleDefinitionList.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlRoleDefinitionList.json
 func ExampleSQLResourcesClient_NewListSQLRoleDefinitionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1933,15 +2341,14 @@ func ExampleSQLResourcesClient_NewListSQLRoleDefinitionsPager() {
 		// 	SQLRoleDefinitionListResult: armcosmos.SQLRoleDefinitionListResult{
 		// 		Value: []*armcosmos.SQLRoleDefinitionGetResults{
 		// 			{
-		// 				ID: to.Ptr("/subscriptions/mySubscriptionId/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/sqlRoleDefinitions/myRoleDefinitionId"),
 		// 				Name: to.Ptr("myRoleDefinitionId"),
 		// 				Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlRoleDefinitions"),
+		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/sqlRoleDefinitions/myRoleDefinitionId"),
 		// 				Properties: &armcosmos.SQLRoleDefinitionResource{
-		// 					RoleName: to.Ptr("myRoleName"),
 		// 					Type: to.Ptr(armcosmos.RoleDefinitionTypeCustomRole),
 		// 					AssignableScopes: []*string{
-		// 						to.Ptr("/subscriptions/mySubscriptionId/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/dbs/sales"),
-		// 						to.Ptr("/subscriptions/mySubscriptionId/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/dbs/purchases"),
+		// 						to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/dbs/sales"),
+		// 						to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/dbs/purchases"),
 		// 					},
 		// 					Permissions: []*armcosmos.Permission{
 		// 						{
@@ -1953,6 +2360,7 @@ func ExampleSQLResourcesClient_NewListSQLRoleDefinitionsPager() {
 		// 							},
 		// 						},
 		// 					},
+		// 					RoleName: to.Ptr("myRoleName"),
 		// 				},
 		// 			},
 		// 		},
@@ -1961,7 +2369,7 @@ func ExampleSQLResourcesClient_NewListSQLRoleDefinitionsPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-15/CosmosDBSqlStoredProcedureList.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlStoredProcedureList.json
 func ExampleSQLResourcesClient_NewListSQLStoredProceduresPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1987,16 +2395,16 @@ func ExampleSQLResourcesClient_NewListSQLStoredProceduresPager() {
 		// 	SQLStoredProcedureListResult: armcosmos.SQLStoredProcedureListResult{
 		// 		Value: []*armcosmos.SQLStoredProcedureGetResults{
 		// 			{
-		// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName/sqlContainers/containerName/sqlStoredProcedures/storedProcedureName"),
 		// 				Name: to.Ptr("testctn"),
 		// 				Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases/sqlContainers/sqlStoredProcedures"),
+		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName/sqlContainers/containerName/sqlStoredProcedures/storedProcedureName"),
 		// 				Properties: &armcosmos.SQLStoredProcedureGetProperties{
 		// 					Resource: &armcosmos.SQLStoredProcedureGetPropertiesResource{
-		// 						ID: to.Ptr("testctn"),
-		// 						Body: to.Ptr("body"),
+		// 						Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
 		// 						Rid: to.Ptr("PD5DALigDgw="),
 		// 						Ts: to.Ptr[float32](1459200611),
-		// 						Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
+		// 						Body: to.Ptr("body"),
+		// 						ID: to.Ptr("testctn"),
 		// 					},
 		// 				},
 		// 			},
@@ -2006,7 +2414,7 @@ func ExampleSQLResourcesClient_NewListSQLStoredProceduresPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-15/CosmosDBSqlTriggerList.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlTriggerList.json
 func ExampleSQLResourcesClient_NewListSQLTriggersPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2032,18 +2440,18 @@ func ExampleSQLResourcesClient_NewListSQLTriggersPager() {
 		// 	SQLTriggerListResult: armcosmos.SQLTriggerListResult{
 		// 		Value: []*armcosmos.SQLTriggerGetResults{
 		// 			{
-		// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName/sqlContainers/containerName/sqlTriggers/triggerName"),
 		// 				Name: to.Ptr("testctn"),
 		// 				Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases/sqlContainers/sqlTriggers"),
+		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName/sqlContainers/containerName/sqlTriggers/triggerName"),
 		// 				Properties: &armcosmos.SQLTriggerGetProperties{
 		// 					Resource: &armcosmos.SQLTriggerGetPropertiesResource{
-		// 						ID: to.Ptr("testctn"),
-		// 						Body: to.Ptr("body"),
-		// 						TriggerType: to.Ptr(armcosmos.TriggerType("triggerType")),
-		// 						TriggerOperation: to.Ptr(armcosmos.TriggerOperation("triggerOperation")),
+		// 						Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
 		// 						Rid: to.Ptr("PD5DALigDgw="),
 		// 						Ts: to.Ptr[float32](1459200611),
-		// 						Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
+		// 						Body: to.Ptr("body"),
+		// 						ID: to.Ptr("testctn"),
+		// 						TriggerOperation: to.Ptr(armcosmos.TriggerOperation("triggerOperation")),
+		// 						TriggerType: to.Ptr(armcosmos.TriggerType("triggerType")),
 		// 					},
 		// 				},
 		// 			},
@@ -2053,7 +2461,7 @@ func ExampleSQLResourcesClient_NewListSQLTriggersPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-15/CosmosDBSqlUserDefinedFunctionList.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlUserDefinedFunctionList.json
 func ExampleSQLResourcesClient_NewListSQLUserDefinedFunctionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2079,16 +2487,16 @@ func ExampleSQLResourcesClient_NewListSQLUserDefinedFunctionsPager() {
 		// 	SQLUserDefinedFunctionListResult: armcosmos.SQLUserDefinedFunctionListResult{
 		// 		Value: []*armcosmos.SQLUserDefinedFunctionGetResults{
 		// 			{
-		// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName/sqlContainers/containerName/sqlUserDefinedFunctions/userDefinedFunctionName"),
 		// 				Name: to.Ptr("testctn"),
 		// 				Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases/sqlContainers/sqlUserDefinedFunctions"),
+		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName/sqlContainers/containerName/sqlUserDefinedFunctions/userDefinedFunctionName"),
 		// 				Properties: &armcosmos.SQLUserDefinedFunctionGetProperties{
 		// 					Resource: &armcosmos.SQLUserDefinedFunctionGetPropertiesResource{
-		// 						ID: to.Ptr("testctn"),
-		// 						Body: to.Ptr("body"),
+		// 						Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
 		// 						Rid: to.Ptr("PD5DALigDgw="),
 		// 						Ts: to.Ptr[float32](1459200611),
-		// 						Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
+		// 						Body: to.Ptr("body"),
+		// 						ID: to.Ptr("testctn"),
 		// 					},
 		// 				},
 		// 			},
@@ -2098,7 +2506,7 @@ func ExampleSQLResourcesClient_NewListSQLUserDefinedFunctionsPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-15/CosmosDBSqlContainerMigrateToAutoscale.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlContainerMigrateToAutoscale.json
 func ExampleSQLResourcesClient_BeginMigrateSQLContainerToAutoscale() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2124,22 +2532,22 @@ func ExampleSQLResourcesClient_BeginMigrateSQLContainerToAutoscale() {
 	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
 	// 		Properties: &armcosmos.ThroughputSettingsGetProperties{
 	// 			Resource: &armcosmos.ThroughputSettingsGetPropertiesResource{
-	// 				Throughput: to.Ptr[int32](400),
+	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
+	// 				Rid: to.Ptr("PD5DALigDgw="),
+	// 				Ts: to.Ptr[float32](1459200611),
 	// 				AutoscaleSettings: &armcosmos.AutoscaleSettingsResource{
 	// 					MaxThroughput: to.Ptr[int32](4000),
 	// 				},
 	// 				MinimumThroughput: to.Ptr("4000"),
 	// 				OfferReplacePending: to.Ptr("false"),
-	// 				Rid: to.Ptr("PD5DALigDgw="),
-	// 				Ts: to.Ptr[float32](1459200611),
-	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
+	// 				Throughput: to.Ptr[int32](400),
 	// 			},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-03-15/CosmosDBSqlContainerMigrateToManualThroughput.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlContainerMigrateToManualThroughput.json
 func ExampleSQLResourcesClient_BeginMigrateSQLContainerToManualThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2165,19 +2573,19 @@ func ExampleSQLResourcesClient_BeginMigrateSQLContainerToManualThroughput() {
 	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
 	// 		Properties: &armcosmos.ThroughputSettingsGetProperties{
 	// 			Resource: &armcosmos.ThroughputSettingsGetPropertiesResource{
-	// 				Throughput: to.Ptr[int32](400),
-	// 				MinimumThroughput: to.Ptr("400"),
-	// 				OfferReplacePending: to.Ptr("true"),
+	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
 	// 				Rid: to.Ptr("PD5DALigDgw="),
 	// 				Ts: to.Ptr[float32](1459200611),
-	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
+	// 				MinimumThroughput: to.Ptr("400"),
+	// 				OfferReplacePending: to.Ptr("true"),
+	// 				Throughput: to.Ptr[int32](400),
 	// 			},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-03-15/CosmosDBSqlDatabaseMigrateToAutoscale.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlDatabaseMigrateToAutoscale.json
 func ExampleSQLResourcesClient_BeginMigrateSQLDatabaseToAutoscale() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2203,22 +2611,22 @@ func ExampleSQLResourcesClient_BeginMigrateSQLDatabaseToAutoscale() {
 	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
 	// 		Properties: &armcosmos.ThroughputSettingsGetProperties{
 	// 			Resource: &armcosmos.ThroughputSettingsGetPropertiesResource{
-	// 				Throughput: to.Ptr[int32](400),
+	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
+	// 				Rid: to.Ptr("PD5DALigDgw="),
+	// 				Ts: to.Ptr[float32](1459200611),
 	// 				AutoscaleSettings: &armcosmos.AutoscaleSettingsResource{
 	// 					MaxThroughput: to.Ptr[int32](4000),
 	// 				},
 	// 				MinimumThroughput: to.Ptr("4000"),
 	// 				OfferReplacePending: to.Ptr("false"),
-	// 				Rid: to.Ptr("PD5DALigDgw="),
-	// 				Ts: to.Ptr[float32](1459200611),
-	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
+	// 				Throughput: to.Ptr[int32](400),
 	// 			},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-03-15/CosmosDBSqlDatabaseMigrateToManualThroughput.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlDatabaseMigrateToManualThroughput.json
 func ExampleSQLResourcesClient_BeginMigrateSQLDatabaseToManualThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2244,19 +2652,19 @@ func ExampleSQLResourcesClient_BeginMigrateSQLDatabaseToManualThroughput() {
 	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
 	// 		Properties: &armcosmos.ThroughputSettingsGetProperties{
 	// 			Resource: &armcosmos.ThroughputSettingsGetPropertiesResource{
-	// 				Throughput: to.Ptr[int32](400),
-	// 				MinimumThroughput: to.Ptr("400"),
-	// 				OfferReplacePending: to.Ptr("true"),
+	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
 	// 				Rid: to.Ptr("PD5DALigDgw="),
 	// 				Ts: to.Ptr[float32](1459200611),
-	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
+	// 				MinimumThroughput: to.Ptr("400"),
+	// 				OfferReplacePending: to.Ptr("true"),
+	// 				Throughput: to.Ptr[int32](400),
 	// 			},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-03-15/CosmosDBSqlContainerBackupInformation.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlContainerBackupInformation.json
 func ExampleSQLResourcesClient_BeginRetrieveContinuousBackupInformation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2289,14 +2697,308 @@ func ExampleSQLResourcesClient_BeginRetrieveContinuousBackupInformation() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15/CosmosDBSqlContainerThroughputUpdate.json
-func ExampleSQLResourcesClient_BeginUpdateSQLContainerThroughput() {
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlContainerRedistributeThroughput.json
+func ExampleSQLResourcesClient_BeginSQLContainerRedistributeThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
 	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewSQLResourcesClient().BeginSQLContainerRedistributeThroughput(ctx, "rg1", "ddb1", "databaseName", "containerName", armcosmos.RedistributeThroughputParameters{
+		Properties: &armcosmos.RedistributeThroughputProperties{
+			Resource: &armcosmos.RedistributeThroughputPropertiesResource{
+				SourcePhysicalPartitionThroughputInfo: []*armcosmos.PhysicalPartitionThroughputInfoResource{
+					{
+						ID:         to.Ptr("2"),
+						Throughput: to.Ptr[float64](5000),
+					},
+					{
+						ID: to.Ptr("3"),
+					},
+				},
+				TargetPhysicalPartitionThroughputInfo: []*armcosmos.PhysicalPartitionThroughputInfoResource{
+					{
+						ID:         to.Ptr("0"),
+						Throughput: to.Ptr[float64](5000),
+					},
+					{
+						ID:         to.Ptr("1"),
+						Throughput: to.Ptr[float64](5000),
+					},
+				},
+				ThroughputPolicy: to.Ptr(armcosmos.ThroughputPolicyTypeCustom),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcosmos.SQLResourcesClientSQLContainerRedistributeThroughputResponse{
+	// 	PhysicalPartitionThroughputInfoResult: armcosmos.PhysicalPartitionThroughputInfoResult{
+	// 		Properties: &armcosmos.PhysicalPartitionThroughputInfoResultProperties{
+	// 			Resource: &armcosmos.PhysicalPartitionThroughputInfoResultPropertiesResource{
+	// 				PhysicalPartitionThroughputInfo: []*armcosmos.PhysicalPartitionThroughputInfoResource{
+	// 					{
+	// 						ID: to.Ptr("0"),
+	// 						TargetThroughput: to.Ptr[float64](5000),
+	// 						Throughput: to.Ptr[float64](5000),
+	// 					},
+	// 					{
+	// 						ID: to.Ptr("1"),
+	// 						TargetThroughput: to.Ptr[float64](5000),
+	// 						Throughput: to.Ptr[float64](5000),
+	// 					},
+	// 					{
+	// 						ID: to.Ptr("2"),
+	// 						TargetThroughput: to.Ptr[float64](5000),
+	// 						Throughput: to.Ptr[float64](5000),
+	// 					},
+	// 					{
+	// 						ID: to.Ptr("3"),
+	// 						TargetThroughput: to.Ptr[float64](3000),
+	// 						Throughput: to.Ptr[float64](3000),
+	// 					},
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlContainerRetrieveThroughputDistribution.json
+func ExampleSQLResourcesClient_BeginSQLContainerRetrieveThroughputDistribution() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewSQLResourcesClient().BeginSQLContainerRetrieveThroughputDistribution(ctx, "rg1", "ddb1", "databaseName", "containerName", armcosmos.RetrieveThroughputParameters{
+		Properties: &armcosmos.RetrieveThroughputProperties{
+			Resource: &armcosmos.RetrieveThroughputPropertiesResource{
+				PhysicalPartitionIDs: []*armcosmos.PhysicalPartitionID{
+					{
+						ID: to.Ptr("0"),
+					},
+					{
+						ID: to.Ptr("1"),
+					},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcosmos.SQLResourcesClientSQLContainerRetrieveThroughputDistributionResponse{
+	// 	PhysicalPartitionThroughputInfoResult: armcosmos.PhysicalPartitionThroughputInfoResult{
+	// 		Properties: &armcosmos.PhysicalPartitionThroughputInfoResultProperties{
+	// 			Resource: &armcosmos.PhysicalPartitionThroughputInfoResultPropertiesResource{
+	// 				PhysicalPartitionThroughputInfo: []*armcosmos.PhysicalPartitionThroughputInfoResource{
+	// 					{
+	// 						ID: to.Ptr("0"),
+	// 						TargetThroughput: to.Ptr[float64](5000),
+	// 						Throughput: to.Ptr[float64](5000),
+	// 					},
+	// 					{
+	// 						ID: to.Ptr("1"),
+	// 						TargetThroughput: to.Ptr[float64](5000),
+	// 						Throughput: to.Ptr[float64](5000),
+	// 					},
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlDatabasePartitionMerge.json
+func ExampleSQLResourcesClient_BeginSQLDatabasePartitionMerge() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewSQLResourcesClient().BeginSQLDatabasePartitionMerge(ctx, "rgName", "ddb1", "databaseName", armcosmos.MergeParameters{
+		IsDryRun: to.Ptr(false),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcosmos.SQLResourcesClientSQLDatabasePartitionMergeResponse{
+	// 	PhysicalPartitionStorageInfoCollection: armcosmos.PhysicalPartitionStorageInfoCollection{
+	// 		PhysicalPartitionStorageInfoCollection: []*armcosmos.PhysicalPartitionStorageInfo{
+	// 			{
+	// 				ID: to.Ptr("0"),
+	// 				StorageInKB: to.Ptr[float64](333),
+	// 			},
+	// 			{
+	// 				ID: to.Ptr("1"),
+	// 				StorageInKB: to.Ptr[float64](305),
+	// 			},
+	// 			{
+	// 				ID: to.Ptr("177"),
+	// 				StorageInKB: to.Ptr[float64](368),
+	// 			},
+	// 			{
+	// 				ID: to.Ptr("178"),
+	// 				StorageInKB: to.Ptr[float64](96313),
+	// 			},
+	// 			{
+	// 				ID: to.Ptr("5"),
+	// 				StorageInKB: to.Ptr[float64](194),
+	// 			},
+	// 			{
+	// 				ID: to.Ptr("6"),
+	// 				StorageInKB: to.Ptr[float64](331),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlDatabaseRedistributeThroughput.json
+func ExampleSQLResourcesClient_BeginSQLDatabaseRedistributeThroughput() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewSQLResourcesClient().BeginSQLDatabaseRedistributeThroughput(ctx, "rg1", "ddb1", "databaseName", armcosmos.RedistributeThroughputParameters{
+		Properties: &armcosmos.RedistributeThroughputProperties{
+			Resource: &armcosmos.RedistributeThroughputPropertiesResource{
+				SourcePhysicalPartitionThroughputInfo: []*armcosmos.PhysicalPartitionThroughputInfoResource{
+					{
+						ID:         to.Ptr("2"),
+						Throughput: to.Ptr[float64](5000),
+					},
+					{
+						ID: to.Ptr("3"),
+					},
+				},
+				TargetPhysicalPartitionThroughputInfo: []*armcosmos.PhysicalPartitionThroughputInfoResource{
+					{
+						ID:         to.Ptr("0"),
+						Throughput: to.Ptr[float64](5000),
+					},
+					{
+						ID:         to.Ptr("1"),
+						Throughput: to.Ptr[float64](5000),
+					},
+				},
+				ThroughputPolicy: to.Ptr(armcosmos.ThroughputPolicyTypeCustom),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcosmos.SQLResourcesClientSQLDatabaseRedistributeThroughputResponse{
+	// 	PhysicalPartitionThroughputInfoResult: armcosmos.PhysicalPartitionThroughputInfoResult{
+	// 		Properties: &armcosmos.PhysicalPartitionThroughputInfoResultProperties{
+	// 			Resource: &armcosmos.PhysicalPartitionThroughputInfoResultPropertiesResource{
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlDatabaseRetrieveThroughputDistribution.json
+func ExampleSQLResourcesClient_BeginSQLDatabaseRetrieveThroughputDistribution() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewSQLResourcesClient().BeginSQLDatabaseRetrieveThroughputDistribution(ctx, "rg1", "ddb1", "databaseName", armcosmos.RetrieveThroughputParameters{
+		Properties: &armcosmos.RetrieveThroughputProperties{
+			Resource: &armcosmos.RetrieveThroughputPropertiesResource{
+				PhysicalPartitionIDs: []*armcosmos.PhysicalPartitionID{
+					{
+						ID: to.Ptr("0"),
+					},
+					{
+						ID: to.Ptr("1"),
+					},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcosmos.SQLResourcesClientSQLDatabaseRetrieveThroughputDistributionResponse{
+	// 	PhysicalPartitionThroughputInfoResult: armcosmos.PhysicalPartitionThroughputInfoResult{
+	// 		Properties: &armcosmos.PhysicalPartitionThroughputInfoResultProperties{
+	// 			Resource: &armcosmos.PhysicalPartitionThroughputInfoResultPropertiesResource{
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlContainerThroughputUpdate.json
+func ExampleSQLResourcesClient_BeginUpdateSQLContainerThroughput() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcosmos.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -2332,6 +3034,29 @@ func ExampleSQLResourcesClient_BeginUpdateSQLContainerThroughput() {
 	// 				Throughput: to.Ptr[int32](400),
 	// 				MinimumThroughput: to.Ptr("400"),
 	// 				OfferReplacePending: to.Ptr("true"),
+	// 				ThroughputBuckets: []*armcosmos.ThroughputBucketResource{
+	// 					{
+	// 						ID: to.Ptr[int32](1),
+	// 						MaxThroughputPercentage: to.Ptr[int32](10),
+	// 					},
+	// 					{
+	// 						ID: to.Ptr[int32](2),
+	// 						MaxThroughputPercentage: to.Ptr[int32](5),
+	// 						IsDefaultBucket: to.Ptr(true),
+	// 					},
+	// 					{
+	// 						ID: to.Ptr[int32](3),
+	// 						MaxThroughputPercentage: to.Ptr[int32](15),
+	// 					},
+	// 					{
+	// 						ID: to.Ptr[int32](4),
+	// 						MaxThroughputPercentage: to.Ptr[int32](10),
+	// 					},
+	// 					{
+	// 						ID: to.Ptr[int32](5),
+	// 						MaxThroughputPercentage: to.Ptr[int32](20),
+	// 					},
+	// 				},
 	// 				Rid: to.Ptr("PD5DALigDgw="),
 	// 				Ts: to.Ptr[float32](1459200611),
 	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
@@ -2341,7 +3066,7 @@ func ExampleSQLResourcesClient_BeginUpdateSQLContainerThroughput() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15/CosmosDBSqlDatabaseThroughputUpdate.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlDatabaseThroughputUpdate.json
 func ExampleSQLResourcesClient_BeginUpdateSQLDatabaseThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2354,12 +3079,12 @@ func ExampleSQLResourcesClient_BeginUpdateSQLDatabaseThroughput() {
 	}
 	poller, err := clientFactory.NewSQLResourcesClient().BeginUpdateSQLDatabaseThroughput(ctx, "rg1", "ddb1", "databaseName", armcosmos.ThroughputSettingsUpdateParameters{
 		Location: to.Ptr("West US"),
-		Tags:     map[string]*string{},
 		Properties: &armcosmos.ThroughputSettingsUpdateProperties{
 			Resource: &armcosmos.ThroughputSettingsResource{
 				Throughput: to.Ptr[int32](400),
 			},
 		},
+		Tags: map[string]*string{},
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -2373,21 +3098,21 @@ func ExampleSQLResourcesClient_BeginUpdateSQLDatabaseThroughput() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientUpdateSQLDatabaseThroughputResponse{
 	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
-	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName/throughputSettings/default"),
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases/throughputSettings"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName/throughputSettings/default"),
 	// 		Location: to.Ptr("West US"),
-	// 		Tags: map[string]*string{
-	// 		},
 	// 		Properties: &armcosmos.ThroughputSettingsGetProperties{
 	// 			Resource: &armcosmos.ThroughputSettingsGetPropertiesResource{
-	// 				Throughput: to.Ptr[int32](400),
-	// 				MinimumThroughput: to.Ptr("400"),
-	// 				OfferReplacePending: to.Ptr("true"),
+	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
 	// 				Rid: to.Ptr("PD5DALigDgw="),
 	// 				Ts: to.Ptr[float32](1459200611),
-	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
+	// 				MinimumThroughput: to.Ptr("400"),
+	// 				OfferReplacePending: to.Ptr("true"),
+	// 				Throughput: to.Ptr[int32](400),
 	// 			},
+	// 		},
+	// 		Tags: map[string]*string{
 	// 		},
 	// 	},
 	// }

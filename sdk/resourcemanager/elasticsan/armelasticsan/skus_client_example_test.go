@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elasticsan/armelasticsan"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elasticsan/armelasticsan/v2"
 	"log"
 )
 
-// Generated from example definition: 2025-09-01/Skus_List_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/Skus_List_MaximumSet_Gen.json
 func ExampleSKUsClient_NewListPager_skusListMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -37,10 +37,13 @@ func ExampleSKUsClient_NewListPager_skusListMaximumSetGen() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armelasticsan.SKUsClientListResponse{
 		// 	SKUInformationList: armelasticsan.SKUInformationList{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/subscriptionid/providers/Microsoft.ElasticSan/skus?api-version=2024-07-01-preview&%24skiptoken=def456uvw890"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/subscriptionid/providers/Microsoft.ElasticSan/skus?api-version=2026-05-01-preview&%24skiptoken=def456uvw890"),
 		// 		Value: []*armelasticsan.SKUInformation{
 		// 			{
-		// 				Name: to.Ptr(armelasticsan.SKUNamePremiumLRS),
+		// 				Name: to.Ptr(armelasticsan.SKUNameElasticSANLRS),
+		// 				Locations: []*string{
+		// 					to.Ptr("ceszpxwqyifrxobqykplm"),
+		// 				},
 		// 				Capabilities: []*armelasticsan.SKUCapability{
 		// 					{
 		// 						Name: to.Ptr("qkht"),
@@ -53,13 +56,22 @@ func ExampleSKUsClient_NewListPager_skusListMaximumSetGen() {
 		// 						Zones: []*string{
 		// 							to.Ptr("1"),
 		// 						},
+		// 						ZoneDetails: []*armelasticsan.SKUZoneDetails{
+		// 							{
+		// 								Name: []*string{
+		// 									to.Ptr("1"),
+		// 								},
+		// 								Capabilities: []*armelasticsan.SKUCapability{
+		// 									{
+		// 										Name: to.Ptr("qkht"),
+		// 										Value: to.Ptr("eoayvlyzyjjziecxymlpk"),
+		// 									},
+		// 								},
+		// 							},
+		// 						},
 		// 					},
 		// 				},
-		// 				Locations: []*string{
-		// 					to.Ptr("ceszpxwqyifrxobqykplm"),
-		// 				},
 		// 				ResourceType: to.Ptr("tlqickysdtjahoanstgancifxfu"),
-		// 				Tier: to.Ptr(armelasticsan.SKUTierPremium),
 		// 			},
 		// 		},
 		// 	},
@@ -67,7 +79,7 @@ func ExampleSKUsClient_NewListPager_skusListMaximumSetGen() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/Skus_List_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/Skus_List_MinimumSet_Gen.json
 func ExampleSKUsClient_NewListPager_skusListMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -19,7 +19,7 @@ import (
 // TableServicesClient contains the methods for the TableServices group.
 // Don't use this type directly, use NewTableServicesClient() instead.
 //
-// Generated from API version 2026-04-01
+// Generated from API version 2026-09-01
 type TableServicesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type TableServicesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewTableServicesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TableServicesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -63,19 +66,14 @@ func (client *TableServicesClient) GetServiceProperties(ctx context.Context, res
 	if err != nil {
 		return TableServicesClientGetServicePropertiesResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return TableServicesClientGetServicePropertiesResponse{}, err
-	}
-	resp, err := client.getServicePropertiesHandleResponse(httpResp)
-	return resp, err
+	return client.getServicePropertiesHandleResponse(httpResp, http.StatusOK)
 }
 
 // getServicePropertiesCreateRequest creates the GetServiceProperties request.
 func (client *TableServicesClient) getServicePropertiesCreateRequest(ctx context.Context, resourceGroupName string, accountName string, _ *TableServicesClientGetServicePropertiesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/tableServices/default"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -91,15 +89,18 @@ func (client *TableServicesClient) getServicePropertiesCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getServicePropertiesHandleResponse handles the GetServiceProperties response.
-func (client *TableServicesClient) getServicePropertiesHandleResponse(resp *http.Response) (TableServicesClientGetServicePropertiesResponse, error) {
+func (client *TableServicesClient) getServicePropertiesHandleResponse(resp *http.Response, successCodes ...int) (TableServicesClientGetServicePropertiesResponse, error) {
 	result := TableServicesClientGetServicePropertiesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TableServiceProperties); err != nil {
 		return TableServicesClientGetServicePropertiesResponse{}, err
 	}
@@ -126,19 +127,14 @@ func (client *TableServicesClient) List(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return TableServicesClientListResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return TableServicesClientListResponse{}, err
-	}
-	resp, err := client.listHandleResponse(httpResp)
-	return resp, err
+	return client.listHandleResponse(httpResp, http.StatusOK)
 }
 
 // listCreateRequest creates the List request.
 func (client *TableServicesClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, _ *TableServicesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/tableServices"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -154,15 +150,18 @@ func (client *TableServicesClient) listCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *TableServicesClient) listHandleResponse(resp *http.Response) (TableServicesClientListResponse, error) {
+func (client *TableServicesClient) listHandleResponse(resp *http.Response, successCodes ...int) (TableServicesClientListResponse, error) {
 	result := TableServicesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListTableServices); err != nil {
 		return TableServicesClientListResponse{}, err
 	}
@@ -193,19 +192,14 @@ func (client *TableServicesClient) SetServiceProperties(ctx context.Context, res
 	if err != nil {
 		return TableServicesClientSetServicePropertiesResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return TableServicesClientSetServicePropertiesResponse{}, err
-	}
-	resp, err := client.setServicePropertiesHandleResponse(httpResp)
-	return resp, err
+	return client.setServicePropertiesHandleResponse(httpResp, http.StatusOK)
 }
 
 // setServicePropertiesCreateRequest creates the SetServiceProperties request.
 func (client *TableServicesClient) setServicePropertiesCreateRequest(ctx context.Context, resourceGroupName string, accountName string, parameters TableServiceProperties, _ *TableServicesClientSetServicePropertiesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/tableServices/default"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -221,7 +215,7 @@ func (client *TableServicesClient) setServicePropertiesCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -232,8 +226,11 @@ func (client *TableServicesClient) setServicePropertiesCreateRequest(ctx context
 }
 
 // setServicePropertiesHandleResponse handles the SetServiceProperties response.
-func (client *TableServicesClient) setServicePropertiesHandleResponse(resp *http.Response) (TableServicesClientSetServicePropertiesResponse, error) {
+func (client *TableServicesClient) setServicePropertiesHandleResponse(resp *http.Response, successCodes ...int) (TableServicesClientSetServicePropertiesResponse, error) {
 	result := TableServicesClientSetServicePropertiesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TableServiceProperties); err != nil {
 		return TableServicesClientSetServicePropertiesResponse{}, err
 	}

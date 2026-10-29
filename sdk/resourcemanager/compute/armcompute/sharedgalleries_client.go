@@ -19,7 +19,7 @@ import (
 // SharedGalleriesClient contains the methods for the SharedGalleries group.
 // Don't use this type directly, use NewSharedGalleriesClient() instead.
 //
-// Generated from API version 2025-12-03
+// Generated from API version 2026-03-03
 type SharedGalleriesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -86,7 +86,7 @@ func (client *SharedGalleriesClient) getCreateRequest(ctx context.Context, locat
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251203)
+	reqQP.Set("api-version", version20260303)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -157,7 +157,7 @@ func (client *SharedGalleriesClient) listCreateRequest(ctx context.Context, loca
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20251203)
+		reqQP.Set("api-version", version20260303)
 		if options != nil && options.SharedTo != nil {
 			reqQP.Set("sharedTo", string(*options.SharedTo))
 		}

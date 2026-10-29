@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-04-01-preview/HeatMap-GET-With-Null-Values.json
+// Generated from example definition: 2026-09-01/HeatMap-GET-With-Null-Values.json
 func ExampleHeatMapClient_Get_heatMapGetWithNullValues() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -87,7 +87,7 @@ func ExampleHeatMapClient_Get_heatMapGetWithNullValues() {
 	// }
 }
 
-// Generated from example definition: 2024-04-01-preview/HeatMap-GET-With-TopLeft-BotRight.json
+// Generated from example definition: 2026-09-01/HeatMap-GET-With-TopLeft-BotRight.json
 func ExampleHeatMapClient_Get_heatMapGetWithTopLeftBotRight() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -172,7 +172,7 @@ func ExampleHeatMapClient_Get_heatMapGetWithTopLeftBotRight() {
 	// }
 }
 
-// Generated from example definition: 2024-04-01-preview/HeatMap-GET.json
+// Generated from example definition: 2026-09-01/HeatMap-GET.json
 func ExampleHeatMapClient_Get_heatMapGet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

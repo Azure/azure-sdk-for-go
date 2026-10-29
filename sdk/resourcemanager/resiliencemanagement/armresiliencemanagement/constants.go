@@ -5,7 +5,7 @@
 package armresiliencemanagement
 
 const (
-	version20260401Preview string = "2026-04-01-preview"
+	version20261001 string = "2026-10-01"
 )
 
 // ActionTask - An action task type indicates the type of action task.
@@ -179,6 +179,63 @@ func PossibleDrillModeValues() []DrillMode {
 	}
 }
 
+// DrillReportFinalizationState - Finalization state of a Drill Run report.
+type DrillReportFinalizationState string
+
+const (
+	// DrillReportFinalizationStateFinalized - The report is finalized and immutable.
+	DrillReportFinalizationStateFinalized DrillReportFinalizationState = "Finalized"
+	// DrillReportFinalizationStateNotFinalized - The report is not finalized and may still change.
+	DrillReportFinalizationStateNotFinalized DrillReportFinalizationState = "NotFinalized"
+)
+
+// PossibleDrillReportFinalizationStateValues returns the possible values for the DrillReportFinalizationState const type.
+func PossibleDrillReportFinalizationStateValues() []DrillReportFinalizationState {
+	return []DrillReportFinalizationState{
+		DrillReportFinalizationStateFinalized,
+		DrillReportFinalizationStateNotFinalized,
+	}
+}
+
+// DrillReportFormat - Format of a Drill Run report.
+type DrillReportFormat string
+
+const (
+	// DrillReportFormatHTML - Human readable HTML report.
+	DrillReportFormatHTML DrillReportFormat = "Html"
+)
+
+// PossibleDrillReportFormatValues returns the possible values for the DrillReportFormat const type.
+func PossibleDrillReportFormatValues() []DrillReportFormat {
+	return []DrillReportFormat{
+		DrillReportFormatHTML,
+	}
+}
+
+// DrillReportGenerationStatus - Report generation status.
+type DrillReportGenerationStatus string
+
+const (
+	// DrillReportGenerationStatusFailed - Report generation failed. Details are captured in the lastError field.
+	DrillReportGenerationStatusFailed DrillReportGenerationStatus = "Failed"
+	// DrillReportGenerationStatusInProgress - Report generation is currently running.
+	DrillReportGenerationStatusInProgress DrillReportGenerationStatus = "InProgress"
+	// DrillReportGenerationStatusNotStarted - Report generation has not been attempted yet.
+	DrillReportGenerationStatusNotStarted DrillReportGenerationStatus = "NotStarted"
+	// DrillReportGenerationStatusSucceeded - Report generation completed successfully.
+	DrillReportGenerationStatusSucceeded DrillReportGenerationStatus = "Succeeded"
+)
+
+// PossibleDrillReportGenerationStatusValues returns the possible values for the DrillReportGenerationStatus const type.
+func PossibleDrillReportGenerationStatusValues() []DrillReportGenerationStatus {
+	return []DrillReportGenerationStatus{
+		DrillReportGenerationStatusFailed,
+		DrillReportGenerationStatusInProgress,
+		DrillReportGenerationStatusNotStarted,
+		DrillReportGenerationStatusSucceeded,
+	}
+}
+
 // DrillResourceFaultState - Drill Resource Fault State
 type DrillResourceFaultState string
 
@@ -314,6 +371,30 @@ func PossibleDrillRunSubtasksValues() []DrillRunSubtasks {
 	}
 }
 
+// DrillRunTasks - Enum for DrillRun Tasks.
+type DrillRunTasks string
+
+const (
+	// DrillRunTasksFailover - Failover task.
+	DrillRunTasksFailover DrillRunTasks = "Failover"
+	// DrillRunTasksFailoverReverse - FailoverReverse task.
+	DrillRunTasksFailoverReverse DrillRunTasks = "FailoverReverse"
+	// DrillRunTasksReprotect - Reprotect task.
+	DrillRunTasksReprotect DrillRunTasks = "Reprotect"
+	// DrillRunTasksReprotectReverse - ReprotectReverse task.
+	DrillRunTasksReprotectReverse DrillRunTasks = "ReprotectReverse"
+)
+
+// PossibleDrillRunTasksValues returns the possible values for the DrillRunTasks const type.
+func PossibleDrillRunTasksValues() []DrillRunTasks {
+	return []DrillRunTasks{
+		DrillRunTasksFailover,
+		DrillRunTasksFailoverReverse,
+		DrillRunTasksReprotect,
+		DrillRunTasksReprotectReverse,
+	}
+}
+
 // DrillType - Enum for Drill type object hierarchy.
 type DrillType string
 
@@ -357,9 +438,9 @@ func PossibleExclusionReasonValues() []ExclusionReason {
 type ExclusionState string
 
 const (
-	// ExclusionStateExcluded - Resource is not included in the goals.
+	// ExclusionStateExcluded - The resource is excluded from the goals.
 	ExclusionStateExcluded ExclusionState = "Excluded"
-	// ExclusionStateIncluded - Resource is excluded from the goals.
+	// ExclusionStateIncluded - The resource is included in the goals.
 	ExclusionStateIncluded ExclusionState = "Included"
 )
 
@@ -485,36 +566,6 @@ func PossibleForceInclusionAndUpdateValues() []ForceInclusionAndUpdate {
 	}
 }
 
-// GoalAssignmentType - Supported type of goal assignment.
-type GoalAssignmentType string
-
-const (
-	// GoalAssignmentTypeResiliency - Resiliency goal assignment type.
-	GoalAssignmentTypeResiliency GoalAssignmentType = "Resiliency"
-)
-
-// PossibleGoalAssignmentTypeValues returns the possible values for the GoalAssignmentType const type.
-func PossibleGoalAssignmentTypeValues() []GoalAssignmentType {
-	return []GoalAssignmentType{
-		GoalAssignmentTypeResiliency,
-	}
-}
-
-// GoalType - Supported type of goal.
-type GoalType string
-
-const (
-	// GoalTypeResiliency - Resiliency goal type.
-	GoalTypeResiliency GoalType = "Resiliency"
-)
-
-// PossibleGoalTypeValues returns the possible values for the GoalType const type.
-func PossibleGoalTypeValues() []GoalType {
-	return []GoalType{
-		GoalTypeResiliency,
-	}
-}
-
 // HAStatus - HA Status
 type HAStatus string
 
@@ -548,30 +599,6 @@ func PossibleInitialConfigValues() []InitialConfig {
 	return []InitialConfig{
 		InitialConfigComplete,
 		InitialConfigPending,
-	}
-}
-
-// IsoDuration - ISO 8601 duration formats.
-type IsoDuration string
-
-const (
-	// IsoDurationPT15M - 15 minutes.
-	IsoDurationPT15M IsoDuration = "PT15M"
-	// IsoDurationPT1H - 1 hour.
-	IsoDurationPT1H IsoDuration = "PT1H"
-	// IsoDurationPT24H - 24 hours.
-	IsoDurationPT24H IsoDuration = "PT24H"
-	// IsoDurationPT4H - 4 hours.
-	IsoDurationPT4H IsoDuration = "PT4H"
-)
-
-// PossibleIsoDurationValues returns the possible values for the IsoDuration const type.
-func PossibleIsoDurationValues() []IsoDuration {
-	return []IsoDuration{
-		IsoDurationPT15M,
-		IsoDurationPT1H,
-		IsoDurationPT24H,
-		IsoDurationPT4H,
 	}
 }
 
@@ -704,27 +731,6 @@ func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
 	}
 }
 
-// MembershipType - Membership type of the service group to resource.
-type MembershipType string
-
-const (
-	// MembershipTypeDirect - Resource is direct member of service group.
-	MembershipTypeDirect MembershipType = "Direct"
-	// MembershipTypeThroughResourceGroup - Resource is member of service group through resource group.
-	MembershipTypeThroughResourceGroup MembershipType = "ThroughResourceGroup"
-	// MembershipTypeThroughSubscription - Resource is member of service group through subscription.
-	MembershipTypeThroughSubscription MembershipType = "ThroughSubscription"
-)
-
-// PossibleMembershipTypeValues returns the possible values for the MembershipType const type.
-func PossibleMembershipTypeValues() []MembershipType {
-	return []MembershipType{
-		MembershipTypeDirect,
-		MembershipTypeThroughResourceGroup,
-		MembershipTypeThroughSubscription,
-	}
-}
-
 // Origin - The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
 // value is "user,system"
 type Origin string
@@ -759,6 +765,8 @@ const (
 	ProvisioningStateDeleting ProvisioningState = "Deleting"
 	// ProvisioningStateFailed - Resource creation failed.
 	ProvisioningStateFailed ProvisioningState = "Failed"
+	// ProvisioningStateNeedsAttention - The resource needs attention from the user.
+	ProvisioningStateNeedsAttention ProvisioningState = "NeedsAttention"
 	// ProvisioningStateProvisioning - Initial provisioning in progress
 	ProvisioningStateProvisioning ProvisioningState = "Provisioning"
 	// ProvisioningStateSucceeded - Resource has been created.
@@ -774,6 +782,7 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 		ProvisioningStateCanceled,
 		ProvisioningStateDeleting,
 		ProvisioningStateFailed,
+		ProvisioningStateNeedsAttention,
 		ProvisioningStateProvisioning,
 		ProvisioningStateSucceeded,
 		ProvisioningStateUpdating,
@@ -1020,42 +1029,42 @@ func PossibleRelativeResourceCompositionStateValues() []RelativeResourceComposit
 	}
 }
 
-// RequirementSelected - Enum for the requirement status of the resource in the goal.
-type RequirementSelected string
+// ResourceFeasibilityReviewStatus - Outcome of a resource feasibility review for a recovery resource.
+type ResourceFeasibilityReviewStatus string
 
 const (
-	// RequirementSelectedNotRequired - The resource is not required for the specified goal.
-	RequirementSelectedNotRequired RequirementSelected = "NotRequired"
-	// RequirementSelectedRequired - The resource is required for the specified goal.
-	RequirementSelectedRequired RequirementSelected = "Required"
+	// ResourceFeasibilityReviewStatusFlagged - The review identified a risk the operator should consider.
+	ResourceFeasibilityReviewStatusFlagged ResourceFeasibilityReviewStatus = "Flagged"
+	// ResourceFeasibilityReviewStatusNotApplicable - The review did not apply to this resource and was skipped.
+	ResourceFeasibilityReviewStatusNotApplicable ResourceFeasibilityReviewStatus = "NotApplicable"
+	// ResourceFeasibilityReviewStatusPassed - The review identified no risk.
+	ResourceFeasibilityReviewStatusPassed ResourceFeasibilityReviewStatus = "Passed"
+	// ResourceFeasibilityReviewStatusUnavailable - The review could not complete. Advisory only; it never blocks failover.
+	ResourceFeasibilityReviewStatusUnavailable ResourceFeasibilityReviewStatus = "Unavailable"
 )
 
-// PossibleRequirementSelectedValues returns the possible values for the RequirementSelected const type.
-func PossibleRequirementSelectedValues() []RequirementSelected {
-	return []RequirementSelected{
-		RequirementSelectedNotRequired,
-		RequirementSelectedRequired,
+// PossibleResourceFeasibilityReviewStatusValues returns the possible values for the ResourceFeasibilityReviewStatus const type.
+func PossibleResourceFeasibilityReviewStatusValues() []ResourceFeasibilityReviewStatus {
+	return []ResourceFeasibilityReviewStatus{
+		ResourceFeasibilityReviewStatusFlagged,
+		ResourceFeasibilityReviewStatusNotApplicable,
+		ResourceFeasibilityReviewStatusPassed,
+		ResourceFeasibilityReviewStatusUnavailable,
 	}
 }
 
-// ResilienceHealthStatus - enum for Resilience health status.
-type ResilienceHealthStatus string
+// ResourceFeasibilityReviewType - The resource feasibility review category for a recovery resource.
+type ResourceFeasibilityReviewType string
 
 const (
-	// ResilienceHealthStatusHealthy - Resource is Healthy.
-	ResilienceHealthStatusHealthy ResilienceHealthStatus = "Healthy"
-	// ResilienceHealthStatusNotEvaluated - Resource is not evaluated.
-	ResilienceHealthStatusNotEvaluated ResilienceHealthStatus = "NotEvaluated"
-	// ResilienceHealthStatusUnhealthy - Resource is Unhealthy.
-	ResilienceHealthStatusUnhealthy ResilienceHealthStatus = "Unhealthy"
+	// ResourceFeasibilityReviewTypeSKUCapacity - SKU capacity availability check in the target region or zone.
+	ResourceFeasibilityReviewTypeSKUCapacity ResourceFeasibilityReviewType = "SkuCapacity"
 )
 
-// PossibleResilienceHealthStatusValues returns the possible values for the ResilienceHealthStatus const type.
-func PossibleResilienceHealthStatusValues() []ResilienceHealthStatus {
-	return []ResilienceHealthStatus{
-		ResilienceHealthStatusHealthy,
-		ResilienceHealthStatusNotEvaluated,
-		ResilienceHealthStatusUnhealthy,
+// PossibleResourceFeasibilityReviewTypeValues returns the possible values for the ResourceFeasibilityReviewType const type.
+func PossibleResourceFeasibilityReviewTypeValues() []ResourceFeasibilityReviewType {
+	return []ResourceFeasibilityReviewType{
+		ResourceFeasibilityReviewTypeSKUCapacity,
 	}
 }
 
@@ -1159,7 +1168,7 @@ func PossibleResourceReplicationRoleValues() []ResourceReplicationRole {
 type ResourceTypeCategories string
 
 const (
-	// ResourceTypeCategoriesAzureSiteRecoveryVMsPresent - Indicates that alteast one Azure Site Recovery VMs are present.
+	// ResourceTypeCategoriesAzureSiteRecoveryVMsPresent - Indicates that at least one Azure Site Recovery VM is present.
 	ResourceTypeCategoriesAzureSiteRecoveryVMsPresent ResourceTypeCategories = "AzureSiteRecoveryVMsPresent"
 )
 
@@ -1167,6 +1176,42 @@ const (
 func PossibleResourceTypeCategoriesValues() []ResourceTypeCategories {
 	return []ResourceTypeCategories{
 		ResourceTypeCategoriesAzureSiteRecoveryVMsPresent,
+	}
+}
+
+// SliType - Category of an SLI selected for Drill monitoring.
+type SliType string
+
+const (
+	// SliTypeAvailability - Availability SLI.
+	SliTypeAvailability SliType = "Availability"
+	// SliTypeLatency - Latency SLI.
+	SliTypeLatency SliType = "Latency"
+)
+
+// PossibleSliTypeValues returns the possible values for the SliType const type.
+func PossibleSliTypeValues() []SliType {
+	return []SliType{
+		SliTypeAvailability,
+		SliTypeLatency,
+	}
+}
+
+// SliTypeMatchState - Whether the user-declared SLI type matches the SLI's actual category.
+type SliTypeMatchState string
+
+const (
+	// SliTypeMatchStateMatched - Declared type matches the SLI's actual category.
+	SliTypeMatchStateMatched SliTypeMatchState = "Matched"
+	// SliTypeMatchStateMismatched - Declared type does not match the SLI's actual category.
+	SliTypeMatchStateMismatched SliTypeMatchState = "Mismatched"
+)
+
+// PossibleSliTypeMatchStateValues returns the possible values for the SliTypeMatchState const type.
+func PossibleSliTypeMatchStateValues() []SliTypeMatchState {
+	return []SliTypeMatchState{
+		SliTypeMatchStateMatched,
+		SliTypeMatchStateMismatched,
 	}
 }
 
@@ -1207,33 +1252,10 @@ func PossibleTestFailoverStateValues() []TestFailoverState {
 	}
 }
 
-// UnifiedResilienceItemRequirementSelected - Enum for the requirement status of the resource in the goal.
-type UnifiedResilienceItemRequirementSelected string
-
-const (
-	// UnifiedResilienceItemRequirementSelectedNotRequired - The resource is not required for the specified goal.
-	UnifiedResilienceItemRequirementSelectedNotRequired UnifiedResilienceItemRequirementSelected = "NotRequired"
-	// UnifiedResilienceItemRequirementSelectedNotSelected - The resource is not selected for the specified goal.
-	UnifiedResilienceItemRequirementSelectedNotSelected UnifiedResilienceItemRequirementSelected = "NotSelected"
-	// UnifiedResilienceItemRequirementSelectedRequired - The resource is required for the specified goal.
-	UnifiedResilienceItemRequirementSelectedRequired UnifiedResilienceItemRequirementSelected = "Required"
-)
-
-// PossibleUnifiedResilienceItemRequirementSelectedValues returns the possible values for the UnifiedResilienceItemRequirementSelected const type.
-func PossibleUnifiedResilienceItemRequirementSelectedValues() []UnifiedResilienceItemRequirementSelected {
-	return []UnifiedResilienceItemRequirementSelected{
-		UnifiedResilienceItemRequirementSelectedNotRequired,
-		UnifiedResilienceItemRequirementSelectedNotSelected,
-		UnifiedResilienceItemRequirementSelectedRequired,
-	}
-}
-
 // UsagePlanType - The type of usage plan.
 type UsagePlanType string
 
 const (
-	// UsagePlanTypeBasic - Basic usage plan with restricted functionality without any charges.
-	UsagePlanTypeBasic UsagePlanType = "Basic"
 	// UsagePlanTypeStandard - Standard usage plan with comprehensive functionality and usage based charges.
 	UsagePlanTypeStandard UsagePlanType = "Standard"
 )
@@ -1241,7 +1263,6 @@ const (
 // PossibleUsagePlanTypeValues returns the possible values for the UsagePlanType const type.
 func PossibleUsagePlanTypeValues() []UsagePlanType {
 	return []UsagePlanType{
-		UsagePlanTypeBasic,
 		UsagePlanTypeStandard,
 	}
 }
@@ -1270,7 +1291,7 @@ type VMPresent string
 const (
 	// VMPresentAbsent - No VM present.
 	VMPresentAbsent VMPresent = "Absent"
-	// VMPresentPresent - Atleast one VM Present.
+	// VMPresentPresent - At least one VM is present.
 	VMPresentPresent VMPresent = "Present"
 )
 

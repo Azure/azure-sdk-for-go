@@ -97,10 +97,7 @@ func (g *GenerateDetailedCostReportOperationResultsServerTransport) dispatchBegi
 		if err != nil {
 			return nil, err
 		}
-		scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-		if err != nil {
-			return nil, err
-		}
+		scopeParam := matches[regex.SubexpIndex("scope")]
 		respr, errRespr := g.srv.BeginGet(req.Context(), operationIDParam, scopeParam, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr

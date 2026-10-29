@@ -19,7 +19,7 @@ import (
 // AutoUpgradeProfileOperationsClient contains the methods for the AutoUpgradeProfileOperations group.
 // Don't use this type directly, use NewAutoUpgradeProfileOperationsClient() instead.
 //
-// Generated from API version 2026-06-01
+// Generated from API version 2026-06-02-preview
 type AutoUpgradeProfileOperationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -115,7 +115,7 @@ func (client *AutoUpgradeProfileOperationsClient) generateUpdateRunCreateRequest
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
+	reqQP.Set("api-version", version20260602Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

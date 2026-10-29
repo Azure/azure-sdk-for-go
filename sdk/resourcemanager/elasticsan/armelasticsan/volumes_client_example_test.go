@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elasticsan/armelasticsan"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elasticsan/armelasticsan/v2"
 	"log"
 )
 
-// Generated from example definition: 2025-09-01/Volumes_Create_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/Volumes_Create_MaximumSet_Gen.json
 func ExampleVolumesClient_BeginCreate_volumesCreateMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -29,8 +29,14 @@ func ExampleVolumesClient_BeginCreate_volumesCreateMaximumSetGen() {
 				CreateSource: to.Ptr(armelasticsan.VolumeCreateOptionNone),
 				SourceID:     to.Ptr("mdonegivjquite"),
 			},
-			ManagedBy: &armelasticsan.ManagedByInfo{
-				ResourceID: to.Ptr("pclpkrpkpmvcsegcubrakcoodrubo"),
+			ManagedBy: []*armelasticsan.ManagedByResources{
+				{
+					ClientID: to.Ptr("pclpkrpkpmvcsegcubrakcoodrubo"),
+					Version:  to.Ptr[int32](1),
+					ResourceIDs: []*string{
+						to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.SomeProvider/someResource/myResource"),
+					},
+				},
 			},
 			SizeGiB: to.Ptr[int64](23),
 		},
@@ -55,8 +61,14 @@ func ExampleVolumesClient_BeginCreate_volumesCreateMaximumSetGen() {
 	// 				CreateSource: to.Ptr(armelasticsan.VolumeCreateOptionNone),
 	// 				SourceID: to.Ptr("mdonegivjquite"),
 	// 			},
-	// 			ManagedBy: &armelasticsan.ManagedByInfo{
-	// 				ResourceID: to.Ptr("pclpkrpkpmvcsegcubrakcoodrubo"),
+	// 			ManagedBy: []*armelasticsan.ManagedByResources{
+	// 				{
+	// 					ClientID: to.Ptr("pclpkrpkpmvcsegcubrakcoodrubo"),
+	// 					Version: to.Ptr[int32](1),
+	// 					ResourceIDs: []*string{
+	// 						to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.SomeProvider/someResource/myResource"),
+	// 					},
+	// 				},
 	// 			},
 	// 			ProvisioningState: to.Ptr(armelasticsan.ProvisioningStatesInvalid),
 	// 			SizeGiB: to.Ptr[int64](23),
@@ -81,7 +93,7 @@ func ExampleVolumesClient_BeginCreate_volumesCreateMaximumSetGen() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/Volumes_Create_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/Volumes_Create_MinimumSet_Gen.json
 func ExampleVolumesClient_BeginCreate_volumesCreateMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -117,8 +129,14 @@ func ExampleVolumesClient_BeginCreate_volumesCreateMinimumSetGen() {
 	// 				CreateSource: to.Ptr(armelasticsan.VolumeCreateOptionNone),
 	// 				SourceID: to.Ptr("ARM Id of Resource"),
 	// 			},
-	// 			ManagedBy: &armelasticsan.ManagedByInfo{
-	// 				ResourceID: to.Ptr("mtkeip"),
+	// 			ManagedBy: []*armelasticsan.ManagedByResources{
+	// 				{
+	// 					ClientID: to.Ptr("pclpkrpkpmvcsegcubrakcoodrubo"),
+	// 					Version: to.Ptr[int32](1),
+	// 					ResourceIDs: []*string{
+	// 						to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.SomeProvider/someResource/myResource"),
+	// 					},
+	// 				},
 	// 			},
 	// 			ProvisioningState: to.Ptr(armelasticsan.ProvisioningStatesInvalid),
 	// 			SizeGiB: to.Ptr[int64](9),
@@ -143,7 +161,7 @@ func ExampleVolumesClient_BeginCreate_volumesCreateMinimumSetGen() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/Volumes_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/Volumes_Delete_MaximumSet_Gen.json
 func ExampleVolumesClient_BeginDelete_volumesDeleteMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -155,6 +173,7 @@ func ExampleVolumesClient_BeginDelete_volumesDeleteMaximumSetGen() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewVolumesClient().BeginDelete(ctx, "resourcegroupname", "elasticsanname", "volumegroupname", "volumename", &armelasticsan.VolumesClientBeginDeleteOptions{
+		DeleteType:         to.Ptr(armelasticsan.DeleteTypePermanent),
 		XMSDeleteSnapshots: to.Ptr(armelasticsan.XMSDeleteSnapshotsTrue),
 		XMSForceDelete:     to.Ptr(armelasticsan.XMSForceDeleteTrue)})
 	if err != nil {
@@ -171,7 +190,7 @@ func ExampleVolumesClient_BeginDelete_volumesDeleteMaximumSetGen() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/Volumes_Delete_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/Volumes_Delete_MinimumSet_Gen.json
 func ExampleVolumesClient_BeginDelete_volumesDeleteMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -182,7 +201,8 @@ func ExampleVolumesClient_BeginDelete_volumesDeleteMinimumSetGen() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewVolumesClient().BeginDelete(ctx, "resourcegroupname", "elasticsanname", "volumegroupname", "volumename", nil)
+	poller, err := clientFactory.NewVolumesClient().BeginDelete(ctx, "resourcegroupname", "elasticsanname", "volumegroupname", "volumename", &armelasticsan.VolumesClientBeginDeleteOptions{
+		DeleteType: to.Ptr(armelasticsan.DeleteTypePermanent)})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -197,7 +217,7 @@ func ExampleVolumesClient_BeginDelete_volumesDeleteMinimumSetGen() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/Volumes_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/Volumes_Get_MaximumSet_Gen.json
 func ExampleVolumesClient_Get_volumesGetMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -225,8 +245,14 @@ func ExampleVolumesClient_Get_volumesGetMaximumSetGen() {
 	// 				CreateSource: to.Ptr(armelasticsan.VolumeCreateOptionNone),
 	// 				SourceID: to.Ptr("owsp"),
 	// 			},
-	// 			ManagedBy: &armelasticsan.ManagedByInfo{
-	// 				ResourceID: to.Ptr("gyqwvotwkluuzzpuedccamwfvasf"),
+	// 			ManagedBy: []*armelasticsan.ManagedByResources{
+	// 				{
+	// 					ClientID: to.Ptr("pclpkrpkpmvcsegcubrakcoodrubo"),
+	// 					Version: to.Ptr[int32](1),
+	// 					ResourceIDs: []*string{
+	// 						to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.SomeProvider/someResource/myResource"),
+	// 					},
+	// 				},
 	// 			},
 	// 			ProvisioningState: to.Ptr(armelasticsan.ProvisioningStatesInvalid),
 	// 			SizeGiB: to.Ptr[int64](25),
@@ -251,7 +277,7 @@ func ExampleVolumesClient_Get_volumesGetMaximumSetGen() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/Volumes_Get_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/Volumes_Get_MinimumSet_Gen.json
 func ExampleVolumesClient_Get_volumesGetMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -279,8 +305,14 @@ func ExampleVolumesClient_Get_volumesGetMinimumSetGen() {
 	// 				CreateSource: to.Ptr(armelasticsan.VolumeCreateOptionNone),
 	// 				SourceID: to.Ptr("ARM Id of Resource"),
 	// 			},
-	// 			ManagedBy: &armelasticsan.ManagedByInfo{
-	// 				ResourceID: to.Ptr("mtkeip"),
+	// 			ManagedBy: []*armelasticsan.ManagedByResources{
+	// 				{
+	// 					ClientID: to.Ptr("pclpkrpkpmvcsegcubrakcoodrubo"),
+	// 					Version: to.Ptr[int32](1),
+	// 					ResourceIDs: []*string{
+	// 						to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.SomeProvider/someResource/myResource"),
+	// 					},
+	// 				},
 	// 			},
 	// 			ProvisioningState: to.Ptr(armelasticsan.ProvisioningStatesInvalid),
 	// 			SizeGiB: to.Ptr[int64](9),
@@ -305,7 +337,7 @@ func ExampleVolumesClient_Get_volumesGetMinimumSetGen() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/Volumes_ListByVolumeGroup_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/Volumes_ListByVolumeGroup_MaximumSet_Gen.json
 func ExampleVolumesClient_NewListByVolumeGroupPager_volumesListByVolumeGroupMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -316,7 +348,8 @@ func ExampleVolumesClient_NewListByVolumeGroupPager_volumesListByVolumeGroupMaxi
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewVolumesClient().NewListByVolumeGroupPager("resourcegroupname", "elasticsanname", "volumegroupname", nil)
+	pager := clientFactory.NewVolumesClient().NewListByVolumeGroupPager("resourcegroupname", "elasticsanname", "volumegroupname", &armelasticsan.VolumesClientListByVolumeGroupOptions{
+		XMSAccessSoftDeletedResources: to.Ptr(armelasticsan.XMSAccessSoftDeletedResourcesTrue)})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -329,7 +362,7 @@ func ExampleVolumesClient_NewListByVolumeGroupPager_volumesListByVolumeGroupMaxi
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armelasticsan.VolumesClientListByVolumeGroupResponse{
 		// 	VolumeList: armelasticsan.VolumeList{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/subscriptionid/resourceGroups/resourcegroupname/providers/Microsoft.ElasticSan/elasticSans/elasticsanname/volumegroups/volumegroupname/volumes?api-version=2024-07-01-preview&%24skiptoken=jkl789mno012"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/subscriptionid/resourceGroups/resourcegroupname/providers/Microsoft.ElasticSan/elasticSans/elasticsanname/volumegroups/volumegroupname/volumes?api-version=2026-05-01-preview&%24skiptoken=jkl789mno012"),
 		// 		Value: []*armelasticsan.Volume{
 		// 			{
 		// 				Name: to.Ptr("hxm"),
@@ -340,8 +373,14 @@ func ExampleVolumesClient_NewListByVolumeGroupPager_volumesListByVolumeGroupMaxi
 		// 						CreateSource: to.Ptr(armelasticsan.VolumeCreateOptionNone),
 		// 						SourceID: to.Ptr("mdonegivjquite"),
 		// 					},
-		// 					ManagedBy: &armelasticsan.ManagedByInfo{
-		// 						ResourceID: to.Ptr("pclpkrpkpmvcsegcubrakcoodrubo"),
+		// 					ManagedBy: []*armelasticsan.ManagedByResources{
+		// 						{
+		// 							ClientID: to.Ptr("pclpkrpkpmvcsegcubrakcoodrubo"),
+		// 							Version: to.Ptr[int32](1),
+		// 							ResourceIDs: []*string{
+		// 								to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.SomeProvider/someResource/myResource"),
+		// 							},
+		// 						},
 		// 					},
 		// 					ProvisioningState: to.Ptr(armelasticsan.ProvisioningStatesInvalid),
 		// 					SizeGiB: to.Ptr[int64](23),
@@ -369,7 +408,7 @@ func ExampleVolumesClient_NewListByVolumeGroupPager_volumesListByVolumeGroupMaxi
 	}
 }
 
-// Generated from example definition: 2025-09-01/Volumes_ListByVolumeGroup_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/Volumes_ListByVolumeGroup_MinimumSet_Gen.json
 func ExampleVolumesClient_NewListByVolumeGroupPager_volumesListByVolumeGroupMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -380,7 +419,8 @@ func ExampleVolumesClient_NewListByVolumeGroupPager_volumesListByVolumeGroupMini
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewVolumesClient().NewListByVolumeGroupPager("resourcegroupname", "elasticsanname", "volumegroupname", nil)
+	pager := clientFactory.NewVolumesClient().NewListByVolumeGroupPager("resourcegroupname", "elasticsanname", "volumegroupname", &armelasticsan.VolumesClientListByVolumeGroupOptions{
+		XMSAccessSoftDeletedResources: to.Ptr(armelasticsan.XMSAccessSoftDeletedResourcesTrue)})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -400,7 +440,7 @@ func ExampleVolumesClient_NewListByVolumeGroupPager_volumesListByVolumeGroupMini
 	}
 }
 
-// Generated from example definition: 2025-09-01/Volumes_PreBackup_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/Volumes_PreBackup_MaximumSet_Gen.json
 func ExampleVolumesClient_BeginPreBackup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -433,7 +473,7 @@ func ExampleVolumesClient_BeginPreBackup() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/Volumes_PreRestore_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/Volumes_PreRestore_MaximumSet_Gen.json
 func ExampleVolumesClient_BeginPreRestore() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -466,7 +506,7 @@ func ExampleVolumesClient_BeginPreRestore() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/Volumes_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/Volumes_Update_MaximumSet_Gen.json
 func ExampleVolumesClient_BeginUpdate_volumesUpdateMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -479,8 +519,14 @@ func ExampleVolumesClient_BeginUpdate_volumesUpdateMaximumSetGen() {
 	}
 	poller, err := clientFactory.NewVolumesClient().BeginUpdate(ctx, "resourcegroupname", "elasticsanname", "volumegroupname", "volumename", armelasticsan.VolumeUpdate{
 		Properties: &armelasticsan.VolumeUpdateProperties{
-			ManagedBy: &armelasticsan.ManagedByInfo{
-				ResourceID: to.Ptr("pclpkrpkpmvcsegcubrakcoodrubo"),
+			ManagedBy: []*armelasticsan.ManagedByResources{
+				{
+					ClientID: to.Ptr("pclpkrpkpmvcsegcubrakcoodrubo"),
+					Version:  to.Ptr[int32](1),
+					ResourceIDs: []*string{
+						to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.SomeProvider/someResource/myResource"),
+					},
+				},
 			},
 			SizeGiB: to.Ptr[int64](7),
 		},
@@ -505,8 +551,14 @@ func ExampleVolumesClient_BeginUpdate_volumesUpdateMaximumSetGen() {
 	// 				CreateSource: to.Ptr(armelasticsan.VolumeCreateOptionNone),
 	// 				SourceID: to.Ptr("mdonegivjquite"),
 	// 			},
-	// 			ManagedBy: &armelasticsan.ManagedByInfo{
-	// 				ResourceID: to.Ptr("pclpkrpkpmvcsegcubrakcoodrubo"),
+	// 			ManagedBy: []*armelasticsan.ManagedByResources{
+	// 				{
+	// 					ClientID: to.Ptr("pclpkrpkpmvcsegcubrakcoodrubo"),
+	// 					Version: to.Ptr[int32](1),
+	// 					ResourceIDs: []*string{
+	// 						to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.SomeProvider/someResource/myResource"),
+	// 					},
+	// 				},
 	// 			},
 	// 			ProvisioningState: to.Ptr(armelasticsan.ProvisioningStatesInvalid),
 	// 			SizeGiB: to.Ptr[int64](23),
@@ -531,7 +583,7 @@ func ExampleVolumesClient_BeginUpdate_volumesUpdateMaximumSetGen() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/Volumes_Update_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/Volumes_Update_MinimumSet_Gen.json
 func ExampleVolumesClient_BeginUpdate_volumesUpdateMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -563,8 +615,14 @@ func ExampleVolumesClient_BeginUpdate_volumesUpdateMinimumSetGen() {
 	// 				CreateSource: to.Ptr(armelasticsan.VolumeCreateOptionNone),
 	// 				SourceID: to.Ptr("ARM Id of Resource"),
 	// 			},
-	// 			ManagedBy: &armelasticsan.ManagedByInfo{
-	// 				ResourceID: to.Ptr("mtkeip"),
+	// 			ManagedBy: []*armelasticsan.ManagedByResources{
+	// 				{
+	// 					ClientID: to.Ptr("pclpkrpkpmvcsegcubrakcoodrubo"),
+	// 					Version: to.Ptr[int32](1),
+	// 					ResourceIDs: []*string{
+	// 						to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.SomeProvider/someResource/myResource"),
+	// 					},
+	// 				},
 	// 			},
 	// 			ProvisioningState: to.Ptr(armelasticsan.ProvisioningStatesInvalid),
 	// 			SizeGiB: to.Ptr[int64](9),

@@ -153,6 +153,9 @@ type Backup struct {
 	// Indicates if the server is configured to create geographically redundant backups.
 	GeoRedundantBackup *GeographicallyRedundantBackup
 
+	// Indicates if the server is configured to create immutable backups.
+	ImmutableBackup *ImmutableBackup
+
 	// READ-ONLY; Earliest restore point time (ISO8601 format) for a server.
 	EarliestRestoreDate *time.Time
 }
@@ -200,6 +203,9 @@ type BackupAutomaticAndOnDemandProperties struct {
 type BackupForPatch struct {
 	// Backup retention days for the server.
 	BackupRetentionDays *int32
+
+	// Indicates if the server is configured to create immutable backups.
+	ImmutableBackup *ImmutableBackup
 
 	// READ-ONLY; Earliest restore point time (ISO8601 format) for a server.
 	EarliestRestoreDate *time.Time
@@ -586,6 +592,57 @@ type DatabaseProperties struct {
 
 	// Collation of the database.
 	Collation *string
+}
+
+// DbAgent - The database agent configuration for a PostgreSQL flexible server.
+type DbAgent struct {
+	// The resource-specific properties for this resource.
+	Properties *DbAgentProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// DbAgentForUpdate - A request to enable or disable the database agent.
+type DbAgentForUpdate struct {
+	// REQUIRED; The requested database agent properties.
+	Properties *DbAgentForUpdateProperties
+}
+
+// DbAgentForUpdateProperties - Writable properties of the database agent configuration.
+type DbAgentForUpdateProperties struct {
+	// REQUIRED; The requested state of the database agent.
+	State *DbAgentForUpdateState
+}
+
+// DbAgentListResult - The response of a DbAgent list operation.
+type DbAgentListResult struct {
+	// REQUIRED; The DbAgent items on this page
+	Value []*DbAgent
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// DbAgentProperties - Properties of the database agent configuration.
+type DbAgentProperties struct {
+	// READ-ONLY; The state of the database agent.
+	State *DbAgentState
+
+	// READ-ONLY; The time when the database agent configuration was last modified.
+	LastModifiedTime *time.Time
+
+	// READ-ONLY; The provisioning state of the database agent resource.
+	ProvisioningState *DbAgentProvisioningState
 }
 
 // DbLevelValidationStatus - Validation status summary for a database.
@@ -1782,6 +1839,10 @@ type ServerProperties struct {
 	// Data encryption properties of a server.
 	DataEncryption *DataEncryption
 
+	// Indicates if FIPS (Federal Information Processing Standards) mode is enabled on the server. If not specified on create,
+	// it defaults to Disabled.
+	FipsMode *FipsMode
+
 	// High availability properties of a server.
 	HighAvailability *HighAvailability
 
@@ -1852,6 +1913,10 @@ type ServerPropertiesForPatch struct {
 	// Data encryption properties of a server.
 	DataEncryption *DataEncryption
 
+	// Indicates if FIPS (Federal Information Processing Standards) mode is enabled on the server. If not specified, the current
+	// value is preserved.
+	FipsMode *FipsMode
+
 	// High availability properties of a server.
 	HighAvailability *HighAvailabilityForPatch
 
@@ -1867,6 +1932,9 @@ type ServerPropertiesForPatch struct {
 
 	// Role of the server in a replication set.
 	ReplicationRole *ReplicationRole
+
+	// Identifier of the server to be used as the source of the new server.
+	SourceServerResourceID *string
 
 	// Storage properties of a server.
 	Storage *Storage
@@ -1973,6 +2041,14 @@ type Storage struct {
 	// Flag to enable or disable the automatic growth of storage size of a server when available space is nearing zero and conditions
 	// allow for automatically growing storage size.
 	AutoGrow *StorageAutoGrow
+
+	// Storage autogrow increment as a percentage of the current allocated storage size. This value is not an absolute size increment
+	// or a utilization threshold.
+	AutoGrowIncrementPercent *int32
+
+	// Maximum allocated storage size to which storage autogrow may grow, in MB. This value is not a disk-utilization trigger
+	// threshold and must be at least the effective current or requested storage size. Storage conversion uses 1 GB = 1,024 MB.
+	AutoGrowMaxThresholdMb *int32
 
 	// Maximum IOPS supported for storage. Required when type of storage is PremiumV2_LRS or UltraSSD_LRS.
 	Iops *int32

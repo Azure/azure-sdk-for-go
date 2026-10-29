@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01-preview/SearchGetAdminKeys.json
+// Generated from example definition: 2026-09-01-preview/SearchGetAdminKeys.json
 func ExampleAdminKeysClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -37,7 +37,7 @@ func ExampleAdminKeysClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/SearchRegenerateAdminKey.json
+// Generated from example definition: 2026-09-01-preview/SearchRegenerateAdminKey.json
 func ExampleAdminKeysClient_Regenerate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

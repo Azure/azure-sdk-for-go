@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-06-01/AutoUpgradeProfiles_CreateOrUpdate.json
+// Generated from example definition: 2026-06-02-preview/AutoUpgradeProfiles_CreateOrUpdate.json
 func ExampleAutoUpgradeProfilesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -72,7 +72,7 @@ func ExampleAutoUpgradeProfilesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01/AutoUpgradeProfiles_Delete.json
+// Generated from example definition: 2026-06-02-preview/AutoUpgradeProfiles_Delete.json
 func ExampleAutoUpgradeProfilesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -93,7 +93,7 @@ func ExampleAutoUpgradeProfilesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-06-01/AutoUpgradeProfiles_Get.json
+// Generated from example definition: 2026-06-02-preview/AutoUpgradeProfiles_Get.json
 func ExampleAutoUpgradeProfilesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -138,7 +138,7 @@ func ExampleAutoUpgradeProfilesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01/AutoUpgradeProfiles_ListByFleet.json
+// Generated from example definition: 2026-06-02-preview/AutoUpgradeProfiles_ListByFleet.json
 func ExampleAutoUpgradeProfilesClient_NewListByFleetPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

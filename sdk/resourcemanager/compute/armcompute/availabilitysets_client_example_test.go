@@ -8,26 +8,9 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v8"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v9"
 	"log"
 )
-
-// Generated from example definition: 2026-04-01/availabilitySetExamples/AvailabilitySet_CancelMigrationToVirtualMachineScaleSet.json
-func ExampleAvailabilitySetsClient_CancelMigrationToVirtualMachineScaleSet() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	_, err = clientFactory.NewAvailabilitySetsClient().CancelMigrationToVirtualMachineScaleSet(ctx, "rgcompute", "myAvailabilitySet", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-}
 
 // Generated from example definition: 2026-04-01/availabilitySetExamples/AvailabilitySet_ConvertToVirtualMachineScaleSet.json
 func ExampleAvailabilitySetsClient_BeginConvertToVirtualMachineScaleSet() {
@@ -50,6 +33,23 @@ func ExampleAvailabilitySetsClient_BeginConvertToVirtualMachineScaleSet() {
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-04-01/availabilitySetExamples/AvailabilitySet_CancelMigrationToVirtualMachineScaleSet.json
+func ExampleAvailabilitySetsClient_CancelMigrationToVirtualMachineScaleSet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	_, err = clientFactory.NewAvailabilitySetsClient().CancelMigrationToVirtualMachineScaleSet(ctx, "rgcompute", "myAvailabilitySet", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
@@ -319,6 +319,186 @@ func ExampleAvailabilitySetsClient_Get_availabilitySetGetMinimumSetGen() {
 	// }
 }
 
+// Generated from example definition: 2026-04-01/availabilitySetExamples/AvailabilitySet_ListAvailableSizes_MaximumSet_Gen.json
+func ExampleAvailabilitySetsClient_NewListAvailableSizesPager_availabilitySetListAvailableSizesMaximumSetGen() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewAvailabilitySetsClient().NewListAvailableSizesPager("rgcompute", "aaaaaaaaaaaaaaaaaaaa", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armcompute.AvailabilitySetsClientListAvailableSizesResponse{
+		// 	VirtualMachineSizeListResult: armcompute.VirtualMachineSizeListResult{
+		// 		Value: []*armcompute.VirtualMachineSize{
+		// 			{
+		// 				Name: to.Ptr("Standard_A1_V2"),
+		// 				NumberOfCores: to.Ptr[int32](1),
+		// 				OSDiskSizeInMB: to.Ptr[int32](1047552),
+		// 				ResourceDiskSizeInMB: to.Ptr[int32](10240),
+		// 				MemoryInMB: to.Ptr[int32](2048),
+		// 				MaxDataDiskCount: to.Ptr[int32](2),
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("Standard_A2_V2"),
+		// 				NumberOfCores: to.Ptr[int32](2),
+		// 				OSDiskSizeInMB: to.Ptr[int32](1047552),
+		// 				ResourceDiskSizeInMB: to.Ptr[int32](20480),
+		// 				MemoryInMB: to.Ptr[int32](4096),
+		// 				MaxDataDiskCount: to.Ptr[int32](4),
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-04-01/availabilitySetExamples/AvailabilitySet_ListAvailableSizes_MinimumSet_Gen.json
+func ExampleAvailabilitySetsClient_NewListAvailableSizesPager_availabilitySetListAvailableSizesMinimumSetGen() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewAvailabilitySetsClient().NewListAvailableSizesPager("rgcompute", "aa", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armcompute.AvailabilitySetsClientListAvailableSizesResponse{
+		// 	VirtualMachineSizeListResult: armcompute.VirtualMachineSizeListResult{
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-04-01/availabilitySetExamples/AvailabilitySet_ListBySubscription.json
+func ExampleAvailabilitySetsClient_NewListBySubscriptionPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("{subscriptionId}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewAvailabilitySetsClient().NewListBySubscriptionPager(&armcompute.AvailabilitySetsClientListBySubscriptionOptions{
+		Expand: to.Ptr("virtualMachines\\$ref")})
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armcompute.AvailabilitySetsClientListBySubscriptionResponse{
+		// 	AvailabilitySetListResult: armcompute.AvailabilitySetListResult{
+		// 		Value: []*armcompute.AvailabilitySet{
+		// 			{
+		// 				Name: to.Ptr("{availabilitySetName}"),
+		// 				ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
+		// 				Type: to.Ptr("Microsoft.Compute/availabilitySets"),
+		// 				Location: to.Ptr("australiasoutheast"),
+		// 				Properties: &armcompute.AvailabilitySetProperties{
+		// 					PlatformUpdateDomainCount: to.Ptr[int32](5),
+		// 					PlatformFaultDomainCount: to.Ptr[int32](3),
+		// 					VirtualMachines: []*armcompute.SubResource{
+		// 						{
+		// 							ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}"),
+		// 						},
+		// 					},
+		// 				},
+		// 				SKU: &armcompute.SKU{
+		// 					Name: to.Ptr("Classic"),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("{availabilitySetName}"),
+		// 				ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
+		// 				Type: to.Ptr("Microsoft.Compute/availabilitySets"),
+		// 				Location: to.Ptr("australiasoutheast"),
+		// 				Properties: &armcompute.AvailabilitySetProperties{
+		// 					PlatformUpdateDomainCount: to.Ptr[int32](5),
+		// 					PlatformFaultDomainCount: to.Ptr[int32](3),
+		// 					VirtualMachines: []*armcompute.SubResource{
+		// 						{
+		// 							ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}"),
+		// 						},
+		// 					},
+		// 				},
+		// 				SKU: &armcompute.SKU{
+		// 					Name: to.Ptr("Classic"),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("{availabilitySetName}"),
+		// 				ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
+		// 				Type: to.Ptr("Microsoft.Compute/availabilitySets"),
+		// 				Location: to.Ptr("westcentralus"),
+		// 				Tags: map[string]*string{
+		// 					"{tagName}": to.Ptr("{tagValue}"),
+		// 				},
+		// 				Properties: &armcompute.AvailabilitySetProperties{
+		// 					PlatformUpdateDomainCount: to.Ptr[int32](5),
+		// 					PlatformFaultDomainCount: to.Ptr[int32](3),
+		// 					VirtualMachines: []*armcompute.SubResource{
+		// 					},
+		// 				},
+		// 				SKU: &armcompute.SKU{
+		// 					Name: to.Ptr("Classic"),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("{availabilitySetName}"),
+		// 				ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
+		// 				Type: to.Ptr("Microsoft.Compute/availabilitySets"),
+		// 				Location: to.Ptr("westcentralus"),
+		// 				Tags: map[string]*string{
+		// 					"{tagName}": to.Ptr("{tagValue}"),
+		// 				},
+		// 				Properties: &armcompute.AvailabilitySetProperties{
+		// 					PlatformUpdateDomainCount: to.Ptr[int32](5),
+		// 					PlatformFaultDomainCount: to.Ptr[int32](3),
+		// 					VirtualMachines: []*armcompute.SubResource{
+		// 					},
+		// 				},
+		// 				SKU: &armcompute.SKU{
+		// 					Name: to.Ptr("Classic"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
 // Generated from example definition: 2026-04-01/availabilitySetExamples/AvailabilitySet_List_MaximumSet_Gen.json
 func ExampleAvailabilitySetsClient_NewListPager_availabilitySetListMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -523,186 +703,6 @@ func ExampleAvailabilitySetsClient_NewListPager_availabilitySetListMinimumSetGen
 		// 			{
 		// 				Location: to.Ptr("westcentralus"),
 		// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/rgcompute/providers/Microsoft.Compute/availabilitySets/myAvailabilitySet4"),
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-04-01/availabilitySetExamples/AvailabilitySet_ListAvailableSizes_MaximumSet_Gen.json
-func ExampleAvailabilitySetsClient_NewListAvailableSizesPager_availabilitySetListAvailableSizesMaximumSetGen() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewAvailabilitySetsClient().NewListAvailableSizesPager("rgcompute", "aaaaaaaaaaaaaaaaaaaa", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcompute.AvailabilitySetsClientListAvailableSizesResponse{
-		// 	VirtualMachineSizeListResult: armcompute.VirtualMachineSizeListResult{
-		// 		Value: []*armcompute.VirtualMachineSize{
-		// 			{
-		// 				Name: to.Ptr("Standard_A1_V2"),
-		// 				NumberOfCores: to.Ptr[int32](1),
-		// 				OSDiskSizeInMB: to.Ptr[int32](1047552),
-		// 				ResourceDiskSizeInMB: to.Ptr[int32](10240),
-		// 				MemoryInMB: to.Ptr[int32](2048),
-		// 				MaxDataDiskCount: to.Ptr[int32](2),
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("Standard_A2_V2"),
-		// 				NumberOfCores: to.Ptr[int32](2),
-		// 				OSDiskSizeInMB: to.Ptr[int32](1047552),
-		// 				ResourceDiskSizeInMB: to.Ptr[int32](20480),
-		// 				MemoryInMB: to.Ptr[int32](4096),
-		// 				MaxDataDiskCount: to.Ptr[int32](4),
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-04-01/availabilitySetExamples/AvailabilitySet_ListAvailableSizes_MinimumSet_Gen.json
-func ExampleAvailabilitySetsClient_NewListAvailableSizesPager_availabilitySetListAvailableSizesMinimumSetGen() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewAvailabilitySetsClient().NewListAvailableSizesPager("rgcompute", "aa", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcompute.AvailabilitySetsClientListAvailableSizesResponse{
-		// 	VirtualMachineSizeListResult: armcompute.VirtualMachineSizeListResult{
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-04-01/availabilitySetExamples/AvailabilitySet_ListBySubscription.json
-func ExampleAvailabilitySetsClient_NewListBySubscriptionPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("{subscriptionId}", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewAvailabilitySetsClient().NewListBySubscriptionPager(&armcompute.AvailabilitySetsClientListBySubscriptionOptions{
-		Expand: to.Ptr("virtualMachines\\$ref")})
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcompute.AvailabilitySetsClientListBySubscriptionResponse{
-		// 	AvailabilitySetListResult: armcompute.AvailabilitySetListResult{
-		// 		Value: []*armcompute.AvailabilitySet{
-		// 			{
-		// 				Name: to.Ptr("{availabilitySetName}"),
-		// 				ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
-		// 				Type: to.Ptr("Microsoft.Compute/availabilitySets"),
-		// 				Location: to.Ptr("australiasoutheast"),
-		// 				Properties: &armcompute.AvailabilitySetProperties{
-		// 					PlatformUpdateDomainCount: to.Ptr[int32](5),
-		// 					PlatformFaultDomainCount: to.Ptr[int32](3),
-		// 					VirtualMachines: []*armcompute.SubResource{
-		// 						{
-		// 							ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}"),
-		// 						},
-		// 					},
-		// 				},
-		// 				SKU: &armcompute.SKU{
-		// 					Name: to.Ptr("Classic"),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("{availabilitySetName}"),
-		// 				ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
-		// 				Type: to.Ptr("Microsoft.Compute/availabilitySets"),
-		// 				Location: to.Ptr("australiasoutheast"),
-		// 				Properties: &armcompute.AvailabilitySetProperties{
-		// 					PlatformUpdateDomainCount: to.Ptr[int32](5),
-		// 					PlatformFaultDomainCount: to.Ptr[int32](3),
-		// 					VirtualMachines: []*armcompute.SubResource{
-		// 						{
-		// 							ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}"),
-		// 						},
-		// 					},
-		// 				},
-		// 				SKU: &armcompute.SKU{
-		// 					Name: to.Ptr("Classic"),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("{availabilitySetName}"),
-		// 				ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
-		// 				Type: to.Ptr("Microsoft.Compute/availabilitySets"),
-		// 				Location: to.Ptr("westcentralus"),
-		// 				Tags: map[string]*string{
-		// 					"{tagName}": to.Ptr("{tagValue}"),
-		// 				},
-		// 				Properties: &armcompute.AvailabilitySetProperties{
-		// 					PlatformUpdateDomainCount: to.Ptr[int32](5),
-		// 					PlatformFaultDomainCount: to.Ptr[int32](3),
-		// 					VirtualMachines: []*armcompute.SubResource{
-		// 					},
-		// 				},
-		// 				SKU: &armcompute.SKU{
-		// 					Name: to.Ptr("Classic"),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("{availabilitySetName}"),
-		// 				ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
-		// 				Type: to.Ptr("Microsoft.Compute/availabilitySets"),
-		// 				Location: to.Ptr("westcentralus"),
-		// 				Tags: map[string]*string{
-		// 					"{tagName}": to.Ptr("{tagValue}"),
-		// 				},
-		// 				Properties: &armcompute.AvailabilitySetProperties{
-		// 					PlatformUpdateDomainCount: to.Ptr[int32](5),
-		// 					PlatformFaultDomainCount: to.Ptr[int32](3),
-		// 					VirtualMachines: []*armcompute.SubResource{
-		// 					},
-		// 				},
-		// 				SKU: &armcompute.SKU{
-		// 					Name: to.Ptr("Classic"),
-		// 				},
 		// 			},
 		// 		},
 		// 	},

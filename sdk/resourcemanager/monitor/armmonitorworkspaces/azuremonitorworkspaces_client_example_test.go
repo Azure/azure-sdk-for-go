@@ -12,7 +12,28 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-10-03/AzureMonitorWorkspaces_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-03-preview/AzureMonitorWorkspaces_Delete_MaximumSet_Gen.json
+func ExampleAzureMonitorWorkspacesClient_BeginDelete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmonitorworkspaces.NewClientFactory("703362b3-f278-4e4b-9179-c76eaf41ffc2", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewAzureMonitorWorkspacesClient().BeginDelete(ctx, "rgazuremonitorworkspace", "myAzureMonitorWorkspace", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-09-03-preview/AzureMonitorWorkspaces_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleAzureMonitorWorkspacesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,11 +51,15 @@ func ExampleAzureMonitorWorkspacesClient_CreateOrUpdate() {
 				EnableAccessUsingResourcePermissions: to.Ptr(true),
 			},
 			PublicNetworkAccess: to.Ptr(armmonitorworkspaces.PublicNetworkAccessEnabled),
+			Actions: &armmonitorworkspaces.AzureMonitorWorkspaceActions{
+				DefaultActionGroups: []*armmonitorworkspaces.DefaultActionGroupResource{
+					{
+						ID: to.Ptr("/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/myResourceGroup/providers/Microsoft.Insights/actionGroups/defaultActionGroup"),
+					},
+				},
+			},
 		},
 		Tags: map[string]*string{},
-		Identity: &armmonitorworkspaces.ManagedServiceIdentity{
-			Type: to.Ptr(armmonitorworkspaces.ManagedServiceIdentityTypeSystemAssigned),
-		},
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -91,13 +116,18 @@ func ExampleAzureMonitorWorkspacesClient_CreateOrUpdate() {
 	// 					},
 	// 				},
 	// 			},
+	// 			Endpoints: &armmonitorworkspaces.AzureMonitorWorkspaceEndpoints{
+	// 				Query: to.Ptr("https://myAzureMonitorWorkspace.eastus.data.monitor.azure.com"),
+	// 			},
+	// 			Actions: &armmonitorworkspaces.AzureMonitorWorkspaceActions{
+	// 				DefaultActionGroups: []*armmonitorworkspaces.DefaultActionGroupResource{
+	// 					{
+	// 						ID: to.Ptr("/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/myResourceGroup/providers/Microsoft.Insights/actionGroups/defaultActionGroup"),
+	// 					},
+	// 				},
+	// 			},
 	// 		},
 	// 		Tags: map[string]*string{
-	// 		},
-	// 		Identity: &armmonitorworkspaces.ManagedServiceIdentity{
-	// 			Type: to.Ptr(armmonitorworkspaces.ManagedServiceIdentityTypeSystemAssigned),
-	// 			PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-	// 			TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 		},
 	// 		ID: to.Ptr("/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/myResourceGroup/providers/Microsoft.Monitor/accounts/myAzureMonitorWorkspace"),
 	// 		Name: to.Ptr("myAzureMonitorWorkspace"),
@@ -115,28 +145,7 @@ func ExampleAzureMonitorWorkspacesClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-10-03/AzureMonitorWorkspaces_Delete_MaximumSet_Gen.json
-func ExampleAzureMonitorWorkspacesClient_BeginDelete() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmonitorworkspaces.NewClientFactory("703362b3-f278-4e4b-9179-c76eaf41ffc2", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewAzureMonitorWorkspacesClient().BeginDelete(ctx, "rgazuremonitorworkspace", "myAzureMonitorWorkspace", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2025-10-03/AzureMonitorWorkspaces_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-03-preview/AzureMonitorWorkspaces_Get_MaximumSet_Gen.json
 func ExampleAzureMonitorWorkspacesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -203,15 +212,20 @@ func ExampleAzureMonitorWorkspacesClient_Get() {
 	// 				},
 	// 			},
 	// 			PublicNetworkAccess: to.Ptr(armmonitorworkspaces.PublicNetworkAccessEnabled),
+	// 			Endpoints: &armmonitorworkspaces.AzureMonitorWorkspaceEndpoints{
+	// 				Query: to.Ptr("https://myAzureMonitorWorkspace.eastus.data.monitor.azure.com"),
+	// 			},
+	// 			Actions: &armmonitorworkspaces.AzureMonitorWorkspaceActions{
+	// 				DefaultActionGroups: []*armmonitorworkspaces.DefaultActionGroupResource{
+	// 					{
+	// 						ID: to.Ptr("/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/myResourceGroup/providers/Microsoft.Insights/actionGroups/defaultActionGroup"),
+	// 					},
+	// 				},
+	// 			},
 	// 		},
 	// 		Tags: map[string]*string{
 	// 			"key1693": to.Ptr("xkjnypgoxx"),
 	// 			"key4981": to.Ptr("akpkhqbugamcavvmdqevahsnqebh"),
-	// 		},
-	// 		Identity: &armmonitorworkspaces.ManagedServiceIdentity{
-	// 			Type: to.Ptr(armmonitorworkspaces.ManagedServiceIdentityTypeSystemAssigned),
-	// 			PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-	// 			TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 		},
 	// 		ID: to.Ptr("/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/myResourceGroup/providers/Microsoft.Monitor/accounts/myAzureMonitorWorkspace"),
 	// 		Name: to.Ptr("myAzureMonitorWorkspace"),
@@ -229,7 +243,7 @@ func ExampleAzureMonitorWorkspacesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-10-03/AzureMonitorWorkspaces_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-03-preview/AzureMonitorWorkspaces_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleAzureMonitorWorkspacesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -305,6 +319,16 @@ func ExampleAzureMonitorWorkspacesClient_NewListByResourceGroupPager() {
 		// 						},
 		// 					},
 		// 					PublicNetworkAccess: to.Ptr(armmonitorworkspaces.PublicNetworkAccessEnabled),
+		// 					Endpoints: &armmonitorworkspaces.AzureMonitorWorkspaceEndpoints{
+		// 						Query: to.Ptr("https://myAzureMonitorWorkspace.eastus.data.monitor.azure.com"),
+		// 					},
+		// 					Actions: &armmonitorworkspaces.AzureMonitorWorkspaceActions{
+		// 						DefaultActionGroups: []*armmonitorworkspaces.DefaultActionGroupResource{
+		// 							{
+		// 								ID: to.Ptr("/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/myResourceGroup/providers/Microsoft.Insights/actionGroups/defaultActionGroup"),
+		// 							},
+		// 						},
+		// 					},
 		// 				},
 		// 				SystemData: &armmonitorworkspaces.SystemData{
 		// 					CreatedBy: to.Ptr("user1"),
@@ -316,11 +340,6 @@ func ExampleAzureMonitorWorkspacesClient_NewListByResourceGroupPager() {
 		// 				},
 		// 				Tags: map[string]*string{
 		// 					"key4981": to.Ptr("akpkhqbugamcavvmdqevahsnqebh"),
-		// 				},
-		// 				Identity: &armmonitorworkspaces.ManagedServiceIdentity{
-		// 					Type: to.Ptr(armmonitorworkspaces.ManagedServiceIdentityTypeSystemAssigned),
-		// 					PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 					TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 				},
 		// 				Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 			},
@@ -375,6 +394,16 @@ func ExampleAzureMonitorWorkspacesClient_NewListByResourceGroupPager() {
 		// 						},
 		// 					},
 		// 					PublicNetworkAccess: to.Ptr(armmonitorworkspaces.PublicNetworkAccessEnabled),
+		// 					Endpoints: &armmonitorworkspaces.AzureMonitorWorkspaceEndpoints{
+		// 						Query: to.Ptr("https://myAzureMonitorWorkspace.eastus.data.monitor.azure.com"),
+		// 					},
+		// 					Actions: &armmonitorworkspaces.AzureMonitorWorkspaceActions{
+		// 						DefaultActionGroups: []*armmonitorworkspaces.DefaultActionGroupResource{
+		// 							{
+		// 								ID: to.Ptr("/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/myResourceGroup/providers/Microsoft.Insights/actionGroups/defaultActionGroup"),
+		// 							},
+		// 						},
+		// 					},
 		// 				},
 		// 				SystemData: &armmonitorworkspaces.SystemData{
 		// 					CreatedBy: to.Ptr("user1"),
@@ -387,11 +416,6 @@ func ExampleAzureMonitorWorkspacesClient_NewListByResourceGroupPager() {
 		// 				Tags: map[string]*string{
 		// 					"key583": to.Ptr("deudtkpbrajjhz"),
 		// 				},
-		// 				Identity: &armmonitorworkspaces.ManagedServiceIdentity{
-		// 					Type: to.Ptr(armmonitorworkspaces.ManagedServiceIdentityTypeSystemAssigned),
-		// 					PrincipalID: to.Ptr("11111111-1111-1111-1111-111111111111"),
-		// 					TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				},
 		// 				Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 			},
 		// 		},
@@ -401,7 +425,7 @@ func ExampleAzureMonitorWorkspacesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-10-03/AzureMonitorWorkspaces_ListBySubscription_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-03-preview/AzureMonitorWorkspaces_ListBySubscription_MaximumSet_Gen.json
 func ExampleAzureMonitorWorkspacesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -477,6 +501,16 @@ func ExampleAzureMonitorWorkspacesClient_NewListBySubscriptionPager() {
 		// 						},
 		// 					},
 		// 					PublicNetworkAccess: to.Ptr(armmonitorworkspaces.PublicNetworkAccessEnabled),
+		// 					Endpoints: &armmonitorworkspaces.AzureMonitorWorkspaceEndpoints{
+		// 						Query: to.Ptr("https://myAzureMonitorWorkspace.eastus.data.monitor.azure.com"),
+		// 					},
+		// 					Actions: &armmonitorworkspaces.AzureMonitorWorkspaceActions{
+		// 						DefaultActionGroups: []*armmonitorworkspaces.DefaultActionGroupResource{
+		// 							{
+		// 								ID: to.Ptr("/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/myResourceGroup/providers/Microsoft.Insights/actionGroups/defaultActionGroup"),
+		// 							},
+		// 						},
+		// 					},
 		// 				},
 		// 				SystemData: &armmonitorworkspaces.SystemData{
 		// 					CreatedBy: to.Ptr("user1"),
@@ -488,11 +522,6 @@ func ExampleAzureMonitorWorkspacesClient_NewListBySubscriptionPager() {
 		// 				},
 		// 				Tags: map[string]*string{
 		// 					"key4981": to.Ptr("akpkhqbugamcavvmdqevahsnqebh"),
-		// 				},
-		// 				Identity: &armmonitorworkspaces.ManagedServiceIdentity{
-		// 					Type: to.Ptr(armmonitorworkspaces.ManagedServiceIdentityTypeSystemAssigned),
-		// 					PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 					TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 				},
 		// 				Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 			},
@@ -547,6 +576,16 @@ func ExampleAzureMonitorWorkspacesClient_NewListBySubscriptionPager() {
 		// 						},
 		// 					},
 		// 					PublicNetworkAccess: to.Ptr(armmonitorworkspaces.PublicNetworkAccessEnabled),
+		// 					Endpoints: &armmonitorworkspaces.AzureMonitorWorkspaceEndpoints{
+		// 						Query: to.Ptr("https://myAzureMonitorWorkspace.eastus.data.monitor.azure.com"),
+		// 					},
+		// 					Actions: &armmonitorworkspaces.AzureMonitorWorkspaceActions{
+		// 						DefaultActionGroups: []*armmonitorworkspaces.DefaultActionGroupResource{
+		// 							{
+		// 								ID: to.Ptr("/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/myResourceGroup/providers/Microsoft.Insights/actionGroups/defaultActionGroup"),
+		// 							},
+		// 						},
+		// 					},
 		// 				},
 		// 				SystemData: &armmonitorworkspaces.SystemData{
 		// 					CreatedBy: to.Ptr("user1"),
@@ -559,11 +598,6 @@ func ExampleAzureMonitorWorkspacesClient_NewListBySubscriptionPager() {
 		// 				Tags: map[string]*string{
 		// 					"key583": to.Ptr("deudtkpbrajjhz"),
 		// 				},
-		// 				Identity: &armmonitorworkspaces.ManagedServiceIdentity{
-		// 					Type: to.Ptr(armmonitorworkspaces.ManagedServiceIdentityTypeSystemAssigned),
-		// 					PrincipalID: to.Ptr("11111111-1111-1111-1111-111111111111"),
-		// 					TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				},
 		// 				Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 			},
 		// 		},
@@ -573,7 +607,7 @@ func ExampleAzureMonitorWorkspacesClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2025-10-03/AzureMonitorWorkspaces_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-03-preview/AzureMonitorWorkspaces_Update_MaximumSet_Gen.json
 func ExampleAzureMonitorWorkspacesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -586,12 +620,6 @@ func ExampleAzureMonitorWorkspacesClient_Update() {
 	}
 	res, err := clientFactory.NewAzureMonitorWorkspacesClient().Update(ctx, "rgazuremonitorworkspace", "myAzureMonitorWorkspace", armmonitorworkspaces.AzureMonitorWorkspaceResourceUpdate{
 		Tags: map[string]*string{},
-		Properties: &armmonitorworkspaces.AzureMonitorWorkspace{
-			PublicNetworkAccess: to.Ptr(armmonitorworkspaces.PublicNetworkAccessEnabled),
-			Metrics: &armmonitorworkspaces.AzureMonitorWorkspaceMetrics{
-				EnableAccessUsingResourcePermissions: to.Ptr(true),
-			},
-		},
 		Identity: &armmonitorworkspaces.ManagedServiceIdentity{
 			Type: to.Ptr(armmonitorworkspaces.ManagedServiceIdentityTypeSystemAssigned),
 		},
@@ -651,15 +679,20 @@ func ExampleAzureMonitorWorkspacesClient_Update() {
 	// 				},
 	// 			},
 	// 			PublicNetworkAccess: to.Ptr(armmonitorworkspaces.PublicNetworkAccessEnabled),
+	// 			Endpoints: &armmonitorworkspaces.AzureMonitorWorkspaceEndpoints{
+	// 				Query: to.Ptr("https://myAzureMonitorWorkspace.eastus.data.monitor.azure.com"),
+	// 			},
+	// 			Actions: &armmonitorworkspaces.AzureMonitorWorkspaceActions{
+	// 				DefaultActionGroups: []*armmonitorworkspaces.DefaultActionGroupResource{
+	// 					{
+	// 						ID: to.Ptr("/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/myResourceGroup/providers/Microsoft.Insights/actionGroups/defaultActionGroup"),
+	// 					},
+	// 				},
+	// 			},
 	// 		},
 	// 		Tags: map[string]*string{
 	// 			"key1693": to.Ptr("xkjnypgoxx"),
 	// 			"key4981": to.Ptr("akpkhqbugamcavvmdqevahsnqebh"),
-	// 		},
-	// 		Identity: &armmonitorworkspaces.ManagedServiceIdentity{
-	// 			Type: to.Ptr(armmonitorworkspaces.ManagedServiceIdentityTypeSystemAssigned),
-	// 			PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-	// 			TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 		},
 	// 		ID: to.Ptr("/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/myResourceGroup/providers/Microsoft.Monitor/accounts/myAzureMonitorWorkspace"),
 	// 		Name: to.Ptr("myAzureMonitorWorkspace"),

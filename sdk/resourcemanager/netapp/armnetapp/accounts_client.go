@@ -19,7 +19,7 @@ import (
 // AccountsClient contains the methods for the Accounts group.
 // Don't use this type directly, use NewAccountsClient() instead.
 //
-// Generated from API version 2026-06-15-preview
+// Generated from API version 2026-08-01
 type AccountsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -68,7 +68,7 @@ func (client *AccountsClient) BeginChangeKeyVault(ctx context.Context, resourceG
 	}
 }
 
-// ChangeKeyVault - Affects existing volumes that are encrypted with Key Vault/Managed HSM, and new volumes. Supports HSM
+// changeKeyVault - Affects existing volumes that are encrypted with Key Vault/Managed HSM, and new volumes. Supports HSM
 // to Key Vault, Key Vault to HSM, HSM to HSM and Key Vault to Key Vault.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AccountsClient) changeKeyVault(ctx context.Context, resourceGroupName string, accountName string, options *AccountsClientBeginChangeKeyVaultOptions) (*http.Response, error) {
@@ -91,7 +91,7 @@ func (client *AccountsClient) changeKeyVault(ctx context.Context, resourceGroupN
 	return httpResp, nil
 }
 
-// changeKeyVaultCreateRequest creates the ChangeKeyVault request.
+// changeKeyVaultCreateRequest creates the changeKeyVault request.
 func (client *AccountsClient) changeKeyVaultCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *AccountsClientBeginChangeKeyVaultOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/changeKeyVault"
 	if client.subscriptionID == "" {
@@ -111,7 +111,7 @@ func (client *AccountsClient) changeKeyVaultCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260615Preview)
+	reqQP.Set("api-version", version20260801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.Body != nil {
 		req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -147,7 +147,7 @@ func (client *AccountsClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 	}
 }
 
-// CreateOrUpdate - Create or update the specified NetApp account within the resource group
+// createOrUpdate - Create or update the specified NetApp account within the resource group
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AccountsClient) createOrUpdate(ctx context.Context, resourceGroupName string, accountName string, body Account, options *AccountsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -169,7 +169,7 @@ func (client *AccountsClient) createOrUpdate(ctx context.Context, resourceGroupN
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *AccountsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, body Account, _ *AccountsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}"
 	if client.subscriptionID == "" {
@@ -189,7 +189,7 @@ func (client *AccountsClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260615Preview)
+	reqQP.Set("api-version", version20260801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -221,7 +221,7 @@ func (client *AccountsClient) BeginDelete(ctx context.Context, resourceGroupName
 	}
 }
 
-// Delete - Delete the specified NetApp account
+// deleteOperation - Delete the specified NetApp account
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AccountsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, options *AccountsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -243,7 +243,7 @@ func (client *AccountsClient) deleteOperation(ctx context.Context, resourceGroup
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *AccountsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, _ *AccountsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}"
 	if client.subscriptionID == "" {
@@ -263,8 +263,381 @@ func (client *AccountsClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260615Preview)
+	reqQP.Set("api-version", version20260801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginGetChangeKeyVaultInformation - Contains data from encryption.keyVaultProperties as well as information about which
+// private endpoint is used by each encryption sibling set. Response from this endpoint can be modified and used as request
+// body for POST request.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of the NetApp account
+//   - options - AccountsClientBeginGetChangeKeyVaultInformationOptions contains the optional parameters for the AccountsClient.BeginGetChangeKeyVaultInformation
+//     method.
+func (client *AccountsClient) BeginGetChangeKeyVaultInformation(ctx context.Context, resourceGroupName string, accountName string, options *AccountsClientBeginGetChangeKeyVaultInformationOptions) (*runtime.Poller[AccountsClientGetChangeKeyVaultInformationResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.getChangeKeyVaultInformation(ctx, resourceGroupName, accountName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AccountsClientGetChangeKeyVaultInformationResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AccountsClientGetChangeKeyVaultInformationResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// getChangeKeyVaultInformation - Contains data from encryption.keyVaultProperties as well as information about which private
+// endpoint is used by each encryption sibling set. Response from this endpoint can be modified and used as request body for
+// POST request.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *AccountsClient) getChangeKeyVaultInformation(ctx context.Context, resourceGroupName string, accountName string, options *AccountsClientBeginGetChangeKeyVaultInformationOptions) (*http.Response, error) {
+	var err error
+	const operationName = "AccountsClient.BeginGetChangeKeyVaultInformation"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getChangeKeyVaultInformationCreateRequest(ctx, resourceGroupName, accountName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// getChangeKeyVaultInformationCreateRequest creates the getChangeKeyVaultInformation request.
+func (client *AccountsClient) getChangeKeyVaultInformationCreateRequest(ctx context.Context, resourceGroupName string, accountName string, _ *AccountsClientBeginGetChangeKeyVaultInformationOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/getKeyVaultStatus"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// BeginRefreshLdapBindPassword - Refresh LDAP Bind DN password by fetching the latest password from Azure Key Vault.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of the NetApp account
+//   - options - AccountsClientBeginRefreshLdapBindPasswordOptions contains the optional parameters for the AccountsClient.BeginRefreshLdapBindPassword
+//     method.
+func (client *AccountsClient) BeginRefreshLdapBindPassword(ctx context.Context, resourceGroupName string, accountName string, options *AccountsClientBeginRefreshLdapBindPasswordOptions) (*runtime.Poller[AccountsClientRefreshLdapBindPasswordResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.refreshLdapBindPassword(ctx, resourceGroupName, accountName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AccountsClientRefreshLdapBindPasswordResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AccountsClientRefreshLdapBindPasswordResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// refreshLdapBindPassword - Refresh LDAP Bind DN password by fetching the latest password from Azure Key Vault.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *AccountsClient) refreshLdapBindPassword(ctx context.Context, resourceGroupName string, accountName string, options *AccountsClientBeginRefreshLdapBindPasswordOptions) (*http.Response, error) {
+	var err error
+	const operationName = "AccountsClient.BeginRefreshLdapBindPassword"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.refreshLdapBindPasswordCreateRequest(ctx, resourceGroupName, accountName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// refreshLdapBindPasswordCreateRequest creates the refreshLdapBindPassword request.
+func (client *AccountsClient) refreshLdapBindPasswordCreateRequest(ctx context.Context, resourceGroupName string, accountName string, _ *AccountsClientBeginRefreshLdapBindPasswordOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/refreshLdapBindPassword"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginRenewCredentials - Renew identity credentials that are used to authenticate to key vault, for customer-managed key
+// encryption. If encryption.identity.principalId does not match identity.principalId, running this operation will fix it.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of the NetApp account
+//   - options - AccountsClientBeginRenewCredentialsOptions contains the optional parameters for the AccountsClient.BeginRenewCredentials
+//     method.
+func (client *AccountsClient) BeginRenewCredentials(ctx context.Context, resourceGroupName string, accountName string, options *AccountsClientBeginRenewCredentialsOptions) (*runtime.Poller[AccountsClientRenewCredentialsResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.renewCredentials(ctx, resourceGroupName, accountName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AccountsClientRenewCredentialsResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AccountsClientRenewCredentialsResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// renewCredentials - Renew identity credentials that are used to authenticate to key vault, for customer-managed key encryption.
+// If encryption.identity.principalId does not match identity.principalId, running this operation will fix it.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *AccountsClient) renewCredentials(ctx context.Context, resourceGroupName string, accountName string, options *AccountsClientBeginRenewCredentialsOptions) (*http.Response, error) {
+	var err error
+	const operationName = "AccountsClient.BeginRenewCredentials"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.renewCredentialsCreateRequest(ctx, resourceGroupName, accountName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// renewCredentialsCreateRequest creates the renewCredentials request.
+func (client *AccountsClient) renewCredentialsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, _ *AccountsClientBeginRenewCredentialsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/renewCredentials"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginTransitionToCmk - Transitions all volumes in a VNet to a different encryption key source (Microsoft-managed key or
+// Azure Key Vault). Operation fails if targeted volumes share encryption sibling set with volumes from another account.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of the NetApp account
+//   - options - AccountsClientBeginTransitionToCmkOptions contains the optional parameters for the AccountsClient.BeginTransitionToCmk
+//     method.
+func (client *AccountsClient) BeginTransitionToCmk(ctx context.Context, resourceGroupName string, accountName string, options *AccountsClientBeginTransitionToCmkOptions) (*runtime.Poller[AccountsClientTransitionToCmkResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.transitionToCmk(ctx, resourceGroupName, accountName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AccountsClientTransitionToCmkResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AccountsClientTransitionToCmkResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// transitionToCmk - Transitions all volumes in a VNet to a different encryption key source (Microsoft-managed key or Azure
+// Key Vault). Operation fails if targeted volumes share encryption sibling set with volumes from another account.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *AccountsClient) transitionToCmk(ctx context.Context, resourceGroupName string, accountName string, options *AccountsClientBeginTransitionToCmkOptions) (*http.Response, error) {
+	var err error
+	const operationName = "AccountsClient.BeginTransitionToCmk"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.transitionToCmkCreateRequest(ctx, resourceGroupName, accountName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// transitionToCmkCreateRequest creates the transitionToCmk request.
+func (client *AccountsClient) transitionToCmkCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *AccountsClientBeginTransitionToCmkOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/transitiontocmk"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	if options != nil && options.Body != nil {
+		req.Raw().Header["Content-Type"] = []string{"application/json"}
+		if err := runtime.MarshalAsJSON(req, *options.Body); err != nil {
+			return nil, err
+		}
+		return req, nil
+	}
+	return req, nil
+}
+
+// BeginUpdate - Patch the specified NetApp account
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of the NetApp account
+//   - body - NetApp Account object supplied in the body of the operation.
+//   - options - AccountsClientBeginUpdateOptions contains the optional parameters for the AccountsClient.BeginUpdate method.
+func (client *AccountsClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, body AccountPatch, options *AccountsClientBeginUpdateOptions) (*runtime.Poller[AccountsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, accountName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AccountsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AccountsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Patch the specified NetApp account
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *AccountsClient) update(ctx context.Context, resourceGroupName string, accountName string, body AccountPatch, options *AccountsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "AccountsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *AccountsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, body AccountPatch, _ *AccountsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -310,7 +683,7 @@ func (client *AccountsClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260615Preview)
+	reqQP.Set("api-version", version20260801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -328,80 +701,71 @@ func (client *AccountsClient) getHandleResponse(resp *http.Response, successCode
 	return result, nil
 }
 
-// BeginGetChangeKeyVaultInformation - Contains data from encryption.keyVaultProperties as well as information about which
-// private endpoint is used by each encryption sibling set. Response from this endpoint can be modified and used as request
-// body for POST request.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - accountName - The name of the NetApp account
-//   - options - AccountsClientBeginGetChangeKeyVaultInformationOptions contains the optional parameters for the AccountsClient.BeginGetChangeKeyVaultInformation
+// NewListBySubscriptionPager - List and describe all NetApp accounts in the subscription.
+//   - options - AccountsClientListBySubscriptionOptions contains the optional parameters for the AccountsClient.NewListBySubscriptionPager
 //     method.
-func (client *AccountsClient) BeginGetChangeKeyVaultInformation(ctx context.Context, resourceGroupName string, accountName string, options *AccountsClientBeginGetChangeKeyVaultInformationOptions) (*runtime.Poller[AccountsClientGetChangeKeyVaultInformationResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.getChangeKeyVaultInformation(ctx, resourceGroupName, accountName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AccountsClientGetChangeKeyVaultInformationResponse]{
-			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
-			Tracer:        client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AccountsClientGetChangeKeyVaultInformationResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
+func (client *AccountsClient) NewListBySubscriptionPager(options *AccountsClientListBySubscriptionOptions) *runtime.Pager[AccountsClientListBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PagingHandler[AccountsClientListBySubscriptionResponse]{
+		More: func(page AccountsClientListBySubscriptionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *AccountsClientListBySubscriptionResponse) (AccountsClientListBySubscriptionResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AccountsClient.NewListBySubscriptionPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listBySubscriptionCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return AccountsClientListBySubscriptionResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return AccountsClientListBySubscriptionResponse{}, err
+			}
+			return client.listBySubscriptionHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
 }
 
-// GetChangeKeyVaultInformation - Contains data from encryption.keyVaultProperties as well as information about which private
-// endpoint is used by each encryption sibling set. Response from this endpoint can be modified and used as request body for
-// POST request.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *AccountsClient) getChangeKeyVaultInformation(ctx context.Context, resourceGroupName string, accountName string, options *AccountsClientBeginGetChangeKeyVaultInformationOptions) (*http.Response, error) {
+// listBySubscriptionCreateRequest creates the ListBySubscription request.
+func (client *AccountsClient) listBySubscriptionCreateRequest(ctx context.Context, nextLink string, _ *AccountsClientListBySubscriptionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
 	var err error
-	const operationName = "AccountsClient.BeginGetChangeKeyVaultInformation"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.getChangeKeyVaultInformationCreateRequest(ctx, resourceGroupName, accountName, options)
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.NetApp/netAppAccounts"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
 	if err != nil {
 		return nil, err
 	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260801)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
+	return req, nil
 }
 
-// getChangeKeyVaultInformationCreateRequest creates the GetChangeKeyVaultInformation request.
-func (client *AccountsClient) getChangeKeyVaultInformationCreateRequest(ctx context.Context, resourceGroupName string, accountName string, _ *AccountsClientBeginGetChangeKeyVaultInformationOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/getKeyVaultStatus"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
+// listBySubscriptionHandleResponse handles the ListBySubscription response.
+func (client *AccountsClient) listBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (AccountsClientListBySubscriptionResponse, error) {
+	result := AccountsClientListBySubscriptionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	if err := runtime.UnmarshalAsJSON(resp, &result.AccountList); err != nil {
+		return AccountsClientListBySubscriptionResponse{}, err
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260615Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
+	return result, nil
 }
 
 // NewListPager - List and describe all NetApp accounts in the resource group.
@@ -456,7 +820,7 @@ func (client *AccountsClient) listCreateRequest(ctx context.Context, resourceGro
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260615Preview)
+		reqQP.Set("api-version", version20260801)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -473,368 +837,4 @@ func (client *AccountsClient) listHandleResponse(resp *http.Response, successCod
 		return AccountsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// NewListBySubscriptionPager - List and describe all NetApp accounts in the subscription.
-//   - options - AccountsClientListBySubscriptionOptions contains the optional parameters for the AccountsClient.NewListBySubscriptionPager
-//     method.
-func (client *AccountsClient) NewListBySubscriptionPager(options *AccountsClientListBySubscriptionOptions) *runtime.Pager[AccountsClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PagingHandler[AccountsClientListBySubscriptionResponse]{
-		More: func(page AccountsClientListBySubscriptionResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *AccountsClientListBySubscriptionResponse) (AccountsClientListBySubscriptionResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AccountsClient.NewListBySubscriptionPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listBySubscriptionCreateRequest(ctx, nextLink, options)
-			if err != nil {
-				return AccountsClientListBySubscriptionResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return AccountsClientListBySubscriptionResponse{}, err
-			}
-			return client.listBySubscriptionHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *AccountsClient) listBySubscriptionCreateRequest(ctx context.Context, nextLink string, _ *AccountsClientListBySubscriptionOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.NetApp/netAppAccounts"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260615Preview)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *AccountsClient) listBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (AccountsClientListBySubscriptionResponse, error) {
-	result := AccountsClientListBySubscriptionResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.AccountList); err != nil {
-		return AccountsClientListBySubscriptionResponse{}, err
-	}
-	return result, nil
-}
-
-// BeginRefreshLdapBindPassword - Refresh LDAP Bind DN password by fetching the latest password from Azure Key Vault.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - accountName - The name of the NetApp account
-//   - options - AccountsClientBeginRefreshLdapBindPasswordOptions contains the optional parameters for the AccountsClient.BeginRefreshLdapBindPassword
-//     method.
-func (client *AccountsClient) BeginRefreshLdapBindPassword(ctx context.Context, resourceGroupName string, accountName string, options *AccountsClientBeginRefreshLdapBindPasswordOptions) (*runtime.Poller[AccountsClientRefreshLdapBindPasswordResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.refreshLdapBindPassword(ctx, resourceGroupName, accountName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AccountsClientRefreshLdapBindPasswordResponse]{
-			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
-			Tracer:        client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AccountsClientRefreshLdapBindPasswordResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// RefreshLdapBindPassword - Refresh LDAP Bind DN password by fetching the latest password from Azure Key Vault.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *AccountsClient) refreshLdapBindPassword(ctx context.Context, resourceGroupName string, accountName string, options *AccountsClientBeginRefreshLdapBindPasswordOptions) (*http.Response, error) {
-	var err error
-	const operationName = "AccountsClient.BeginRefreshLdapBindPassword"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.refreshLdapBindPasswordCreateRequest(ctx, resourceGroupName, accountName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// refreshLdapBindPasswordCreateRequest creates the RefreshLdapBindPassword request.
-func (client *AccountsClient) refreshLdapBindPasswordCreateRequest(ctx context.Context, resourceGroupName string, accountName string, _ *AccountsClientBeginRefreshLdapBindPasswordOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/refreshLdapBindPassword"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260615Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
-}
-
-// BeginRenewCredentials - Renew identity credentials that are used to authenticate to key vault, for customer-managed key
-// encryption. If encryption.identity.principalId does not match identity.principalId, running this operation will fix it.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - accountName - The name of the NetApp account
-//   - options - AccountsClientBeginRenewCredentialsOptions contains the optional parameters for the AccountsClient.BeginRenewCredentials
-//     method.
-func (client *AccountsClient) BeginRenewCredentials(ctx context.Context, resourceGroupName string, accountName string, options *AccountsClientBeginRenewCredentialsOptions) (*runtime.Poller[AccountsClientRenewCredentialsResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.renewCredentials(ctx, resourceGroupName, accountName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AccountsClientRenewCredentialsResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AccountsClientRenewCredentialsResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// RenewCredentials - Renew identity credentials that are used to authenticate to key vault, for customer-managed key encryption.
-// If encryption.identity.principalId does not match identity.principalId, running this operation will fix it.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *AccountsClient) renewCredentials(ctx context.Context, resourceGroupName string, accountName string, options *AccountsClientBeginRenewCredentialsOptions) (*http.Response, error) {
-	var err error
-	const operationName = "AccountsClient.BeginRenewCredentials"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.renewCredentialsCreateRequest(ctx, resourceGroupName, accountName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// renewCredentialsCreateRequest creates the RenewCredentials request.
-func (client *AccountsClient) renewCredentialsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, _ *AccountsClientBeginRenewCredentialsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/renewCredentials"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260615Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
-}
-
-// BeginTransitionToCmk - Transitions all volumes in a VNet to a different encryption key source (Microsoft-managed key or
-// Azure Key Vault). Operation fails if targeted volumes share encryption sibling set with volumes from another account.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - accountName - The name of the NetApp account
-//   - options - AccountsClientBeginTransitionToCmkOptions contains the optional parameters for the AccountsClient.BeginTransitionToCmk
-//     method.
-func (client *AccountsClient) BeginTransitionToCmk(ctx context.Context, resourceGroupName string, accountName string, options *AccountsClientBeginTransitionToCmkOptions) (*runtime.Poller[AccountsClientTransitionToCmkResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.transitionToCmk(ctx, resourceGroupName, accountName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AccountsClientTransitionToCmkResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AccountsClientTransitionToCmkResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// TransitionToCmk - Transitions all volumes in a VNet to a different encryption key source (Microsoft-managed key or Azure
-// Key Vault). Operation fails if targeted volumes share encryption sibling set with volumes from another account.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *AccountsClient) transitionToCmk(ctx context.Context, resourceGroupName string, accountName string, options *AccountsClientBeginTransitionToCmkOptions) (*http.Response, error) {
-	var err error
-	const operationName = "AccountsClient.BeginTransitionToCmk"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.transitionToCmkCreateRequest(ctx, resourceGroupName, accountName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// transitionToCmkCreateRequest creates the TransitionToCmk request.
-func (client *AccountsClient) transitionToCmkCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *AccountsClientBeginTransitionToCmkOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/transitiontocmk"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260615Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	if options != nil && options.Body != nil {
-		req.Raw().Header["Content-Type"] = []string{"application/json"}
-		if err := runtime.MarshalAsJSON(req, *options.Body); err != nil {
-			return nil, err
-		}
-		return req, nil
-	}
-	return req, nil
-}
-
-// BeginUpdate - Patch the specified NetApp account
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - accountName - The name of the NetApp account
-//   - body - NetApp Account object supplied in the body of the operation.
-//   - options - AccountsClientBeginUpdateOptions contains the optional parameters for the AccountsClient.BeginUpdate method.
-func (client *AccountsClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, body AccountPatch, options *AccountsClientBeginUpdateOptions) (*runtime.Poller[AccountsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, accountName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AccountsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AccountsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Patch the specified NetApp account
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *AccountsClient) update(ctx context.Context, resourceGroupName string, accountName string, body AccountPatch, options *AccountsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "AccountsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *AccountsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, body AccountPatch, _ *AccountsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260615Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

@@ -1,5 +1,7 @@
 # Azure Astro Module for Go
 
+> **DEPRECATED**: The Astronomer.Astro service is being retired on October 2, 2026 and there is no replacement package. This package will no longer be maintained after October 2, 2026. Refer to our deprecation policy (https://aka.ms/azsdk/support-policies) for more details.
+
 The `armastro` module provides operations for working with Azure Astro.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/astro/armastro)

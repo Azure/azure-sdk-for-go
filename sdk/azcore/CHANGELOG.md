@@ -1,14 +1,38 @@
 # Release History
 
-## 1.23.2-beta.1 (Unreleased)
+## 1.24.0 (Unreleased)
 
 ### Features Added
+
+* Added `tracing.WrapTracer` to decorate a tracer while preserving attribute override ordering.
+* Added supporting infrastructure for SSE responses.  This includes streaming types, runtime support, and fakes.
+* Added `arm.ResourceID.ValidateResourceTypeChain` to validate complete resource-type ancestry.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
+* Client tracing spans now redact the request URL in error descriptions using the pipeline's query parameter allow list.
+* Retry logging now uses the pipeline's query parameter allow list and redacts request URLs in errors.
+
 ### Other Changes
+
+## 1.23.3 (2026-10-06)
+
+### Bugs Fixed
+
+* Fixed `arm.ResourceID.Location` being empty when the `locations` segment uses different casing.
+
+### Other Changes
+
+* Added `azure-deprecating` to the default set of allowed (non-redacted) response headers for logging.
+* Replaced internal default HTTP client with the one from `sdk/internal`.
+
+## 1.23.2 (2026-09-28)
+
+### Bugs Fixed
+
+* Fixed unmarshalling `datetime.RFC7231` to use a fixed `GMT` zone.
 
 ## 1.23.1 (2026-08-27)
 

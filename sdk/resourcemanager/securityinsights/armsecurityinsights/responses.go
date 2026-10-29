@@ -29,8 +29,7 @@ type ActionsClientListByAlertRuleResponse struct {
 
 // AlertRuleClientTriggerRuleRunResponse contains the response from method AlertRuleClient.BeginTriggerRuleRun.
 type AlertRuleClientTriggerRuleRunResponse struct {
-	// Alert rule.
-	AlertRuleClassification
+	// placeholder for future response values
 }
 
 // AlertRuleTemplatesClientGetResponse contains the response from method AlertRuleTemplatesClient.Get.
@@ -87,7 +86,6 @@ type AutomationRulesClientGetResponse struct {
 
 // AutomationRulesClientListResponse contains the response from method AutomationRulesClient.NewListPager.
 type AutomationRulesClientListResponse struct {
-	// Paged collection of AutomationRule items
 	AutomationRulesList
 }
 
@@ -879,7 +877,8 @@ type WatchlistsClientCreateOrUpdateResponse struct {
 
 // WatchlistsClientDeleteResponse contains the response from method WatchlistsClient.BeginDelete.
 type WatchlistsClientDeleteResponse struct {
-	// placeholder for future response values
+	// Represents a Watchlist in Azure Security Insights.
+	Watchlist
 }
 
 // WatchlistsClientGetResponse contains the response from method WatchlistsClient.Get.

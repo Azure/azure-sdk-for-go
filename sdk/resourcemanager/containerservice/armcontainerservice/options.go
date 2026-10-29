@@ -4,6 +4,31 @@
 
 package armcontainerservice
 
+// AgentFabricMembershipsClientBeginCreateOrUpdateOptions contains the optional parameters for the AgentFabricMembershipsClient.BeginCreateOrUpdate
+// method.
+type AgentFabricMembershipsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// AgentFabricMembershipsClientBeginDeleteOptions contains the optional parameters for the AgentFabricMembershipsClient.BeginDelete
+// method.
+type AgentFabricMembershipsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// AgentFabricMembershipsClientGetOptions contains the optional parameters for the AgentFabricMembershipsClient.Get method.
+type AgentFabricMembershipsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AgentFabricMembershipsClientListByManagedClusterOptions contains the optional parameters for the AgentFabricMembershipsClient.NewListByManagedClusterPager
+// method.
+type AgentFabricMembershipsClientListByManagedClusterOptions struct {
+	// placeholder for future optional parameters
+}
+
 // AgentPoolsClientBeginAbortLatestOperationOptions contains the optional parameters for the AgentPoolsClient.BeginAbortLatestOperation
 // method.
 type AgentPoolsClientBeginAbortLatestOperationOptions struct {
@@ -709,6 +734,21 @@ type TrustedAccessRoleBindingsClientListOptions struct {
 
 // TrustedAccessRolesClientListOptions contains the optional parameters for the TrustedAccessRolesClient.NewListPager method.
 type TrustedAccessRolesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// UpgradeInsightsClientGenerateOptions contains the optional parameters for the UpgradeInsightsClient.Generate method.
+type UpgradeInsightsClientGenerateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// UpgradeInsightsClientGetOptions contains the optional parameters for the UpgradeInsightsClient.Get method.
+type UpgradeInsightsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// UpgradeInsightsClientListOptions contains the optional parameters for the UpgradeInsightsClient.NewListPager method.
+type UpgradeInsightsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 

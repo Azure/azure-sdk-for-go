@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-04-01-preview/Endpoint-PUT-External-WithAlwaysServe.json
+// Generated from example definition: 2026-09-01/Endpoint-PUT-External-WithAlwaysServe.json
 func ExampleEndpointsClient_CreateOrUpdate_endpointPutExternalWithAlwaysServe() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -57,7 +57,7 @@ func ExampleEndpointsClient_CreateOrUpdate_endpointPutExternalWithAlwaysServe() 
 	// }
 }
 
-// Generated from example definition: 2024-04-01-preview/Endpoint-PUT-External-WithCustomHeaders.json
+// Generated from example definition: 2026-09-01/Endpoint-PUT-External-WithCustomHeaders.json
 func ExampleEndpointsClient_CreateOrUpdate_endpointPutExternalWithCustomHeaders() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -120,7 +120,7 @@ func ExampleEndpointsClient_CreateOrUpdate_endpointPutExternalWithCustomHeaders(
 	// }
 }
 
-// Generated from example definition: 2024-04-01-preview/Endpoint-PUT-External-WithGeoMapping.json
+// Generated from example definition: 2026-09-01/Endpoint-PUT-External-WithGeoMapping.json
 func ExampleEndpointsClient_CreateOrUpdate_endpointPutExternalWithGeoMapping() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -169,7 +169,7 @@ func ExampleEndpointsClient_CreateOrUpdate_endpointPutExternalWithGeoMapping() {
 	// }
 }
 
-// Generated from example definition: 2024-04-01-preview/Endpoint-PUT-External-WithLocation.json
+// Generated from example definition: 2026-09-01/Endpoint-PUT-External-WithLocation.json
 func ExampleEndpointsClient_CreateOrUpdate_endpointPutExternalWithLocation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -212,7 +212,7 @@ func ExampleEndpointsClient_CreateOrUpdate_endpointPutExternalWithLocation() {
 	// }
 }
 
-// Generated from example definition: 2024-04-01-preview/Endpoint-PUT-External-WithSubnetMapping.json
+// Generated from example definition: 2026-09-01/Endpoint-PUT-External-WithSubnetMapping.json
 func ExampleEndpointsClient_CreateOrUpdate_endpointPutExternalWithSubnetMapping() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -273,7 +273,7 @@ func ExampleEndpointsClient_CreateOrUpdate_endpointPutExternalWithSubnetMapping(
 	// }
 }
 
-// Generated from example definition: 2024-04-01-preview/Endpoint-DELETE-External.json
+// Generated from example definition: 2026-09-01/Endpoint-DELETE-External.json
 func ExampleEndpointsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -297,7 +297,7 @@ func ExampleEndpointsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2024-04-01-preview/Endpoint-GET-External-WithGeoMapping.json
+// Generated from example definition: 2026-09-01/Endpoint-GET-External-WithGeoMapping.json
 func ExampleEndpointsClient_Get_endpointGetExternalWithGeoMapping() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -335,7 +335,7 @@ func ExampleEndpointsClient_Get_endpointGetExternalWithGeoMapping() {
 	// }
 }
 
-// Generated from example definition: 2024-04-01-preview/Endpoint-GET-External-WithLocation.json
+// Generated from example definition: 2026-09-01/Endpoint-GET-External-WithLocation.json
 func ExampleEndpointsClient_Get_endpointGetExternalWithLocation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -370,7 +370,7 @@ func ExampleEndpointsClient_Get_endpointGetExternalWithLocation() {
 	// }
 }
 
-// Generated from example definition: 2024-04-01-preview/Endpoint-GET-External-WithSubnetMapping.json
+// Generated from example definition: 2026-09-01/Endpoint-GET-External-WithSubnetMapping.json
 func ExampleEndpointsClient_Get_endpointGetExternalWithSubnetMapping() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -414,7 +414,7 @@ func ExampleEndpointsClient_Get_endpointGetExternalWithSubnetMapping() {
 	// }
 }
 
-// Generated from example definition: 2024-04-01-preview/Endpoint-PATCH-External-Target.json
+// Generated from example definition: 2026-09-01/Endpoint-PATCH-External-Target.json
 func ExampleEndpointsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

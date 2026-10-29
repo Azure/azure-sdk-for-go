@@ -19,7 +19,7 @@ import (
 // AlertConfigurationsClient contains the methods for the AlertConfigurations group.
 // Don't use this type directly, use NewAlertConfigurationsClient() instead.
 //
-// Generated from API version 2026-06-02-preview
+// Generated from API version 2026-08-02-preview
 type AlertConfigurationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -69,7 +69,7 @@ func (client *AlertConfigurationsClient) BeginCreateOrUpdate(ctx context.Context
 	}
 }
 
-// CreateOrUpdate - Creates or updates an alert configuration in the specified managed cluster.
+// createOrUpdate - Creates or updates an alert configuration in the specified managed cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AlertConfigurationsClient) createOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, configurationName string, resource AlertConfiguration, options *AlertConfigurationsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *AlertConfigurationsClient) createOrUpdate(ctx context.Context, res
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *AlertConfigurationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, configurationName string, resource AlertConfiguration, _ *AlertConfigurationsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/alertConfigurations/{configurationName}"
 	if client.subscriptionID == "" {
@@ -115,7 +115,7 @@ func (client *AlertConfigurationsClient) createOrUpdateCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260602Preview)
+	reqQP.Set("api-version", version20260802Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -149,7 +149,7 @@ func (client *AlertConfigurationsClient) BeginDelete(ctx context.Context, resour
 	}
 }
 
-// Delete - Deletes an alert configuration.
+// deleteOperation - Deletes an alert configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AlertConfigurationsClient) deleteOperation(ctx context.Context, resourceGroupName string, resourceName string, configurationName string, options *AlertConfigurationsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -171,7 +171,7 @@ func (client *AlertConfigurationsClient) deleteOperation(ctx context.Context, re
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *AlertConfigurationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, configurationName string, _ *AlertConfigurationsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/alertConfigurations/{configurationName}"
 	if client.subscriptionID == "" {
@@ -195,7 +195,7 @@ func (client *AlertConfigurationsClient) deleteCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260602Preview)
+	reqQP.Set("api-version", version20260802Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -247,7 +247,7 @@ func (client *AlertConfigurationsClient) getCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260602Preview)
+	reqQP.Set("api-version", version20260802Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -323,7 +323,7 @@ func (client *AlertConfigurationsClient) listByManagedClusterCreateRequest(ctx c
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260602Preview)
+		reqQP.Set("api-version", version20260802Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

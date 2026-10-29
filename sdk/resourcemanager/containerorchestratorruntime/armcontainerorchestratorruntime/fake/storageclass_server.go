@@ -128,10 +128,7 @@ func (s *StorageClassServerTransport) dispatchBeginCreateOrUpdate(req *http.Requ
 		if err != nil {
 			return nil, err
 		}
-		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-		if err != nil {
-			return nil, err
-		}
+		resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 		storageClassNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("storageClassName")])
 		if err != nil {
 			return nil, err
@@ -172,10 +169,7 @@ func (s *StorageClassServerTransport) dispatchBeginDelete(req *http.Request) (*h
 		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-		if err != nil {
-			return nil, err
-		}
+		resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 		storageClassNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("storageClassName")])
 		if err != nil {
 			return nil, err
@@ -214,10 +208,7 @@ func (s *StorageClassServerTransport) dispatchGet(req *http.Request) (*http.Resp
 	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-	if err != nil {
-		return nil, err
-	}
+	resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 	storageClassNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("storageClassName")])
 	if err != nil {
 		return nil, err
@@ -249,10 +240,7 @@ func (s *StorageClassServerTransport) dispatchNewListPager(req *http.Request) (*
 		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-		if err != nil {
-			return nil, err
-		}
+		resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 		resp := s.srv.NewListPager(resourceURIParam, nil)
 		newListPager = &resp
 		s.newListPager.add(req, newListPager)
@@ -290,10 +278,7 @@ func (s *StorageClassServerTransport) dispatchBeginUpdate(req *http.Request) (*h
 		if err != nil {
 			return nil, err
 		}
-		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-		if err != nil {
-			return nil, err
-		}
+		resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 		storageClassNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("storageClassName")])
 		if err != nil {
 			return nil, err

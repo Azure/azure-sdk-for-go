@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-08-06-preview/BulkCreateCustom_Cancel_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-06-preview/BulkCreateCustom_Cancel_MaximumSet_Gen.json
 func ExampleBulkCreateCustomClient_BeginCancel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -33,7 +33,7 @@ func ExampleBulkCreateCustomClient_BeginCancel() {
 	}
 }
 
-// Generated from example definition: 2026-08-06-preview/BulkCreateCustom_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-06-preview/BulkCreateCustom_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleBulkCreateCustomClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -48,38 +48,6 @@ func ExampleBulkCreateCustomClient_BeginCreateOrUpdate() {
 		Properties: &armbulkactions.BulkCreateCustomProperties{
 			Capacity:     to.Ptr[int32](2),
 			CapacityType: to.Ptr(armbulkactions.CapacityTypeVM),
-			MinCapacity:  to.Ptr[int32](1),
-			PartialFulfillmentPolicy: &armbulkactions.PartialFulfillmentPolicy{
-				Mode: to.Ptr(armbulkactions.PartialFulfillmentModeEnabled),
-			},
-			PriorityProfile: &armbulkactions.BulkCreateCustomPriorityProfile{
-				Type:               to.Ptr(armbulkactions.PriorityTypeSpot),
-				MaxPricePerVM:      to.Ptr[float32](0.2),
-				EvictionPolicy:     to.Ptr(armbulkactions.EvictionPolicyDelete),
-				AllocationStrategy: to.Ptr(armbulkactions.BulkCreateCustomAllocationStrategyLowestPrice),
-			},
-			VMSizesProfile: []*armbulkactions.BulkCreateCustomVMSizeProfile{
-				{
-					Name: to.Ptr("Standard_D2s_v5"),
-					Rank: to.Ptr[int32](1),
-				},
-				{
-					Name: to.Ptr("Standard_D4s_v5"),
-					Rank: to.Ptr[int32](2),
-					Override: &armbulkactions.BulkCreateCustomOverrideBase{
-						VirtualMachineProfile: &armbulkactions.BulkactionVMProperties{
-							StorageProfile: &armbulkactions.StorageProfile{
-								ImageReference: &armbulkactions.ImageReference{
-									Publisher: to.Ptr("Canonical"),
-									Offer:     to.Ptr("0001-com-ubuntu-server-jammy"),
-									SKU:       to.Ptr("22_04-lts-arm64"),
-									Version:   to.Ptr("latest"),
-								},
-							},
-						},
-					},
-				},
-			},
 			ComputeProfile: &armbulkactions.ComputeProfile{
 				VirtualMachineProfile: &armbulkactions.BulkactionVMProperties{
 					StorageProfile: &armbulkactions.StorageProfile{
@@ -98,6 +66,9 @@ func ExampleBulkCreateCustomClient_BeginCreateOrUpdate() {
 							},
 							DeleteOption: to.Ptr(armbulkactions.DiskDeleteOptionTypesDelete),
 						},
+					},
+					HardwareProfile: &armbulkactions.HardwareProfile{
+						VMSize: to.Ptr("Standard_D2s_v5"),
 					},
 					OSProfile: &armbulkactions.OSProfile{
 						ComputerName:  to.Ptr("bulkvm"),
@@ -137,35 +108,49 @@ func ExampleBulkCreateCustomClient_BeginCreateOrUpdate() {
 							},
 						},
 					},
+					Priority:       to.Ptr(armbulkactions.PriorityTypeSpot),
+					EvictionPolicy: to.Ptr(armbulkactions.EvictionPolicyDeallocate),
+					BillingProfile: &armbulkactions.BillingProfile{
+						MaxPrice: to.Ptr[float64](0.05),
+					},
 				},
 				ComputeAPIVersion: to.Ptr("2024-11-01"),
-			},
-			ZoneAllocationPolicy: &armbulkactions.BulkCreateCustomZoneAllocationPolicy{
-				DistributionStrategy: to.Ptr(armbulkactions.BulkCreateCustomDistributionStrategyBestEffortBalanced),
-				ZonePreferences: []*armbulkactions.ZonePreference{
-					{
-						Zone: to.Ptr("1"),
-						Rank: to.Ptr[int32](1),
-					},
-					{
-						Zone: to.Ptr("2"),
-						Rank: to.Ptr[int32](2),
-					},
-				},
 			},
 			OverridesProfile: &armbulkactions.BulkCreateCustomOverridesProfile{
 				VirtualMachineNamePrefix: to.Ptr("bulkvm"),
 				Overrides: []*armbulkactions.BulkCreateCustomOverride{
 					{
 						VirtualMachineName: to.Ptr("bulkvm-payments-0"),
+						Zone:               to.Ptr("1"),
+						ExtendedLocation: &armbulkactions.ExtendedLocation{
+							Name: to.Ptr("microsoftlosangeles1"),
+							Type: to.Ptr(armbulkactions.ExtendedLocationTypeEdgeZone),
+						},
 						Tags: map[string]*string{
 							"workload": to.Ptr("payments"),
 							"env":      to.Ptr("prod"),
+						},
+						Placement: &armbulkactions.Placement{
+							ZonePlacementPolicy: to.Ptr(armbulkactions.ZonePlacementPolicyTypeAny),
+							IncludeZones: []*string{
+								to.Ptr("1"),
+							},
 						},
 					},
 					{
 						Tags: map[string]*string{
 							"workload": to.Ptr("batch"),
+						},
+						Zone: to.Ptr("2"),
+						ExtendedLocation: &armbulkactions.ExtendedLocation{
+							Name: to.Ptr("microsoftlosangeles2"),
+							Type: to.Ptr(armbulkactions.ExtendedLocationTypeEdgeZone),
+						},
+						Placement: &armbulkactions.Placement{
+							ZonePlacementPolicy: to.Ptr(armbulkactions.ZonePlacementPolicyTypeAuto),
+							ExcludeZones: []*string{
+								to.Ptr("3"),
+							},
 						},
 					},
 				},
@@ -180,6 +165,20 @@ func ExampleBulkCreateCustomClient_BeginCreateOrUpdate() {
 		Zones: []*string{
 			to.Ptr("1"),
 			to.Ptr("2"),
+		},
+		ExtendedLocation: &armbulkactions.ExtendedLocation{
+			Name: to.Ptr("microsoftlosangeles1"),
+			Type: to.Ptr(armbulkactions.ExtendedLocationTypeEdgeZone),
+		},
+		Placement: &armbulkactions.Placement{
+			ZonePlacementPolicy: to.Ptr(armbulkactions.ZonePlacementPolicyTypeAuto),
+			IncludeZones: []*string{
+				to.Ptr("1"),
+				to.Ptr("2"),
+			},
+			ExcludeZones: []*string{
+				to.Ptr("3"),
+			},
 		},
 		Tags: map[string]*string{
 			"workload": to.Ptr("batch-render"),
@@ -206,40 +205,6 @@ func ExampleBulkCreateCustomClient_BeginCreateOrUpdate() {
 	// 			ProvisioningState: to.Ptr(armbulkactions.ProvisioningStateSucceeded),
 	// 			Capacity: to.Ptr[int32](2),
 	// 			CapacityType: to.Ptr(armbulkactions.CapacityTypeVM),
-	// 			MinCapacity: to.Ptr[int32](1),
-	// 			PartialFulfillmentPolicy: &armbulkactions.PartialFulfillmentPolicy{
-	// 				Mode: to.Ptr(armbulkactions.PartialFulfillmentModeEnabled),
-	// 				FulfilledCapacity: to.Ptr[int32](1),
-	// 				Reason: to.Ptr(armbulkactions.PartialFulfillmentReasonInsufficientCapacity),
-	// 			},
-	// 			PriorityProfile: &armbulkactions.BulkCreateCustomPriorityProfile{
-	// 				Type: to.Ptr(armbulkactions.PriorityTypeSpot),
-	// 				MaxPricePerVM: to.Ptr[float32](0.2),
-	// 				EvictionPolicy: to.Ptr(armbulkactions.EvictionPolicyDelete),
-	// 				AllocationStrategy: to.Ptr(armbulkactions.BulkCreateCustomAllocationStrategyLowestPrice),
-	// 			},
-	// 			VMSizesProfile: []*armbulkactions.BulkCreateCustomVMSizeProfile{
-	// 				{
-	// 					Name: to.Ptr("Standard_D2s_v5"),
-	// 					Rank: to.Ptr[int32](1),
-	// 				},
-	// 				{
-	// 					Name: to.Ptr("Standard_D4s_v5"),
-	// 					Rank: to.Ptr[int32](2),
-	// 					Override: &armbulkactions.BulkCreateCustomOverrideBase{
-	// 						VirtualMachineProfile: &armbulkactions.BulkactionVMProperties{
-	// 							StorageProfile: &armbulkactions.StorageProfile{
-	// 								ImageReference: &armbulkactions.ImageReference{
-	// 									Publisher: to.Ptr("Canonical"),
-	// 									Offer: to.Ptr("0001-com-ubuntu-server-jammy"),
-	// 									SKU: to.Ptr("22_04-lts-arm64"),
-	// 									Version: to.Ptr("latest"),
-	// 								},
-	// 							},
-	// 						},
-	// 					},
-	// 				},
-	// 			},
 	// 			ComputeProfile: &armbulkactions.ComputeProfile{
 	// 				VirtualMachineProfile: &armbulkactions.BulkactionVMProperties{
 	// 					StorageProfile: &armbulkactions.StorageProfile{
@@ -258,6 +223,9 @@ func ExampleBulkCreateCustomClient_BeginCreateOrUpdate() {
 	// 							},
 	// 							DeleteOption: to.Ptr(armbulkactions.DiskDeleteOptionTypesDelete),
 	// 						},
+	// 					},
+	// 					HardwareProfile: &armbulkactions.HardwareProfile{
+	// 						VMSize: to.Ptr("Standard_D2s_v5"),
 	// 					},
 	// 					OSProfile: &armbulkactions.OSProfile{
 	// 						ComputerName: to.Ptr("bulkvm"),
@@ -297,21 +265,13 @@ func ExampleBulkCreateCustomClient_BeginCreateOrUpdate() {
 	// 							},
 	// 						},
 	// 					},
+	// 					Priority: to.Ptr(armbulkactions.PriorityTypeSpot),
+	// 					EvictionPolicy: to.Ptr(armbulkactions.EvictionPolicyDeallocate),
+	// 					BillingProfile: &armbulkactions.BillingProfile{
+	// 						MaxPrice: to.Ptr[float64](0.05),
+	// 					},
 	// 				},
 	// 				ComputeAPIVersion: to.Ptr("2024-11-01"),
-	// 			},
-	// 			ZoneAllocationPolicy: &armbulkactions.BulkCreateCustomZoneAllocationPolicy{
-	// 				DistributionStrategy: to.Ptr(armbulkactions.BulkCreateCustomDistributionStrategyBestEffortBalanced),
-	// 				ZonePreferences: []*armbulkactions.ZonePreference{
-	// 					{
-	// 						Zone: to.Ptr("1"),
-	// 						Rank: to.Ptr[int32](1),
-	// 					},
-	// 					{
-	// 						Zone: to.Ptr("2"),
-	// 						Rank: to.Ptr[int32](2),
-	// 					},
-	// 				},
 	// 			},
 	// 			ExecutionParameters: &armbulkactions.ExecutionParameters{
 	// 				RetryPolicy: &armbulkactions.RetryPolicy{
@@ -332,6 +292,20 @@ func ExampleBulkCreateCustomClient_BeginCreateOrUpdate() {
 	// 		Zones: []*string{
 	// 			to.Ptr("1"),
 	// 			to.Ptr("2"),
+	// 		},
+	// 		ExtendedLocation: &armbulkactions.ExtendedLocation{
+	// 			Name: to.Ptr("microsoftlosangeles1"),
+	// 			Type: to.Ptr(armbulkactions.ExtendedLocationTypeEdgeZone),
+	// 		},
+	// 		Placement: &armbulkactions.Placement{
+	// 			ZonePlacementPolicy: to.Ptr(armbulkactions.ZonePlacementPolicyTypeAuto),
+	// 			IncludeZones: []*string{
+	// 				to.Ptr("1"),
+	// 				to.Ptr("2"),
+	// 			},
+	// 			ExcludeZones: []*string{
+	// 				to.Ptr("3"),
+	// 			},
 	// 		},
 	// 		Tags: map[string]*string{
 	// 			"workload": to.Ptr("batch-render"),
@@ -357,7 +331,7 @@ func ExampleBulkCreateCustomClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-08-06-preview/BulkCreateCustom_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-06-preview/BulkCreateCustom_Delete_MaximumSet_Gen.json
 func ExampleBulkCreateCustomClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -379,7 +353,7 @@ func ExampleBulkCreateCustomClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-08-06-preview/BulkCreateCustom_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-06-preview/BulkCreateCustom_Get_MaximumSet_Gen.json
 func ExampleBulkCreateCustomClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -404,22 +378,6 @@ func ExampleBulkCreateCustomClient_Get() {
 	// 			ProvisioningState: to.Ptr(armbulkactions.ProvisioningStateSucceeded),
 	// 			Capacity: to.Ptr[int32](10),
 	// 			CapacityType: to.Ptr(armbulkactions.CapacityTypeVM),
-	// 			PriorityProfile: &armbulkactions.BulkCreateCustomPriorityProfile{
-	// 				Type: to.Ptr(armbulkactions.PriorityTypeSpot),
-	// 				MaxPricePerVM: to.Ptr[float32](0.2),
-	// 				EvictionPolicy: to.Ptr(armbulkactions.EvictionPolicyDelete),
-	// 				AllocationStrategy: to.Ptr(armbulkactions.BulkCreateCustomAllocationStrategyLowestPrice),
-	// 			},
-	// 			VMSizesProfile: []*armbulkactions.BulkCreateCustomVMSizeProfile{
-	// 				{
-	// 					Name: to.Ptr("Standard_D2s_v5"),
-	// 					Rank: to.Ptr[int32](1),
-	// 				},
-	// 				{
-	// 					Name: to.Ptr("Standard_D4s_v5"),
-	// 					Rank: to.Ptr[int32](2),
-	// 				},
-	// 			},
 	// 			ComputeProfile: &armbulkactions.ComputeProfile{
 	// 				VirtualMachineProfile: &armbulkactions.BulkactionVMProperties{
 	// 					StorageProfile: &armbulkactions.StorageProfile{
@@ -480,19 +438,6 @@ func ExampleBulkCreateCustomClient_Get() {
 	// 				},
 	// 				ComputeAPIVersion: to.Ptr("2024-11-01"),
 	// 			},
-	// 			ZoneAllocationPolicy: &armbulkactions.BulkCreateCustomZoneAllocationPolicy{
-	// 				DistributionStrategy: to.Ptr(armbulkactions.BulkCreateCustomDistributionStrategyBestEffortBalanced),
-	// 				ZonePreferences: []*armbulkactions.ZonePreference{
-	// 					{
-	// 						Zone: to.Ptr("1"),
-	// 						Rank: to.Ptr[int32](1),
-	// 					},
-	// 					{
-	// 						Zone: to.Ptr("2"),
-	// 						Rank: to.Ptr[int32](2),
-	// 					},
-	// 				},
-	// 			},
 	// 			ExecutionParameters: &armbulkactions.ExecutionParameters{
 	// 				RetryPolicy: &armbulkactions.RetryPolicy{
 	// 					RetryWindowInMinutes: to.Ptr[int32](30),
@@ -512,6 +457,20 @@ func ExampleBulkCreateCustomClient_Get() {
 	// 		Zones: []*string{
 	// 			to.Ptr("1"),
 	// 			to.Ptr("2"),
+	// 		},
+	// 		ExtendedLocation: &armbulkactions.ExtendedLocation{
+	// 			Name: to.Ptr("microsoftlosangeles1"),
+	// 			Type: to.Ptr(armbulkactions.ExtendedLocationTypeEdgeZone),
+	// 		},
+	// 		Placement: &armbulkactions.Placement{
+	// 			ZonePlacementPolicy: to.Ptr(armbulkactions.ZonePlacementPolicyTypeAuto),
+	// 			IncludeZones: []*string{
+	// 				to.Ptr("1"),
+	// 				to.Ptr("2"),
+	// 			},
+	// 			ExcludeZones: []*string{
+	// 				to.Ptr("3"),
+	// 			},
 	// 		},
 	// 		Tags: map[string]*string{
 	// 			"workload": to.Ptr("batch-render"),
@@ -537,7 +496,7 @@ func ExampleBulkCreateCustomClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-08-06-preview/BulkCreateCustom_GetAsyncOperationStatus_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-06-preview/BulkCreateCustom_GetAsyncOperationStatus_MaximumSet_Gen.json
 func ExampleBulkCreateCustomClient_GetAsyncOperationStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -607,7 +566,7 @@ func ExampleBulkCreateCustomClient_GetAsyncOperationStatus() {
 	// }
 }
 
-// Generated from example definition: 2026-08-06-preview/BulkCreateCustom_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-06-preview/BulkCreateCustom_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleBulkCreateCustomClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -638,22 +597,6 @@ func ExampleBulkCreateCustomClient_NewListByResourceGroupPager() {
 		// 					ProvisioningState: to.Ptr(armbulkactions.ProvisioningStateSucceeded),
 		// 					Capacity: to.Ptr[int32](10),
 		// 					CapacityType: to.Ptr(armbulkactions.CapacityTypeVM),
-		// 					PriorityProfile: &armbulkactions.BulkCreateCustomPriorityProfile{
-		// 						Type: to.Ptr(armbulkactions.PriorityTypeSpot),
-		// 						MaxPricePerVM: to.Ptr[float32](0.2),
-		// 						EvictionPolicy: to.Ptr(armbulkactions.EvictionPolicyDelete),
-		// 						AllocationStrategy: to.Ptr(armbulkactions.BulkCreateCustomAllocationStrategyLowestPrice),
-		// 					},
-		// 					VMSizesProfile: []*armbulkactions.BulkCreateCustomVMSizeProfile{
-		// 						{
-		// 							Name: to.Ptr("Standard_D2s_v5"),
-		// 							Rank: to.Ptr[int32](1),
-		// 						},
-		// 						{
-		// 							Name: to.Ptr("Standard_D4s_v5"),
-		// 							Rank: to.Ptr[int32](2),
-		// 						},
-		// 					},
 		// 					ComputeProfile: &armbulkactions.ComputeProfile{
 		// 						VirtualMachineProfile: &armbulkactions.BulkactionVMProperties{
 		// 							StorageProfile: &armbulkactions.StorageProfile{
@@ -714,19 +657,6 @@ func ExampleBulkCreateCustomClient_NewListByResourceGroupPager() {
 		// 						},
 		// 						ComputeAPIVersion: to.Ptr("2024-11-01"),
 		// 					},
-		// 					ZoneAllocationPolicy: &armbulkactions.BulkCreateCustomZoneAllocationPolicy{
-		// 						DistributionStrategy: to.Ptr(armbulkactions.BulkCreateCustomDistributionStrategyBestEffortBalanced),
-		// 						ZonePreferences: []*armbulkactions.ZonePreference{
-		// 							{
-		// 								Zone: to.Ptr("1"),
-		// 								Rank: to.Ptr[int32](1),
-		// 							},
-		// 							{
-		// 								Zone: to.Ptr("2"),
-		// 								Rank: to.Ptr[int32](2),
-		// 							},
-		// 						},
-		// 					},
 		// 					ExecutionParameters: &armbulkactions.ExecutionParameters{
 		// 						RetryPolicy: &armbulkactions.RetryPolicy{
 		// 							RetryWindowInMinutes: to.Ptr[int32](30),
@@ -737,6 +667,20 @@ func ExampleBulkCreateCustomClient_NewListByResourceGroupPager() {
 		// 				Zones: []*string{
 		// 					to.Ptr("1"),
 		// 					to.Ptr("2"),
+		// 				},
+		// 				ExtendedLocation: &armbulkactions.ExtendedLocation{
+		// 					Name: to.Ptr("microsoftlosangeles1"),
+		// 					Type: to.Ptr(armbulkactions.ExtendedLocationTypeEdgeZone),
+		// 				},
+		// 				Placement: &armbulkactions.Placement{
+		// 					ZonePlacementPolicy: to.Ptr(armbulkactions.ZonePlacementPolicyTypeAuto),
+		// 					IncludeZones: []*string{
+		// 						to.Ptr("1"),
+		// 						to.Ptr("2"),
+		// 					},
+		// 					ExcludeZones: []*string{
+		// 						to.Ptr("3"),
+		// 					},
 		// 				},
 		// 				Tags: map[string]*string{
 		// 					"workload": to.Ptr("batch-render"),
@@ -765,22 +709,6 @@ func ExampleBulkCreateCustomClient_NewListByResourceGroupPager() {
 		// 					ProvisioningState: to.Ptr(armbulkactions.ProvisioningStateCreating),
 		// 					Capacity: to.Ptr[int32](10),
 		// 					CapacityType: to.Ptr(armbulkactions.CapacityTypeVM),
-		// 					PriorityProfile: &armbulkactions.BulkCreateCustomPriorityProfile{
-		// 						Type: to.Ptr(armbulkactions.PriorityTypeSpot),
-		// 						MaxPricePerVM: to.Ptr[float32](0.2),
-		// 						EvictionPolicy: to.Ptr(armbulkactions.EvictionPolicyDelete),
-		// 						AllocationStrategy: to.Ptr(armbulkactions.BulkCreateCustomAllocationStrategyLowestPrice),
-		// 					},
-		// 					VMSizesProfile: []*armbulkactions.BulkCreateCustomVMSizeProfile{
-		// 						{
-		// 							Name: to.Ptr("Standard_D2s_v5"),
-		// 							Rank: to.Ptr[int32](1),
-		// 						},
-		// 						{
-		// 							Name: to.Ptr("Standard_D4s_v5"),
-		// 							Rank: to.Ptr[int32](2),
-		// 						},
-		// 					},
 		// 					ComputeProfile: &armbulkactions.ComputeProfile{
 		// 						VirtualMachineProfile: &armbulkactions.BulkactionVMProperties{
 		// 							StorageProfile: &armbulkactions.StorageProfile{
@@ -841,19 +769,6 @@ func ExampleBulkCreateCustomClient_NewListByResourceGroupPager() {
 		// 						},
 		// 						ComputeAPIVersion: to.Ptr("2024-11-01"),
 		// 					},
-		// 					ZoneAllocationPolicy: &armbulkactions.BulkCreateCustomZoneAllocationPolicy{
-		// 						DistributionStrategy: to.Ptr(armbulkactions.BulkCreateCustomDistributionStrategyBestEffortBalanced),
-		// 						ZonePreferences: []*armbulkactions.ZonePreference{
-		// 							{
-		// 								Zone: to.Ptr("1"),
-		// 								Rank: to.Ptr[int32](1),
-		// 							},
-		// 							{
-		// 								Zone: to.Ptr("2"),
-		// 								Rank: to.Ptr[int32](2),
-		// 							},
-		// 						},
-		// 					},
 		// 					ExecutionParameters: &armbulkactions.ExecutionParameters{
 		// 						RetryPolicy: &armbulkactions.RetryPolicy{
 		// 							RetryWindowInMinutes: to.Ptr[int32](30),
@@ -864,6 +779,20 @@ func ExampleBulkCreateCustomClient_NewListByResourceGroupPager() {
 		// 				Zones: []*string{
 		// 					to.Ptr("1"),
 		// 					to.Ptr("2"),
+		// 				},
+		// 				ExtendedLocation: &armbulkactions.ExtendedLocation{
+		// 					Name: to.Ptr("microsoftlosangeles1"),
+		// 					Type: to.Ptr(armbulkactions.ExtendedLocationTypeEdgeZone),
+		// 				},
+		// 				Placement: &armbulkactions.Placement{
+		// 					ZonePlacementPolicy: to.Ptr(armbulkactions.ZonePlacementPolicyTypeAuto),
+		// 					IncludeZones: []*string{
+		// 						to.Ptr("1"),
+		// 						to.Ptr("2"),
+		// 					},
+		// 					ExcludeZones: []*string{
+		// 						to.Ptr("3"),
+		// 					},
 		// 				},
 		// 				Tags: map[string]*string{
 		// 					"workload": to.Ptr("batch-render"),
@@ -887,13 +816,13 @@ func ExampleBulkCreateCustomClient_NewListByResourceGroupPager() {
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/1FBA3C66-5C9C-4391-B72F-9F52735FC9F2/resourceGroups/rgBulkactions/providers/Microsoft.Compute/locations/eastus/bulkCreateCustom?api-version=2026-08-06-preview&$skiptoken=page2"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/1FBA3C66-5C9C-4391-B72F-9F52735FC9F2/resourceGroups/rgBulkactions/providers/Microsoft.Compute/locations/eastus/bulkCreateCustom?api-version=2026-10-06-preview&$skiptoken=page2"),
 		// 	},
 		// }
 	}
 }
 
-// Generated from example definition: 2026-08-06-preview/BulkCreateCustom_ListBySubscription_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-06-preview/BulkCreateCustom_ListBySubscription_MaximumSet_Gen.json
 func ExampleBulkCreateCustomClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -924,22 +853,6 @@ func ExampleBulkCreateCustomClient_NewListBySubscriptionPager() {
 		// 					ProvisioningState: to.Ptr(armbulkactions.ProvisioningStateSucceeded),
 		// 					Capacity: to.Ptr[int32](10),
 		// 					CapacityType: to.Ptr(armbulkactions.CapacityTypeVM),
-		// 					PriorityProfile: &armbulkactions.BulkCreateCustomPriorityProfile{
-		// 						Type: to.Ptr(armbulkactions.PriorityTypeSpot),
-		// 						MaxPricePerVM: to.Ptr[float32](0.2),
-		// 						EvictionPolicy: to.Ptr(armbulkactions.EvictionPolicyDelete),
-		// 						AllocationStrategy: to.Ptr(armbulkactions.BulkCreateCustomAllocationStrategyLowestPrice),
-		// 					},
-		// 					VMSizesProfile: []*armbulkactions.BulkCreateCustomVMSizeProfile{
-		// 						{
-		// 							Name: to.Ptr("Standard_D2s_v5"),
-		// 							Rank: to.Ptr[int32](1),
-		// 						},
-		// 						{
-		// 							Name: to.Ptr("Standard_D4s_v5"),
-		// 							Rank: to.Ptr[int32](2),
-		// 						},
-		// 					},
 		// 					ComputeProfile: &armbulkactions.ComputeProfile{
 		// 						VirtualMachineProfile: &armbulkactions.BulkactionVMProperties{
 		// 							StorageProfile: &armbulkactions.StorageProfile{
@@ -1000,19 +913,6 @@ func ExampleBulkCreateCustomClient_NewListBySubscriptionPager() {
 		// 						},
 		// 						ComputeAPIVersion: to.Ptr("2024-11-01"),
 		// 					},
-		// 					ZoneAllocationPolicy: &armbulkactions.BulkCreateCustomZoneAllocationPolicy{
-		// 						DistributionStrategy: to.Ptr(armbulkactions.BulkCreateCustomDistributionStrategyBestEffortBalanced),
-		// 						ZonePreferences: []*armbulkactions.ZonePreference{
-		// 							{
-		// 								Zone: to.Ptr("1"),
-		// 								Rank: to.Ptr[int32](1),
-		// 							},
-		// 							{
-		// 								Zone: to.Ptr("2"),
-		// 								Rank: to.Ptr[int32](2),
-		// 							},
-		// 						},
-		// 					},
 		// 					ExecutionParameters: &armbulkactions.ExecutionParameters{
 		// 						RetryPolicy: &armbulkactions.RetryPolicy{
 		// 							RetryWindowInMinutes: to.Ptr[int32](30),
@@ -1023,6 +923,20 @@ func ExampleBulkCreateCustomClient_NewListBySubscriptionPager() {
 		// 				Zones: []*string{
 		// 					to.Ptr("1"),
 		// 					to.Ptr("2"),
+		// 				},
+		// 				ExtendedLocation: &armbulkactions.ExtendedLocation{
+		// 					Name: to.Ptr("microsoftlosangeles1"),
+		// 					Type: to.Ptr(armbulkactions.ExtendedLocationTypeEdgeZone),
+		// 				},
+		// 				Placement: &armbulkactions.Placement{
+		// 					ZonePlacementPolicy: to.Ptr(armbulkactions.ZonePlacementPolicyTypeAuto),
+		// 					IncludeZones: []*string{
+		// 						to.Ptr("1"),
+		// 						to.Ptr("2"),
+		// 					},
+		// 					ExcludeZones: []*string{
+		// 						to.Ptr("3"),
+		// 					},
 		// 				},
 		// 				Tags: map[string]*string{
 		// 					"workload": to.Ptr("batch-render"),
@@ -1051,22 +965,6 @@ func ExampleBulkCreateCustomClient_NewListBySubscriptionPager() {
 		// 					ProvisioningState: to.Ptr(armbulkactions.ProvisioningStateCreating),
 		// 					Capacity: to.Ptr[int32](10),
 		// 					CapacityType: to.Ptr(armbulkactions.CapacityTypeVM),
-		// 					PriorityProfile: &armbulkactions.BulkCreateCustomPriorityProfile{
-		// 						Type: to.Ptr(armbulkactions.PriorityTypeSpot),
-		// 						MaxPricePerVM: to.Ptr[float32](0.2),
-		// 						EvictionPolicy: to.Ptr(armbulkactions.EvictionPolicyDelete),
-		// 						AllocationStrategy: to.Ptr(armbulkactions.BulkCreateCustomAllocationStrategyLowestPrice),
-		// 					},
-		// 					VMSizesProfile: []*armbulkactions.BulkCreateCustomVMSizeProfile{
-		// 						{
-		// 							Name: to.Ptr("Standard_D2s_v5"),
-		// 							Rank: to.Ptr[int32](1),
-		// 						},
-		// 						{
-		// 							Name: to.Ptr("Standard_D4s_v5"),
-		// 							Rank: to.Ptr[int32](2),
-		// 						},
-		// 					},
 		// 					ComputeProfile: &armbulkactions.ComputeProfile{
 		// 						VirtualMachineProfile: &armbulkactions.BulkactionVMProperties{
 		// 							StorageProfile: &armbulkactions.StorageProfile{
@@ -1127,19 +1025,6 @@ func ExampleBulkCreateCustomClient_NewListBySubscriptionPager() {
 		// 						},
 		// 						ComputeAPIVersion: to.Ptr("2024-11-01"),
 		// 					},
-		// 					ZoneAllocationPolicy: &armbulkactions.BulkCreateCustomZoneAllocationPolicy{
-		// 						DistributionStrategy: to.Ptr(armbulkactions.BulkCreateCustomDistributionStrategyBestEffortBalanced),
-		// 						ZonePreferences: []*armbulkactions.ZonePreference{
-		// 							{
-		// 								Zone: to.Ptr("1"),
-		// 								Rank: to.Ptr[int32](1),
-		// 							},
-		// 							{
-		// 								Zone: to.Ptr("2"),
-		// 								Rank: to.Ptr[int32](2),
-		// 							},
-		// 						},
-		// 					},
 		// 					ExecutionParameters: &armbulkactions.ExecutionParameters{
 		// 						RetryPolicy: &armbulkactions.RetryPolicy{
 		// 							RetryWindowInMinutes: to.Ptr[int32](30),
@@ -1150,6 +1035,20 @@ func ExampleBulkCreateCustomClient_NewListBySubscriptionPager() {
 		// 				Zones: []*string{
 		// 					to.Ptr("1"),
 		// 					to.Ptr("2"),
+		// 				},
+		// 				ExtendedLocation: &armbulkactions.ExtendedLocation{
+		// 					Name: to.Ptr("microsoftlosangeles1"),
+		// 					Type: to.Ptr(armbulkactions.ExtendedLocationTypeEdgeZone),
+		// 				},
+		// 				Placement: &armbulkactions.Placement{
+		// 					ZonePlacementPolicy: to.Ptr(armbulkactions.ZonePlacementPolicyTypeAuto),
+		// 					IncludeZones: []*string{
+		// 						to.Ptr("1"),
+		// 						to.Ptr("2"),
+		// 					},
+		// 					ExcludeZones: []*string{
+		// 						to.Ptr("3"),
+		// 					},
 		// 				},
 		// 				Tags: map[string]*string{
 		// 					"workload": to.Ptr("batch-render"),
@@ -1173,13 +1072,13 @@ func ExampleBulkCreateCustomClient_NewListBySubscriptionPager() {
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/1FBA3C66-5C9C-4391-B72F-9F52735FC9F2/providers/Microsoft.Compute/locations/eastus/bulkCreateCustom?api-version=2026-08-06-preview&$skiptoken=page2"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/1FBA3C66-5C9C-4391-B72F-9F52735FC9F2/providers/Microsoft.Compute/locations/eastus/bulkCreateCustom?api-version=2026-10-06-preview&$skiptoken=page2"),
 		// 	},
 		// }
 	}
 }
 
-// Generated from example definition: 2026-08-06-preview/BulkCreateCustom_VirtualMachinesGetOperationStatus_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-06-preview/BulkCreateCustom_VirtualMachinesGetOperationStatus_MaximumSet_Gen.json
 func ExampleBulkCreateCustomClient_NewVirtualMachinesGetOperationStatusPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1213,7 +1112,7 @@ func ExampleBulkCreateCustomClient_NewVirtualMachinesGetOperationStatusPager() {
 		// 					SubscriptionID: to.Ptr("700935bc-adf2-4176-b9ad-c571731c09fc"),
 		// 					Deadline: to.Ptr(time.Date(2026, time.August, 4, 15, 40, 8, 280208200, time.UTC)),
 		// 					DeadlineType: to.Ptr(armbulkactions.DeadlineTypeInitiateAt),
-		// 					State: to.Ptr(armbulkactions.OperationStatePendingScheduling),
+		// 					State: to.Ptr(armbulkactions.OperationStateScheduled),
 		// 					Timezone: to.Ptr("UTC"),
 		// 					RetryPolicy: &armbulkactions.RetryPolicy{
 		// 						RetryCount: to.Ptr[int32](1),
@@ -1223,10 +1122,11 @@ func ExampleBulkCreateCustomClient_NewVirtualMachinesGetOperationStatusPager() {
 		// 				VirtualMachineInfo: &armbulkactions.VirtualMachineInfo{
 		// 					VMSize: to.Ptr("Standard_D4as_v5"),
 		// 					Zone: to.Ptr("1"),
+		// 					Name: to.Ptr("vm-001"),
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/700935bc-adf2-4176-b9ad-c571731c09fc/resourceGroups/local-test-rg/providers/Microsoft.Compute/locations/eastus/bulkCreateCustom/00000000-0000-0000-0000-000000000102/virtualMachinesGetOperationStatus?api-version=2026-08-06-preview&$skiptoken=page2"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/700935bc-adf2-4176-b9ad-c571731c09fc/resourceGroups/local-test-rg/providers/Microsoft.Compute/locations/eastus/bulkCreateCustom/00000000-0000-0000-0000-000000000102/virtualMachinesGetOperationStatus?api-version=2026-10-06-preview&$skiptoken=page2"),
 		// 	},
 		// }
 	}

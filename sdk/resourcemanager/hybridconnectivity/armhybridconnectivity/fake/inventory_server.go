@@ -98,10 +98,7 @@ func (i *InventoryServerTransport) dispatchGet(req *http.Request) (*http.Respons
 	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-	if err != nil {
-		return nil, err
-	}
+	resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 	solutionConfigurationParam, err := url.PathUnescape(matches[regex.SubexpIndex("solutionConfiguration")])
 	if err != nil {
 		return nil, err
@@ -137,10 +134,7 @@ func (i *InventoryServerTransport) dispatchNewListBySolutionConfigurationPager(r
 		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-		if err != nil {
-			return nil, err
-		}
+		resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 		solutionConfigurationParam, err := url.PathUnescape(matches[regex.SubexpIndex("solutionConfiguration")])
 		if err != nil {
 			return nil, err

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-06-02-preview/ManagedClusterSnapshotsCreate.json
+// Generated from example definition: 2026-08-02-preview/ManagedClusterSnapshotsCreate.json
 func ExampleManagedClusterSnapshotsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -80,7 +80,7 @@ func ExampleManagedClusterSnapshotsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-06-02-preview/ManagedClusterSnapshotsDelete.json
+// Generated from example definition: 2026-08-02-preview/ManagedClusterSnapshotsDelete.json
 func ExampleManagedClusterSnapshotsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -102,7 +102,7 @@ func ExampleManagedClusterSnapshotsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2026-06-02-preview/ManagedClusterSnapshotsGet.json
+// Generated from example definition: 2026-08-02-preview/ManagedClusterSnapshotsGet.json
 func ExampleManagedClusterSnapshotsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -159,73 +159,7 @@ func ExampleManagedClusterSnapshotsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-06-02-preview/ManagedClusterSnapshotsList.json
-func ExampleManagedClusterSnapshotsClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcontainerservice.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewManagedClusterSnapshotsClient().NewListPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcontainerservice.ManagedClusterSnapshotsClientListResponse{
-		// 	ManagedClusterSnapshotListResult: armcontainerservice.ManagedClusterSnapshotListResult{
-		// 		Value: []*armcontainerservice.ManagedClusterSnapshot{
-		// 			{
-		// 				Name: to.Ptr("snapshot1"),
-		// 				Type: to.Ptr("Microsoft.ContainerService/managedClusterSnapshots"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedclustersnapshots/snapshot1"),
-		// 				Location: to.Ptr("westus"),
-		// 				Properties: &armcontainerservice.ManagedClusterSnapshotProperties{
-		// 					CreationData: &armcontainerservice.CreationData{
-		// 						SourceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/cluster1"),
-		// 					},
-		// 					ManagedClusterPropertiesReadOnly: &armcontainerservice.ManagedClusterPropertiesForSnapshot{
-		// 						EnableRbac: to.Ptr(true),
-		// 						KubernetesVersion: to.Ptr("1.20.5"),
-		// 						NetworkProfile: &armcontainerservice.NetworkProfileForSnapshot{
-		// 							LoadBalancerSKU: to.Ptr(armcontainerservice.LoadBalancerSKUStandard),
-		// 							NetworkMode: to.Ptr(armcontainerservice.NetworkModeBridge),
-		// 							NetworkPlugin: to.Ptr(armcontainerservice.NetworkPluginKubenet),
-		// 							NetworkPolicy: to.Ptr(armcontainerservice.NetworkPolicyCalico),
-		// 						},
-		// 						SKU: &armcontainerservice.ManagedClusterSKU{
-		// 							Name: to.Ptr(armcontainerservice.ManagedClusterSKUName("Basic")),
-		// 							Tier: to.Ptr(armcontainerservice.ManagedClusterSKUTierFree),
-		// 						},
-		// 					},
-		// 					SnapshotType: to.Ptr(armcontainerservice.SnapshotTypeManagedCluster),
-		// 				},
-		// 				SystemData: &armcontainerservice.SystemData{
-		// 					CreatedAt: to.Ptr(time.Date(2021, time.August, 9, 20, 13, 23, 298420761, time.UTC)),
-		// 					CreatedBy: to.Ptr("user1"),
-		// 					CreatedByType: to.Ptr(armcontainerservice.CreatedByTypeUser),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 					"key1": to.Ptr("val1"),
-		// 					"key2": to.Ptr("val2"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-06-02-preview/ManagedClusterSnapshotsListByResourceGroup.json
+// Generated from example definition: 2026-08-02-preview/ManagedClusterSnapshotsListByResourceGroup.json
 func ExampleManagedClusterSnapshotsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -291,7 +225,73 @@ func ExampleManagedClusterSnapshotsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-06-02-preview/ManagedClusterSnapshotsUpdateTags.json
+// Generated from example definition: 2026-08-02-preview/ManagedClusterSnapshotsList.json
+func ExampleManagedClusterSnapshotsClient_NewListPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcontainerservice.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewManagedClusterSnapshotsClient().NewListPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armcontainerservice.ManagedClusterSnapshotsClientListResponse{
+		// 	ManagedClusterSnapshotListResult: armcontainerservice.ManagedClusterSnapshotListResult{
+		// 		Value: []*armcontainerservice.ManagedClusterSnapshot{
+		// 			{
+		// 				Name: to.Ptr("snapshot1"),
+		// 				Type: to.Ptr("Microsoft.ContainerService/managedClusterSnapshots"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedclustersnapshots/snapshot1"),
+		// 				Location: to.Ptr("westus"),
+		// 				Properties: &armcontainerservice.ManagedClusterSnapshotProperties{
+		// 					CreationData: &armcontainerservice.CreationData{
+		// 						SourceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/cluster1"),
+		// 					},
+		// 					ManagedClusterPropertiesReadOnly: &armcontainerservice.ManagedClusterPropertiesForSnapshot{
+		// 						EnableRbac: to.Ptr(true),
+		// 						KubernetesVersion: to.Ptr("1.20.5"),
+		// 						NetworkProfile: &armcontainerservice.NetworkProfileForSnapshot{
+		// 							LoadBalancerSKU: to.Ptr(armcontainerservice.LoadBalancerSKUStandard),
+		// 							NetworkMode: to.Ptr(armcontainerservice.NetworkModeBridge),
+		// 							NetworkPlugin: to.Ptr(armcontainerservice.NetworkPluginKubenet),
+		// 							NetworkPolicy: to.Ptr(armcontainerservice.NetworkPolicyCalico),
+		// 						},
+		// 						SKU: &armcontainerservice.ManagedClusterSKU{
+		// 							Name: to.Ptr(armcontainerservice.ManagedClusterSKUName("Basic")),
+		// 							Tier: to.Ptr(armcontainerservice.ManagedClusterSKUTierFree),
+		// 						},
+		// 					},
+		// 					SnapshotType: to.Ptr(armcontainerservice.SnapshotTypeManagedCluster),
+		// 				},
+		// 				SystemData: &armcontainerservice.SystemData{
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.August, 9, 20, 13, 23, 298420761, time.UTC)),
+		// 					CreatedBy: to.Ptr("user1"),
+		// 					CreatedByType: to.Ptr(armcontainerservice.CreatedByTypeUser),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"key1": to.Ptr("val1"),
+		// 					"key2": to.Ptr("val2"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-08-02-preview/ManagedClusterSnapshotsUpdateTags.json
 func ExampleManagedClusterSnapshotsClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

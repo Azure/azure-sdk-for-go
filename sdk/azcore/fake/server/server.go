@@ -16,6 +16,7 @@ import (
 	azexported "github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
 	fakepoller "github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/errorinfo"
 )
 
@@ -233,4 +234,11 @@ func SanitizePagerPollerPath(path string) string {
 	path = exported.SanitizePagerPath(path)
 	path = fakepoller.SanitizePollerPath(path)
 	return path
+}
+
+// MarshalSSEResponder renders the events in an SSEResponder to a text/event-stream body.
+// The encode callback maps each typed event to an SSE frame.
+// This function is called by the fake server internals.
+func MarshalSSEResponder[T any](s *fake.SSEResponder[T], encode func(T) (streaming.SSEFrame, error)) (io.ReadCloser, error) {
+	return (*exported.SSEResponder[T])(s).MarshalEvents(encode)
 }

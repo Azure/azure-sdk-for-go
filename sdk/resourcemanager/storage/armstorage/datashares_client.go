@@ -19,7 +19,7 @@ import (
 // DataSharesClient contains the methods for the DataShares group.
 // Don't use this type directly, use NewDataSharesClient() instead.
 //
-// Generated from API version 2026-04-01
+// Generated from API version 2026-09-01
 type DataSharesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type DataSharesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewDataSharesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DataSharesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -68,7 +71,7 @@ func (client *DataSharesClient) BeginCreate(ctx context.Context, resourceGroupNa
 	}
 }
 
-// Create - Create a Storage DataShare if it does not already exist; otherwise, error out. This API will not allow you to
+// create - Create a Storage DataShare if it does not already exist; otherwise, error out. This API will not allow you to
 // replace an already existing resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *DataSharesClient) create(ctx context.Context, resourceGroupName string, accountName string, dataShareName string, resource DataShare, options *DataSharesClientBeginCreateOptions) (*http.Response, error) {
@@ -86,17 +89,16 @@ func (client *DataSharesClient) create(ctx context.Context, resourceGroupName st
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *DataSharesClient) createCreateRequest(ctx context.Context, resourceGroupName string, accountName string, dataShareName string, resource DataShare, _ *DataSharesClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/dataShares/{dataShareName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -116,7 +118,7 @@ func (client *DataSharesClient) createCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -150,7 +152,7 @@ func (client *DataSharesClient) BeginDelete(ctx context.Context, resourceGroupNa
 	}
 }
 
-// Delete - Delete a Storage DataShare.
+// deleteOperation - Delete a Storage DataShare.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *DataSharesClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, dataShareName string, options *DataSharesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -167,17 +169,16 @@ func (client *DataSharesClient) deleteOperation(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *DataSharesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, dataShareName string, _ *DataSharesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/dataShares/{dataShareName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -197,141 +198,9 @@ func (client *DataSharesClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
-}
-
-// Get - Get the specified Storage DataShare.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
-//     3 and 24 characters in length and use numbers and lower-case letters only.
-//   - dataShareName - The name of the Storage DataShare.
-//   - options - DataSharesClientGetOptions contains the optional parameters for the DataSharesClient.Get method.
-func (client *DataSharesClient) Get(ctx context.Context, resourceGroupName string, accountName string, dataShareName string, options *DataSharesClientGetOptions) (DataSharesClientGetResponse, error) {
-	var err error
-	const operationName = "DataSharesClient.Get"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, dataShareName, options)
-	if err != nil {
-		return DataSharesClientGetResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return DataSharesClientGetResponse{}, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DataSharesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
-}
-
-// getCreateRequest creates the Get request.
-func (client *DataSharesClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, dataShareName string, _ *DataSharesClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/dataShares/{dataShareName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if dataShareName == "" {
-		return nil, errors.New("parameter dataShareName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{dataShareName}", url.PathEscape(dataShareName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// getHandleResponse handles the Get response.
-func (client *DataSharesClient) getHandleResponse(resp *http.Response) (DataSharesClientGetResponse, error) {
-	result := DataSharesClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.DataShare); err != nil {
-		return DataSharesClientGetResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListByStorageAccountPager - List all Storage DataShares in a Storage Account.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
-//     3 and 24 characters in length and use numbers and lower-case letters only.
-//   - options - DataSharesClientListByStorageAccountOptions contains the optional parameters for the DataSharesClient.NewListByStorageAccountPager
-//     method.
-func (client *DataSharesClient) NewListByStorageAccountPager(resourceGroupName string, accountName string, options *DataSharesClientListByStorageAccountOptions) *runtime.Pager[DataSharesClientListByStorageAccountResponse] {
-	return runtime.NewPager(runtime.PagingHandler[DataSharesClientListByStorageAccountResponse]{
-		More: func(page DataSharesClientListByStorageAccountResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *DataSharesClientListByStorageAccountResponse) (DataSharesClientListByStorageAccountResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DataSharesClient.NewListByStorageAccountPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByStorageAccountCreateRequest(ctx, resourceGroupName, accountName, options)
-			}, nil)
-			if err != nil {
-				return DataSharesClientListByStorageAccountResponse{}, err
-			}
-			return client.listByStorageAccountHandleResponse(resp)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listByStorageAccountCreateRequest creates the ListByStorageAccount request.
-func (client *DataSharesClient) listByStorageAccountCreateRequest(ctx context.Context, resourceGroupName string, accountName string, _ *DataSharesClientListByStorageAccountOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/dataShares"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listByStorageAccountHandleResponse handles the ListByStorageAccount response.
-func (client *DataSharesClient) listByStorageAccountHandleResponse(resp *http.Response) (DataSharesClientListByStorageAccountResponse, error) {
-	result := DataSharesClientListByStorageAccountResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.DataShareListResult); err != nil {
-		return DataSharesClientListByStorageAccountResponse{}, err
-	}
-	return result, nil
 }
 
 // BeginUpdate - Update a Storage DataShare.
@@ -359,7 +228,7 @@ func (client *DataSharesClient) BeginUpdate(ctx context.Context, resourceGroupNa
 	}
 }
 
-// Update - Update a Storage DataShare.
+// update - Update a Storage DataShare.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *DataSharesClient) update(ctx context.Context, resourceGroupName string, accountName string, dataShareName string, properties DataShareUpdate, options *DataSharesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
@@ -376,17 +245,16 @@ func (client *DataSharesClient) update(ctx context.Context, resourceGroupName st
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
 
-// updateCreateRequest creates the Update request.
+// updateCreateRequest creates the update request.
 func (client *DataSharesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, dataShareName string, properties DataShareUpdate, _ *DataSharesClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/dataShares/{dataShareName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -406,7 +274,7 @@ func (client *DataSharesClient) updateCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -414,4 +282,148 @@ func (client *DataSharesClient) updateCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	return req, nil
+}
+
+// Get - Get the specified Storage DataShare.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
+//     3 and 24 characters in length and use numbers and lower-case letters only.
+//   - dataShareName - The name of the Storage DataShare.
+//   - options - DataSharesClientGetOptions contains the optional parameters for the DataSharesClient.Get method.
+func (client *DataSharesClient) Get(ctx context.Context, resourceGroupName string, accountName string, dataShareName string, options *DataSharesClientGetOptions) (DataSharesClientGetResponse, error) {
+	var err error
+	const operationName = "DataSharesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, dataShareName, options)
+	if err != nil {
+		return DataSharesClientGetResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return DataSharesClientGetResponse{}, err
+	}
+	return client.getHandleResponse(httpResp, http.StatusOK)
+}
+
+// getCreateRequest creates the Get request.
+func (client *DataSharesClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, dataShareName string, _ *DataSharesClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/dataShares/{dataShareName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if dataShareName == "" {
+		return nil, errors.New("parameter dataShareName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{dataShareName}", url.PathEscape(dataShareName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getHandleResponse handles the Get response.
+func (client *DataSharesClient) getHandleResponse(resp *http.Response, successCodes ...int) (DataSharesClientGetResponse, error) {
+	result := DataSharesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DataShare); err != nil {
+		return DataSharesClientGetResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListByStorageAccountPager - List all Storage DataShares in a Storage Account.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
+//     3 and 24 characters in length and use numbers and lower-case letters only.
+//   - options - DataSharesClientListByStorageAccountOptions contains the optional parameters for the DataSharesClient.NewListByStorageAccountPager
+//     method.
+func (client *DataSharesClient) NewListByStorageAccountPager(resourceGroupName string, accountName string, options *DataSharesClientListByStorageAccountOptions) *runtime.Pager[DataSharesClientListByStorageAccountResponse] {
+	return runtime.NewPager(runtime.PagingHandler[DataSharesClientListByStorageAccountResponse]{
+		More: func(page DataSharesClientListByStorageAccountResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *DataSharesClientListByStorageAccountResponse) (DataSharesClientListByStorageAccountResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DataSharesClient.NewListByStorageAccountPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listByStorageAccountCreateRequest(ctx, resourceGroupName, accountName, nextLink, options)
+			if err != nil {
+				return DataSharesClientListByStorageAccountResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return DataSharesClientListByStorageAccountResponse{}, err
+			}
+			return client.listByStorageAccountHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listByStorageAccountCreateRequest creates the ListByStorageAccount request.
+func (client *DataSharesClient) listByStorageAccountCreateRequest(ctx context.Context, resourceGroupName string, accountName string, nextLink string, _ *DataSharesClientListByStorageAccountOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/dataShares"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if accountName == "" {
+			return nil, errors.New("parameter accountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260901)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listByStorageAccountHandleResponse handles the ListByStorageAccount response.
+func (client *DataSharesClient) listByStorageAccountHandleResponse(resp *http.Response, successCodes ...int) (DataSharesClientListByStorageAccountResponse, error) {
+	result := DataSharesClientListByStorageAccountResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DataShareListResult); err != nil {
+		return DataSharesClientListByStorageAccountResponse{}, err
+	}
+	return result, nil
 }

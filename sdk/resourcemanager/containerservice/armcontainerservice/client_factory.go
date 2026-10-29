@@ -32,6 +32,14 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
+// NewAgentFabricMembershipsClient creates a new instance of AgentFabricMembershipsClient.
+func (c *ClientFactory) NewAgentFabricMembershipsClient() *AgentFabricMembershipsClient {
+	return &AgentFabricMembershipsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewAgentPoolsClient creates a new instance of AgentPoolsClient.
 func (c *ClientFactory) NewAgentPoolsClient() *AgentPoolsClient {
 	return &AgentPoolsClient{
@@ -194,6 +202,14 @@ func (c *ClientFactory) NewTrustedAccessRoleBindingsClient() *TrustedAccessRoleB
 // NewTrustedAccessRolesClient creates a new instance of TrustedAccessRolesClient.
 func (c *ClientFactory) NewTrustedAccessRolesClient() *TrustedAccessRolesClient {
 	return &TrustedAccessRolesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewUpgradeInsightsClient creates a new instance of UpgradeInsightsClient.
+func (c *ClientFactory) NewUpgradeInsightsClient() *UpgradeInsightsClient {
+	return &UpgradeInsightsClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

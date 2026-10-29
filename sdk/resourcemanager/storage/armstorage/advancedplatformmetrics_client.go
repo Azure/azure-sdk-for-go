@@ -19,7 +19,7 @@ import (
 // AdvancedPlatformMetricsClient contains the methods for the AdvancedPlatformMetrics group.
 // Don't use this type directly, use NewAdvancedPlatformMetricsClient() instead.
 //
-// Generated from API version 2026-04-01
+// Generated from API version 2026-09-01
 type AdvancedPlatformMetricsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type AdvancedPlatformMetricsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAdvancedPlatformMetricsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AdvancedPlatformMetricsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -64,19 +67,14 @@ func (client *AdvancedPlatformMetricsClient) CreateOrUpdate(ctx context.Context,
 	if err != nil {
 		return AdvancedPlatformMetricsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return AdvancedPlatformMetricsClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *AdvancedPlatformMetricsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, advancedPlatformMetricsRuleType AdvancedPlatformMetricsRuleType, resource AdvancedPlatformMetricsRule, _ *AdvancedPlatformMetricsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/advancedPlatformMetrics/{advancedPlatformMetricsRuleType}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -96,7 +94,7 @@ func (client *AdvancedPlatformMetricsClient) createOrUpdateCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -107,8 +105,11 @@ func (client *AdvancedPlatformMetricsClient) createOrUpdateCreateRequest(ctx con
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *AdvancedPlatformMetricsClient) createOrUpdateHandleResponse(resp *http.Response) (AdvancedPlatformMetricsClientCreateOrUpdateResponse, error) {
+func (client *AdvancedPlatformMetricsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (AdvancedPlatformMetricsClientCreateOrUpdateResponse, error) {
 	result := AdvancedPlatformMetricsClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AdvancedPlatformMetricsRule); err != nil {
 		return AdvancedPlatformMetricsClientCreateOrUpdateResponse{}, err
 	}
@@ -138,8 +139,7 @@ func (client *AdvancedPlatformMetricsClient) Delete(ctx context.Context, resourc
 		return AdvancedPlatformMetricsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return AdvancedPlatformMetricsClientDeleteResponse{}, err
+		return AdvancedPlatformMetricsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return AdvancedPlatformMetricsClientDeleteResponse{}, nil
 }
@@ -148,7 +148,7 @@ func (client *AdvancedPlatformMetricsClient) Delete(ctx context.Context, resourc
 func (client *AdvancedPlatformMetricsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, advancedPlatformMetricsRuleType AdvancedPlatformMetricsRuleType, _ *AdvancedPlatformMetricsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/advancedPlatformMetrics/{advancedPlatformMetricsRuleType}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -168,7 +168,7 @@ func (client *AdvancedPlatformMetricsClient) deleteCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -195,19 +195,14 @@ func (client *AdvancedPlatformMetricsClient) Get(ctx context.Context, resourceGr
 	if err != nil {
 		return AdvancedPlatformMetricsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AdvancedPlatformMetricsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *AdvancedPlatformMetricsClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, advancedPlatformMetricsRuleType AdvancedPlatformMetricsRuleType, _ *AdvancedPlatformMetricsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/advancedPlatformMetrics/{advancedPlatformMetricsRuleType}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -227,15 +222,18 @@ func (client *AdvancedPlatformMetricsClient) getCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *AdvancedPlatformMetricsClient) getHandleResponse(resp *http.Response) (AdvancedPlatformMetricsClientGetResponse, error) {
+func (client *AdvancedPlatformMetricsClient) getHandleResponse(resp *http.Response, successCodes ...int) (AdvancedPlatformMetricsClientGetResponse, error) {
 	result := AdvancedPlatformMetricsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AdvancedPlatformMetricsRule); err != nil {
 		return AdvancedPlatformMetricsClientGetResponse{}, err
 	}
@@ -259,47 +257,61 @@ func (client *AdvancedPlatformMetricsClient) NewListPager(resourceGroupName stri
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, accountName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, accountName, nextLink, options)
 			if err != nil {
 				return AdvancedPlatformMetricsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return AdvancedPlatformMetricsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *AdvancedPlatformMetricsClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, _ *AdvancedPlatformMetricsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/advancedPlatformMetrics"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *AdvancedPlatformMetricsClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, nextLink string, _ *AdvancedPlatformMetricsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/advancedPlatformMetrics"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if accountName == "" {
+			return nil, errors.New("parameter accountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260901)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *AdvancedPlatformMetricsClient) listHandleResponse(resp *http.Response) (AdvancedPlatformMetricsClientListResponse, error) {
+func (client *AdvancedPlatformMetricsClient) listHandleResponse(resp *http.Response, successCodes ...int) (AdvancedPlatformMetricsClientListResponse, error) {
 	result := AdvancedPlatformMetricsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AdvancedPlatformMetricsRuleListResult); err != nil {
 		return AdvancedPlatformMetricsClientListResponse{}, err
 	}

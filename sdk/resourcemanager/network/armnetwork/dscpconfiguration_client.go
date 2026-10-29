@@ -128,7 +128,7 @@ func (client *DscpConfigurationClient) createOrUpdateCreateRequest(ctx context.C
 //     method.
 func (client *DscpConfigurationClient) BeginDelete(ctx context.Context, resourceGroupName string, dscpConfigurationName string, options *DscpConfigurationClientBeginDeleteOptions) (*runtime.Poller[DscpConfigurationClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, dscpConfigurationName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, dscpConfigurationName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -143,9 +143,9 @@ func (client *DscpConfigurationClient) BeginDelete(ctx context.Context, resource
 	}
 }
 
-// delete - Deletes a DSCP Configuration.
+// deleteOperation - Deletes a DSCP Configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *DscpConfigurationClient) delete(ctx context.Context, resourceGroupName string, dscpConfigurationName string, options *DscpConfigurationClientBeginDeleteOptions) (*http.Response, error) {
+func (client *DscpConfigurationClient) deleteOperation(ctx context.Context, resourceGroupName string, dscpConfigurationName string, options *DscpConfigurationClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DscpConfigurationClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)

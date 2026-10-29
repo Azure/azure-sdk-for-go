@@ -128,7 +128,7 @@ func (client *CustomIPPrefixesClient) createOrUpdateCreateRequest(ctx context.Co
 //     method.
 func (client *CustomIPPrefixesClient) BeginDelete(ctx context.Context, resourceGroupName string, customIPPrefixName string, options *CustomIPPrefixesClientBeginDeleteOptions) (*runtime.Poller[CustomIPPrefixesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, customIPPrefixName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, customIPPrefixName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -143,9 +143,9 @@ func (client *CustomIPPrefixesClient) BeginDelete(ctx context.Context, resourceG
 	}
 }
 
-// delete - Deletes the specified custom IP prefix.
+// deleteOperation - Deletes the specified custom IP prefix.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *CustomIPPrefixesClient) delete(ctx context.Context, resourceGroupName string, customIPPrefixName string, options *CustomIPPrefixesClientBeginDeleteOptions) (*http.Response, error) {
+func (client *CustomIPPrefixesClient) deleteOperation(ctx context.Context, resourceGroupName string, customIPPrefixName string, options *CustomIPPrefixesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CustomIPPrefixesClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)

@@ -136,7 +136,7 @@ func (client *FirewallPolicyKubeSelectorGroupsClient) createOrUpdateCreateReques
 //     method.
 func (client *FirewallPolicyKubeSelectorGroupsClient) BeginDelete(ctx context.Context, resourceGroupName string, firewallPolicyName string, kubeSelectorGroupName string, options *FirewallPolicyKubeSelectorGroupsClientBeginDeleteOptions) (*runtime.Poller[FirewallPolicyKubeSelectorGroupsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, firewallPolicyName, kubeSelectorGroupName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, firewallPolicyName, kubeSelectorGroupName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -151,9 +151,9 @@ func (client *FirewallPolicyKubeSelectorGroupsClient) BeginDelete(ctx context.Co
 	}
 }
 
-// delete - Deletes the specified FirewallPolicyKubeSelectorGroup.
+// deleteOperation - Deletes the specified FirewallPolicyKubeSelectorGroup.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *FirewallPolicyKubeSelectorGroupsClient) delete(ctx context.Context, resourceGroupName string, firewallPolicyName string, kubeSelectorGroupName string, options *FirewallPolicyKubeSelectorGroupsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *FirewallPolicyKubeSelectorGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, firewallPolicyName string, kubeSelectorGroupName string, options *FirewallPolicyKubeSelectorGroupsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "FirewallPolicyKubeSelectorGroupsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)

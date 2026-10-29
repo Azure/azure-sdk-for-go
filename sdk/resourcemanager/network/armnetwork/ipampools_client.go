@@ -142,7 +142,7 @@ func (client *IpamPoolsClient) createCreateRequest(ctx context.Context, resource
 //   - options - IpamPoolsClientBeginDeleteOptions contains the optional parameters for the IpamPoolsClient.BeginDelete method.
 func (client *IpamPoolsClient) BeginDelete(ctx context.Context, resourceGroupName string, networkManagerName string, poolName string, options *IpamPoolsClientBeginDeleteOptions) (*runtime.Poller[IpamPoolsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, networkManagerName, poolName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, networkManagerName, poolName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -157,11 +157,11 @@ func (client *IpamPoolsClient) BeginDelete(ctx context.Context, resourceGroupNam
 	}
 }
 
-// delete - Delete the Pool resource.
+// deleteOperation - Delete the Pool resource.
 //
 // Delete the Pool resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *IpamPoolsClient) delete(ctx context.Context, resourceGroupName string, networkManagerName string, poolName string, options *IpamPoolsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *IpamPoolsClient) deleteOperation(ctx context.Context, resourceGroupName string, networkManagerName string, poolName string, options *IpamPoolsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "IpamPoolsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)

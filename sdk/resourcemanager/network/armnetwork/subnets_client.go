@@ -133,7 +133,7 @@ func (client *SubnetsClient) createOrUpdateCreateRequest(ctx context.Context, re
 //   - options - SubnetsClientBeginDeleteOptions contains the optional parameters for the SubnetsClient.BeginDelete method.
 func (client *SubnetsClient) BeginDelete(ctx context.Context, resourceGroupName string, virtualNetworkName string, subnetName string, options *SubnetsClientBeginDeleteOptions) (*runtime.Poller[SubnetsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, virtualNetworkName, subnetName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, virtualNetworkName, subnetName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -148,9 +148,9 @@ func (client *SubnetsClient) BeginDelete(ctx context.Context, resourceGroupName 
 	}
 }
 
-// delete - Deletes the specified subnet.
+// deleteOperation - Deletes the specified subnet.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *SubnetsClient) delete(ctx context.Context, resourceGroupName string, virtualNetworkName string, subnetName string, options *SubnetsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *SubnetsClient) deleteOperation(ctx context.Context, resourceGroupName string, virtualNetworkName string, subnetName string, options *SubnetsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SubnetsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)

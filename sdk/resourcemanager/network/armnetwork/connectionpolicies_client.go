@@ -136,7 +136,7 @@ func (client *ConnectionPoliciesClient) createOrUpdateCreateRequest(ctx context.
 //     method.
 func (client *ConnectionPoliciesClient) BeginDelete(ctx context.Context, resourceGroupName string, virtualHubName string, connectionPolicyName string, options *ConnectionPoliciesClientBeginDeleteOptions) (*runtime.Poller[ConnectionPoliciesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, virtualHubName, connectionPolicyName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, virtualHubName, connectionPolicyName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -151,9 +151,9 @@ func (client *ConnectionPoliciesClient) BeginDelete(ctx context.Context, resourc
 	}
 }
 
-// delete - Deletes a ConnectionPolicy.
+// deleteOperation - Deletes a ConnectionPolicy.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *ConnectionPoliciesClient) delete(ctx context.Context, resourceGroupName string, virtualHubName string, connectionPolicyName string, options *ConnectionPoliciesClientBeginDeleteOptions) (*http.Response, error) {
+func (client *ConnectionPoliciesClient) deleteOperation(ctx context.Context, resourceGroupName string, virtualHubName string, connectionPolicyName string, options *ConnectionPoliciesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ConnectionPoliciesClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)

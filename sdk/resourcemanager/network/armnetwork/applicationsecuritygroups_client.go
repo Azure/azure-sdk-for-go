@@ -128,7 +128,7 @@ func (client *ApplicationSecurityGroupsClient) createOrUpdateCreateRequest(ctx c
 //     method.
 func (client *ApplicationSecurityGroupsClient) BeginDelete(ctx context.Context, resourceGroupName string, applicationSecurityGroupName string, options *ApplicationSecurityGroupsClientBeginDeleteOptions) (*runtime.Poller[ApplicationSecurityGroupsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, applicationSecurityGroupName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, applicationSecurityGroupName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -143,9 +143,9 @@ func (client *ApplicationSecurityGroupsClient) BeginDelete(ctx context.Context, 
 	}
 }
 
-// delete - Deletes the specified application security group.
+// deleteOperation - Deletes the specified application security group.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *ApplicationSecurityGroupsClient) delete(ctx context.Context, resourceGroupName string, applicationSecurityGroupName string, options *ApplicationSecurityGroupsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *ApplicationSecurityGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, applicationSecurityGroupName string, options *ApplicationSecurityGroupsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ApplicationSecurityGroupsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)

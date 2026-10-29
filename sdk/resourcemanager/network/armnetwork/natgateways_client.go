@@ -127,7 +127,7 @@ func (client *NatGatewaysClient) createOrUpdateCreateRequest(ctx context.Context
 //   - options - NatGatewaysClientBeginDeleteOptions contains the optional parameters for the NatGatewaysClient.BeginDelete method.
 func (client *NatGatewaysClient) BeginDelete(ctx context.Context, resourceGroupName string, natGatewayName string, options *NatGatewaysClientBeginDeleteOptions) (*runtime.Poller[NatGatewaysClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, natGatewayName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, natGatewayName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -142,9 +142,9 @@ func (client *NatGatewaysClient) BeginDelete(ctx context.Context, resourceGroupN
 	}
 }
 
-// delete - Deletes the specified nat gateway.
+// deleteOperation - Deletes the specified nat gateway.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *NatGatewaysClient) delete(ctx context.Context, resourceGroupName string, natGatewayName string, options *NatGatewaysClientBeginDeleteOptions) (*http.Response, error) {
+func (client *NatGatewaysClient) deleteOperation(ctx context.Context, resourceGroupName string, natGatewayName string, options *NatGatewaysClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NatGatewaysClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)

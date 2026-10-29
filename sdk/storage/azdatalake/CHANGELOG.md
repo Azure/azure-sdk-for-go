@@ -1,6 +1,6 @@
 # Release History
 
-## 1.7.0 (Unreleased)
+## 1.8.0-beta.1 (Unreleased)
 
 ### Features Added
 * Added support for session authentication. Set `Session` on `ClientOptions` to configure it. Sessions apply only to
@@ -28,9 +28,12 @@
 * The token credential constructors now return the error from creating their blob client instead of discarding it.
 
 ### Other Changes
-* Updated `azblob` version to `1.9.0`
+* Updated `azblob` version to `1.9.0-beta.1`
 
-## 1.6.1 (2026-10-07)
+## 1.7.0 (2026-10-08)
+
+### Features Added
+* Added structured message (XSM/1.0) CRC64 content validation for `azdatalake` uploads and downloads via the new `TransferValidationTypeComputeStructuredMessageCRC64` transfer validation option.
 
 ### Bugs Fixed
 * Fixed a panic in `GetProperties` (and `DownloadStream`) for file and directory clients created via `directory.NewFileClient`/`directory.NewSubdirectoryClient`. These clients did not capture the raw HTTP response, so reading the datalake-specific headers dereferenced a nil response. Fixes [#25490](https://github.com/Azure/azure-sdk-for-go/issues/25490).

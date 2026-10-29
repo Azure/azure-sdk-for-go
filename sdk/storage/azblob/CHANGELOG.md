@@ -12,7 +12,7 @@
     `SessionOptions.AccountName` for a custom domain. When it can be determined from neither, client construction
     fails if `SessionModeEnabled` was set explicitly.
   * By default each client creates its own session cache, shared with the clients derived from it. Create a
-    `ContainerSessionProvider` with `NewContainerSessionProvider` and pass it as `SessionOptions.Provider` to share one
+    `container.SessionProvider` with `container.NewSessionProvider` and pass it as `SessionOptions.Provider` to share one
     cache across separately constructed clients, so that sessions survive the clients that created them.
   * Sessions are refreshed in the background shortly before they expire. If the service indicates sessions are
     unavailable, or rejects a session, the client transparently falls back to bearer token authentication.

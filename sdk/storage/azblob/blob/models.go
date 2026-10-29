@@ -28,14 +28,14 @@ const (
 	// ExpectContinueModeApplyOnThrottle indicates that Expect-Continue will not be applied
 	// until specific errors are encountered from the service, at which point it will be
 	// applied for a fixed window of time after the last triggering error. This is the default.
-	ExpectContinueModeApplyOnThrottle = exported.ExpectContinueModeApplyOnThrottle
+	ExpectContinueModeApplyOnThrottle ExpectContinueMode = exported.ExpectContinueModeApplyOnThrottle
 
 	// ExpectContinueModeOn indicates Expect-Continue will be applied regardless of recent
 	// error status. The ContentLengthThreshold option still applies.
-	ExpectContinueModeOn = exported.ExpectContinueModeOn
+	ExpectContinueModeOn ExpectContinueMode = exported.ExpectContinueModeOn
 
 	// ExpectContinueModeOff indicates Expect-Continue will never be applied.
-	ExpectContinueModeOff = exported.ExpectContinueModeOff
+	ExpectContinueModeOff ExpectContinueMode = exported.ExpectContinueModeOff
 )
 
 // ExpectContinueOptions configures the behavior for applying the HTTP "Expect: 100-continue"

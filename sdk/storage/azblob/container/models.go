@@ -30,14 +30,14 @@ const (
 	// ExpectContinueModeApplyOnThrottle indicates that Expect-Continue will not be applied
 	// until specific errors are encountered from the service, at which point it will be
 	// applied for a fixed window of time after the last triggering error. This is the default.
-	ExpectContinueModeApplyOnThrottle = exported.ExpectContinueModeApplyOnThrottle
+	ExpectContinueModeApplyOnThrottle ExpectContinueMode = exported.ExpectContinueModeApplyOnThrottle
 
 	// ExpectContinueModeOn indicates Expect-Continue will be applied regardless of recent
 	// error status. The ContentLengthThreshold option still applies.
-	ExpectContinueModeOn = exported.ExpectContinueModeOn
+	ExpectContinueModeOn ExpectContinueMode = exported.ExpectContinueModeOn
 
 	// ExpectContinueModeOff indicates Expect-Continue will never be applied.
-	ExpectContinueModeOff = exported.ExpectContinueModeOff
+	ExpectContinueModeOff ExpectContinueMode = exported.ExpectContinueModeOff
 )
 
 // ExpectContinueOptions configures the behavior for applying the HTTP "Expect: 100-continue"
@@ -231,14 +231,14 @@ type StorageResponseFormat = exported.StorageResponseFormat
 const (
 	// StorageResponseFormatAuto lets the SDK choose the response format.
 	// For the current release this resolves to XML; a future release will resolve to Arrow.
-	StorageResponseFormatAuto = exported.StorageResponseFormatAuto
+	StorageResponseFormatAuto StorageResponseFormat = exported.StorageResponseFormatAuto
 
 	// StorageResponseFormatXML forces XML-only responses. Use when you need raw XML responses (e.g. debugging).
-	StorageResponseFormatXML = exported.StorageResponseFormatXML
+	StorageResponseFormatXML StorageResponseFormat = exported.StorageResponseFormatXML
 
 	// StorageResponseFormatArrow sends both Arrow and XML in the Accept header; the service returns Arrow
 	// when Photon is enabled, otherwise falls back to XML. The SDK handles both transparently.
-	StorageResponseFormatArrow = exported.StorageResponseFormatArrow
+	StorageResponseFormatArrow StorageResponseFormat = exported.StorageResponseFormatArrow
 )
 
 // ListBlobsFlatOptions contains the optional parameters for the ContainerClient.ListBlobFlatSegment method.

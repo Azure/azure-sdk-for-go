@@ -21,6 +21,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blockblob"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
 	"github.com/stretchr/testify/require"
 )
@@ -475,7 +476,7 @@ func TestSessionImplicitProvidersAreNotSharedAcrossIndependentClients(t *testing
 // them, including clients created after earlier ones were discarded.
 func TestSessionSharedProviderOutlivesClients(t *testing.T) {
 	tr := &sessionAPITransport{}
-	provider, err := azblob.NewContainerSessionProvider(sessionTestServiceURL, sessionTestTokenCredential{}, &azblob.ClientOptions{
+	provider, err := container.NewSessionProvider(sessionTestServiceURL, sessionTestTokenCredential{}, &container.ClientOptions{
 		ClientOptions: azcore.ClientOptions{Transport: tr, Retry: policy.RetryOptions{MaxRetries: -1}},
 	})
 	require.NoError(t, err)

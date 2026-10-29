@@ -73,7 +73,7 @@ type SessionOptions struct {
 	AccountName string
 
 	// Provider is an optional session provider that owns the session cache, created with
-	// NewContainerSessionProvider. Clients configured with the same provider share its cached
+	// container.NewSessionProvider. Clients configured with the same provider share its cached
 	// sessions, so a session is created once per container no matter how many clients use it,
 	// and the cache outlives any one of those clients. The provider must target the same blob
 	// service endpoint as the clients it is used with.
@@ -85,7 +85,7 @@ type SessionOptions struct {
 // SessionProvider provides and caches the sessions used to authenticate eligible requests. It
 // can be shared across clients through SessionOptions.Provider.
 //
-// SessionProvider can't be implemented outside this module. Use NewContainerSessionProvider to
+// SessionProvider can't be implemented outside this module. Use container.NewSessionProvider to
 // create one.
 type SessionProvider interface {
 	// getSession returns the cached session for the request's scope, acquiring one if needed.
@@ -128,7 +128,7 @@ const (
 // azcore.TokenCredential and caches one per container. It applies only to clients authenticated
 // with a token credential.
 //
-// Use NewContainerSessionProvider to create one. The zero value is not usable.
+// Use container.NewSessionProvider to create one. The zero value is not usable.
 type ContainerSessionProvider struct {
 	client *generated.ServiceClient
 	now    func() time.Time
@@ -140,7 +140,7 @@ type ContainerSessionProvider struct {
 
 // NewContainerSessionProviderFromClient returns a ContainerSessionProvider that creates sessions
 // through client, which must target a blob service endpoint and must not itself use sessions.
-// It is the constructor the public NewContainerSessionProvider and the clients use once they
+// It is the constructor the public container.NewSessionProvider and the clients use once they
 // have built a session-free pipeline.
 func NewContainerSessionProviderFromClient(client *generated.ServiceClient) *ContainerSessionProvider {
 	return &ContainerSessionProvider{client: client, now: time.Now}

@@ -66,6 +66,50 @@ func TestEagerConstructorCancellationDrainsRuntimeAttachment(t *testing.T) {
 	}, 5*time.Second, time.Millisecond, "late completion must release the runtime attachment")
 }
 
+func TestAccountConstructionDoesNotInheritOperationTimeout(t *testing.T) {
+	for _, token := range []bool{false, true} {
+		for _, runtimeDefault := range []bool{false, true} {
+			t.Run(fmt.Sprintf("token=%t/runtimeDefault=%t", token, runtimeDefault), func(t *testing.T) {
+				const operationTimeout = time.Second
+				const metadataDelay = 1500 * time.Millisecond
+				server := newMetadataServer(t, func(_ http.ResponseWriter, r *http.Request) bool {
+					if r.URL.Path == "/" {
+						time.Sleep(metadataDelay)
+					}
+					return false
+				})
+				operation := OperationOptions{EndToEndTimeout: to(operationTimeout)}
+				runtimeOptions := &RuntimeOptions{}
+				options := &ClientOptions{}
+				if runtimeDefault {
+					runtimeOptions.Operation = operation
+				} else {
+					options.Operation = operation
+				}
+				shared, err := NewRuntime(runtimeOptions)
+				require.NoError(t, err)
+				t.Cleanup(func() { require.NoError(t, shared.Close()) })
+				options.Runtime = shared
+				ctx, cancel := context.WithTimeout(t.Context(), 10*time.Second)
+				defer cancel()
+				start := time.Now()
+				var client *Client
+				if token {
+					client, err = NewClient(ctx, server.URL, fakeTokenCredential{}, options)
+				} else {
+					client, err = NewClientWithKey(ctx, server.URL, mustKeyCredential(t), options)
+				}
+				require.NoError(t, err)
+				require.NotNil(t, client)
+				t.Cleanup(func() { require.NoError(t, client.Close()) })
+				require.NoError(t, ctx.Err())
+				require.GreaterOrEqual(t, time.Since(start), metadataDelay)
+				require.True(t, client.driver.created)
+			})
+		}
+	}
+}
+
 func newMetadataServer(t *testing.T, intercept func(http.ResponseWriter, *http.Request) bool) *httptest.Server {
 	t.Helper()
 	var endpoint string

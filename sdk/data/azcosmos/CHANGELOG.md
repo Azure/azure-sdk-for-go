@@ -98,6 +98,8 @@
 
 * Both account constructors and both `NewContainer` factories now take context first and initialize
   account or container metadata before success. Removed `Client.Initialize`; `NewDatabase` stays local.
+  Account startup uses the caller's context, not client/runtime `EndToEndTimeout` defaults.
+  Endpoint and option validation precede cancellation checks and native resource allocation.
 * Replaced `BinaryEncodingOptions.Enabled` with `Disabled bool` and removed the dedicated
   `ClientOptions.BinaryEncoding` field. Use `ClientOptions.Operation.BinaryEncoding`; precedence is
   request, client, runtime, then environment captured at runtime construction.

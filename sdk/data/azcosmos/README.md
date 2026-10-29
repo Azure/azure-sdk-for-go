@@ -264,6 +264,8 @@ Select
 Pass context first to both account constructors and both container factories, and remove calls
 to `Client.Initialize`. Account and container factory errors now occur during construction;
 `NewDatabase` remains local. `Client.Endpoint`, `DatabaseClient.ID`, and `ContainerClient.ID` remain.
+Account construction uses the supplied context to bound the startup wait, not client/runtime
+`EndToEndTimeout` defaults. Native transport and retry limits still apply.
 Replace serializer injection with model JSON hooks or `json.RawMessage`.
 
 Move `ClientOptions.BinaryEncoding` to `ClientOptions.Operation.BinaryEncoding`, replacing

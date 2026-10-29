@@ -129,12 +129,7 @@ type driverCreation struct {
 
 // initialize eagerly creates the driver, which fills its account-properties and routing caches.
 func (d *nativeDriver) initialize(ctx context.Context) error {
-	ctx, _, release, err := d.snapshot(ctx, OperationOptions{})
-	if err != nil {
-		return err
-	}
-	defer release()
-	_, err = d.ensureDriver(ctx)
+	_, err := d.ensureDriver(ctx)
 	return err
 }
 

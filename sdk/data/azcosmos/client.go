@@ -82,6 +82,7 @@ type Client struct {
 // implementations in the azidentity module. options may be nil to accept the defaults. Construction
 // initializes account metadata and routing before returning success.
 // Failure returns a nil client. Context cancellation bounds the wait; native cleanup may finish later.
+// Client and runtime EndToEndTimeout defaults do not limit account construction.
 //
 // Clients sharing a runtime and account also share native authentication state; cached resources
 // may use a credential supplied by another client, even after that client closes. This reuse
@@ -100,6 +101,7 @@ func NewClient(ctx context.Context, endpoint string, cred azcore.TokenCredential
 // scoped down. options may be nil to accept the defaults. Construction initializes account
 // metadata and routing before returning success.
 // Failure returns a nil client. Context cancellation bounds the wait; native cleanup may finish later.
+// Client and runtime EndToEndTimeout defaults do not limit account construction.
 func NewClientWithKey(ctx context.Context, endpoint string, cred KeyCredential, options *ClientOptions) (*Client, error) {
 	if cred.accountKey == "" {
 		return nil, errors.New("azcosmos: credential must be created with NewKeyCredential")
@@ -111,10 +113,7 @@ func newInitializedClient(ctx context.Context, endpoint, accountKey string, cred
 	if ctx == nil {
 		return nil, errors.New("azcosmos: context must not be nil")
 	}
-	if err := ctx.Err(); err != nil {
-		return nil, err
-	}
-	client, err := newClient(endpoint, accountKey, cred, options)
+	client, err := newClientWithContext(ctx, endpoint, accountKey, cred, options)
 	if err != nil {
 		return nil, err
 	}
@@ -135,6 +134,16 @@ func newInitializedClient(ctx context.Context, endpoint, accountKey string, cred
 // accountKey is empty when the caller supplied a token credential. In builds that are not bound to
 // the driver no resources are acquired, and operations report that the driver is unavailable.
 func newClient(
+	endpoint string,
+	accountKey string,
+	tokenCredential azcore.TokenCredential,
+	options *ClientOptions,
+) (*Client, error) {
+	return newClientWithContext(context.Background(), endpoint, accountKey, tokenCredential, options)
+}
+
+func newClientWithContext(
+	ctx context.Context,
 	endpoint string,
 	accountKey string,
 	tokenCredential azcore.TokenCredential,
@@ -165,6 +174,9 @@ func newClient(
 		client.options.Operation = options.Operation.clone()
 	}
 	if err := client.options.validate(); err != nil {
+		return nil, err
+	}
+	if err := ctx.Err(); err != nil {
 		return nil, err
 	}
 	client.runtime = client.options.Runtime

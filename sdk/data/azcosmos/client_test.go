@@ -9,6 +9,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"strings"
 	"sync"
 	"testing"
@@ -109,6 +110,47 @@ func TestAccountConstructorsRejectInvalidContext(t *testing.T) {
 		client, err = constructor(ctx)
 		require.Nil(t, client)
 		require.ErrorIs(t, err, context.Canceled)
+	}
+}
+
+func TestAccountConstructorsValidateBeforeCancellation(t *testing.T) {
+	ctx, cancel := context.WithCancel(t.Context())
+	cancel()
+	for _, token := range []bool{false, true} {
+		for _, tt := range []struct {
+			name     string
+			endpoint string
+			options  ClientOptions
+			want     string
+		}{
+			{name: "malformed endpoint", endpoint: "https://%", want: "parsing endpoint"},
+			{name: "relative endpoint", endpoint: "account", want: "absolute URL"},
+			{name: "unsupported scheme", endpoint: "ftp://account", want: "http or https"},
+			{name: "invalid diagnostics", endpoint: "https://account", options: ClientOptions{DiagnosticsVerbosity: -1}, want: "DiagnosticsVerbosity"},
+			{name: "invalid timeout", endpoint: "https://account", options: ClientOptions{Operation: OperationOptions{EndToEndTimeout: to(-time.Second)}}, want: "EndToEndTimeout"},
+			{name: "valid arguments", endpoint: "https://account"},
+		} {
+			t.Run(fmt.Sprintf("token=%t/%s", token, tt.name), func(t *testing.T) {
+				// A zero runtime would fail registration if construction reached native setup.
+				runtime := &Runtime{}
+				tt.options.Runtime = runtime
+				var client *Client
+				var err error
+				if token {
+					client, err = NewClient(ctx, tt.endpoint, fakeTokenCredential{}, &tt.options)
+				} else {
+					client, err = NewClientWithKey(ctx, tt.endpoint, mustKeyCredential(t), &tt.options)
+				}
+				require.Nil(t, client)
+				if tt.want == "" {
+					require.ErrorIs(t, err, context.Canceled)
+				} else {
+					require.ErrorContains(t, err, tt.want)
+					require.NotErrorIs(t, err, context.Canceled)
+				}
+				require.Zero(t, runtime.clients)
+			})
+		}
 	}
 }
 

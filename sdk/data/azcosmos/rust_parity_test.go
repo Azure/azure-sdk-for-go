@@ -15,25 +15,25 @@ import (
 func TestBinaryEncodingRustDefaultsAndEnvironment(t *testing.T) {
 	t.Setenv("AZURE_COSMOS_BINARY_ENCODING_ENABLED", "")
 	require.NoError(t, os.Unsetenv("AZURE_COSMOS_BINARY_ENCODING_ENABLED"))
-	require.Nil(t, resolveClientBinaryEncoding(nil), "absence must preserve native option inheritance")
+	require.False(t, runtimeBinaryEncoding(nil).Disabled)
 	for _, value := range []string{"1", "true", "YES", " on ", "false", "", "nope"} {
 		t.Run(value, func(t *testing.T) {
 			t.Setenv("AZURE_COSMOS_BINARY_ENCODING_ENABLED", value)
 			want := value == "1" || value == "true" || value == "YES" || value == " on "
-			require.Equal(t, want, resolveClientBinaryEncoding(nil).enabled())
-			require.True(t, resolveClientBinaryEncoding(&BinaryEncodingOptions{}).enabled())
-			require.False(t, resolveClientBinaryEncoding(&BinaryEncodingOptions{Enabled: to(false)}).enabled())
+			require.Equal(t, !want, runtimeBinaryEncoding(nil).Disabled)
+			require.False(t, runtimeBinaryEncoding(&BinaryEncodingOptions{}).Disabled)
+			require.True(t, runtimeBinaryEncoding(&BinaryEncodingOptions{Disabled: true}).Disabled)
 		})
 	}
 }
 
-func TestClientCopiesDedicatedBinaryOptions(t *testing.T) {
-	options := &BinaryEncodingOptions{Enabled: to(false)}
-	client, err := NewClientWithKey("https://myaccount.documents.azure.com", mustKeyCredential(t), &ClientOptions{BinaryEncoding: options})
+func TestClientCopiesOperationBinaryOptions(t *testing.T) {
+	options := &BinaryEncodingOptions{Disabled: true}
+	client, err := newTestClientWithKey("https://myaccount.documents.azure.com", mustKeyCredential(t), &ClientOptions{Operation: OperationOptions{BinaryEncoding: options}})
 	require.NoError(t, err)
 	t.Cleanup(func() { require.NoError(t, client.Close()) })
-	*options.Enabled = true
-	require.False(t, client.binaryEncoding.enabled())
+	options.Disabled = false
+	require.True(t, client.options.Operation.BinaryEncoding.Disabled)
 }
 
 func TestPatchTrackingRustRetentionAndUUID(t *testing.T) {

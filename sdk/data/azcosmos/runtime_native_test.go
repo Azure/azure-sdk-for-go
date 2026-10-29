@@ -16,7 +16,7 @@ import (
 
 func sharedTestClient(t *testing.T, runtime *Runtime, options OperationOptions) *Client {
 	t.Helper()
-	client, err := NewClientWithKey("https://myaccount.documents.azure.com", KeyCredential{accountKey: emulatorKey},
+	client, err := newTestClientWithKey("https://myaccount.documents.azure.com", KeyCredential{accountKey: emulatorKey},
 		&ClientOptions{Runtime: runtime, Operation: options})
 	require.NoError(t, err)
 	t.Cleanup(func() { require.NoError(t, client.Close()) })
@@ -32,7 +32,7 @@ func TestDefaultRuntimeSharedAcrossConcurrentClients(t *testing.T) {
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
-			client, err := NewClientWithKey("https://default.documents.azure.com", KeyCredential{accountKey: emulatorKey}, nil)
+			client, err := newTestClientWithKey("https://default.documents.azure.com", KeyCredential{accountKey: emulatorKey}, nil)
 			if err != nil {
 				failures <- err
 				return
@@ -66,7 +66,7 @@ func TestRuntimeOwnerClosePreservesAttachedClients(t *testing.T) {
 	second := sharedTestClient(t, runtime, OperationOptions{})
 	require.NoError(t, runtime.Close())
 	require.NotNil(t, runtime.native)
-	_, err = NewClientWithKey("https://another.documents.azure.com", KeyCredential{accountKey: emulatorKey}, &ClientOptions{Runtime: runtime})
+	_, err = newTestClientWithKey("https://another.documents.azure.com", KeyCredential{accountKey: emulatorKey}, &ClientOptions{Runtime: runtime})
 	require.Error(t, err)
 	require.NoError(t, first.Close())
 	release, err := second.acquire()

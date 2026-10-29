@@ -39,14 +39,13 @@ func TestCreateContainerRejectsMissingPartitionKeyPaths(t *testing.T) {
 }
 
 func TestManagementReadsAllowTokenCredentialClient(t *testing.T) {
-	client, err := NewClient("https://myaccount.documents.azure.com", fakeTokenCredential{}, nil)
+	client, err := newTestTokenClient("https://myaccount.documents.azure.com", fakeTokenCredential{}, nil)
 	require.NoError(t, err)
 	t.Cleanup(func() { require.NoError(t, client.Close()) })
 
 	database, err := client.NewDatabase("db")
 	require.NoError(t, err)
-	container, err := database.NewContainer("items")
-	require.NoError(t, err)
+	container := localTestContainer(client, "db", "items")
 
 	ctx, cancel := context.WithCancel(context.Background())
 	cancel()
@@ -62,8 +61,7 @@ func TestManagementReadsRejectUnknownConsistencyStrategy(t *testing.T) {
 	client := newTestClient(t)
 	database, err := client.NewDatabase("db")
 	require.NoError(t, err)
-	container, err := database.NewContainer("items")
-	require.NoError(t, err)
+	container := localTestContainer(client, "db", "items")
 	invalid := OperationOptions{ConsistencyStrategy: ReadConsistencyStrategy("LatestCommited")}
 
 	_, err = database.Read(context.Background(), &ReadDatabaseOptions{Operation: invalid})
@@ -74,14 +72,13 @@ func TestManagementReadsRejectUnknownConsistencyStrategy(t *testing.T) {
 }
 
 func TestManagementMutationsRejectTokenCredentialClient(t *testing.T) {
-	client, err := NewClient("https://myaccount.documents.azure.com", fakeTokenCredential{}, nil)
+	client, err := newTestTokenClient("https://myaccount.documents.azure.com", fakeTokenCredential{}, nil)
 	require.NoError(t, err)
 	t.Cleanup(func() { require.NoError(t, client.Close()) })
 
 	database, err := client.NewDatabase("db")
 	require.NoError(t, err)
-	container, err := database.NewContainer("items")
-	require.NoError(t, err)
+	container := localTestContainer(client, "db", "items")
 
 	ctx, cancel := context.WithCancel(context.Background())
 	cancel()

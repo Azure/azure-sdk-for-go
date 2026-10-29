@@ -170,7 +170,7 @@ func TestEmulatorTransactionalBatchCompleteHierarchicalKeysAndIsolation(t *testi
 		if levels == 3 {
 			containerID = "batch-hierarchical"
 		}
-		container, err := client.NewContainer(databaseID, containerID)
+		container, err := client.NewContainer(t.Context(), databaseID, containerID)
 		require.NoError(t, err)
 		id := uniqueItemID(t) + containerID
 		prefix := NewPartitionKeyString(id)
@@ -235,7 +235,7 @@ func TestEmulatorTransactionalBatchContentResponsesAndLifetime(t *testing.T) {
 		client, databaseID, containerID := emulatorClientWithOptions(t, &ClientOptions{
 			Operation: OperationOptions{EnableContentResponseOnWrite: &disabled},
 		})
-		container, err := client.NewContainer(databaseID, containerID)
+		container, err := client.NewContainer(t.Context(), databaseID, containerID)
 		require.NoError(t, err)
 		id := uniqueItemID(t)
 		body, err := json.Marshal(map[string]any{"id": id, "pk": id, "value": "owned"})

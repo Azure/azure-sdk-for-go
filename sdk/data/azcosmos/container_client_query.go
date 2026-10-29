@@ -12,7 +12,7 @@ import (
 	"sync"
 )
 
-// NewQueryItemsPager queries the supplied scope, decoding each result as T with the client's serializer.
+// NewQueryItemsPager queries the supplied scope, decoding each result as T with encoding/json.
 // Construction performs no network I/O; argument errors are reported by NextPage.
 //
 // Defer Close when stopping before exhaustion. Empty pages do not imply exhaustion.
@@ -21,9 +21,6 @@ func (c *ContainerClient) NewQueryItemsPager[T any](query Query, scope FeedScope
 	req, err := newQueryRequest(query, scope, options)
 	req.databaseID = c.database.id
 	req.containerID = c.id
-	if req.options.Operation.BinaryEncoding == nil {
-		req.options.Operation.BinaryEncoding = c.database.client.binaryEncoding.clone()
-	}
 	return &QueryItemsPager[T]{client: c.database.client, req: req, validationErr: err}
 }
 
@@ -109,7 +106,6 @@ func (p *QueryItemsPager[T]) NextPage(ctx context.Context) (QueryItemsResponse[T
 	if page.ActivityID == "" && setup.RequestCharge != 0 {
 		page.ActivityID = setup.ActivityID
 	}
-	serializer := p.client.options.Serializer
 	p.converting = true
 	defer func() { p.converting = false }()
 	release()
@@ -117,7 +113,7 @@ func (p *QueryItemsPager[T]) NextPage(ctx context.Context) (QueryItemsResponse[T
 	decoded, err := func() (QueryItemsResponse[T], error) {
 		p.mu.Unlock()
 		defer p.mu.Lock()
-		return decodeModels[T](ctx, page, serializer)
+		return decodeModels[T](ctx, page)
 	}()
 	if err != nil {
 		p.done = true
@@ -132,7 +128,7 @@ func (p *QueryItemsPager[T]) NextPage(ctx context.Context) (QueryItemsResponse[T
 	return decoded, nil
 }
 
-func decodeModels[T any](ctx context.Context, page queryPage, serializer Serializer) (QueryItemsResponse[T], error) {
+func decodeModels[T any](ctx context.Context, page queryPage) (QueryItemsResponse[T], error) {
 	result := QueryItemsResponse[T]{
 		Response: page.Response, SessionToken: page.SessionToken,
 		IndexMetrics: page.IndexMetrics, QueryMetrics: page.QueryMetrics,
@@ -146,7 +142,7 @@ func decodeModels[T any](ctx context.Context, page queryPage, serializer Seriali
 			failure.Code = CodeOperationCancelled
 			return QueryItemsResponse[T]{}, failure
 		}
-		model, err := unmarshalModel[T](serializer, body)
+		model, err := unmarshalModel[T](body)
 		if err != nil {
 			failure := queryResponseError(page.Response, page.SessionToken, err)
 			failure.Message = fmt.Sprintf("decoding query item at index %d", i)

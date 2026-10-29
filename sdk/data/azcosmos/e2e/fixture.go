@@ -200,12 +200,11 @@ func newRawFixture(t *testing.T, containerIDOverride string) fixture {
 
 	cred, err := azcosmos.NewKeyCredential(emulatorKey)
 	require.NoError(t, err)
-	client, err := azcosmos.NewClientWithKey(endpoint, cred, nil)
+	client, err := azcosmos.NewClientWithKey(t.Context(), endpoint, cred, nil)
 	require.NoError(t, err)
 	t.Cleanup(func() { require.NoError(t, client.Close()) })
-	require.NoError(t, client.Initialize(context.Background()))
 
-	container, err := client.NewContainer(databaseID, containerID)
+	container, err := client.NewContainer(t.Context(), databaseID, containerID)
 	require.NoError(t, err)
 
 	return fixture{Client: client, Container: container}

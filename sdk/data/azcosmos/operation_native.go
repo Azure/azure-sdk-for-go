@@ -36,13 +36,25 @@ const unsetMaxItemCount = -1
 // handles alive for the operation's duration: Close cannot take the write lock until every
 // operation has released it.
 func (c *Client) execute(ctx context.Context, req itemRequest) (ItemResponse, []byte, error) {
-	switch req.kind {
-	case operationKindCreateItem, operationKindReadItem, operationKindReplaceItem, operationKindUpsertItem:
-		if req.options.BinaryEncoding == nil {
-			req.options.BinaryEncoding = c.binaryEncoding.clone()
-		}
-	}
 	return c.driver.execute(ctx, req)
+}
+
+func (d *nativeDriver) resolveContainer(ctx context.Context, databaseID, containerID string) error {
+	ctx, _, release, err := d.snapshot(ctx, OperationOptions{})
+	if err != nil {
+		return err
+	}
+	defer release()
+	driver, err := d.ensureDriver(ctx)
+	if err != nil {
+		return err
+	}
+	container, err := d.submitResolveContainer(ctx, driver, databaseID, containerID)
+	if err != nil {
+		return err
+	}
+	C.cosmos_container_ref_free(container)
+	return nil
 }
 
 // execute runs one operation to completion and returns its result.

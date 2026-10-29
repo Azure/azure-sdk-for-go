@@ -65,7 +65,7 @@ func TestEmulatorCompletionHandoffConcurrentResponsesSurviveClose(t *testing.T) 
 	for _, verbosity := range []DiagnosticsVerbosity{DiagnosticsVerbositySummary, DiagnosticsVerbosityDetailed} {
 		t.Run(verbosity.String(), func(t *testing.T) {
 			client, databaseID, containerID := emulatorClientWithOptions(t, &ClientOptions{DiagnosticsVerbosity: verbosity})
-			container, err := client.NewContainer(databaseID, containerID)
+			container, err := client.NewContainer(t.Context(), databaseID, containerID)
 			require.NoError(t, err)
 			type snapshot struct {
 				Read    ItemResponse
@@ -82,7 +82,7 @@ func TestEmulatorCompletionHandoffConcurrentResponsesSurviveClose(t *testing.T) 
 						id := uniqueItemID(t)
 						pk := NewPartitionKeyString(id)
 						trackEmulatorItem(t, container, pk, id)
-						body := []byte(fmt.Sprintf(`{"id":%q,"pk":%q,"value":1}`, id, id))
+						body := json.RawMessage(fmt.Sprintf(`{"id":%q,"pk":%q,"value":1}`, id, id))
 						for range 3 {
 							created, err := container.CreateItem(t.Context(), pk, id, body, nil)
 							require.NoError(t, err)
@@ -147,7 +147,7 @@ func TestEmulatorCompletionHandoffConcurrentResponsesSurviveClose(t *testing.T) 
 
 func TestEmulatorCompletionHandoffCloseWaitsForPreparation(t *testing.T) {
 	client, databaseID, containerID := emulatorClient(t)
-	container, err := client.NewContainer(databaseID, containerID)
+	container, err := client.NewContainer(t.Context(), databaseID, containerID)
 	require.NoError(t, err)
 	id := uniqueItemID(t)
 	started, resume := make(chan struct{}), make(chan struct{})

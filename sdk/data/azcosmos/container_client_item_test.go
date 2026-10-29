@@ -22,9 +22,7 @@ func newTestContainer(t *testing.T) *ContainerClient {
 	client, err := newClient("https://myaccount.documents.azure.com", testAccountKey, nil, nil)
 	require.NoError(t, err)
 	t.Cleanup(func() { require.NoError(t, client.Close()) })
-	container, err := client.NewContainer("db", "items")
-	require.NoError(t, err)
-	return container
+	return localTestContainer(client, "db", "items")
 }
 
 func requireNotDriverUnavailable(t *testing.T, err error) {
@@ -310,8 +308,7 @@ func TestClosedClientReportedAheadOfCancelledContext(t *testing.T) {
 func TestReadItemDoesNotNestClientLifetimeLocks(t *testing.T) {
 	client, err := newClient("https://myaccount.documents.azure.com", testAccountKey, nil, nil)
 	require.NoError(t, err)
-	container, err := client.NewContainer("db", "items")
-	require.NoError(t, err)
+	container := localTestContainer(client, "db", "items")
 
 	beforeAcquire := make(chan struct{})
 	continueAcquire := make(chan struct{})

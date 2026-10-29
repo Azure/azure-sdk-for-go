@@ -23,7 +23,7 @@ v2 is an idiomatic Go API over the shared Rust Cosmos driver. Keep responsibilit
 - Do not duplicate driver policy in Go. Validate stable Go API contracts at the boundary, but leave
   service topology and protocol decisions to the driver.
 - Do not expose native-driver or FFI types through the public Go API.
-- Keep item payloads schema-agnostic. Generic writes use the configured Serializer, and the
+- Keep item payloads schema-agnostic. Generic writes use encoding/json and model JSON hooks, and the
   binding passes the resulting bytes through unchanged. Neither the binding nor the driver should inspect
   application-defined item fields unless an operation explicitly requires a value such as an item
   ID.
@@ -35,7 +35,7 @@ the corresponding Rust implementation.
 
 ## Public API Design
 
-- This module requires Go 1.27 for concrete generic methods. Application serializers must not
+- This module requires Go 1.27 for concrete generic methods. Application model hooks must not
   receive query envelopes, PATCH payloads, partition keys, or other internal protocol metadata.
 - Use Go conventions: `context.Context` first, required parameters next, and an options pointer
   last. A nil options pointer must select defaults.

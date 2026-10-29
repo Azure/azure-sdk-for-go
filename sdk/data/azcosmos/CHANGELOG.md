@@ -6,11 +6,11 @@
 
 ### Features Added
 
-* Added optional `ClientOptions.Serializer`, generic item writes, `ItemResponse.IntoModel[T]()`,
+* Added generic item writes using `encoding/json` and model hooks, `ItemResponse.IntoModel[T]()`,
   and generic query results with metadata-preserving model conversion errors.
 * Query model-conversion failures stop iteration but retain supported checkpoints so callers
   can explicitly resume after the entire failed page before closing the failed pager.
-* Query serializer callbacks run outside pager and client lifetime locks, allowing reentrant
+* Query model hooks run outside pager and client lifetime locks, allowing reentrant
   inspection and shutdown without deadlocking.
 * Added transactional batches for create, read, upsert, replace, and delete with complete
   hierarchical partition keys, owned builders, Rust-compatible conditional options,
@@ -88,23 +88,31 @@
 * Added `PatchItemOptions.Strategy` to select automatic, client-side, or server-side PATCH
   execution.
 * Added the Cosmos driver binding for cgo builds on `linux/amd64` and `darwin/arm64`. `ReadItem` and
-  `CreateItem` run against the driver, including `LatestCommitted` reads; `Client.Initialize`
-  eagerly fills account and routing caches, and token credentials are supported.
+  `CreateItem` run against the driver, including `LatestCommitted` reads; account constructors
+  eagerly fill account and routing caches, and token credentials are supported.
   See [PR 27482](https://github.com/Azure/azure-sdk-for-go/pull/27482).
 * Added proximity routing: `ProximityTo` expands an application region to a proximity-sorted
   routing order. See [PR 27589](https://github.com/Azure/azure-sdk-for-go/pull/27589).
 
 ### Breaking Changes
 
+* Both account constructors and both `NewContainer` factories now take context first and initialize
+  account or container metadata before success. Removed `Client.Initialize`; `NewDatabase` stays local.
+  Account startup uses the caller's context, not client/runtime `EndToEndTimeout` defaults.
+  Endpoint and option validation precede cancellation checks and native resource allocation.
+* Replaced `BinaryEncodingOptions.Enabled` with `Disabled bool` and removed the dedicated
+  `ClientOptions.BinaryEncoding` field. Use `ClientOptions.Operation.BinaryEncoding`; precedence is
+  request, client, runtime, then environment captured at runtime construction.
+* Removed serializer injection and retained serializer state. Use model JSON hooks or `json.RawMessage`.
 * Raised the minimum Go version to 1.27 for concrete generic methods.
 * Replaced provisional byte-oriented writes with generic `CreateItem`, `ReplaceItem`, and
   `UpsertItem`. Pass models directly or use `json.RawMessage` for pre-encoded JSON; plain
-  `[]byte` is now serialized using the configured serializer.
+  `[]byte` is now serialized using `encoding/json`.
 * Item writes reject serialized bodies that are not valid JSON objects before submission.
-  With the default serializer, this includes plain `[]byte` and nil models.
+  This includes plain `[]byte` and nil models.
 * Transactional batch writes accept models or `json.RawMessage` instead of raw `[]byte`.
-  `ContainerClient.NewTransactionalBatch` captures the client serializer; the package-level
-  constructor uses `encoding/json`. Item serialization and copying occur when appended.
+  Both batch constructors use `encoding/json` and model hooks.
+  Item serialization and copying occur when appended.
 * `NewQueryItemsPager[T]`, `QueryItemsPager[T]`, and `QueryItemsResponse[T]` require an
   explicit query result type. There are no separate raw operation variants.
 * This is the first release of `github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos/v2`. The v2

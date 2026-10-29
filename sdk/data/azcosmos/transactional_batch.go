@@ -34,11 +34,9 @@ type TransactionalBatch struct {
 	partitionKey PartitionKey
 	operations   []transactionalBatchOperation
 	err          error
-	serializer   Serializer
 }
 
 // NewTransactionalBatch constructs an empty batch for partitionKey using encoding/json.
-// Use [ContainerClient.NewTransactionalBatch] to use a client's configured serializer.
 //
 // The key must have exactly one component per path in the container's partition key definition,
 // including every level of a hierarchical partition key. Prefix and cross-partition batches
@@ -104,7 +102,7 @@ type transactionalBatchOperation struct {
 	IfNoneMatch   string          `json:"ifNoneMatch,omitempty"`
 }
 
-// CreateItem serializes item with the batch's serializer and appends a create operation.
+// CreateItem serializes item with encoding/json and appends a create operation.
 //
 // The SDK does not inspect application-defined fields, including id and partition key properties.
 // All item bodies must belong to the batch's logical partition. options may be nil.
@@ -125,7 +123,7 @@ func (b *TransactionalBatch) ReadItem(itemID string, options *TransactionalBatch
 	return b.appendOperation(transactionalBatchOperation{OperationType: "Read", ID: itemID}, nil, false, ifMatch, ifNoneMatch)
 }
 
-// UpsertItem serializes item with the batch's serializer and appends a create-or-replace operation.
+// UpsertItem serializes item with encoding/json and appends a create-or-replace operation.
 // The SDK leaves application id and partition key consistency checks to the driver/service.
 // options may be nil.
 func (b *TransactionalBatch) UpsertItem[T any](item T, options *TransactionalBatchUpsertItemOptions) error {
@@ -136,7 +134,7 @@ func (b *TransactionalBatch) UpsertItem[T any](item T, options *TransactionalBat
 	return b.appendOperation(transactionalBatchOperation{OperationType: "Upsert"}, item, true, ifMatch, ifNoneMatch)
 }
 
-// ReplaceItem serializes item with the batch's serializer and appends a replacement for itemID.
+// ReplaceItem serializes item with encoding/json and appends a replacement for itemID.
 // itemID must match the item's id property; the SDK does not parse the body to compare them.
 // options may be nil.
 func (b *TransactionalBatch) ReplaceItem[T any](itemID string, item T, options *TransactionalBatchReplaceItemOptions) error {
@@ -179,7 +177,7 @@ func (b *TransactionalBatch) appendOperation(operation transactionalBatchOperati
 		}
 	}
 	if requireItem {
-		body, err := marshalItem(b.serializer, item)
+		body, err := marshalItem(item)
 		if err != nil {
 			return fail(err)
 		}

@@ -105,6 +105,7 @@ func TestConnectionStringParserInvalid(t *testing.T) {
 		";",
 		"=;==",
 		"foobar=baz=foo",
+		"UseDevelopmentStorage=false",
 	}
 
 	for _, badConnStr := range badConnectionStrings {
@@ -178,4 +179,23 @@ func TestConnectionStringAzurite(t *testing.T) {
 	require.NotNil(t, client.cred)
 	require.Equal(t, client.cred.accountName, "dummyaccountname")
 	require.Equal(t, getAccountKey(client.cred), "secretkeykey")
+}
+
+func TestConnectionStringDevelopmentStorage(t *testing.T) {
+	for _, connStr := range []string{"UseDevelopmentStorage=true", "UseDevelopmentStorage=true;"} {
+		serviceURL, cred, err := parseConnectionString(connStr)
+		require.NoError(t, err)
+		require.Equal(t, serviceURL, "http://127.0.0.1:10002/devstoreaccount1")
+		require.NotNil(t, cred)
+
+		require.Equal(t, cred.accountName, "devstoreaccount1")
+		require.Equal(t, getAccountKey(cred), "Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==")
+
+		client, err := NewServiceClientFromConnectionString(connStr, nil)
+		require.NoError(t, err)
+		require.NotNil(t, client)
+		require.Equal(t, client.service.Endpoint(), "http://127.0.0.1:10002/devstoreaccount1")
+		require.NotNil(t, client.cred)
+		require.Equal(t, client.cred.accountName, "devstoreaccount1")
+	}
 }

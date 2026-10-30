@@ -41,6 +41,12 @@ func convertConnStrToMap(connStr string) (map[string]string, error) {
 	return ret, nil
 }
 
+// developmentConnectionString is what the "UseDevelopmentStorage=true" shortcut expands to:
+// the well-known Azurite account and key on the emulator's default table endpoint.
+const developmentConnectionString = "DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;" +
+	"AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;" +
+	"TableEndpoint=http://127.0.0.1:10002/devstoreaccount1"
+
 // parseConnectionString parses a connection string into a service URL and a SharedKeyCredential or a service url with the
 // SharedAccessSignature combined.
 func parseConnectionString(connStr string) (string, *SharedKeyCredential, error) {
@@ -49,6 +55,10 @@ func parseConnectionString(connStr string) (string, *SharedKeyCredential, error)
 
 	defaultScheme := "https"
 	defaultSuffix := "core.windows.net"
+
+	if strings.TrimRight(connStr, ";") == "UseDevelopmentStorage=true" {
+		connStr = developmentConnectionString
+	}
 
 	connStrMap, err := convertConnStrToMap(connStr)
 	if err != nil {

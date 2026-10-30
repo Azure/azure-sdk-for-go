@@ -3,6 +3,7 @@
 ## 1.4.2-beta.1 (Unreleased)
 
 ### Features Added
+* Added support for the `UseDevelopmentStorage=true` connection string shortcut, which connects to the Azurite emulator's default development account.
 
 ### Breaking Changes
 

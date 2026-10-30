@@ -1,0 +1,17 @@
+implementation,transport,workers,throughput_ops_s,vm_cpu_percent,cpu_us_per_op,mean_latency_ms,p95_latency_ms,p99_latency_ms,current_rss_mib,high_water_rss_mib,go_alloc_space_mib,go_inuse_space_mib,go_alloc_kib_per_op,stage_profile_available
+Go v1.5.0,Standard Gateway HTTP/2,8,1889,11.29,239.0,4.23,7.19,9.58,27.3,,,,,false
+Go v1.5.0,Standard Gateway HTTP/2,16,3763,21.22,225.6,4.25,7.27,9.96,40.1,,,,,false
+Go v1.5.0,Standard Gateway HTTP/2,32,7397,39.14,211.7,4.32,7.33,9.97,50.0,,,,,false
+Go v1.5.0,Standard Gateway HTTP/2,64,13895,60.14,173.1,4.60,7.93,10.70,76.1,,,,,false
+Go v2,Standard Gateway HTTP/1.1,8,1728,20.80,481.4,4.62,7.79,10.39,39.3,39.3,964.7,1.50,9.53,true
+Go v2,Standard Gateway HTTP/1.1,16,3371,40.82,484.4,4.74,7.87,10.41,47.6,50.8,1957.2,0.50,9.91,true
+Go v2,Standard Gateway HTTP/1.1,32,6479,68.53,423.0,4.93,8.06,10.55,63.8,73.1,3660.7,1.00,9.64,true
+Go v2,Standard Gateway HTTP/1.1,64,9098,90.36,397.3,7.03,10.65,12.92,92.7,101.9,5481.4,2.52,10.28,true
+Go v2,Standard Gateway HTTP/2,8,1690,24.96,590.8,4.73,7.77,10.08,36.6,38.5,1050.1,1.50,10.60,true
+Go v2,Standard Gateway HTTP/2,16,3307,45.83,554.3,4.83,7.87,10.53,45.1,48.7,2008.6,1.51,10.37,true
+Go v2,Standard Gateway HTTP/2,32,6108,76.20,499.0,5.23,8.27,10.79,66.0,66.9,3706.9,1.52,10.36,true
+Go v2,Standard Gateway HTTP/2,64,7981,90.62,454.2,8.01,12.19,14.59,79.9,90.6,4889.2,1.00,10.45,true
+Go v2,Gateway V2 HTTP/2,8,1427,19.90,558.0,5.60,7.85,10.05,33.4,35.5,913.0,1.52,10.92,true
+Go v2,Gateway V2 HTTP/2,16,2840,38.43,541.3,5.62,8.91,10.80,44.9,45.8,1683.6,0.50,10.12,true
+Go v2,Gateway V2 HTTP/2,32,5422,62.62,462.0,5.90,9.42,11.28,65.9,65.9,3251.4,2.01,10.24,true
+Go v2,Gateway V2 HTTP/2,64,9330,89.14,382.2,6.85,10.61,12.64,98.6,98.6,5614.0,2.02,10.27,true

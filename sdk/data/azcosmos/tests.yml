@@ -1,0 +1,128 @@
+# Azure Live is intentionally separate from public PR/emulator validation.
+trigger: none
+pr: none
+
+parameters:
+  - name: RunLiveTests
+    displayName: Provision Azure resources and run AAD smoke tests (billed)
+    type: boolean
+    default: false
+
+schedules:
+  - cron: '0 6 * * 1'
+    displayName: Weekly Cosmos Go AAD smoke
+    branches:
+      include:
+        - main
+    always: true
+
+extends:
+  template: /eng/pipelines/templates/stages/1es-redirect.yml
+  parameters:
+    stages:
+      - ${{ if and(eq(variables['System.TeamProject'], 'internal'), startsWith(variables['Build.SourceBranch'], 'refs/heads/'), or(and(eq(variables['Build.Reason'], 'Manual'), parameters.RunLiveTests), and(eq(variables['Build.Reason'], 'Schedule'), eq(variables['Build.SourceBranch'], 'refs/heads/main')))) }}:
+        - stage: AzureLive
+          displayName: Cosmos Go Azure Live AAD smoke
+          variables:
+            - template: /eng/pipelines/templates/variables/globals.yml
+            - template: /eng/pipelines/templates/variables/image.yml
+          jobs:
+            - job: LinuxAMD64
+              timeoutInMinutes: 45
+              cancelTimeoutInMinutes: 15
+              pool:
+                name: $(LINUXPOOL)
+                image: $(LINUXVMIMAGE)
+                os: linux
+              templateContext:
+                outputs:
+                  - output: pipelineArtifact
+                    targetPath: '$(Build.ArtifactStagingDirectory)/cosmos-live'
+                    artifactName: cosmos-live-linux-amd64
+                    condition: succeededOrFailed()
+                    sbomEnabled: false
+              steps:
+                - template: /eng/common/TestResources/deploy-test-resources.yml
+                  parameters:
+                    ServiceDirectory: data/azcosmos
+                    Location: eastus
+                    ServiceConnection: azure-sdk-tests-cosmos
+                    UseFederatedAuth: true
+                    DeleteAfterHours: 8
+                - task: GoTool@0
+                  inputs:
+                    version: $(GO_VERSION_LATEST)
+                  displayName: Select Go version
+                - template: /eng/pipelines/templates/steps/create-go-workspace.yml
+                - task: AzurePowerShell@5
+                  displayName: Run native Go AAD smoke scenarios
+                  inputs:
+                    azureSubscription: azure-sdk-tests-cosmos
+                    azurePowerShellVersion: LatestVersion
+                    pwsh: true
+                    ScriptType: InlineScript
+                    Inline: |
+                      $account = (Get-AzContext).Account
+                      $env:AZURESUBSCRIPTION_CLIENT_ID = $account.Id
+                      $env:AZURESUBSCRIPTION_TENANT_ID = $account.Tenants
+                      ./sdk/data/azcosmos/eng/scripts/Invoke-LiveTests.ps1 `
+                        -OutputDirectory '$(Build.ArtifactStagingDirectory)/cosmos-live'
+                  env:
+                    SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+                    AZURE_RECORD_MODE: live
+                    AZURE_COSMOS_E2E_BACKEND: azureLive
+                    AZCOSMOS_ENDPOINT: $(AZCOSMOS_ENDPOINT)
+                    AZCOSMOS_DATABASE: $(AZCOSMOS_DATABASE)
+                    AZCOSMOS_CONTAINER: $(AZCOSMOS_CONTAINER)
+                    CGO_ENABLED: '1'
+                - task: PublishTestResults@2
+                  displayName: Publish scenario results
+                  condition: succeededOrFailed()
+                  inputs:
+                    testResultsFormat: JUnit
+                    testResultsFiles: '$(Build.ArtifactStagingDirectory)/cosmos-live/report.xml'
+                    failTaskOnFailedTests: true
+                    failTaskOnMissingResultsFile: true
+                - task: AzurePowerShell@5
+                  displayName: Remove owned live resources
+                  condition: and(always(), eq(variables['CI_HAS_DEPLOYED_RESOURCES'], 'true'))
+                  inputs:
+                    azureSubscription: azure-sdk-tests-cosmos
+                    azurePowerShellVersion: LatestVersion
+                    pwsh: true
+                    ScriptType: InlineScript
+                    Inline: |
+                      ./eng/common/scripts/Import-AzModules.ps1
+                      $config = @'
+                      $(SubscriptionConfiguration)
+                      '@ | ConvertFrom-Json -AsHashtable
+                      ./eng/common/TestResources/Remove-TestResources.ps1 @config `
+                        -ServiceDirectory data/azcosmos -CI -Force
+      - ${{ elseif and(eq(variables['System.TeamProject'], 'internal'), not(parameters.RunLiveTests), ne(variables['Build.Reason'], 'Schedule')) }}:
+        - stage: ValidateLivePipeline
+          displayName: Validate live test tooling (no Azure deployment)
+          variables:
+            - template: /eng/pipelines/templates/variables/globals.yml
+            - template: /eng/pipelines/templates/variables/image.yml
+          jobs:
+            - job: ValidateTooling
+              pool:
+                name: $(LINUXPOOL)
+                image: $(LINUXVMIMAGE)
+                os: linux
+              steps:
+                - pwsh: ./sdk/data/azcosmos/eng/scripts/Test-LiveResults.Tests.ps1
+                  displayName: Verify fail-closed result gate without Azure credentials
+                - pwsh: |
+                    Write-Host 'Only offline tooling was validated. No live scenarios ran and no Azure resources were created.'
+                    Write-Host 'For a live run, manually select a refs/heads branch and set RunLiveTests=true.'
+                  displayName: Report validation-only scope
+      - ${{ else }}:
+        - stage: UnsupportedContext
+          jobs:
+            - job: Explain
+              pool:
+                vmImage: ubuntu-latest
+              steps:
+                - checkout: none
+                - pwsh: throw 'Live tests require the internal project, a branch (not a PR merge ref), and explicit manual opt-in or the main schedule. No Azure resources were created.'

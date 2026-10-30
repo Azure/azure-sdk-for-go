@@ -504,6 +504,138 @@ while the real native driver executes against the emulator. This validates the b
 native decoding, not live-service metric generation. Per-cursor test hooks control checkpoint
 delivery and cancellation races without relying on network timing.
 
+## Azure Live E2E smoke tests
+
+The opt-in live lane for [issue 27655](https://github.com/Azure/azure-sdk-for-go/issues/27655)
+is `tests.yml`, separate from `ci.yml` and its emulator tests. It uses real Microsoft Entra ID
+authentication through the public Go API, never an account key or a playback credential.
+The first hosted target is Linux amd64 with cgo and the released native driver.
+macOS arm64 can run the same tests locally; hosted macOS coverage remains to be configured.
+Windows and cgo-disabled builds must not count as live native coverage.
+
+The bounded selection is in `internal/e2e/live.go`: `bootstrap.primary-success`,
+`item.lifecycle`, `item.optimistic-concurrency`, `diagnostics.success-and-error`, and
+`query.pagination-resume`. The first four use the shared `smokeTests` profile; pagination
+uses `coreOperations`, as required by the pinned catalog. This is **not** certification of
+every supported scenario in either profile. Explicit session-token reuse is checked during
+item lifecycle and pagination, without claiming the broader `consistency.session-management`
+scenario or its multi-region profile. An incompatible profile, unavailable capability, or
+omitted required live scenario fails selection validation before network I/O.
+
+### Local execution
+
+Use an existing, dedicated single-region East US Session account and a database/container
+with partition-key path `/pk`. The identity needs Cosmos DB data-plane permissions for metadata,
+items, and queries at the database scope; Azure Contributor alone is insufficient. The test
+does not create/delete databases or containers. Never use a container containing customer data.
+
+In a native-capable shell with Go, a C compiler, and PowerShell 7:
+
+```powershell
+az login --tenant <account-tenant>
+$env:AZURE_RECORD_MODE = 'live'
+$env:AZURE_COSMOS_E2E_BACKEND = 'azureLive'
+$env:AZCOSMOS_ENDPOINT = 'https://<test-account>.documents.azure.com/'
+$env:AZCOSMOS_DATABASE = '<test-database>'
+$env:AZCOSMOS_CONTAINER = '<test-container>'
+$env:CGO_ENABLED = '1'
+./sdk/data/azcosmos/eng/scripts/Invoke-LiveTests.ps1 -OutputDirectory <temporary-results-directory>
+```
+
+Leave `EMULATOR` and the `AZURE_COSMOS_E2E_PROFILE/ACCOUNT/RUNTIME/CLIENT` axis overrides unset.
+The lane selects the declared profiles and SDK-default axes itself. It reuses
+`sdk/internal/test/credential`: `AzurePipelinesCredential` in federated CI, or the normal
+development credential locally. A missing credential or permission is a failure, never a skip.
+The live suite stays skipped in ordinary unit/emulator runs unless explicitly selected.
+
+Each scenario uses an isolated runtime and random item IDs/partition keys. Cleanup is registered
+before writes, runs with an independent timeout, and deletes only owned items. Do not blindly
+retry canceled writes: native execution may still complete after the caller stops waiting.
+New-account RBAC propagation is retried only for setup's 403/5302, for at most 90 seconds;
+scenario failures are not retried or silently quarantined.
+
+### Hosted setup and operation
+
+Use the standard PR-based pipeline bootstrap before requesting manual registration:
+
+1. Include the new `tests.yml` and its referenced test/resource files in the PR, alongside the
+   existing `ci.yml` on that branch. Keep repository-wide pipeline generation unchanged for this
+   first attempt.
+2. Comment `/azp run prepare-pipelines` on the PR. Inspect the existing
+   **Generate test pipelines** task and check whether it creates or updates
+   **go - azcosmos - tests** in `azure-sdk/internal`, pointing to
+   `sdk/data/azcosmos/tests.yml`. Generation alone does not run live tests or deploy resources.
+3. If that task is skipped or the definition is absent, retain the task condition, logs, and
+   definition lookup as evidence before proposing a separate engineering-system change.
+   The current shared template leaves Go's `TestVariableGroups` empty, while its test-generation
+   task requires a nonempty value. A green prepare run is therefore not sufficient evidence that
+   the standalone tests pipeline was created.
+4. If the definition was created, open it and manually select the branch containing all changes. The
+   generator sets the default branch to `main`, where this new file may not exist yet. Leave
+   **RunLiveTests=false** for the first validation-only run: it checks the offline result gate
+   without authenticating to Azure, provisioning resources, or claiming live certification.
+5. To execute real live scenarios, manually select the same branch and set **RunLiveTests=true**.
+   The job must run in `internal` on a `refs/heads/` branch, not a `refs/pull/` merge ref.
+   Only trusted, reviewed branch content should be run with the service connection.
+
+If a definition is created, inspect its effective schedules, variable groups, and service-connection
+permissions: the existing generator may add definition-level defaults that override or supplement
+the YAML. Do not assume it authorized the Cosmos-specific service connection or that the YAML's
+weekly schedule is the only effective schedule. If generation or resource authorization fails,
+inspect that exact error before requesting help. The live execution prerequisites are:
+
+- The `azsdk-pool` Linux agent pool, with a working C compiler and PowerShell.
+- The `azure-sdk-tests-cosmos` workload-identity-federated service connection. Its identity must
+  be in the account's tenant and have permission to provision/delete test resource groups,
+  Cosmos accounts and fixtures, and Cosmos SQL role assignments.
+- The approved test subscription/region, quota, resource-expiration sweeper, and spending limits.
+
+The template's subscription configuration and federated task environment supply the principal
+object ID and token-exchange context. `test-resources.bicep` provisions a unique account through
+the standard Azure SDK resource manager, a database and 400 RU/s container, and a database-scoped
+Cosmos DB Built-in Data Contributor assignment. It emits only endpoint/fixture identifiers, no
+account keys. No fixed-account Key Vault secret or personal identity is required.
+
+The YAML permits explicitly opted-in manual live runs from branches and a weekly Monday 06:00 UTC
+schedule on `main`, once the YAML is on that branch. The generated definition can override YAML
+PR triggers as part of its secure test convention; those runs only validate the offline tooling,
+never use Azure credentials, and never count as live evidence. Public-project runs and attempts
+to provision from PR merge refs fail without deploying resources. This pipeline does not publish
+packages. Required live tests are not quarantined: any exception
+must be explicit, linked to an issue, owned, and time-bounded before expanding this lane.
+
+`Invoke-LiveTests.ps1` runs only `TestAzureLive`, with race detection, a fresh result directory,
+and a 12-minute test timeout. `Test-LiveResults.ps1` checks the emitted selection against Go JSON
+events, requires every selected scenario and the package to pass, and rejects skips, missing
+results, and unterminated tests. JUnit and `summary.json` retain permanent IDs, profile, backend,
+duration, and outcomes. `metadata.json` records the SDK commit and dirty state, native driver
+version, Go version, target, build ID, and expected account configuration (not an independent
+measurement of account settings). Sanitized events include bounded failure status/substatus/attempt
+information. Never enable credential/HTTP body logging or publish `.env`
+files, bearer tokens, connection strings, or raw native diagnostics.
+
+The job allows 45 minutes including account provisioning; the scenario execution target is under
+12 minutes, to be measured in hosted runs rather than assumed. Account creation is billed:
+400 RU/s throughput and storage are charged at the applicable regional rates until teardown.
+Schedule expansion requires observed runtime/cost evidence and platform coverage.
+
+Resource-group removal runs on success, failure, and cancellation within a 15-minute cancellation
+grace period. Hard agent termination cannot guarantee teardown: the standard `DeleteAfter` tag
+expires after eight hours, and the subscription's sweeper must be confirmed by an administrator.
+Container TTL also expires test items after one day; it does not stop account/throughput billing.
+If cleanup fails, use the exact resource group from that run, inspect its ownership/expiration
+tags, and run the standard `eng/common/TestResources/Remove-TestResources.ps1` with that group's
+subscription configuration. Never delete a shared account or sweep unrelated resource groups.
+Provisioning/RBAC errors, product failures, and cleanup failures are separate task outcomes.
+The first hosted run, service-connection permissions, cancellation teardown, and billed runtime
+must be verified in Azure DevOps; local success does not establish those properties.
+
+Run the offline result-gate fixtures with:
+
+```powershell
+./sdk/data/azcosmos/eng/scripts/Test-LiveResults.Tests.ps1
+```
+
 ## Getting Started
 
 ### Prerequisites
